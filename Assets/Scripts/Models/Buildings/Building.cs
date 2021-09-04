@@ -7,17 +7,21 @@ namespace Assets.Scripts.Models.Buildings
     public class Building
     {
         public Vector2Int Position { get; private set; }
+
+        private BuildingsGrid _grid;
+
         public BuildingSchemeData Scheme { get; private set; }
 
-        public Building(BuildingScheme scheme, Vector2Int position)
+        public Building(BuildingsGrid grid, BuildingScheme scheme, Vector2Int position)
         {
             Scheme = scheme.GetData();
             Position = position;
+            _grid = grid;
         }
 
-        public Vector2Int[] GetOccupiedSpace()
+        public Vector3 GetWorldPosition()
         {
-            return new Vector2Int[] { Position };
+            return _grid.GetWorldPosition(Position);
         }
     }
 }

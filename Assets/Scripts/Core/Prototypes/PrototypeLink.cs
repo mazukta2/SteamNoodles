@@ -27,6 +27,8 @@ namespace Assets.Scripts.Core.Prototypes
 
         public abstract void Create(Transform parent, Action<GameObject> result, string name = null, bool active = true);
 
+        public abstract void DestroySpawned();
+
         protected static T CreatePrefab<T>(GameObject prefab, Transform parent,
             string name = null, bool active = true) where T : MonoBehaviour
         {

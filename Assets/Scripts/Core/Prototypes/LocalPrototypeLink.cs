@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Core.Prototypes
 {
@@ -8,6 +9,7 @@ namespace Assets.Scripts.Core.Prototypes
     public class LocalPrototypeLink : PrototypeLink
     {
         private bool _itsOriginal = true;
+        private List<GameObject> _spawned = new List<GameObject>();
 
         public override void ForceInit()
         {
@@ -28,8 +30,10 @@ namespace Assets.Scripts.Core.Prototypes
             var child = go.GetComponent<LocalPrototypeLink>();
             child._itsOriginal = false;
             if (!string.IsNullOrEmpty(name)) go.name = name;
-            go.SetActive(active);
+            _spawned.Add(go);
             result(go.GetComponent<T>());
+
+            go.SetActive(active);
         }
 
         public override void Create(Transform parent, Action<GameObject> result, string name = null, bool active = true)
@@ -38,10 +42,20 @@ namespace Assets.Scripts.Core.Prototypes
             var child = go.GetComponent<LocalPrototypeLink>();
             child._itsOriginal = false;
             if (!string.IsNullOrEmpty(name)) go.name = name;
-            go.SetActive(active);
-
+            _spawned.Add(go);
             result(go);
+
+            go.SetActive(active);
         }
 
+        public override void DestroySpawned()
+        {
+            foreach (var item in _spawned)
+            {
+                Destroy(item);
+            }
+
+            _spawned.Clear();
+        }
     }
 }

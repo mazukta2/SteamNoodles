@@ -1,23 +1,38 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
-using Assets.Scripts.Models;
 using Assets.Scripts.Models.Buildings;
-using Assets.Scripts.Models.Requests;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings
 {
-    public class BuildingScrollView : GameMonoBehaviour, IBuildingsRequest
+    public class BuildingScrollView : GameMonoBehaviour
     {
-        public SessionBuildings Buildings { get; set; }
         [SerializeField] PrototypeLink _buildingButton;
+        private BuildingViewModel _building;
 
-        protected void Start()
+        public void Set(BuildingViewModel building)
         {
-            Messages.Publish<IBuildingsRequest>(this);
-            foreach (var item in Buildings.GetCurrentSchemes())
+            if (building == null) throw new ArgumentNullException(nameof(building));
+            _building = building;
+            foreach (var item in _building.GetPool().GetCurrentSchemes())
+                _buildingButton.Create<BuildingSchemeView>(x => x.Set(item, OnClick));
+        }
+
+        private void OnClick(BuildingScheme scheme)
+        {
+            if (_building.Ghost == scheme)
             {
-                _buildingButton.Create<BuildingSchemeView>(x => x.Set(item));
+                _building.ClearGhost();
+            }
+            else if (_building.Ghost != null)
+            {
+                _building.ClearGhost();
+                _building.SetGhost(scheme);
+            }
+            else
+            {
+                _building.SetGhost(scheme);
             }
         }
     }

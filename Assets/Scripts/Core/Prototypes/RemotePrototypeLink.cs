@@ -9,17 +9,21 @@ namespace Assets.Scripts.Core.Prototypes
     {
         [SerializeField] GameObject _prefab;
 
-        private List<Action> _requests = new List<Action>();
         private bool _isInited;
+        private List<GameObject> _spawned = new List<GameObject>();
 
         public override void Create<T>(Transform parent, Action<T> result, string name = null, bool active = true)
         {
-            result(CreatePrefab<T>(_prefab, parent, name, active));
+            var t = CreatePrefab<T>(_prefab, parent, name, active);
+            _spawned.Add(t.gameObject);
+            result(t);
         }
 
         public override void Create(Transform parent, Action<GameObject> result, string name = null, bool active = true)
         {
-            result(CreatePrefab(_prefab, parent, name, active));
+            var t = CreatePrefab(_prefab, parent, name, active);
+            _spawned.Add(t);
+            result(t);
         }
 
         protected void LazyInit()
@@ -37,6 +41,15 @@ namespace Assets.Scripts.Core.Prototypes
         public override void ForceInit()
         {
             LazyInit();
+        }
+        public override void DestroySpawned()
+        {
+            foreach (var item in _spawned)
+            {
+                Destroy(item);
+            }
+
+            _spawned.Clear();
         }
     }
 }

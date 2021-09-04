@@ -1,36 +1,42 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Models.Buildings;
-using Assets.Scripts.Models.Requests;
 using Assets.Scripts.Views.Cameras;
+using Assets.Scripts.Views.Events;
 using System;
-using UniRx;
 using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings
 {
-    public class BuildingGhostView : GameMonoBehaviour, IBuildingsRequest
+    public class BuildingGhostView : GameMonoBehaviour
     {
         public BuildingScheme Scheme { get; private set; }
-        public SessionBuildings Buildings { get; set; }
 
         private GameObject _ghost;
         private GameInputs _inputs = new GameInputs();
+        private BuildingViewModel _buildings;
+        private HistoryReader _reader;
 
-        protected void Start()
+        public void Set(BuildingViewModel buildings)
         {
-            Messages.Publish<IBuildingsRequest>(this);
+            if (buildings == null) throw new ArgumentNullException(nameof(buildings));
+            _buildings = buildings;
+            _reader = new HistoryReader(_buildings.History);
+            _reader
+                .Subscribe<BuildingViewModel.GhostSetEvent>(SetGhost)
+                .Subscribe<BuildingViewModel.GhostClearEvent>(ClearGhost)
+                .Update();
         }
 
-        public void SetGhost(BuildingScheme buildingScheme)
+        public void SetGhost(BuildingViewModel.GhostSetEvent ev)
         {
             if (Scheme != null)
                 throw new Exception("Clear ghost before changing it");
 
-            Scheme = buildingScheme;
+            Scheme = ev.BuildingScheme;
             _ghost = GameObject.Instantiate(Scheme.GetGhostPrefab(), transform);
         }
 
-        public void ClearGhost()
+        public void ClearGhost(BuildingViewModel.GhostClearEvent ev)
         {
             Scheme = null;
             GameObject.Destroy(_ghost);
@@ -39,22 +45,20 @@ namespace Assets.Scripts.Views.Buildings
 
         protected void Update()
         {
+            _reader.Update();
+
             if (_ghost == null)
                 return;
 
-            var mousePosition = MainCameraController.Instance.ScreenToWorld(Input.mousePosition);
-            var cell = new Vector2Int(Mathf.CeilToInt(mousePosition.x / Buildings.CellSize), Mathf.CeilToInt(mousePosition.y / Buildings.CellSize));
-            var buildingPosition = Buildings.GetWorldPosition(cell);
-
-            _ghost.transform.position = buildingPosition;
-            _ghost.SetActive(Buildings.IsInside(Scheme, cell));
+            _ghost.transform.position = _buildings.GetGhostPosition();
 
             if (_inputs.IsTapedOnLevel())
             {
-                if (Buildings.CanBuild(Scheme, cell))
+                var position = _buildings.GetGhostCell();
+                if (_buildings.Ghost.CanBuild(_buildings.GetGrid(), position))
                 {
-                    Messages.Publish(Buildings.Build(Scheme, cell));
-                    ClearGhost();
+                    _buildings.BuildGhost();
+                    _buildings.ClearGhost();
                 }
             }
         }

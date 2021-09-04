@@ -11,14 +11,15 @@ namespace Assets.Scripts.Views.Buildings
     {
         [SerializeField] Image _image;
         [SerializeField] Button _button;
-        [SerializeField] BuildingGhostView _ghostView;
 
         private BuildingScheme _buildingScheme;
+        private Action<BuildingScheme> _onClick;
 
-        public void Set(BuildingScheme buildingScheme)
+        public void Set(BuildingScheme buildingScheme, Action<BuildingScheme> onClick)
         {
             _buildingScheme = buildingScheme;
             _image.sprite = _buildingScheme.GetImage();
+            _onClick = onClick;
         }
 
         protected void OnEnable()
@@ -33,19 +34,7 @@ namespace Assets.Scripts.Views.Buildings
 
         private void OnClick()
         {
-            if (_ghostView.Scheme == _buildingScheme)
-            {
-                _ghostView.ClearGhost();
-            } 
-            else if (_ghostView.Scheme != null)
-            {
-                _ghostView.ClearGhost();
-                _ghostView.SetGhost(_buildingScheme);
-            }
-            else
-            {
-                _ghostView.SetGhost(_buildingScheme);
-            }
+            _onClick(_buildingScheme);
         }
     }
 }

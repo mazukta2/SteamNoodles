@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Models;
-using Assets.Scripts.Models.Requests;
+using Assets.Scripts.Models.Services;
 using System;
 using UniRx;
 using UnityEngine;
@@ -8,7 +8,22 @@ namespace Assets.Scripts.Core
 {
     public class GameMonoBehaviour : MonoBehaviour
     {
-        protected IMessageBroker Messages => MessageBroker.Default;
+        private static GameContext _gameContext;
 
+        protected T Get<T>() where T : class, IService
+        {
+            return _gameContext.Get<T>();
+        }
+
+        protected void SetGameContext(GameContext gameContext)
+        {
+            _gameContext = gameContext;
+        }
+
+        protected void DisposeGameContext()
+        {
+            _gameContext.Dispose();
+            _gameContext = null;
+        }
     }
 }
