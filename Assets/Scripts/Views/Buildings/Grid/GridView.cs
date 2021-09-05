@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
 using Assets.Scripts.Models.Buildings;
+using Assets.Scripts.ViewModels.Buildings;
 using Assets.Scripts.Views.Events;
 using System;
 using UnityEngine;
@@ -11,18 +12,17 @@ namespace Assets.Scripts.Views.Buildings.Grid
     {
         [SerializeField] PrototypeLink _gridPiece;
 
-        public BuildingViewModel ViewModel { get; private set; }
-
+        private PlacementViewModel _placement;
         private HistoryReader _historyReader;
 
-        public void Set(BuildingViewModel viewModel)
+        public void Set(PlacementViewModel placement)
         {
-            if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
-            ViewModel = viewModel;
+            if (placement == null) throw new ArgumentNullException(nameof(placement));
+            _placement = placement;
             RecreateGrid();
 
-            _historyReader = new HistoryReader(ViewModel.GetGrid().History);
-            _historyReader.Subscribe<BuildingsGrid.BuildingAddedEvent>(AddBuilingHandle).Update();
+            _historyReader = new HistoryReader(_placement.History);
+            _historyReader.Subscribe<PlacementViewModel.BuildingAddedEvent>(AddBuilingHandle).Update();
         }
 
         protected void Update()
@@ -33,20 +33,20 @@ namespace Assets.Scripts.Views.Buildings.Grid
         private void RecreateGrid()
         {
             _gridPiece.DestroySpawned();
-            var rect = ViewModel.GetGrid().GetRect();
-            for (int x = rect.x; x < rect.width; x++)
+            var rect = _placement.Rect;
+            for (int x = rect.x; x < rect.x + rect.width; x++)
             {
-                for (int y = rect.y; y < rect.height; y++)
+                for (int y = rect.y; y < rect.y + rect.height; y++)
                 {
-                    _gridPiece.Create<GridPieceView>(v => v.Set(ViewModel, x, y));
+                    _gridPiece.Create<GridPieceView>(v => v.Set(_placement, x, y));
                 }
             }
         }
 
 
-        private void AddBuilingHandle(BuildingsGrid.BuildingAddedEvent obj)
+        private void AddBuilingHandle(PlacementViewModel.BuildingAddedEvent obj)
         {
-            var view = GameObject.Instantiate(obj.Building.Scheme.View, transform);
+            var view = GameObject.Instantiate(obj.Building.View, transform);
             view.transform.position = obj.Building.GetWorldPosition();
         }
 

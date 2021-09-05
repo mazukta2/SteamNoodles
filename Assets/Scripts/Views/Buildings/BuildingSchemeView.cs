@@ -1,7 +1,7 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Models.Buildings;
+using Assets.Scripts.ViewModels.Buildings;
 using System;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,13 +12,13 @@ namespace Assets.Scripts.Views.Buildings
         [SerializeField] Image _image;
         [SerializeField] Button _button;
 
-        private BuildingScheme _buildingScheme;
-        private Action<BuildingScheme> _onClick;
+        private BuildingSchemeViewModel _buildingScheme;
+        private Action<BuildingSchemeViewModel> _onClick;
 
-        public void Set(BuildingScheme buildingScheme, Action<BuildingScheme> onClick)
+        public void Set(BuildingSchemeViewModel buildingScheme, Action<BuildingSchemeViewModel> onClick)
         {
             _buildingScheme = buildingScheme;
-            _image.sprite = _buildingScheme.GetImage();
+            _image.sprite = _buildingScheme.BuildingIcon;
             _onClick = onClick;
         }
 

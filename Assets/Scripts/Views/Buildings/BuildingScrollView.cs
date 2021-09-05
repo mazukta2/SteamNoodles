@@ -1,6 +1,8 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
 using Assets.Scripts.Models.Buildings;
+using Assets.Scripts.ViewModels.Buildings;
+using Assets.Scripts.ViewModels.Level;
 using System;
 using UnityEngine;
 
@@ -9,30 +11,34 @@ namespace Assets.Scripts.Views.Buildings
     public class BuildingScrollView : GameMonoBehaviour
     {
         [SerializeField] PrototypeLink _buildingButton;
-        private BuildingViewModel _building;
+        private PlayerHandViewModel _hand;
+        private PlacementViewModel _placement;
 
-        public void Set(BuildingViewModel building)
+        public void Set(PlayerHandViewModel hand, PlacementViewModel placement)
         {
-            if (building == null) throw new ArgumentNullException(nameof(building));
-            _building = building;
-            foreach (var item in _building.GetPool().GetCurrentSchemes())
+            if (hand == null) throw new ArgumentNullException(nameof(hand));
+            if (placement == null) throw new ArgumentNullException(nameof(placement));
+            _hand = hand;
+            _placement = placement;
+
+            foreach (var item in _hand.CurrentSchemes)
                 _buildingButton.Create<BuildingSchemeView>(x => x.Set(item, OnClick));
         }
 
-        private void OnClick(BuildingScheme scheme)
+        private void OnClick(BuildingSchemeViewModel scheme)
         {
-            if (_building.Ghost == scheme)
+            if (_placement.Ghost == scheme)
             {
-                _building.ClearGhost();
+                _placement.ClearGhost();
             }
-            else if (_building.Ghost != null)
+            else if (_placement.Ghost != null)
             {
-                _building.ClearGhost();
-                _building.SetGhost(scheme);
+                _placement.ClearGhost();
+                _placement.SetGhost(scheme);
             }
             else
             {
-                _building.SetGhost(scheme);
+                _placement.SetGhost(scheme);
             }
         }
     }

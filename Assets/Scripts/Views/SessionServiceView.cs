@@ -4,7 +4,6 @@ using Assets.Scripts.Models.Session;
 using Assets.Scripts.Views.Events;
 using Assets.Scripts.Views.Levels;
 using System.Collections;
-using UniRx;
 using UnityEngine;
 
 namespace Assets.Scripts.Views.Session

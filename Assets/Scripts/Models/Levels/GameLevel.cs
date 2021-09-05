@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Data.Buildings;
 using Assets.Scripts.Models.Buildings;
+using Assets.Scripts.Models.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +11,23 @@ namespace Assets.Scripts.Models.Levels
 {
     public class GameLevel
     {
-        private BuildingsGrid _grid;
-        private BuildingsPool _pool;
-
-
         public GameLevel(BuildingsData data)
         {
-            _grid = new BuildingsGrid(data);
-            _pool = new BuildingsPool(data);
+            Data = data;
+            Placement = new Placement(data);
+            Hand = new PlayerHand(data);
         }
 
-        public BuildingsGrid GetGrid()
-        {
-            return _grid;
-        }
+        protected BuildingsData Data { get; }
 
-        public BuildingsPool GetBuildingPool()
+        public Placement Placement { get; }
+        public PlayerHand Hand { get; }
+        public History History { get; } = new History();
+
+        public GameLevel(GameLevel origin)
         {
-            return _pool;
+            Placement = origin.Placement;
+            Hand = origin.Hand;
         }
     }
 }

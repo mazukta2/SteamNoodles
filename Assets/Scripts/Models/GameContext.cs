@@ -5,7 +5,6 @@ using Assets.Scripts.Models.Session;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniRx;
 
 namespace Assets.Scripts.Models
 {

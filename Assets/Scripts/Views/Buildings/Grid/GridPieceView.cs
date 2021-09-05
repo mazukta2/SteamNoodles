@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Views.Events;
-using System;
-using System.Collections;
+﻿using Assets.Scripts.ViewModels.Buildings;
 using System.Linq;
 using UnityEngine;
 
@@ -13,14 +11,15 @@ namespace Assets.Scripts.Views.Buildings.Grid
         [SerializeField] GameObject _highlight;
         [SerializeField] GameObject _blocked;
 
-        private BuildingViewModel _model;
+        private PlacementViewModel _model;
+        private float _size;
         private Vector2Int _position;
 
-        public void Set(BuildingViewModel model, int x, int y)
+        public void Set(PlacementViewModel model, int x, int y)
         {
             _model = model;
-            var size = model.GetGrid().CellSize;
-            transform.localPosition = new Vector3(x * size, y * size, 1);
+            _size = model.CellSize;
+            transform.localPosition = new Vector3(x * _size, y * _size, 1);
             _position = new Vector2Int(x, y);
         }
 
@@ -40,7 +39,7 @@ namespace Assets.Scripts.Views.Buildings.Grid
                 var position = _model.GetGhostCell();
                 var occupiedPositions = _model.Ghost.GetOccupiedSpace(position);
                 var isTarget = occupiedPositions.Any(p => p == _position);
-                var requirementsPosition = _model.Ghost.GetPlaceablePositions(_model.GetGrid());
+                var requirementsPosition = _model.GetPlaceablePositions(_model.Ghost);
 
                 if (!isTarget)
                 {
@@ -61,6 +60,16 @@ namespace Assets.Scripts.Views.Buildings.Grid
             }
             return Mode.Normal;
         }
+
+//        private void OnDrawGizmos()
+//        {
+//#if UNITY_EDITOR
+//                GUIStyle style = new GUIStyle();
+//                style.normal.textColor = new Color(222f / 255, 49f / 255, 99f / 255);
+//                style.fontSize = (int)20;
+//                Handles.Label(transform.position - _size * Vector3.one, $"({_position.x}:{_position.y})", style);
+//#endif
+//        }
 
         private enum Mode
         {

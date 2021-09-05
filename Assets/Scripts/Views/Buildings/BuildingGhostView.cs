@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Models.Buildings;
-using Assets.Scripts.Views.Cameras;
+using Assets.Scripts.ViewModels.Buildings;
 using Assets.Scripts.Views.Events;
 using System;
 using UnityEngine;
@@ -9,34 +9,33 @@ namespace Assets.Scripts.Views.Buildings
 {
     public class BuildingGhostView : GameMonoBehaviour
     {
-        public BuildingScheme Scheme { get; private set; }
+        public BuildingSchemeViewModel Scheme { get; private set; }
 
         private GameObject _ghost;
         private GameInputs _inputs = new GameInputs();
-        private BuildingViewModel _buildings;
+        private PlacementViewModel _placement;
         private HistoryReader _reader;
 
-        public void Set(BuildingViewModel buildings)
+        public void Set(PlacementViewModel placement)
         {
-            if (buildings == null) throw new ArgumentNullException(nameof(buildings));
-            _buildings = buildings;
-            _reader = new HistoryReader(_buildings.History);
+            if (placement == null) throw new ArgumentNullException(nameof(placement));
+            _placement = placement;
+            _reader = new HistoryReader(_placement.History);
             _reader
-                .Subscribe<BuildingViewModel.GhostSetEvent>(SetGhost)
-                .Subscribe<BuildingViewModel.GhostClearEvent>(ClearGhost)
+                .Subscribe<PlacementViewModel.GhostSetEvent>(SetGhostHandle)
+                .Subscribe<PlacementViewModel.GhostClearEvent>(ClearGhostHandle)
                 .Update();
         }
 
-        public void SetGhost(BuildingViewModel.GhostSetEvent ev)
+        public void SetGhostHandle(PlacementViewModel.GhostSetEvent ev)
         {
-            if (Scheme != null)
-                throw new Exception("Clear ghost before changing it");
+            if (Scheme != null) throw new Exception("Clear ghost before changing it");
 
             Scheme = ev.BuildingScheme;
-            _ghost = GameObject.Instantiate(Scheme.GetGhostPrefab(), transform);
+            _ghost = GameObject.Instantiate(Scheme.Ghost, transform);
         }
 
-        public void ClearGhost(BuildingViewModel.GhostClearEvent ev)
+        public void ClearGhostHandle(PlacementViewModel.GhostClearEvent ev)
         {
             Scheme = null;
             GameObject.Destroy(_ghost);
@@ -50,15 +49,14 @@ namespace Assets.Scripts.Views.Buildings
             if (_ghost == null)
                 return;
 
-            _ghost.transform.position = _buildings.GetGhostPosition();
+            _ghost.transform.position = _placement.GetGhostPosition();
 
             if (_inputs.IsTapedOnLevel())
             {
-                var position = _buildings.GetGhostCell();
-                if (_buildings.Ghost.CanBuild(_buildings.GetGrid(), position))
+                if (_placement.CanPlace(_placement.Ghost, _placement.GetGhostCell()))
                 {
-                    _buildings.BuildGhost();
-                    _buildings.ClearGhost();
+                    _placement.BuildGhost();
+                    _placement.ClearGhost();
                 }
             }
         }

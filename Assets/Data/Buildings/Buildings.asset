@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Buildings:
   - {fileID: 11400000, guid: 06959166efcddab4981f5e2f47b4918c, type: 2}
-  MapSize: {x: 4, y: 4}
+  MapSize: {x: 8, y: 8}

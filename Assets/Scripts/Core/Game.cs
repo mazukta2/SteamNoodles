@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Data;
 using Assets.Scripts.Models;
 using System;
-using UniRx;
 using UnityEngine;
 
 namespace Assets.Scripts.Core
