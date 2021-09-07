@@ -1,17 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Core.Helpers;
-using Assets.Scripts.Data.Buildings;
-using Assets.Scripts.Models.Buildings;
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-
 namespace Assets.Scripts.Tests
 {
     public class BuildingsTests
     {
+        /*
         [Test]
         public void Rect()
         {
@@ -66,5 +57,6 @@ namespace Assets.Scripts.Tests
             public Vector2Int Size { get; }
             public Requirements Requirements => new Requirements();
         }
+*/
     }
 }
