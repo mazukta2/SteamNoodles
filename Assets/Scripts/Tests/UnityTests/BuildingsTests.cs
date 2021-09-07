@@ -1,7 +1,15 @@
+using NUnit.Framework;
+
 namespace Assets.Scripts.Tests
 {
     public class BuildingsTests
     {
+
+        [Test]
+        public void Test()
+        {
+            Assert.IsTrue(true);
+        }
         /*
         [Test]
         public void Rect()

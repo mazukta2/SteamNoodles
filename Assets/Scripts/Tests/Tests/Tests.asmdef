@@ -1,17 +1,18 @@
 {
-    "name": "GameUnity",
-    "rootNamespace": "GameUnity",
+    "name": "Tests",
+    "rootNamespace": "Tests",
     "references": [
-        "GUID:4307f53044263cf4b835bd812fc161a4",
         "GUID:7307276072fb94ce19419acdbb3d5529"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        "rnunit.framework.common.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": true
 }
