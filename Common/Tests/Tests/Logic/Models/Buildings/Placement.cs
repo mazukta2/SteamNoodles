@@ -21,7 +21,7 @@ namespace Assets.Scripts.Models.Buildings
         public Placement(IPoint size)
         {
             Size = size;
-            //Rect = new RectInt(-Size.x / 2, -Size.y / 2, Size.x, Size.y);
+            Rect = Size.ToCenterRect();
         }
 
         public Placement(Placement origin)

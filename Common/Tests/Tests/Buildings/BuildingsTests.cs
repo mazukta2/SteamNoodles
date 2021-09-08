@@ -5,6 +5,7 @@ using System.Text;
 using Assets.Scripts.Logic;
 using Tests.Mocks.Prototypes.Levels;
 using Tests.Mocks.Common.Math;
+using Assets.Scripts.Models.Buildings;
 
 namespace Tests.Buildings
 {
@@ -22,18 +23,18 @@ namespace Tests.Buildings
         public void Rect()
         {
             var size = new Point(4, 4);
-            //var buildinGrid = new Placement(size);
-            //var rect = buildinGrid.Rect;
-            //Assert.AreEqual(-2, rect.xMin);
-            //Assert.AreEqual(2, rect.xMax);
-            //Assert.AreEqual(-2, rect.yMin);
-            //Assert.AreEqual(2, rect.yMax);
+            var buildinGrid = new Placement(size);
+            var rect = buildinGrid.Rect;
+            Assert.AreEqual(-2, rect.xMin);
+            Assert.AreEqual(2, rect.xMax);
+            Assert.AreEqual(-2, rect.yMin);
+            Assert.AreEqual(2, rect.yMax);
 
-            //Assert.IsTrue(rect.IsInside(new Vector2Int(0, 0)));
-            //Assert.IsTrue(rect.IsInside(new Vector2Int(-2, -2)));
-            //Assert.IsTrue(rect.IsInside(new Vector2Int(2, 2)));
-            //Assert.IsFalse(rect.IsInside(new Vector2Int(-3, -3)));
-            //Assert.IsFalse(rect.IsInside(new Vector2Int(3, 3)));
+            Assert.IsTrue(rect.IsInside(new Point(0, 0)));
+            Assert.IsTrue(rect.IsInside(new Point(-2, -2)));
+            Assert.IsTrue(rect.IsInside(new Point(2, 2)));
+            Assert.IsFalse(rect.IsInside(new Point(-3, -3)));
+            Assert.IsFalse(rect.IsInside(new Point(3, 3)));
         }
 
         //[Test]

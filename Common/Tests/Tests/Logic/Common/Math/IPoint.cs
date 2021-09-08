@@ -8,6 +8,6 @@ namespace Assets.Scripts.Logic.Common.Math
 {
     public interface IPoint
     {
-        
+        IRect ToCenterRect();
     }
 }

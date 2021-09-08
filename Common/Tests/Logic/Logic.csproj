@@ -6,41 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Logic\Common.meta" />
-    <None Remove="Logic\Common\Math.meta" />
-    <None Remove="Logic\Common\Math\IPoint.cs.meta" />
-    <None Remove="Logic\GameLogic.asmdef" />
-    <None Remove="Logic\GameLogic.asmdef.meta" />
-    <None Remove="Logic\GameLogic.cs.meta" />
-    <None Remove="Logic\Models.meta" />
-    <None Remove="Logic\Models\Buildings.meta" />
-    <None Remove="Logic\Models\Buildings\Building.cs.meta" />
-    <None Remove="Logic\Models\Buildings\BuildingScheme.cs.meta" />
-    <None Remove="Logic\Models\Buildings\Placement.cs.meta" />
-    <None Remove="Logic\Models\Buildings\PlayerHand.cs.meta" />
-    <None Remove="Logic\Models\Buildings\SessionBuildings.cs.meta" />
-    <None Remove="Logic\Models\Events.meta" />
-    <None Remove="Logic\Models\Events\GameEvents.meta" />
-    <None Remove="Logic\Models\Events\GameEvents\LevelCreatedEvent.cs.meta" />
-    <None Remove="Logic\Models\Events\History.cs.meta" />
-    <None Remove="Logic\Models\Events\IGameEvent.cs.meta" />
-    <None Remove="Logic\Models\Levels.meta" />
-    <None Remove="Logic\Models\Levels\GameLevel.cs.meta" />
-    <None Remove="Logic\Models\Levels\IGameLevelData.cs.meta" />
-    <None Remove="Logic\Models\Levels\ILevelData.cs.meta" />
-    <None Remove="Logic\Models\Services.meta" />
-    <None Remove="Logic\Models\Session.meta" />
-    <None Remove="Logic\Prototypes.meta" />
-    <None Remove="Logic\Prototypes\Buildings.meta" />
-    <None Remove="Logic\Prototypes\Levels.meta" />
-    <None Remove="Logic\Prototypes\Levels\ILevelPrototype.cs.meta" />
-    <None Remove="Logic\ViewModels.meta" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Logic\Models\Services\" />
-    <Folder Include="Logic\Prototypes\Buildings\" />
-    <Folder Include="Logic\ViewModels\" />
+    <Folder Include="..\..\..\Assets\Scripts\Logic\" />
   </ItemGroup>
 
 </Project>

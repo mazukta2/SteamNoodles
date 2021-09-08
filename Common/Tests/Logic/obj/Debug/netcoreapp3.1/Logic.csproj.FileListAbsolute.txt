@@ -1,0 +1,4 @@
+D:\Projects\SteamNoodles\Common\Tests\Logic\obj\Debug\netcoreapp3.1\Logic.AssemblyInfoInputs.cache
+D:\Projects\SteamNoodles\Common\Tests\Logic\obj\Debug\netcoreapp3.1\Logic.AssemblyInfo.cs
+D:\Projects\SteamNoodles\Common\Tests\Logic\obj\Debug\netcoreapp3.1\Logic.csproj.CoreCompileInputs.cache
+D:\Projects\SteamNoodles\Common\Tests\Logic\obj\Debug\netcoreapp3.1\Logic.csprojAssemblyReference.cache

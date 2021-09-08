@@ -7,13 +7,18 @@ namespace Tests.Mocks.Common.Math
 {
     public struct Point : IPoint
     {
-        public readonly int X;
-        public readonly int Y;
+        public readonly int X { get; }
+        public readonly int Y { get; }
 
         public Point(int x, int y)
         {
             X = x;
             Y = y;
+        }
+
+        public IRect ToCenterRect()
+        {
+            return new Rect(-X / 2, -Y / 2, X, Y);
         }
     }
 }
