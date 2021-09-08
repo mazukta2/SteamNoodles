@@ -1,7 +1,8 @@
-﻿using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Assets.Scripts.Models.Buildings;
 using Assets.Scripts.Models.Events;
 
-namespace Assets.Scripts.Models.Levels
+namespace Assets.Scripts.Logic.Models.Levels
 {
     public class GameLevel
     {
@@ -9,13 +10,7 @@ namespace Assets.Scripts.Models.Levels
         public PlayerHand Hand { get; }
         public History History { get; } = new History();
 
-        public GameLevel(GameLevel origin)
-        {
-            Placement = origin.Placement;
-            Hand = origin.Hand;
-        }
-
-        public GameLevel()
+        public GameLevel(ILevelPrototype prototype)
         {
         }
     }

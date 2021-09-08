@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Assets.Scripts.Logic;
+using Tests.Mocks.Prototypes.Levels;
 
 namespace Tests.Buildings
 {
@@ -10,8 +12,9 @@ namespace Tests.Buildings
         [Test]
         public void Test()
         {
-            var t = 1;
-            Assert.IsTrue(t == 1);
+            var game = new GameLogic();
+            var session = game.CreateSession();
+            var level = session.LoadLevel(new BasicLevelPrototype());
         }
     }
 }

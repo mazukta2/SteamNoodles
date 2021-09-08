@@ -876,6 +876,15 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
+      },
+      "GameLogic/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/GameLogic.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GameLogic.dll": {}
+        }
       }
     }
   },
@@ -3752,10 +3761,16 @@
         "system.xml.xdocument.4.0.11.nupkg.sha512",
         "system.xml.xdocument.nuspec"
       ]
+    },
+    "GameLogic/1.0.0": {
+      "type": "project",
+      "path": "../../../GameLogic.csproj",
+      "msbuildProject": "../../../GameLogic.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "GameLogic >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 16.11.0",
       "NUnit >= 3.13.2",
       "NUnit3TestAdapter >= 4.0.0"
@@ -3791,7 +3806,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Projects\\SteamNoodles\\GameLogic.csproj": {
+              "projectPath": "D:\\Projects\\SteamNoodles\\GameLogic.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

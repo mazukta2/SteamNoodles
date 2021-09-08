@@ -1,5 +1,8 @@
+using Assets.Scripts.Logic.Models.Events.GameEvents;
+using Assets.Scripts.Logic.Models.Levels;
+using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Events;
-using Assets.Scripts.Models.Levels;
+using System;
 
 namespace Assets.Scripts.Logic.Models.Session
 {
@@ -9,21 +12,18 @@ namespace Assets.Scripts.Logic.Models.Session
 
         public GameSession()
         {
-            CreateLevel();
         }
 
         public History History { get; } = new History();
 
-        private void CreateLevel()
+        public GameLevel LoadLevel(ILevelPrototype prototype)
         {
-           _currentLevel = new GameLevel();
-           History.Add(new LevelCreatedEvent(_currentLevel));
+            if (_currentLevel != null) throw new Exception("Need to unload previous level before loading new one");
+
+            _currentLevel = new GameLevel(prototype);
+            History.Add(new LevelCreatedEvent(_currentLevel));
+            return _currentLevel;
         }
 
-        public class LevelCreatedEvent : IGameEvent 
-        {
-            public LevelCreatedEvent(GameLevel level) => (Level) = (level);
-            public GameLevel Level { get; } 
-        };
     }
 }

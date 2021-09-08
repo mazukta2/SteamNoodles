@@ -30,7 +30,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\Projects\\SteamNoodles\\GameLogic.csproj": {
+                "projectPath": "D:\\Projects\\SteamNoodles\\GameLogic.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -73,6 +77,16 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "D:\\Projects\\SteamNoodles\\GameLogic.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\Projects\\SteamNoodles\\GameLogic.csproj",
+        "projectName": "GameLogic",
+        "projectPath": "D:\\Projects\\SteamNoodles\\GameLogic.csproj"
+      },
+      "frameworks": {
+        "net471": {}
       }
     }
   }
