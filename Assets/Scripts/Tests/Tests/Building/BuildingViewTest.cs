@@ -3,15 +3,10 @@ using System.Collections.Generic;
 
 public class BuildingViewTest 
 {
-    // Start is called before the first frame update
+    //[Test]
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -1,6 +1,6 @@
 {
-    "name": "Tests",
-    "rootNamespace": "Tests",
+    "name": "GameTests",
+    "rootNamespace": "GameTests",
     "references": [
         "GUID:7307276072fb94ce19419acdbb3d5529"
     ],
@@ -8,10 +8,7 @@
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
-    "precompiledReferences": [
-        "rnunit.framework.common.dll",
-        "mNUnit3.TestAdapter.dll"
-    ],
+    "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
