@@ -13,9 +13,9 @@ namespace Tests.Buildings
         [Test]
         public void Test()
         {
-            //var game = new GameLogic();
-            //var session = game.CreateSession();
-            //session.LoadLevel(new BasicLevelPrototype());
+            var game = new GameLogic();
+            var session = game.CreateSession();
+            session.LoadLevel(new BasicLevelPrototype());
         }
 
         [Test]
