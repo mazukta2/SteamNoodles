@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="\**" />
+    <EmbeddedResource Remove="\**" />
+    <None Remove="\**" />
+
+    <None Include="Assets\Scripts\Game\Logic\**\*.cs" />
+    
+    <Compile Include="Assets\Scripts\Game\Logic\**\*.cs"  />
+    <EmbeddedResource Include="Assets\Scripts\Game\Logic\**\*.cs"  />
+    
+    <None Include="Tests\**\*.cs" />
+    <Compile Include="Tests\**\*.cs" />
+    <EmbeddedResource Include="Tests\**\*.cs" />
+  </ItemGroup>
+
+</Project>

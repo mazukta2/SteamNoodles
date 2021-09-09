@@ -1,5 +1,4 @@
 using Assets.Scripts.Core;
-using Assets.Scripts.Models.Buildings;
 using Assets.Scripts.ViewModels.Buildings;
 using System;
 using UnityEngine;
@@ -12,29 +11,29 @@ namespace Assets.Scripts.Views.Buildings
         [SerializeField] Image _image;
         [SerializeField] Button _button;
 
-        private BuildingSchemeViewModel _buildingScheme;
-        private Action<BuildingSchemeViewModel> _onClick;
+        //private BuildingSchemeViewModel _buildingScheme;
+        //private Action<BuildingSchemeViewModel> _onClick;
 
-        public void Set(BuildingSchemeViewModel buildingScheme, Action<BuildingSchemeViewModel> onClick)
-        {
-            _buildingScheme = buildingScheme;
-            _image.sprite = _buildingScheme.BuildingIcon;
-            _onClick = onClick;
-        }
+        //public void Set(BuildingSchemeViewModel buildingScheme, Action<BuildingSchemeViewModel> onClick)
+        //{
+        //    _buildingScheme = buildingScheme;
+        //    _image.sprite = _buildingScheme.BuildingIcon;
+        //    _onClick = onClick;
+        //}
 
-        protected void OnEnable()
-        {
-            _button.onClick.AddListener(OnClick);
-        }
+        //protected void OnEnable()
+        //{
+        //    _button.onClick.AddListener(OnClick);
+        //}
 
-        protected void OnDisable()
-        {
-            _button.onClick.RemoveListener(OnClick);
-        }
+        //protected void OnDisable()
+        //{
+        //    _button.onClick.RemoveListener(OnClick);
+        //}
 
-        private void OnClick()
-        {
-            _onClick(_buildingScheme);
-        }
+        //private void OnClick()
+        //{
+        //    _onClick(_buildingScheme);
+        //}
     }
 }
