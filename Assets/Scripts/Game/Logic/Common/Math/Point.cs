@@ -1,11 +1,7 @@
-﻿using Assets.Scripts.Logic.Common.Math;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tests.Mocks.Common.Math
+﻿
+namespace Assets.Scripts.Game.Logic.Common.Math
 {
-    public struct Point : IPoint
+    public struct Point
     {
         public readonly int X { get; }
         public readonly int Y { get; }
@@ -16,7 +12,7 @@ namespace Tests.Mocks.Common.Math
             Y = y;
         }
 
-        public IRect ToCenterRect()
+        public Rect AsCenteredRect()
         {
             return new Rect(-X / 2, -Y / 2, X, Y);
         }

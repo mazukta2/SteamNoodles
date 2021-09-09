@@ -8,22 +8,32 @@ namespace Assets.Scripts.Logic.Models.Session
 {
     public class GameSession
     {
-        private GameLevel _currentLevel;
-
         public GameSession()
         {
         }
 
         public History History { get; } = new History();
+        public bool IsLoading { get; private set; }
+        public GameLevel CurrentLevel { get; private set; }
 
-        public GameLevel LoadLevel(ILevelPrototype prototype)
+        public void LoadLevel(ILevelPrototype prototype)
         {
-            if (_currentLevel != null) throw new Exception("Need to unload previous level before loading new one");
-
-            _currentLevel = new GameLevel(prototype);
-            History.Add(new LevelCreatedEvent(_currentLevel));
-            return _currentLevel;
+            if (CurrentLevel != null) throw new Exception("Need to unload previous level before loading new one");
+            if (IsLoading) throw new Exception("Is currently loading");
+            
+            IsLoading = true;
+           
+            prototype.Load(OnFinished);
         }
 
+        private void OnFinished(ILevelPrototype prototype)
+        {
+            if (!IsLoading) throw new Exception("Is currently not loading");
+
+            CurrentLevel = new GameLevel(prototype);
+            IsLoading = false;
+
+            History.Add(new LevelLoadedEvent(CurrentLevel));
+        }
     }
 }

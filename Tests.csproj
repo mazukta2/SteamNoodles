@@ -4,6 +4,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <EnableDefaultItems>false</EnableDefaultItems>
   </PropertyGroup>
   
 
@@ -14,18 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="\**" />
-    <EmbeddedResource Remove="\**" />
-    <None Remove="\**" />
-
     <None Include="Assets\Scripts\Game\Logic\**\*.cs" />
-    
-    <Compile Include="Assets\Scripts\Game\Logic\**\*.cs"  />
-    <EmbeddedResource Include="Assets\Scripts\Game\Logic\**\*.cs"  />
+    <Compile Include="Assets\Scripts\Game\Logic\**\*.cs" />
+    <EmbeddedResource Include="Assets\Scripts\Game\Logic\**\*.cs" />
     
     <None Include="Tests\**\*.cs" />
     <Compile Include="Tests\**\*.cs" />
     <EmbeddedResource Include="Tests\**\*.cs" />
   </ItemGroup>
+
 
 </Project>

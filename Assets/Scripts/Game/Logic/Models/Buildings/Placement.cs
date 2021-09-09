@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Logic.Common.Math;
+using Assets.Scripts.Game.Logic.Common.Math;
 using Assets.Scripts.Models.Events;
 
 namespace Assets.Scripts.Models.Buildings
@@ -8,8 +8,8 @@ namespace Assets.Scripts.Models.Buildings
     {
         public readonly float CellSize = 0.25f;
 
-        public IPoint Size { get; }
-        public IRect Rect { get; }
+        public Point Size { get; }
+        public Rect Rect { get; }
         public List<Building> Buildings { get; } = new List<Building>();
         public History History { get; } = new History();
 
@@ -18,10 +18,10 @@ namespace Assets.Scripts.Models.Buildings
         //    Size = data.MapSize;
         //}
 
-        public Placement(IPoint size)
+        public Placement(Point size)
         {
             Size = size;
-            //Rect = new RectInt(-Size.x / 2, -Size.y / 2, Size.x, Size.y);
+            Rect = size.AsCenteredRect();
         }
 
         public Placement(Placement origin)
@@ -35,7 +35,7 @@ namespace Assets.Scripts.Models.Buildings
         //    return new Vector3(cell.x * CellSize - CellSize / 2, cell.y * CellSize - CellSize / 2);
         //}
 
-        public Building Place(BuildingScheme scheme, IPoint position)
+        public Building Place(BuildingScheme scheme, Point position)
         {
             var building = new Building(this, scheme, position);
             Buildings.Add(building);
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Models.Buildings
             return building;
         }
 
-        public bool CanPlace(BuildingScheme scheme, IPoint position)
+        public bool CanPlace(BuildingScheme scheme, Point position)
         {
             return false;
             //return scheme
@@ -51,7 +51,7 @@ namespace Assets.Scripts.Models.Buildings
                 //.All(otherPosition => IsFreeCell(scheme, otherPosition));
         }
 
-        public bool IsFreeCell(BuildingScheme scheme, IPoint position)
+        public bool IsFreeCell(BuildingScheme scheme, Point position)
         {
             /*
             if (!Rect.IsInside(position))

@@ -4,38 +4,30 @@ using System.Collections.Generic;
 using System.Text;
 using Assets.Scripts.Logic;
 using Tests.Mocks.Prototypes.Levels;
-using Tests.Mocks.Common.Math;
 using Assets.Scripts.Models.Buildings;
+using Assets.Scripts.Game.Logic.Common.Math;
 
 namespace Tests.Buildings
 {
     public class BuildingsTests
     {
         [Test]
-        public void Test()
+        public void PlacementGridRectHasRightSize()
         {
-            var game = new GameLogic();
-            var session = game.CreateSession();
-            session.LoadLevel(new BasicLevelPrototype());
+            var size = new Point(4, 4);
+            var buildinGrid = new Placement(size);
+            var rect = buildinGrid.Rect;
+            Assert.AreEqual(-2, rect.xMin);
+            Assert.AreEqual(2, rect.xMax);
+            Assert.AreEqual(-2, rect.yMin);
+            Assert.AreEqual(2, rect.yMax);
+
+            Assert.IsTrue(rect.IsInside(new Point(0, 0)));
+            Assert.IsTrue(rect.IsInside(new Point(-2, -2)));
+            Assert.IsTrue(rect.IsInside(new Point(2, 2)));
+            Assert.IsFalse(rect.IsInside(new Point(-3, -3)));
+            Assert.IsFalse(rect.IsInside(new Point(3, 3)));
         }
-
-        //[Test]
-        //public void Rect()
-        //{
-        //    var size = new Point(4, 4);
-        //    var buildinGrid = new Placement(size);
-        //    var rect = buildinGrid.Rect;
-        //    Assert.AreEqual(-2, rect.xMin);
-        //    Assert.AreEqual(2, rect.xMax);
-        //    Assert.AreEqual(-2, rect.yMin);
-        //    Assert.AreEqual(2, rect.yMax);
-
-        //    Assert.IsTrue(rect.IsInside(new Point(0, 0)));
-        //    Assert.IsTrue(rect.IsInside(new Point(-2, -2)));
-        //    Assert.IsTrue(rect.IsInside(new Point(2, 2)));
-        //    Assert.IsFalse(rect.IsInside(new Point(-3, -3)));
-        //    Assert.IsFalse(rect.IsInside(new Point(3, 3)));
-        //}
 
         //[Test]
         //public void Placing()

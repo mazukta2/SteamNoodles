@@ -8,5 +8,6 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
 {
     public interface ILevelPrototype
     {
+        void Load(Action<ILevelPrototype> onFinished);
     }
 }
