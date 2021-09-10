@@ -16,5 +16,9 @@ namespace Assets.Scripts.Game.Logic.Common.Math
         {
             return new Rect(-X / 2, -Y / 2, X, Y);
         }
+
+        public static Point operator +(Point current, Point other) => new Point(current.X + other.X, current.Y + other.Y);
+        public static bool operator ==(Point current, Point other) => current.X == other.X && current.Y == other.Y;
+        public static bool operator !=(Point current, Point other) => current.X != other.X || current.Y != other.Y;
     }
 }

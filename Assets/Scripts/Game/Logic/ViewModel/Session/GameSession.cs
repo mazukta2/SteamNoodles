@@ -12,17 +12,17 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Session
 {
     public class GameSessionViewModel
     {
-        public AutoUpdatedProperty<LevelViewModel, LevelLoadedEvent> Level { get; private set; }
+        public AutoUpdatedProperty<LevelViewModel, LevelLoadedEvent> CurrentLevel { get; private set; }
         private GameSession _model;
 
         public GameSessionViewModel(GameSession model)
         {
             _model = model;
 
-            Level = new AutoUpdatedProperty<LevelViewModel, LevelLoadedEvent>(null, model.History, Update);
+            CurrentLevel = new AutoUpdatedProperty<LevelViewModel, LevelLoadedEvent>(model.History, GetModel);
         }
 
-        private LevelViewModel Update(LevelLoadedEvent arg)
+        private LevelViewModel GetModel(LevelLoadedEvent arg)
         {
             return new LevelViewModel(arg.Level);
         }

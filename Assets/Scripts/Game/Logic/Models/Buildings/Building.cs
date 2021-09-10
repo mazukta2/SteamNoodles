@@ -6,7 +6,7 @@ namespace Assets.Scripts.Models.Buildings
     {
         private Placement _grid;
 
-        public Building(Placement grid, BuildingScheme scheme, Point position)
+        public Building(Placement grid, ConstructionScheme scheme, Point position)
         {
             Scheme = scheme;
             Position = position;
@@ -21,7 +21,7 @@ namespace Assets.Scripts.Models.Buildings
         }
 
         public Point Position { get; private set; }
-        public BuildingScheme Scheme { get; private set; }
+        public ConstructionScheme Scheme { get; private set; }
 
         //public Vector3 GetWorldPosition()
         //{

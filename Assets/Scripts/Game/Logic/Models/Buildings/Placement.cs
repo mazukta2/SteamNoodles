@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Logic.Common.Math;
 using Assets.Scripts.Models.Events;
 
@@ -6,17 +8,12 @@ namespace Assets.Scripts.Models.Buildings
 {
     public class Placement
     {
-        public readonly float CellSize = 0.25f;
 
         public Point Size { get; }
         public Rect Rect { get; }
         public List<Building> Buildings { get; } = new List<Building>();
         public History History { get; } = new History();
 
-        //public Placement(BuildingsData data)
-        //{
-        //    Size = data.MapSize;
-        //}
 
         public Placement(Point size)
         {
@@ -24,18 +21,7 @@ namespace Assets.Scripts.Models.Buildings
             Rect = size.AsCenteredRect();
         }
 
-        public Placement(Placement origin)
-        {
-            Size = origin.Size;
-            Rect = origin.Rect;
-        }
-
-        //public IPoint GetWorldPosition(IPoint cell)
-        //{
-        //    return new Vector3(cell.x * CellSize - CellSize / 2, cell.y * CellSize - CellSize / 2);
-        //}
-
-        public Building Place(BuildingScheme scheme, Point position)
+        public Building Place(ConstructionScheme scheme, Point position)
         {
             var building = new Building(this, scheme, position);
             Buildings.Add(building);
@@ -43,17 +29,15 @@ namespace Assets.Scripts.Models.Buildings
             return building;
         }
 
-        public bool CanPlace(BuildingScheme scheme, Point position)
+        public bool CanPlace(ConstructionScheme scheme, Point position)
         {
-            return false;
-            //return scheme
-              //  .GetOccupiedSpace(position)
-                //.All(otherPosition => IsFreeCell(scheme, otherPosition));
+            return scheme
+                .GetOccupiedSpace(position)
+                .All(otherPosition => IsFreeCell(scheme, otherPosition));
         }
 
-        public bool IsFreeCell(BuildingScheme scheme, Point position)
+        public bool IsFreeCell(ConstructionScheme scheme, Point position)
         {
-            /*
             if (!Rect.IsInside(position))
                 return false;
 
@@ -62,8 +46,8 @@ namespace Assets.Scripts.Models.Buildings
 
             if (scheme.Requirements.DownEdge)
             {
-                return Rect.y == position.y || Rect.y + 1 == position.y;
-            }*/
+                return Rect.Y == position.Y || Rect.Y + 1 == position.Y;
+            }
 
             return true;
         }

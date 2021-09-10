@@ -7,15 +7,12 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Common
     public class AutoUpdatedProperty<TValue, TEvent> where TEvent : IGameEvent
     {
         private Func<TEvent, TValue> _setter;
-        private Action _update;
         private HistoryReader _history;
         private TValue _value;
 
-
-        public AutoUpdatedProperty(Action update, History history, Func<TEvent, TValue> setter)
+        public AutoUpdatedProperty(History history, Func<TEvent, TValue> setter)
         {
             _setter = setter;
-            _update = update;
             _history = new HistoryReader(history);
             _history.Subscribe<TEvent>(OnEvent).Update();
         }
@@ -24,7 +21,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Common
 
         private TValue GetValue()
         {
-            _update();
+            _history.Update();
             return _value;
         }
 

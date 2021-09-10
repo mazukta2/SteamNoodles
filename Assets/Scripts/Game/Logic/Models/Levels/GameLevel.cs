@@ -12,6 +12,8 @@ namespace Assets.Scripts.Logic.Models.Levels
 
         public GameLevel(ILevelPrototype prototype)
         {
+            Hand = new PlayerHand(prototype.StartingHand);
+            Placement = new Placement(prototype.Size);
         }
     }
 }

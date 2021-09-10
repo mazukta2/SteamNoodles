@@ -1,25 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
+using Assets.Scripts.Logic.Prototypes.Levels;
+using Assets.Scripts.Models.Events;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Models.Buildings
 {
     public class PlayerHand
     {
-        public BuildingScheme[] CurrentSchemes => _schemes.ToArray();
-        private List<BuildingScheme> _schemes = new List<BuildingScheme>();
+        public ConstructionScheme[] CurrentSchemes => _schemes.ToArray();
 
-        /*
-        public PlayerHand(BuildingsData buildings)
+        public History History = new History();
+
+        private List<ConstructionScheme> _schemes = new List<ConstructionScheme>();
+
+        public PlayerHand(IBuildingPrototype[] startingHand)
         {
-            foreach (var item in buildings.Buildings)
+            foreach (var item in startingHand)
             {
-                _schemes.Add(new BuildingScheme(item));
+                Add(new ConstructionScheme(item));
             }
         }
-        */
 
-        //public PlayerHand(PlayerHand origin)
-        //{
-         //   _schemes = origin._schemes;
-        //}
+        public void Add(ConstructionScheme buildingScheme)
+        {
+            _schemes.Add(buildingScheme);
+            History.Add(new SchemeAddedToHandEvent(buildingScheme));
+        }
     }
 }

@@ -21,8 +21,7 @@ namespace Tests.Tests.Shortcuts
             game.Session.LoadLevel(levelProto);
             levelProto.Finish();
 
-            vm.Update();
-            return (game.Session.CurrentLevel, vm.Session.CurrentLevel);
+            return (game.Session.CurrentLevel, vm.Session.Value.CurrentLevel.Value);
         }
 }
     }
