@@ -20,5 +20,18 @@ namespace Assets.Scripts.Game.Logic.Common.Math
         public static Point operator +(Point current, Point other) => new Point(current.X + other.X, current.Y + other.Y);
         public static bool operator ==(Point current, Point other) => current.X == other.X && current.Y == other.Y;
         public static bool operator !=(Point current, Point other) => current.X != other.X || current.Y != other.Y;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Point otherPoint)
+                return this == otherPoint;
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return X + Y;
+        }
     }
 }

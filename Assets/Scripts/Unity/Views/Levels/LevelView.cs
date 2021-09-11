@@ -1,11 +1,5 @@
 ﻿using Assets.Scripts.Core.Prototypes;
-using Assets.Scripts.ViewModels.Level;
-using Assets.Scripts.Views.Buildings;
-using Assets.Scripts.Views.Buildings.Grid;
-using System;
-using System.Collections;
 using UnityEngine;
-using static Assets.Scripts.Views.Levels.LevelView;
 
 namespace Assets.Scripts.Views.Levels
 {

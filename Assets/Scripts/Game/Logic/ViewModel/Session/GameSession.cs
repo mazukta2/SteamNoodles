@@ -12,7 +12,6 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Session
 {
     public class GameSessionViewModel
     {
-        public AutoUpdatedProperty<LevelViewModel, LevelLoadedEvent> CurrentLevel { get; private set; }
         private GameSession _model;
 
         public GameSessionViewModel(GameSession model)
@@ -20,6 +19,13 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Session
             _model = model;
 
             CurrentLevel = new AutoUpdatedProperty<LevelViewModel, LevelLoadedEvent>(model.History, GetModel);
+        }
+
+        public AutoUpdatedProperty<LevelViewModel, LevelLoadedEvent> CurrentLevel { get; private set; }
+
+        public void LoadLevel(ILevelPrototype levelPrototype)
+        {
+            _model.LoadLevel(levelPrototype);
         }
 
         private LevelViewModel GetModel(LevelLoadedEvent arg)

@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.ViewModels.Buildings;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings.Grid
 {

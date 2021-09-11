@@ -1,8 +1,5 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
-using Assets.Scripts.ViewModels.Buildings;
-using Assets.Scripts.ViewModels.Level;
-using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings

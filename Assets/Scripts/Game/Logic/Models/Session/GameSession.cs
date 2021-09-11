@@ -20,7 +20,8 @@ namespace Assets.Scripts.Logic.Models.Session
         {
             if (CurrentLevel != null) throw new Exception("Need to unload previous level before loading new one");
             if (IsLoading) throw new Exception("Is currently loading");
-            
+            if (prototype == null) throw new Exception("Prototype is null");
+
             IsLoading = true;
            
             prototype.Load(OnFinished);

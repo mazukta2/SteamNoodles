@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Data;
+using Assets.Scripts.Logic;
 using System;
+using Tests.Assets.Scripts.Game.Logic.ViewModel;
 using UnityEngine;
 
 namespace Assets.Scripts.Core
@@ -8,14 +10,17 @@ namespace Assets.Scripts.Core
     {
         [SerializeField] GameSessionData _gameSessionData;
 
+        private GameLogicViewModel _viewModel;
+
         protected void Awake()
         {
-           // SetGameContext(new GameContext(_gameSessionData));
+            DontDestroyOnLoad(gameObject);
+            _viewModel = new GameLogicViewModel(new GameLogic());
+            _viewModel.StartGame(_gameSessionData.StartLevel);
         }
 
         protected void OnDestroy()
         {
-            //DisposeGameContext();
         }
     }
 }

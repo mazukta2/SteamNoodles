@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GameSession
   m_EditorClassIdentifier: 
   Buildings: {fileID: 11400000, guid: 475a9a6f0ecde7844b3ac85b3ce6a7b6, type: 2}
+  StartLevel: {fileID: 11400000, guid: ff6f0be4ff5236544a61479ab6257885, type: 2}

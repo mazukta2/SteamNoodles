@@ -3,7 +3,7 @@
     "rootNamespace": "GameUnity",
     "references": [
         "GUID:4307f53044263cf4b835bd812fc161a4",
-        "GUID:7307276072fb94ce19419acdbb3d5529"
+        "GUID:55460911c89c66943a77afcabb454d94"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

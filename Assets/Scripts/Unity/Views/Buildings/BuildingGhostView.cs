@@ -1,8 +1,4 @@
 ﻿using Assets.Scripts.Core;
-using Assets.Scripts.ViewModels.Buildings;
-using Assets.Scripts.Views.Events;
-using System;
-using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings
 {

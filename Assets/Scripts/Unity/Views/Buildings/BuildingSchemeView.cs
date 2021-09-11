@@ -1,6 +1,4 @@
 using Assets.Scripts.Core;
-using Assets.Scripts.ViewModels.Buildings;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
