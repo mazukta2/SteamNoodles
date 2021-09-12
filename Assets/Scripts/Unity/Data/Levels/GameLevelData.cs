@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.Data.Buildings;
 using Assets.Scripts.Game.Logic.Common.Math;
+using Assets.Scripts.Game.Logic.Contexts;
 using Assets.Scripts.Logic.Prototypes.Levels;
+using Assets.Scripts.Views.Levels;
 using GameUnity.Assets.Scripts.Unity.Core;
 using System;
 using UnityEngine;
@@ -19,19 +21,27 @@ namespace Assets.Scripts.Data
         public IBuildingPrototype[] StartingHand => Hand;
         Point ILevelPrototype.Size => Size;
 
-        public void Load(Action<ILevelPrototype> onFinished)
+        public void Load(Action<ILevelPrototype, ILevelContext> onFinished)
         {
             var loading = SceneManager.LoadSceneAsync(Scene, LoadSceneMode.Single);
-            //if (loading.isDone)
-            //    onFinished(this);
-            //else
-            //    loading.completed += Complited;
+            if (loading.isDone)
+                Finish();
+            else
+                loading.completed += Complited;
 
-            //void Complited(AsyncOperation operation)
-            //{
-            //    //loading.completed -= Complited;
-            //    onFinished(this);
-            //}
+            void Complited(AsyncOperation operation)
+            {
+                loading.completed -= Complited;
+                Finish();
+            }
+
+            void Finish()
+            {
+                var view = GameObject.FindObjectOfType<LevelView>();
+                if (view == null) throw new Exception("Cant find level view in scene");
+                
+                onFinished(this, view);
+            }
         }
     }
 }

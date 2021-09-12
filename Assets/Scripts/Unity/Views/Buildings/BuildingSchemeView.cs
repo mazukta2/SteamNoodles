@@ -1,4 +1,5 @@
 using Assets.Scripts.Core;
+using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,30 +9,27 @@ namespace Assets.Scripts.Views.Buildings
     {
         [SerializeField] Image _image;
         [SerializeField] Button _button;
+        private HandConstructionViewModel _buildingScheme;
 
-        //private BuildingSchemeViewModel _buildingScheme;
-        //private Action<BuildingSchemeViewModel> _onClick;
+        public void Set(HandConstructionViewModel buildingScheme)
+        {
+            _buildingScheme = buildingScheme;
+            //_image.sprite = _buildingScheme.BuildingIcon;
+        }
 
-        //public void Set(BuildingSchemeViewModel buildingScheme, Action<BuildingSchemeViewModel> onClick)
-        //{
-        //    _buildingScheme = buildingScheme;
-        //    _image.sprite = _buildingScheme.BuildingIcon;
-        //    _onClick = onClick;
-        //}
+        protected void OnEnable()
+        {
+            _button.onClick.AddListener(OnClick);
+        }
 
-        //protected void OnEnable()
-        //{
-        //    _button.onClick.AddListener(OnClick);
-        //}
+        protected void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnClick);
+        }
 
-        //protected void OnDisable()
-        //{
-        //    _button.onClick.RemoveListener(OnClick);
-        //}
-
-        //private void OnClick()
-        //{
-        //    _onClick(_buildingScheme);
-        //}
+        private void OnClick()
+        {
+            _buildingScheme.OnClick();
+        }
     }
 }

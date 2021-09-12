@@ -1,24 +1,28 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
+using Assets.Scripts.Game.Logic.Contexts;
+using Assets.Scripts.Models.Buildings;
+using System;
+using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
 using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings
 {
-    public class BuildingScrollView : GameMonoBehaviour
+    public class BuildingScrollView : GameMonoBehaviour, IHandContext
     {
         [SerializeField] PrototypeLink _buildingButton;
+
+        public void Set(HandViewModel hand)
+        {
+            _buildingButton.DestroySpawned();
+            foreach (var item in hand.GetConstructions())
+                _buildingButton.Create<BuildingSchemeView>(x => x.Set(item));
+        }
         //private PlayerHandViewModel _hand;
         //private PlacementViewModel _placement;
 
         //public void Set(PlayerHandViewModel hand, PlacementViewModel placement)
         //{
-        //    if (hand == null) throw new ArgumentNullException(nameof(hand));
-        //    if (placement == null) throw new ArgumentNullException(nameof(placement));
-        //    _hand = hand;
-        //    _placement = placement;
-
-        //    foreach (var item in _hand.CurrentSchemes)
-        //        _buildingButton.Create<BuildingSchemeView>(x => x.Set(item, OnClick));
         //}
 
         //private void OnClick(BuildingSchemeViewModel scheme)

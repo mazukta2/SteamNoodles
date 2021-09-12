@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Game.Logic.Common.Math;
+using Assets.Scripts.Game.Logic.Contexts;
 using System;
 
 namespace Assets.Scripts.Logic.Prototypes.Levels
@@ -8,6 +9,6 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
         Point Size { get; }
         IBuildingPrototype[] StartingHand { get; }
 
-        void Load(Action<ILevelPrototype> onFinished);
+        void Load(Action<ILevelPrototype, ILevelContext> onFinished);
     }
 }

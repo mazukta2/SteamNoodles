@@ -1,3 +1,4 @@
+using Assets.Scripts.Game.Logic.Contexts;
 using Assets.Scripts.Logic.Models.Events.GameEvents;
 using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Logic.Prototypes.Levels;
@@ -27,11 +28,11 @@ namespace Assets.Scripts.Logic.Models.Session
             prototype.Load(OnFinished);
         }
 
-        private void OnFinished(ILevelPrototype prototype)
+        private void OnFinished(ILevelPrototype prototype, ILevelContext levelContext)
         {
             if (!IsLoading) throw new Exception("Is currently not loading");
 
-            CurrentLevel = new GameLevel(prototype);
+            CurrentLevel = new GameLevel(prototype, levelContext);
             IsLoading = false;
 
             History.Add(new LevelLoadedEvent(CurrentLevel));
