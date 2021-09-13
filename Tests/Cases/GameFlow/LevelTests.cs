@@ -21,16 +21,16 @@ namespace Tests.Tests.Cases.GameFlow
             Assert.IsTrue(sessionVm != null);
 
             var levelProto = new BasicLevelPrototype();
-            session.LoadLevel(levelProto);
+            gameVm.Session.Value.LoadLevel(levelProto);
             Assert.IsTrue(session.CurrentLevel == null);
             Assert.IsTrue(sessionVm.CurrentLevel.Value == null);
-            Assert.IsTrue(session.IsLoading);
+            Assert.IsTrue(session.IsNotLoaded);
 
             levelProto.Finish();
 
             Assert.IsTrue(session.CurrentLevel != null);
             Assert.IsTrue(sessionVm.CurrentLevel.Value != null);
-            Assert.IsTrue(!session.IsLoading);
+            Assert.IsTrue(!session.IsNotLoaded);
 
         }
     }

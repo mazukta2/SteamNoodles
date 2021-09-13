@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.ViewModel;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
+using Tests.Assets.Scripts.Game.Logic.ViewModel.Session;
 using Tests.Mocks.Prototypes.Levels;
 
 namespace Tests.Tests.Shortcuts
@@ -18,7 +19,7 @@ namespace Tests.Tests.Shortcuts
 
             game.CreateSession();
             var levelProto = new BasicLevelPrototype();
-            game.Session.LoadLevel(levelProto);
+            vm.Session.Value.LoadLevel(levelProto);
             levelProto.Finish();
 
             return (game.Session.CurrentLevel, vm.Session.Value.CurrentLevel.Value);

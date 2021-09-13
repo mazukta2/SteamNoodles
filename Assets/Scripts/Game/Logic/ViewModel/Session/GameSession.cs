@@ -7,31 +7,29 @@ using System;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Common;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
+using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Session
 {
     public class GameSessionViewModel
     {
         private GameSession _model;
+        private LevelViewModel _viewModel;
 
         public GameSessionViewModel(GameSession model)
         {
             _model = model;
-
-            CurrentLevel = new AutoUpdatedProperty<LevelViewModel, LevelLoadedEvent>(model.History, GetModel);
         }
-
-        public AutoUpdatedProperty<LevelViewModel, LevelLoadedEvent> CurrentLevel { get; private set; }
 
         public void LoadLevel(ILevelPrototype levelPrototype)
         {
-            _model.LoadLevel(levelPrototype);
+            levelPrototype.Load(OnFinished);
         }
 
-        private LevelViewModel GetModel(LevelLoadedEvent arg)
+        private void OnFinished(ILevelPrototype prototype, ILevelView view)
         {
-            return new LevelViewModel(arg.Level);
+            _model.SetLevel(new GameLevel(prototype));
+            _viewModel = new LevelViewModel(_model.CurrentLevel, view);
         }
-
     }
 }

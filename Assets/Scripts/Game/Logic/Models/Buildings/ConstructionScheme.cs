@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Game.Logic.Common.Math;
 using Assets.Scripts.Logic.Prototypes.Levels;
 using System.Collections.Generic;
+using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Assets.Scripts.Models.Buildings
 {
@@ -16,6 +17,7 @@ namespace Assets.Scripts.Models.Buildings
 
         public Point CellSize => _item.Size;
         public Requirements Requirements => _item.Requirements;
+        public ISprite HandIcon => _item.HandIcon;
 
         public Point[] GetOccupiedSpace(Point position)
         {

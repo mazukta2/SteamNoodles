@@ -1,7 +1,6 @@
-﻿using Assets.Scripts.Game.Logic.Contexts;
-using Assets.Scripts.Logic.Prototypes.Levels;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Buildings;
-using Assets.Scripts.Models.Events;
+using System;
 
 namespace Assets.Scripts.Logic.Models.Levels
 {
@@ -9,17 +8,14 @@ namespace Assets.Scripts.Logic.Models.Levels
     {
         public Placement Placement { get; }
 
-        private ILevelContext _context;
-
         public PlayerHand Hand { get; }
-        public History History { get; } = new History();
 
-        public GameLevel(ILevelPrototype prototype, ILevelContext levelContext)
+        public GameLevel(ILevelPrototype prototype)
         {
-            Hand = new PlayerHand(prototype.StartingHand, _context.CreateHand());
-            Placement = new Placement(prototype.Size);
+            if (prototype == null) throw new ArgumentNullException(nameof(prototype));
 
-            _context = levelContext;
+            Hand = new PlayerHand(prototype.StartingHand);
+            Placement = new Placement(prototype.Size);
         }
     }
 }

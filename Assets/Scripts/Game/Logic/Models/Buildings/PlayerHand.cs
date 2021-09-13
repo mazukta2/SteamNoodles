@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Game.Logic.Contexts;
-using Assets.Scripts.Logic.Models.Events.GameEvents;
+﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
 using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Events;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ namespace Assets.Scripts.Models.Buildings
 
         private List<ConstructionScheme> _schemes = new List<ConstructionScheme>();
 
-        public PlayerHand(IBuildingPrototype[] startingHand, IHandContext hand)
+        public PlayerHand(IBuildingPrototype[] startingHand)
         {
             foreach (var item in startingHand)
             {

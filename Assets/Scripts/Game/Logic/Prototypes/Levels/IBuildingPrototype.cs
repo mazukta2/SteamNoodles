@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Game.Logic.Common.Math;
+using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Assets.Scripts.Logic.Prototypes.Levels
 {
@@ -7,6 +8,7 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
         Point Size { get; }
 
         Requirements Requirements { get;}
+        ISprite HandIcon { get; }
     }
 
     public struct Requirements

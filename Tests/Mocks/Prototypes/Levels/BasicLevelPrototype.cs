@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.Game.Logic.Common.Math;
 using Assets.Scripts.Logic.Prototypes.Levels;
 using System;
+using Tests.Assets.Scripts.Game.Logic.Views;
+using Tests.Tests.Mocks.Views.Levels;
 
 namespace Tests.Mocks.Prototypes.Levels
 {
@@ -12,16 +14,16 @@ namespace Tests.Mocks.Prototypes.Levels
             new BasicBuildingPrototype()
         };
 
-        private Action<ILevelPrototype> _finished;
-
-        public void Load(Action<ILevelPrototype> onFinished)
-        {
-            _finished = onFinished;
-        }
+        private Action<ILevelPrototype, ILevelView> _finished;
 
         public void Finish()
         {
-            _finished(this);
+            _finished(this, new BasicLevelView());
+        }
+
+        public void Load(Action<ILevelPrototype, ILevelView> onFinished)
+        {
+            _finished = onFinished;
         }
     }
 }

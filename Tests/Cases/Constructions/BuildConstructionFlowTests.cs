@@ -45,8 +45,6 @@ namespace Tests.Tests.Cases.Constructions
             construction.OnClick();
 
             viewLevel.Placement.OnClick(new Vector2(0f, 0f));
-
-            //viewLevel.Placement.Con
         }
     }
 }
