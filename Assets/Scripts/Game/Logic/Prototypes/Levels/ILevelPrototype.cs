@@ -7,7 +7,7 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
     public interface ILevelPrototype
     {
         Point Size { get; }
-        IBuildingPrototype[] StartingHand { get; }
+        IConstructionPrototype[] StartingHand { get; }
 
         void Load(Action<ILevelPrototype, ILevelView> onFinished);
     }

@@ -1,6 +1,6 @@
 ﻿namespace Tests.Assets.Scripts.Game.Logic.Views.Common
 {
-    public interface ISprite : IView
+    public interface ISprite 
     {
     }
 }

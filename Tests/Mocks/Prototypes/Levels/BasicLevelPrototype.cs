@@ -10,15 +10,18 @@ namespace Tests.Mocks.Prototypes.Levels
     {
         public Point Size => new Point(4, 4);
 
-        public IBuildingPrototype[] StartingHand => new IBuildingPrototype[] {
+        public IConstructionPrototype[] StartingHand => new IConstructionPrototype[] {
             new BasicBuildingPrototype()
         };
+
+        public BasicLevelView Level { get; set; }
 
         private Action<ILevelPrototype, ILevelView> _finished;
 
         public void Finish()
         {
-            _finished(this, new BasicLevelView());
+            Level = new BasicLevelView();
+            _finished(this, Level);
         }
 
         public void Load(Action<ILevelPrototype, ILevelView> onFinished)

@@ -2,18 +2,18 @@
 
 namespace Assets.Scripts.Models.Buildings
 {
-    public class Building
+    public class Construction
     {
         private Placement _grid;
 
-        public Building(Placement grid, ConstructionScheme scheme, Point position)
+        public Construction(Placement grid, ConstructionScheme scheme, Point position)
         {
             Scheme = scheme;
             Position = position;
             _grid = grid;
         }
 
-        public Building(Building origin)
+        public Construction(Construction origin)
         {
             Scheme = origin.Scheme;
             Position = origin.Position;

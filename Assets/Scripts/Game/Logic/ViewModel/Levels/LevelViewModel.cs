@@ -24,7 +24,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             _model = model;
             _levelView = view;
 
-            Placement = new PlacementViewModel(model.Placement);
+            Placement = new PlacementViewModel(model.Placement, view.CreatePlacement());
             Screen = new LevelScreenViewModel(model, view, Placement);
         }
 

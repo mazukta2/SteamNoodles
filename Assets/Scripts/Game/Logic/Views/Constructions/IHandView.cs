@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tests.Assets.Scripts.Game.Logic.Views.Constructions
 {
-    public interface IHandView
+    public interface IHandView : IView
     {
-        IHandConstructionView CreateConstrcution();
+        IHandConstructionView CreateConstruction();
     }
 }

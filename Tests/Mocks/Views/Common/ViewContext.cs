@@ -3,7 +3,7 @@ using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Tests.Tests.Mocks.Views.Common
 {
-    public class SpriteViewContext
+    public class ViewContext
     {
         public int Convert(ISprite icon)
         {

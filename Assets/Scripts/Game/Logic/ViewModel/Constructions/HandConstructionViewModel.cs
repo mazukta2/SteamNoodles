@@ -24,7 +24,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             UpdateView();
         }
 
-        public void OnClick()
+        private void OnClick()
         {
             _onClick(_model);
         }
@@ -32,6 +32,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
         private void UpdateView()
         {
             _view.SetIcon(_model.HandIcon);
+            _view.SetClick(OnClick);
         }
 
     }

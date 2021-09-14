@@ -12,7 +12,7 @@ namespace Tests.Tests.Shortcuts
 {
     public class LevelShortcuts
     {
-        public (GameLevel, LevelViewModel) LoadLevel()
+        public (GameLevel, LevelViewModel, BasicLevelPrototype) LoadLevel()
         {
             var game = new GameLogic();
             var vm = new GameLogicViewModel(game);
@@ -22,7 +22,7 @@ namespace Tests.Tests.Shortcuts
             vm.Session.Value.LoadLevel(levelProto);
             levelProto.Finish();
 
-            return (game.Session.CurrentLevel, vm.Session.Value.CurrentLevel);
+            return (game.Session.CurrentLevel, vm.Session.Value.CurrentLevel, levelProto);
         }
 }
     }

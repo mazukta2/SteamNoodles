@@ -7,18 +7,22 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
+using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 {
     public class ConstructionGhostViewModel
     {
         public ConstructionScheme Scheme { get; }
+        public IGhostConstructionView View { get; private set; }
+
         private PlacementViewModel _placement;
 
-        public ConstructionGhostViewModel(PlacementViewModel placement, ConstructionScheme scheme)
+        public ConstructionGhostViewModel(PlacementViewModel placement, ConstructionScheme scheme, IGhostConstructionView view)
         {
             Scheme = scheme;
             _placement = placement;
+            View = view;
         }
 
         public Point GetCellPosition(Vector2 worldPosition)
@@ -34,6 +38,11 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             var mousePosY = Math.Round(pos.Y / _placement.CellSize);
 
             return new Point((int)Math.Ceiling(mousePosX), (int)Math.Ceiling(mousePosY));
+        }
+
+        public void Destroy()
+        {
+            View.Destroy();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Assets.Scripts.Models.Buildings
 
         private List<ConstructionScheme> _schemes = new List<ConstructionScheme>();
 
-        public PlayerHand(IBuildingPrototype[] startingHand)
+        public PlayerHand(IConstructionPrototype[] startingHand)
         {
             foreach (var item in startingHand)
             {

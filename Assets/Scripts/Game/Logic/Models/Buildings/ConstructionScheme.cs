@@ -8,9 +8,9 @@ namespace Assets.Scripts.Models.Buildings
     public class ConstructionScheme
     {
         
-        private IBuildingPrototype _item;
+        private IConstructionPrototype _item;
 
-        public ConstructionScheme(IBuildingPrototype item)
+        public ConstructionScheme(IConstructionPrototype item)
         {
             _item = item;
         }

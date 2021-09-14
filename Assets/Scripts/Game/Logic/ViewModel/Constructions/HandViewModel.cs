@@ -13,21 +13,23 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
     public class HandViewModel
     {
         private PlayerHand _model;
-        private IHandView _view;
         private PlacementViewModel _placement;
         private List<HandConstructionViewModel> _list = new List<HandConstructionViewModel>();
         private HistoryReader _historyReader;
+
 
         public HandViewModel(PlayerHand model, IHandView view, PlacementViewModel placement)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             _model = model;
-            _view = view;
+            View = view;
             _placement = placement;
 
             _historyReader = new HistoryReader(_model.History);
             _historyReader.Subscribe<SchemeAddedToHandEvent>(ScnemeAddedHandle).Update();
         }
+
+        public IHandView View { get; private set; }
 
         public HandConstructionViewModel[] GetConstructions()
         {
@@ -36,12 +38,15 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
 
         private void ScnemeAddedHandle(SchemeAddedToHandEvent obj)
         {
-            _list.Add(new HandConstructionViewModel(obj.Construction, _view.CreateConstrcution(), OnSchemeClick));
+            _list.Add(new HandConstructionViewModel(obj.Construction, View.CreateConstruction(), OnSchemeClick));
         }
 
         private void OnSchemeClick(ConstructionScheme obj)
         {
-            _placement.SetGhost(obj);
+            if (_placement.Ghost == null)
+                _placement.SetGhost(obj);
+            else
+                _placement.ClearGhost();
         }
     }
 }

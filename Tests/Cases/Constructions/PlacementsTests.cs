@@ -1,15 +1,12 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Assets.Scripts.Logic;
-using Tests.Mocks.Prototypes.Levels;
+﻿using Assets.Scripts.Game.Logic.Common.Math;
 using Assets.Scripts.Models.Buildings;
-using Assets.Scripts.Game.Logic.Common.Math;
+using NUnit.Framework;
+using System.Linq;
+using Tests.Tests.Shortcuts;
 
 namespace Tests.Buildings
 {
-    public class BuildingsTests
+    public class PlacementsTests
     {
         [Test]
         public void PlacementGridRectHasRightSize()
@@ -27,6 +24,17 @@ namespace Tests.Buildings
             Assert.IsTrue(rect.IsInside(new Point(2, 2)));
             Assert.IsFalse(rect.IsInside(new Point(-3, -3)));
             Assert.IsFalse(rect.IsInside(new Point(3, 3)));
+        }
+
+        [Test]
+        public void IsCellsCreated()
+        {
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var cells = levelViewModel.Placement.GetCells();
+            Assert.IsTrue(cells.Length > 0);
+            Assert.AreEqual((levelViewModel.Placement.GetSize().X +1) * (levelViewModel.Placement.GetSize().Y +1), cells.Length);
+
+            Assert.IsTrue(cells.All(x => x.View != null));
         }
 
         //[Test]

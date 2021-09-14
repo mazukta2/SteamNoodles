@@ -3,7 +3,7 @@ using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Assets.Scripts.Logic.Prototypes.Levels
 {
-    public interface IBuildingPrototype
+    public interface IConstructionPrototype
     {
         Point Size { get; }
 

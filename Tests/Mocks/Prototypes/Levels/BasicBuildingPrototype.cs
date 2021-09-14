@@ -5,7 +5,7 @@ using Tests.Tests.Mocks.Views.Common;
 
 namespace Tests.Mocks.Prototypes.Levels
 {
-    public class BasicBuildingPrototype : IBuildingPrototype
+    public class BasicBuildingPrototype : IConstructionPrototype
     {
         public Point Size => new Point(2, 1);
 

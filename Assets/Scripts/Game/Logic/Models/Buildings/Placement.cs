@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Logic.Common.Math;
 using Assets.Scripts.Models.Events;
+using Tests.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
 
 namespace Assets.Scripts.Models.Buildings
 {
@@ -11,7 +12,7 @@ namespace Assets.Scripts.Models.Buildings
 
         public Point Size { get; }
         public Rect Rect { get; }
-        public List<Building> Buildings { get; } = new List<Building>();
+        public List<Construction> Buildings { get; } = new List<Construction>();
         public History History { get; } = new History();
 
 
@@ -21,11 +22,11 @@ namespace Assets.Scripts.Models.Buildings
             Rect = size.AsCenteredRect();
         }
 
-        public Building Place(ConstructionScheme scheme, Point position)
+        public Construction Place(ConstructionScheme scheme, Point position)
         {
-            var building = new Building(this, scheme, position);
+            var building = new Construction(this, scheme, position);
             Buildings.Add(building);
-            History.Add(new BuildingAddedEvent(building));
+            History.Add(new ConstrcutionAddedEvent(building));
             return building;
         }
 
@@ -68,14 +69,5 @@ namespace Assets.Scripts.Models.Buildings
         //    return list.ToArray();
         //}
 
-        public class BuildingAddedEvent : IGameEvent
-        {
-            public BuildingAddedEvent(Building building)
-            {
-                Building = building;
-            }
-
-            public Building Building { get; set; }
-        }
     }
 }

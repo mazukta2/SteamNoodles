@@ -3,9 +3,7 @@ using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
 namespace Tests.Assets.Scripts.Game.Logic.Views
 {
-    public interface ILevelView : IView
+    public interface IConstructionView : IView
     {
-        IHandView CreateHand();
-        IPlacementView CreatePlacement();
     }
 }

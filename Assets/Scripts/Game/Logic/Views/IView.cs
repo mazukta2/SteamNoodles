@@ -6,5 +6,7 @@ namespace Tests.Assets.Scripts.Game.Logic.Views
 {
     public interface IView
     {
+        public bool IsDestoyed { get; }
+        public void Destroy();
     }
 }
