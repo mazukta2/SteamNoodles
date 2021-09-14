@@ -13,6 +13,8 @@ namespace Tests.Tests.Cases.Constructions
         {
             var (level, viewLevel) = new LevelShortcuts().LoadLevel();
             var item = viewLevel.Screen.Hand.GetConstructions().First();
+            var icon = item.View.GetIcon();
+            Assert.IsTrue(level.Hand.CurrentSchemes.First().HandIcon.Equals(icon));
         }
 
     }

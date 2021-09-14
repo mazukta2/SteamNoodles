@@ -1,4 +1,5 @@
-﻿using Tests.Assets.Scripts.Game.Logic.Views.Common;
+﻿using NUnit.Framework.Constraints;
+using Tests.Assets.Scripts.Game.Logic.Views.Common;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using Tests.Tests.Mocks.Views.Common;
 
@@ -11,6 +12,11 @@ namespace Tests.Tests.Mocks.Views.Levels
         public void SetIcon(ISprite icon)
         {
             SpriteId = new SpriteViewContext().Convert(icon);
+        }
+
+        public ISprite GetIcon()
+        {
+            return new ItsUnitySpriteWrapper(SpriteId);
         }
     }
 }

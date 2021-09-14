@@ -22,7 +22,7 @@ namespace Tests.Tests.Shortcuts
             vm.Session.Value.LoadLevel(levelProto);
             levelProto.Finish();
 
-            return (game.Session.CurrentLevel, vm.Session.Value.CurrentLevel.Value);
+            return (game.Session.CurrentLevel, vm.Session.Value.CurrentLevel);
         }
 }
     }

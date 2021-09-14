@@ -13,8 +13,9 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Session
 {
     public class GameSessionViewModel
     {
+        public LevelViewModel CurrentLevel { get; private set; }
+
         private GameSession _model;
-        private LevelViewModel _viewModel;
 
         public GameSessionViewModel(GameSession model)
         {
@@ -29,7 +30,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Session
         private void OnFinished(ILevelPrototype prototype, ILevelView view)
         {
             _model.SetLevel(new GameLevel(prototype));
-            _viewModel = new LevelViewModel(_model.CurrentLevel, view);
+            CurrentLevel = new LevelViewModel(_model.CurrentLevel, view);
         }
     }
 }

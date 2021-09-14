@@ -6,6 +6,8 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
 {
     public class HandConstructionViewModel
     {
+        public IHandConstructionView View => _view;
+
         private ConstructionScheme _model;
         private IHandConstructionView _view;
         private Action<ConstructionScheme> _onClick;

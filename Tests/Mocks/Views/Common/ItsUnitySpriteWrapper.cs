@@ -8,12 +8,23 @@ namespace Tests.Tests.Mocks.Views.Common
     public class ItsUnitySpriteWrapper : ISprite
     {
         public int Id { get; }
-        private static int _counter;
+        private static int _counter = 1;
 
         public ItsUnitySpriteWrapper()
         {
             Id = _counter++;
         }
 
+        public ItsUnitySpriteWrapper(int id)
+        {
+            Id = id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ItsUnitySpriteWrapper wr)
+                return wr.Id == Id;
+            return base.Equals(obj);
+        }
     }
 }
