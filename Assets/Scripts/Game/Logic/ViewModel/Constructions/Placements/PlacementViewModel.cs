@@ -4,6 +4,7 @@ using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Models.Buildings;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
@@ -51,23 +52,15 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             if (Ghost != null) throw new Exception("Ghost already existing");
 
             Ghost = new ConstructionGhostViewModel(this, obj, View.CreateGhost());
-
-            foreach (var cell in _cells)
-            {
-                if (_model.IsFreeCell(Ghost.Scheme, cell.Position))
-                    cell.SetState(CellViewModel.CellState.IsReadyToPlace);
-            }
+            UpdateGhostCells();
         }
+
 
         public void ClearGhost()
         {
             Ghost.Destroy();
             Ghost = null;
-
-            foreach (var cell in _cells)
-            {
-                cell.SetState(CellViewModel.CellState.Normal);
-            }
+            UpdateGhostCells();
         }
 
         public void OnClick(Vector2 worldPosition)
@@ -97,6 +90,27 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         public CellViewModel[] GetCells()
         {
             return _cells.ToArray();
+        }
+
+        public void UpdateGhostCells()
+        {
+            foreach (var cell in _cells)
+            {
+                var state = CellViewModel.CellState.Normal;
+                if (Ghost != null)
+                {
+                    var ocuppiedCells = Ghost.Scheme.GetOccupiedSpace(Ghost.Position);
+                    if (_model.IsFreeCell(Ghost.Scheme, cell.Position))
+                        state = CellViewModel.CellState.IsReadyToPlace;
+
+                    if (ocuppiedCells.Any(x => x == cell.Position))
+                    {
+                        state = CellViewModel.CellState.IsAvailableGhostPlace;
+                    }
+                }
+
+                cell.SetState(state);
+            }
         }
 
         private void OnConstruction(ConstrcutionAddedEvent obj)

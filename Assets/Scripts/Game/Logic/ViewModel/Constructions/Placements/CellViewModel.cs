@@ -27,7 +27,8 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         public enum CellState
         {
             Normal,
-            IsReadyToPlace
+            IsReadyToPlace,
+            IsAvailableGhostPlace,
         }
     }
 }

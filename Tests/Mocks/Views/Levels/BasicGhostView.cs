@@ -10,5 +10,34 @@ namespace Tests.Tests.Mocks.Views.Levels
 {
     public class BasicGhostView : TestView, IGhostConstructionView
     {
+        public Vector2 Position;
+
+        private Action<Vector2> _move;
+        private bool _canBePlaced;
+
+        public void SetMoveAction(Action<Vector2> action)
+        {
+            _move = action;
+        }
+
+        public void MoveTo(Vector2 vector2)
+        {
+            Position = vector2;
+        }
+
+        public Action<Vector2> GetMoveAction()
+        {
+            return _move;
+        }
+
+        public void SetCanBePlacedState(bool value)
+        {
+            _canBePlaced = value;
+        }
+
+        public bool GetCanBePlacedState()
+        {
+            return _canBePlaced;
+        }
     }
 }

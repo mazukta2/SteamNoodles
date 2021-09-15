@@ -15,14 +15,17 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
     {
         public ConstructionScheme Scheme { get; }
         public IGhostConstructionView View { get; private set; }
+        public Point Position { get; set; }
 
         private PlacementViewModel _placement;
+        
 
         public ConstructionGhostViewModel(PlacementViewModel placement, ConstructionScheme scheme, IGhostConstructionView view)
         {
             Scheme = scheme;
             _placement = placement;
             View = view;
+            View.SetMoveAction(MoveTo);
         }
 
         public Point GetCellPosition(Vector2 worldPosition)
@@ -40,9 +43,21 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             return new Point((int)Math.Ceiling(mousePosX), (int)Math.Ceiling(mousePosY));
         }
 
+        public Vector2 GetWorldPosition()
+        {
+            return new Vector2(_placement.CellSize * Position.X, _placement.CellSize * Position.Y);
+        }
+
         public void Destroy()
         {
             View.Destroy();
+        }
+
+        private void MoveTo(Vector2 worldPosition)
+        {
+            Position = GetCellPosition(worldPosition);
+            View.MoveTo(GetWorldPosition());
+            _placement.UpdateGhostCells();
         }
     }
 }

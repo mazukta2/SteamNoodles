@@ -21,7 +21,12 @@ namespace Assets.Scripts.Models.Buildings
             }
         }
 
-        public void Add(ConstructionScheme buildingScheme)
+        public void Add(IConstructionPrototype proto)
+        {
+            Add(new ConstructionScheme(proto));
+        }
+
+        private void Add(ConstructionScheme buildingScheme)
         {
             _schemes.Add(buildingScheme);
             History.Add(new SchemeAddedToHandEvent(buildingScheme));

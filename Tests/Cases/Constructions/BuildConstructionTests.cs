@@ -1,8 +1,11 @@
-﻿using NUnit.Framework;
-using System.Drawing;
+﻿using Assets.Scripts.Game.Logic.Common.Math;
+using Assets.Scripts.Logic.Prototypes.Levels;
+using Assets.Scripts.Models.Buildings;
+using NUnit.Framework;
 using System.Linq;
 using System.Numerics;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
+using Tests.Mocks.Prototypes.Levels;
 using Tests.Tests.Shortcuts;
 
 namespace Tests.Tests.Cases.Constructions
@@ -85,20 +88,56 @@ namespace Tests.Tests.Cases.Constructions
 
             construction.View.Click();
 
-            Assert.IsTrue(cells.All(x => x.State == CellViewModel.CellState.IsReadyToPlace
-                && x.View.GetState() == CellViewModel.CellState.IsReadyToPlace));
+            Assert.IsTrue(cells.All(x => (x.State == CellViewModel.CellState.IsReadyToPlace || x.State == CellViewModel.CellState.IsAvailableGhostPlace)
+                && (x.View.GetState() == CellViewModel.CellState.IsReadyToPlace || x.View.GetState() == CellViewModel.CellState.IsAvailableGhostPlace)));
         }
 
         [Test]
         public void IsCellsBeneathGhostIsHighlighted()
         {
-            throw new System.Exception();
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var construction = levelViewModel.Screen.Hand.GetConstructions().First();
+            construction.View.Click();
+
+            var ghost = levelViewModel.Placement.Ghost;
+            ghost.View.GetMoveAction()(new Vector2(0, 0));
+
+            var cells = levelViewModel.Placement.GetCells();
+            var highlighedCells = cells.Where(x => x.State == CellViewModel.CellState.IsAvailableGhostPlace && x.View.GetState() == CellViewModel.CellState.IsAvailableGhostPlace);
+            Assert.AreEqual(2, highlighedCells.Count());
+
+            Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(0, 0)));
+            Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(1, 0)));
+
+            ghost.View.GetMoveAction()(new Vector2(levelViewModel.Placement.CellSize + levelViewModel.Placement.CellSize/4, 0));
+
+            highlighedCells = cells.Where(x => x.State == CellViewModel.CellState.IsAvailableGhostPlace && x.View.GetState() == CellViewModel.CellState.IsAvailableGhostPlace);
+            Assert.AreEqual(2, highlighedCells.Count());
+
+            Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(1, 0)));
+            Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(2, 0)));
         }
 
         [Test]
-        public void IsGhostViewChangeVisualIfCanBePlaced()
+        public void IsGhostViewChangeVisualIfItAvailable()
         {
-            throw new System.Exception();
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var proto = new BasicBuildingPrototype();
+            proto.Requirements = new Requirements() { DownEdge = true };
+            level.Hand.Add(proto);
+
+            Assert.AreEqual(2, levelViewModel.Screen.Hand.GetConstructions().Length);
+            var construction = levelViewModel.Screen.Hand.GetConstructions().Last();
+            construction.View.Click();
+
+            var ghost = levelViewModel.Placement.Ghost.View;
+
+            Assert.IsFalse(ghost.GetCanBePlacedState());
+            ghost.GetMoveAction()(new Vector2(0, - levelViewModel.Placement.CellSize * 2 - levelViewModel.Placement.CellSize / 4));
+
+            Assert.IsFalse(levelViewModel.Placement.Ghost.Position == new Point(0, 2));
+
+            Assert.IsTrue(ghost.GetCanBePlacedState());
         }
         #endregion
 

@@ -9,7 +9,7 @@ namespace Tests.Mocks.Prototypes.Levels
     {
         public Point Size => new Point(2, 1);
 
-        public Requirements Requirements => new Requirements()
+        public Requirements Requirements { get; set; } = new Requirements()
         {
             DownEdge = false
         };
