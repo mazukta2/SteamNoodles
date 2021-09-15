@@ -33,6 +33,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
 
         public HandConstructionViewModel[] GetConstructions()
         {
+            _historyReader.Update();
             return _list.ToArray();
         }
 

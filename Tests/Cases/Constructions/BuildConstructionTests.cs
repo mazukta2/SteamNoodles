@@ -150,7 +150,7 @@ namespace Tests.Tests.Cases.Constructions
 
             construction.View.Click();
 
-            Assert.IsTrue(levelViewModel.Placement.CanPlaceGhost(new Vector2(0f, 0f)));
+            Assert.IsTrue(levelViewModel.Placement.Ghost.CanPlaceGhost());
 
             levelViewModel.Placement.View.Click(new Vector2(0f, 0f));
 
@@ -161,7 +161,15 @@ namespace Tests.Tests.Cases.Constructions
         [Test]
         public void IsConstructionPlacedInRightPosition()
         {
-            throw new System.Exception();
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var construction = levelViewModel.Screen.Hand.GetConstructions().First();
+            construction.View.Click();
+            var ghost = levelViewModel.Placement.Ghost.View;
+            ghost.GetMoveAction()(new Vector2(0, -levelViewModel.Placement.CellSize * 2 - levelViewModel.Placement.CellSize / 4));
+            Assert.IsFalse(levelViewModel.Placement.Ghost.Position == new Point(0, 2));
+
+            Assert.IsTrue(levelViewModel.Placement.GetConstructions().Length > 0);
+            Assert.IsNotNull(levelViewModel.Placement.GetConstructions().First().View);
         }
 
         [Test]

@@ -43,6 +43,11 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             return new Point((int)Math.Ceiling(mousePosX), (int)Math.Ceiling(mousePosY));
         }
 
+        public bool CanPlaceGhost()
+        {
+            return _placement.CanPlace(Scheme, Position);
+        }
+
         public Vector2 GetWorldPosition()
         {
             return new Vector2(_placement.CellSize * Position.X, _placement.CellSize * Position.Y);
@@ -57,6 +62,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         {
             Position = GetCellPosition(worldPosition);
             View.MoveTo(GetWorldPosition());
+            View.SetCanBePlacedState(CanPlaceGhost());
             _placement.UpdateGhostCells();
         }
     }

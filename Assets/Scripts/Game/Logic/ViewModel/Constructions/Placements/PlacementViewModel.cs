@@ -42,6 +42,11 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             _historyReader.Subscribe<ConstrcutionAddedEvent>(OnConstruction).Update();
         }
 
+        public bool CanPlace(ConstructionScheme scheme, Point position)
+        {
+            return _model.CanPlace(scheme, position);
+        }
+
         public Point GetSize() => _model.Size;
 
         public ConstructionGhostViewModel Ghost { get; private set; }
@@ -55,7 +60,6 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             UpdateGhostCells();
         }
 
-
         public void ClearGhost()
         {
             Ghost.Destroy();
@@ -65,21 +69,16 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
         public void OnClick(Vector2 worldPosition)
         {
-            if (CanPlaceGhost(worldPosition))
+            if (Ghost != null)
             {
-                _model.Place(Ghost.Scheme, Ghost.GetCellPosition(worldPosition));
-                _historyReader.Update();
-                ClearGhost();
+                if (Ghost.CanPlaceGhost())
+                {
+                    _model.Place(Ghost.Scheme, Ghost.GetCellPosition(worldPosition));
+                    _historyReader.Update();
+                    ClearGhost();
+                }
             }
-        }
 
-        public bool CanPlaceGhost(Vector2 worldPosition)
-        {
-            if (Ghost == null)
-                return false;
-
-            var targetPosition = Ghost.GetCellPosition(worldPosition);
-            return _model.CanPlace(Ghost.Scheme, targetPosition);
         }
 
         public ConstructionViewModel[] GetConstructions()
