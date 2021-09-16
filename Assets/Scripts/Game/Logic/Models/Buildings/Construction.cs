@@ -25,8 +25,7 @@ namespace Assets.Scripts.Models.Buildings
 
         public Point[] GetOccupiedScace()
         {
-            return null;
-            //return Scheme.GetOccupiedSpace(Position);
+            return Scheme.GetOccupiedSpace(Position);
         }
     }
 }

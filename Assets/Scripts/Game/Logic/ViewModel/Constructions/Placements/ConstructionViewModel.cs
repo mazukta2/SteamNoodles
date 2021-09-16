@@ -16,10 +16,11 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         private Construction _model;
         public IConstructionView View { get; private set; }
 
-        public ConstructionViewModel(Construction construction, IConstructionView view)
+        public ConstructionViewModel(PlacementViewModel placement, Construction construction, IConstructionView view)
         {
             _model = construction;
             View = view;
+            View.SetPosition(placement.GetWorldPosition(construction.Position));
         }
     }
 }

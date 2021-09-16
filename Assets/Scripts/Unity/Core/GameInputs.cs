@@ -30,9 +30,10 @@ namespace Assets.Scripts.Core
             return Input.GetMouseButtonDown(0) && !IsPointerOverUi();
         }
 
-        public Vector2 GetMouseWorldPosition()
+        public System.Numerics.Vector2 GetMouseWorldPosition()
         {
-            return MainCameraController.Instance.ScreenToWorld(Input.mousePosition);
+            var pos =MainCameraController.Instance.ScreenToWorld(Input.mousePosition);
+            return new System.Numerics.Vector2(pos.x, pos.y);
         }
     }
 }

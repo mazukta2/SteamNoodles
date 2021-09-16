@@ -119,7 +119,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
         private void OnConstruction(ConstrcutionAddedEvent obj)
         {
-            _constructions.Add(new ConstructionViewModel(obj.Construction, View.CreateConstrcution()));
+            _constructions.Add(new ConstructionViewModel(this, obj.Construction, View.CreateConstrcution()));
         }
 
 

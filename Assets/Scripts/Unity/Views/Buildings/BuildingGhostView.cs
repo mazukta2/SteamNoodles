@@ -39,8 +39,7 @@ namespace Assets.Scripts.Views.Buildings
 
         protected void Update()
         {
-            var pos = _inputs.GetMouseWorldPosition();
-            _move(new Vector2(pos.x, pos.y));
+            _move(_inputs.GetMouseWorldPosition());
         }
     }
 }

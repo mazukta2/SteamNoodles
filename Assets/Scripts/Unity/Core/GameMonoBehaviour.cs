@@ -11,7 +11,7 @@ namespace Assets.Scripts.Core
         public void Destroy()
         {
             IsDestoyed = true;
-            GameObject.Destroy(this);
+            GameObject.Destroy(gameObject);
         }
     }
 }

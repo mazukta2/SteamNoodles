@@ -14,6 +14,7 @@ namespace Assets.Scripts.Views.Buildings.Grid
         [SerializeField] PrototypeLink _ghost;
 
         private Action<System.Numerics.Vector2> _click;
+        private GameInputs _inputs = new GameInputs();
 
         public ICellView CreateCell()
         {
@@ -38,6 +39,12 @@ namespace Assets.Scripts.Views.Buildings.Grid
         public void SetClick(Action<System.Numerics.Vector2> onClick)
         {
             _click = onClick;
+        }
+
+        public void Update()
+        {
+            if (_inputs.IsTapedOnLevel())
+                _click(_inputs.GetMouseWorldPosition());
         }
     }
 }
