@@ -12,18 +12,18 @@ namespace Assets.Scripts.Core.Prototypes
         private bool _isInited;
         private List<GameObject> _spawned = new List<GameObject>();
 
-        public override void Create<T>(Transform parent, Action<T> result, string name = null, bool active = true)
+        public override T Create<T>(Transform parent, string name = null, bool active = true)
         {
             var t = CreatePrefab<T>(_prefab, parent, name, active);
             _spawned.Add(t.gameObject);
-            result(t);
+            return t;
         }
 
-        public override void Create(Transform parent, Action<GameObject> result, string name = null, bool active = true)
+        public override GameObject Create(Transform parent, string name = null, bool active = true)
         {
             var t = CreatePrefab(_prefab, parent, name, active);
             _spawned.Add(t);
-            result(t);
+            return t;
         }
 
         protected void LazyInit()

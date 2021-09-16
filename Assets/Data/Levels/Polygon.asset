@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Polygon
   m_EditorClassIdentifier: 
   Scene: PolygonScene
+  Size:
+    X: 8
+    Y: 8
   Hand:
   - {fileID: 11400000, guid: 06959166efcddab4981f5e2f47b4918c, type: 2}

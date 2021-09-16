@@ -1,10 +1,10 @@
 ﻿using Assets.Scripts.Data.Buildings;
 using Assets.Scripts.Game.Logic.Common.Math;
-using Assets.Scripts.Game.Logic.Contexts;
 using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Views.Levels;
 using GameUnity.Assets.Scripts.Unity.Core;
 using System;
+using Tests.Assets.Scripts.Game.Logic.Views;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,10 +18,10 @@ namespace Assets.Scripts.Data
         public Point Size;
         public BuildingSchemeData[] Hand;
 
-        public IBuildingPrototype[] StartingHand => Hand;
+        public IConstructionPrototype[] StartingHand => Hand;
         Point ILevelPrototype.Size => Size;
 
-        public void Load(Action<ILevelPrototype, ILevelContext> onFinished)
+        public void Load(Action<ILevelPrototype, ILevelView> onFinished)
         {
             var loading = SceneManager.LoadSceneAsync(Scene, LoadSceneMode.Single);
             if (loading.isDone)

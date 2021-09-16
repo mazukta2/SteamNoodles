@@ -1,59 +1,46 @@
 ﻿using Assets.Scripts.Core;
+using System;
+using System.Numerics;
+using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Assets.Scripts.Views.Buildings
 {
-    public class BuildingGhostView : GameMonoBehaviour
+    public class BuildingGhostView : GameMonoBehaviour, IGhostConstructionView
     {
-        //public BuildingSchemeViewModel Scheme { get; private set; }
+        private bool _canBePlaced;
+        private Action<Vector2> _move;
 
-        //private GameObject _ghost;
-        //private GameInputs _inputs = new GameInputs();
-        //private PlacementViewModel _placement;
-        //private HistoryReader _reader;
+        private GameInputs _inputs = new GameInputs();
 
-        //public void Set(PlacementViewModel placement)
-        //{
-        //    if (placement == null) throw new ArgumentNullException(nameof(placement));
-        //    _placement = placement;
-        //    _reader = new HistoryReader(_placement.History);
-        //    _reader
-        //        .Subscribe<PlacementViewModel.GhostSetEvent>(SetGhostHandle)
-        //        .Subscribe<PlacementViewModel.GhostClearEvent>(ClearGhostHandle)
-        //        .Update();
-        //}
+        public bool GetCanBePlacedState()
+        {
+            return _canBePlaced;
+        }
 
-        //public void SetGhostHandle(PlacementViewModel.GhostSetEvent ev)
-        //{
-        //    if (Scheme != null) throw new Exception("Clear ghost before changing it");
+        public void SetCanBePlacedState(bool value)
+        {
+            _canBePlaced = value;
+        }
 
-        //    Scheme = ev.BuildingScheme;
-        //    _ghost = GameObject.Instantiate(Scheme.Ghost, transform);
-        //}
+        public Action<Vector2> GetMoveAction()
+        {
+            return _move;
+        }
 
-        //public void ClearGhostHandle(PlacementViewModel.GhostClearEvent ev)
-        //{
-        //    Scheme = null;
-        //    GameObject.Destroy(_ghost);
-        //    _ghost = null;
-        //}
+        public void PlaceTo(Vector2 vector2)
+        {
+            transform.position = new UnityEngine.Vector3(vector2.X, vector2.Y, transform.position.z);
+        }
 
-        //protected void Update()
-        //{
-        //    _reader.Update();
+        public void SetMoveAction(Action<Vector2> action)
+        {
+            _move = action;
+        }
 
-        //    if (_ghost == null)
-        //        return;
-
-        //    _ghost.transform.position = _placement.GetGhostPosition();
-
-        //    if (_inputs.IsTapedOnLevel())
-        //    {
-        //        if (_placement.CanPlace(_placement.Ghost, _placement.GetGhostCell()))
-        //        {
-        //            _placement.BuildGhost();
-        //            _placement.ClearGhost();
-        //        }
-        //    }
-        //}
+        protected void Update()
+        {
+            var pos = _inputs.GetMouseWorldPosition();
+            _move(new Vector2(pos.x, pos.y));
+        }
     }
 }

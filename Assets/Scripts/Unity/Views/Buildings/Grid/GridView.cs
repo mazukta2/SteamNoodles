@@ -1,50 +1,43 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
+using GameUnity.Assets.Scripts.Unity.Views.Buildings;
+using System;
+using Tests.Assets.Scripts.Game.Logic.Views;
 using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings.Grid
 {
-    public class GridView : GameMonoBehaviour
+    public class GridView : GameMonoBehaviour, IPlacementView
     {
         [SerializeField] PrototypeLink _gridPiece;
+        [SerializeField] PrototypeLink _construction;
+        [SerializeField] PrototypeLink _ghost;
 
-        //private PlacementViewModel _placement;
-        //private HistoryReader _historyReader;
+        private Action<System.Numerics.Vector2> _click;
 
-        //public void Set(PlacementViewModel placement)
-        //{
-        //    if (placement == null) throw new ArgumentNullException(nameof(placement));
-        //    _placement = placement;
-        //    RecreateGrid();
+        public ICellView CreateCell()
+        {
+            return _gridPiece.Create<GridPieceView>();
+        }
 
-        //    _historyReader = new HistoryReader(_placement.History);
-        //    _historyReader.Subscribe<PlacementViewModel.BuildingAddedEvent>(AddBuilingHandle).Update();
-        //}
+        public IConstructionView CreateConstrcution()
+        {
+            return _construction.Create<BuildingView>();
+        }
 
-        //protected void Update()
-        //{
-        //    _historyReader.Update();
-        //}
+        public IGhostConstructionView CreateGhost()
+        {
+            return _ghost.Create<BuildingGhostView>();
+        }
 
-        //private void RecreateGrid()
-        //{
-        //    _gridPiece.DestroySpawned();
-        //    var rect = _placement.Rect;
-        //    for (int x = rect.x; x < rect.x + rect.width; x++)
-        //    {
-        //        for (int y = rect.y; y < rect.y + rect.height; y++)
-        //        {
-        //            _gridPiece.Create<GridPieceView>(v => v.Set(_placement, x, y));
-        //        }
-        //    }
-        //}
+        public void Click(System.Numerics.Vector2 vector2)
+        {
+            _click(vector2);
+        }
 
-
-        //private void AddBuilingHandle(PlacementViewModel.BuildingAddedEvent obj)
-        //{
-        //    var view = GameObject.Instantiate(obj.Building.View, transform);
-        //    view.transform.position = obj.Building.GetWorldPosition();
-        //}
-
+        public void SetClick(Action<System.Numerics.Vector2> onClick)
+        {
+            _click = onClick;
+        }
     }
 }

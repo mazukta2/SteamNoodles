@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Views.Cameras;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,11 @@ namespace Assets.Scripts.Core
         public bool IsTapedOnLevel()
         {
             return Input.GetMouseButtonDown(0) && !IsPointerOverUi();
+        }
+
+        public Vector2 GetMouseWorldPosition()
+        {
+            return MainCameraController.Instance.ScreenToWorld(Input.mousePosition);
         }
     }
 }

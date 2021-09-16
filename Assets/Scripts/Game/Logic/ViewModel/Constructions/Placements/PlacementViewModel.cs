@@ -34,7 +34,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             {
                 for (int y = _model.Rect.yMin; y <= _model.Rect.yMax; y++)
                 {
-                    _cells.Add(new CellViewModel(model, new Point(x, y), View.CreateCell()));
+                    _cells.Add(new CellViewModel(this, new Point(x, y), View.CreateCell()));
                 }
             }
 
@@ -110,6 +110,11 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
                 cell.SetState(state);
             }
+        }
+
+        public Vector2 GetWorldPosition(Point point)
+        {
+            return new Vector2(point.X * CellSize, point.Y * CellSize);
         }
 
         private void OnConstruction(ConstrcutionAddedEvent obj)

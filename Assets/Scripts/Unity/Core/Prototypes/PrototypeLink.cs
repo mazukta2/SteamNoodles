@@ -9,23 +9,19 @@ namespace Assets.Scripts.Core.Prototypes
     {
         public abstract void ForceInit();
 
-        public void Create(Action<GameObject> result = null, string name = null, bool active = true)
+        public GameObject Create(string name = null, bool active = true)
         {
-            if (result == null) result = (g) => { };
-
-            Create(transform.parent, result, name, active);
+            return Create(transform.parent, name, active);
         }
 
-        public void Create<T>(Action<T> result = null, string name = null, bool active = true) where T : MonoBehaviour
+        public T Create<T>(string name = null, bool active = true) where T : MonoBehaviour
         {
-            if (result == null) result = (t) => { };
-
-            Create(transform.parent, result, name, active);
+            return Create<T>(transform.parent, name, active);
         }
 
-        public abstract void Create<T>(Transform parent, Action<T> result, string name = null, bool active = true) where T : MonoBehaviour;
+        public abstract T Create<T>(Transform parent, string name = null, bool active = true) where T : MonoBehaviour;
 
-        public abstract void Create(Transform parent, Action<GameObject> result, string name = null, bool active = true);
+        public abstract GameObject Create(Transform parent, string name = null, bool active = true);
 
         public abstract void DestroySpawned();
 

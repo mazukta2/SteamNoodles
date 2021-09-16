@@ -23,11 +23,6 @@ namespace Assets.Scripts.Models.Buildings
         public Point Position { get; private set; }
         public ConstructionScheme Scheme { get; private set; }
 
-        //public Vector3 GetWorldPosition()
-        //{
-        //    return _grid.GetWorldPosition(Position);
-        //}
-
         public Point[] GetOccupiedScace()
         {
             return null;

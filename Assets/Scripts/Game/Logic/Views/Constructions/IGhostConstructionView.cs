@@ -8,7 +8,7 @@ namespace Tests.Assets.Scripts.Game.Logic.Views
     public interface IGhostConstructionView : IView
     {
         void SetMoveAction(Action<Vector2> action);
-        void MoveTo(Vector2 vector2);
+        void PlaceTo(Vector2 vector2);
         Action<Vector2> GetMoveAction();
 
         void SetCanBePlacedState(bool value);

@@ -1,10 +1,13 @@
 ﻿
+using System;
+
 namespace Assets.Scripts.Game.Logic.Common.Math
 {
+    [Serializable]
     public struct Point
     {
-        public readonly int X { get; }
-        public readonly int Y { get; }
+        public int X;
+        public int Y;
 
         public Point(int x, int y)
         {

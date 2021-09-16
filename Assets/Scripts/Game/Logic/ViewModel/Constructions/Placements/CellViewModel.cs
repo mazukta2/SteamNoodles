@@ -6,12 +6,14 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 {
     public class CellViewModel
     {
-        private Placement _model;
-        public CellViewModel(Placement placement, Point position, ICellView view)
+        private PlacementViewModel _placementModel;
+        public CellViewModel(PlacementViewModel placement, Point position, ICellView view)
         {
-            _model = placement;
+            _placementModel = placement;
             View = view;
             Position = position;
+            View.SetPosition(placement.GetWorldPosition(position));
+            View.SetState(State);
         }
 
         public ICellView View { get; private set; }

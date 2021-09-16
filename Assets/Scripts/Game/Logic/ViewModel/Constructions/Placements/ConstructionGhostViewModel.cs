@@ -48,11 +48,6 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             return _placement.CanPlace(Scheme, Position);
         }
 
-        public Vector2 GetWorldPosition()
-        {
-            return new Vector2(_placement.CellSize * Position.X, _placement.CellSize * Position.Y);
-        }
-
         public void Destroy()
         {
             View.Destroy();
@@ -61,7 +56,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         private void MoveTo(Vector2 worldPosition)
         {
             Position = GetCellPosition(worldPosition);
-            View.MoveTo(GetWorldPosition());
+            View.PlaceTo(_placement.GetWorldPosition(Position));
             View.SetCanBePlacedState(CanPlaceGhost());
             _placement.UpdateGhostCells();
         }

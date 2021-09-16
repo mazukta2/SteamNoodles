@@ -24,28 +24,27 @@ namespace Assets.Scripts.Core.Prototypes
                 gameObject.SetActive(false);
         }
 
-        public override void Create<T>(Transform parent, Action<T> result, string name = null, bool active = true)
+
+        public override T Create<T>(Transform parent, string name = null, bool active = true)
         {
             var go = Instantiate(gameObject, parent);
             var child = go.GetComponent<LocalPrototypeLink>();
             child._itsOriginal = false;
             if (!string.IsNullOrEmpty(name)) go.name = name;
             _spawned.Add(go);
-            result(go.GetComponent<T>());
-
             go.SetActive(active);
+            return go.GetComponent<T>();
         }
 
-        public override void Create(Transform parent, Action<GameObject> result, string name = null, bool active = true)
+        public override GameObject Create(Transform parent, string name = null, bool active = true)
         {
             var go = Instantiate(gameObject, parent);
             var child = go.GetComponent<LocalPrototypeLink>();
             child._itsOriginal = false;
             if (!string.IsNullOrEmpty(name)) go.name = name;
             _spawned.Add(go);
-            result(go);
-
             go.SetActive(active);
+            return go;
         }
 
         public override void DestroySpawned()
