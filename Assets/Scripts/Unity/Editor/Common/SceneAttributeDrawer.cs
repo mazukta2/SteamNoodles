@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Scripts.Editor.Game
+namespace Game.Editor
 {
     [CustomPropertyDrawer(typeof(SceneAttribute))]
     public class SceneAttributeDrawer : PropertyDrawer
