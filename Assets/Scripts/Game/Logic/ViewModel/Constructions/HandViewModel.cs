@@ -1,13 +1,11 @@
 ﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Models.Levels;
+using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Buildings;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
-using Tests.Mocks.Prototypes.Levels;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
 {
@@ -38,7 +36,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             return _list.ToArray();
         }
 
-        public void Add(BasicBuildingPrototype building)
+        public void Add(IConstructionPrototype building)
         {
             _model.Add(building);
             _historyReader.Update();

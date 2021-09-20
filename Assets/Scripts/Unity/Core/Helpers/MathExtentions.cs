@@ -14,5 +14,21 @@ namespace Assets.Scripts.Core.Helpers
             return rect.xMin <= position.x && position.x <= rect.xMax &&
                 rect.yMin <= position.y && position.y <= rect.yMax;
         }
+
+        public static Vector2 ToUnityVector(this System.Numerics.Vector2 vector)
+        {
+            return new Vector2(vector.X, vector.Y);
+        }
+
+
+        public static System.Numerics.Vector2 ToLogicVector(this Vector2 vector)
+        {
+            return new System.Numerics.Vector2(vector.x, vector.y);
+        }
+
+        public static System.Numerics.Vector2 ToLogicVector(this Vector3 vector)
+        {
+            return new System.Numerics.Vector2(vector.x, vector.y);
+        }
     }
 }

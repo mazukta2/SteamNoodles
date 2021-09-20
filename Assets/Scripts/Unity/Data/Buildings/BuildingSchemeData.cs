@@ -18,7 +18,7 @@ namespace Assets.Scripts.Data.Buildings
         public Requirements Requirements;
 
         public ISprite HandIcon => new UnitySprite(BuildingIcon);
-
+        public IVisual BuildingView => new UnityView(View);
         Point IConstructionPrototype.Size => Size;
         Requirements IConstructionPrototype.Requirements => Requirements;
     }
