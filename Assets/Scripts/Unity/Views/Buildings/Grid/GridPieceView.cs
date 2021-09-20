@@ -36,7 +36,7 @@ namespace Assets.Scripts.Views.Buildings.Grid
             _normal.SetActive(_state == CellViewModel.CellState.Normal);
             _target.SetActive(_state == CellViewModel.CellState.IsReadyToPlace);
             _highlight.SetActive(_state == CellViewModel.CellState.IsAvailableGhostPlace);
-            _blocked.SetActive(false);
+            _blocked.SetActive(_state == CellViewModel.CellState.IsNotAvailableGhostPlace);
         }
     }
 }
