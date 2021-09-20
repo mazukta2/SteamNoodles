@@ -105,7 +105,10 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
                     if (ocuppiedCells.Any(x => x == cell.Position))
                     {
-                        state = CellViewModel.CellState.IsAvailableGhostPlace;
+                        if (state == CellViewModel.CellState.IsReadyToPlace)
+                            state = CellViewModel.CellState.IsAvailableGhostPlace;
+                        else
+                            state = CellViewModel.CellState.IsNotAvailableGhostPlace;
                     }
                 }
 

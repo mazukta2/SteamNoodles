@@ -139,6 +139,44 @@ namespace Tests.Tests.Cases.Constructions
 
             Assert.IsTrue(ghost.GetCanBePlacedState());
         }
+
+        [Test]
+        public void IsCellsBeneathGhostIsHighlightedRed()
+        {
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var building = new BasicBuildingPrototype();
+            building.Size = new Point(2, 2);
+            building.Requirements = new Requirements()
+            {
+                DownEdge = true,
+            };
+            levelViewModel.Screen.Hand.Add(building);
+
+            var construction = levelViewModel.Screen.Hand.GetConstructions().Last();
+            construction.View.Click();
+            var worldPos = new Vector2(0f, -levelViewModel.Placement.CellSize /2 );
+            levelViewModel.Placement.Ghost.View.GetMoveAction()(worldPos);
+
+            var cells = levelViewModel.Placement.GetCells();
+
+            Assert.AreEqual(CellViewModel.CellState.Normal,
+                cells.First(x => x.Position == new Point(-1, 0)).View.GetState());
+            Assert.AreEqual(CellViewModel.CellState.IsNotAvailableGhostPlace, 
+                cells.First(x => x.Position == new Point(0, 0)).View.GetState());
+            Assert.AreEqual(CellViewModel.CellState.IsNotAvailableGhostPlace,
+                cells.First(x => x.Position == new Point(1, 0)).View.GetState());
+            Assert.AreEqual(CellViewModel.CellState.Normal,
+                cells.First(x => x.Position == new Point(-1, 0)).View.GetState());
+
+            Assert.AreEqual(CellViewModel.CellState.IsReadyToPlace,
+                cells.First(x => x.Position == new Point(-1, -1)).View.GetState());
+            Assert.AreEqual(CellViewModel.CellState.IsAvailableGhostPlace,
+                cells.First(x => x.Position == new Point(0, -1)).View.GetState());
+            Assert.AreEqual(CellViewModel.CellState.IsAvailableGhostPlace,
+                cells.First(x => x.Position == new Point(1, -1)).View.GetState());
+            Assert.AreEqual(CellViewModel.CellState.IsReadyToPlace,
+                cells.First(x => x.Position == new Point(-1, -1)).View.GetState());
+        }
         #endregion
 
         #region Build

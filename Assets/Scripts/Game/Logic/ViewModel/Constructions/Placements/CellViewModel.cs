@@ -31,6 +31,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             Normal,
             IsReadyToPlace,
             IsAvailableGhostPlace,
+            IsNotAvailableGhostPlace,
         }
     }
 }

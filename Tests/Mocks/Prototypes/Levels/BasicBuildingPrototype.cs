@@ -7,7 +7,7 @@ namespace Tests.Mocks.Prototypes.Levels
 {
     public class BasicBuildingPrototype : IConstructionPrototype
     {
-        public Point Size => new Point(2, 1);
+        public Point Size { get; set; } = new Point(2, 1);
 
         public Requirements Requirements { get; set; } = new Requirements()
         {
