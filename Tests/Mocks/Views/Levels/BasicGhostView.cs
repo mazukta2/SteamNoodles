@@ -20,11 +20,6 @@ namespace Tests.Tests.Mocks.Views.Levels
             _move = action;
         }
 
-        public void MoveTo(Vector2 vector2)
-        {
-            Position = vector2;
-        }
-
         public Action<Vector2> GetMoveAction()
         {
             return _move;
@@ -38,6 +33,11 @@ namespace Tests.Tests.Mocks.Views.Levels
         public bool GetCanBePlacedState()
         {
             return _canBePlaced;
+        }
+
+        public void PlaceTo(Vector2 vector2)
+        {
+            Position = vector2;
         }
     }
 }

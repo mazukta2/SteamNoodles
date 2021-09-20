@@ -7,9 +7,9 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
     public interface IConstructionPrototype
     {
         Point Size { get; }
-
         Requirements Requirements { get;}
         ISprite HandIcon { get; }
+        IVisual BuildingView { get; }
     }
 
     [Serializable]

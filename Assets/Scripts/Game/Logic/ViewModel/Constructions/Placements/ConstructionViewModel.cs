@@ -21,6 +21,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             _model = construction;
             View = view;
             View.SetPosition(placement.GetWorldPosition(construction.Position));
+            View.SetImage(_model.GetVisual());
         }
     }
 }

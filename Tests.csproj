@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <EnableDefaultItems>false</EnableDefaultItems>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
   
 
@@ -23,19 +24,5 @@
     <Compile Include="Tests\**\*.cs" />
     <EmbeddedResource Include="Tests\**\*.cs" />
   </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Assets\Scripts\Game\Logic\ViewModel\Constructions\Placements\CellViewModel.cs" />
-    <EmbeddedResource Remove="Assets\Scripts\Game\Logic\Views\Constructions\ICellView.cs" />
-    <EmbeddedResource Remove="Tests\Mocks\Views\Levels\BasicCellView.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Assets\Scripts\Game\Logic\ViewModel\Constructions\Placements\CellViewModel.cs" />
-    <None Remove="Assets\Scripts\Game\Logic\Views\Constructions\ICellView.cs" />
-    <None Remove="Tests\Mocks\Views\Levels\BasicCellView.cs" />
-  </ItemGroup>
-
-
 
 </Project>

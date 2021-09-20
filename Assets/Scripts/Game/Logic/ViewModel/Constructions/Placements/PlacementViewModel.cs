@@ -71,6 +71,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         {
             if (Ghost != null)
             {
+                Ghost.MoveTo(worldPosition);
                 if (Ghost.CanPlaceGhost())
                 {
                     _model.Place(Ghost.Scheme, Ghost.GetCellPosition(worldPosition));

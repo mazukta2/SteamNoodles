@@ -47,7 +47,9 @@ namespace Assets.Scripts.Models.Buildings
 
             if (scheme.Requirements.DownEdge)
             {
-                return Rect.Y == position.Y || Rect.Y + 1 == position.Y;
+                var min = Rect.Y;
+                var max = Rect.Y + scheme.CellSize.Y;
+                return min <= position.Y && position.Y < max;
             }
 
             return true;

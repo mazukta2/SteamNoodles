@@ -15,7 +15,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
     {
         public ConstructionScheme Scheme { get; }
         public IGhostConstructionView View { get; private set; }
-        public Point Position { get; set; }
+        public Point Position { get; private set; }
 
         private PlacementViewModel _placement;
         
@@ -53,7 +53,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             View.Destroy();
         }
 
-        private void MoveTo(Vector2 worldPosition)
+        public void MoveTo(Vector2 worldPosition)
         {
             Position = GetCellPosition(worldPosition);
             View.PlaceTo(_placement.GetWorldPosition(Position));

@@ -18,6 +18,7 @@ namespace Assets.Scripts.Models.Buildings
         public Point CellSize => _item.Size;
         public Requirements Requirements => _item.Requirements;
         public ISprite HandIcon => _item.HandIcon;
+        public IVisual BuildingView => _item.BuildingView;
 
         public Point[] GetOccupiedSpace(Point position)
         {

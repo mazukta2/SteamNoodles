@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Game.Logic.Common.Math;
+using System;
+using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Assets.Scripts.Models.Buildings
 {
@@ -26,6 +28,11 @@ namespace Assets.Scripts.Models.Buildings
         public Point[] GetOccupiedScace()
         {
             return Scheme.GetOccupiedSpace(Position);
+        }
+
+        public IVisual GetVisual()
+        {
+            return Scheme.BuildingView;
         }
     }
 }

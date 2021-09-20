@@ -5,7 +5,7 @@ using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Tests.Tests.Mocks.Views.Common
 {
-    public class ItsUnitySpriteWrapper : ISprite
+    public class ItsUnitySpriteWrapper : ISprite, IVisual
     {
         public int Id { get; }
         private static int _counter = 1;

@@ -24,5 +24,6 @@ namespace Tests.Tests.Shortcuts
 
             return (game.Session.CurrentLevel, vm.Session.Value.CurrentLevel, levelProto);
         }
-}
+
     }
+}

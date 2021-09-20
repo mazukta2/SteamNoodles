@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
 using Tests.Assets.Scripts.Game.Logic.Views;
@@ -12,6 +13,8 @@ namespace Tests.Tests.Mocks.Views.Levels
     {
         private CellViewModel.CellState _state;
 
+        public Vector2 Position { get; private set; }
+
         public void SetState(CellViewModel.CellState state)
         {
             _state = state;
@@ -20,6 +23,11 @@ namespace Tests.Tests.Mocks.Views.Levels
         public CellViewModel.CellState GetState()
         {
             return _state;
+        }
+
+        public void SetPosition(Vector2 vector2)
+        {
+            Position = vector2;
         }
     }
 }

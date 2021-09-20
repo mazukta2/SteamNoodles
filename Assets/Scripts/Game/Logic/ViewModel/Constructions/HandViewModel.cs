@@ -7,6 +7,7 @@ using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
+using Tests.Mocks.Prototypes.Levels;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
 {
@@ -35,6 +36,12 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
         {
             _historyReader.Update();
             return _list.ToArray();
+        }
+
+        public void Add(BasicBuildingPrototype building)
+        {
+            _model.Add(building);
+            _historyReader.Update();
         }
 
         private void ScnemeAddedHandle(SchemeAddedToHandEvent obj)
