@@ -17,11 +17,11 @@ namespace Tests.Tests.Cases.GameFlow
             var gameVm = new GameLogicViewModel(game);
             game.CreateSession();
             var session = game.Session;
-            var sessionVm = gameVm.Session.Value;
+            var sessionVm = gameVm.Session;
             Assert.IsTrue(sessionVm != null);
 
             var levelProto = new BasicLevelPrototype();
-            gameVm.Session.Value.LoadLevel(levelProto);
+            gameVm.Session.LoadLevel(levelProto);
             Assert.IsTrue(session.CurrentLevel == null);
             Assert.IsTrue(sessionVm.CurrentLevel == null);
             Assert.IsTrue(session.IsNotLoaded);

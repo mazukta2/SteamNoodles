@@ -19,10 +19,10 @@ namespace Tests.Tests.Shortcuts
 
             game.CreateSession();
             var levelProto = new BasicLevelPrototype();
-            vm.Session.Value.LoadLevel(levelProto);
+            vm.Session.LoadLevel(levelProto);
             levelProto.Finish();
 
-            return (game.Session.CurrentLevel, vm.Session.Value.CurrentLevel, levelProto);
+            return (game.Session.CurrentLevel, vm.Session.CurrentLevel, levelProto);
         }
 
     }

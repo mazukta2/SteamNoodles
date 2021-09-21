@@ -25,21 +25,19 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             _placement = placement;
 
             _historyReader = new HistoryReader(_model.History);
-            _historyReader.Subscribe<SchemeAddedToHandEvent>(ScnemeAddedHandle).Update();
+            _historyReader.Subscribe<SchemeAddedToHandEvent>(ScnemeAddedHandle);
         }
 
         public IHandView View { get; private set; }
 
         public HandConstructionViewModel[] GetConstructions()
         {
-            _historyReader.Update();
             return _list.ToArray();
         }
 
         public void Add(IConstructionPrototype building)
         {
             _model.Add(building);
-            _historyReader.Update();
         }
 
         private void ScnemeAddedHandle(SchemeAddedToHandEvent obj)

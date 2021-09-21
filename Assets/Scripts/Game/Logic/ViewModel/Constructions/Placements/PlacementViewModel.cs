@@ -39,7 +39,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             }
 
             _historyReader = new HistoryReader(model.History);
-            _historyReader.Subscribe<ConstrcutionAddedEvent>(OnConstruction).Update();
+            _historyReader.Subscribe<ConstrcutionAddedEvent>(OnConstruction);
         }
 
         public bool CanPlace(ConstructionScheme scheme, Point position)
@@ -75,7 +75,6 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
                 if (Ghost.CanPlaceGhost())
                 {
                     _model.Place(Ghost.Scheme, Ghost.GetCellPosition(worldPosition));
-                    _historyReader.Update();
                     ClearGhost();
                 }
             }

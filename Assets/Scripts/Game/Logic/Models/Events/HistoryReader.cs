@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Models.Events;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Tests.Assets.Scripts.Game.Logic.Models.Events
@@ -14,6 +15,7 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Events
         public HistoryReader(History history)
         {
             _history = history;
+            _history.Add(this);
         }
 
         public void Update()
@@ -32,6 +34,16 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Events
         public HistoryReader Subscribe<T>(Action<T> action) where T : IGameEvent
         {
             _subs[typeof(T)] = (e) => action((T)e);
+
+            for (int i = 0; i < _localMessages.Count; i++)
+            {
+                var message = _history.Messages[i];
+                if (message is T)
+                    Resolve(message);
+            }
+
+            Update();
+
             return this;
         }
 

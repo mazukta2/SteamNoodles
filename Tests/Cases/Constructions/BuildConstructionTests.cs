@@ -122,6 +122,7 @@ namespace Tests.Tests.Cases.Constructions
         public void IsGhostViewChangeVisualIfItAvailable()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            Assert.AreEqual(1, levelViewModel.Screen.Hand.GetConstructions().Length);
             var proto = new BasicBuildingPrototype();
             proto.Requirements = new Requirements() { DownEdge = true };
             level.Hand.Add(proto);

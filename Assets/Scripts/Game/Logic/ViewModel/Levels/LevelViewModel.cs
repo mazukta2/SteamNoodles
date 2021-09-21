@@ -1,9 +1,5 @@
-﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Models.Levels;
+﻿using Assets.Scripts.Logic.Models.Levels;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Common;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
 using Tests.Assets.Scripts.Game.Logic.Views;
 

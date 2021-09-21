@@ -1,11 +1,6 @@
-using Assets.Scripts.Logic.Models.Events.GameEvents;
 using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Logic.Models.Session;
 using Assets.Scripts.Logic.Prototypes.Levels;
-using Assets.Scripts.Models.Events;
-using System;
-using Tests.Assets.Scripts.Game.Logic.Models.Events;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Common;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
