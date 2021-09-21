@@ -19,6 +19,9 @@ namespace Assets.Scripts.Data.Buildings
 
         public ISprite HandIcon => new UnitySprite(BuildingIcon);
         public IVisual BuildingView => new UnityView(View);
+
+        public IIngredientPrototype ProvideIngredient => throw new NotImplementedException();
+
         Point IConstructionPrototype.Size => Size;
         Requirements IConstructionPrototype.Requirements => Requirements;
     }

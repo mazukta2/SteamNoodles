@@ -15,6 +15,10 @@ namespace Assets.Scripts.Views.Levels
         [SerializeField] PrototypeLink _buildingPanel;
         [SerializeField] PrototypeLink _ghostPrototype;
 
+        public ICurrentOrderView CreateCurrentOrder()
+        {
+            throw new System.NotImplementedException();
+        }
 
         public void CreateHand(PlayerHand hand)
         {

@@ -19,6 +19,9 @@ namespace Assets.Scripts.Data
         public BuildingSchemeData[] Hand;
 
         public IConstructionPrototype[] StartingHand => Hand;
+
+        public IOrderPrototype[] Orders => throw new NotImplementedException();
+
         Point ILevelPrototype.Size => Size;
 
         public void Load(Action<ILevelPrototype, ILevelView> onFinished)
