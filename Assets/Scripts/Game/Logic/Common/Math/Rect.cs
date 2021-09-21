@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Assets.Scripts.Game.Logic.Common.Math
+namespace Game.Assets.Scripts.Game.Logic.Common.Math
 {
     public struct Rect
     {

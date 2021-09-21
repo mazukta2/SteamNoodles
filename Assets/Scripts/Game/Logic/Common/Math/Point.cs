@@ -1,7 +1,6 @@
-﻿
-using System;
+﻿using System;
 
-namespace Assets.Scripts.Game.Logic.Common.Math
+namespace Game.Assets.Scripts.Game.Logic.Common.Math
 {
     [Serializable]
     public struct Point

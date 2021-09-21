@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Game.Logic.Common.Math;
 using Assets.Scripts.Models.Events;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Tests.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
 using Tests.Assets.Scripts.Game.Logic.Models.Orders;
 
