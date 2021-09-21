@@ -29,7 +29,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Session
 
         private void OnFinished(ILevelPrototype prototype, ILevelView view)
         {
-            _model.SetLevel(new GameLevel(prototype));
+            _model.SetLevel(new GameLevel(prototype, _model.Random));
             CurrentLevel = new LevelViewModel(_model.CurrentLevel, view);
         }
     }

@@ -17,5 +17,6 @@ namespace Tests.Mocks.Prototypes.Levels
         public ISprite HandIcon { get; } = new ItsUnitySpriteWrapper();
 
         public IVisual BuildingView { get; } = new ItsUnitySpriteWrapper();
+        public IIngredientPrototype ProvideIngredient { get; set; } = new BasicIngredientPrototype();
     }
 }

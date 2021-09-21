@@ -8,6 +8,7 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
     {
         Point Size { get; }
         IConstructionPrototype[] StartingHand { get; }
+        IOrderPrototype[] Orders { get; }
 
         void Load(Action<ILevelPrototype, ILevelView> onFinished);
     }

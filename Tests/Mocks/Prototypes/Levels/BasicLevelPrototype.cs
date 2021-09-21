@@ -14,6 +14,9 @@ namespace Tests.Mocks.Prototypes.Levels
             new BasicBuildingPrototype()
         };
 
+        public IOrderPrototype[] Orders { get; } = new IOrderPrototype[] {
+            new BasicOrderPrototype()
+        };
         public BasicLevelView Level { get; set; }
 
         private Action<ILevelPrototype, ILevelView> _finished;
@@ -28,5 +31,6 @@ namespace Tests.Mocks.Prototypes.Levels
         {
             _finished = onFinished;
         }
+
     }
 }

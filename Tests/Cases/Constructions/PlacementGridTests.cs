@@ -11,8 +11,8 @@ namespace Tests.Buildings
         [Test]
         public void PlacementGridRectHasRightSize()
         {
-            var size = new Point(4, 4);
-            var buildinGrid = new Placement(size);
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var buildinGrid = level.Placement;
             var rect = buildinGrid.Rect;
             Assert.AreEqual(-2, rect.xMin);
             Assert.AreEqual(2, rect.xMax);

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Game.Logic.Common.Math;
+using Assets.Scripts.Logic.Prototypes.Levels;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
@@ -15,15 +16,13 @@ namespace Assets.Scripts.Models.Buildings
             _grid = grid;
         }
 
-        public Construction(Construction origin)
-        {
-            Scheme = origin.Scheme;
-            Position = origin.Position;
-            _grid = origin._grid;
-        }
-
         public Point Position { get; private set; }
         public ConstructionScheme Scheme { get; private set; }
+
+        public bool IsProvide(IIngredientPrototype ingredient)
+        {
+            return (Scheme.ProvidedIngridient == ingredient);
+        }
 
         public Point[] GetOccupiedScace()
         {

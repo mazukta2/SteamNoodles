@@ -4,28 +4,33 @@ using System.Linq;
 using Assets.Scripts.Game.Logic.Common.Math;
 using Assets.Scripts.Models.Events;
 using Tests.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
+using Tests.Assets.Scripts.Game.Logic.Models.Orders;
 
 namespace Assets.Scripts.Models.Buildings
 {
     public class Placement
     {
-
+        public OrderManager Orders { get; }
         public Point Size { get; }
         public Rect Rect { get; }
         public List<Construction> Buildings { get; } = new List<Construction>();
         public History History { get; } = new History();
 
 
-        public Placement(Point size)
+        public Placement(Point size, OrderManager orderManager)
         {
             Size = size;
             Rect = size.AsCenteredRect();
+            Orders = orderManager;
         }
 
         public Construction Place(ConstructionScheme scheme, Point position)
         {
             var building = new Construction(this, scheme, position);
             Buildings.Add(building);
+
+            Orders.UpdateOrders(Buildings.ToArray());
+
             History.Add(new ConstrcutionAddedEvent(building));
             return building;
         }
@@ -54,22 +59,6 @@ namespace Assets.Scripts.Models.Buildings
 
             return true;
         }
-
-
-        //public IPoint[] GetPlaceablePositions(BuildingScheme scheme)
-        //{
-        //    var list = new List<IPoint>();
-        //    for (int x = Rect.x; x < Rect.x + Rect.width; x++)
-        //    {
-        //        for (int y = Rect.y; y < Rect.y + Rect.height; y++)
-        //        {
-        //            var pos = new IPoint(x, y);
-        //            if (IsFreeCell(scheme, pos))
-        //                list.Add(pos);
-        //        }
-        //    }
-        //    return list.ToArray();
-        //}
 
     }
 }

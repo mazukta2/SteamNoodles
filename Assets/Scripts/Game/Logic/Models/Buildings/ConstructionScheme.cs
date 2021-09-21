@@ -19,6 +19,7 @@ namespace Assets.Scripts.Models.Buildings
         public Requirements Requirements => _item.Requirements;
         public ISprite HandIcon => _item.HandIcon;
         public IVisual BuildingView => _item.BuildingView;
+        public IIngredientPrototype ProvidedIngridient => _item.ProvideIngredient;
 
         public Point[] GetOccupiedSpace(Point position)
         {

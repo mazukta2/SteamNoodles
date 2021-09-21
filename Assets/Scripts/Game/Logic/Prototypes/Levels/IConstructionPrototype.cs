@@ -10,6 +10,7 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
         Requirements Requirements { get;}
         ISprite HandIcon { get; }
         IVisual BuildingView { get; }
+        IIngredientPrototype ProvideIngredient { get; }
     }
 
     [Serializable]
