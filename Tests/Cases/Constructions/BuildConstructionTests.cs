@@ -1,6 +1,5 @@
-﻿using Assets.Scripts.Game.Logic.Common.Math;
-using Assets.Scripts.Logic.Prototypes.Levels;
-using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using NUnit.Framework;
 using System.Linq;
 using System.Numerics;

@@ -1,7 +1,6 @@
-﻿using Assets.Scripts.Game.Logic.Common.Math;
-using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using NUnit.Framework;
-using System.Linq;
 using Tests.Mocks.Prototypes.Levels;
 using Tests.Tests.Shortcuts;
 

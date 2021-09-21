@@ -1,7 +1,4 @@
-﻿using Assets.Scripts.Game.Logic.Common.Math;
-using Assets.Scripts.Logic.Prototypes.Levels;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
-using Tests.Tests.Mocks.Views.Common;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
 
 namespace Tests.Mocks.Prototypes.Levels
 {
