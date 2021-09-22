@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Assets\Art\**" />
+    <Compile Remove="Assets\Data\**" />
+    <Compile Remove="Assets\Materials\**" />
+    <Compile Remove="Assets\Plugins\**" />
+    <Compile Remove="Assets\Prefabs\**" />
+    <Compile Remove="Assets\Presets\**" />
+    <Compile Remove="Assets\Refs\**" />
+    <Compile Remove="Assets\Scenes\**" />
+    <Compile Remove="Assets\Scripts\Unity\**" />
+    <Compile Remove="Assets\Settings\**" />
+    <Compile Remove="Assets\Sounds\**" />
+    <Compile Remove="Library\**" />
+    <Compile Remove="Logs\**" />
+    <Compile Remove="Packages\**" />
+    <Compile Remove="ProjectSettings\**" />
+    <Compile Remove="Temp\**" />
+    <Compile Remove="UserSettings\**" />
+    <EmbeddedResource Remove="Assets\Art\**" />
+    <EmbeddedResource Remove="Assets\Data\**" />
+    <EmbeddedResource Remove="Assets\Materials\**" />
+    <EmbeddedResource Remove="Assets\Plugins\**" />
+    <EmbeddedResource Remove="Assets\Prefabs\**" />
+    <EmbeddedResource Remove="Assets\Presets\**" />
+    <EmbeddedResource Remove="Assets\Refs\**" />
+    <EmbeddedResource Remove="Assets\Scenes\**" />
+    <EmbeddedResource Remove="Assets\Scripts\Unity\**" />
+    <EmbeddedResource Remove="Assets\Settings\**" />
+    <EmbeddedResource Remove="Assets\Sounds\**" />
+    <EmbeddedResource Remove="Library\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <EmbeddedResource Remove="Packages\**" />
+    <EmbeddedResource Remove="ProjectSettings\**" />
+    <EmbeddedResource Remove="Temp\**" />
+    <EmbeddedResource Remove="UserSettings\**" />
+    <None Remove="**\*.meta" />
+    <None Remove="Assets\Art\**" />
+    <None Remove="Assets\Data\**" />
+    <None Remove="Assets\Materials\**" />
+    <None Remove="Assets\Plugins\**" />
+    <None Remove="Assets\Prefabs\**" />
+    <None Remove="Assets\Presets\**" />
+    <None Remove="Assets\Refs\**" />
+    <None Remove="Assets\Scenes\**" />
+    <None Remove="Assets\Scripts\Unity\**" />
+    <None Remove="Assets\Settings\**" />
+    <None Remove="Assets\Sounds\**" />
+    <None Remove="Library\**" />
+    <None Remove="Logs\**" />
+    <None Remove="Packages\**" />
+    <None Remove="ProjectSettings\**" />
+    <None Remove="Temp\**" />
+    <None Remove="UserSettings\**" />
+  </ItemGroup>
+
+
+</Project>
