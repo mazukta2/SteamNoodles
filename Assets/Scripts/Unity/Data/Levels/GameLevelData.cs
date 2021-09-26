@@ -17,10 +17,10 @@ namespace Assets.Scripts.Data
         public string Scene;
         public Point Size;
         public BuildingSchemeData[] Hand;
+        public OrderData[] AvailableOrders;
 
         public IConstructionPrototype[] StartingHand => Hand;
-
-        public IOrderPrototype[] Orders => throw new NotImplementedException();
+        public IOrderPrototype[] Orders => AvailableOrders;
 
         Point ILevelPrototype.Size => Size;
 

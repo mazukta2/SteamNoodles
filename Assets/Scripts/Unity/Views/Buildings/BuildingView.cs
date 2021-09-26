@@ -23,7 +23,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Buildings
 
         public void SetImage(IVisual image)
         {
-            _image = (UnityView)image;
+            _image = new UnityView(image);
             UpdateView();
         }
 

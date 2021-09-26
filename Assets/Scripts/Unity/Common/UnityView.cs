@@ -16,5 +16,10 @@ namespace GameUnity.Assets.Scripts.Unity.Common
         {
             View = go;
         }
+
+        public UnityView(IVisual ivisual)
+        {
+            View = ((UnityView)ivisual).View;
+        }
     }
 }
