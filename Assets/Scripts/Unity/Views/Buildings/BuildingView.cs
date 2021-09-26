@@ -9,12 +9,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Tests.Assets.Scripts.Game.Logic.Views;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
+using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Buildings
 {
     public class BuildingView : GameMonoBehaviour, IConstructionView
     {
         private UnityView _image;
+        [SerializeField] private UnityEngine.Vector3 _offset;
 
         public IVisual GetImage()
         {
@@ -27,14 +29,14 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Buildings
             UpdateView();
         }
 
-        public void SetPosition(Vector2 pos)
+        public void SetPosition(System.Numerics.Vector2 pos)
         {
-            var npos = pos.ToUnityVector();
-            transform.position = new UnityEngine.Vector3(npos.x, npos.y, transform.position.z);
+            transform.position = pos.ToUnityVector(transform.position.z) + _offset;
         }
-        public Vector2 GetPosition()
+
+        public System.Numerics.Vector2 GetPosition()
         {
-            return transform.position.ToLogicVector();
+            return (transform.position - _offset).ToLogicVector();
         }
 
         private void UpdateView()

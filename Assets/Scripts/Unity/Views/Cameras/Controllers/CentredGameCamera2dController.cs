@@ -11,9 +11,6 @@ namespace Ui.Cameras.Controllers
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public abstract class CentredGameCamera2dController : GameCameraController
     {
-        [SerializeField] float _minDistance = 10;
-        [SerializeField] float _maxDistance = 50;
-
         [SerializeField] Collider2D[] _bounds;
 
         private CinemachineVirtualCamera _camera;
@@ -154,7 +151,7 @@ namespace Ui.Cameras.Controllers
         private IEnumerator ZoomToPosition(float zoom, float time)
         {
             var transposer = _camera.GetCinemachineComponent<CinemachineFramingTransposer>();
-            var targetZoom = Mathf.Clamp(zoom, _minDistance, _maxDistance);
+            var targetZoom = zoom;
 
             var startZoom = transposer.m_CameraDistance;
 
@@ -167,7 +164,7 @@ namespace Ui.Cameras.Controllers
 
         private void SetZoomDistance(float distance)
         {
-            var targetZoom = Mathf.Clamp(distance, _minDistance, _maxDistance);
+            var targetZoom = distance;
             var transposer = _camera.GetCinemachineComponent<CinemachineFramingTransposer>();
             transposer.m_CameraDistance = targetZoom;
         }

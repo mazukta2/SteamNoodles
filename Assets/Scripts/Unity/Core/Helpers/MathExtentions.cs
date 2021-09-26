@@ -20,6 +20,10 @@ namespace Assets.Scripts.Core.Helpers
             return new Vector2(vector.X, vector.Y);
         }
 
+        public static Vector3 ToUnityVector(this System.Numerics.Vector2 vector, float z)
+        {
+            return new Vector3(vector.X, vector.Y, z);
+        }
 
         public static System.Numerics.Vector2 ToLogicVector(this Vector2 vector)
         {
