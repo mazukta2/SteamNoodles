@@ -1,25 +1,26 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using Tests.Assets.Scripts.Game.Logic.Views;
 using Tests.Tests.Mocks.Views.Levels;
 
 namespace Tests.Mocks.Prototypes.Levels
 {
-    public class BasicLevelPrototype : ILevelPrototype
+    public class TestLevelPrototype : ILevelPrototype
     {
         public Point Size => new Point(4, 4);
 
         public IConstructionPrototype[] StartingHand => new IConstructionPrototype[] {
-            new BasicBuildingPrototype()
+            new TestBuildingPrototype()
         };
 
-        public IOrderPrototype[] Orders { get; } = new IOrderPrototype[] {
-            new BasicOrderPrototype()
-        };
+        public IOrderPrototype[] Orders => _orders.ToArray();
         public BasicLevelView Level { get; set; }
 
         private Action<ILevelPrototype, ILevelView> _finished;
+        private List<IOrderPrototype> _orders = new List<IOrderPrototype>();
 
         public void Finish()
         {
@@ -32,5 +33,9 @@ namespace Tests.Mocks.Prototypes.Levels
             _finished = onFinished;
         }
 
+        public void Add(IOrderPrototype order)
+        {
+            _orders.Add(order);
+        }
     }
 }

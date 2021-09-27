@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Views;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using Tests.Tests.Mocks.Views.Common;
 

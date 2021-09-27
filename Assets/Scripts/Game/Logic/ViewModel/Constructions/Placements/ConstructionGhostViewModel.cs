@@ -2,12 +2,12 @@
 using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
-using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 {
@@ -26,6 +26,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             _placement = placement;
             View = view;
             View.SetMoveAction(MoveTo);
+            View.SetImage(Scheme.BuildingView);
         }
 
         public Point GetCellPosition(Vector2 worldPosition)

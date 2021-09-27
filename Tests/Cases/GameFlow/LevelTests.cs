@@ -20,7 +20,7 @@ namespace Tests.Tests.Cases.GameFlow
             var sessionVm = gameVm.Session;
             Assert.IsTrue(sessionVm != null);
 
-            var levelProto = new BasicLevelPrototype();
+            var levelProto = new TestLevelPrototype();
             gameVm.Session.LoadLevel(levelProto);
             Assert.IsTrue(session.CurrentLevel == null);
             Assert.IsTrue(sessionVm.CurrentLevel == null);

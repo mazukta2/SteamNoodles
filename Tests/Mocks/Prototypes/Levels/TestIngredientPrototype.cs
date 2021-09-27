@@ -2,7 +2,7 @@
 
 namespace Tests.Mocks.Prototypes.Levels
 {
-    public class BasicIngredientPrototype : IIngredientPrototype
+    public class TestIngredientPrototype : IIngredientPrototype
     {
     }
 }

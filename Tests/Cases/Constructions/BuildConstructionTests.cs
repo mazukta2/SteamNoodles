@@ -122,7 +122,7 @@ namespace Tests.Tests.Cases.Constructions
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
             Assert.AreEqual(1, levelViewModel.Screen.Hand.GetConstructions().Length);
-            var proto = new BasicBuildingPrototype();
+            var proto = new TestBuildingPrototype();
             proto.Requirements = new Requirements() { DownEdge = true };
             level.Hand.Add(proto);
 
@@ -144,7 +144,7 @@ namespace Tests.Tests.Cases.Constructions
         public void IsCellsBeneathGhostIsHighlightedRed()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            var building = new BasicBuildingPrototype();
+            var building = new TestBuildingPrototype();
             building.Size = new Point(2, 2);
             building.Requirements = new Requirements()
             {
@@ -238,7 +238,7 @@ namespace Tests.Tests.Cases.Constructions
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
 
-            var building = new BasicBuildingPrototype();
+            var building = new TestBuildingPrototype();
             building.Requirements = new Requirements()
             {
                 DownEdge = true,

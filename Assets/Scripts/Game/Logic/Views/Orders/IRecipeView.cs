@@ -5,8 +5,7 @@ using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
 namespace Tests.Assets.Scripts.Game.Logic.Views
 {
-    public interface ICurrentOrderView : IView
+    public interface IRecipeView : IView
     {
-        IRecipeView CreateRecipe();
     }
 }

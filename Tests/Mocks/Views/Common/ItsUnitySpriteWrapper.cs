@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;

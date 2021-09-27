@@ -18,14 +18,14 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
 
         public CurrentOrder ToCurrentOrder()
         {
-            return new CurrentOrder(this);
+            return new CurrentOrder(_order);
         }
 
         public bool CanBeOrder(Construction[] constructions)
         {
-            foreach (var ingredient in _order.RequiredIngredients)
+            foreach (var recipe in _order.Recipes)
             {
-                if (!constructions.Any(x => x.IsProvide(ingredient)))
+                if (!constructions.Any(x => x.IsProvide(recipe.Ingredient)))
                     return false;
             }
             return true;

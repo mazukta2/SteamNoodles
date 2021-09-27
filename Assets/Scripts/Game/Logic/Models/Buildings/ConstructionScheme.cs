@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System.Collections.Generic;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 

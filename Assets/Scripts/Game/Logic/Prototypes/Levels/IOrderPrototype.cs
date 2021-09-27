@@ -2,6 +2,6 @@
 {
     public interface IOrderPrototype
     {
-        public IIngredientPrototype[] RequiredIngredients { get; }
+        public IRecipePrototype[] Recipes { get; }
     }
 }
