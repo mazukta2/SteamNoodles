@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Models.Events;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Tests.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
@@ -10,26 +11,26 @@ namespace Assets.Scripts.Models.Buildings
 {
     public class Placement
     {
-        public OrderManager Orders { get; }
         public Point Size { get; }
         public Rect Rect { get; }
-        public List<Construction> Buildings { get; } = new List<Construction>();
+        public GameLevel Level { get; }
+        public List<Construction> Constructions { get; } = new List<Construction>();
         public History History { get; } = new History();
 
 
-        public Placement(Point size, OrderManager orderManager)
+        public Placement(GameLevel level, Point size)
         {
             Size = size;
             Rect = size.AsCenteredRect();
-            Orders = orderManager;
+            Level = level;
         }
 
         public Construction Place(ConstructionScheme scheme, Point position)
         {
             var building = new Construction(this, scheme, position);
-            Buildings.Add(building);
+            Constructions.Add(building);
 
-            Orders.UpdateOrders(Buildings.ToArray());
+            Level.Orders.TryGetOrder();
 
             History.Add(new ConstrcutionAddedEvent(building));
             return building;
@@ -47,7 +48,7 @@ namespace Assets.Scripts.Models.Buildings
             if (!Rect.IsInside(position))
                 return false;
 
-            if (Buildings.Any(otherBuilding => otherBuilding.GetOccupiedScace().Any(pos => pos == position)))
+            if (Constructions.Any(otherBuilding => otherBuilding.GetOccupiedScace().Any(pos => pos == position)))
                 return false;
 
             if (scheme.Requirements.DownEdge)

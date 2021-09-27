@@ -28,15 +28,15 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel
             _view = view;
             Hand = new HandViewModel(model.Hand, _view.CreateHand(), placement);
 
-            _reader = new HistoryReader(_model.Placement.Orders.History);
+            _reader = new HistoryReader(_model.Orders.History);
             _reader.Subscribe<CurrentOrderCreatedEvent>(UpdateOrder);
         }
 
         private void UpdateOrder(CurrentOrderCreatedEvent evt)
         {
-            if (_model.Placement.Orders.Order != null)
+            if (_model.Orders.CurrentOrder != null)
             {
-                Order = new CurrentOrderViewModel(_model.Placement.Orders.Order, _view.CreateCurrentOrder());
+                Order = new CurrentOrderViewModel(_model.Orders.CurrentOrder, _view.CreateCurrentOrder());
             }
             else
             {

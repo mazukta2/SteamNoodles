@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Tests.Mocks.Prototypes.Levels;
 
 namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
 {
@@ -29,6 +30,11 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
                     return false;
             }
             return true;
+        }
+
+        public bool Have(IIngredientPrototype ingredient)
+        {
+            return _order.Recipes.Any(x=> x.Ingredient == ingredient);
         }
     }
 }

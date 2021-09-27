@@ -10,7 +10,7 @@ namespace Assets.Scripts.Logic.Models.Levels
     public class GameLevel
     {
         public Placement Placement { get; }
-
+        public OrderManager Orders { get; }
         public PlayerHand Hand { get; }
 
         public GameLevel(ILevelPrototype prototype, SessionRandom random)
@@ -21,7 +21,8 @@ namespace Assets.Scripts.Logic.Models.Levels
             Hand = new PlayerHand(prototype.StartingHand);
 
             var orders = prototype.Orders.Select(x => new AvailableOrder(x));
-            Placement = new Placement(prototype.Size, new OrderManager(random, orders.ToArray()));
+            Placement = new Placement(this, prototype.Size);
+            Orders = new OrderManager(this, random, orders.ToArray());
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Logic.Models.Levels;
+using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Tests.Mocks.Prototypes.Levels;
 using NUnit.Framework;
@@ -26,14 +27,14 @@ namespace Tests.Buildings
 
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel(levelProto);
 
-            Assert.IsNull(level.Placement.Orders.Order);
+            Assert.IsNull(level.Orders.CurrentOrder);
             Assert.IsNull(levelViewModel.Screen.Order?.View);
 
             var scheme = new ConstructionScheme(proto);
             var construction = level.Placement.Place(scheme, new Point(0, 0));
             Assert.IsTrue(construction.IsProvide(ingridient));
 
-            Assert.IsNotNull(level.Placement.Orders.Order);
+            Assert.IsNotNull(level.Orders.CurrentOrder);
             Assert.IsNotNull(levelViewModel.Screen.Order?.View);
             Assert.IsNotNull(levelViewModel.Screen.Order.Recipies.First().View);
         }
@@ -45,7 +46,36 @@ namespace Tests.Buildings
         [Test]
         public void OrdersAreSelectedOnlyIfWeCanProcessThem()
         {
-            throw new NotImplementedException();
+            var levelProto = new TestLevelPrototype();
+
+            var weHaveThisIngridient = new TestIngredientPrototype();
+            var weDontHaveThisIngridient = new TestIngredientPrototype();
+            CreateOrder(levelProto, weHaveThisIngridient);
+            CreateOrder(levelProto, weDontHaveThisIngridient);
+
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel(levelProto);
+
+            Assert.AreEqual(0, level.Orders.GetAvailableOrders().Count);
+
+            CreateBuilding(level, weHaveThisIngridient);
+
+            Assert.AreEqual(1, level.Orders.GetAvailableOrders().Count);
+            Assert.IsTrue(level.Orders.GetAvailableOrders().First().Have(weHaveThisIngridient));
+            Assert.IsTrue(level.Orders.CurrentOrder.Have(weHaveThisIngridient));
+
+            static void CreateBuilding(GameLevel level, TestIngredientPrototype ingredientPrototype)
+            {
+                var buildingProto = new TestBuildingPrototype() { ProvideIngredient = ingredientPrototype };
+                var scheme = new ConstructionScheme(buildingProto);
+                level.Placement.Place(scheme, new Point(0, 0));
+            }
+
+            static void CreateOrder(TestLevelPrototype levelPrototype, TestIngredientPrototype ingredientPrototype)
+            {
+                var order = new TestOrderPrototype();
+                order.Add(new TestRecipePrototype(ingredientPrototype));
+                levelPrototype.Add(order);
+            }
         }
 
         [Test]
