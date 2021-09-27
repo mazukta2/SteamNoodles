@@ -6,7 +6,7 @@ using System.Text;
 using Tests.Assets.Scripts.Game.Logic.ViewModel;
 using Tests.Mocks.Prototypes.Levels;
 
-namespace Tests.Tests.Cases.GameFlow
+namespace Game.Tests.Cases.GameFlow
 {
     public class LevelTests
     {

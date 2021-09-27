@@ -1,5 +1,5 @@
-﻿using System;
-using Tests.Assets.Scripts.Game.Logic.Models.Orders;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels

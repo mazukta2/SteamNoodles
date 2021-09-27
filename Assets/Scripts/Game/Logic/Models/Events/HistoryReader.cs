@@ -54,5 +54,10 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Events
                 _subs[message.GetType()].Invoke(message);
             }
         }
+
+        public void Dispose()
+        {
+            _history.Remove(this);
+        }
     }
 }

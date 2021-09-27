@@ -8,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.Logic.Models.Events.GameEvents
+namespace Game.Assets.Scripts.Game.Logic.Models.Events.GameEvents
 {
-    public class CurrentOrderCreatedEvent : IGameEvent
+    public class CurrentOrderClosedEvent : IGameEvent
     {
-        public CurrentOrderCreatedEvent(CurrentOrder order) => (Order) = (order);
+        public CurrentOrderClosedEvent(CurrentOrder order) => Order = order;
         public CurrentOrder Order { get; }
     };
 }

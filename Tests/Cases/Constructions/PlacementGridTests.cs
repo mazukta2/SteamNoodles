@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System.Linq;
 using Tests.Tests.Shortcuts;
 
-namespace Tests.Buildings
+namespace Game.Tests.Cases.Constructions
 {
     public class PlacementGridTests
     {
@@ -31,7 +31,7 @@ namespace Tests.Buildings
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
             var cells = levelViewModel.Placement.GetCells();
             Assert.IsTrue(cells.Length > 0);
-            Assert.AreEqual((levelViewModel.Placement.GetSize().X +1) * (levelViewModel.Placement.GetSize().Y +1), cells.Length);
+            Assert.AreEqual((levelViewModel.Placement.GetSize().X + 1) * (levelViewModel.Placement.GetSize().Y + 1), cells.Length);
 
             Assert.IsTrue(cells.All(x => x.View != null));
         }

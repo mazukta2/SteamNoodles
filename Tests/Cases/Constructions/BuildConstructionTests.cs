@@ -7,7 +7,7 @@ using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
 using Tests.Mocks.Prototypes.Levels;
 using Tests.Tests.Shortcuts;
 
-namespace Tests.Tests.Cases.Constructions
+namespace Game.Tests.Cases.Constructions
 {
     public class BuildConstructionTests
     {
@@ -108,7 +108,7 @@ namespace Tests.Tests.Cases.Constructions
             Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(0, 0)));
             Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(1, 0)));
 
-            ghost.View.GetMoveAction()(new Vector2(levelViewModel.Placement.CellSize + levelViewModel.Placement.CellSize/4, 0));
+            ghost.View.GetMoveAction()(new Vector2(levelViewModel.Placement.CellSize + levelViewModel.Placement.CellSize / 4, 0));
 
             highlighedCells = cells.Where(x => x.State == CellViewModel.CellState.IsAvailableGhostPlace && x.View.GetState() == CellViewModel.CellState.IsAvailableGhostPlace);
             Assert.AreEqual(2, highlighedCells.Count());
@@ -133,7 +133,7 @@ namespace Tests.Tests.Cases.Constructions
             var ghost = levelViewModel.Placement.Ghost.View;
 
             Assert.IsFalse(ghost.GetCanBePlacedState());
-            ghost.GetMoveAction()(new Vector2(0, - levelViewModel.Placement.CellSize * 2 - levelViewModel.Placement.CellSize / 4));
+            ghost.GetMoveAction()(new Vector2(0, -levelViewModel.Placement.CellSize * 2 - levelViewModel.Placement.CellSize / 4));
 
             Assert.IsFalse(levelViewModel.Placement.Ghost.Position == new Point(0, 2));
 
@@ -154,14 +154,14 @@ namespace Tests.Tests.Cases.Constructions
 
             var construction = levelViewModel.Screen.Hand.GetConstructions().Last();
             construction.View.Click();
-            var worldPos = new Vector2(0f, -levelViewModel.Placement.CellSize /2 );
+            var worldPos = new Vector2(0f, -levelViewModel.Placement.CellSize / 2);
             levelViewModel.Placement.Ghost.View.GetMoveAction()(worldPos);
 
             var cells = levelViewModel.Placement.GetCells();
 
             Assert.AreEqual(CellViewModel.CellState.Normal,
                 cells.First(x => x.Position == new Point(-1, 0)).View.GetState());
-            Assert.AreEqual(CellViewModel.CellState.IsNotAvailableGhostPlace, 
+            Assert.AreEqual(CellViewModel.CellState.IsNotAvailableGhostPlace,
                 cells.First(x => x.Position == new Point(0, 0)).View.GetState());
             Assert.AreEqual(CellViewModel.CellState.IsNotAvailableGhostPlace,
                 cells.First(x => x.Position == new Point(1, 0)).View.GetState());
@@ -229,7 +229,7 @@ namespace Tests.Tests.Cases.Constructions
             levelViewModel.Placement.View.Click(new Vector2(0, 0));
 
             Assert.IsTrue(model.BuildingView != null);
-            Assert.AreEqual(model.BuildingView, 
+            Assert.AreEqual(model.BuildingView,
                 levelViewModel.Placement.GetConstructions().First().View.GetImage());
         }
 
@@ -268,8 +268,8 @@ namespace Tests.Tests.Cases.Constructions
 
             Assert.IsTrue(level.Placement.IsFreeCell(levelViewModel.Placement.Ghost.Scheme, new Point(0, -2)));
             Assert.IsTrue(level.Placement.IsFreeCell(levelViewModel.Placement.Ghost.Scheme, new Point(1, -2)));
-            
-            worldPos = new Vector2(0f, - levelViewModel.Placement.CellSize * 2 - levelViewModel.Placement.CellSize / 4);
+
+            worldPos = new Vector2(0f, -levelViewModel.Placement.CellSize * 2 - levelViewModel.Placement.CellSize / 4);
             levelViewModel.Placement.View.Click(worldPos);
             Assert.AreEqual(1, levelViewModel.Placement.GetConstructions().Length);
 

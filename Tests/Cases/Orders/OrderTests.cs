@@ -6,10 +6,9 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using Tests.Mocks.Prototypes.Levels;
-using Tests.Tests.Mocks.Views.Levels;
 using Tests.Tests.Shortcuts;
 
-namespace Tests.Buildings
+namespace Game.Tests.Cases.Orders
 {
     public class OrderTests
     {
@@ -62,26 +61,32 @@ namespace Tests.Buildings
             Assert.AreEqual(1, level.Orders.GetAvailableOrders().Count);
             Assert.IsTrue(level.Orders.GetAvailableOrders().First().Have(weHaveThisIngridient));
             Assert.IsTrue(level.Orders.CurrentOrder.Have(weHaveThisIngridient));
-
-            static void CreateBuilding(GameLevel level, TestIngredientPrototype ingredientPrototype)
-            {
-                var buildingProto = new TestBuildingPrototype() { ProvideIngredient = ingredientPrototype };
-                var scheme = new ConstructionScheme(buildingProto);
-                level.Placement.Place(scheme, new Point(0, 0));
-            }
-
-            static void CreateOrder(TestLevelPrototype levelPrototype, TestIngredientPrototype ingredientPrototype)
-            {
-                var order = new TestOrderPrototype();
-                order.Add(new TestRecipePrototype(ingredientPrototype));
-                levelPrototype.Add(order);
-            }
         }
 
         [Test]
         public void CloseOrderIfAllRecipiesAreComplited()
         {
-            throw new NotImplementedException();
+            var levelProto = new TestLevelPrototype();
+            var weHaveThisIngridient = new TestIngredientPrototype();
+            CreateOrder(levelProto, weHaveThisIngridient);
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel(levelProto);
+
+            CreateBuilding(level, weHaveThisIngridient);
+
+            Assert.IsTrue(level.Orders.CurrentOrder.IsOpen());
+            Assert.IsFalse(level.Orders.CurrentOrder.IsCanBeClosed());
+
+            level.Orders.CurrentOrder.Recipes.First().Close();
+
+            Assert.IsTrue(level.Orders.CurrentOrder.IsOpen());
+            Assert.IsTrue(level.Orders.CurrentOrder.IsCanBeClosed());
+
+            var order = level.Orders.CurrentOrder;
+            order.Close();
+
+            Assert.IsFalse(order.IsOpen());
+
+            Assert.AreNotEqual(order, level.Orders.CurrentOrder); // current order is changed.
         }
 
         #endregion
@@ -109,5 +114,19 @@ namespace Tests.Buildings
 
         #endregion
 
+
+        static void CreateBuilding(GameLevel level, TestIngredientPrototype ingredientPrototype)
+        {
+            var buildingProto = new TestBuildingPrototype() { ProvideIngredient = ingredientPrototype };
+            var scheme = new ConstructionScheme(buildingProto);
+            level.Placement.Place(scheme, new Point(0, 0));
+        }
+
+        static void CreateOrder(TestLevelPrototype levelPrototype, TestIngredientPrototype ingredientPrototype)
+        {
+            var order = new TestOrderPrototype();
+            order.Add(new TestRecipePrototype(ingredientPrototype));
+            levelPrototype.Add(order);
+        }
     }
 }

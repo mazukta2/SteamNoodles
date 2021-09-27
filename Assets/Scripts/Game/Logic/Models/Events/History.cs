@@ -30,5 +30,21 @@ namespace Assets.Scripts.Models.Events
         {
             _readers.Add(new WeakReference<HistoryReader>(historyReader));
         }
+
+        public void Remove(HistoryReader historyReader)
+        {
+            foreach (var reader in _readers.ToList())
+            {
+                if (reader.TryGetTarget(out var target))
+                {
+                    if (target == historyReader)
+                        _readers.Remove(reader);
+                }
+                else
+                {
+                    _readers.Remove(reader);
+                }
+            }
+        }
     }
 }

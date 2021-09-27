@@ -2,10 +2,13 @@
 using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Models.Buildings;
 using Assets.Scripts.Models.Events;
+using Game.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
+using Game.Assets.Scripts.Game.Logic.Models.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Tests.Assets.Scripts.Game.Logic.Models.Events;
 using Tests.Assets.Scripts.Game.Logic.Models.Session;
 
 namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
@@ -30,6 +33,8 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
 
         public CurrentOrder CurrentOrder { get; private set; }
 
+        private HistoryReader _orderReader;
+
         public void TryGetOrder()
         {
             if (CurrentOrder == null)
@@ -38,6 +43,9 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
                 if (order != null)
                 {
                     CurrentOrder = order.ToCurrentOrder();
+                    _orderReader?.Dispose();
+                    _orderReader = new HistoryReader(CurrentOrder.History);
+                    _orderReader.Subscribe<CurrentOrderClosedEvent>(OnOrderClosed);
                     History.Add(new CurrentOrderCreatedEvent(CurrentOrder));
                 }
             }
@@ -61,6 +69,15 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
                 return null;
 
             return orders[_random.GetRandom(0, orders.Count)];
+        }
+
+        private void OnOrderClosed(CurrentOrderClosedEvent evnt)
+        {
+            if (CurrentOrder.IsOpen())
+                return;
+
+            CurrentOrder = null;
+            TryGetOrder();
         }
 
     }

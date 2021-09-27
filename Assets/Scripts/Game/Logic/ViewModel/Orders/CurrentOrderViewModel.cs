@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using System;
 using System.Collections.Generic;
-using Tests.Assets.Scripts.Game.Logic.Models.Orders;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
