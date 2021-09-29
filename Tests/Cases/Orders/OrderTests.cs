@@ -97,7 +97,27 @@ namespace Game.Tests.Cases.Orders
         [Test]
         public void RecipeProcessing()
         {
-            throw new NotImplementedException();
+            var levelProto = new TestLevelPrototype();
+            var weHaveThisIngridient = new TestIngredientPrototype();
+            CreateOrder(levelProto, weHaveThisIngridient);
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel(levelProto);
+
+            CreateBuilding(level, weHaveThisIngridient);
+
+            Assert.IsTrue(level.Orders.CurrentOrder.IsOpen());
+            Assert.IsFalse(level.Orders.CurrentOrder.IsCanBeClosed());
+
+            //level.Orders.CurrentOrder.Recipes.First().Close();
+
+            Assert.IsTrue(level.Orders.CurrentOrder.IsOpen());
+            Assert.IsTrue(level.Orders.CurrentOrder.IsCanBeClosed());
+
+            var order = level.Orders.CurrentOrder;
+            order.Close();
+
+            Assert.IsFalse(order.IsOpen());
+
+            Assert.AreNotEqual(order, level.Orders.CurrentOrder); // current order is changed.
         }
 
         [Test]

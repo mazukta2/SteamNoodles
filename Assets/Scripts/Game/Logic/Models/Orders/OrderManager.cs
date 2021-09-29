@@ -46,6 +46,8 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
                     _orderReader?.Dispose();
                     _orderReader = new HistoryReader(CurrentOrder.History);
                     _orderReader.Subscribe<CurrentOrderClosedEvent>(OnOrderClosed);
+                    _level.WorkManager.HandleOrder();
+
                     History.Add(new CurrentOrderCreatedEvent(CurrentOrder));
                 }
             }

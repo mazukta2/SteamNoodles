@@ -29,6 +29,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _isOpen = false;
         }
 
+        public Construction GetConstruction()
+        {
+            return _level.Placement.Constructions.FirstOrDefault(x => x.IsProvide(_proto.Ingredient));
+        }
+
         public bool IsOpen()
         {
             return _isOpen;
