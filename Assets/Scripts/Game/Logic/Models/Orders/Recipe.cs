@@ -10,6 +10,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class Recipe
     {
+        public float CurrentProgress { get; private set; }
+        public float MaxProgress { get; } = 100;
+        
         private GameLevel _level;
         private IRecipePrototype _proto;
         private bool _isOpen;
@@ -42,6 +45,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public bool IsCanBeClosed()
         {
             return _level.Placement.Constructions.Any(x => x.IsProvide(_proto.Ingredient));
+        }
+
+        public void Progress(float workProgress)
+        {
+            CurrentProgress += workProgress;
+            if (CurrentProgress >= MaxProgress)
+            {
+                CurrentProgress = MaxProgress;
+                Close();
+            }
         }
     }
 }

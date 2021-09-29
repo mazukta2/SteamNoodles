@@ -8,16 +8,20 @@ namespace Assets.Scripts.Models.Buildings
     public class Construction
     {
         private Placement _grid;
+        private IConstructionPrototype _proto;
 
-        public Construction(Placement grid, ConstructionScheme scheme, Point position)
+        public Construction(Placement grid, IConstructionPrototype proto, Point position)
         {
-            Scheme = scheme;
+            Scheme = new ConstructionScheme(proto);
             Position = position;
             _grid = grid;
+            _proto = proto;
         }
 
         public Point Position { get; private set; }
         public ConstructionScheme Scheme { get; private set; }
+        public TimeSpan WorkTime => _proto.WorkTime;
+        public float WorkProgressPerHit => _proto.WorkProgressPerHit;
 
         public bool IsProvide(IIngredientPrototype ingredient)
         {

@@ -10,5 +10,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
         {
             return new GameTimer(this, time);
         }
+
+        public GameUpdater MakeUpdater(TimeSpan time)
+        {
+            return new GameUpdater(this, time);
+        }
     }
 }
