@@ -1,21 +1,21 @@
 ﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
 using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
 using System;
 using System.Collections.Generic;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
+using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
-namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
+namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions
 {
-    public class HandViewModel
+    public class HandViewModel : IViewModel
     {
         private PlayerHand _model;
         private PlacementViewModel _placement;
         private List<HandConstructionViewModel> _list = new List<HandConstructionViewModel>();
         private HistoryReader _historyReader;
-
 
         public HandViewModel(PlayerHand model, IHandView view, PlacementViewModel placement)
         {
@@ -28,7 +28,16 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             _historyReader.Subscribe<SchemeAddedToHandEvent>(ScnemeAddedHandle);
         }
 
+        public void Destroy()
+        {
+            foreach (var item in _list)
+                item.Destroy();
+            View.Destroy();
+            IsDestoyed = true;
+        }
+
         public IHandView View { get; private set; }
+        public bool IsDestoyed { get; private set; }
 
         public HandConstructionViewModel[] GetConstructions()
         {
@@ -52,5 +61,6 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             else
                 _placement.ClearGhost();
         }
+
     }
 }

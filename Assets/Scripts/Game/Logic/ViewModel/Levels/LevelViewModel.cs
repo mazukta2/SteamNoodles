@@ -1,14 +1,18 @@
 ﻿using Assets.Scripts.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.ViewModel;
+using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
 using System;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
+using Tests.Assets.Scripts.Game.Logic.ViewModel;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
-namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
+namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
 {
-    public class LevelViewModel
+    public class LevelViewModel : IViewModel
     {
         public LevelScreenViewModel Screen { get; private set; }
         public PlacementViewModel Placement { get; private set; }
+
+        public bool IsDestoyed { get; private set; }
 
         private GameLevel _model;
         private ILevelView _levelView;
@@ -24,5 +28,11 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             Screen = new LevelScreenViewModel(model, view, Placement);
         }
 
+        public void Destroy()
+        {
+            Placement.Destroy();
+            Screen.Destroy();
+            IsDestoyed = true;
+        }
     }
 }

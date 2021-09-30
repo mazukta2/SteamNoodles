@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
+using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 using Tests.Tests.Mocks.Views.Common;
 
@@ -19,5 +20,8 @@ namespace Tests.Mocks.Prototypes.Levels
 
         public IVisual BuildingView { get; } = new ItsUnitySpriteWrapper();
         public IIngredientPrototype ProvideIngredient { get; set; } = new TestIngredientPrototype();
+
+        public TimeSpan WorkTime => new TimeSpan(0, 0, 2);
+        public float WorkProgressPerHit => 10;
     }
 }

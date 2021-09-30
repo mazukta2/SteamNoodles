@@ -1,39 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Logic.Models.Levels;
+﻿using Assets.Scripts.Logic.Models.Levels;
+using Assets.Scripts.Models.Buildings;
 using Assets.Scripts.Models.Events;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Events;
+using Game.Assets.Scripts.Game.Logic.States;
+using Game.Assets.Scripts.Game.Logic.States.Game.Level;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Tests.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
-using Tests.Assets.Scripts.Game.Logic.Models.Orders;
 
-namespace Assets.Scripts.Models.Buildings
+namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 {
     public class Placement
     {
+        public event Action OnConstructionAdded = delegate { };
         public Point Size { get; }
         public Rect Rect { get; }
-        public GameLevel Level { get; }
-        public List<Construction> Constructions { get; } = new List<Construction>();
-        public History History { get; } = new History();
+        public Construction[] Constructions => _state.Get().GetConstructions();
 
-
-        public Placement(GameLevel level, Point size)
+        private StateLink<ConstructionsState> _state;
+        public Placement(StateLink<ConstructionsState> state, Point size)
         {
             Size = size;
             Rect = size.AsCenteredRect();
-            Level = level;
+            _state = state;
+            _state.Get().SubscribeToNewConstruction(HandleConstructionAdded);
         }
 
         public Construction Place(ConstructionScheme scheme, Point position)
         {
-            var building = new Construction(this, scheme, position);
-            Constructions.Add(building);
+            return _state.Get().Place(scheme, position);
+        }
 
-            Level.Orders.TryGetOrder();
-
-            History.Add(new ConstrcutionAddedEvent(building));
-            return building;
+        public bool Contain(uint key)
+        {
+            return Constructions.Any(x => x.Id == key);
         }
 
         public bool CanPlace(ConstructionScheme scheme, Point position)
@@ -61,5 +63,9 @@ namespace Assets.Scripts.Models.Buildings
             return true;
         }
 
+        private void HandleConstructionAdded(Construction construction)
+        {
+            OnConstructionAdded();
+        }
     }
 }

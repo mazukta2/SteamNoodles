@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System.Numerics;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;

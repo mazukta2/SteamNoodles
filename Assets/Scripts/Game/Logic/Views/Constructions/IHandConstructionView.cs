@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Views;
+using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Tests.Assets.Scripts.Game.Logic.Views.Constructions

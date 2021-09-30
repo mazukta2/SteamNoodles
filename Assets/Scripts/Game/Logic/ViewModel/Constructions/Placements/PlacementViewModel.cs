@@ -1,26 +1,27 @@
-﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Models.Levels;
-using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Actions;
+using Game.Assets.Scripts.Game.Logic.Actions.Game;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Models.Events;
+using Game.Assets.Scripts.Game.Logic.States.Game.Level;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using Tests.Assets.Scripts.Game.Logic.Models.Events;
-using Tests.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
+using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
 using Tests.Assets.Scripts.Game.Logic.Views;
-using static Assets.Scripts.Models.Buildings.Placement;
 
-namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
+namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 {
-    public class PlacementViewModel
+    public class PlacementViewModel : IViewModel
     {
         public readonly float CellSize = 0.25f;
 
+        public bool IsDestoyed { get; private set; }
+
         private Placement _model;
-        private HistoryReader _historyReader;
-        private List<ConstructionViewModel> _constructions = new List<ConstructionViewModel>();
+        private Dictionary<uint, ConstructionViewModel> _constructions = new Dictionary<uint, ConstructionViewModel>();
         private List<CellViewModel> _cells = new List<CellViewModel>();
 
         public PlacementViewModel(Placement model, IPlacementView view)
@@ -38,8 +39,17 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
                 }
             }
 
-            _historyReader = new HistoryReader(model.History);
-            _historyReader.Subscribe<ConstrcutionAddedEvent>(OnConstruction);
+            UpdateConstructions();
+            model.OnConstructionAdded += UpdateConstructions;
+        }
+
+        public void Destroy()
+        {
+            _model.OnConstructionAdded -= UpdateConstructions;
+            View.Destroy();
+            Ghost?.Destroy();
+
+            IsDestoyed = true;
         }
 
         public bool CanPlace(ConstructionScheme scheme, Point position)
@@ -51,7 +61,6 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
         public ConstructionGhostViewModel Ghost { get; private set; }
         public IPlacementView View { get; private set; }
-
         public void SetGhost(ConstructionScheme obj)
         {
             if (Ghost != null) throw new Exception("Ghost already existing");
@@ -78,12 +87,11 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
                     ClearGhost();
                 }
             }
-
         }
 
         public ConstructionViewModel[] GetConstructions()
         {
-            return _constructions.ToArray();
+            return _constructions.Values.ToArray();
         }
 
         public CellViewModel[] GetCells()
@@ -120,29 +128,18 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             return new Vector2(point.X * CellSize, point.Y * CellSize);
         }
 
-        private void OnConstruction(ConstrcutionAddedEvent obj)
+        private void UpdateConstructions()
         {
-            _constructions.Add(new ConstructionViewModel(this, obj.Construction, View.CreateConstrcution()));
+            var toDelete = _constructions.Where(x => !_model.Contain(x.Key));
+            foreach (var viewModel in toDelete)
+            {
+                viewModel.Value.Destroy();
+                _constructions.Remove(viewModel.Key);
+            }
+
+            var toAdd = _model.Constructions.Where(x => !_constructions.ContainsKey(x.Id));
+            foreach (var model in toAdd)
+                _constructions.Add(model.Id, new ConstructionViewModel(this, model, View.CreateConstrcution()));
         }
-
-
-        //public IPoint GetWorldPosition(IPoint cell)
-        //{
-        //    return new Vector3(cell.x * CellSize - CellSize / 2, cell.y * CellSize - CellSize / 2);
-        //}
-
-        //public Point WorldToCell(Vector2 positon)
-        //{
-        //    var offset = new Vector3(Size.X * CellSize / 2 - CellSize / 2,
-        //        Ghost.Size.y * CellSize / 2 - CellSize / 2);
-
-        //    mouseWorldPosition -= offset;
-
-        //    var mousePosX = Mathf.RoundToInt(mouseWorldPosition.x / CellSize);
-        //    var mousePosY = Mathf.RoundToInt(mouseWorldPosition.y / CellSize);
-
-        //    var cell = new Vector2Int(Mathf.CeilToInt(mousePosX), Mathf.CeilToInt(mousePosY));
-        //    return cell;
-        //}
     }
 }

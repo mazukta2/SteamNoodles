@@ -1,12 +1,14 @@
 ﻿using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.ViewModel;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
 {
-    public class HandConstructionViewModel
+    public class HandConstructionViewModel : IViewModel
     {
         public IHandConstructionView View => _view;
+        public bool IsDestoyed { get; private set; }
 
         private ConstructionScheme _model;
         private IHandConstructionView _view;
@@ -24,6 +26,12 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             UpdateView();
         }
 
+        public void Destroy()
+        {
+            IsDestoyed = true;
+            View.Destroy();
+        }
+
         private void OnClick()
         {
             _onClick(_model);
@@ -34,6 +42,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             _view.SetIcon(_model.HandIcon);
             _view.SetClick(OnClick);
         }
+
 
     }
 }

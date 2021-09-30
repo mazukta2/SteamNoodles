@@ -9,16 +9,18 @@ using System.Numerics;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
 
-namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
+namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 {
-    public class ConstructionGhostViewModel
+    public class ConstructionGhostViewModel : IViewModel
     {
         public ConstructionScheme Scheme { get; }
         public IGhostConstructionView View { get; private set; }
         public Point Position { get; private set; }
 
+        public bool IsDestoyed { get; private set; }
+
         private PlacementViewModel _placement;
-        
+
 
         public ConstructionGhostViewModel(PlacementViewModel placement, ConstructionScheme scheme, IGhostConstructionView view)
         {
@@ -52,6 +54,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         public void Destroy()
         {
             View.Destroy();
+            IsDestoyed = true;
         }
 
         public void MoveTo(Vector2 worldPosition)

@@ -1,5 +1,8 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.States;
+using Game.Assets.Scripts.Game.Logic.States.Game.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 
@@ -7,21 +10,18 @@ namespace Assets.Scripts.Models.Buildings
 {
     public class Construction
     {
-        private Placement _grid;
-        private IConstructionPrototype _proto;
+        public uint Id => _state.Get().Id;
+        public ConstructionScheme Scheme => new ConstructionScheme(_state.Get().Prototype);
+        public Point Position => _state.Get().Position;
+        public TimeSpan WorkTime => _state.Get().Prototype.WorkTime;
+        public float WorkProgressPerHit => _state.Get().Prototype.WorkProgressPerHit;
 
-        public Construction(Placement grid, IConstructionPrototype proto, Point position)
+        private StateLink<ConstructionState> _state;
+
+        public Construction(StateLink<ConstructionState> state)
         {
-            Scheme = new ConstructionScheme(proto);
-            Position = position;
-            _grid = grid;
-            _proto = proto;
+            _state = state;
         }
-
-        public Point Position { get; private set; }
-        public ConstructionScheme Scheme { get; private set; }
-        public TimeSpan WorkTime => _proto.WorkTime;
-        public float WorkProgressPerHit => _proto.WorkProgressPerHit;
 
         public bool IsProvide(IIngredientPrototype ingredient)
         {

@@ -1,10 +1,10 @@
 ﻿using Assets.Scripts.Logic;
 using Assets.Scripts.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.ViewModel.Levels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.ViewModel;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Session;
 using Tests.Mocks.Prototypes.Levels;
 

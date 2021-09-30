@@ -22,6 +22,8 @@ namespace Assets.Scripts.Models.Buildings
         public IVisual BuildingView => _item.BuildingView;
         public IIngredientPrototype ProvidedIngridient => _item.ProvideIngredient;
 
+        public IConstructionPrototype Protype => _item;
+
         public Point[] GetOccupiedSpace(Point position)
         {
             var result = new List<Point>();

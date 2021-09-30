@@ -1,70 +1,52 @@
-﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Models.Levels;
-using Assets.Scripts.Models.Buildings;
-using Assets.Scripts.Models.Events;
-using Game.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
-using Game.Assets.Scripts.Game.Logic.Models.Orders;
+﻿using Game.Assets.Scripts.Game.Logic.States;
+using Game.Assets.Scripts.Game.Logic.States.Game.Level;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tests.Assets.Scripts.Game.Logic.Models.Events;
 using Tests.Assets.Scripts.Game.Logic.Models.Session;
 
-namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
+namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class OrderManager
     {
-        private List<AvailableOrder> _levelOrders = new List<AvailableOrder>();
-        private GameLevel _level;
+        private StateLink<OrdersState> _state;
         private SessionRandom _random;
 
-        public History History { get; } = new History();
-
-        public OrderManager(GameLevel level, Session.SessionRandom random, AvailableOrder[] orders)
+        public OrderManager(StateLink<OrdersState> state, SessionRandom random)
         {
             if (random == null) throw new Exception(nameof(random));
-            if (orders == null) throw new Exception(nameof(orders));
+            if (state == null) throw new Exception(nameof(state));
 
-            _level = level;
+            _state = state;
             _random = random;
-            _levelOrders = orders.ToList();
+            UpdateCurrentOrder();
         }
 
-        public CurrentOrder CurrentOrder { get; private set; }
-
-        private HistoryReader _orderReader;
-
-        public void TryGetOrder()
-        {
-            if (CurrentOrder == null)
-            {
-                var order = FindCurrentOrder();
-                if (order != null)
-                {
-                    CurrentOrder = order.ToCurrentOrder();
-                    _orderReader?.Dispose();
-                    _orderReader = new HistoryReader(CurrentOrder.History);
-                    _orderReader.Subscribe<CurrentOrderClosedEvent>(OnOrderClosed);
-                    _level.WorkManager.HandleOrder();
-
-                    History.Add(new CurrentOrderCreatedEvent(CurrentOrder));
-                }
-            }
-        }
+        public CurrentOrder CurrentOrder => _state.Get().GetCurrentOrder();
 
         public List<AvailableOrder> GetAvailableOrders()
         {
             var list = new List<AvailableOrder>();
-            foreach (var item in _levelOrders)
+            foreach (var item in _state.Get().GetLevelOrders())
             {
-                if (item.CanBeOrder(_level.Placement.Constructions.ToArray()))
+                if (item.CanBeOrder())
                     list.Add(item);
             }
             return list;
         }
 
-        private AvailableOrder FindCurrentOrder()
+        private void UpdateCurrentOrder()
+        {
+            if (CurrentOrder == null)
+            {
+                var order = FindNextOrder();
+                if (order != null)
+                {
+                    _state.Change(x => x.SetCurrentOrder(order));
+                }
+            }
+        }
+
+        private AvailableOrder FindNextOrder()
         {
             var orders = GetAvailableOrders();
             if (orders.Count == 0)
@@ -73,14 +55,14 @@ namespace Tests.Assets.Scripts.Game.Logic.Models.Orders
             return orders[_random.GetRandom(0, orders.Count)];
         }
 
-        private void OnOrderClosed(CurrentOrderClosedEvent evnt)
-        {
-            if (CurrentOrder.IsOpen())
-                return;
+        //private void OnOrderClosed(CurrentOrderClosedEvent evnt)
+        //{
+        //    if (CurrentOrder.IsOpen())
+        //        return;
 
-            CurrentOrder = null;
-            TryGetOrder();
-        }
+        //    CurrentOrder = null;
+        //    UpdateCurrentOrder();
+        //}
 
     }
 }

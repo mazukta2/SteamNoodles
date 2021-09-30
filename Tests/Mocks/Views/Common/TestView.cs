@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Views;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Tests.Tests.Mocks.Views.Common
 {
