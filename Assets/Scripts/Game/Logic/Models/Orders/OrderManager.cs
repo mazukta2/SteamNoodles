@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _state = state;
             _random = random;
 
-            _state.Add(new GameState(orders));
+            (_id, _) = _state.Add(new GameState(orders));
 
             UpdateCurrentOrder();
         }
@@ -58,7 +58,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 if (order != null)
                 {
                     var newOrder = new CurrentOrder(_state, order);
-                    _state.Change<GameState>(_id, x => x.CurrentOrder = newOrder.Id);
+                    var state = Get();
+                    state.CurrentOrder = newOrder.Id;
+                    _state.Change(_id, state);
                 }
             }
         }
@@ -105,6 +107,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 CurrentOrder = 0;
                 Orders = orders;
             }
+
         }
     }
 }

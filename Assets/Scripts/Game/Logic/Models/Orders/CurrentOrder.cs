@@ -8,7 +8,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
     {
         public Recipe[] Recipes => GetRecipies();
 
-        public uint Id => Id;
+        public uint Id => _id;
 
         private State _state;
         private uint _id;

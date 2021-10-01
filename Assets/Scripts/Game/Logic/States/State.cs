@@ -19,13 +19,11 @@ namespace Game.Assets.Scripts.Game.Logic.States
             return (T)_entities[id];
         }
 
-        public void Change<T>(uint id, Action<T> p) where T : IStateEntity
+        public void Change<T>(uint id, T entity) where T : IStateEntity
         {
             if (!_entities.ContainsKey(id))
                 throw new Exception("Changes in non existing entity");
 
-            var entity = (T)_entities[id];
-            p(entity);
             _entities[id] = entity;
         }
 

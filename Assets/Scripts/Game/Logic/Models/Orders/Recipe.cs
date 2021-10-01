@@ -41,7 +41,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public void Progress(float workProgress)
         {
             var newProgess = Math.Clamp(CurrentProgress + workProgress, 0, MaxProgress);
-            _state.Change<GameState>(_id, x => x.CurrentProgress = newProgess);
+            var state = Get();
+            state.CurrentProgress = newProgess;
+            _state.Change<GameState>(_id, state);
         }
 
         public struct GameState : IStateEntity
