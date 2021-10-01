@@ -1,46 +1,41 @@
-﻿using Game.Assets.Scripts.Game.Logic.States;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using Game.Assets.Scripts.Game.Logic.States;
+using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Workers
 {
     public class WorkManager
     {
         private State _state;
+        private OrderManager _orderManager;
+        private uint _id;
 
-        public WorkManager(State state)
+        private GameState Get() => _state.Get<GameState>(_id);
+
+        public WorkManager(State state, OrderManager orderManager)
         {
             _state = state;
-
-            HandleOrder();
+            _orderManager = orderManager;
+            (_id, _) =_state.Add(new GameState());
+            var mainWorker = new Worker(state, orderManager);
+            SetMainWorker(mainWorker);
         }
 
-        //public Job MainHeroJob { get; private set; }
-
-        public void HandleOrder()
+        public Worker GetMainWorker()
         {
-            //var currentOrder = _level.Orders?.CurrentOrder;
-            //if (currentOrder != null && MainHeroJob == null)
-            //{
-            //    var recipe = _level.Orders.CurrentOrder.Recipes.Where(x => x.IsOpen()).FirstOrDefault();
-            //    if (recipe != null)
-            //    {
-            //        //MainHeroJob = new RecipeJob(this, recipe);
-            //        MainHeroJob.Start();
-            //    }
-            //    else
-            //    {
-            //        // all recipies is compited. do nothing
-            //    }
-            //}
+            return new Worker(_state, Get().MainWorker, _orderManager);
         }
 
-        public void FinishCurrentJob()
+        public void SetMainWorker(Worker worker)
         {
-            //if (MainHeroJob != null)
-            //{
-            //    MainHeroJob.Stop();
-            //    MainHeroJob = null;
-            //}
-            //HandleOrder();
+            var st = Get();
+            st.MainWorker = worker.Id;
+            _state.Change(_id, st);
+        }
+
+        public struct GameState : IStateEntity
+        {
+            public uint MainWorker { get; set; }
         }
     }
 }

@@ -1,19 +1,21 @@
-﻿using Game.Assets.Scripts.Game.Logic.States;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using Game.Assets.Scripts.Game.Logic.States;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs
 {
     public class RecipeJob : Job
     {
+        public uint Id { get; private set; }
         private State _state;
-        private uint _id;
-        private GameState Get() => _state.Get<GameState>(_id);
+
+        private GameState Get() => _state.Get<GameState>(Id);
 
         public RecipeJob(State state, uint id)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             _state = state;
-            _id = id;
+            Id = id;
 
             //if (!recipe.IsOpen()) throw new Exception("Recipe is closed");
             //if (recipe.GetConstruction() == null) throw new Exception("Not construction to resolve the recipe");
@@ -23,11 +25,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs
             //_construction = _recipe.GetConstruction();
         }
 
-        public override void Start()
+        public RecipeJob(State state, Recipe recipe)
         {
-            //_updater = _time.MakeUpdater(_construction.WorkTime);
-            //_updater.OnUpdate += HitRecipe;
+            _state = state;
+            (Id, _) = _state.Add(new GameState(recipe.Id));
         }
+
+        //public override void Start()
+        //{
+        //    //_updater = _time.MakeUpdater(_construction.WorkTime);
+        //    //_updater.OnUpdate += HitRecipe;
+        //}
 
         public override void Stop()
         {

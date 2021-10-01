@@ -11,6 +11,14 @@ namespace Game.Assets.Scripts.Game.Logic.States
         private uint _lastId = 1;
         private WeakEvent _onAdded = new WeakEvent();
 
+        public IStateEntity Get(uint id)
+        {
+            if (!_entities.ContainsKey(id))
+                throw new Exception("Non existing entity");
+
+            return _entities[id];
+        }
+
         public T Get<T>(uint id) where T : IStateEntity
         {
             if (!_entities.ContainsKey(id))

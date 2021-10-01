@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.States;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
     {
         private SessionRandom _random;
         private State _state;
+        private Placement _placement;
         private uint _id;
         private GameState Get() => _state.Get<GameState>(_id);
         public OrderManager(State state, uint id, SessionRandom random)
@@ -24,18 +26,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             UpdateCurrentOrder();
         }
 
-        public OrderManager(State state, IOrdersPrototype orders, SessionRandom random)
+        public OrderManager(State state, IOrdersPrototype orders, Placement placement, SessionRandom random)
         {
             if (random == null) throw new Exception(nameof(random));
             if (state == null) throw new Exception(nameof(state));
             _state = state;
+            _placement = placement;
             _random = random;
 
             (_id, _) = _state.Add(new GameState(orders));
 
+            _state.Subscribe<Construction.GameState>(UpdateConstruction, States.Events.StateEventType.Add);
+            _state.Subscribe<Construction.GameState>(UpdateConstruction, States.Events.StateEventType.Remove);
             UpdateCurrentOrder();
         }
-
         public CurrentOrder CurrentOrder => GetCurrentOrder();
 
         public List<AvailableOrder> GetAvailableOrders()
@@ -85,17 +89,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private AvailableOrder[] GetLevelOrders()
         {
-            return Get().Orders.Orders.Select(x => new AvailableOrder(x)).ToArray();
+            return Get().Orders.Orders.Select(x => new AvailableOrder(_placement, x)).ToArray();
         }
 
-        //private void OnOrderClosed(CurrentOrderClosedEvent evnt)
-        //{
-        //    if (CurrentOrder.IsOpen())
-        //        return;
 
-        //    CurrentOrder = null;
-        //    UpdateCurrentOrder();
-        //}
+        private void UpdateConstruction(uint id, Construction.GameState state)
+        {
+            UpdateCurrentOrder();
+        }
 
         public struct GameState : IStateEntity
         {

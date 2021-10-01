@@ -19,7 +19,6 @@ namespace Assets.Scripts.Logic.Models.Levels
         public TimeManager Time { get; }
 
         private ILevelPrototype _prototype;
-
         public State State { get; }
 
         public GameLevel(ILevelPrototype prototype, SessionRandom random)
@@ -33,20 +32,9 @@ namespace Assets.Scripts.Logic.Models.Levels
             Time = new TimeManager();
             Hand = new PlayerHand(prototype.StartingHand);
 
-            Orders = new OrderManager(State, _prototype, random);
-            Work = new WorkManager(State);
             Placement = new Placement(State, prototype.Size);
+            Orders = new OrderManager(State, _prototype, Placement, random);
+            Work = new WorkManager(State, Orders);
         }
-
-        //public struct LevelState : IStateEntity
-        //{
-        //    public ILevelPrototype Prototype { get; }
-
-        //    public LevelState(ILevelPrototype proto)
-        //    {
-        //        Prototype = proto;
-        //    }
-
-        //}
     }
 }

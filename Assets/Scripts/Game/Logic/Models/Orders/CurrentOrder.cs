@@ -24,6 +24,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         {
             _state = state;
             (_id, _) =_state.Add(new GameState(order.GetPrototype()));
+            foreach(var recipe in order.GetPrototype().Recipes)
+                new Recipe(_state, recipe);
         }
 
         public bool Have(IIngredientPrototype ingredient)

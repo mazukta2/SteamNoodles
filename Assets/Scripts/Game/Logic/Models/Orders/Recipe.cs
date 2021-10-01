@@ -11,20 +11,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public float MaxProgress => Get().MaxProgress;
         public IIngredientPrototype Ingredient => Get().Prototype.Ingredient;
 
-        private State _state;
-        private uint _id;
+        public uint Id { get; private set; }
 
-        private GameState Get() => _state.Get<GameState>(_id);
+        private State _state;
+
+        private GameState Get() => _state.Get<GameState>(Id);
         public Recipe(State state, uint id)
         {
             _state = state;
-            _id = id;
+            Id = id;
         }
 
-        public Construction GetConstruction()
+        public Recipe(State state, IRecipePrototype recipe)
         {
-            return null;
-            //return _level.Placement.Constructions.FirstOrDefault(x => x.IsProvide(_proto.Ingredient));
+            _state = state;
+            (Id, _) = _state.Add(new GameState(recipe));
         }
 
         public bool IsOpen()
@@ -32,18 +33,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             return CurrentProgress < MaxProgress;
         }
 
-        public bool IsCanBeClosed()
-        {
-            return false;
-            //return _level.Placement.Constructions.Any(x => x.IsProvide(_proto.Ingredient));
-        }
-
         public void Progress(float workProgress)
         {
             var newProgess = Math.Clamp(CurrentProgress + workProgress, 0, MaxProgress);
             var state = Get();
             state.CurrentProgress = newProgess;
-            _state.Change<GameState>(_id, state);
+            _state.Change<GameState>(Id, state);
         }
 
         public struct GameState : IStateEntity

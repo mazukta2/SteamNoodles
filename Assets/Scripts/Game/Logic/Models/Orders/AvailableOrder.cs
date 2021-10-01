@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.States;
 using System;
 using System.Linq;
@@ -9,25 +10,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
     public class AvailableOrder
     {
         private IOrderPrototype _order;
-        //private GameLevel _level;
+        private Placement _placement;
 
-        public AvailableOrder(IOrderPrototype order)
+        public AvailableOrder(Placement placement, IOrderPrototype order)
         {
             _order = order;
+            _placement = placement;
         }
-
-        //public CurrentOrder ToCurrentOrder()
-        //{
-        //    return _state.Create() new CurrentOrder(_level, _order);
-        //}
 
         public bool CanBeOrder()
         {
-            //foreach (var recipe in _order.Recipes)
-            //{
-            //    if (!constructions.Any(x => x.IsProvide(recipe.Ingredient)))
-            //        return false;
-            //}
+            foreach (var recipe in _order.Recipes)
+            {
+                if (!_placement.GetConstructions().Any(x => x.IsProvide(recipe)))
+                    return false;
+            }
             return true;
         }
 

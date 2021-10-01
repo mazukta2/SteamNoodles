@@ -31,9 +31,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
             (_id, _) = _state.Add(new GameState(prototype, position));
         }
 
-        public bool IsProvide(IIngredientPrototype ingredient)
+        public bool IsProvide(IRecipePrototype recipe)
         {
-            return Scheme.ProvidedIngridient == ingredient;
+            return Scheme.ProvidedIngridient == recipe.Ingredient;
         }
 
         public Point[] GetOccupiedScace()

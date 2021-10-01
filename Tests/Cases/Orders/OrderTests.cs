@@ -21,7 +21,8 @@ namespace Game.Tests.Cases.Orders
             proto.ProvideIngredient = ingridient;
             var levelProto = new TestLevelPrototype();
             var order = new TestOrderPrototype();
-            order.Add(new TestRecipePrototype(ingridient));
+            var recipe = new TestRecipePrototype(ingridient);
+            order.Add(recipe);
             levelProto.Add(order);
 
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel(levelProto);
@@ -31,7 +32,7 @@ namespace Game.Tests.Cases.Orders
 
             var scheme = new ConstructionScheme(proto);
             var construction = level.Placement.Place(scheme, new Point(0, 0));
-            Assert.IsTrue(construction.IsProvide(ingridient));
+            Assert.IsTrue(construction.IsProvide(recipe));
 
             Assert.IsNotNull(level.Orders.CurrentOrder);
             Assert.IsNotNull(levelViewModel.Screen.Order?.View);
@@ -75,17 +76,13 @@ namespace Game.Tests.Cases.Orders
 
             Assert.IsTrue(level.Orders.CurrentOrder.IsOpen());
 
-            //level.Orders.CurrentOrder.Recipes.First().Close();
+            var order = level.Orders.CurrentOrder;
 
-            //Assert.IsTrue(level.Orders.CurrentOrder.IsOpen());
-            //Assert.IsTrue(level.Orders.CurrentOrder.IsCanBeClosed());
+            level.Orders.CurrentOrder.Recipes.First().Progress(1000);
 
-            //var order = level.Orders.CurrentOrder;
-            //order.Close();
+            Assert.IsFalse(order.IsOpen());
 
-            //Assert.IsFalse(order.IsOpen());
-
-            //Assert.AreNotEqual(order, level.Orders.CurrentOrder); // current order is changed.
+            Assert.AreNotEqual(order, level.Orders.CurrentOrder); // current order is changed.
         }
 
         #endregion
@@ -94,16 +91,22 @@ namespace Game.Tests.Cases.Orders
         #region Recepies
 
         [Test]
-        public void RecipeProcessing()
+        public void WorkProcessing()
         {
             var levelProto = new TestLevelPrototype();
             var weHaveThisIngridient = new TestIngredientPrototype();
             CreateOrder(levelProto, weHaveThisIngridient);
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel(levelProto);
 
-            CreateBuilding(level, weHaveThisIngridient);
+            Assert.IsNotNull(level.Work.GetMainWorker());
+            Assert.IsNull(level.Work.GetMainWorker().GetJob());
 
+            CreateBuilding(level, weHaveThisIngridient);
             Assert.IsTrue(level.Orders.CurrentOrder.IsOpen());
+
+            Assert.IsNotNull(level.Work.GetMainWorker());
+            Assert.IsNotNull(level.Work.GetMainWorker().GetJob());
+
             //Assert.IsFalse(level.Orders.CurrentOrder.IsCanBeClosed());
 
             ////level.Orders.CurrentOrder.Recipes.First().Close();
