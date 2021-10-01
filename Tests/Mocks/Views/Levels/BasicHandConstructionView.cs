@@ -1,10 +1,11 @@
-﻿using NUnit.Framework.Constraints;
+﻿using Game.Tests.Mocks.Views.Common;
+using NUnit.Framework.Constraints;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using Tests.Tests.Mocks.Views.Common;
 
-namespace Tests.Tests.Mocks.Views.Levels
+namespace Game.Tests.Mocks.Views.Levels
 {
     public class BasicHandConstructionView : TestView, IHandConstructionView
     {

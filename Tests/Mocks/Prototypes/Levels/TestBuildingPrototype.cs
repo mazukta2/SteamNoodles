@@ -1,11 +1,13 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Tests.Mocks.Views.Common;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
+using Tests.Mocks.Prototypes.Levels;
 using Tests.Tests.Mocks.Views.Common;
 
-namespace Tests.Mocks.Prototypes.Levels
+namespace Game.Tests.Mocks.Prototypes.Levels
 {
     public class TestBuildingPrototype : IConstructionPrototype
     {

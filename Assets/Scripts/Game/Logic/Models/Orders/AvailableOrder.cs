@@ -1,18 +1,18 @@
 ﻿using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.States;
+using System;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class AvailableOrder
     {
-        //private StateLink<LevelState> _state;
         private IOrderPrototype _order;
-        private GameLevel _level;
+        //private GameLevel _level;
 
         public AvailableOrder(IOrderPrototype order)
         {
-            //_state = state;
             _order = order;
         }
 
@@ -40,5 +40,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         {
             return _order;
         }
+
     }
 }

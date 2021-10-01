@@ -6,6 +6,5 @@ namespace Game.Assets.Scripts.Game.Logic.States
 {
     public interface IStateEntity
     {
-        public uint Id { get; }
     }
 }

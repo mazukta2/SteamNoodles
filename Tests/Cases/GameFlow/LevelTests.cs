@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Logic;
+using Game.Assets.Scripts.Game.Logic.Models;
+using Game.Tests.Mocks.Prototypes.Levels;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

@@ -1,9 +1,9 @@
-﻿using Assets.Scripts.Logic;
-using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Prototypes.Levels;
+﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
+using Game.Assets.Scripts.Game.Logic.Models;
+using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.ViewModel.Session;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Session;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel
 {

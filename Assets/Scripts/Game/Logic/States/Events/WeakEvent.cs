@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Events
             _weakActions.Clear();
         }
 
-        public void Subscribe<T>(Action<T> action) where T : IStateEntity
+        public void Subscribe<T>(Action<uint, T> action) where T : IStateEntity
         {
             _weakActions.Add(new WeakAction<T>(action.Target, action.Method));
         }
@@ -26,11 +26,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Events
             _weakActions.RemoveAll(x => x.Target == action.Target && x.MethodInfo == action.Method);
         }
 
-        public void Execute<T>(T state) where T : IStateEntity
+        public void Execute<T>(uint id, T state) where T : IStateEntity
         {
             _weakActions.RemoveAll(x => !x.IsAlive);
             foreach (var item in _weakActions.OfType<WeakAction<T>>())
-                item.Execute(state);
+                item.Execute(id, state);
         }
 
         private class WeakAction<T> : IWeakAction where T : IStateEntity
@@ -44,12 +44,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Events
                 MethodInfo = methodInfo;
             }
 
-            public void Execute(T state)
+            public void Execute(uint id, T state)
             {
                 Object target = Target.Target;
                 if (target != null)
                 {
-                    MethodInfo.Invoke(target, new object[] { state });
+                    MethodInfo.Invoke(target, new object[] { id, state });
                 }
             }
 

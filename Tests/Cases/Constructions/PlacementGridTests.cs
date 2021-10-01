@@ -1,7 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Tests.Shortcuts;
 using NUnit.Framework;
 using System.Linq;
-using Tests.Tests.Shortcuts;
 
 namespace Game.Tests.Cases.Constructions
 {

@@ -1,16 +1,12 @@
-﻿using Assets.Scripts.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs;
-using Game.Assets.Scripts.Game.Logic.States;
-using Game.Assets.Scripts.Game.Logic.States.Game.Level;
-using System.Linq;
+﻿using Game.Assets.Scripts.Game.Logic.States;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Workers
 {
     public class WorkManager
     {
-        private StateLink<WorkState> _state;
+        private State _state;
 
-        public WorkManager(StateLink<WorkState> state)
+        public WorkManager(State state)
         {
             _state = state;
 

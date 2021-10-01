@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Models.Buildings;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.ViewModel;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views;

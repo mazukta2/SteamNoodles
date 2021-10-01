@@ -1,38 +1,54 @@
-﻿using Game.Assets.Scripts.Game.Logic.States;
-using Game.Assets.Scripts.Game.Logic.States.Game.Level;
+﻿using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.States;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tests.Assets.Scripts.Game.Logic.Models.Session;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class OrderManager
     {
-        private StateLink<OrdersState> _state;
         private SessionRandom _random;
-
-        public OrderManager(StateLink<OrdersState> state, SessionRandom random)
+        private State _state;
+        private uint _id;
+        private GameState Get() => _state.Get<GameState>(_id);
+        public OrderManager(State state, uint id, SessionRandom random)
         {
             if (random == null) throw new Exception(nameof(random));
             if (state == null) throw new Exception(nameof(state));
 
             _state = state;
+            _id = id;
             _random = random;
             UpdateCurrentOrder();
         }
 
-        public CurrentOrder CurrentOrder => _state.Get().GetCurrentOrder();
+        public OrderManager(State state, IOrdersPrototype orders, SessionRandom random)
+        {
+            if (random == null) throw new Exception(nameof(random));
+            if (state == null) throw new Exception(nameof(state));
+            _state = state;
+            _random = random;
+
+            _state.Add(new GameState(orders));
+
+            UpdateCurrentOrder();
+        }
+
+        public CurrentOrder CurrentOrder => GetCurrentOrder();
 
         public List<AvailableOrder> GetAvailableOrders()
         {
             var list = new List<AvailableOrder>();
-            foreach (var item in _state.Get().GetLevelOrders())
+            foreach (var item in GetLevelOrders())
             {
                 if (item.CanBeOrder())
                     list.Add(item);
             }
             return list;
         }
+
 
         private void UpdateCurrentOrder()
         {
@@ -41,7 +57,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 var order = FindNextOrder();
                 if (order != null)
                 {
-                    _state.Change(x => x.SetCurrentOrder(order));
+                    var newOrder = new CurrentOrder(_state, order);
+                    _state.Change<GameState>(_id, x => x.CurrentOrder = newOrder.Id);
                 }
             }
         }
@@ -55,6 +72,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             return orders[_random.GetRandom(0, orders.Count)];
         }
 
+        private CurrentOrder GetCurrentOrder()
+        {
+            var state = Get();
+            if (state.CurrentOrder == 0)
+                return null;
+
+            return new CurrentOrder(_state, state.CurrentOrder);
+        }
+
+        private AvailableOrder[] GetLevelOrders()
+        {
+            return Get().Orders.Orders.Select(x => new AvailableOrder(x)).ToArray();
+        }
+
         //private void OnOrderClosed(CurrentOrderClosedEvent evnt)
         //{
         //    if (CurrentOrder.IsOpen())
@@ -64,5 +95,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         //    UpdateCurrentOrder();
         //}
 
+        public struct GameState : IStateEntity
+        {
+            public uint CurrentOrder { get; set; }
+            public IOrdersPrototype Orders { get; set; }
+
+            public GameState(IOrdersPrototype orders)
+            {
+                CurrentOrder = 0;
+                Orders = orders;
+            }
+        }
     }
 }

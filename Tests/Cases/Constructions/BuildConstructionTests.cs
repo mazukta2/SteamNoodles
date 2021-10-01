@@ -1,11 +1,12 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Tests.Mocks.Prototypes.Levels;
+using Game.Tests.Shortcuts;
 using NUnit.Framework;
 using System.Linq;
 using System.Numerics;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
 using Tests.Mocks.Prototypes.Levels;
-using Tests.Tests.Shortcuts;
 
 namespace Game.Tests.Cases.Constructions
 {

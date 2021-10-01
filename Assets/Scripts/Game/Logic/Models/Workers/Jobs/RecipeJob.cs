@@ -1,22 +1,19 @@
-﻿using Assets.Scripts.Models.Buildings;
-using Game.Assets.Scripts.Game.Logic.Models.Orders;
-using Game.Assets.Scripts.Game.Logic.Models.Time;
-using Game.Assets.Scripts.Game.Logic.States;
-using Game.Assets.Scripts.Game.Logic.States.Game.Level;
+﻿using Game.Assets.Scripts.Game.Logic.States;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs
 {
     public class RecipeJob : Job
     {
-        private StateLink<JobState> _state;
+        private State _state;
+        private uint _id;
+        private GameState Get() => _state.Get<GameState>(_id);
 
-        public RecipeJob(StateLink<JobState> state)
+        public RecipeJob(State state, uint id)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             _state = state;
+            _id = id;
 
             //if (!recipe.IsOpen()) throw new Exception("Recipe is closed");
             //if (recipe.GetConstruction() == null) throw new Exception("Not construction to resolve the recipe");
@@ -44,6 +41,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs
         private void HitRecipe()
         {
             //_recipe.Progress(_construction.WorkProgressPerHit);
+        }
+
+        public struct GameState : IStateEntity
+        {
+            public uint Recipe { get; }
+
+            public GameState(uint recipe)
+            {
+                Recipe = recipe;
+            }
         }
     }
 }

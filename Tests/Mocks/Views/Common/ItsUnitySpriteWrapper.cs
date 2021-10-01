@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
-namespace Tests.Tests.Mocks.Views.Common
+namespace Game.Tests.Mocks.Views.Common
 {
     public class ItsUnitySpriteWrapper : ISprite, IVisual
     {
@@ -26,6 +26,11 @@ namespace Tests.Tests.Mocks.Views.Common
             if (obj is ItsUnitySpriteWrapper wr)
                 return wr.Id == Id;
             return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Events;
-using Game.Assets.Scripts.Game.Logic.States.Game.Level;
+using Game.Assets.Scripts.Game.Logic.States.Events;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.States
 {
@@ -12,7 +11,7 @@ namespace Game.Assets.Scripts.Game.Logic.States
         private uint _lastId = 1;
         private WeakEvent _onAdded = new WeakEvent();
 
-        public T GetById<T>(uint id) where T : IStateEntity
+        public T Get<T>(uint id) where T : IStateEntity
         {
             if (!_entities.ContainsKey(id))
                 throw new Exception("Non existing entity");
@@ -30,50 +29,57 @@ namespace Game.Assets.Scripts.Game.Logic.States
             _entities[id] = entity;
         }
 
-        public StateLink<T>[] GetAll<T>() where T : IStateEntity
+        public T[] GetAll<T>() where T : IStateEntity
         {
-            var list = new List<StateLink<T>>();
+            var list = new List<T>();
             foreach (var item in _entities)
             {
                 if (item.Value is T value)
-                    list.Add(new StateLink<T>(this, value.Id));
+                    list.Add(value);
             }
             return list.ToArray();
         }
 
-        public StateLink<T> Get<T>() where T : IStateEntity
+        public uint[] GetAllId<T>() where T : IStateEntity
+        {
+            var list = new List<uint>();
+            foreach (var item in _entities)
+            {
+                if (item.Value is T value)
+                    list.Add(item.Key);
+            }
+            return list.ToArray();
+        }
+
+        public Nullable<T> Get<T>() where T : struct, IStateEntity
         {
             foreach (var item in _entities)
             {
                 if (item.Value is T value)
-                    return new StateLink<T>(this, value.Id);
+                    return new Nullable<T>(value);
             }
             return null;
         }
 
-        public StateLink<T> Get<T>(uint id) where T : IStateEntity
-        {
-            return new StateLink<T>(this, id);
-        }
 
-        public StateLink<T> Add<T>(Func<State, uint, T> p) where T : IStateEntity
+        public (uint, T) Add<T>(T state) where T : IStateEntity
         {
             var id = _lastId + 1;
-            var state = p(this, id);
             _entities.Add(id, state);
             _lastId = id;
-            _onAdded.Execute<T>(state);
-            return new StateLink<T>(this, state.Id);
+            _onAdded.Execute<T>(id, state);
+            return (id, state);
         }
 
-        public void Update(IStateEntity state)
+        public void Update(uint id, IStateEntity state)
         {
-            _entities[state.Id] = state;
+            _entities[id] = state;
         }
 
-        public void SubscribeToNew<T>(Action<T> p) where T : IStateEntity
+        public void Subscribe<T>(Action<uint, T> p, StateEventType type) where T : IStateEntity
         {
-            _onAdded.Subscribe(p);
+            if (type == StateEventType.Add)
+                _onAdded.Subscribe(p);
         }
 
     }

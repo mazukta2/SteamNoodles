@@ -1,14 +1,9 @@
-﻿using Assets.Scripts.Logic.Models.Levels;
-using Assets.Scripts.Models.Buildings;
-using Assets.Scripts.Models.Events;
+﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Events;
 using Game.Assets.Scripts.Game.Logic.States;
-using Game.Assets.Scripts.Game.Logic.States.Game.Level;
+using Game.Assets.Scripts.Game.Logic.States.Events;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Tests.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 {
@@ -17,20 +12,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
         public event Action OnConstructionAdded = delegate { };
         public Point Size { get; }
         public Rect Rect { get; }
-        public Construction[] Constructions => _state.Get().GetConstructions();
+        public Construction[] Constructions => GetConstructions();
 
-        private StateLink<ConstructionsState> _state;
-        public Placement(StateLink<ConstructionsState> state, Point size)
+        private State _state;
+        public Placement(State state, Point size)
         {
             Size = size;
             Rect = size.AsCenteredRect();
             _state = state;
-            _state.Get().SubscribeToNewConstruction(HandleConstructionAdded);
+            _state.Subscribe<Construction.GameState>(HandleConstructionAdded, StateEventType.Add);
         }
 
         public Construction Place(ConstructionScheme scheme, Point position)
         {
-            return _state.Get().Place(scheme, position);
+            return new Construction(_state, scheme.Protype, position);
         }
 
         public bool Contain(uint key)
@@ -63,9 +58,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
             return true;
         }
 
-        private void HandleConstructionAdded(Construction construction)
+        private void HandleConstructionAdded(uint id, Construction.GameState construction)
         {
             OnConstructionAdded();
+        }
+
+        public Construction[] GetConstructions()
+        {
+            return _state.GetAllId<Construction.GameState>().Select(x => new Construction(_state, x)).ToArray();
         }
     }
 }

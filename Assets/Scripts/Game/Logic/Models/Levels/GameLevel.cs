@@ -1,13 +1,11 @@
-﻿using Assets.Scripts.Logic.Prototypes.Levels;
-using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Orders;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Workers;
+using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.States;
-using Game.Assets.Scripts.Game.Logic.States.Game.Level;
 using System;
-using System.Linq;
 using Tests.Assets.Scripts.Game.Logic.Models.Session;
 
 namespace Assets.Scripts.Logic.Models.Levels
@@ -16,7 +14,7 @@ namespace Assets.Scripts.Logic.Models.Levels
     {
         public Placement Placement { get; }
         public OrderManager Orders { get; }
-        public WorkManager WorkManager { get; }
+        public WorkManager Work { get; }
         public PlayerHand Hand { get; }
         public TimeManager Time { get; }
 
@@ -31,21 +29,24 @@ namespace Assets.Scripts.Logic.Models.Levels
 
             _prototype = prototype;
             State = new State();
-            FillNewState();
 
             Time = new TimeManager();
             Hand = new PlayerHand(prototype.StartingHand);
-            Placement = new Placement(State.Get<ConstructionsState>(), prototype.Size);
-            Orders = new OrderManager(State.Get<OrdersState>(), random);
-            WorkManager = new WorkManager(State.Get<WorkState>());
+
+            Orders = new OrderManager(State, _prototype, random);
+            Work = new WorkManager(State);
+            Placement = new Placement(State, prototype.Size);
         }
 
-        public void FillNewState()
-        {
-            var level = State.Add((state, id) => new LevelState(state, id, _prototype));
-            var orders = level.Get().CreateOrders();
-            var work = level.Get().CreateWorks();
-            var constructions = level.Get().CreateConstructions();
-        }
+        //public struct LevelState : IStateEntity
+        //{
+        //    public ILevelPrototype Prototype { get; }
+
+        //    public LevelState(ILevelPrototype proto)
+        //    {
+        //        Prototype = proto;
+        //    }
+
+        //}
     }
 }

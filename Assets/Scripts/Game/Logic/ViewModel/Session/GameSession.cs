@@ -1,10 +1,10 @@
 using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Logic.Models.Session;
-using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.ViewModel.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
-namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Session
+namespace Game.Assets.Scripts.Game.Logic.ViewModel.Session
 {
     public class GameSessionViewModel
     {

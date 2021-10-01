@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Models.Buildings;
-using Assets.Scripts.Models.Events;
+﻿using Assets.Scripts.Models.Events;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using System;
 using System.Collections.Generic;
 using System.Text;

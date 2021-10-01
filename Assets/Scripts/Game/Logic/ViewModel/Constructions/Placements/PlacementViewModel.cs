@@ -1,10 +1,6 @@
 ﻿using Assets.Scripts.Models.Buildings;
-using Game.Assets.Scripts.Game.Logic.Actions;
-using Game.Assets.Scripts.Game.Logic.Actions.Game;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
-using Game.Assets.Scripts.Game.Logic.Models.Events;
-using Game.Assets.Scripts.Game.Logic.States.Game.Level;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,26 +1,24 @@
-﻿using Assets.Scripts.Logic.Models.Levels;
-using Assets.Scripts.Logic.Prototypes.Levels;
-using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.States;
-using Game.Assets.Scripts.Game.Logic.States.Game.Level;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class Recipe
     {
-        public float CurrentProgress => _state.Get().CurrentProgress;
-        public float MaxProgress => _state.Get().MaxProgress;
-        public IIngredientPrototype Ingredient => _state.Get().Prototype.Ingredient;
+        public float CurrentProgress => Get().CurrentProgress;
+        public float MaxProgress => Get().MaxProgress;
+        public IIngredientPrototype Ingredient => Get().Prototype.Ingredient;
 
-        private StateLink<RecipeState> _state;
+        private State _state;
+        private uint _id;
 
-        public Recipe(StateLink<RecipeState> state)
+        private GameState Get() => _state.Get<GameState>(_id);
+        public Recipe(State state, uint id)
         {
             _state = state;
+            _id = id;
         }
 
         public Construction GetConstruction()
@@ -43,7 +41,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public void Progress(float workProgress)
         {
             var newProgess = Math.Clamp(CurrentProgress + workProgress, 0, MaxProgress);
-            _state.Change(x => x.CurrentProgress = newProgess);
+            _state.Change<GameState>(_id, x => x.CurrentProgress = newProgess);
+        }
+
+        public struct GameState : IStateEntity
+        {
+            public IRecipePrototype Prototype { get; }
+            public float CurrentProgress { get; set; }
+            public float MaxProgress { get; }
+
+            public GameState(IRecipePrototype proto)
+            {
+                Prototype = proto;
+                CurrentProgress = 0;
+                MaxProgress = 100;
+            }
         }
     }
 }
