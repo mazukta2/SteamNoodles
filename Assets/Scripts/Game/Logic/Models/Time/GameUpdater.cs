@@ -8,10 +8,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
     {
         public event Action OnUpdate = delegate { };
 
-        private TimeManager _timeManager;
+        private GameTime _timeManager;
         private TimeSpan _rate;
 
-        public GameUpdater(TimeManager timeManager, TimeSpan rate)
+        public GameUpdater(GameTime timeManager, TimeSpan rate)
         {
             _timeManager = timeManager;
             _rate = rate;

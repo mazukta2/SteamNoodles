@@ -23,7 +23,7 @@ namespace Game.Tests.Mocks.Prototypes.Levels
         public IVisual BuildingView { get; } = new ItsUnitySpriteWrapper();
         public IIngredientPrototype ProvideIngredient { get; set; } = new TestIngredientPrototype();
 
-        public TimeSpan WorkTime => new TimeSpan(0, 0, 2);
+        public float WorkTime => 2f;
         public float WorkProgressPerHit => 10;
     }
 }

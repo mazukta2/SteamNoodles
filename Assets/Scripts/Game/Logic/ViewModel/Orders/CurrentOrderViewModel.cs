@@ -1,19 +1,23 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
 using System;
 using System.Collections.Generic;
+using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
-namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
+namespace Game.Assets.Scripts.Game.Logic.ViewModel.Orders
 {
     public class CurrentOrderViewModel
     {
         public List<RecipeViewModel> Recipies { get; } = new List<RecipeViewModel>();
+        public ICurrentOrderView View { get; private set; }
 
-        private CurrentOrder _model;
+        private ActiveOrder _model;
 
-        public CurrentOrderViewModel(CurrentOrder model, ICurrentOrderView view)
+        public CurrentOrderViewModel(ActiveOrder model, ICurrentOrderView view)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
+            if (view == null) throw new ArgumentNullException(nameof(view));
+
             _model = model;
             View = view;
 
@@ -22,8 +26,6 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
                 Recipies.Add(new RecipeViewModel(recipe, View.CreateRecipe()));
             }
         }
-
-        public ICurrentOrderView View { get; private set; }
 
         public void Destroy()
         {

@@ -7,26 +7,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class Recipe
     {
-        public float CurrentProgress => Get().CurrentProgress;
-        public float MaxProgress => Get().MaxProgress;
-        public IIngredientPrototype Ingredient => Get().Prototype.Ingredient;
+        public event Action OnComplited = delegate { };
+        private GameState _state;
 
-        public uint Id { get; private set; }
-
-        private State _state;
-
-        private GameState Get() => _state.Get<GameState>(Id);
-        public Recipe(State state, uint id)
+        public Recipe(IRecipePrototype recipe)
         {
-            _state = state;
-            Id = id;
+            _state = new GameState();
+            _state.Prototype = recipe;
         }
 
-        public Recipe(State state, IRecipePrototype recipe)
-        {
-            _state = state;
-            (Id, _) = _state.Add(new GameState(recipe));
-        }
+        public float CurrentProgress => _state.CurrentProgress;
+        public float MaxProgress => 100;
+        public IIngredientPrototype Ingredient => _state.Prototype.Ingredient;
 
         public bool IsOpen()
         {
@@ -35,24 +27,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         public void Progress(float workProgress)
         {
-            var newProgess = Math.Clamp(CurrentProgress + workProgress, 0, MaxProgress);
-            var state = Get();
-            state.CurrentProgress = newProgess;
-            _state.Change<GameState>(Id, state);
+            _state.CurrentProgress = Math.Clamp(CurrentProgress + workProgress, 0, MaxProgress);
+            if (!IsOpen())
+                OnComplited();
         }
 
-        public struct GameState : IStateEntity
+        private class GameState : IStateEntity
         {
-            public IRecipePrototype Prototype { get; }
+            public IRecipePrototype Prototype { get; set; }
             public float CurrentProgress { get; set; }
-            public float MaxProgress { get; }
-
-            public GameState(IRecipePrototype proto)
-            {
-                Prototype = proto;
-                CurrentProgress = 0;
-                MaxProgress = 100;
-            }
+            public uint Order { get; }
         }
+
     }
 }

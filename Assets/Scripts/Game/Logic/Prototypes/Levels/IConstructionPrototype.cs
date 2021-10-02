@@ -12,7 +12,7 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
         ISprite HandIcon { get; }
         IVisual BuildingView { get; }
         IIngredientPrototype ProvideIngredient { get; }
-        TimeSpan WorkTime { get; }
+        float WorkTime { get; }
         float WorkProgressPerHit { get; }
     }
 

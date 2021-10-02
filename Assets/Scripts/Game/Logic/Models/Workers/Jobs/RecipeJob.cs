@@ -1,64 +1,64 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.States;
 using System;
+using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs
 {
     public class RecipeJob : Job
     {
-        public uint Id { get; private set; }
-        private State _state;
+        private GameState _state;
 
-        private GameState Get() => _state.Get<GameState>(Id);
-
-        public RecipeJob(State state, uint id)
+        public RecipeJob(Placement placement, GameTime time, Recipe recipe)
         {
-            if (state == null) throw new ArgumentNullException(nameof(state));
-            _state = state;
-            Id = id;
+            _state = new GameState();
+            _state.Placement = placement;
+            _state.GameTime = time;
+            _state.Recipe = recipe;
+            _state.Construction = placement.Constructions.First(x => x.IsProvide(recipe));
+            if (_state.Construction == null) throw new Exception("Not construction to resolve the recipe");
 
-            //if (!recipe.IsOpen()) throw new Exception("Recipe is closed");
-            //if (recipe.GetConstruction() == null) throw new Exception("Not construction to resolve the recipe");
-
-            //_recipe = recipe;
-            //_work = work;
-            //_construction = _recipe.GetConstruction();
+            _state.GameTime.OnTimeChanged += OnTime;
+            _state.Recipe.OnComplited += OnRecipeComplited;
         }
 
-        public RecipeJob(State state, Recipe recipe)
+        protected override void StopInner()
         {
-            _state = state;
-            (Id, _) = _state.Add(new GameState(recipe.Id));
+            _state.GameTime.OnTimeChanged -= OnTime;
+            _state.Recipe.OnComplited -= OnRecipeComplited;
         }
 
-        //public override void Start()
-        //{
-        //    //_updater = _time.MakeUpdater(_construction.WorkTime);
-        //    //_updater.OnUpdate += HitRecipe;
-        //}
-
-        public override void Stop()
+        private void OnTime()
         {
-            //if (_updater != null)
-            //{
-            //    _updater.OnUpdate -= HitRecipe;
-            //    _updater.Destroy();
-            //}
+            while (!IsStopped && GetNextHitTime() <= _state.GameTime.Time)
+                HitRecipe();
+        }
+
+        private float GetNextHitTime()
+        {
+            return _state.StartTime + _state.Construction.WorkTime;
         }
 
         private void HitRecipe()
         {
-            //_recipe.Progress(_construction.WorkProgressPerHit);
+            _state.StartTime += _state.Construction.WorkTime;
+            _state.Recipe.Progress(_state.Construction.WorkProgressPerHit);
+        }
+
+        private void OnRecipeComplited()
+        {
+            StopInner();
         }
 
         public struct GameState : IStateEntity
         {
-            public uint Recipe { get; }
-
-            public GameState(uint recipe)
-            {
-                Recipe = recipe;
-            }
+            public Recipe Recipe { get; set; }
+            public Construction Construction { get; set; }
+            public Placement Placement { get; set; }
+            public GameTime GameTime { get; set; }
+            public float StartTime { get; set; }
         }
     }
 }

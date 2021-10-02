@@ -5,9 +5,8 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
 {
-    public interface ILevelPrototype : IOrdersPrototype
+    public interface ILevelPrototype : IOrdersPrototype, IPlacementPrototype
     {
-        Point Size { get; }
         IConstructionPrototype[] StartingHand { get; }
 
         void Load(Action<ILevelPrototype, ILevelView> onFinished);
@@ -16,5 +15,10 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
     public interface IOrdersPrototype
     {
         IOrderPrototype[] Orders { get; }
+    }
+
+    public interface IPlacementPrototype
+    {
+        Point Size { get; }
     }
 }

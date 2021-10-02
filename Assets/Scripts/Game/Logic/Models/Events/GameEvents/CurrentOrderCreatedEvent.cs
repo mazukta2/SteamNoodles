@@ -12,7 +12,7 @@ namespace Assets.Scripts.Logic.Models.Events.GameEvents
 {
     public class CurrentOrderCreatedEvent : IGameEvent
     {
-        public CurrentOrderCreatedEvent(CurrentOrder order) => (Order) = (order);
-        public CurrentOrder Order { get; }
+        public CurrentOrderCreatedEvent(ActiveOrder order) => (Order) = (order);
+        public ActiveOrder Order { get; }
     };
 }

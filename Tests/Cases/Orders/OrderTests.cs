@@ -32,7 +32,7 @@ namespace Game.Tests.Cases.Orders
 
             var scheme = new ConstructionScheme(proto);
             var construction = level.Placement.Place(scheme, new Point(0, 0));
-            Assert.IsTrue(construction.IsProvide(recipe));
+            Assert.IsTrue(construction.IsProvide(level.Orders.CurrentOrder.Recipes.First()));
 
             Assert.IsNotNull(level.Orders.CurrentOrder);
             Assert.IsNotNull(levelViewModel.Screen.Order?.View);
@@ -98,28 +98,23 @@ namespace Game.Tests.Cases.Orders
             CreateOrder(levelProto, weHaveThisIngridient);
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel(levelProto);
 
-            Assert.IsNotNull(level.Work.GetMainWorker());
-            Assert.IsNull(level.Work.GetMainWorker().GetJob());
+            Assert.IsNotNull(level.Work.MainWorker);
+            Assert.IsNull(level.Work.MainWorker.Job);
 
             CreateBuilding(level, weHaveThisIngridient);
             Assert.IsTrue(level.Orders.CurrentOrder.IsOpen());
 
-            Assert.IsNotNull(level.Work.GetMainWorker());
-            Assert.IsNotNull(level.Work.GetMainWorker().GetJob());
+            Assert.IsNotNull(level.Work.MainWorker);
+            Assert.IsNotNull(level.Work.MainWorker.Job);
 
-            //Assert.IsFalse(level.Orders.CurrentOrder.IsCanBeClosed());
+            var order = level.Orders.CurrentOrder;
+            Assert.IsTrue(order.IsOpen());
+            var recipe = order.Recipes.First();
+            Assert.IsTrue(recipe.IsOpen());
 
-            ////level.Orders.CurrentOrder.Recipes.First().Close();
+            level.Time.MoveTime(100f);
 
-            //Assert.IsTrue(level.Orders.CurrentOrder.IsOpen());
-            //Assert.IsTrue(level.Orders.CurrentOrder.IsCanBeClosed());
-
-            //var order = level.Orders.CurrentOrder;
-            //order.Close();
-
-            //Assert.IsFalse(order.IsOpen());
-
-            //Assert.AreNotEqual(order, level.Orders.CurrentOrder); // current order is changed.
+            Assert.IsTrue(!recipe.IsOpen());
         }
 
         [Test]

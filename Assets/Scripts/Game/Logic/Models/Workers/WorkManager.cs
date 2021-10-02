@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.States;
 using System;
 
@@ -6,36 +8,32 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers
 {
     public class WorkManager
     {
-        private State _state;
-        private OrderManager _orderManager;
-        private uint _id;
+        private GameState _state;
 
-        private GameState Get() => _state.Get<GameState>(_id);
+        public WorkManager(OrderManager orderManager, Placement placement, GameTime gameTime)
+        {
+            _state = new GameState();
+            _state.Orders = orderManager;
+            _state.Placements = placement;
+            _state.GameTime = gameTime;
+            MainWorker = new Worker(orderManager, placement, gameTime);
+        }
 
-        public WorkManager(State state, OrderManager orderManager)
+        public WorkManager(GameState state)
         {
             _state = state;
-            _orderManager = orderManager;
-            (_id, _) =_state.Add(new GameState());
-            var mainWorker = new Worker(state, orderManager);
-            SetMainWorker(mainWorker);
+            //var mainWorker = new Worker(state, _orderManager, _placement, _time);
+            //MainWorker = mainWorker;
         }
 
-        public Worker GetMainWorker()
-        {
-            return new Worker(_state, Get().MainWorker, _orderManager);
-        }
+        public Worker MainWorker { get => _state.MainWorker; set => _state.MainWorker = value; }
 
-        public void SetMainWorker(Worker worker)
+        public class GameState : IStateEntity
         {
-            var st = Get();
-            st.MainWorker = worker.Id;
-            _state.Change(_id, st);
-        }
-
-        public struct GameState : IStateEntity
-        {
-            public uint MainWorker { get; set; }
+            public Worker MainWorker { get; set; }
+            public OrderManager Orders { get; set; }
+            public Placement Placements { get; set; }
+            public GameTime GameTime { get; set; }
         }
     }
 }

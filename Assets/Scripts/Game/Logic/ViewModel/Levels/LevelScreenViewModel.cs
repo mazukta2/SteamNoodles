@@ -5,11 +5,11 @@ using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.ViewModel;
 using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions;
 using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
+using Game.Assets.Scripts.Game.Logic.ViewModel.Orders;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel
@@ -30,11 +30,18 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel
             _view = view;
             Hand = new HandViewModel(model.Hand, _view.CreateHand(), placement);
 
-            //_reader = new HistoryReader(_model.Orders.History);
-            //_reader.Subscribe<CurrentOrderCreatedEvent>(UpdateOrder);
+            model.Orders.OnCurrentOrderChanged += UpdateOrder;
         }
 
-        private void UpdateOrder(CurrentOrderCreatedEvent evt)
+        public void Destroy()
+        {
+            _model.Orders.OnCurrentOrderChanged -= UpdateOrder;
+            Hand.Destroy();
+            Order?.Destroy();
+            IsDestoyed = true;
+        }
+
+        private void UpdateOrder()
         {
             if (_model.Orders.CurrentOrder != null)
             {
@@ -47,11 +54,5 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel
             }
         }
 
-        public void Destroy()
-        {
-            Hand.Destroy();
-            Order?.Destroy();
-            IsDestoyed = true;
-        }
     }
 }

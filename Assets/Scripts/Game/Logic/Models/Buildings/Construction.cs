@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Orders;
 using Game.Assets.Scripts.Game.Logic.States;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
@@ -9,31 +10,28 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 {
     public class Construction
     {
-        private State _state;
-        private uint _id;
-        private GameState _entity => _state.Get<GameState>(_id);
+        private GameState _state;
 
-        public ConstructionScheme Scheme => new ConstructionScheme(_entity.Prototype);
-        public Point Position => _entity.Position;
-        public TimeSpan WorkTime => _entity.Prototype.WorkTime;
-        public float WorkProgressPerHit => _entity.Prototype.WorkProgressPerHit;
-        public uint Id => _id;
-
-        public Construction(State state, uint id)
+        public Construction(IConstructionPrototype prototype, Point position)
         {
-            _state = state;
-            _id = id;
+            _state = new GameState();
+            _state.Prototype = prototype;
+            _state.Position = position;
         }
 
-        public Construction(State state, IConstructionPrototype prototype, Point position)
-        {
-            _state = state;
-            (_id, _) = _state.Add(new GameState(prototype, position));
-        }
+        public ConstructionScheme Scheme => new ConstructionScheme(_state.Prototype);
+        public Point Position => _state.Position;
+        public float WorkTime => _state.Prototype.WorkTime;
+        public float WorkProgressPerHit => _state.Prototype.WorkProgressPerHit;
 
-        public bool IsProvide(IRecipePrototype recipe)
+        public bool IsProvide(Recipe recipe)
         {
             return Scheme.ProvidedIngridient == recipe.Ingredient;
+        }
+
+        public bool IsProvide(AvailableOrder availableOrder)
+        {
+            return availableOrder.Have(Scheme.ProvidedIngridient);
         }
 
         public Point[] GetOccupiedScace()
@@ -46,16 +44,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
             return Scheme.BuildingView;
         }
 
-        public struct GameState : IStateEntity
+        private class GameState : IStateEntity
         {
-            public IConstructionPrototype Prototype { get; }
-            public Point Position { get; }
-
-            public GameState(IConstructionPrototype prototype, Point position)
-            {
-                Prototype = prototype;
-                Position = position;
-            }
+            public IConstructionPrototype Prototype { get; set; }
+            public Point Position { get; set; }
         }
 
     }

@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         public bool IsDestoyed { get; private set; }
 
         private Placement _model;
-        private Dictionary<uint, ConstructionViewModel> _constructions = new Dictionary<uint, ConstructionViewModel>();
+        private Dictionary<Construction, ConstructionViewModel> _constructions = new Dictionary<Construction, ConstructionViewModel>();
         private List<CellViewModel> _cells = new List<CellViewModel>();
 
         public PlacementViewModel(Placement model, IPlacementView view)
@@ -36,12 +36,14 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             }
 
             UpdateConstructions();
-            model.OnConstructionAdded += UpdateConstructions;
+            model.OnConstructionAdded += ConstructionAdded;
+            model.OnConstructionRemoved += ConstructionRemoved;
         }
 
         public void Destroy()
         {
-            _model.OnConstructionAdded -= UpdateConstructions;
+            _model.OnConstructionAdded -= ConstructionAdded;
+            _model.OnConstructionRemoved += ConstructionRemoved;
             View.Destroy();
             Ghost?.Destroy();
 
@@ -124,6 +126,9 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             return new Vector2(point.X * CellSize, point.Y * CellSize);
         }
 
+        private void ConstructionRemoved(Construction obj) => UpdateConstructions();
+        private void ConstructionAdded(Construction obj) => UpdateConstructions();
+
         private void UpdateConstructions()
         {
             var toDelete = _constructions.Where(x => !_model.Contain(x.Key));
@@ -133,9 +138,9 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
                 _constructions.Remove(viewModel.Key);
             }
 
-            var toAdd = _model.Constructions.Where(x => !_constructions.ContainsKey(x.Id));
+            var toAdd = _model.Constructions.Where(x => !_constructions.ContainsKey(x));
             foreach (var model in toAdd)
-                _constructions.Add(model.Id, new ConstructionViewModel(this, model, View.CreateConstrcution()));
+                _constructions.Add(model, new ConstructionViewModel(this, model, View.CreateConstrcution()));
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         {
             foreach (var recipe in _order.Recipes)
             {
-                if (!_placement.GetConstructions().Any(x => x.IsProvide(recipe)))
+                if (!_placement.Constructions.Any(x => x.IsProvide(this)))
                     return false;
             }
             return true;

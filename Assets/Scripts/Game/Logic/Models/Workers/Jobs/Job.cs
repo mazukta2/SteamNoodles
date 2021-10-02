@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.States;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.States;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,15 +8,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs
 {
     public abstract class Job
     {
-        public abstract void Stop();
+        public event Action OnStop = delegate { };
 
-        public static Job MakeJob(State state, uint id)
+        public bool IsStopped { get; private set; }
+        protected abstract void StopInner();
+
+        public void Stop()
         {
-            var job = state.Get(id);
-            if (job is RecipeJob.GameState)
-                return new RecipeJob(state, id);
-
-            throw new Exception("Unknown job type");
+            IsStopped = true;
+            StopInner();
+            OnStop();
         }
     }
 }

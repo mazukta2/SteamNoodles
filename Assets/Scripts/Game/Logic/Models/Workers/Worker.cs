@@ -1,109 +1,69 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs;
 using Game.Assets.Scripts.Game.Logic.States;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Workers
 {
     public class Worker
     {
-        public uint Id { get; private set; }
+        private GameState _state;
 
-        private State _state;
-        private OrderManager _orderManager;
-
-        private GameState Get() => _state.Get<GameState>(Id);
-
-
-        public Worker(State state, uint id, OrderManager orderManager)
+        public Worker(OrderManager orderManager, Placement placement, GameTime gameTime)
         {
-            _state = state;
-            _orderManager = orderManager;
-            Id = id;
-            _state.Subscribe<Construction.GameState>(HandleUpdateConstruction, States.Events.StateEventType.Add);
-            _state.Subscribe<Construction.GameState>(HandleUpdateConstruction, States.Events.StateEventType.Remove);
-            _state.Subscribe<CurrentOrder.GameState>(HandleUpdateOrder, States.Events.StateEventType.Add);
-            _state.Subscribe<CurrentOrder.GameState>(HandleUpdateOrder, States.Events.StateEventType.Remove);
+            _state = new GameState();
+
+            _state.Orders = orderManager;
+            _state.Placement = placement;
+            _state.GameTime = gameTime;
+
+            _state.Placement.OnConstructionAdded += (c) => UpdateJob();
+            _state.Placement.OnConstructionRemoved += (c) => UpdateJob();
+            _state.Orders.OnCurrentOrderChanged += UpdateJob;
         }
 
-        public Worker(State state, OrderManager orderManager)
-        {
-            _state = state;
-            _orderManager = orderManager;
-            (Id, _) = _state.Add(new GameState());
-            _state.Subscribe<Construction.GameState>(HandleUpdateConstruction, States.Events.StateEventType.Add);
-            _state.Subscribe<Construction.GameState>(HandleUpdateConstruction, States.Events.StateEventType.Remove);
-            _state.Subscribe<CurrentOrder.GameState>(HandleUpdateOrder, States.Events.StateEventType.Add);
-            _state.Subscribe<CurrentOrder.GameState>(HandleUpdateOrder, States.Events.StateEventType.Remove);
-        }
-
-        public Job GetJob()
-        {
-            if (Get().Job == 0)
-                return null;
-
-            return Job.MakeJob(_state, Get().Job);
-        }
+        public Job Job { get => _state.Job; set => _state.Job = value; }
 
         public void UpdateJob()
         {
-            var job = GetJob();
-            if (job == null)
+            if (Job == null)
             {
-                if (_orderManager.CurrentOrder != null)
+                if (_state.Orders.CurrentOrder != null)
                 {
-                    var recipe = _orderManager.CurrentOrder.Recipes.Where(x => x.IsOpen()).FirstOrDefault();
+                    var recipe = _state.Orders.CurrentOrder.Recipes.Where(x => x.IsOpen()).FirstOrDefault();
                     if (recipe != null)
                     {
-                        job = SetJob(new RecipeJob(_state, recipe));
+                        Job = new RecipeJob(_state.Placement, _state.GameTime, recipe);
+                        Job.OnStop += HandleJobStop;
                     }
                     else
                     {
                         // all recipies is compited. do nothing
                     }
                 }
-
             }
         }
 
-        private Job SetJob(RecipeJob recipeJob)
+        private void HandleJobStop()
         {
-            var state = Get();
-            if (state.Job != 0)
-                throw new Exception("Job already setted");
+            if (Job == null)
+                throw new Exception("Unknown job is stopped");
 
-            state.Job = recipeJob.Id;
-            _state.Change(Id, state);
-            return recipeJob;
-        }
-
-        public void FinishCurrentJob()
-        {
-            //if (MainHeroJob != null)
-            //{
-            //    MainHeroJob.Stop();
-            //    MainHeroJob = null;
-            //}
-            //HandleOrder();
+            Job.OnStop -= HandleJobStop;
+            Job = null;
+            UpdateJob();
         }
 
         public struct GameState : IStateEntity
         {
-            public uint Job { get; set; }
+            public Job Job { get; set; }
+            public OrderManager Orders { get; internal set; }
+            public Placement Placement { get; internal set; }
+            public GameTime GameTime { get; internal set; }
         }
 
-        private void HandleUpdateConstruction(uint id, Construction.GameState state)
-        {
-            UpdateJob();
-        }
-
-        private void HandleUpdateOrder(uint id, CurrentOrder.GameState state)
-        {
-            UpdateJob();
-        }
     }
 }

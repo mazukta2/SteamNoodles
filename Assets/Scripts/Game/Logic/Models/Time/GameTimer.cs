@@ -6,10 +6,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
 {
     public class GameTimer
     {
-        private TimeManager _timeManager;
+        private GameTime _timeManager;
         private TimeSpan _time;
 
-        public GameTimer(TimeManager timeManager, TimeSpan time)
+        public GameTimer(GameTime timeManager, TimeSpan time)
         {
             _timeManager = timeManager;
             _time = time;

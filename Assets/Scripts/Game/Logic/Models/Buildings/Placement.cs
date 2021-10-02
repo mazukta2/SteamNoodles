@@ -1,36 +1,42 @@
 ﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.States;
 using Game.Assets.Scripts.Game.Logic.States.Events;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 {
     public class Placement
     {
-        public event Action OnConstructionAdded = delegate { };
-        public Point Size { get; }
-        public Rect Rect { get; }
-        public Construction[] Constructions => GetConstructions();
+        public event Action<Construction> OnConstructionAdded = delegate { };
+        public event Action<Construction> OnConstructionRemoved = delegate { };
 
-        private State _state;
-        public Placement(State state, Point size)
+        private GameState _state;
+
+        public Placement(IPlacementPrototype placement)
         {
-            Size = size;
-            Rect = size.AsCenteredRect();
-            _state = state;
-            _state.Subscribe<Construction.GameState>(HandleConstructionAdded, StateEventType.Add);
+            _state = new GameState();
+            _state.Prototype = placement;
         }
+
+        public Point Size => _state.Prototype.Size;
+        public Rect Rect => Size.AsCenteredRect();
+        public Construction[] Constructions => _state.Constructions.ToArray();
 
         public Construction Place(ConstructionScheme scheme, Point position)
         {
-            return new Construction(_state, scheme.Protype, position);
+            var construction = new Construction(scheme.Protype, position);
+            _state.Constructions.Add(construction);
+            OnConstructionAdded(construction);
+            return construction;
         }
 
-        public bool Contain(uint key)
+        public bool Contain(Construction key)
         {
-            return Constructions.Any(x => x.Id == key);
+            return Constructions.Any(x => x == key);
         }
 
         public bool CanPlace(ConstructionScheme scheme, Point position)
@@ -58,14 +64,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
             return true;
         }
 
-        private void HandleConstructionAdded(uint id, Construction.GameState construction)
+        private class GameState : IStateEntity
         {
-            OnConstructionAdded();
-        }
-
-        public Construction[] GetConstructions()
-        {
-            return _state.GetAllId<Construction.GameState>().Select(x => new Construction(_state, x)).ToArray();
+            public IPlacementPrototype Prototype { get; set; }
+            public List<Construction> Constructions { get; set; } = new List<Construction>();
         }
     }
 }
