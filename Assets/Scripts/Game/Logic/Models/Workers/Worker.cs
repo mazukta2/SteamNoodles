@@ -23,6 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers
             _state.Placement.OnConstructionAdded += (c) => UpdateJob();
             _state.Placement.OnConstructionRemoved += (c) => UpdateJob();
             _state.Orders.OnCurrentOrderChanged += UpdateJob;
+            _state.GameTime.OnTimeChanged += OnTime;
         }
 
         public Job Job { get => _state.Job; set => _state.Job = value; }
@@ -38,6 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers
                     {
                         Job = new RecipeJob(_state.Placement, _state.GameTime, recipe);
                         Job.OnStop += HandleJobStop;
+                        OnTime();
                     }
                     else
                     {
@@ -45,6 +47,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers
                     }
                 }
             }
+        }
+
+        private void OnTime()
+        {
+            if (Job != null) Job.OnTime();
         }
 
         private void HandleJobStop()

@@ -12,6 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs
 
         public bool IsStopped { get; private set; }
         protected abstract void StopInner();
+        public abstract void OnTime();
 
         public void Stop()
         {

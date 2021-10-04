@@ -10,6 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
         public event Action OnTimeChanged = delegate { };
 
         private GameState _state;
+        private const float _pieces = 1f;
 
         public GameTime()
         {
@@ -20,6 +21,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
 
         public void MoveTime(float time)
         {
+            if (time < 0)
+                throw new Exception("Can't be null");
+
+            while (time > _pieces)
+            {
+                _state.Time += _pieces;
+                time -= _pieces;
+                OnTimeChanged();
+            }
+
             _state.Time += time;
             OnTimeChanged();
         }

@@ -120,7 +120,55 @@ namespace Game.Tests.Cases.Orders
         [Test]
         public void CompliteRecipesOneByOne()
         {
-            throw new NotImplementedException();
+            var levelProto = new TestLevelPrototype();
+            var weHaveThisIngridient = new TestIngredientPrototype();
+            var orderProto = new TestOrderPrototype();
+            orderProto.Add(new TestRecipePrototype(weHaveThisIngridient));
+            orderProto.Add(new TestRecipePrototype(weHaveThisIngridient));
+            orderProto.Add(new TestRecipePrototype(weHaveThisIngridient));
+            levelProto.Add(orderProto);
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel(levelProto);
+            CreateBuilding(level, weHaveThisIngridient);
+
+            var order = level.Orders.CurrentOrder;
+            Assert.IsTrue(order.IsOpen());
+            var recipe1 = order.Recipes[0];
+            var recipe2 = order.Recipes[1];
+            var recipe3 = order.Recipes[2];
+            Assert.IsTrue(recipe1.IsOpen());
+            Assert.IsTrue(recipe2.IsOpen());
+
+            var construction = level.Placement.Constructions.First();
+            level.Time.MoveTime(construction.WorkTime);
+           
+            Assert.AreEqual(construction.WorkProgressPerHit, recipe1.CurrentProgress);
+            Assert.AreEqual(0, recipe2.CurrentProgress);
+            Assert.IsTrue(recipe1.IsOpen());
+            Assert.IsTrue(recipe2.IsOpen());
+
+            for (int i = 2; i <= 9; i++)
+            {
+                level.Time.MoveTime(construction.WorkTime);
+                Assert.AreEqual(i*10, recipe1.CurrentProgress);
+            }
+
+            level.Time.MoveTime(construction.WorkTime * 2);
+            Assert.AreEqual(100, recipe1.CurrentProgress);
+            Assert.AreEqual(10, recipe2.CurrentProgress);
+            Assert.IsTrue(!recipe1.IsOpen());
+            Assert.IsTrue(recipe2.IsOpen());
+            Assert.IsTrue(recipe3.IsOpen());
+
+            level.Time.MoveTime(construction.WorkTime);
+            Assert.AreEqual(20, recipe2.CurrentProgress);
+
+            level.Time.MoveTime(1000f);
+
+            Assert.IsTrue(!recipe1.IsOpen());
+            Assert.IsTrue(!recipe2.IsOpen());
+            Assert.IsTrue(!recipe3.IsOpen());
+
+            Assert.IsTrue(!order.IsOpen());
         }
 
         [Test]

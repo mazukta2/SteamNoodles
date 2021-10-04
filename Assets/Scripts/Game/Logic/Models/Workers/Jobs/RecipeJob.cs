@@ -16,24 +16,27 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs
             _state = new GameState();
             _state.Placement = placement;
             _state.GameTime = time;
+            _state.StartTime = time.Time;
             _state.Recipe = recipe;
             _state.Construction = placement.Constructions.First(x => x.IsProvide(recipe));
             if (_state.Construction == null) throw new Exception("Not construction to resolve the recipe");
 
-            _state.GameTime.OnTimeChanged += OnTime;
             _state.Recipe.OnComplited += OnRecipeComplited;
         }
 
         protected override void StopInner()
         {
-            _state.GameTime.OnTimeChanged -= OnTime;
             _state.Recipe.OnComplited -= OnRecipeComplited;
         }
 
-        private void OnTime()
+        public override void OnTime()
         {
-            while (!IsStopped && GetNextHitTime() <= _state.GameTime.Time)
+            while (GetNextHitTime() <= _state.GameTime.Time)
+            {
                 HitRecipe();
+                if (IsStopped)
+                    break;
+            }
         }
 
         private float GetNextHitTime()
@@ -49,7 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers.Jobs
 
         private void OnRecipeComplited()
         {
-            StopInner();
+            Stop();
         }
 
         public struct GameState : IStateEntity
