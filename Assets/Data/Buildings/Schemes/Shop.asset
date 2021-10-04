@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Shop
   m_EditorClassIdentifier: 
   BuildingIcon: {fileID: 21300000, guid: 0f45ac790388fa843a1d0300fea1e457, type: 3}
-  Ghost: {fileID: 7098766311505803040, guid: f34e1ad73b99bfa428bd073fde8b12dc, type: 3}
   View: {fileID: 7792093803026714425, guid: 46720ea74af07f246ad2a935c03d0f2a, type: 3}
   Size:
     X: 3
     Y: 2
   Requirements:
     DownEdge: 1
+  TimeBeforeHits: 2
+  WorkPerHit: 1
+  Ingredient: {fileID: 11400000, guid: 0f8d894fcdc2f724586cab81a5bb7157, type: 2}

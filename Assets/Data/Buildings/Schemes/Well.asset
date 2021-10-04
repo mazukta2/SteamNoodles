@@ -13,5 +13,12 @@ MonoBehaviour:
   m_Name: Well
   m_EditorClassIdentifier: 
   BuildingIcon: {fileID: 21300000, guid: 11e58c513b20bfb4f9a44dc55598120c, type: 3}
-  Ghost: {fileID: 6507239595025869134, guid: 7a5d96e9a78e0eb46949ad6ae61cb3d8, type: 3}
   View: {fileID: 3272026873445384481, guid: 5d29a66662c93a14d8160958ba38559f, type: 3}
+  Size:
+    X: 1
+    Y: 1
+  Requirements:
+    DownEdge: 0
+  TimeBeforeHits: 2
+  WorkPerHit: 1
+  Ingredient: {fileID: 11400000, guid: 3f2772b078c235a47b009c7aebc8274f, type: 2}

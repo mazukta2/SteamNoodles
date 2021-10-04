@@ -20,18 +20,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
         }
 
         public ConstructionScheme Scheme => new ConstructionScheme(_state.Prototype);
+
         public Point Position => _state.Position;
         public float WorkTime => _state.Prototype.WorkTime;
         public float WorkProgressPerHit => _state.Prototype.WorkProgressPerHit;
 
         public bool IsProvide(Recipe recipe)
         {
-            return Scheme.ProvidedIngridient == recipe.Ingredient;
+            return IsProvide(recipe.Ingredient);
         }
 
-        public bool IsProvide(AvailableOrder availableOrder)
+        public bool IsProvide(IIngredientPrototype ingredient)
         {
-            return availableOrder.Have(Scheme.ProvidedIngridient);
+            return Scheme.ProvidedIngridient == ingredient;
         }
 
         public Point[] GetOccupiedScace()

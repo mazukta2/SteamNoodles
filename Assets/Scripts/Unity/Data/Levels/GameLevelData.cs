@@ -2,6 +2,7 @@
 using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using GameUnity.Assets.Scripts.Unity.Core;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
@@ -21,8 +22,7 @@ namespace Assets.Scripts.Data
 
         public IConstructionPrototype[] StartingHand => Hand;
         public IOrderPrototype[] Orders => AvailableOrders;
-
-        Point ILevelPrototype.Size => Size;
+        Point IPlacementPrototype.Size => Size;
 
         public void Load(Action<ILevelPrototype, ILevelView> onFinished)
         {

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Helpers;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using GameUnity.Assets.Scripts.Unity.Common;
 using System;
 using System.Collections.Generic;

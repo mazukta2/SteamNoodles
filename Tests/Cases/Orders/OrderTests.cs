@@ -171,12 +171,6 @@ namespace Game.Tests.Cases.Orders
             Assert.IsTrue(!order.IsOpen());
         }
 
-        [Test]
-        public void RecipeTimingIsRight()
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
 

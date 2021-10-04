@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Data;
 using Assets.Scripts.Logic;
+using Game.Assets.Scripts.Game.Logic.Models;
 using System;
 using Tests.Assets.Scripts.Game.Logic.ViewModel;
 using UnityEngine;
