@@ -1,4 +1,5 @@
-﻿using Tests.Assets.Scripts.Game.Logic.Views;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Constructions;
+using Tests.Assets.Scripts.Game.Logic.Views;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using Tests.Tests.Mocks.Views.Common;
 using Tests.Tests.Mocks.Views.Levels;

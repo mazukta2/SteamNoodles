@@ -26,7 +26,7 @@ namespace Game.Tests.Cases.Constructions
         public void IsHandHaveItems()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            var items = levelViewModel.Screen.Hand.GetConstructions();
+            var items = levelViewModel.Screen.Hand.GetSchemes();
             Assert.IsTrue(items.Length > 0);
             Assert.IsTrue(items.All(x => x.View != null));
         }
@@ -35,7 +35,7 @@ namespace Game.Tests.Cases.Constructions
         public void IsIconSettedInHand()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            var item = levelViewModel.Screen.Hand.GetConstructions().First();
+            var item = levelViewModel.Screen.Hand.GetSchemes().First();
             var icon = item.View.GetIcon();
             Assert.IsTrue(level.Hand.CurrentSchemes.First().HandIcon.Equals(icon));
         }
@@ -49,7 +49,7 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.IsNull(levelViewModel.Placement.Ghost);
 
-            var construction = levelViewModel.Screen.Hand.GetConstructions().First();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().First();
             construction.View.Click();
 
             var view = levelViewModel.Placement.Ghost.View;
@@ -65,7 +65,7 @@ namespace Game.Tests.Cases.Constructions
         public void IsBuildingPlacingIsExitGhostMode()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            var construction = levelViewModel.Screen.Hand.GetConstructions().First();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().First();
 
             construction.View.Click();
 
@@ -80,7 +80,7 @@ namespace Game.Tests.Cases.Constructions
         public void IsAvailableCellsIsHighlightedInGhostMode()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            var construction = levelViewModel.Screen.Hand.GetConstructions().First();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().First();
 
             var cells = levelViewModel.Placement.GetCells();
             Assert.IsTrue(cells.All(x => x.State == CellViewModel.CellState.Normal
@@ -96,7 +96,7 @@ namespace Game.Tests.Cases.Constructions
         public void IsCellsBeneathGhostIsHighlighted()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            var construction = levelViewModel.Screen.Hand.GetConstructions().First();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().First();
             construction.View.Click();
 
             var ghost = levelViewModel.Placement.Ghost;
@@ -122,13 +122,13 @@ namespace Game.Tests.Cases.Constructions
         public void IsGhostViewChangeVisualIfItAvailable()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            Assert.AreEqual(1, levelViewModel.Screen.Hand.GetConstructions().Length);
+            Assert.AreEqual(1, levelViewModel.Screen.Hand.GetSchemes().Length);
             var proto = new TestBuildingPrototype();
             proto.Requirements = new Requirements() { DownEdge = true };
             level.Hand.Add(proto);
 
-            Assert.AreEqual(2, levelViewModel.Screen.Hand.GetConstructions().Length);
-            var construction = levelViewModel.Screen.Hand.GetConstructions().Last();
+            Assert.AreEqual(2, levelViewModel.Screen.Hand.GetSchemes().Length);
+            var construction = levelViewModel.Screen.Hand.GetSchemes().Last();
             construction.View.Click();
 
             var ghost = levelViewModel.Placement.Ghost.View;
@@ -153,7 +153,7 @@ namespace Game.Tests.Cases.Constructions
             };
             levelViewModel.Screen.Hand.Add(building);
 
-            var construction = levelViewModel.Screen.Hand.GetConstructions().Last();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().Last();
             construction.View.Click();
             var worldPos = new Vector2(0f, -levelViewModel.Placement.CellSize / 2);
             levelViewModel.Placement.Ghost.View.GetMoveAction()(worldPos);
@@ -185,7 +185,7 @@ namespace Game.Tests.Cases.Constructions
         public void IsConstructionPlaced()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            var construction = levelViewModel.Screen.Hand.GetConstructions().First();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().First();
 
             construction.View.Click();
 
@@ -203,7 +203,7 @@ namespace Game.Tests.Cases.Constructions
         public void IsConstructionPlacedInRightPosition()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            var construction = levelViewModel.Screen.Hand.GetConstructions().First();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().First();
             construction.View.Click();
 
             Assert.IsTrue(levelViewModel.Placement.GetConstructions().Length == 0);
@@ -224,7 +224,7 @@ namespace Game.Tests.Cases.Constructions
         public void IsConstructionPlacedHaveRightImage()
         {
             var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
-            var construction = levelViewModel.Screen.Hand.GetConstructions().First();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().First();
             var model = level.Hand.CurrentSchemes.First();
             construction.View.Click();
             levelViewModel.Placement.View.Click(new Vector2(0, 0));
@@ -246,7 +246,7 @@ namespace Game.Tests.Cases.Constructions
             };
             levelViewModel.Screen.Hand.Add(building);
 
-            var construction = levelViewModel.Screen.Hand.GetConstructions().Last();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().Last();
             construction.View.Click();
 
             Assert.AreEqual(0, levelViewModel.Placement.GetConstructions().Length);
@@ -274,6 +274,22 @@ namespace Game.Tests.Cases.Constructions
             levelViewModel.Placement.View.Click(worldPos);
             Assert.AreEqual(1, levelViewModel.Placement.GetConstructions().Length);
 
+        }
+
+
+
+        [Test]
+        public void IsRemovedFromHand()
+        {
+            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var construction = levelViewModel.Screen.Hand.GetSchemes().First();
+
+            Assert.AreEqual(1, levelViewModel.Screen.Hand.GetSchemes().Length);
+
+            construction.View.Click();
+            levelViewModel.Placement.View.Click(new Vector2(0f, 0f));
+
+            Assert.AreEqual(0, levelViewModel.Screen.Hand.GetSchemes().Length);
         }
         #endregion
 

@@ -1,12 +1,12 @@
 ﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
-using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 {

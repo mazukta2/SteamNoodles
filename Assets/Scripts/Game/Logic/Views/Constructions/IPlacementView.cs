@@ -1,11 +1,8 @@
-﻿using Assets.Scripts.Models.Buildings;
-using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Logic.Views.Constructions;
-using System;
+﻿using System;
 using System.Numerics;
-using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
+using Tests.Assets.Scripts.Game.Logic.Views;
 
-namespace Tests.Assets.Scripts.Game.Logic.Views
+namespace Game.Assets.Scripts.Game.Logic.Views.Constructions
 {
     public interface IPlacementView : IView
     {

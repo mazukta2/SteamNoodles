@@ -23,7 +23,7 @@ namespace Assets.Scripts.Logic.Models.Levels
             _state.Prototype = prototype;
             _state.Time = new GameTime();
             _state.Hand = new PlayerHand(prototype.StartingHand);
-            _state.Placement = new Placement(prototype);
+            _state.Placement = new Placement(prototype, _state.Hand);
             _state.Orders = new OrderManager(prototype, Placement, random);
             _state.Work = new WorkManager(Orders, Placement, Time);
         }

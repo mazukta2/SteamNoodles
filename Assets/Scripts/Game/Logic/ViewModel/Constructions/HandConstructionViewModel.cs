@@ -9,6 +9,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
     {
         public IHandConstructionView View => _view;
         public bool IsDestoyed { get; private set; }
+        public ConstructionScheme Scheme => _model;
 
         private ConstructionScheme _model;
         private IHandConstructionView _view;

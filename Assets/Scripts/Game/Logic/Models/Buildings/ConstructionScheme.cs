@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.States;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System.Collections.Generic;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
@@ -8,21 +9,20 @@ namespace Assets.Scripts.Models.Buildings
 {
     public class ConstructionScheme
     {
-        
-        private IConstructionPrototype _item;
+        private GameState _state;
 
         public ConstructionScheme(IConstructionPrototype item)
         {
-            _item = item;
+            _state = new GameState();
+            _state.Item = item;
         }
 
-        public Point CellSize => _item.Size;
-        public Requirements Requirements => _item.Requirements;
-        public ISprite HandIcon => _item.HandIcon;
-        public IVisual BuildingView => _item.BuildingView;
-        public IIngredientPrototype ProvidedIngridient => _item.ProvideIngredient;
-
-        public IConstructionPrototype Protype => _item;
+        public Point CellSize => _state.Item.Size;
+        public Requirements Requirements => _state.Item.Requirements;
+        public ISprite HandIcon => _state.Item.HandIcon;
+        public IVisual BuildingView => _state.Item.BuildingView;
+        public IIngredientPrototype ProvidedIngridient => _state.Item.ProvideIngredient;
+        public IConstructionPrototype Protype => _state.Item;
 
         public Point[] GetOccupiedSpace(Point position)
         {
@@ -35,6 +35,11 @@ namespace Assets.Scripts.Models.Buildings
                 }
             }
             return result.ToArray();
+        }
+
+        private class GameState : IStateEntity
+        {
+            public IConstructionPrototype Item { get; set; }
         }
     }
 }

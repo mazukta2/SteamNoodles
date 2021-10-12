@@ -16,10 +16,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 
         private GameState _state;
 
-        public Placement(IPlacementPrototype placement)
+        public Placement(IPlacementPrototype placement, PlayerHand hand)
         {
             _state = new GameState();
             _state.Prototype = placement;
+            _state.Hand = hand;
         }
 
         public Point Size => _state.Prototype.Size;
@@ -30,6 +31,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
         {
             var construction = new Construction(scheme.Protype, position);
             _state.Constructions.Add(construction);
+            if (_state.Hand.Contain(scheme))
+                _state.Hand.Remove(scheme);
+
             OnConstructionAdded(construction);
             return construction;
         }
@@ -68,6 +72,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
         {
             public IPlacementPrototype Prototype { get; set; }
             public List<Construction> Constructions { get; set; } = new List<Construction>();
+            public PlayerHand Hand { get; set; }
         }
     }
 }
