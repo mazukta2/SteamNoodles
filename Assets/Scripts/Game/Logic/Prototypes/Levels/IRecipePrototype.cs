@@ -2,6 +2,7 @@
 {
     public interface IRecipePrototype
     {
-        public IIngredientPrototype Ingredient { get; }
+        IIngredientPrototype Ingredient { get; }
+        int Count { get; }
     }
 }

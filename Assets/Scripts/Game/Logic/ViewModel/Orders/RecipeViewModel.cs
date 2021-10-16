@@ -1,6 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using Game.Assets.Scripts.Game.Logic.Views.Orders;
 using System;
-using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
 {
@@ -13,14 +13,27 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
             if (model == null) throw new ArgumentNullException(nameof(model));
             _model = model;
             View = view;
+
+            View.SetName(_model.Ingredient.Name);
+            View.SetMaxCount((int)_model.MaxProgress);
+            View.SetCount((int)_model.CurrentProgress);
+
+            _model.OnProcess += _model_OnProcess;
+        }
+
+        public void Destroy()
+        {
+            _model.OnProcess -= _model_OnProcess;
+            View.Destroy();
+            View = null;
         }
 
         public IRecipeView View { get; private set; }
 
-        public void Destroy()
+        private void _model_OnProcess()
         {
-            View.Destroy();
-            View = null;
+            View.SetCount((int)_model.CurrentProgress);
         }
+
     }
 }

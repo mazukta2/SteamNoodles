@@ -2,5 +2,6 @@
 {
     public interface IIngredientPrototype
     {
+        string Name { get; }
     }
 }

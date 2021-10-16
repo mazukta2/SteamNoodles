@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using GameUnity.Assets.Scripts.Unity.Common;
+using GameUnity.Assets.Scripts.Unity.Data.Ingredients;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 using UnityEngine;

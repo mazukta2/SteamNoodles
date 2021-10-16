@@ -26,6 +26,8 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
 
             Placement = new PlacementViewModel(model.Placement, view.CreatePlacement());
             Screen = new LevelScreenViewModel(model, view, Placement);
+
+            _levelView.SetTimeMover(_model.Time.MoveTime);
         }
 
         public void Destroy()

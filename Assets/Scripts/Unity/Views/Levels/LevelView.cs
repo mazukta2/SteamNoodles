@@ -4,6 +4,7 @@ using Assets.Scripts.Views.Buildings;
 using Assets.Scripts.Views.Buildings.Grid;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using GameUnity.Assets.Scripts.Unity.Views.Orders;
+using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Assets.Scripts.Views.Levels
         [SerializeField] PrototypeLink _gridPrototype;
         [SerializeField] PrototypeLink _buildingPanel;
         [SerializeField] PrototypeLink _orderPanel;
+        private Action<float> _moveTime;
 
         public ICurrentOrderView CreateCurrentOrder()
         {
@@ -29,6 +31,17 @@ namespace Assets.Scripts.Views.Levels
         public IPlacementView CreatePlacement()
         {
             return _gridPrototype.Create<GridView>();
+        }
+
+        public void SetTimeMover(Action<float> moveTime)
+        {
+            _moveTime = moveTime;
+        }
+
+        protected void Update()
+        {
+            if (_moveTime != null)
+                _moveTime(Time.deltaTime);
         }
     }
 }
