@@ -1,8 +1,6 @@
-﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Prototypes.Levels;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Models.Session;
 using Assets.Scripts.Models.Events;
+using Game.Assets.Scripts.Game.Logic.Models.Session;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models

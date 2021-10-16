@@ -1,12 +1,7 @@
-using Assets.Scripts.Logic.Models.Events.GameEvents;
 using Assets.Scripts.Logic.Models.Levels;
-using Assets.Scripts.Logic.Prototypes.Levels;
-using Assets.Scripts.Models.Events;
-using Game.Assets.Scripts.Game.Logic.Models.Session;
 using System;
-using Tests.Assets.Scripts.Game.Logic.Views;
 
-namespace Assets.Scripts.Logic.Models.Session
+namespace Game.Assets.Scripts.Game.Logic.Models.Session
 {
     public class GameSession
     {
