@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Logic;
 using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Models.Levels;
 using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.ViewModel;
 using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions;
 using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;

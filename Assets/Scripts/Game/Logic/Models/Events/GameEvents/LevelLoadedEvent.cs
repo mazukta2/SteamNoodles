@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Logic.Models.Levels;
-using Assets.Scripts.Models.Events;
+﻿using Assets.Scripts.Models.Events;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

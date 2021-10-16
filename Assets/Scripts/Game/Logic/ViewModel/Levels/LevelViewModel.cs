@@ -1,6 +1,7 @@
-﻿using Assets.Scripts.Logic.Models.Levels;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.ViewModel;
 using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
+using Game.Assets.Scripts.Game.Logic.ViewModel.Units;
 using System;
 using Tests.Assets.Scripts.Game.Logic.ViewModel;
 using Tests.Assets.Scripts.Game.Logic.Views;
@@ -11,6 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
     {
         public LevelScreenViewModel Screen { get; private set; }
         public PlacementViewModel Placement { get; private set; }
+        public QueueViewModel Queue { get; private set; }
 
         public bool IsDestoyed { get; private set; }
 
@@ -26,6 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
 
             Placement = new PlacementViewModel(model.Placement, view.CreatePlacement());
             Screen = new LevelScreenViewModel(model, view, Placement);
+            Queue = new QueueViewModel(model.UnitsQueue);
 
             _levelView.SetTimeMover(_model.Time.MoveTime);
         }
@@ -34,6 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
         {
             Placement.Destroy();
             Screen.Destroy();
+            Queue.Destroy();
             IsDestoyed = true;
         }
     }

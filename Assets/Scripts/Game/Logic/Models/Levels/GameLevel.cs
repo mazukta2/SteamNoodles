@@ -3,12 +3,13 @@ using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Orders;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Workers;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.States;
 using System;
 
-namespace Assets.Scripts.Logic.Models.Levels
+namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
     public class GameLevel
     {
@@ -26,6 +27,7 @@ namespace Assets.Scripts.Logic.Models.Levels
             _state.Placement = new Placement(prototype, _state.Hand);
             _state.Orders = new OrderManager(prototype, Placement, random);
             _state.Work = new WorkManager(Orders, Placement, Time);
+            _state.UnitsQueue = new UnitsQueue(_state.Placement);
         }
 
         public Placement Placement => _state.Placement;
@@ -33,6 +35,7 @@ namespace Assets.Scripts.Logic.Models.Levels
         public WorkManager Work => _state.Work;
         public PlayerHand Hand => _state.Hand;
         public GameTime Time => _state.Time;
+        public UnitsQueue UnitsQueue => _state.UnitsQueue;
 
         public class GameState : IStateEntity
         {
@@ -42,6 +45,7 @@ namespace Assets.Scripts.Logic.Models.Levels
             public WorkManager Work { get; set; }
             public PlayerHand Hand { get; set; }
             public GameTime Time { get; set; }
+            public UnitsQueue UnitsQueue { get; set; }
         }
     }
 }

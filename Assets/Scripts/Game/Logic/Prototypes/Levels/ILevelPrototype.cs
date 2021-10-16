@@ -17,6 +17,11 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
         IOrderPrototype[] Orders { get; }
     }
 
+    public interface IQueuePrototype
+    {
+        int QueueSize { get; }
+    }
+
     public interface IPlacementPrototype
     {
         Point Size { get; }

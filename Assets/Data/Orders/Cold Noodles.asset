@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Cold Noodles
   m_EditorClassIdentifier: 
   Recipies:
-  - Ingredient: {fileID: 11400000, guid: 3f2772b078c235a47b009c7aebc8274f, type: 2}
   - Ingredient: {fileID: 11400000, guid: 0f8d894fcdc2f724586cab81a5bb7157, type: 2}
+    Count: 3
