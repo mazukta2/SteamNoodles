@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Session;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -31,6 +32,11 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         {
             return xMin <= point.X && point.X <= xMax &&
                 yMin <= point.Y && point.Y <= yMax;
+        }
+
+        public Point GetRandomPoint(SessionRandom random)
+        {
+            return new Point(random.GetRandom(xMin, xMax), random.GetRandom(yMin, yMax));
         }
     }
 }

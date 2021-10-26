@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Game.Assets.Scripts.Game.Logic.Models;
+﻿using Game.Assets.Scripts.Game.Logic.Models;
+using Game.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.ViewModel.Session;
 using System;

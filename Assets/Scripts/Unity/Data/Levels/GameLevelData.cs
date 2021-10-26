@@ -8,6 +8,7 @@ using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Rect = Game.Assets.Scripts.Game.Logic.Common.Math.Rect;
 
 namespace Assets.Scripts.Data
 {
@@ -19,9 +20,12 @@ namespace Assets.Scripts.Data
         public Point Size;
         public BuildingSchemeData[] Hand;
         public OrderData[] AvailableOrders;
+        public UnityEngine.RectInt UnitsRect;
 
         public IConstructionPrototype[] StartingHand => Hand;
         public IOrderPrototype[] Orders => AvailableOrders;
+        public Rect UnitsSpawnRect => new Rect(UnitsRect.x, UnitsRect.y, UnitsRect.width, UnitsRect.height);
+
         Point IPlacementPrototype.Size => Size;
 
         public void Load(Action<ILevelPrototype, ILevelView> onFinished)

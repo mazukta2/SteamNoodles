@@ -3,7 +3,9 @@ using Assets.Scripts.Core.Prototypes;
 using Assets.Scripts.Views.Buildings;
 using Assets.Scripts.Views.Buildings.Grid;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Units;
 using GameUnity.Assets.Scripts.Unity.Views.Orders;
+using GameUnity.Assets.Scripts.Unity.Views.Units;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
@@ -16,6 +18,7 @@ namespace Assets.Scripts.Views.Levels
         [SerializeField] PrototypeLink _gridPrototype;
         [SerializeField] PrototypeLink _buildingPanel;
         [SerializeField] PrototypeLink _orderPanel;
+        [SerializeField] PrototypeLink _unitsPrototype;
         private Action<float> _moveTime;
 
         public ICurrentOrderView CreateCurrentOrder()
@@ -31,6 +34,11 @@ namespace Assets.Scripts.Views.Levels
         public IPlacementView CreatePlacement()
         {
             return _gridPrototype.Create<GridView>();
+        }
+
+        public IUnitsView CreateUnits()
+        {
+            return _unitsPrototype.Create<UnitsView>();
         }
 
         public void SetTimeMover(Action<float> moveTime)

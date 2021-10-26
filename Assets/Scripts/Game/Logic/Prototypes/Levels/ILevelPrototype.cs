@@ -5,7 +5,7 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
 {
-    public interface ILevelPrototype : IOrdersPrototype, IPlacementPrototype
+    public interface ILevelPrototype : IOrdersPrototype, IPlacementPrototype, IUnitsPrototype
     {
         IConstructionPrototype[] StartingHand { get; }
 
@@ -25,5 +25,10 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
     public interface IPlacementPrototype
     {
         Point Size { get; }
+    }
+
+    public interface IUnitsPrototype
+    {
+        Rect UnitsSpawnRect { get; }
     }
 }

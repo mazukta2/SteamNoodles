@@ -1,13 +1,8 @@
-﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Models.Levels;
-using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
-using Tests.Assets.Scripts.Game.Logic.Models.Events;
 
 namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 {

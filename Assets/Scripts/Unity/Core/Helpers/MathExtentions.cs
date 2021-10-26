@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,11 @@ namespace Assets.Scripts.Core.Helpers
         }
 
         public static Vector3 ToUnityVector(this System.Numerics.Vector2 vector, float z)
+        {
+            return new Vector3(vector.X, vector.Y, z);
+        }
+
+        public static Vector3 ToUnityVector(this Point vector, float z)
         {
             return new Vector3(vector.X, vector.Y, z);
         }

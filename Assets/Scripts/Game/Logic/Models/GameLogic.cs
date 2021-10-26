@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Models.Events;
+﻿using Assets.Scripts.Models.Events;
+using Game.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using System;
 

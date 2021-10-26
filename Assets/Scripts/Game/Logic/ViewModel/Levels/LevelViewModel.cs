@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
     {
         public LevelScreenViewModel Screen { get; private set; }
         public PlacementViewModel Placement { get; private set; }
-        public QueueViewModel Queue { get; private set; }
+        public UnitsViewModel Units { get; private set; }
 
         public bool IsDestoyed { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
 
             Placement = new PlacementViewModel(model.Placement, view.CreatePlacement());
             Screen = new LevelScreenViewModel(model, view, Placement);
-            Queue = new QueueViewModel(model.UnitsQueue);
+            Units = new UnitsViewModel(model.Units, view.CreateUnits());
 
             _levelView.SetTimeMover(_model.Time.MoveTime);
         }
@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
         {
             Placement.Destroy();
             Screen.Destroy();
-            Queue.Destroy();
+            Units.Destroy();
             IsDestoyed = true;
         }
     }

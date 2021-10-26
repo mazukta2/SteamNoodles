@@ -1,4 +1,4 @@
-using Assets.Scripts.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.ViewModel.Levels;

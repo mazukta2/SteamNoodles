@@ -1,8 +1,5 @@
-﻿using Assets.Scripts.Logic.Models.Levels;
-using Assets.Scripts.Logic.Prototypes.Levels;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
-using Game.Assets.Scripts.Game.Logic.States;
-using System;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders

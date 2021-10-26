@@ -21,3 +21,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f0c24d6ae94ac964b9b59ede463a8633, type: 2}
   AvailableOrders:
   - {fileID: 11400000, guid: 4fdb3723c8ae65f4695f1051568d876c, type: 2}
+  UnitsRect:
+    x: -7
+    y: -4
+    width: 14
+    height: 3
