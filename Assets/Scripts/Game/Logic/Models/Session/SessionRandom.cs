@@ -12,5 +12,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
         {
             return _random.Next(minValue, maxValue);
         }
+
+        public float GetRandom(float minValue, float maxValue)
+        {
+            return (float)(minValue + (maxValue - minValue) * _random.NextDouble());
+        }
+
+        public bool GetRandom()
+        {
+            return _random.NextDouble() > 0.5f;
+        }
     }
 }

@@ -27,7 +27,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             _state.Placement = new Placement(prototype, _state.Hand);
             _state.Orders = new OrderManager(prototype, Placement, random);
             _state.Work = new WorkManager(Orders, Placement, Time);
-            _state.Units = new LevelUnits(_state.Placement, random, prototype);
+            _state.Units = new LevelUnits(_state.Placement, _state.Time, random, prototype);
+        }
+
+        public void Destroy()
+        {
+            _state.Units.Destroy();
         }
 
         public Placement Placement => _state.Placement;

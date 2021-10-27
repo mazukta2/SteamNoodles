@@ -4,6 +4,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Units
 {
     public interface IUnitView : IView
     {
-        void SetPosition(Point position);
+        void SetPosition(FloatPoint position);
     }
 }

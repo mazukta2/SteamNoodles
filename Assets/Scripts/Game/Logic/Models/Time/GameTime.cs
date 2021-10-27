@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
 {
     public class GameTime
     {
-        public event Action OnTimeChanged = delegate { };
+        public event Action<float> OnTimeChanged = delegate { };
 
         private GameState _state;
         private const float _pieces = 1f;
@@ -28,11 +28,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
             {
                 _state.Time += _pieces;
                 time -= _pieces;
-                OnTimeChanged();
+                OnTimeChanged(_pieces);
             }
 
             _state.Time += time;
-            OnTimeChanged();
+            OnTimeChanged(time);
         }
 
         private class GameState : IStateEntity

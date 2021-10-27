@@ -10,7 +10,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Units
 {
     public class UnitView : GameMonoBehaviour, IUnitView
     {
-        public void SetPosition(Point position)
+        public void SetPosition(FloatPoint position)
         {
             transform.position = position.ToUnityVector(transform.position.z);
         }

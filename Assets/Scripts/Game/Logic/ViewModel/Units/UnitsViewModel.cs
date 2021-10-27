@@ -25,6 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Units
                 SpawnUnit(unit);
             }
             _model.OnUnitSpawn += SpawnUnit;
+            _model.OnUnitDestroy += DestroyUnit;
         }
 
         public void Destroy()
@@ -36,7 +37,20 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Units
 
         private void SpawnUnit(Unit unit)
         {
-            _units.Add(new UnitViewModel(unit, _view.CreateUnit()));
+            var vm = new UnitViewModel(unit, _view.CreateUnit());
+            _units.Add(vm);
+        }
+
+        private void DestroyUnit(Unit obj)
+        {
+            foreach (var item in _units.ToList())
+            {
+                if (item.Unit == obj)
+                {
+                    _units.Remove(item);
+                    item.Destroy();
+                }
+            }
         }
 
     }

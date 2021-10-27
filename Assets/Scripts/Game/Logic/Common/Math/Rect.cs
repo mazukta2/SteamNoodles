@@ -34,9 +34,20 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
                 yMin <= point.Y && point.Y <= yMax;
         }
 
+        public bool IsInside(FloatPoint point)
+        {
+            return xMin <= point.X && point.X <= xMax &&
+                yMin <= point.Y && point.Y <= yMax;
+        }
+
         public Point GetRandomPoint(SessionRandom random)
         {
             return new Point(random.GetRandom(xMin, xMax), random.GetRandom(yMin, yMax));
+        }
+
+        public FloatPoint GetRandomFloatPoint(SessionRandom random)
+        {
+            return new FloatPoint(random.GetRandom((float)xMin, (float)xMax), random.GetRandom((float)yMin, (float)yMax));
         }
     }
 }

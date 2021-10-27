@@ -38,6 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
             Placement.Destroy();
             Screen.Destroy();
             Units.Destroy();
+            _model.Destroy();
             IsDestoyed = true;
         }
     }

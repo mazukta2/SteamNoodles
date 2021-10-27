@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers
                     {
                         Job = new RecipeJob(_state.Placement, _state.GameTime, recipe);
                         Job.OnStop += HandleJobStop;
-                        OnTime();
+                        OnTime(0);
                     }
                     else
                     {
@@ -49,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers
             }
         }
 
-        private void OnTime()
+        private void OnTime(float delta)
         {
             if (Job != null) Job.OnTime();
         }

@@ -11,16 +11,28 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Units
     public class UnitViewModel
     {
         private IUnitView _view;
+        private Unit _model;
 
         public UnitViewModel(Unit model, IUnitView view)
         {
             _view = view;
             _view.SetPosition(model.Position);
+            _model = model;
+            _model.OnPositionChanged += _model_OnPositionChanged;
         }
 
         public void Destroy()
         {
+            _model.OnPositionChanged -= _model_OnPositionChanged;
             _view.Destroy();
         }
+
+        public Unit Unit => _model;
+
+        private void _model_OnPositionChanged()
+        {
+            _view.SetPosition(_model.Position);
+        }
+
     }
 }
