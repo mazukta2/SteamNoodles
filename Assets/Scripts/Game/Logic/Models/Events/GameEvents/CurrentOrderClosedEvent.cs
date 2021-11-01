@@ -5,7 +5,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Events.GameEvents
 {
     public class CurrentOrderClosedEvent : IGameEvent
     {
-        public CurrentOrderClosedEvent(ActiveOrder order) => Order = order;
-        public ActiveOrder Order { get; }
+        public CurrentOrderClosedEvent(ServingOrderProcess order) => Order = order;
+        public ServingOrderProcess Order { get; }
     };
 }

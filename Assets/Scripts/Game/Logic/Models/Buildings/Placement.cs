@@ -11,6 +11,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 {
     public class Placement
     {
+        public readonly float CellSize = 0.25f;
+
         public event Action<Construction> OnConstructionAdded = delegate { };
         public event Action<Construction> OnConstructionRemoved = delegate { };
 
@@ -25,6 +27,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 
         public Point Size => _state.Prototype.Size;
         public Rect Rect => Size.AsCenteredRect();
+        public FloatRect RealRect => Rect * CellSize;
         public Construction[] Constructions => _state.Constructions.ToArray();
 
         public Construction Place(ConstructionScheme scheme, Point position)

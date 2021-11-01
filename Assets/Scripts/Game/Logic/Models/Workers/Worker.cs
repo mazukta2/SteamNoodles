@@ -30,23 +30,23 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers
 
         public void UpdateJob()
         {
-            if (Job == null)
-            {
-                if (_state.Orders.CurrentOrder != null)
-                {
-                    var recipe = _state.Orders.CurrentOrder.Recipes.Where(x => x.IsOpen()).FirstOrDefault();
-                    if (recipe != null)
-                    {
-                        Job = new RecipeJob(_state.Placement, _state.GameTime, recipe);
-                        Job.OnStop += HandleJobStop;
-                        OnTime(0);
-                    }
-                    else
-                    {
-                        // all recipies is compited. do nothing
-                    }
-                }
-            }
+            //if (Job == null)
+            //{
+            //    if (_state.Orders.CurrentOrder != null)
+            //    {
+            //        var recipe = _state.Orders.CurrentOrder.Recipes.Where(x => x.IsOpen()).FirstOrDefault();
+            //        if (recipe != null)
+            //        {
+            //            Job = new RecipeJob(_state.Placement, _state.GameTime, recipe);
+            //            Job.OnStop += HandleJobStop;
+            //            OnTime(0);
+            //        }
+            //        else
+            //        {
+            //            // all recipies is compited. do nothing
+            //        }
+            //    }
+            //}
         }
 
         private void OnTime(float delta)

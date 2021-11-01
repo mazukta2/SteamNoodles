@@ -33,6 +33,9 @@ namespace Assets.Scripts.Core.Prototypes
             if (!string.IsNullOrEmpty(name)) go.name = name;
             _spawned.Add(go);
             go.SetActive(active);
+
+            if (go.GetComponent<T>() == null) throw new Exception($"No {typeof(T)} in game object");
+
             return go.GetComponent<T>();
         }
 

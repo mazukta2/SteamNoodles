@@ -49,5 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         {
             return new FloatPoint(random.GetRandom((float)xMin, (float)xMax), random.GetRandom((float)yMin, (float)yMax));
         }
+
+        public static FloatRect operator *(Rect current, float other) => new FloatRect(current.X * other, current.Y * other, current.Width * other, current.Height * other);
     }
 }

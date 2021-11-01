@@ -12,8 +12,6 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 {
     public class PlacementViewModel : IViewModel
     {
-        public readonly float CellSize = 0.25f;
-
         public bool IsDestoyed { get; private set; }
 
         private Placement _model;
@@ -59,6 +57,8 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
         public ConstructionGhostViewModel Ghost { get; private set; }
         public IPlacementView View { get; private set; }
+        public float CellSize => _model.CellSize;
+
         public void SetGhost(ConstructionScheme obj)
         {
             if (Ghost != null) throw new Exception("Ghost already existing");
@@ -123,7 +123,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
         public Vector2 GetWorldPosition(Point point)
         {
-            return new Vector2(point.X * CellSize, point.Y * CellSize);
+            return new Vector2(point.X * _model.CellSize, point.Y * _model.CellSize);
         }
 
         private void ConstructionRemoved(Construction obj) => UpdateConstructions();

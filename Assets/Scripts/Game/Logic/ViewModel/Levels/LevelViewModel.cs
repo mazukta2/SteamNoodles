@@ -13,6 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
         public LevelScreenViewModel Screen { get; private set; }
         public PlacementViewModel Placement { get; private set; }
         public UnitsViewModel Units { get; private set; }
+        public ClashesViewModel Clashes { get; private set; }
 
         public bool IsDestoyed { get; private set; }
 
@@ -29,6 +30,8 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Levels
             Placement = new PlacementViewModel(model.Placement, view.CreatePlacement());
             Screen = new LevelScreenViewModel(model, view, Placement);
             Units = new UnitsViewModel(model.Units, view.CreateUnits());
+            Clashes = new ClashesViewModel(model.Clashes, view.CreateClashes());
+
 
             _levelView.SetTimeMover(_model.Time.MoveTime);
         }

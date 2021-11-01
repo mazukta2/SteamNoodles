@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers
             _state.Orders = orderManager;
             _state.Placements = placement;
             _state.GameTime = gameTime;
-            MainWorker = new Worker(orderManager, placement, gameTime);
+            //MainWorker = new Worker(orderManager, placement, gameTime);
         }
 
         public WorkManager(GameState state)
@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Workers
             //MainWorker = mainWorker;
         }
 
-        public Worker MainWorker { get => _state.MainWorker; set => _state.MainWorker = value; }
+        //public Worker MainWorker { get => _state.MainWorker; set => _state.MainWorker = value; }
 
         public class GameState : IStateEntity
         {

@@ -8,12 +8,12 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Orders
 {
     public class CurrentOrderViewModel
     {
-        public List<RecipeViewModel> Recipies { get; } = new List<RecipeViewModel>();
+        //public List<RecipeViewModel> Recipies { get; } = new List<RecipeViewModel>();
         public ICurrentOrderView View { get; private set; }
 
-        private ActiveOrder _model;
+        private ServingOrderProcess _model;
 
-        public CurrentOrderViewModel(ActiveOrder model, ICurrentOrderView view)
+        public CurrentOrderViewModel(ServingOrderProcess model, ICurrentOrderView view)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (view == null) throw new ArgumentNullException(nameof(view));
@@ -21,16 +21,16 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Orders
             _model = model;
             View = view;
 
-            foreach (var recipe in _model.Recipes)
-            {
-                Recipies.Add(new RecipeViewModel(recipe, View.CreateRecipe()));
-            }
+            //foreach (var recipe in _model.Recipes)
+            //{
+            //    Recipies.Add(new RecipeViewModel(recipe, View.CreateRecipe()));
+            //}
         }
 
         public void Destroy()
         {
-            foreach (var item in Recipies)
-                item.Destroy();
+            //foreach (var item in Recipies)
+            //    item.Destroy();
 
             View.Destroy();
             View = null;

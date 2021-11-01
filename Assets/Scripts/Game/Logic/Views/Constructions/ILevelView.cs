@@ -14,5 +14,6 @@ namespace Tests.Assets.Scripts.Game.Logic.Views
         ICurrentOrderView CreateCurrentOrder();
         void SetTimeMover(Action<float> moveTime);
         IUnitsView CreateUnits();
+        IClashesView CreateClashes();
     }
 }

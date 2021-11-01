@@ -1,5 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Models.Clashes;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.States;
 using System;
@@ -12,79 +15,102 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
     {
         public event Action OnCurrentOrderChanged = delegate { };
         private GameState _state;
-        public OrderManager(IOrdersPrototype orders, Placement placement, SessionRandom random)
+        public OrderManager(IOrdersPrototype orders, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
             if (random == null) throw new Exception(nameof(random));
             if (orders == null) throw new Exception(nameof(orders));
             if (placement == null) throw new Exception(nameof(placement));
+            if (units == null) throw new Exception(nameof(units));
 
             _state = new GameState();
             _state.Prototype = orders;
             _state.Placement = placement;
+            _state.Units = units;
             _state.Random = random;
+            _state.Time = time;
+            _state.Clashes = clashes;
 
-            _state.Placement.OnConstructionAdded += (construction) => UpdateCurrentOrder();
-            _state.Placement.OnConstructionRemoved += (construction) => UpdateCurrentOrder();
-            
+            _state.Time.OnTimeChanged += Time_OnTimeChanged;
+
             UpdateCurrentOrder();
         }
 
-        public ActiveOrder CurrentOrder => _state.CurrentOrder;
-
-        public List<AvailableOrder> GetAvailableOrders()
+        public void Destroy()
         {
-            var list = new List<AvailableOrder>();
-            foreach (var item in GetLevelOrders())
+            _state.Time.OnTimeChanged -= Time_OnTimeChanged;
+        }
+
+        public ServingOrderProcess CurrentOrder => _state.CurrentOrder;
+
+        public List<Unit> GetPotentialCustumers()
+        {
+            var listOfUnits = _state.Units.Units.OrderBy(u => Math.Abs(u.Position.X));
+            var list = new List<Unit>();
+            foreach (var item in listOfUnits)
             {
-                if (item.CanBeOrder())
+                if (item.CanOrder())
                     list.Add(item);
+
+                if (list.Count > 5) // on
+                    break;
             }
             return list;
         }
 
+        private void Time_OnTimeChanged(float obj)
+        {
+            UpdateCurrentOrder();
+        }
 
         private void UpdateCurrentOrder()
         {
-            if (CurrentOrder != null && !CurrentOrder.IsOpen())
+            if (CurrentOrder != null)
             {
-                _state.CurrentOrder = null;
-
-                OnCurrentOrderChanged();
+                if (!_state.Clashes.IsClashStarted)
+                {
+                    _state.CurrentOrder.Break();
+                }
+                
+                if (!CurrentOrder.IsOpen)
+                {
+                    _state.Units.ReturnToCrowd(_state.CurrentOrder.Unit);
+                    _state.CurrentOrder = null;
+                    OnCurrentOrderChanged();
+                }
             }
 
-            if (CurrentOrder == null)
+            if (CurrentOrder == null && _state.Clashes.IsClashStarted)
             {
-                var order = FindNextOrder();
-                if (order != null)
+                var unit = FindNextCustumer();
+                if (unit != null)
                 {
-                    _state.CurrentOrder = new ActiveOrder(order);
-                    _state.CurrentOrder.OnComplited += UpdateCurrentOrder;
+                    _state.Units.TakeFromCrowd(unit);
+
+                    _state.CurrentOrder = new ServingOrderProcess(_state.Placement, unit);
                     OnCurrentOrderChanged();
                 }
             }
         }
 
-        private AvailableOrder FindNextOrder()
+        private Unit FindNextCustumer()
         {
-            var orders = GetAvailableOrders();
+            var orders = GetPotentialCustumers();
             if (orders.Count == 0)
                 return null;
 
             return orders[_state.Random.GetRandom(0, orders.Count)];
         }
 
-        private AvailableOrder[] GetLevelOrders()
-        {
-            return _state.Prototype.Orders.Select(x => new AvailableOrder(_state.Placement, x)).ToArray();
-        }
-
         private struct GameState : IStateEntity
         {
-            public ActiveOrder CurrentOrder { get; set; }
+            public ServingOrderProcess CurrentOrder { get; set; }
             public IOrdersPrototype Orders { get; set; }
             public IOrdersPrototype Prototype { get; internal set; }
             public Placement Placement { get; internal set; }
             public SessionRandom Random { get; internal set; }
+            public LevelUnits Units { get; internal set; }
+            public GameTime Time { get; internal set; }
+            public GameClashes Clashes { get; internal set; }
         }
     }
 }

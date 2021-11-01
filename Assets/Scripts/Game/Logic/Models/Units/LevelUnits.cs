@@ -19,6 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private GameTime _time;
         private int UnitsCount = 20;
         private List<Unit> _spawnedUnits = new List<Unit>();
+        private List<Unit> _crowd = new List<Unit>();
         private Rect Rect => _prototype.UnitsSpawnRect;
 
         public LevelUnits(Placement placement, Time.GameTime time, SessionRandom random, IUnitsPrototype prototype)
@@ -51,6 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             var position = Rect.GetRandomFloatPoint(_random);
             var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? Rect.X - 1 : Rect.X + Rect.Width + 1, position.Y));
             _spawnedUnits.Add(unit);
+            _crowd.Add(unit);
             OnUnitSpawn(unit);
         }
 
@@ -59,10 +61,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             foreach (var item in _spawnedUnits.ToArray())
             {
                 item.MoveToTarget(delta);
-                 
+            }
+
+            foreach (var item in _crowd.ToArray())
+            {
                 if (!Rect.IsInside(item.Position))
                 {
                     _spawnedUnits.Remove(item);
+                    _crowd.Remove(item);
                     OnUnitDestroy(item);
                 }
             }
@@ -83,8 +89,33 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 }
                 var unit = new Unit(position, target);
                 _spawnedUnits.Add(unit);
+                _crowd.Add(unit);
                 OnUnitSpawn(unit);
             }
+        }
+
+        public void ReturnToCrowd(Unit unit)
+        {
+            _crowd.Add(unit);
+
+            var position = Rect.GetRandomFloatPoint(_random);
+            FloatPoint target;
+            if (_random.GetRandom())
+            {
+                position = new FloatPoint(Rect.X + 1, position.Y);
+                target = new FloatPoint(Rect.X + Rect.Width + 1, position.Y);
+            }
+            else
+            {
+                position = new FloatPoint(Rect.X + Rect.Width - 1, position.Y);
+                target = new FloatPoint(Rect.X - 1, position.Y);
+            }
+            unit.SetTarget(target);
+        }
+
+        public void TakeFromCrowd(Unit unit)
+        {
+            _crowd.Remove(unit);
         }
     }
 }

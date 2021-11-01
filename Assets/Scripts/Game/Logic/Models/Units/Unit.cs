@@ -24,5 +24,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             OnPositionChanged();
             return false;    
         }
+
+        public bool CanOrder()
+        {
+            return true;
+        }
+
+        public void SetTarget(FloatPoint target)
+        {
+            Target = target;
+        }
     }
 }

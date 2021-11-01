@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
-    public class AvailableOrder
+    public class PotentialOrder
     {
         private IOrderPrototype _order;
         private Placement _placement;
 
-        public AvailableOrder(Placement placement, IOrderPrototype order)
+        public PotentialOrder(Placement placement, IOrderPrototype order)
         {
             _order = order;
             _placement = placement;

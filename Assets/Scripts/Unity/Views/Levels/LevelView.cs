@@ -19,7 +19,14 @@ namespace Assets.Scripts.Views.Levels
         [SerializeField] PrototypeLink _buildingPanel;
         [SerializeField] PrototypeLink _orderPanel;
         [SerializeField] PrototypeLink _unitsPrototype;
+        [SerializeField] PrototypeLink _clashesPrototyp;
+
         private Action<float> _moveTime;
+
+        public IClashesView CreateClashes()
+        {
+            return _clashesPrototyp.Create<ClashesView>();
+        }
 
         public ICurrentOrderView CreateCurrentOrder()
         {
