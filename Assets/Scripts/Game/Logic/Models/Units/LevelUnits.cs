@@ -65,7 +65,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
             foreach (var item in _crowd.ToArray())
             {
-                if (!Rect.IsInside(item.Position))
+                if (!Rect.IsHorisontalyInside(item.Position))
                 {
                     _spawnedUnits.Remove(item);
                     _crowd.Remove(item);

@@ -40,6 +40,11 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
                 yMin <= point.Y && point.Y <= yMax;
         }
 
+        public bool IsHorisontalyInside(FloatPoint point)
+        {
+            return xMin <= point.X && point.X <= xMax;
+        }
+
         public Point GetRandomPoint(SessionRandom random)
         {
             return new Point(random.GetRandom(xMin, xMax), random.GetRandom(yMin, yMax));

@@ -38,6 +38,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public void Destroy()
         {
             _state.Time.OnTimeChanged -= Time_OnTimeChanged;
+            if (_state.CurrentOrder != null)
+                _state.CurrentOrder.Destroy();
         }
 
         public ServingOrderProcess CurrentOrder => _state.CurrentOrder;
@@ -74,6 +76,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 if (!CurrentOrder.IsOpen)
                 {
                     _state.Units.ReturnToCrowd(_state.CurrentOrder.Unit);
+                    _state.CurrentOrder.Destroy();
                     _state.CurrentOrder = null;
                     OnCurrentOrderChanged();
                 }
@@ -86,7 +89,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 {
                     _state.Units.TakeFromCrowd(unit);
 
-                    _state.CurrentOrder = new ServingOrderProcess(_state.Placement, unit);
+                    _state.CurrentOrder = new ServingOrderProcess(_state.Time, _state.Placement, unit);
                     OnCurrentOrderChanged();
                 }
             }
