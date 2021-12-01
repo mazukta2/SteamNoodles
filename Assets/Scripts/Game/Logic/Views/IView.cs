@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views
 {
-    public interface IView
+    public interface IView : IDisposable
     {
-        public bool IsDestoyed { get; }
-        public void Destroy();
+        public bool IsDisposed { get; }
     }
 }

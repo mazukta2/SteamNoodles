@@ -1,16 +1,15 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class ConstructionPresenter : IPresenter
+    public class ConstructionPresenter : Disposable
     {
         private Construction _model;
         public IConstructionView View { get; private set; }
-
-        public bool IsDestoyed { get; set; }
 
         public ConstructionPresenter(PlacementPresenter placement, Construction construction, IConstructionView view)
         {
@@ -20,10 +19,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             View.SetImage(_model.GetVisual());
         }
 
-        public void Destroy()
+        protected override void DisposeInner()
         {
-            IsDestoyed = true;
-            View.Destroy();
+            View.Dispose();
         }
     }
 }

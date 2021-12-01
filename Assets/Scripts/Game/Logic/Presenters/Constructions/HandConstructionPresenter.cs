@@ -1,21 +1,21 @@
 ﻿using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
 namespace Tests.Assets.Scripts.Game.Logic.Presenters.Levels
 {
-    public class HandConstructionPresenter : IPresenter
+    public class HandConstructionPresenter : Disposable
     {
         public IHandConstructionView View => _view;
-        public bool IsDestoyed { get; private set; }
-        public ConstructionScheme Scheme => _model;
+        public ConstructionCard Scheme => _model;
 
-        private ConstructionScheme _model;
+        private ConstructionCard _model;
         private IHandConstructionView _view;
-        private Action<ConstructionScheme> _onClick;
+        private Action<ConstructionCard> _onClick;
 
-        public HandConstructionPresenter(ConstructionScheme model, IHandConstructionView view, Action<ConstructionScheme> onClick)
+        public HandConstructionPresenter(ConstructionCard model, IHandConstructionView view, Action<ConstructionCard> onClick)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (view == null) throw new ArgumentNullException(nameof(view));
@@ -27,10 +27,9 @@ namespace Tests.Assets.Scripts.Game.Logic.Presenters.Levels
             UpdateView();
         }
 
-        public void Destroy()
+        protected override void DisposeInner()
         {
-            IsDestoyed = true;
-            View.Destroy();
+            View.Dispose();
         }
 
         private void OnClick()
@@ -43,7 +42,5 @@ namespace Tests.Assets.Scripts.Game.Logic.Presenters.Levels
             _view.SetIcon(_model.HandIcon);
             _view.SetClick(OnClick);
         }
-
-
     }
 }

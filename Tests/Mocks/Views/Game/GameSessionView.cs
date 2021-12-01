@@ -13,5 +13,8 @@ namespace Game.Tests.Mocks.Views.Game
         {
             CurrentLevel = levelView;
         }
+        protected override void DisposeInner()
+        {
+        }
     }
 }

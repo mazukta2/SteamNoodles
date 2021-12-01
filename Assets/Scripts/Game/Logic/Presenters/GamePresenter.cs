@@ -9,14 +9,14 @@ using Game.Assets.Scripts.Game.Logic.Common.Core;
 
 namespace Tests.Assets.Scripts.Game.Logic.Presenters
 {
-    public class GameLogicPresenter : Disposable
+    public class GamePresenter : Disposable
     {
         public GameSessionPresenter Session { get; private set; }
 
-        private GameLogic _model;
+        private GameModel _model;
         private IGameView _view;
 
-        public GameLogicPresenter(GameLogic model, IGameView view)
+        public GamePresenter(GameModel model, IGameView view)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (view == null) throw new ArgumentNullException(nameof(view));
@@ -27,12 +27,15 @@ namespace Tests.Assets.Scripts.Game.Logic.Presenters
                 CreatePresenter();
 
             _model.OnSessionCreated += CreatePresenter;
+            _model.OnDispose += Dispose; 
         }
 
-        protected override void OnDispose()
+        protected override void DisposeInner()
         {
             _model.OnSessionCreated -= CreatePresenter;
-            _model.Dispose();
+            _model.OnDispose -= Dispose;
+            Session?.Dispose();
+            _view.Dispose();
         }
 
         private void CreatePresenter()

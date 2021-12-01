@@ -1,13 +1,18 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
 {
-    public class GameClashes
+    public class GameClashes : Disposable
     { 
         public event Action OnClashStarted = delegate { };
         public event Action OnClashEnded = delegate { };
 
         public bool IsClashStarted { get; private set; }
+
+        protected override void DisposeInner()
+        {
+        }
 
         public void StartClash()
         {
@@ -16,5 +21,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
             IsClashStarted = true;
             OnClashStarted();
         }
+
     }
 }

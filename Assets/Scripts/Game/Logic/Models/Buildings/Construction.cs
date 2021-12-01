@@ -1,44 +1,38 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Orders;
-using Game.Assets.Scripts.Game.Logic.States;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 {
-    public class Construction
+    public class Construction : Disposable
     {
-        private GameState _state;
+        public Point Position { get; private set; }
+        public float WorkTime => _prototype.WorkTime;
+        public float WorkProgressPerHit => _prototype.WorkProgressPerHit;
+
+        private IConstructionSettings _prototype { get; set; }
 
         public Construction(IConstructionSettings prototype, Point position)
         {
-            _state = new GameState();
-            _state.Prototype = prototype;
-            _state.Position = position;
+            _prototype = prototype;
+            Position = position;
         }
 
-        public ConstructionScheme Scheme => new ConstructionScheme(_state.Prototype);
-
-        public Point Position => _state.Position;
-        public float WorkTime => _state.Prototype.WorkTime;
-        public float WorkProgressPerHit => _state.Prototype.WorkProgressPerHit;
+        protected override void DisposeInner()
+        {
+        }
 
         public Point[] GetOccupiedScace()
         {
-            return Scheme.GetOccupiedSpace(Position);
+            return new ConstructionSettingsFunctions(_prototype).GetOccupiedSpace(Position);
         }
 
         public IVisual GetVisual()
         {
-            return Scheme.BuildingView;
-        }
-
-        private class GameState : IStateEntity
-        {
-            public IConstructionSettings Prototype { get; set; }
-            public Point Position { get; set; }
+            return _prototype.BuildingView;
         }
 
     }

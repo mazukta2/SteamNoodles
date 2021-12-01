@@ -18,5 +18,8 @@ namespace Game.Tests.Mocks.Views.Clashes
         {
             ButtonShowed = v;
         }
+        protected override void DisposeInner()
+        {
+        }
     }
 }

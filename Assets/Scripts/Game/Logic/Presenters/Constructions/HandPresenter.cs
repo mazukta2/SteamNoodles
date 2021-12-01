@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
 {
-    public class HandPresenter : IPresenter
+    public class HandPresenter : Disposable
     {
         private PlayerHand _model;
         private PlacementPresenter _placement;
@@ -24,26 +25,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
             View = view;
             _placement = placement;
 
-            foreach (var item in model.CurrentSchemes)
+            foreach (var item in model.Cards)
                 ScnemeAddedHandle(item);
 
             _model.OnAdded += ScnemeAddedHandle;
             _model.OnRemoved += ScnemeRemovedHandle;
         }
 
-        public void Destroy()
+
+        protected override void DisposeInner()
         {
             _model.OnAdded -= ScnemeAddedHandle;
             _model.OnRemoved -= ScnemeRemovedHandle;
 
             foreach (var item in _list)
-                item.Destroy();
-            View.Destroy();
-            IsDestoyed = true;
+                item.Dispose();
+            View.Dispose();
         }
 
         public IHandView View { get; private set; }
-        public bool IsDestoyed { get; private set; }
 
         public HandConstructionPresenter[] GetSchemes()
         {
@@ -55,25 +55,24 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
             _model.Add(building);
         }
 
-        private void ScnemeAddedHandle(ConstructionScheme obj)
+        private void ScnemeAddedHandle(ConstructionCard obj)
         {
             _list.Add(new HandConstructionPresenter(obj, View.CreateConstruction(), OnSchemeClick));
         }
 
-        private void ScnemeRemovedHandle(ConstructionScheme obj)
+        private void ScnemeRemovedHandle(ConstructionCard obj)
         {
             var scheme = _list.First(x => x.Scheme == obj);
             _list.Remove(scheme);
-            scheme.Destroy();
+            scheme.Dispose();
         }
 
-        private void OnSchemeClick(ConstructionScheme obj)
+        private void OnSchemeClick(ConstructionCard obj)
         {
             if (_placement.Ghost == null)
                 _placement.SetGhost(obj);
             else
                 _placement.ClearGhost();
         }
-
     }
 }

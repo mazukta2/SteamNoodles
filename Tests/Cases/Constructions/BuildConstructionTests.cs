@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Tests.Controllers;
 using Game.Tests.Mocks.Prototypes.Levels;
-using Game.Tests.Shortcuts;
 using NUnit.Framework;
 using System.Linq;
 using System.Numerics;
@@ -15,28 +15,34 @@ namespace Game.Tests.Cases.Constructions
         [Test]
         public void IsHandExistingOnLevelLoaded()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             Assert.IsNotNull(level.Hand);
             Assert.IsNotNull(levelViewModel.Screen.Hand);
             Assert.IsNotNull(levelViewModel.Screen.Hand.View);
+            game.Exit();
         }
 
         [Test]
         public void IsHandHaveItems()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var items = levelViewModel.Screen.Hand.GetSchemes();
             Assert.IsTrue(items.Length > 0);
             Assert.IsTrue(items.All(x => x.View != null));
+            game.Exit();
         }
 
         [Test]
         public void IsIconSettedInHand()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var item = levelViewModel.Screen.Hand.GetSchemes().First();
             var icon = item.View.GetIcon();
-            Assert.IsTrue(level.Hand.CurrentSchemes.First().HandIcon.Equals(icon));
+            Assert.IsTrue(level.Hand.Cards.First().HandIcon.Equals(icon));
+            game.Exit();
         }
         #endregion
 
@@ -44,7 +50,8 @@ namespace Game.Tests.Cases.Constructions
         [Test]
         public void IsClickToSchemeEnterAndExitGhostMode()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
 
             Assert.IsNull(levelViewModel.Placement.Ghost);
 
@@ -57,13 +64,15 @@ namespace Game.Tests.Cases.Constructions
             construction.View.Click();
 
             Assert.IsNull(levelViewModel.Placement.Ghost);
-            Assert.IsTrue(view.IsDestoyed);
+            Assert.IsTrue(view.IsDisposed);
+            game.Exit();
         }
 
         [Test]
         public void IsBuildingPlacingIsExitGhostMode()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var construction = levelViewModel.Screen.Hand.GetSchemes().First();
 
             construction.View.Click();
@@ -72,13 +81,15 @@ namespace Game.Tests.Cases.Constructions
             Assert.IsNotNull(view);
             levelViewModel.Placement.View.Click(new Vector2(0f, 0f));
             Assert.IsNull(levelViewModel.Placement.Ghost);
-            Assert.IsTrue(view.IsDestoyed);
+            Assert.IsTrue(view.IsDisposed);
+            game.Exit();
         }
 
         [Test]
         public void IsAvailableCellsIsHighlightedInGhostMode()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var construction = levelViewModel.Screen.Hand.GetSchemes().First();
 
             var cells = levelViewModel.Placement.GetCells();
@@ -89,12 +100,14 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.IsTrue(cells.All(x => (x.State == CellPresenter.CellState.IsReadyToPlace || x.State == CellPresenter.CellState.IsAvailableGhostPlace)
                 && (x.View.GetState() == CellPresenter.CellState.IsReadyToPlace || x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace)));
+            game.Exit();
         }
 
         [Test]
         public void IsCellsBeneathGhostIsHighlighted()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var construction = levelViewModel.Screen.Hand.GetSchemes().First();
             construction.View.Click();
 
@@ -115,12 +128,14 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(1, 0)));
             Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(2, 0)));
+            game.Exit();
         }
 
         [Test]
         public void IsGhostViewChangeVisualIfItAvailable()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             Assert.AreEqual(1, levelViewModel.Screen.Hand.GetSchemes().Length);
             var proto = new TestBuildingPrototype();
             proto.Requirements = new Requirements() { DownEdge = true };
@@ -138,12 +153,14 @@ namespace Game.Tests.Cases.Constructions
             Assert.IsFalse(levelViewModel.Placement.Ghost.Position == new Point(0, 2));
 
             Assert.IsTrue(ghost.GetCanBePlacedState());
+            game.Exit();
         }
 
         [Test]
         public void IsCellsBeneathGhostIsHighlightedRed()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var building = new TestBuildingPrototype();
             building.Size = new Point(2, 2);
             building.Requirements = new Requirements()
@@ -176,6 +193,7 @@ namespace Game.Tests.Cases.Constructions
                 cells.First(x => x.Position == new Point(1, -1)).View.GetState());
             Assert.AreEqual(CellPresenter.CellState.IsReadyToPlace,
                 cells.First(x => x.Position == new Point(-1, -1)).View.GetState());
+            game.Exit();
         }
         #endregion
 
@@ -183,7 +201,8 @@ namespace Game.Tests.Cases.Constructions
         [Test]
         public void IsConstructionPlaced()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var construction = levelViewModel.Screen.Hand.GetSchemes().First();
 
             construction.View.Click();
@@ -196,12 +215,14 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.AreEqual(1, levelViewModel.Placement.GetConstructions().Length);
             Assert.IsNotNull(levelViewModel.Placement.GetConstructions().First().View);
+            game.Exit();
         }
 
         [Test]
         public void IsConstructionPlacedInRightPosition()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var construction = levelViewModel.Screen.Hand.GetSchemes().First();
             construction.View.Click();
 
@@ -217,26 +238,30 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.AreEqual(levelViewModel.Placement.GetWorldPosition(cellPos),
                 levelViewModel.Placement.GetConstructions().First().View.GetPosition());
+            game.Exit();
         }
 
         [Test]
         public void IsConstructionPlacedHaveRightImage()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var construction = levelViewModel.Screen.Hand.GetSchemes().First();
-            var model = level.Hand.CurrentSchemes.First();
+            var model = level.Hand.Cards.First();
             construction.View.Click();
             levelViewModel.Placement.View.Click(new Vector2(0, 0));
 
             Assert.IsTrue(model.BuildingView != null);
             Assert.AreEqual(model.BuildingView,
                 levelViewModel.Placement.GetConstructions().First().View.GetImage());
+            game.Exit();
         }
 
         [Test]
         public void IsConstructionButtomRestrictionIsWorking()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
 
             var building = new TestBuildingPrototype();
             building.Requirements = new Requirements()
@@ -273,6 +298,7 @@ namespace Game.Tests.Cases.Constructions
             levelViewModel.Placement.View.Click(worldPos);
             Assert.AreEqual(1, levelViewModel.Placement.GetConstructions().Length);
 
+            game.Exit();
         }
 
 
@@ -280,7 +306,8 @@ namespace Game.Tests.Cases.Constructions
         [Test]
         public void IsRemovedFromHand()
         {
-            var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel();
+            var game = new GameController();
+            var (level, levelViewModel, levelView) = game.LoadLevel();
             var construction = levelViewModel.Screen.Hand.GetSchemes().First();
 
             Assert.AreEqual(1, levelViewModel.Screen.Hand.GetSchemes().Length);
@@ -289,6 +316,7 @@ namespace Game.Tests.Cases.Constructions
             levelViewModel.Placement.View.Click(new Vector2(0f, 0f));
 
             Assert.AreEqual(0, levelViewModel.Screen.Hand.GetSchemes().Length);
+            game.Exit();
         }
         #endregion
 

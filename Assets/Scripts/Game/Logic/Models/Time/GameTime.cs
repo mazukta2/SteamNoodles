@@ -1,23 +1,23 @@
-﻿using Game.Assets.Scripts.Game.Logic.States;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Time
 {
-    public class GameTime
+    public class GameTime : Disposable
     {
         public event Action<float> OnTimeChanged = delegate { };
 
-        private GameState _state;
+        public float Time { get; private set; }
+
         private const float _pieces = 1f;
 
         public GameTime()
         {
-            _state = new GameState();
         }
 
-        public float Time => _state.Time;
+        protected override void DisposeInner()
+        {
+        }
 
         public void MoveTime(float time)
         {
@@ -26,18 +26,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
 
             while (time > _pieces)
             {
-                _state.Time += _pieces;
+                Time += _pieces;
                 time -= _pieces;
                 OnTimeChanged(_pieces);
             }
 
-            _state.Time += time;
+            Time += time;
             OnTimeChanged(time);
-        }
-
-        private class GameState : IStateEntity
-        {
-            public float Time { get; set; }
         }
     }
 }

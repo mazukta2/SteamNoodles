@@ -8,8 +8,6 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
     public interface ILevelSettings : IOrdersPrototype, IPlacementPrototype, IUnitsPrototype
     {
         IConstructionSettings[] StartingHand { get; }
-
-        void Load(Action<ILevelSettings, ILevelView> onFinished);
     }
 
     public interface IOrdersPrototype

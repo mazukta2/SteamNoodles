@@ -16,5 +16,8 @@ namespace Game.Tests.Mocks.Views.Units
             Position = position;
         }
 
+        protected override void DisposeInner()
+        {
+        }
     }
 }

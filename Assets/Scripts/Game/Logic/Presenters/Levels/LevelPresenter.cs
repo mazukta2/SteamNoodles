@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Units;
@@ -7,13 +8,11 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
 {
-    public class LevelPresenter : IPresenter
+    public class LevelPresenter : Disposable
     {
         public LevelScreenPresenter Screen { get; private set; }
         public PlacementPresenter Placement { get; private set; }
         public UnitsPresenter Units { get; private set; }
-
-        public bool IsDestoyed { get; private set; }
 
         private GameLevel _model;
         private ILevelView _view;
@@ -30,15 +29,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
             Screen = new LevelScreenPresenter(model, view.Screen, Placement);
 
             _view.SetTimeMover(_model.Time.MoveTime);
+
+            _model.OnDispose += Dispose;
+
+        }
+        protected override void DisposeInner()
+        {
+            _model.OnDispose -= Dispose;
+
+            Placement.Dispose();
+            Screen.Dispose();
+            Units.Dispose();
+
+            _view.Dispose();
         }
 
-        public void Destroy()
-        {
-            Placement.Destroy();
-            Screen.Destroy();
-            Units.Destroy();
-            _model.Destroy();
-            IsDestoyed = true;
-        }
     }
 }

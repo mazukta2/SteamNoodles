@@ -37,5 +37,8 @@ namespace Tests.Tests.Mocks.Views.Levels
         {
             return new BasicCellView();
         }
+        protected override void DisposeInner()
+        {
+        }
     }
 }

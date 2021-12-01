@@ -25,5 +25,9 @@ namespace Tests.Tests.Mocks.Views.Levels
         {
             Position = vector2;
         }
+
+        protected override void DisposeInner()
+        {
+        }
     }
 }

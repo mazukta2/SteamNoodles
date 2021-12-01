@@ -31,5 +31,8 @@ namespace Game.Tests.Mocks.Views.Levels
         {
             _clickAction();
         }
+        protected override void DisposeInner()
+        {
+        }
     }
 }

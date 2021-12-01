@@ -17,21 +17,8 @@ namespace Game.Tests.Mocks.Prototypes.Levels
         };
 
         public IOrderSettings[] Orders => _orders.ToArray();
-        public LevelView Level { get; set; }
 
-        private Action<ILevelSettings, ILevelView> _finished;
         private List<IOrderSettings> _orders = new List<IOrderSettings>();
-
-        public void Finish()
-        {
-            Level = new LevelView();
-            _finished(this, Level);
-        }
-
-        public void Load(Action<ILevelSettings, ILevelView> onFinished)
-        {
-            _finished = onFinished;
-        }
 
         public void Add(IOrderSettings order)
         {

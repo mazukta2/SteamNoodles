@@ -12,5 +12,8 @@ namespace Game.Tests.Mocks.Views.Units
         {
             return new UnitView();
         }
+        protected override void DisposeInner()
+        {
+        }
     }
 }

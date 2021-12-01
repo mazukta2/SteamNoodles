@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Clashes;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
 {
-    public class ClashesPresenter
+    public class ClashesPresenter : Disposable
     {
         private GameClashes _model;
         private IClashesView _view;
@@ -29,10 +30,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
             _model.OnClashEnded += _model_OnClashEnded;
         }
 
-        public void Destroy()
+        protected override void DisposeInner()
         {
             _model.OnClashStarted -= _model_OnClashStarted;
             _model.OnClashEnded -= _model_OnClashEnded;
+            _view.Dispose();
         }
 
         public void OnStartClash()
@@ -49,6 +51,5 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
         {
             _view.ShowButton(true);
         }
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Logic;
 using Assets.Scripts.Logic.Models.Events.GameEvents;
 using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions;
@@ -16,12 +17,11 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
 {
-    public class LevelScreenPresenter : IPresenter
+    public class LevelScreenPresenter : Disposable
     {
         public HandPresenter Hand { get; }
         public CurrentOrderPresenter Order { get; private set; }
         public ClashesPresenter Clashes { get; private set; }
-        public bool IsDestoyed { get; private set; }
 
         private GameLevel _model;
         private IScreenView _view;
@@ -39,12 +39,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
             model.Orders.OnCurrentOrderChanged += UpdateOrder;
         }
 
-        public void Destroy()
+        protected override void DisposeInner()
         {
             _model.Orders.OnCurrentOrderChanged -= UpdateOrder;
-            Hand.Destroy();
-            Order?.Destroy();
-            IsDestoyed = true;
+            Hand.Dispose();
+            Order?.Dispose();
+            Clashes.Dispose();
         }
 
         private void UpdateOrder()
@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
             }
             else
             {
-                Order?.Destroy();
+                Order?.Dispose();
                 Order = null;
             }
         }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Game
 {
-    public interface IGameView
+    public interface IGameView : IView
     {
         IGameSessionView Session { get; }
         IGameSessionView CreateSession();

@@ -5,5 +5,8 @@ namespace Tests.Tests.Mocks.Views.Levels
 {
     public class BasicCurrentOrderView : TestView, ICurrentOrderView
     {
+        protected override void DisposeInner()
+        {
+        }
     }
 }

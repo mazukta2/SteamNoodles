@@ -32,5 +32,8 @@ namespace Game.Tests.Mocks.Views.Levels
             Clashes = new ClashesView();
             return Clashes;
         }
+        protected override void DisposeInner()
+        {
+        }
     }
 }

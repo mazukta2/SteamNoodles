@@ -1,11 +1,4 @@
-﻿using Assets.Scripts.Models.Buildings;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Tests.Mocks.Prototypes.Levels;
-using Game.Tests.Shortcuts;
-using NUnit.Framework;
-using System.Linq;
-using Tests.Mocks.Prototypes.Levels;
+﻿using NUnit.Framework;
 
 namespace Game.Tests.Cases.Orders
 {

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
@@ -10,10 +11,8 @@ using Tests.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class PlacementPresenter : IPresenter
+    public class PlacementPresenter : Disposable
     {
-        public bool IsDestoyed { get; private set; }
-
         private Placement _model;
         private Dictionary<Construction, ConstructionPresenter> _constructions = new Dictionary<Construction, ConstructionPresenter>();
         private List<CellPresenter> _cells = new List<CellPresenter>();
@@ -38,17 +37,19 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             model.OnConstructionRemoved += ConstructionRemoved;
         }
 
-        public void Destroy()
+
+        protected override void DisposeInner()
         {
             _model.OnConstructionAdded -= ConstructionAdded;
             _model.OnConstructionRemoved += ConstructionRemoved;
-            View.Destroy();
-            Ghost?.Destroy();
+            View.Dispose();
+            Ghost?.Dispose();
 
-            IsDestoyed = true;
+            foreach (var cell in _cells)
+                cell.Dispose();
         }
 
-        public bool CanPlace(ConstructionScheme scheme, Point position)
+        public bool CanPlace(ConstructionCard scheme, Point position)
         {
             return _model.CanPlace(scheme, position);
         }
@@ -59,7 +60,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         public IPlacementView View { get; private set; }
         public float CellSize => _model.CellSize;
 
-        public void SetGhost(ConstructionScheme obj)
+        public void SetGhost(ConstructionCard obj)
         {
             if (Ghost != null) throw new Exception("Ghost already existing");
 
@@ -69,7 +70,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
         public void ClearGhost()
         {
-            Ghost.Destroy();
+            Ghost.Dispose();
             Ghost = null;
             UpdateGhostCells();
         }
@@ -134,8 +135,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             var toDelete = _constructions.Where(x => !_model.Contain(x.Key));
             foreach (var viewModel in toDelete)
             {
-                viewModel.Value.Destroy();
                 _constructions.Remove(viewModel.Key);
+                viewModel.Value.Dispose();
             }
 
             var toAdd = _model.Constructions.Where(x => !_constructions.ContainsKey(x));

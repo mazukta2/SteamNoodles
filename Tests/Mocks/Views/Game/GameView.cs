@@ -12,5 +12,9 @@ namespace Game.Tests.Mocks.Views.Game
             Session = new GameSessionView();
             return Session;
         }
+        protected override void DisposeInner()
+        {
+            Session.Dispose();
+        }
     }
 }

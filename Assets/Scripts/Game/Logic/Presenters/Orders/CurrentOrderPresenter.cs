@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Orders;
 using System;
 using System.Collections.Generic;
 using Tests.Assets.Scripts.Game.Logic.Presenters.Levels;
@@ -6,9 +7,8 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Orders
 {
-    public class CurrentOrderPresenter
+    public class CurrentOrderPresenter : Disposable
     {
-        //public List<RecipeViewModel> Recipies { get; } = new List<RecipeViewModel>();
         public ICurrentOrderView View { get; private set; }
 
         private ServingOrderProcess _model;
@@ -20,19 +20,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Orders
 
             _model = model;
             View = view;
-
-            //foreach (var recipe in _model.Recipes)
-            //{
-            //    Recipies.Add(new RecipeViewModel(recipe, View.CreateRecipe()));
-            //}
         }
 
-        public void Destroy()
+        protected override void DisposeInner()
         {
-            //foreach (var item in Recipies)
-            //    item.Destroy();
-
-            View.Destroy();
+            View.Dispose();
             View = null;
         }
     }

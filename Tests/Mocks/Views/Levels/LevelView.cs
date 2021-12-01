@@ -23,6 +23,11 @@ namespace Game.Tests.Mocks.Views.Levels
             Screen = new ScreenView();
         }
 
+        protected override void DisposeInner()
+        {
+            Screen.Dispose();
+        }
+
         public IHandView CreateHand()
         {
             return new BasicHandView();

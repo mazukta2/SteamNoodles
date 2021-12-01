@@ -5,10 +5,11 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Game;
 using System;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Session
 {
-    public class GameSessionPresenter
+    public class GameSessionPresenter : Disposable
     {
         public LevelPresenter CurrentLevel { get; private set; }
 
@@ -22,18 +23,22 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Session
 
             _model = model;
             _view = view;
+
+            _model.OnLoaded += _model_OnLoaded;
+            _model.OnDispose += Dispose;
         }
 
-        public void LoadLevel(ILevelSettings levelPrototype)
+        protected override void DisposeInner()
         {
-            levelPrototype.Load(OnFinished);
+            _model.OnLoaded -= _model_OnLoaded;
+            _model.OnDispose -= Dispose;
+            CurrentLevel?.Dispose();
         }
 
-        private void OnFinished(ILevelSettings prototype, ILevelView levelView)
+        private void _model_OnLoaded()
         {
-            _model.SetLevel(new GameLevel(prototype, _model.Random));
-            _view.SetLevel(levelView);
-            CurrentLevel = new LevelPresenter(_model.CurrentLevel, levelView);
+            CurrentLevel = new LevelPresenter(_model.CurrentLevel, _view.CurrentLevel);
         }
+
     }
 }

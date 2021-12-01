@@ -7,6 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Core
 {
     public abstract class Disposable : IDisposable
     {
+        public event Action OnDispose = delegate { };
         public bool IsDisposed { get; private set; }
         public void Dispose() // Implement IDisposable
         {
@@ -23,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Core
         }
 #endif
 
-        protected abstract void OnDispose();
+        protected abstract void DisposeInner();
 
         protected virtual void Dispose(bool disposing)
         {
@@ -31,12 +32,18 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Core
             {
                 if (!disposing)
                 {
-                    throw new Exception("Undisposed action " + this);
-                    //_undisposed.Add(this);
+                    _undisposed.Add(this);
                 }              
-                OnDispose();
+                DisposeInner();
                 IsDisposed = true;
+                OnDispose();
             }
+        }
+
+        private static List<object> _undisposed = new List<object>();
+        public static List<object>  GetListOfUndisposed()
+        {
+            return _undisposed;
         }
     }
 }

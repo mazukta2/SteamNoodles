@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
 {
-    public class UnitsPresenter
+    public class UnitsPresenter : Disposable
     {
         private LevelUnits _model;
         private IUnitsView _view;
@@ -28,11 +29,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
             _model.OnUnitDestroy += DestroyUnit;
         }
 
-        public void Destroy()
+        protected override void DisposeInner()
         {
             _model.OnUnitSpawn -= SpawnUnit;
             foreach (var item in _units)
-                item.Destroy();
+                item.Dispose();
+
+            _units.Clear();
+            _view.Dispose();
         }
 
         private void SpawnUnit(Unit unit)
@@ -48,10 +52,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
                 if (item.Unit == obj)
                 {
                     _units.Remove(item);
-                    item.Destroy();
+                    item.Dispose();
                 }
             }
         }
-
     }
 }

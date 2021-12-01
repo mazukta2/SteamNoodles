@@ -13,5 +13,8 @@ namespace Game.Tests.Mocks.Views.Levels
         {
             return new BasicHandConstructionView();
         }
+        protected override void DisposeInner()
+        {
+        }
     }
 }

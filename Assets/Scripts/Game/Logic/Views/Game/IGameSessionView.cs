@@ -5,7 +5,7 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Game
 {
-    public interface IGameSessionView
+    public interface IGameSessionView : IView
     {
         ILevelView CurrentLevel { get;}
         void SetLevel(ILevelView levelView);

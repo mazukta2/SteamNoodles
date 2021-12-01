@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
-    public class ServingOrderProcess
+    public class ServingOrderProcess : Disposable
     {
 
         public ServingOrderProcess(GameTime time, Placement placement, Unit unit)
@@ -38,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _stateMachine.Fire(Triggers.Start);
         }
 
-        public void Destroy()
+        protected override void DisposeInner()
         {
             Unit.OnReachedPosition -= Unit_OnPositionReached;
 

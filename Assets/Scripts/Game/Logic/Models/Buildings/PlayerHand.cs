@@ -1,56 +1,54 @@
-﻿using Assets.Scripts.Logic.Models.Events.GameEvents;
-using Assets.Scripts.Logic.Prototypes.Levels;
-using Assets.Scripts.Models.Events;
-using Game.Assets.Scripts.Game.Logic.States;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using System;
 using System.Collections.Generic;
 
 namespace Assets.Scripts.Models.Buildings
 {
-    public class PlayerHand
+    public class PlayerHand : Disposable
     {
-        public event Action<ConstructionScheme> OnAdded = delegate { };
-        public event Action<ConstructionScheme> OnRemoved = delegate { };
+        public event Action<ConstructionCard> OnAdded = delegate { };
+        public event Action<ConstructionCard> OnRemoved = delegate { };
 
-        public ConstructionScheme[] CurrentSchemes => _state.Schemes.ToArray();
-
-        private GameState _state;
+        public ConstructionCard[] Cards => _cards.ToArray();
+        private List<ConstructionCard> _cards { get; set; } = new List<ConstructionCard>();
 
         public PlayerHand(IConstructionSettings[] startingHand)
         {
-            _state = new GameState();
-
             foreach (var item in startingHand)
             {
-                Add(new ConstructionScheme(item));
+                Add(new ConstructionCard(item));
             }
         }
 
-        public void Remove(ConstructionScheme scheme)
+        protected override void DisposeInner()
         {
-            _state.Schemes.Remove(scheme);
+            foreach (var card in _cards)
+                card.Dispose();
+            _cards = null;
+        }
+
+        public void Remove(ConstructionCard scheme)
+        {
+            _cards.Remove(scheme);
             OnRemoved(scheme);
         }
 
-        public bool Contain(ConstructionScheme scheme)
+        public bool Contain(ConstructionCard scheme)
         {
-            return _state.Schemes.Contains(scheme);
+            return _cards.Contains(scheme);
         }
 
         public void Add(IConstructionSettings proto)
         {
-            Add(new ConstructionScheme(proto));
+            Add(new ConstructionCard(proto));
         }
 
-        private void Add(ConstructionScheme buildingScheme)
+        private void Add(ConstructionCard buildingScheme)
         {
-            _state.Schemes.Add(buildingScheme);
+            _cards.Add(buildingScheme);
             OnAdded(buildingScheme);
         }
 
-        private class GameState : IStateEntity
-        {
-            public List<ConstructionScheme> Schemes { get; set; } = new List<ConstructionScheme>();
-        }
     }
 }

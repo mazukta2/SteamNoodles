@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Units;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
 {
-    public class UnitPresenter
+    public class UnitPresenter : Disposable
     {
+        public Unit Unit => _model;
+
         private IUnitView _view;
         private Unit _model;
 
@@ -21,18 +24,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
             _model.OnPositionChanged += _model_OnPositionChanged;
         }
 
-        public void Destroy()
+        protected override void DisposeInner()
         {
             _model.OnPositionChanged -= _model_OnPositionChanged;
-            _view.Destroy();
+            _view.Dispose();
         }
-
-        public Unit Unit => _model;
 
         private void _model_OnPositionChanged()
         {
             _view.SetPosition(_model.Position);
         }
-
     }
 }

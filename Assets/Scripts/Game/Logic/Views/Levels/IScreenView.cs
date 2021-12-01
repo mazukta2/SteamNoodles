@@ -7,7 +7,7 @@ using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Levels
 {
-    public interface IScreenView
+    public interface IScreenView : IView
     {
         public IClashesView Clashes { get; }
         IClashesView CreateClashes();

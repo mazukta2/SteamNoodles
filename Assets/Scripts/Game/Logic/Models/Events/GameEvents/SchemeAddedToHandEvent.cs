@@ -5,7 +5,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Events.GameEvents
 {
     public class SchemeAddedToHandEvent : IGameEvent
     {
-        public SchemeAddedToHandEvent(ConstructionScheme building) => Construction = building;
-        public ConstructionScheme Construction { get; }
+        public SchemeAddedToHandEvent(ConstructionCard building) => Construction = building;
+        public ConstructionCard Construction { get; }
     };
 }

@@ -46,5 +46,8 @@ namespace Tests.Tests.Mocks.Views.Levels
         {
             _image = image;
         }
+        protected override void DisposeInner()
+        {
+        }
     }
 }

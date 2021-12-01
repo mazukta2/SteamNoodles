@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Units
 {
-    public class LevelUnits
+    public class LevelUnits : Disposable
     {
         private Placement _placement;
         private IUnitsPrototype _prototype;
@@ -37,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _time.OnTimeChanged += Time_OnTimeChanged;
         }
 
-        public void Destroy()
+        protected override void DisposeInner()
         {
             _time.OnTimeChanged -= Time_OnTimeChanged;
         }
