@@ -23,7 +23,7 @@ namespace Tests.Assets.Scripts.Game.Logic.Presenters
 
         public GameSessionPresenter Session { get; private set; }
 
-        public void StartGame(ILevelPrototype levelPrototype)
+        public void StartGame(ILevelSettings levelPrototype)
         {
             _model.CreateSession();
 

@@ -11,7 +11,7 @@ namespace Assets.Scripts.Models.Buildings
     {
         private GameState _state;
 
-        public ConstructionScheme(IConstructionPrototype item)
+        public ConstructionScheme(IConstructionSettings item)
         {
             _state = new GameState();
             _state.Item = item;
@@ -21,8 +21,7 @@ namespace Assets.Scripts.Models.Buildings
         public Requirements Requirements => _state.Item.Requirements;
         public ISprite HandIcon => _state.Item.HandIcon;
         public IVisual BuildingView => _state.Item.BuildingView;
-        public IIngredientPrototype ProvidedIngridient => _state.Item.ProvideIngredient;
-        public IConstructionPrototype Protype => _state.Item;
+        public IConstructionSettings Protype => _state.Item;
 
         public Point[] GetOccupiedSpace(Point position)
         {
@@ -39,7 +38,7 @@ namespace Assets.Scripts.Models.Buildings
 
         private class GameState : IStateEntity
         {
-            public IConstructionPrototype Item { get; set; }
+            public IConstructionSettings Item { get; set; }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
     {
         private GameState _state;
 
-        public Construction(IConstructionPrototype prototype, Point position)
+        public Construction(IConstructionSettings prototype, Point position)
         {
             _state = new GameState();
             _state.Prototype = prototype;
@@ -24,16 +24,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
         public Point Position => _state.Position;
         public float WorkTime => _state.Prototype.WorkTime;
         public float WorkProgressPerHit => _state.Prototype.WorkProgressPerHit;
-
-        public bool IsProvide(Recipe recipe)
-        {
-            return IsProvide(recipe.Ingredient);
-        }
-
-        public bool IsProvide(IIngredientPrototype ingredient)
-        {
-            return Scheme.ProvidedIngridient == ingredient;
-        }
 
         public Point[] GetOccupiedScace()
         {
@@ -47,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 
         private class GameState : IStateEntity
         {
-            public IConstructionPrototype Prototype { get; set; }
+            public IConstructionSettings Prototype { get; set; }
             public Point Position { get; set; }
         }
 

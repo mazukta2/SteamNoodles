@@ -9,7 +9,7 @@ using Tests.Tests.Mocks.Views.Common;
 
 namespace Game.Tests.Mocks.Prototypes.Levels
 {
-    public class TestBuildingPrototype : IConstructionPrototype
+    public class TestBuildingPrototype : IConstructionSettings
     {
         public Point Size { get; set; } = new Point(2, 1);
 
@@ -21,7 +21,6 @@ namespace Game.Tests.Mocks.Prototypes.Levels
         public ISprite HandIcon { get; } = new ItsUnitySpriteWrapper();
 
         public IVisual BuildingView { get; } = new ItsUnitySpriteWrapper();
-        public IIngredientPrototype ProvideIngredient { get; set; } = new TestIngredientPrototype();
 
         public float WorkTime => 2f;
         public float WorkProgressPerHit => 10;

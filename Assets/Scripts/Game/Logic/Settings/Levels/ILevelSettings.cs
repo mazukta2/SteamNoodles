@@ -5,16 +5,16 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
 {
-    public interface ILevelPrototype : IOrdersPrototype, IPlacementPrototype, IUnitsPrototype
+    public interface ILevelSettings : IOrdersPrototype, IPlacementPrototype, IUnitsPrototype
     {
-        IConstructionPrototype[] StartingHand { get; }
+        IConstructionSettings[] StartingHand { get; }
 
-        void Load(Action<ILevelPrototype, ILevelView> onFinished);
+        void Load(Action<ILevelSettings, ILevelView> onFinished);
     }
 
     public interface IOrdersPrototype
     {
-        IOrderPrototype[] Orders { get; }
+        IOrderSettings[] Orders { get; }
     }
 
     public interface IQueuePrototype

@@ -6,10 +6,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class PotentialOrder
     {
-        private IOrderPrototype _order;
+        private IOrderSettings _order;
         private Placement _placement;
 
-        public PotentialOrder(Placement placement, IOrderPrototype order)
+        public PotentialOrder(Placement placement, IOrderSettings order)
         {
             _order = order;
             _placement = placement;
@@ -17,20 +17,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         public bool CanBeOrder()
         {
-            foreach (var recipe in _order.Recipes)
-            {
-                if (!_placement.Constructions.Any(x => x.IsProvide(recipe.Ingredient)))
-                    return false;
-            }
             return true;
         }
 
-        public bool Have(IIngredientPrototype ingredient)
-        {
-            return _order.Recipes.Any(x => x.Ingredient == ingredient);
-        }
-
-        public IOrderPrototype GetPrototype()
+        public IOrderSettings GetPrototype()
         {
             return _order;
         }

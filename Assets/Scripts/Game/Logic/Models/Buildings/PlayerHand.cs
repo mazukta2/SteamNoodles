@@ -16,7 +16,7 @@ namespace Assets.Scripts.Models.Buildings
 
         private GameState _state;
 
-        public PlayerHand(IConstructionPrototype[] startingHand)
+        public PlayerHand(IConstructionSettings[] startingHand)
         {
             _state = new GameState();
 
@@ -37,7 +37,7 @@ namespace Assets.Scripts.Models.Buildings
             return _state.Schemes.Contains(scheme);
         }
 
-        public void Add(IConstructionPrototype proto)
+        public void Add(IConstructionSettings proto)
         {
             Add(new ConstructionScheme(proto));
         }

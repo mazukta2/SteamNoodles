@@ -5,13 +5,12 @@ using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Assets.Scripts.Logic.Prototypes.Levels
 {
-    public interface IConstructionPrototype
+    public interface IConstructionSettings
     {
         Point Size { get; }
         Requirements Requirements { get;}
         ISprite HandIcon { get; }
         IVisual BuildingView { get; }
-        IIngredientPrototype ProvideIngredient { get; }
         float WorkTime { get; }
         float WorkProgressPerHit { get; }
     }

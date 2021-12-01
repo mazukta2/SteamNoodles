@@ -50,7 +50,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
             return _list.ToArray();
         }
 
-        public void Add(IConstructionPrototype building)
+        public void Add(IConstructionSettings building)
         {
             _model.Add(building);
         }

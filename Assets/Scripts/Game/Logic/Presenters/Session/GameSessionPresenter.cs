@@ -17,12 +17,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Session
             _model = model;
         }
 
-        public void LoadLevel(ILevelPrototype levelPrototype)
+        public void LoadLevel(ILevelSettings levelPrototype)
         {
             levelPrototype.Load(OnFinished);
         }
 
-        private void OnFinished(ILevelPrototype prototype, ILevelView view)
+        private void OnFinished(ILevelSettings prototype, ILevelView view)
         {
             _model.SetLevel(new GameLevel(prototype, _model.Random));
             CurrentLevel = new LevelPresenter(_model.CurrentLevel, view);

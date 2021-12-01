@@ -8,19 +8,19 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Tests.Mocks.Prototypes.Levels
 {
-    public class TestLevelPrototype : ILevelPrototype
+    public class TestLevelPrototype : ILevelSettings
     {
         public Point Size => new Point(4, 4);
 
-        public IConstructionPrototype[] StartingHand => new IConstructionPrototype[] {
+        public IConstructionSettings[] StartingHand => new IConstructionSettings[] {
             new TestBuildingPrototype()
         };
 
-        public IOrderPrototype[] Orders => _orders.ToArray();
+        public IOrderSettings[] Orders => _orders.ToArray();
         public BasicLevelView Level { get; set; }
 
-        private Action<ILevelPrototype, ILevelView> _finished;
-        private List<IOrderPrototype> _orders = new List<IOrderPrototype>();
+        private Action<ILevelSettings, ILevelView> _finished;
+        private List<IOrderSettings> _orders = new List<IOrderSettings>();
 
         public void Finish()
         {
@@ -28,12 +28,12 @@ namespace Game.Tests.Mocks.Prototypes.Levels
             _finished(this, Level);
         }
 
-        public void Load(Action<ILevelPrototype, ILevelView> onFinished)
+        public void Load(Action<ILevelSettings, ILevelView> onFinished)
         {
             _finished = onFinished;
         }
 
-        public void Add(IOrderPrototype order)
+        public void Add(IOrderSettings order)
         {
             _orders.Add(order);
         }
