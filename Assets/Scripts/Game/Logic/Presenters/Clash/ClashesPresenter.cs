@@ -15,6 +15,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
         private GameClashes _model;
         private IClashesView _view;
 
+        public IClashesView View { get; private set; }
+
         public ClashesPresenter(GameClashes model, IClashesView view)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));

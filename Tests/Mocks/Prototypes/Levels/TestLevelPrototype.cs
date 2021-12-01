@@ -17,14 +17,14 @@ namespace Game.Tests.Mocks.Prototypes.Levels
         };
 
         public IOrderSettings[] Orders => _orders.ToArray();
-        public BasicLevelView Level { get; set; }
+        public LevelView Level { get; set; }
 
         private Action<ILevelSettings, ILevelView> _finished;
         private List<IOrderSettings> _orders = new List<IOrderSettings>();
 
         public void Finish()
         {
-            Level = new BasicLevelView();
+            Level = new LevelView();
             _finished(this, Level);
         }
 

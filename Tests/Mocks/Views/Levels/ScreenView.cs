@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Levels;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
 using Game.Tests.Mocks.Views.Clashes;
 using Game.Tests.Mocks.Views.Units;
@@ -10,38 +12,25 @@ using Tests.Tests.Mocks.Views.Levels;
 
 namespace Game.Tests.Mocks.Views.Levels
 {
-    public class BasicLevelView : TestView, ILevelView
+    public class ScreenView : TestView, IScreenView
     {
-        private Action<float> _moveTime;
+        public IClashesView Clashes { get; private set; }
 
         public IHandView CreateHand()
         {
             return new BasicHandView();
         }
 
-        public IPlacementView CreatePlacement()
-        {
-            return new BasicPlacementView();
-        }
 
         public ICurrentOrderView CreateCurrentOrder()
         {
             return new BasicCurrentOrderView();
         }
 
-        public void SetTimeMover(Action<float> moveTime)
-        {
-            _moveTime = moveTime;
-        }
-
-        public IUnitsView CreateUnits()
-        {
-            return new UnitsView();
-        }
-
         public IClashesView CreateClashes()
         {
-            return new ClashesView();
+            Clashes = new ClashesView();
+            return Clashes;
         }
     }
 }

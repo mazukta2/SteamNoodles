@@ -4,36 +4,40 @@ using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Session;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
+using Game.Assets.Scripts.Game.Logic.Views.Game;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 
 namespace Tests.Assets.Scripts.Game.Logic.Presenters
 {
-    public class GameLogicPresenter
+    public class GameLogicPresenter : Disposable
     {
-        private GameLogic _model;
-        private HistoryReader _historyReader;
-
-        public GameLogicPresenter(GameLogic model)
-        {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-            _model = model;
-
-            _historyReader = new HistoryReader(model.History);
-            _historyReader.Subscribe<SessionCreatedEvent>(UpdateSession);
-        }
-
         public GameSessionPresenter Session { get; private set; }
 
-        public void StartGame(ILevelSettings levelPrototype)
-        {
-            _model.CreateSession();
+        private GameLogic _model;
+        private IGameView _view;
 
-            Session.LoadLevel(levelPrototype);
+        public GameLogicPresenter(GameLogic model, IGameView view)
+        {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+            if (view == null) throw new ArgumentNullException(nameof(view));
+            _model = model;
+            _view = view;
+
+            if (_model.Session != null)
+                CreatePresenter();
+
+            _model.OnSessionCreated += CreatePresenter;
         }
 
-        private void UpdateSession(SessionCreatedEvent obj)
+        protected override void OnDispose()
         {
-            Session = new GameSessionPresenter(obj.Session);
+            _model.OnSessionCreated -= CreatePresenter;
+            _model.Dispose();
         }
 
+        private void CreatePresenter()
+        {
+            Session = new GameSessionPresenter(_model.Session, _view.CreateSession());
+        }
     }
 }
