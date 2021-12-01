@@ -4,5 +4,6 @@ namespace Tests.Mocks.Prototypes.Levels
 {
     public class TestIngredientPrototype : IIngredientPrototype
     {
+        public string Name { get; set; }
     }
 }

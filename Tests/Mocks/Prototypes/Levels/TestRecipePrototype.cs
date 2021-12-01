@@ -13,5 +13,7 @@ namespace Game.Tests.Mocks.Prototypes.Levels
         {
             Ingredient = ingredient;
         }
+
+        public int Count { get; set; }
     }
 }

@@ -37,5 +37,7 @@ namespace Game.Tests.Mocks.Prototypes.Levels
         {
             _orders.Add(order);
         }
+
+        public Rect UnitsSpawnRect { get; set; } = new Rect(-5, -5, 10, 10);
     }
 }

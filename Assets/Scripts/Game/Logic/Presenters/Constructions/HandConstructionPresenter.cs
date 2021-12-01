@@ -1,11 +1,11 @@
 ﻿using Assets.Scripts.Models.Buildings;
-using Game.Assets.Scripts.Game.Logic.ViewModel;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
-namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
+namespace Tests.Assets.Scripts.Game.Logic.Presenters.Levels
 {
-    public class HandConstructionViewModel : IViewModel
+    public class HandConstructionPresenter : IPresenter
     {
         public IHandConstructionView View => _view;
         public bool IsDestoyed { get; private set; }
@@ -15,7 +15,7 @@ namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
         private IHandConstructionView _view;
         private Action<ConstructionScheme> _onClick;
 
-        public HandConstructionViewModel(ConstructionScheme model, IHandConstructionView view, Action<ConstructionScheme> onClick)
+        public HandConstructionPresenter(ConstructionScheme model, IHandConstructionView view, Action<ConstructionScheme> onClick)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (view == null) throw new ArgumentNullException(nameof(view));

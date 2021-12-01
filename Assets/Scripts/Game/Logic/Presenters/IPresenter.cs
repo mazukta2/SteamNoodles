@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel
+namespace Game.Assets.Scripts.Game.Logic.Presenters
 {
-    public interface IViewModel
+    public interface IPresenter
     {
         public bool IsDestoyed { get; }
         public void Destroy();

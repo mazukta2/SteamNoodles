@@ -1,18 +1,18 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Buildings;
-using Game.Assets.Scripts.Game.Logic.ViewModel;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class ConstructionViewModel : IViewModel
+    public class ConstructionPresenter : IPresenter
     {
         private Construction _model;
         public IConstructionView View { get; private set; }
 
         public bool IsDestoyed { get; set; }
 
-        public ConstructionViewModel(PlacementViewModel placement, Construction construction, IConstructionView view)
+        public ConstructionPresenter(PlacementPresenter placement, Construction construction, IConstructionView view)
         {
             _model = construction;
             View = view;

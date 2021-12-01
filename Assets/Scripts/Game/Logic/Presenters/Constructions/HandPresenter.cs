@@ -1,23 +1,23 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Assets.Scripts.Models.Buildings;
-using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
+using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tests.Assets.Scripts.Game.Logic.Models.Events;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
+using Tests.Assets.Scripts.Game.Logic.Presenters.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
 {
-    public class HandViewModel : IViewModel
+    public class HandPresenter : IPresenter
     {
         private PlayerHand _model;
-        private PlacementViewModel _placement;
-        private List<HandConstructionViewModel> _list = new List<HandConstructionViewModel>();
+        private PlacementPresenter _placement;
+        private List<HandConstructionPresenter> _list = new List<HandConstructionPresenter>();
         private HistoryReader _historyReader;
 
-        public HandViewModel(PlayerHand model, IHandView view, PlacementViewModel placement)
+        public HandPresenter(PlayerHand model, IHandView view, PlacementPresenter placement)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             _model = model;
@@ -45,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions
         public IHandView View { get; private set; }
         public bool IsDestoyed { get; private set; }
 
-        public HandConstructionViewModel[] GetSchemes()
+        public HandConstructionPresenter[] GetSchemes()
         {
             return _list.ToArray();
         }
@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions
 
         private void ScnemeAddedHandle(ConstructionScheme obj)
         {
-            _list.Add(new HandConstructionViewModel(obj, View.CreateConstruction(), OnSchemeClick));
+            _list.Add(new HandConstructionPresenter(obj, View.CreateConstruction(), OnSchemeClick));
         }
 
         private void ScnemeRemovedHandle(ConstructionScheme obj)

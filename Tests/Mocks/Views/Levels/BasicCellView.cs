@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
+﻿using System.Numerics;
+using Tests.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Tests.Assets.Scripts.Game.Logic.Views;
-using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using Tests.Tests.Mocks.Views.Common;
 
 namespace Tests.Tests.Mocks.Views.Levels
 {
     public class BasicCellView : TestView, ICellView
     {
-        private CellViewModel.CellState _state;
+        private CellPresenter.CellState _state;
 
         public Vector2 Position { get; private set; }
 
-        public void SetState(CellViewModel.CellState state)
+        public void SetState(CellPresenter.CellState state)
         {
             _state = state;
         }
 
-        public CellViewModel.CellState GetState()
+        public CellPresenter.CellState GetState()
         {
             return _state;
         }

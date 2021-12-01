@@ -4,9 +4,9 @@ using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using System;
 using System.Numerics;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class ConstructionGhostViewModel : IViewModel
+    public class ConstructionGhostPresenter : IPresenter
     {
         public ConstructionScheme Scheme { get; }
         public IGhostConstructionView View { get; private set; }
@@ -14,10 +14,10 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
         public bool IsDestoyed { get; private set; }
 
-        private PlacementViewModel _placement;
+        private PlacementPresenter _placement;
 
 
-        public ConstructionGhostViewModel(PlacementViewModel placement, ConstructionScheme scheme, IGhostConstructionView view)
+        public ConstructionGhostPresenter(PlacementPresenter placement, ConstructionScheme scheme, IGhostConstructionView view)
         {
             Scheme = scheme;
             _placement = placement;

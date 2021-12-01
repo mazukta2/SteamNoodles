@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel.Units
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
 {
-    public class UnitViewModel
+    public class UnitPresenter
     {
         private IUnitView _view;
         private Unit _model;
 
-        public UnitViewModel(Unit model, IUnitView view)
+        public UnitPresenter(Unit model, IUnitView view)
         {
             _view = view;
             _view.SetPosition(model.Position);

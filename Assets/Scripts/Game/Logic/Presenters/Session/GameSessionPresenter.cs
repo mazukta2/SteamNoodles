@@ -1,18 +1,18 @@
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
-using Game.Assets.Scripts.Game.Logic.ViewModel.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel.Session
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Session
 {
-    public class GameSessionViewModel
+    public class GameSessionPresenter
     {
-        public LevelViewModel CurrentLevel { get; private set; }
+        public LevelPresenter CurrentLevel { get; private set; }
 
         private GameSession _model;
 
-        public GameSessionViewModel(GameSession model)
+        public GameSessionPresenter(GameSession model)
         {
             _model = model;
         }
@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Session
         private void OnFinished(ILevelPrototype prototype, ILevelView view)
         {
             _model.SetLevel(new GameLevel(prototype, _model.Random));
-            CurrentLevel = new LevelViewModel(_model.CurrentLevel, view);
+            CurrentLevel = new LevelPresenter(_model.CurrentLevel, view);
         }
     }
 }

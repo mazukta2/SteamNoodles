@@ -5,7 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Tests.Assets.Scripts.Game.Logic.ViewModel;
+using Tests.Assets.Scripts.Game.Logic.Presenters;
 using Tests.Mocks.Prototypes.Levels;
 
 namespace Game.Tests.Cases.GameFlow
@@ -16,7 +16,7 @@ namespace Game.Tests.Cases.GameFlow
         public void Loading()
         {
             var game = new GameLogic();
-            var gameVm = new GameLogicViewModel(game);
+            var gameVm = new GameLogicPresenter(game);
             game.CreateSession();
             var session = game.Session;
             var sessionVm = gameVm.Session;

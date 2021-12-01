@@ -5,8 +5,7 @@ using Game.Tests.Shortcuts;
 using NUnit.Framework;
 using System.Linq;
 using System.Numerics;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
-using Tests.Mocks.Prototypes.Levels;
+using Tests.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 
 namespace Game.Tests.Cases.Constructions
 {
@@ -83,13 +82,13 @@ namespace Game.Tests.Cases.Constructions
             var construction = levelViewModel.Screen.Hand.GetSchemes().First();
 
             var cells = levelViewModel.Placement.GetCells();
-            Assert.IsTrue(cells.All(x => x.State == CellViewModel.CellState.Normal
-                && x.View.GetState() == CellViewModel.CellState.Normal));
+            Assert.IsTrue(cells.All(x => x.State == CellPresenter.CellState.Normal
+                && x.View.GetState() == CellPresenter.CellState.Normal));
 
             construction.View.Click();
 
-            Assert.IsTrue(cells.All(x => (x.State == CellViewModel.CellState.IsReadyToPlace || x.State == CellViewModel.CellState.IsAvailableGhostPlace)
-                && (x.View.GetState() == CellViewModel.CellState.IsReadyToPlace || x.View.GetState() == CellViewModel.CellState.IsAvailableGhostPlace)));
+            Assert.IsTrue(cells.All(x => (x.State == CellPresenter.CellState.IsReadyToPlace || x.State == CellPresenter.CellState.IsAvailableGhostPlace)
+                && (x.View.GetState() == CellPresenter.CellState.IsReadyToPlace || x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace)));
         }
 
         [Test]
@@ -103,7 +102,7 @@ namespace Game.Tests.Cases.Constructions
             ghost.View.GetMoveAction()(new Vector2(0, 0));
 
             var cells = levelViewModel.Placement.GetCells();
-            var highlighedCells = cells.Where(x => x.State == CellViewModel.CellState.IsAvailableGhostPlace && x.View.GetState() == CellViewModel.CellState.IsAvailableGhostPlace);
+            var highlighedCells = cells.Where(x => x.State == CellPresenter.CellState.IsAvailableGhostPlace && x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace);
             Assert.AreEqual(2, highlighedCells.Count());
 
             Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(0, 0)));
@@ -111,7 +110,7 @@ namespace Game.Tests.Cases.Constructions
 
             ghost.View.GetMoveAction()(new Vector2(levelViewModel.Placement.CellSize + levelViewModel.Placement.CellSize / 4, 0));
 
-            highlighedCells = cells.Where(x => x.State == CellViewModel.CellState.IsAvailableGhostPlace && x.View.GetState() == CellViewModel.CellState.IsAvailableGhostPlace);
+            highlighedCells = cells.Where(x => x.State == CellPresenter.CellState.IsAvailableGhostPlace && x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace);
             Assert.AreEqual(2, highlighedCells.Count());
 
             Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(1, 0)));
@@ -160,22 +159,22 @@ namespace Game.Tests.Cases.Constructions
 
             var cells = levelViewModel.Placement.GetCells();
 
-            Assert.AreEqual(CellViewModel.CellState.Normal,
+            Assert.AreEqual(CellPresenter.CellState.Normal,
                 cells.First(x => x.Position == new Point(-1, 0)).View.GetState());
-            Assert.AreEqual(CellViewModel.CellState.IsNotAvailableGhostPlace,
+            Assert.AreEqual(CellPresenter.CellState.IsNotAvailableGhostPlace,
                 cells.First(x => x.Position == new Point(0, 0)).View.GetState());
-            Assert.AreEqual(CellViewModel.CellState.IsNotAvailableGhostPlace,
+            Assert.AreEqual(CellPresenter.CellState.IsNotAvailableGhostPlace,
                 cells.First(x => x.Position == new Point(1, 0)).View.GetState());
-            Assert.AreEqual(CellViewModel.CellState.Normal,
+            Assert.AreEqual(CellPresenter.CellState.Normal,
                 cells.First(x => x.Position == new Point(-1, 0)).View.GetState());
 
-            Assert.AreEqual(CellViewModel.CellState.IsReadyToPlace,
+            Assert.AreEqual(CellPresenter.CellState.IsReadyToPlace,
                 cells.First(x => x.Position == new Point(-1, -1)).View.GetState());
-            Assert.AreEqual(CellViewModel.CellState.IsAvailableGhostPlace,
+            Assert.AreEqual(CellPresenter.CellState.IsAvailableGhostPlace,
                 cells.First(x => x.Position == new Point(0, -1)).View.GetState());
-            Assert.AreEqual(CellViewModel.CellState.IsAvailableGhostPlace,
+            Assert.AreEqual(CellPresenter.CellState.IsAvailableGhostPlace,
                 cells.First(x => x.Position == new Point(1, -1)).View.GetState());
-            Assert.AreEqual(CellViewModel.CellState.IsReadyToPlace,
+            Assert.AreEqual(CellPresenter.CellState.IsReadyToPlace,
                 cells.First(x => x.Position == new Point(-1, -1)).View.GetState());
         }
         #endregion

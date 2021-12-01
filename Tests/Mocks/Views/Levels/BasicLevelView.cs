@@ -1,4 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Units;
+using Game.Tests.Mocks.Views.Clashes;
+using Game.Tests.Mocks.Views.Units;
+using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using Tests.Tests.Mocks.Views.Common;
@@ -8,6 +12,8 @@ namespace Game.Tests.Mocks.Views.Levels
 {
     public class BasicLevelView : TestView, ILevelView
     {
+        private Action<float> _moveTime;
+
         public IHandView CreateHand()
         {
             return new BasicHandView();
@@ -21,6 +27,21 @@ namespace Game.Tests.Mocks.Views.Levels
         public ICurrentOrderView CreateCurrentOrder()
         {
             return new BasicCurrentOrderView();
+        }
+
+        public void SetTimeMover(Action<float> moveTime)
+        {
+            _moveTime = moveTime;
+        }
+
+        public IUnitsView CreateUnits()
+        {
+            return new UnitsView();
+        }
+
+        public IClashesView CreateClashes()
+        {
+            return new ClashesView();
         }
     }
 }

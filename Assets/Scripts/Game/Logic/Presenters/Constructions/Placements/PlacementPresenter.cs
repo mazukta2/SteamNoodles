@@ -6,19 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
+using Tests.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class PlacementViewModel : IViewModel
+    public class PlacementPresenter : IPresenter
     {
         public bool IsDestoyed { get; private set; }
 
         private Placement _model;
-        private Dictionary<Construction, ConstructionViewModel> _constructions = new Dictionary<Construction, ConstructionViewModel>();
-        private List<CellViewModel> _cells = new List<CellViewModel>();
+        private Dictionary<Construction, ConstructionPresenter> _constructions = new Dictionary<Construction, ConstructionPresenter>();
+        private List<CellPresenter> _cells = new List<CellPresenter>();
 
-        public PlacementViewModel(Placement model, IPlacementView view)
+        public PlacementPresenter(Placement model, IPlacementView view)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             _model = model;
@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             {
                 for (int y = _model.Rect.yMin; y <= _model.Rect.yMax; y++)
                 {
-                    _cells.Add(new CellViewModel(this, new Point(x, y), View.CreateCell()));
+                    _cells.Add(new CellPresenter(this, new Point(x, y), View.CreateCell()));
                 }
             }
 
@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
         public Point GetSize() => _model.Size;
 
-        public ConstructionGhostViewModel Ghost { get; private set; }
+        public ConstructionGhostPresenter Ghost { get; private set; }
         public IPlacementView View { get; private set; }
         public float CellSize => _model.CellSize;
 
@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         {
             if (Ghost != null) throw new Exception("Ghost already existing");
 
-            Ghost = new ConstructionGhostViewModel(this, obj, View.CreateGhost());
+            Ghost = new ConstructionGhostPresenter(this, obj, View.CreateGhost());
             UpdateGhostCells();
         }
 
@@ -87,12 +87,12 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
             }
         }
 
-        public ConstructionViewModel[] GetConstructions()
+        public ConstructionPresenter[] GetConstructions()
         {
             return _constructions.Values.ToArray();
         }
 
-        public CellViewModel[] GetCells()
+        public CellPresenter[] GetCells()
         {
             return _cells.ToArray();
         }
@@ -101,19 +101,19 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
         {
             foreach (var cell in _cells)
             {
-                var state = CellViewModel.CellState.Normal;
+                var state = CellPresenter.CellState.Normal;
                 if (Ghost != null)
                 {
                     var ocuppiedCells = Ghost.Scheme.GetOccupiedSpace(Ghost.Position);
                     if (_model.IsFreeCell(Ghost.Scheme, cell.Position))
-                        state = CellViewModel.CellState.IsReadyToPlace;
+                        state = CellPresenter.CellState.IsReadyToPlace;
 
                     if (ocuppiedCells.Any(x => x == cell.Position))
                     {
-                        if (state == CellViewModel.CellState.IsReadyToPlace)
-                            state = CellViewModel.CellState.IsAvailableGhostPlace;
+                        if (state == CellPresenter.CellState.IsReadyToPlace)
+                            state = CellPresenter.CellState.IsAvailableGhostPlace;
                         else
-                            state = CellViewModel.CellState.IsNotAvailableGhostPlace;
+                            state = CellPresenter.CellState.IsNotAvailableGhostPlace;
                     }
                 }
 
@@ -140,7 +140,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
 
             var toAdd = _model.Constructions.Where(x => !_constructions.ContainsKey(x));
             foreach (var model in toAdd)
-                _constructions.Add(model, new ConstructionViewModel(this, model, View.CreateConstrcution()));
+                _constructions.Add(model, new ConstructionPresenter(this, model, View.CreateConstrcution()));
         }
     }
 }

@@ -8,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel.Units
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
 {
-    public class ClashesViewModel
+    public class ClashesPresenter
     {
         private GameClashes _model;
         private IClashesView _view;
 
-        public ClashesViewModel(GameClashes model, IClashesView view)
+        public ClashesPresenter(GameClashes model, IClashesView view)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (view == null) throw new ArgumentNullException(nameof(view));

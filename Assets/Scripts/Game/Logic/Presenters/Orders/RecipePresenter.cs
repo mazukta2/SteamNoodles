@@ -2,13 +2,13 @@
 using Game.Assets.Scripts.Game.Logic.Views.Orders;
 using System;
 
-namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Levels
+namespace Tests.Assets.Scripts.Game.Logic.Presenters.Levels
 {
-    public class RecipeViewModel
+    public class RecipePresenter
     {
         private Recipe _model;
 
-        public RecipeViewModel(Recipe model, IRecipeView view)
+        public RecipePresenter(Recipe model, IRecipeView view)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             _model = model;

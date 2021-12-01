@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel.Units
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
 {
-    public class UnitsViewModel
+    public class UnitsPresenter
     {
         private LevelUnits _model;
         private IUnitsView _view;
-        private List<UnitViewModel> _units = new List<UnitViewModel>();
+        private List<UnitPresenter> _units = new List<UnitPresenter>();
 
-        public UnitsViewModel(LevelUnits model, IUnitsView view)
+        public UnitsPresenter(LevelUnits model, IUnitsView view)
         {
             _model = model;
             _view = view;
@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.ViewModel.Units
 
         private void SpawnUnit(Unit unit)
         {
-            var vm = new UnitViewModel(unit, _view.CreateUnit());
+            var vm = new UnitPresenter(unit, _view.CreateUnit());
             _units.Add(vm);
         }
 

@@ -1,4 +1,5 @@
-﻿using Tests.Assets.Scripts.Game.Logic.Views;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Orders;
+using Tests.Assets.Scripts.Game.Logic.Views;
 using Tests.Tests.Mocks.Views.Common;
 
 namespace Tests.Tests.Mocks.Views.Levels

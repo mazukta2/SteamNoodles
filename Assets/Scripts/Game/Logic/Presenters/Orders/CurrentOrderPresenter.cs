@@ -1,19 +1,19 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
 using System;
 using System.Collections.Generic;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
+using Tests.Assets.Scripts.Game.Logic.Presenters.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
-namespace Game.Assets.Scripts.Game.Logic.ViewModel.Orders
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Orders
 {
-    public class CurrentOrderViewModel
+    public class CurrentOrderPresenter
     {
         //public List<RecipeViewModel> Recipies { get; } = new List<RecipeViewModel>();
         public ICurrentOrderView View { get; private set; }
 
         private ServingOrderProcess _model;
 
-        public CurrentOrderViewModel(ServingOrderProcess model, ICurrentOrderView view)
+        public CurrentOrderPresenter(ServingOrderProcess model, ICurrentOrderView view)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
             if (view == null) throw new ArgumentNullException(nameof(view));

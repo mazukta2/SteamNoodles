@@ -1,14 +1,14 @@
 ﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements;
+using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
-namespace Tests.Assets.Scripts.Game.Logic.ViewModel.Constructions.Placements
+namespace Tests.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class CellViewModel
+    public class CellPresenter
     {
-        private PlacementViewModel _placementModel;
-        public CellViewModel(PlacementViewModel placement, Point position, ICellView view)
+        private PlacementPresenter _placementModel;
+        public CellPresenter(PlacementPresenter placement, Point position, ICellView view)
         {
             _placementModel = placement;
             View = view;
