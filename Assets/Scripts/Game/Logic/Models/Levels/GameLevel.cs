@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Hand = new PlayerHand(settings.StartingHand);
             Placement = new Placement(settings, Hand);
             Units = new LevelUnits(Placement, time, random, settings);
-            Clashes = new GameClashes(settings);
+            Clashes = new GameClashes(settings, time);
             Orders = new OrderManager(settings, Placement, Clashes, Units, time, random);
         }
 

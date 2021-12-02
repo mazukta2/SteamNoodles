@@ -16,25 +16,23 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public event Action OnCurrentOrderChanged = delegate { };
 
         public ServingOrderProcess CurrentOrder { get; private set; }
-        //private readonly IOrdersPrototype _prototype;
+
         private readonly Placement _placement;
         private readonly SessionRandom _random;
         private readonly LevelUnits _units;
         private readonly GameTime _time;
         private readonly GameClashes _clashes;
 
-        public OrderManager(IOrdersSettings orders, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
+        public OrderManager(IOrdersSettings settings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
-            //if (orders == null) throw new Exception(nameof(orders));
-
-            //_prototype = orders;
             _placement = placement ?? throw new Exception(nameof(placement));
             _units = units ?? throw new Exception(nameof(units));
             _random = random ?? throw new Exception(nameof(random));
-            _time = time;
-            _clashes = clashes;
+            _time = time ?? throw new Exception(nameof(time));
+            _clashes = clashes ?? throw new Exception(nameof(clashes));
 
             _clashes.OnClashStarted += UpdateCurrentOrder;
+            _clashes.OnClashEnded += UpdateCurrentOrder;
             _time.OnTimeChanged += Time_OnTimeChanged;
 
             UpdateCurrentOrder();
@@ -44,6 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         {
             _clashes.OnClashStarted -= UpdateCurrentOrder;
             _time.OnTimeChanged -= Time_OnTimeChanged;
+            _clashes.OnClashEnded -= UpdateCurrentOrder;
             CurrentOrder?.Dispose();
         }
 
