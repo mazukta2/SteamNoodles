@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +7,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Game
 {
     public interface IGameView : IView
     {
-        IGameSessionView Session { get; }
-        IGameSessionView CreateSession();
+        DisposableViewKeeper<IGameSessionView> Session { get; }
     }
 }

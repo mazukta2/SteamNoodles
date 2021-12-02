@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Presenters.Levels;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
@@ -14,26 +15,27 @@ namespace Game.Tests.Mocks.Views.Levels
 {
     public class ScreenView : TestView, IScreenView
     {
-        public IClashesView Clashes { get; private set; }
+        public DisposableViewKeeper<IClashesView> Clashes { get; } = new DisposableViewKeeper<IClashesView>(CreateClashes);
+        public DisposableViewKeeper<IHandView> Hand { get; } = new DisposableViewKeeper<IHandView>(CreateHand);
 
-        public IHandView CreateHand()
+        public static IHandView CreateHand()
         {
             return new BasicHandView();
         }
-
 
         public ICurrentOrderView CreateCurrentOrder()
         {
             return new BasicCurrentOrderView();
         }
 
-        public IClashesView CreateClashes()
+        public static IClashesView CreateClashes()
         {
-            Clashes = new ClashesView();
-            return Clashes;
+            return new ClashesView();
         }
         protected override void DisposeInner()
         {
+            Clashes.Dispose();
+            Hand.Dispose();
         }
     }
 }

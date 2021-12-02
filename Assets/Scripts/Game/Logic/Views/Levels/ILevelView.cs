@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
@@ -11,8 +12,9 @@ namespace Tests.Assets.Scripts.Game.Logic.Views
     public interface ILevelView : IView
     {
         public IScreenView Screen { get; }
+        public DisposableViewKeeper<IPlacementView> Placement { get; }
+        
         IHandView CreateHand();
-        IPlacementView CreatePlacement();
         ICurrentOrderView CreateCurrentOrder();
         void SetTimeMover(Action<float> moveTime);
         IUnitsView CreateUnits();

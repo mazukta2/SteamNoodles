@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Tests.Assets.Scripts.Game.Logic.Views.Constructions
 {
     public interface IHandView : IView
     {
-        IHandConstructionView CreateConstruction();
+        public DisposableViewListKeeper<IHandConstructionView> Cards { get; }
     }
 }

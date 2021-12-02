@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
             _model = model;
             _view = view;
 
-            Placement = new PlacementPresenter(model.Placement, view.CreatePlacement());
+            Placement = new PlacementPresenter(model.Placement, view.Placement.Create());
             Units = new UnitsPresenter(model.Units, view.CreateUnits());
             Screen = new LevelScreenPresenter(model, view.Screen, Placement);
 

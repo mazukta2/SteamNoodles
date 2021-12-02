@@ -35,7 +35,7 @@ namespace Tests.Assets.Scripts.Game.Logic.Presenters
 
         private void CreatePresenter()
         {
-            Session = new GameSessionPresenter(_model.Session, _view.CreateSession());
+            Session = new GameSessionPresenter(_model.Session, _view.Session.Create());
         }
     }
 }

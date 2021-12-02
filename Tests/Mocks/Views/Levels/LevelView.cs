@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Presenters.Levels;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
@@ -18,6 +19,8 @@ namespace Game.Tests.Mocks.Views.Levels
 
         private Action<float> _moveTime;
 
+        public DisposableViewKeeper<IPlacementView> Placement { get; } = new DisposableViewKeeper<IPlacementView>(CreatePlacement);
+
         public LevelView()
         {
             Screen = new ScreenView();
@@ -26,6 +29,7 @@ namespace Game.Tests.Mocks.Views.Levels
         protected override void DisposeInner()
         {
             Screen.Dispose();
+            Placement.Dispose();
         }
 
         public IHandView CreateHand()
@@ -33,7 +37,7 @@ namespace Game.Tests.Mocks.Views.Levels
             return new BasicHandView();
         }
 
-        public IPlacementView CreatePlacement()
+        private static IPlacementView CreatePlacement()
         {
             return new BasicPlacementView();
         }

@@ -13,14 +13,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
     public class HandPresenter : Disposable
     {
         private readonly PlayerHand _model;
+        private IHandView _view;
         private readonly PlacementPresenter _placement;
         private readonly List<HandConstructionPresenter> _list = new List<HandConstructionPresenter>();
 
         public HandPresenter(PlayerHand model, IHandView view, PlacementPresenter placement)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
-            View = view;
-            _placement = placement;
+            _view = view ?? throw new ArgumentNullException(nameof(view));
+            _placement = placement ?? throw new ArgumentNullException(nameof(placement));
 
             foreach (var item in model.Cards)
                 ScnemeAddedHandle(item);
@@ -37,14 +38,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
 
             foreach (var item in _list)
                 item.Dispose();
-            View.Dispose();
+            _view.Dispose();
 
             _placement.ClearGhost();
         }
 
-        public IHandView View { get; private set; }
-
-        public HandConstructionPresenter[] GetSchemes()
+        public HandConstructionPresenter[] GetCards()
         {
             return _list.ToArray();
         }
@@ -56,12 +55,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
 
         private void ScnemeAddedHandle(ConstructionCard obj)
         {
-            _list.Add(new HandConstructionPresenter(obj, View.CreateConstruction(), OnCardClick));
+            _list.Add(new HandConstructionPresenter(obj, _view.Cards.Create(), OnCardClick));
         }
 
         private void ScnemeRemovedHandle(ConstructionCard obj)
         {
-            var scheme = _list.First(x => x.Scheme == obj);
+            var scheme = _list.First(x => x.Is(obj));
             _list.Remove(scheme);
             scheme.Dispose();
         }

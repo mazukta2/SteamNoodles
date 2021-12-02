@@ -55,7 +55,7 @@ namespace Game.Tests.Controllers
             Model.Session.LoadLevel(proto);
             Levels.Finish();
 
-            return (Model.Session.CurrentLevel, Presenter.Session.CurrentLevel, View.Session.CurrentLevel);
+            return (Model.Session.CurrentLevel, Presenter.Session.CurrentLevel, View.Session.Value.CurrentLevel.Value);
         }
     }
 }

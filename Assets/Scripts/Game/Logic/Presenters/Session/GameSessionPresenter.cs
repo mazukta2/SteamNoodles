@@ -32,12 +32,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Session
         {
             _model.OnLoaded -= _model_OnLoaded;
             _model.OnDispose -= Dispose;
+            _view.Dispose();
             CurrentLevel?.Dispose();
         }
 
         private void _model_OnLoaded()
         {
-            CurrentLevel = new LevelPresenter(_model.CurrentLevel, _view.CurrentLevel);
+            CurrentLevel = new LevelPresenter(_model.CurrentLevel, _view.CurrentLevel.Value);
         }
 
     }

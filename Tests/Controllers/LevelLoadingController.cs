@@ -29,7 +29,7 @@ namespace Game.Tests.Controllers
 
         public void Finish()
         {
-            _gameController.View.Session.SetLevel(new LevelView());
+            _gameController.View.Session.Value.CurrentLevel.Set(new LevelView());
             _finished();
         }
     }

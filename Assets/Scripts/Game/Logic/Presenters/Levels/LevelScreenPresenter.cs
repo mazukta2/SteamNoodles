@@ -22,8 +22,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            Hand = new HandPresenter(model.Hand, _view.CreateHand(), placement);
-            Clashes = new ClashesPresenter(model.Clashes, view.CreateClashes());
+            Hand = new HandPresenter(model.Hand, _view.Hand.Create(), placement);
+            Clashes = new ClashesPresenter(model.Clashes, view.Clashes.Create());
 
             model.Orders.OnCurrentOrderChanged += UpdateOrder;
         }

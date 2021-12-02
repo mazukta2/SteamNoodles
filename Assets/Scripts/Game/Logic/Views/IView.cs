@@ -6,6 +6,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views
 {
     public interface IView : IDisposable
     {
+        public event Action OnDispose;
         public bool IsDisposed { get; }
     }
 }

@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             {
                 for (int y = _model.Rect.yMin; y <= _model.Rect.yMax; y++)
                 {
-                    _cells.Add(new CellPresenter(this, new Point(x, y), View.CreateCell()));
+                    _cells.Add(new CellPresenter(this, new Point(x, y), View.Cells.Create()));
                 }
             }
 
@@ -67,7 +67,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         {
             if (Ghost != null) throw new Exception("Ghost already existing");
 
-            Ghost = new ConstructionGhostPresenter(this, card, View.CreateGhost());
+            Ghost = new ConstructionGhostPresenter(this, card, View.Ghost.Create());
             UpdateGhostCells();
         }
 
@@ -144,7 +144,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
             var toAdd = _model.Constructions.Where(x => !_constructions.ContainsKey(x));
             foreach (var model in toAdd)
-                _constructions.Add(model, new ConstructionPresenter(this, model, View.CreateConstrcution()));
+                _constructions.Add(model, new ConstructionPresenter(this, model, View.Constructions.Create()));
         }
     }
 }

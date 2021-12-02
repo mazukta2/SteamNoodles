@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -13,6 +14,10 @@ namespace Tests.Tests.Mocks.Views.Levels
     {
         private Action<Vector2> _onClick;
 
+        public DisposableViewKeeper<IGhostConstructionView> Ghost { get; } = new DisposableViewKeeper<IGhostConstructionView>(CreateGhost);
+        public DisposableViewListKeeper<ICellView> Cells { get; } = new DisposableViewListKeeper<ICellView>(CreateCell);
+        public DisposableViewListKeeper<IConstructionView> Constructions { get; } = new DisposableViewListKeeper<IConstructionView>(CreateConstrcution);
+
         public void SetClick(Action<Vector2> onClick)
         {
             _onClick = onClick;
@@ -23,22 +28,26 @@ namespace Tests.Tests.Mocks.Views.Levels
             _onClick(vector2);
         }
 
-        public IGhostConstructionView CreateGhost()
+        private static IGhostConstructionView CreateGhost()
         {
             return new BasicGhostView();
         }
 
-        public IConstructionView CreateConstrcution()
+        private static IConstructionView CreateConstrcution()
         {
             return new BasicConstructionView();
         }
 
-        public ICellView CreateCell()
+        private static ICellView CreateCell()
         {
             return new BasicCellView();
         }
+
         protected override void DisposeInner()
         {
+            Ghost.Dispose();
+            Cells.Dispose();
+            Constructions.Dispose();
         }
     }
 }

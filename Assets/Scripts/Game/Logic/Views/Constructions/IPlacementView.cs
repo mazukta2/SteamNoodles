@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using System;
 using System.Numerics;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
@@ -6,10 +7,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Constructions
 {
     public interface IPlacementView : IView
     {
-        IGhostConstructionView CreateGhost();
+        DisposableViewKeeper<IGhostConstructionView> Ghost { get; }
+        DisposableViewListKeeper<ICellView> Cells { get; }
+        DisposableViewListKeeper<IConstructionView> Constructions { get; }
+
         void SetClick(Action<Vector2> onClick);
         void Click(Vector2 vector2);
-        IConstructionView CreateConstrcution();
-        ICellView CreateCell();
     }
 }

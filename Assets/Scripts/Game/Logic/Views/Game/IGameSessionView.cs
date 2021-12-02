@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Views;
@@ -7,7 +8,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Game
 {
     public interface IGameSessionView : IView
     {
-        ILevelView CurrentLevel { get;}
-        void SetLevel(ILevelView levelView);
+        DisposableViewSetter<ILevelView> CurrentLevel { get; }
     }
 }

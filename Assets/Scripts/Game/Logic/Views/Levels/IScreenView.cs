@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Units;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Units;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,9 +10,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels
 {
     public interface IScreenView : IView
     {
-        public IClashesView Clashes { get; }
-        IClashesView CreateClashes();
-        IHandView CreateHand();
+        DisposableViewKeeper<IClashesView> Clashes { get; }
+        DisposableViewKeeper<IHandView> Hand { get; }
         ICurrentOrderView CreateCurrentOrder();
     }
 }

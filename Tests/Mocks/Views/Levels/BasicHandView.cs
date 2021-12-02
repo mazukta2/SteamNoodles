@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Tests.Assets.Scripts.Game.Logic.Views;
@@ -9,12 +10,16 @@ namespace Game.Tests.Mocks.Views.Levels
 {
     public class BasicHandView : TestView, IHandView
     {
-        public IHandConstructionView CreateConstruction()
+        public DisposableViewListKeeper<IHandConstructionView> Cards { get; } = new DisposableViewListKeeper<IHandConstructionView>(SpawnCard);
+
+        private static IHandConstructionView SpawnCard()
         {
             return new BasicHandConstructionView();
         }
+
         protected override void DisposeInner()
         {
+            Cards.Dispose();
         }
     }
 }
