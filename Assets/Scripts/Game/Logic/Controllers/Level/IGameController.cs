@@ -8,5 +8,6 @@ namespace Game.Assets.Scripts.Game.Logic.Controllers.Level
     public interface IGameController
     {
         ILevelsController Levels { get; }
+        void SetTimeMover(Action<float> moveTime);
     }
 }

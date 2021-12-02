@@ -20,11 +20,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
         public FloatRect RealRect => Rect * CellSize;
         public Construction[] Constructions => _constructions.ToArray();
 
-        private IPlacementPrototype _prototype { get; set; }
+        private IPlacementSettings _prototype { get; set; }
         private PlayerHand _hand { get; set; }
         private List<Construction> _constructions = new List<Construction>();
 
-        public Placement(IPlacementPrototype placement, PlayerHand hand)
+        public Placement(IPlacementSettings placement, PlayerHand hand)
         {
             _prototype = placement;
             _hand = hand;

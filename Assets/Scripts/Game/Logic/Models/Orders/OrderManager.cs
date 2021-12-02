@@ -23,9 +23,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly GameTime _time;
         private readonly GameClashes _clashes;
 
-        public OrderManager(IOrdersPrototype orders, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
+        public OrderManager(IOrdersSettings orders, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
-            if (orders == null) throw new Exception(nameof(orders));
+            //if (orders == null) throw new Exception(nameof(orders));
 
             //_prototype = orders;
             _placement = placement ?? throw new Exception(nameof(placement));
@@ -34,6 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _time = time;
             _clashes = clashes;
 
+            _clashes.OnClashStarted += UpdateCurrentOrder;
             _time.OnTimeChanged += Time_OnTimeChanged;
 
             UpdateCurrentOrder();
@@ -41,6 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         protected override void DisposeInner()
         {
+            _clashes.OnClashStarted -= UpdateCurrentOrder;
             _time.OnTimeChanged -= Time_OnTimeChanged;
             CurrentOrder?.Dispose();
         }
@@ -69,7 +71,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         {
             if (CurrentOrder != null)
             {
-                if (!_clashes.IsClashStarted)
+                if (!_clashes.IsInClash)
                 {
                     CurrentOrder.Break();
                 }
@@ -83,7 +85,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 }
             }
 
-            if (CurrentOrder == null && _clashes.IsClashStarted)
+            if (CurrentOrder == null && _clashes.IsInClash)
             {
                 var unit = FindNextCustumer();
                 if (unit != null)

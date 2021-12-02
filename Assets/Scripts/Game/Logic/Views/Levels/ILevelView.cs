@@ -16,7 +16,6 @@ namespace Tests.Assets.Scripts.Game.Logic.Views
         
         IHandView CreateHand();
         ICurrentOrderView CreateCurrentOrder();
-        void SetTimeMover(Action<float> moveTime);
         IUnitsView CreateUnits();
     }
 }

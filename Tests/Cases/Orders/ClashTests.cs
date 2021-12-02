@@ -17,19 +17,36 @@ namespace Game.Tests.Cases.Orders
 
             var (models, presenters, views) = game.LoadLevel(levelProto);
 
+            Assert.IsFalse(models.Clashes.IsInClash);
             Assert.IsNull(models.Orders.CurrentOrder);
-            Assert.IsNull(presenters.Screen.Order?.View);
-            Assert.IsNotNull(views.Screen.Clashes);
+            Assert.IsNull(views.Screen.Order.Value);
+            Assert.IsNotNull(views.Screen.Clashes.Value);
+            Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);
 
-            //var scheme = new ConstructionScheme(proto);
-            //var construction = models.Placement.Place(scheme, new Point(0, 0));
-            //Assert.IsTrue(construction.IsProvide(models.Orders.CurrentOrder.Recipes.First()));
+            views.Screen.Clashes.Value.StartClash.Click();
 
-            //Assert.IsNotNull(models.Orders.CurrentOrder);
-            //Assert.IsNotNull(presenters.Screen.Order?.View);
-            //Assert.IsNotNull(presenters.Screen.Order.Recipies.First().View);
+            Assert.IsTrue(models.Clashes.IsInClash);
+            Assert.IsFalse(views.Screen.Clashes.Value.StartClash.IsShowing);
+            Assert.IsNotNull(models.Orders.CurrentOrder);
+            Assert.IsNotNull(views.Screen.Order.Value);
+
+            Assert.AreEqual(20, models.Clashes.GetClashesTime());
+
+            game.PushTime(10);
+
+            Assert.IsTrue(models.Clashes.IsInClash);
+
+            game.PushTime(10);
+
+            Assert.IsFalse(models.Clashes.IsInClash);
+            Assert.IsNull(models.Orders.CurrentOrder);
+            Assert.IsNull(views.Screen.Order.Value);
+            Assert.IsNotNull(views.Screen.Clashes.Value);
+            Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);
+
             game.Exit();
         }
+
         [TearDown]
         public void TestDisposables()
         {

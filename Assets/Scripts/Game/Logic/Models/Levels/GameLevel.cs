@@ -17,26 +17,25 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public Placement Placement { get; private set; }
         public OrderManager Orders { get; private set; }
         public PlayerHand Hand { get; private set; }
-        public GameTime Time { get; private set; }
         public LevelUnits Units { get; private set; }
         public GameClashes Clashes { get; private set; }
 
-        public GameLevel(ILevelSettings prototype, SessionRandom random)
+        public GameLevel(ILevelSettings settings, SessionRandom random, GameTime time)
         {
             if (random == null) throw new ArgumentNullException(nameof(random));
+            if (time == null) throw new ArgumentNullException(nameof(time));
 
-            Prototype = prototype ?? throw new ArgumentNullException(nameof(prototype));
-            Time = new GameTime();
-            Hand = new PlayerHand(prototype.StartingHand);
-            Placement = new Placement(prototype, Hand);
-            Units = new LevelUnits(Placement, Time, random, prototype);
-            Clashes = new GameClashes();
-            Orders = new OrderManager(prototype, Placement, Clashes, Units, Time, random);
+            Prototype = settings ?? throw new ArgumentNullException(nameof(settings));
+
+            Hand = new PlayerHand(settings.StartingHand);
+            Placement = new Placement(settings, Hand);
+            Units = new LevelUnits(Placement, time, random, settings);
+            Clashes = new GameClashes(settings);
+            Orders = new OrderManager(settings, Placement, Clashes, Units, time, random);
         }
 
         protected override void DisposeInner()
         {
-            Time.Dispose();
             Hand.Dispose();
             Placement.Dispose();
             Units.Dispose();

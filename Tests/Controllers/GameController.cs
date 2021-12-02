@@ -14,6 +14,8 @@ namespace Game.Tests.Controllers
 {
     public class GameController : IGameController
     {
+        private Action<float> _moveTime;
+
         public GameModel Model { get; private set; }
         public GameView View { get; private set; }
         public GamePresenter Presenter { get; private set; }
@@ -45,6 +47,11 @@ namespace Game.Tests.Controllers
             Model.CreateSession();
         }
 
+        public void PushTime(int v)
+        {
+            _moveTime(v);
+        }
+
         public (GameLevel, LevelPresenter, ILevelView) LoadLevel()
         {
             return LoadLevel(new TestLevelPrototype());
@@ -56,6 +63,11 @@ namespace Game.Tests.Controllers
             Levels.Finish();
 
             return (Model.Session.CurrentLevel, Presenter.Session.CurrentLevel, View.Session.Value.CurrentLevel.Value);
+        }
+
+        public void SetTimeMover(Action<float> moveTime)
+        {
+            _moveTime = moveTime;
         }
     }
 }

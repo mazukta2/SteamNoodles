@@ -5,28 +5,33 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
 {
-    public interface ILevelSettings : IOrdersPrototype, IPlacementPrototype, IUnitsPrototype
+    public interface ILevelSettings : IOrdersSettings, IPlacementSettings, IUnitsSettings, IClashesSettings
     {
         IConstructionSettings[] StartingHand { get; }
     }
 
-    public interface IOrdersPrototype
+    public interface IOrdersSettings
     {
         IOrderSettings[] Orders { get; }
     }
 
-    public interface IQueuePrototype
+    public interface IQueueSettings
     {
         int QueueSize { get; }
     }
 
-    public interface IPlacementPrototype
+    public interface IPlacementSettings
     {
         Point Size { get; }
     }
 
-    public interface IUnitsPrototype
+    public interface IUnitsSettings
     {
         Rect UnitsSpawnRect { get; }
+    }
+
+    public interface IClashesSettings
+    {
+        float ClashTime { get; }
     }
 }

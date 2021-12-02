@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
         {
             if (_model.Orders.CurrentOrder != null)
             {
-                Order = new CurrentOrderPresenter(_model.Orders.CurrentOrder, _view.CreateCurrentOrder());
+                Order = new CurrentOrderPresenter(_model.Orders.CurrentOrder, _view.Order.Create());
             }
             else
             {

@@ -28,8 +28,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
             Units = new UnitsPresenter(model.Units, view.CreateUnits());
             Screen = new LevelScreenPresenter(model, view.Screen, Placement);
 
-            _view.SetTimeMover(_model.Time.MoveTime);
-
             _model.OnDispose += Dispose;
 
         }

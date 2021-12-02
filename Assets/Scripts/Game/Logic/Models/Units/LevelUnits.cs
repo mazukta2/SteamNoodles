@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
     public class LevelUnits : Disposable
     {
         private Placement _placement;
-        private IUnitsPrototype _prototype;
+        private IUnitsSettings _prototype;
         private SessionRandom _random;
         private GameTime _time;
         private int UnitsCount = 20;
@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private List<Unit> _crowd = new List<Unit>();
         private Rect Rect => _prototype.UnitsSpawnRect;
 
-        public LevelUnits(Placement placement, Time.GameTime time, SessionRandom random, IUnitsPrototype prototype)
+        public LevelUnits(Placement placement, Time.GameTime time, SessionRandom random, IUnitsSettings prototype)
         {
             _placement = placement;
             _prototype = prototype;

@@ -26,5 +26,7 @@ namespace Game.Tests.Mocks.Prototypes.Levels
         }
 
         public Rect UnitsSpawnRect { get; set; } = new Rect(-5, -5, 10, 10);
+
+        public float ClashTime { get; set; } = 20;
     }
 }

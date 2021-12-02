@@ -12,6 +12,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels
     {
         DisposableViewKeeper<IClashesView> Clashes { get; }
         DisposableViewKeeper<IHandView> Hand { get; }
-        ICurrentOrderView CreateCurrentOrder();
+        DisposableViewKeeper<ICurrentOrderView> Order { get; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Units;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Units;
+using Game.Tests.Mocks.Views.Common;
 using System;
 using Tests.Tests.Mocks.Views.Common;
 
@@ -6,18 +8,8 @@ namespace Game.Tests.Mocks.Views.Clashes
 {
     public class ClashesView : TestView, IClashesView 
     {
-        private Action _startClashAction;
-        public bool ButtonShowed { get; private set; }
+        public IButtonView StartClash { get; } = new ButtonView();
 
-        public void SetStartClashAction(Action onStartClash)
-        {
-            _startClashAction = onStartClash;
-        }
-
-        public void ShowButton(bool v)
-        {
-            ButtonShowed = v;
-        }
         protected override void DisposeInner()
         {
         }

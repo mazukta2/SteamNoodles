@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Game.Tests.Controllers;
+using NUnit.Framework;
 
 namespace Game.Tests.Cases.Orders
 {
@@ -8,14 +9,8 @@ namespace Game.Tests.Cases.Orders
         [Test]
         public void IsCurrentOrderSetted()
         {
-            //var proto = new TestBuildingPrototype();
-            //var levelProto = new TestLevelPrototype();
-            //var order = new TestOrderPrototype();
-            //var recipe = new TestRecipePrototype();
-            //order.Add(recipe);
-            //levelProto.Add(order);
-
-            //var (level, levelViewModel, levelView) = new LevelShortcuts().LoadLevel(levelProto);
+            //var game = new GameController();
+            //var (models, presenters, views) = game.LoadLevel();
 
             //Assert.IsNull(level.Orders.CurrentOrder);
             //Assert.IsNull(levelViewModel.Screen.Order?.View);
