@@ -11,7 +11,6 @@ namespace Game.Tests.Cases.Orders
         public void IsClashStartedAndFinished()
         {
             var game = new GameController();
-            var proto = new TestBuildingPrototype();
             var levelProto = new TestLevelPrototype();
             var order = new TestOrderPrototype();
             levelProto.Add(order);
@@ -30,6 +29,11 @@ namespace Game.Tests.Cases.Orders
             //Assert.IsNotNull(presenters.Screen.Order?.View);
             //Assert.IsNotNull(presenters.Screen.Order.Recipies.First().View);
             game.Exit();
+        }
+        [TearDown]
+        public void TestDisposables()
+        {
+            DisposeTests.TestDisposables();
         }
     }
 

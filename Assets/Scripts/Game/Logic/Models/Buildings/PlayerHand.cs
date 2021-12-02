@@ -31,6 +31,7 @@ namespace Assets.Scripts.Models.Buildings
         public void Remove(ConstructionCard scheme)
         {
             _cards.Remove(scheme);
+            scheme.Dispose();
             OnRemoved(scheme);
         }
 

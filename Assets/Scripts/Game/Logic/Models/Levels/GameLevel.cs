@@ -23,10 +23,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public GameLevel(ILevelSettings prototype, SessionRandom random)
         {
-            if (prototype == null) throw new ArgumentNullException(nameof(prototype));
             if (random == null) throw new ArgumentNullException(nameof(random));
 
-            Prototype = prototype;
+            Prototype = prototype ?? throw new ArgumentNullException(nameof(prototype));
             Time = new GameTime();
             Hand = new PlayerHand(prototype.StartingHand);
             Placement = new Placement(prototype, Hand);

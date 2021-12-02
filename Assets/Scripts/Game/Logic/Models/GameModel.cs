@@ -1,7 +1,5 @@
-﻿using Assets.Scripts.Models.Events;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Controllers.Level;
-using Game.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using System;
 
@@ -12,7 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
         public event Action OnSessionCreated = delegate { };
         public GameSession Session { get; private set; }
 
-        private IGameController _controller;
+        private readonly IGameController _controller;
 
         public GameModel(IGameController controller)
         {

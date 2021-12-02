@@ -26,7 +26,7 @@ namespace Game.Tests.Cases.GameFlow
             Assert.IsTrue(game.Model.Session != null);
             Assert.IsTrue(game.Presenter.Session != null);
             Assert.IsTrue(game.View.Session != null);
-
+            game.LoadLevel();
             Assert.IsTrue(game.Model.Session.CurrentLevel != null);
             Assert.IsTrue(game.Presenter.Session.CurrentLevel != null);
             Assert.IsTrue(game.View.Session.CurrentLevel != null);
@@ -34,16 +34,11 @@ namespace Game.Tests.Cases.GameFlow
             game.Exit();
         }
 
+
         [TearDown]
         public void TestDisposables()
         {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            var dislosables = Disposable.GetListOfUndisposed();
-            if (dislosables.Count > 0)
-                Assert.Fail($"Some instances {dislosables.Count} are not disposed: {dislosables.Last()}");
+            DisposeTests.TestDisposables();
         }
-
     }
 }

@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Core
             }
         }
 
-        private static List<object> _undisposed = new List<object>();
+        private readonly static List<object> _undisposed = new List<object>();
         public static List<object>  GetListOfUndisposed()
         {
             return _undisposed;

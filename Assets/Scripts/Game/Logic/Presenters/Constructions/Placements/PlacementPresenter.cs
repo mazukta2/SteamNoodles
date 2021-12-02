@@ -47,6 +47,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
             foreach (var cell in _cells)
                 cell.Dispose();
+
+            foreach (var construction in _constructions)
+                construction.Value.Dispose();
         }
 
         public bool CanPlace(ConstructionCard scheme, Point position)
@@ -60,17 +63,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         public IPlacementView View { get; private set; }
         public float CellSize => _model.CellSize;
 
-        public void SetGhost(ConstructionCard obj)
+        public void SetGhost(ConstructionCard card)
         {
             if (Ghost != null) throw new Exception("Ghost already existing");
 
-            Ghost = new ConstructionGhostPresenter(this, obj, View.CreateGhost());
+            Ghost = new ConstructionGhostPresenter(this, card, View.CreateGhost());
             UpdateGhostCells();
         }
 
         public void ClearGhost()
         {
-            Ghost.Dispose();
+            Ghost?.Dispose();
             Ghost = null;
             UpdateGhostCells();
         }
@@ -82,7 +85,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
                 Ghost.MoveTo(worldPosition);
                 if (Ghost.CanPlaceGhost())
                 {
-                    _model.Place(Ghost.Scheme, Ghost.GetCellPosition(worldPosition));
+                    _model.Place(Ghost.Card, Ghost.GetCellPosition(worldPosition));
                     ClearGhost();
                 }
             }
@@ -105,8 +108,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
                 var state = CellPresenter.CellState.Normal;
                 if (Ghost != null)
                 {
-                    var ocuppiedCells = Ghost.Scheme.GetOccupiedSpace(Ghost.Position);
-                    if (_model.IsFreeCell(Ghost.Scheme, cell.Position))
+                    var ocuppiedCells = Ghost.Card.GetOccupiedSpace(Ghost.Position);
+                    if (_model.IsFreeCell(Ghost.Card, cell.Position))
                         state = CellPresenter.CellState.IsReadyToPlace;
 
                     if (ocuppiedCells.Any(x => x == cell.Position))

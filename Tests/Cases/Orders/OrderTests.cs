@@ -177,5 +177,10 @@ namespace Game.Tests.Cases.Orders
         //    order.Add(new TestRecipePrototype(ingredientPrototype));
         //    levelPrototype.Add(order);
         //}
+        [TearDown]
+        public void TestDisposables()
+        {
+            DisposeTests.TestDisposables();
+        }
     }
 }

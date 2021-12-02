@@ -9,20 +9,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
     public class ConstructionGhostPresenter : Disposable
     {
-        public ConstructionCard Scheme { get; }
+        public ConstructionCard Card { get; }
         public IGhostConstructionView View { get; private set; }
         public Point Position { get; private set; }
 
         private PlacementPresenter _placement;
 
 
-        public ConstructionGhostPresenter(PlacementPresenter placement, ConstructionCard scheme, IGhostConstructionView view)
+        public ConstructionGhostPresenter(PlacementPresenter placement, ConstructionCard originCard, IGhostConstructionView view)
         {
-            Scheme = scheme;
+            Card = originCard;
             _placement = placement;
             View = view;
             View.SetMoveAction(MoveTo);
-            View.SetImage(Scheme.BuildingView);
+            View.SetImage(Card.BuildingView);
         }
 
 
@@ -35,8 +35,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         {
             var halfCell = _placement.CellSize / 2;
 
-            var offset = new Vector2(Scheme.CellSize.X * halfCell - halfCell,
-                Scheme.CellSize.Y * halfCell - halfCell);
+            var offset = new Vector2(Card.CellSize.X * halfCell - halfCell,
+                Card.CellSize.Y * halfCell - halfCell);
 
             var pos = worldPosition - offset;
 
@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
         public bool CanPlaceGhost()
         {
-            return _placement.CanPlace(Scheme, Position);
+            return _placement.CanPlace(Card, Position);
         }
 
 

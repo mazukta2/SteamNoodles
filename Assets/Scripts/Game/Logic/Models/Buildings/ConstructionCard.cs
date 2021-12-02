@@ -16,6 +16,8 @@ namespace Assets.Scripts.Models.Buildings
         public IVisual BuildingView => _prototype.BuildingView;
         public IConstructionSettings Protype => _prototype;
 
+        private readonly IConstructionSettings _prototype;
+
         public ConstructionCard(IConstructionSettings item)
         {
             _prototype = item;
@@ -29,7 +31,5 @@ namespace Assets.Scripts.Models.Buildings
         {
             return new ConstructionSettingsFunctions(_prototype).GetOccupiedSpace(position);
         }
-
-        private IConstructionSettings _prototype { get; set; }
     }
 }

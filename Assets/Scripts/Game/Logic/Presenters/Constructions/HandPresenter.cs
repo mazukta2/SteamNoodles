@@ -5,7 +5,6 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tests.Assets.Scripts.Game.Logic.Models.Events;
 using Tests.Assets.Scripts.Game.Logic.Presenters.Levels;
 using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
@@ -13,15 +12,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
 {
     public class HandPresenter : Disposable
     {
-        private PlayerHand _model;
-        private PlacementPresenter _placement;
-        private List<HandConstructionPresenter> _list = new List<HandConstructionPresenter>();
-        private HistoryReader _historyReader;
+        private readonly PlayerHand _model;
+        private readonly PlacementPresenter _placement;
+        private readonly List<HandConstructionPresenter> _list = new List<HandConstructionPresenter>();
 
         public HandPresenter(PlayerHand model, IHandView view, PlacementPresenter placement)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-            _model = model;
+            _model = model ?? throw new ArgumentNullException(nameof(model));
             View = view;
             _placement = placement;
 
@@ -41,6 +38,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
             foreach (var item in _list)
                 item.Dispose();
             View.Dispose();
+
+            _placement.ClearGhost();
         }
 
         public IHandView View { get; private set; }
@@ -57,7 +56,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
 
         private void ScnemeAddedHandle(ConstructionCard obj)
         {
-            _list.Add(new HandConstructionPresenter(obj, View.CreateConstruction(), OnSchemeClick));
+            _list.Add(new HandConstructionPresenter(obj, View.CreateConstruction(), OnCardClick));
         }
 
         private void ScnemeRemovedHandle(ConstructionCard obj)
@@ -67,10 +66,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions
             scheme.Dispose();
         }
 
-        private void OnSchemeClick(ConstructionCard obj)
+        private void OnCardClick(ConstructionCard card)
         {
             if (_placement.Ghost == null)
-                _placement.SetGhost(obj);
+                _placement.SetGhost(card);
             else
                 _placement.ClearGhost();
         }

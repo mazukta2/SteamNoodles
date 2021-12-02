@@ -16,25 +16,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public event Action OnCurrentOrderChanged = delegate { };
 
         public ServingOrderProcess CurrentOrder { get; private set; }
-        private IOrdersPrototype _orders;
-        private IOrdersPrototype _prototype;
-        private Placement _placement;
-        private SessionRandom _random;
-        private LevelUnits _units;
-        private GameTime _time;
-        private GameClashes _clashes;
+        //private readonly IOrdersPrototype _prototype;
+        private readonly Placement _placement;
+        private readonly SessionRandom _random;
+        private readonly LevelUnits _units;
+        private readonly GameTime _time;
+        private readonly GameClashes _clashes;
 
         public OrderManager(IOrdersPrototype orders, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
-            if (random == null) throw new Exception(nameof(random));
             if (orders == null) throw new Exception(nameof(orders));
-            if (placement == null) throw new Exception(nameof(placement));
-            if (units == null) throw new Exception(nameof(units));
 
-            _prototype = orders;
-            _placement = placement;
-            _units = units;
-            _random = random;
+            //_prototype = orders;
+            _placement = placement ?? throw new Exception(nameof(placement));
+            _units = units ?? throw new Exception(nameof(units));
+            _random = random ?? throw new Exception(nameof(random));
             _time = time;
             _clashes = clashes;
 

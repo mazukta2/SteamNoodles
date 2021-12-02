@@ -11,7 +11,7 @@ namespace Game.Tests.Cases.Constructions
         public void PlacementGridRectHasRightSize()
         {
             var game = new GameController();
-            var (level, levelViewModel, levelView) = game.LoadLevel();
+            var (level, _, _) = game.LoadLevel();
             var buildinGrid = level.Placement;
             var rect = buildinGrid.Rect;
             Assert.AreEqual(-2, rect.xMin);
@@ -40,5 +40,10 @@ namespace Game.Tests.Cases.Constructions
             game.Exit();
         }
 
+        [TearDown]
+        public void TestDisposables()
+        {
+            DisposeTests.TestDisposables();
+        }
     }
 }

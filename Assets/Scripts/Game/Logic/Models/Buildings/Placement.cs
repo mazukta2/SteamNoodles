@@ -37,12 +37,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
             _constructions = null;
         }
 
-        public Construction Place(ConstructionCard scheme, Point position)
+        public Construction Place(ConstructionCard card, Point position)
         {
-            var construction = new Construction(scheme.Protype, position);
+            var construction = new Construction(card.Protype, position);
             _constructions.Add(construction);
-            if (_hand.Contain(scheme))
-                _hand.Remove(scheme);
+            if (_hand.Contain(card))
+                _hand.Remove(card);
 
             OnConstructionAdded(construction);
             return construction;

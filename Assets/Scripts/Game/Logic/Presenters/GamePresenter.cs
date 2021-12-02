@@ -1,11 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models;
-using Game.Assets.Scripts.Game.Logic.Models.Events.GameEvents;
-using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Presenters.Session;
-using System;
-using Tests.Assets.Scripts.Game.Logic.Models.Events;
 using Game.Assets.Scripts.Game.Logic.Views.Game;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
+using System;
 
 namespace Tests.Assets.Scripts.Game.Logic.Presenters
 {
@@ -13,15 +10,13 @@ namespace Tests.Assets.Scripts.Game.Logic.Presenters
     {
         public GameSessionPresenter Session { get; private set; }
 
-        private GameModel _model;
-        private IGameView _view;
+        private readonly GameModel _model;
+        private readonly IGameView _view;
 
         public GamePresenter(GameModel model, IGameView view)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-            if (view == null) throw new ArgumentNullException(nameof(view));
-            _model = model;
-            _view = view;
+            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _view = view ?? throw new ArgumentNullException(nameof(view));
 
             if (_model.Session != null)
                 CreatePresenter();
