@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.Logic.Prototypes.Levels;
-using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 

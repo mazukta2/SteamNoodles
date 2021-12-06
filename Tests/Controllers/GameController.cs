@@ -2,7 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Levels;
-using Game.Tests.Mocks.Prototypes.Levels;
+using Game.Tests.Mocks.Settings.Levels;
 using Game.Tests.Mocks.Views.Game;
 using System;
 using System.Collections.Generic;
@@ -54,10 +54,10 @@ namespace Game.Tests.Controllers
 
         public (GameLevel, LevelPresenter, ILevelView) LoadLevel()
         {
-            return LoadLevel(new LevelPrototype());
+            return LoadLevel(new LevelSettings());
         }
 
-        public (GameLevel, LevelPresenter, ILevelView) LoadLevel(LevelPrototype proto)
+        public (GameLevel, LevelPresenter, ILevelView) LoadLevel(LevelSettings proto)
         {
             Model.Session.LoadLevel(proto);
             Levels.Finish();

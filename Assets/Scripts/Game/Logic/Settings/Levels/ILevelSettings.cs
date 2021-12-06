@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Logic.Prototypes.Levels;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
 

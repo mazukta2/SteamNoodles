@@ -4,18 +4,15 @@ using System;
 using System.Collections.Generic;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
-namespace Assets.Scripts.Logic.Prototypes.Levels
+namespace Game.Assets.Scripts.Game.Logic.Settings.Constructions
 {
     public interface IConstructionSettings
     {
         Point Size { get; }
-        Requirements Requirements { get;}
+        Requirements Requirements { get; }
         ISprite HandIcon { get; }
         IVisual BuildingView { get; }
-        float WorkTime { get; }
-        float WorkProgressPerHit { get; }
-
-
+        IConstructionFeatureSettings[] Features { get; }
     }
 
     [Serializable]

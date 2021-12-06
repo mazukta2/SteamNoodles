@@ -2,7 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
-using Game.Tests.Mocks.Prototypes.Levels;
+using Game.Tests.Mocks.Settings.Levels;
 using Game.Tests.Mocks.Views.Game;
 using Game.Tests.Mocks.Views.Levels;
 using System;

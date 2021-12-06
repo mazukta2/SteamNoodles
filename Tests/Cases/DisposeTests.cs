@@ -2,7 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Tests.Controllers;
-using Game.Tests.Mocks.Prototypes.Levels;
+using Game.Tests.Mocks.Settings.Levels;
 using Game.Tests.Mocks.Views.Game;
 using NUnit.Framework;
 using System;

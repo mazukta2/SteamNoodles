@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Tests.Controllers;
-using Game.Tests.Mocks.Prototypes.Levels;
+using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Linq;
 using System.Numerics;
@@ -135,7 +135,7 @@ namespace Game.Tests.Cases.Constructions
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
             Assert.AreEqual(1, views.Screen.Hand.Value.Cards.List.Length);
-            var proto = new ConstructionPrototype
+            var proto = new ConstructionSettings
             {
                 Requirements = new Requirements() { DownEdge = true }
             };
@@ -161,7 +161,7 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var building = new ConstructionPrototype
+            var building = new ConstructionSettings
             {
                 Size = new Point(2, 2),
                 Requirements = new Requirements()
@@ -264,7 +264,7 @@ namespace Game.Tests.Cases.Constructions
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
 
-            var building = new ConstructionPrototype
+            var building = new ConstructionSettings
             {
                 Requirements = new Requirements()
                 {
