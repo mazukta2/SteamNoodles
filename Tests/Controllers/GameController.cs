@@ -54,10 +54,10 @@ namespace Game.Tests.Controllers
 
         public (GameLevel, LevelPresenter, ILevelView) LoadLevel()
         {
-            return LoadLevel(new TestLevelPrototype());
+            return LoadLevel(new LevelPrototype());
         }
 
-        public (GameLevel, LevelPresenter, ILevelView) LoadLevel(TestLevelPrototype proto)
+        public (GameLevel, LevelPresenter, ILevelView) LoadLevel(LevelPrototype proto)
         {
             Model.Session.LoadLevel(proto);
             Levels.Finish();

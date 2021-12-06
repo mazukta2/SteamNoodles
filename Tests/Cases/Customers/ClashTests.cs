@@ -3,7 +3,7 @@ using Game.Tests.Mocks.Prototypes.Levels;
 using NUnit.Framework;
 using Tests.Mocks.Prototypes.Levels;
 
-namespace Game.Tests.Cases.Orders
+namespace Game.Tests.Cases.Customers
 {
     public class ClashTests
     {
@@ -11,15 +11,12 @@ namespace Game.Tests.Cases.Orders
         public void IsClashStartedAndFinished()
         {
             var game = new GameController();
-            var levelProto = new TestLevelPrototype();
-            var order = new TestOrderPrototype();
-            levelProto.Add(order);
-
+            var levelProto = new LevelPrototype();
             var (models, presenters, views) = game.LoadLevel(levelProto);
 
             Assert.IsFalse(models.Clashes.IsInClash);
-            Assert.IsNull(models.Orders.CurrentOrder);
-            Assert.IsNull(views.Screen.Order.Value);
+            Assert.IsNull(models.Customers.CurrentCustomer);
+            Assert.IsNull(views.Screen.Customers.Value);
             Assert.IsNotNull(views.Screen.Clashes.Value);
             Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);
 
@@ -27,8 +24,8 @@ namespace Game.Tests.Cases.Orders
 
             Assert.IsTrue(models.Clashes.IsInClash);
             Assert.IsFalse(views.Screen.Clashes.Value.StartClash.IsShowing);
-            Assert.IsNotNull(models.Orders.CurrentOrder);
-            Assert.IsNotNull(views.Screen.Order.Value);
+            Assert.IsNotNull(models.Customers.CurrentCustomer);
+            Assert.IsNotNull(views.Screen.Customers.Value);
 
             Assert.AreEqual(20, models.Clashes.GetClashesTime());
 
@@ -39,8 +36,8 @@ namespace Game.Tests.Cases.Orders
             game.PushTime(10);
 
             Assert.IsFalse(models.Clashes.IsInClash);
-            Assert.IsNull(models.Orders.CurrentOrder);
-            Assert.IsNull(views.Screen.Order.Value);
+            Assert.IsNull(models.Customers.CurrentCustomer);
+            Assert.IsNull(views.Screen.Customers.Value);
             Assert.IsNotNull(views.Screen.Clashes.Value);
             Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);
 

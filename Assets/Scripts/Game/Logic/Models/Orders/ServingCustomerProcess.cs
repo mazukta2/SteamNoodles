@@ -9,10 +9,10 @@ using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
-    public class ServingOrderProcess : Disposable
+    public class ServingCustomerProcess : Disposable
     {
 
-        public ServingOrderProcess(GameTime time, Placement placement, Unit unit)
+        public ServingCustomerProcess(GameTime time, Placement placement, Unit unit)
         {
             _placement = placement;
             _time = time;

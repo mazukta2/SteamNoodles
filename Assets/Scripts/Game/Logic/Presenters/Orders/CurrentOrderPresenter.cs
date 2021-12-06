@@ -10,9 +10,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Orders
     public class CurrentOrderPresenter : Disposable
     {
         private ICurrentOrderView _view;
-        private ServingOrderProcess _model;
+        private ServingCustomerProcess _model;
 
-        public CurrentOrderPresenter(ServingOrderProcess model, ICurrentOrderView view)
+        public CurrentOrderPresenter(ServingCustomerProcess model, ICurrentOrderView view)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));

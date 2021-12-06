@@ -9,7 +9,7 @@ using Tests.Tests.Mocks.Views.Common;
 
 namespace Game.Tests.Mocks.Prototypes.Levels
 {
-    public class TestBuildingPrototype : IConstructionSettings
+    public class ConstructionPrototype : IConstructionSettings
     {
         public Point Size { get; set; } = new Point(2, 1);
 

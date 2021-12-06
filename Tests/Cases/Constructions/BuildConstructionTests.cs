@@ -135,7 +135,7 @@ namespace Game.Tests.Cases.Constructions
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
             Assert.AreEqual(1, views.Screen.Hand.Value.Cards.List.Length);
-            var proto = new TestBuildingPrototype
+            var proto = new ConstructionPrototype
             {
                 Requirements = new Requirements() { DownEdge = true }
             };
@@ -161,7 +161,7 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var building = new TestBuildingPrototype
+            var building = new ConstructionPrototype
             {
                 Size = new Point(2, 2),
                 Requirements = new Requirements()
@@ -264,7 +264,7 @@ namespace Game.Tests.Cases.Constructions
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
 
-            var building = new TestBuildingPrototype
+            var building = new ConstructionPrototype
             {
                 Requirements = new Requirements()
                 {

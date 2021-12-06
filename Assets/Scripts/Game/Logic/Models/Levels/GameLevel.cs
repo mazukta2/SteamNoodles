@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
     {
         public ILevelSettings Prototype { get; private set; }
         public Placement Placement { get; private set; }
-        public OrderManager Orders { get; private set; }
+        public CustomerManager Customers { get; private set; }
         public PlayerHand Hand { get; private set; }
         public LevelUnits Units { get; private set; }
         public GameClashes Clashes { get; private set; }
@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Placement = new Placement(settings, Hand);
             Units = new LevelUnits(Placement, time, random, settings);
             Clashes = new GameClashes(settings, time);
-            Orders = new OrderManager(settings, Placement, Clashes, Units, time, random);
+            Customers = new CustomerManager(Placement, Clashes, Units, time, random);
         }
 
         protected override void DisposeInner()
@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Placement.Dispose();
             Units.Dispose();
             Clashes.Dispose();
-            Orders.Dispose();
+            Customers.Dispose();
         }
 
 

@@ -17,7 +17,7 @@ namespace Game.Tests.Mocks.Views.Levels
     {
         public DisposableViewKeeper<IClashesView> Clashes { get; } = new DisposableViewKeeper<IClashesView>(CreateClashes);
         public DisposableViewKeeper<IHandView> Hand { get; } = new DisposableViewKeeper<IHandView>(CreateHand);
-        public DisposableViewKeeper<ICurrentOrderView> Order { get; } = new DisposableViewKeeper<ICurrentOrderView>(CreateOrder);
+        public DisposableViewKeeper<ICurrentOrderView> Customers { get; } = new DisposableViewKeeper<ICurrentOrderView>(CreateOrder);
 
         public static IHandView CreateHand()
         {
@@ -37,7 +37,7 @@ namespace Game.Tests.Mocks.Views.Levels
         {
             Clashes.Dispose();
             Hand.Dispose();
-            Order.Dispose();
+            Customers.Dispose();
         }
     }
 }

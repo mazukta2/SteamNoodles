@@ -11,11 +11,11 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
-    public class OrderManager : Disposable
+    public class CustomerManager : Disposable
     {
-        public event Action OnCurrentOrderChanged = delegate { };
+        public event Action OnCurrentCustomerChanged = delegate { };
 
-        public ServingOrderProcess CurrentOrder { get; private set; }
+        public ServingCustomerProcess CurrentCustomer { get; private set; }
 
         private readonly Placement _placement;
         private readonly SessionRandom _random;
@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly GameTime _time;
         private readonly GameClashes _clashes;
 
-        public OrderManager(IOrdersSettings settings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
+        public CustomerManager(Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
             _placement = placement ?? throw new Exception(nameof(placement));
             _units = units ?? throw new Exception(nameof(units));
@@ -43,10 +43,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _clashes.OnClashStarted -= UpdateCurrentOrder;
             _time.OnTimeChanged -= Time_OnTimeChanged;
             _clashes.OnClashEnded -= UpdateCurrentOrder;
-            CurrentOrder?.Dispose();
+            CurrentCustomer?.Dispose();
         }
 
-        public List<Unit> GetPotentialCustumers()
+        public List<Unit> GetPotentialCustomers()
         {
             var listOfUnits = _units.Units.OrderBy(u => Math.Abs(u.Position.X));
             var list = new List<Unit>();
@@ -68,42 +68,42 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void UpdateCurrentOrder()
         {
-            if (CurrentOrder != null)
+            if (CurrentCustomer != null)
             {
                 if (!_clashes.IsInClash)
                 {
-                    CurrentOrder.Break();
+                    CurrentCustomer.Break();
                 }
                 
-                if (!CurrentOrder.IsOpen)
+                if (!CurrentCustomer.IsOpen)
                 {
-                    _units.ReturnToCrowd(CurrentOrder.Unit);
-                    CurrentOrder.Dispose();
-                    CurrentOrder = null;
-                    OnCurrentOrderChanged();
+                    _units.ReturnToCrowd(CurrentCustomer.Unit);
+                    CurrentCustomer.Dispose();
+                    CurrentCustomer = null;
+                    OnCurrentCustomerChanged();
                 }
             }
 
-            if (CurrentOrder == null && _clashes.IsInClash)
+            if (CurrentCustomer == null && _clashes.IsInClash)
             {
                 var unit = FindNextCustumer();
                 if (unit != null)
                 {
                     _units.TakeFromCrowd(unit);
 
-                    CurrentOrder = new ServingOrderProcess(_time, _placement, unit);
-                    OnCurrentOrderChanged();
+                    CurrentCustomer = new ServingCustomerProcess(_time, _placement, unit);
+                    OnCurrentCustomerChanged();
                 }
             }
         }
 
         private Unit FindNextCustumer()
         {
-            var orders = GetPotentialCustumers();
-            if (orders.Count == 0)
+            var customers = GetPotentialCustomers();
+            if (customers.Count == 0)
                 return null;
 
-            return orders[_random.GetRandom(0, orders.Count)];
+            return customers[_random.GetRandom(0, customers.Count)];
         }
 
     }

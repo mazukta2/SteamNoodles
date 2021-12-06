@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tests.Mocks.Prototypes.Levels
 {
-    public class TestOrderPrototype : IOrderSettings
+    public class CustomerPrototype : ICustomerSettings
     {
     }
 }
