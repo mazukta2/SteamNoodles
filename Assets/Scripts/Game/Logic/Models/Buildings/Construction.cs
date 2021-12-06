@@ -10,8 +10,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
     public class Construction : Disposable
     {
         public Point Position { get; private set; }
-        public float WorkTime => _prototype.WorkTime;
-        public float WorkProgressPerHit => _prototype.WorkProgressPerHit;
 
         private IConstructionSettings _prototype { get; set; }
 

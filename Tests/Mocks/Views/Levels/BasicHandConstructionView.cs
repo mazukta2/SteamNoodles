@@ -1,4 +1,5 @@
-﻿using Game.Tests.Mocks.Views.Common;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Tests.Mocks.Views.Common;
 using NUnit.Framework.Constraints;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
@@ -10,7 +11,7 @@ namespace Game.Tests.Mocks.Views.Levels
     public class BasicHandConstructionView : TestView, IHandConstructionView
     {
         public int SpriteId;
-        private Action _clickAction;
+        public IButtonView Button { get; } = new ButtonView();
 
         public void SetIcon(ISprite icon)
         {
@@ -22,15 +23,6 @@ namespace Game.Tests.Mocks.Views.Levels
             return new ItsUnitySpriteWrapper(SpriteId);
         }
 
-        public void SetClick(Action action)
-        {
-            _clickAction = action;
-        }
-
-        public void Click()
-        {
-            _clickAction();
-        }
         protected override void DisposeInner()
         {
         }

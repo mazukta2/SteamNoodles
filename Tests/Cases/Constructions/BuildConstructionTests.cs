@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using Game.Tests.Controllers;
+using Game.Tests.Mocks.Settings.Buildings;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Linq;
@@ -54,12 +56,12 @@ namespace Game.Tests.Cases.Constructions
             Assert.IsNull(presenters.Placement.Ghost);
 
             var construction = views.Screen.Hand.Value.Cards.List.First();
-            construction.Click();
+            construction.Button.Click();
 
             var view = views.Placement.Value.Ghost.Value;
             Assert.IsNotNull(view);
 
-            construction.Click();
+            construction.Button.Click();
 
             Assert.IsNull(views.Placement.Value.Ghost.Value);
             Assert.IsTrue(view.IsDisposed);
@@ -73,7 +75,7 @@ namespace Game.Tests.Cases.Constructions
             var (models, presenters, views) = game.LoadLevel();
             var construction = views.Screen.Hand.Value.Cards.List.First();
 
-            construction.Click();
+            construction.Button.Click();
 
             var view = views.Placement.Value.Ghost.Value;
             Assert.IsNotNull(view);
@@ -94,7 +96,7 @@ namespace Game.Tests.Cases.Constructions
             Assert.IsTrue(cells.All(x => x.State == CellPresenter.CellState.Normal
                 && x.View.GetState() == CellPresenter.CellState.Normal));
 
-            construction.Click();
+            construction.Button.Click();
 
             Assert.IsTrue(cells.All(x => (x.State == CellPresenter.CellState.IsReadyToPlace || x.State == CellPresenter.CellState.IsAvailableGhostPlace)
                 && (x.View.GetState() == CellPresenter.CellState.IsReadyToPlace || x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace)));
@@ -107,7 +109,7 @@ namespace Game.Tests.Cases.Constructions
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
             var construction = views.Screen.Hand.Value.Cards.List.First();
-            construction.Click();
+            construction.Button.Click();
 
             var ghost = views.Placement.Value.Ghost.Value;
             ghost.GetMoveAction()(new Vector2(0, 0));
@@ -143,7 +145,7 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.AreEqual(2, views.Screen.Hand.Value.Cards.List.Length);
             var construction = views.Screen.Hand.Value.Cards.List.Last();
-            construction.Click();
+            construction.Button.Click();
 
             var ghost = views.Placement.Value.Ghost.Value;
 
@@ -172,7 +174,7 @@ namespace Game.Tests.Cases.Constructions
             models.Hand.Add(building);
 
             var construction = views.Screen.Hand.Value.Cards.List.Last();
-            construction.Click();
+            construction.Button.Click();
             var worldPos = new Vector2(0f, -presenters.Placement.CellSize / 2);
             views.Placement.Value.Ghost.Value.GetMoveAction()(worldPos);
 
@@ -207,7 +209,7 @@ namespace Game.Tests.Cases.Constructions
             var (models, presenters, views) = game.LoadLevel();
             var construction = views.Screen.Hand.Value.Cards.List.First();
 
-            construction.Click();
+            construction.Button.Click();
 
             Assert.IsTrue(presenters.Placement.Ghost.CanPlaceGhost());
 
@@ -225,7 +227,7 @@ namespace Game.Tests.Cases.Constructions
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
             var construction = views.Screen.Hand.Value.Cards.List.First();
-            construction.Click();
+            construction.Button.Click();
 
             Assert.IsTrue(views.Placement.Value.Constructions.List.Length == 0);
 
@@ -249,7 +251,7 @@ namespace Game.Tests.Cases.Constructions
             var (models, presenters, views) = game.LoadLevel();
             var construction = views.Screen.Hand.Value.Cards.List.First();
             var model = models.Hand.Cards.First();
-            construction.Click();
+            construction.Button.Click();
             views.Placement.Value.Click(new Vector2(0, 0));
 
             Assert.IsTrue(model.BuildingView != null);
@@ -274,7 +276,7 @@ namespace Game.Tests.Cases.Constructions
             models.Hand.Add(building);
 
             var construction = views.Screen.Hand.Value.Cards.List.Last();
-            construction.Click();
+            construction.Button.Click();
 
             Assert.AreEqual(0, views.Placement.Value.Constructions.List.Length);
 
@@ -315,7 +317,7 @@ namespace Game.Tests.Cases.Constructions
             Assert.AreEqual(1, views.Screen.Hand.Value.Cards.List.Length);
             var construction = views.Screen.Hand.Value.Cards.List.First();
 
-            construction.Click();
+            construction.Button.Click();
             views.Placement.Value.Click(new Vector2(0f, 0f));
 
             Assert.AreEqual(0, views.Screen.Hand.Value.Cards.List.Length);

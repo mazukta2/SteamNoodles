@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Placement = new Placement(settings, Hand);
             Units = new LevelUnits(Placement, time, random, settings);
             Clashes = new GameClashes(settings, time);
-            Customers = new CustomerManager(Placement, Clashes, Units, time, random);
+            Customers = new CustomerManager(settings, Placement, Clashes, Units, time, random);
         }
 
         protected override void DisposeInner()

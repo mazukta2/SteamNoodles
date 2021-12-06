@@ -17,15 +17,20 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var customer1 = new CustomerSettings();
-            var customer2 = new CustomerSettings();
 
+            Assert.AreEqual(1, models.Customers.GetCustomersPool().GetItems().Count());
+
+            var newCustomer = new CustomerSettings();
             models.Hand.Add(new ConstructionSettings() { 
                 Features = new Assets.Scripts.Game.Logic.Settings.Constructions.IConstructionFeatureSettings[] { 
-                    new NewCustomerConstructionFeatureSettings(customer1)
+                    new NewCustomerConstructionFeatureSettings(newCustomer)
                 }
             });
 
+            views.Screen.Hand.Value.Cards.List.Last().Button.Click();
+            views.Placement.Value.Click(System.Numerics.Vector2.Zero);
+
+            Assert.AreEqual(2, models.Customers.GetCustomersPool().GetItems().Count());
 
             game.Exit();
         }

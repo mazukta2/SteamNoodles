@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Calculations;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Clashes;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
@@ -17,25 +19,37 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         public ServingCustomerProcess CurrentCustomer { get; private set; }
 
+        private readonly IUnitsSettings _unitsSettings;
         private readonly Placement _placement;
         private readonly SessionRandom _random;
         private readonly LevelUnits _units;
         private readonly GameTime _time;
         private readonly GameClashes _clashes;
+        private readonly Deck<ICustomerSettings> _pool;
 
-        public CustomerManager(Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
+        public CustomerManager(IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
+            _unitsSettings = unitsSettings ?? throw new Exception(nameof(unitsSettings));
             _placement = placement ?? throw new Exception(nameof(placement));
             _units = units ?? throw new Exception(nameof(units));
             _random = random ?? throw new Exception(nameof(random));
             _time = time ?? throw new Exception(nameof(time));
             _clashes = clashes ?? throw new Exception(nameof(clashes));
 
+            _pool = new Deck<ICustomerSettings>(random);
+            foreach (var item in _unitsSettings.Deck)
+                _pool.Add(item.Key, item.Value);
+
             _clashes.OnClashStarted += UpdateCurrentOrder;
             _clashes.OnClashEnded += UpdateCurrentOrder;
             _time.OnTimeChanged += Time_OnTimeChanged;
 
             UpdateCurrentOrder();
+        }
+
+        public Deck<ICustomerSettings> GetCustomersPool()
+        {
+            return _pool;
         }
 
         protected override void DisposeInner()

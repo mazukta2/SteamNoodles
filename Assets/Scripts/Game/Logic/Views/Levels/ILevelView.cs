@@ -13,9 +13,6 @@ namespace Tests.Assets.Scripts.Game.Logic.Views
     {
         public IScreenView Screen { get; }
         public DisposableViewKeeper<IPlacementView> Placement { get; }
-        
-        IHandView CreateHand();
-        ICurrentOrderView CreateCurrentOrder();
         IUnitsView CreateUnits();
     }
 }

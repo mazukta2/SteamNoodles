@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
@@ -8,7 +9,6 @@ namespace Tests.Assets.Scripts.Game.Logic.Views.Constructions
     {
         void SetIcon(ISprite icon);
         ISprite GetIcon();
-        void SetClick(Action action);
-        void Click();
+        IButtonView Button { get; }
     }
 }

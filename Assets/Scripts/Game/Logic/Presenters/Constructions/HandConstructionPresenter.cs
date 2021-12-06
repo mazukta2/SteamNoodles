@@ -39,7 +39,7 @@ namespace Tests.Assets.Scripts.Game.Logic.Presenters.Levels
         private void UpdateView()
         {
             _view.SetIcon(_model.HandIcon);
-            _view.SetClick(OnClick);
+            _view.Button.SetAction(OnClick);
         }
 
     }

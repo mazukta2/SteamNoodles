@@ -1,6 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using System;
+using System.Collections.Generic;
 using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
@@ -23,6 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
     public interface IUnitsSettings
     {
         Rect UnitsSpawnRect { get; }
+        Dictionary<ICustomerSettings, int> Deck { get; }
     }
 
     public interface IClashesSettings
