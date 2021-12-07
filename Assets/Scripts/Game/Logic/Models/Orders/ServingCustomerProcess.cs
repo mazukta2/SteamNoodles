@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
@@ -11,13 +12,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class ServingCustomerProcess : Disposable
     {
-
         public ServingCustomerProcess(GameTime time, Placement placement, Unit unit)
         {
             _placement = placement;
             _time = time;
             Unit = unit;
-            IsOpen = true;
 
             _stateMachine.Configure(State.Idle)
                 .Permit(Triggers.Start, State.WalkingTo);
@@ -32,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 .Permit(Triggers.WalkingFinished, State.Exiting)
                 .OnEntry(Step_3_MoveAway);
             _stateMachine.Configure(State.Exiting)
-                .OnEntry(Break);
+                .OnEntry(Finish);
 
             Unit.OnReachedPosition += Unit_OnPositionReached;
 
@@ -41,13 +40,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         protected override void DisposeInner()
         {
+            Unit.SetServed();
             Unit.OnReachedPosition -= Unit_OnPositionReached;
 
             if (_timer != null)
                 _timer.OnFinished -= _timer_OnFinished;
         }
-
-        public bool IsOpen { get; private set; }
 
         private Placement _placement;
         private GameTime _time;
@@ -55,12 +53,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         StateMachine<State, Triggers> _stateMachine = new StateMachine<State, Triggers>(State.Idle);
 
         public Unit Unit { get; internal set; }
-
-        public void Break()
-        {
-            Unit.SetServed();
-            IsOpen = false;
-        }
 
         //
         private void Step_1_MoveToServingPoint()
@@ -98,6 +90,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private void _timer_OnFinished()
         {
             _stateMachine.Fire(Triggers.TimerIsEnded);
+        }
+
+        private void Finish()
+        {
+            Dispose();
         }
 
         private enum State

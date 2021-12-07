@@ -47,7 +47,7 @@ namespace Game.Tests.Controllers
             Model.CreateSession();
         }
 
-        public void PushTime(int v)
+        public void PushTime(float v)
         {
             _moveTime(v);
         }

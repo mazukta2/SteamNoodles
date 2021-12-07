@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Calculations;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
@@ -14,6 +16,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 {
     public class LevelUnits : Disposable
     {
+        public event Action<Unit> OnUnitSpawn = delegate { };
+        public event Action<Unit> OnUnitDestroy = delegate { };
+        public IEnumerable<Unit> Units => _spawnedUnits;
+
+
         private Placement _placement;
         private IUnitsSettings _prototype;
         private SessionRandom _random;
@@ -21,14 +28,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private int UnitsCount = 20;
         private List<Unit> _spawnedUnits = new List<Unit>();
         private List<Unit> _crowd = new List<Unit>();
+        private Deck<ICustomerSettings> _pool;
         private Rect Rect => _prototype.UnitsSpawnRect;
 
-        public LevelUnits(Placement placement, Time.GameTime time, SessionRandom random, IUnitsSettings prototype)
+        public LevelUnits(IUnitsSettings unitsSettings, Placement placement, Time.GameTime time, SessionRandom random, IUnitsSettings prototype)
         {
             _placement = placement;
             _prototype = prototype;
             _random = random;
             _time = time;
+            _pool = new Deck<ICustomerSettings>(random);
+            foreach (var item in unitsSettings.Deck)
+                _pool.Add(item.Key, item.Value);
 
             for (int i = 0; i < UnitsCount; i++)
             {
@@ -43,18 +54,27 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _time.OnTimeChanged -= Time_OnTimeChanged;
         }
 
-        public event Action<Unit> OnUnitSpawn = delegate { };
-        public event Action<Unit> OnUnitDestroy = delegate { };
-        
-        public IEnumerable<Unit> Units => _spawnedUnits;
-
-        private void SpawnUnit()
+        public void AddCustumer(ICustomerSettings customer)
         {
+            _pool.Add(customer);
+        }
+
+        public void RemoveCustomer(ICustomerSettings customer)
+        {
+            _pool.Remove(customer);
+        }
+
+        private Unit SpawnUnit(ICustomerSettings settings = null)
+        {
+            if (settings == null)
+                settings = _pool.Take();
+
             var position = Rect.GetRandomFloatPoint(_random);
-            var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? Rect.X - 1 : Rect.X + Rect.Width + 1, position.Y));
+            var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? Rect.X - 1 : Rect.X + Rect.Width + 1, position.Y), settings);
             _spawnedUnits.Add(unit);
             _crowd.Add(unit);
             OnUnitSpawn(unit);
+            return unit;
         }
 
         private void Time_OnTimeChanged(float delta)
@@ -88,7 +108,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                     position = new FloatPoint(Rect.X + Rect.Width - 1, position.Y);
                     target = new FloatPoint(Rect.X - 1, position.Y);
                 }
-                var unit = new Unit(position, target);
+                var unit = new Unit(position, target, _pool.Take());
                 _spawnedUnits.Add(unit);
                 _crowd.Add(unit);
                 OnUnitSpawn(unit);
@@ -112,6 +132,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 target = new FloatPoint(Rect.X - 1, position.Y);
             }
             unit.SetTarget(target);
+        }
+
+        public Unit GetUnit(ICustomerSettings unitSetting)
+        {
+            var unitsOfType = Units.Where(x => x.CanOrder() && x.Settings == unitSetting);
+            if (unitsOfType.Any())
+            {
+                return unitsOfType.OrderBy(u => Math.Abs(u.Position.X)).First();
+            }
+            return SpawnUnit(unitSetting);
         }
 
         public void TakeFromCrowd(Unit unit)

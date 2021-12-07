@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions.Features;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 
@@ -11,11 +12,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
     {
         public Point Position { get; private set; }
 
-        private IConstructionSettings _prototype { get; set; }
+        private IConstructionSettings _settings { get; set; }
 
-        public Construction(IConstructionSettings prototype, Point position)
+        public Construction(IConstructionSettings settings, Point position)
         {
-            _prototype = prototype;
+            _settings = settings;
             Position = position;
         }
 
@@ -25,13 +26,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 
         public Point[] GetOccupiedScace()
         {
-            return new ConstructionSettingsFunctions(_prototype).GetOccupiedSpace(Position);
+            return new ConstructionSettingsFunctions(_settings).GetOccupiedSpace(Position);
         }
 
         public IVisual GetVisual()
         {
-            return _prototype.BuildingView;
+            return _settings.BuildingView;
         }
 
+        public IConstructionFeatureSettings[] GetFeatures()
+        {
+            return _settings.Features;
+        }
     }
 }

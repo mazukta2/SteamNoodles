@@ -40,85 +40,72 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             foreach (var item in _unitsSettings.Deck)
                 _pool.Add(item.Key, item.Value);
 
-            _clashes.OnClashStarted += UpdateCurrentOrder;
-            _clashes.OnClashEnded += UpdateCurrentOrder;
-            _time.OnTimeChanged += Time_OnTimeChanged;
+            _clashes.OnClashStarted += AddOrder;
+            _clashes.OnClashEnded += RemoveOrder;
 
-            UpdateCurrentOrder();
+            if (_clashes.IsInClash)
+                AddOrder();
+        }
+
+        protected override void DisposeInner()
+        {
+            _clashes.OnClashStarted -= AddOrder;
+            _clashes.OnClashEnded -= RemoveOrder;
+
+            if (CurrentCustomer != null)
+            {
+                CurrentCustomer.OnDispose -= CurrentCustomer_OnDispose;
+                CurrentCustomer.Dispose();
+            }
+        }
+
+        public void AddCustumer(ICustomerSettings customer)
+        {
+            _pool.Add(customer);
+        }
+
+        public void RemoveCustomer(ICustomerSettings customer)
+        {
+            _pool.Remove(customer);
         }
 
         public Deck<ICustomerSettings> GetCustomersPool()
         {
             return _pool;
         }
-
-        protected override void DisposeInner()
+        private void AddOrder()
         {
-            _clashes.OnClashStarted -= UpdateCurrentOrder;
-            _time.OnTimeChanged -= Time_OnTimeChanged;
-            _clashes.OnClashEnded -= UpdateCurrentOrder;
-            CurrentCustomer?.Dispose();
+            var unit = FindNextCustomer();
+            if (unit == null)
+                throw new Exception("Cant find customer");
+
+            _units.TakeFromCrowd(unit);
+            CurrentCustomer = new ServingCustomerProcess(_time, _placement, unit);
+            CurrentCustomer.OnDispose += CurrentCustomer_OnDispose;
+            OnCurrentCustomerChanged();
         }
 
-        public List<Unit> GetPotentialCustomers()
+        private void RemoveOrder()
         {
-            var listOfUnits = _units.Units.OrderBy(u => Math.Abs(u.Position.X));
-            var list = new List<Unit>();
-            foreach (var item in listOfUnits)
-            {
-                if (item.CanOrder())
-                    list.Add(item);
-
-                if (list.Count > 5) // on
-                    break;
-            }
-            return list;
+            CurrentCustomer.OnDispose -= CurrentCustomer_OnDispose;
+            _units.ReturnToCrowd(CurrentCustomer.Unit);
+            CurrentCustomer.Dispose();
+            CurrentCustomer = null;
+            OnCurrentCustomerChanged();
         }
 
-        private void Time_OnTimeChanged(float obj)
+        private Unit FindNextCustomer()
         {
-            UpdateCurrentOrder();
+            var unitSetting = _pool.Take();
+            return _units.GetUnit(unitSetting);
         }
 
-        private void UpdateCurrentOrder()
+        private void CurrentCustomer_OnDispose()
         {
-            if (CurrentCustomer != null)
-            {
-                if (!_clashes.IsInClash)
-                {
-                    CurrentCustomer.Break();
-                }
-                
-                if (!CurrentCustomer.IsOpen)
-                {
-                    _units.ReturnToCrowd(CurrentCustomer.Unit);
-                    CurrentCustomer.Dispose();
-                    CurrentCustomer = null;
-                    OnCurrentCustomerChanged();
-                }
-            }
-
-            if (CurrentCustomer == null && _clashes.IsInClash)
-            {
-                var unit = FindNextCustumer();
-                if (unit != null)
-                {
-                    _units.TakeFromCrowd(unit);
-
-                    CurrentCustomer = new ServingCustomerProcess(_time, _placement, unit);
-                    OnCurrentCustomerChanged();
-                }
-            }
+            RemoveOrder();
+            AddOrder();
         }
 
-        private Unit FindNextCustumer()
-        {
-            var customers = GetPotentialCustomers();
-            if (customers.Count == 0)
-                return null;
-
-            return customers[_random.GetRandom(0, customers.Count)];
-        }
 
     }
 }

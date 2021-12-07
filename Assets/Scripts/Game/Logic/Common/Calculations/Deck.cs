@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Session;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Session;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,12 +19,23 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
             _random = random;
         }
 
-        public void Add(T element, int value)
+        public void Add(T element, int value = 1)
         {
             if (_pool.ContainsKey(element))
                 _pool[element] += value;
             else 
                 _pool.Add(element, value);
+        }
+
+        public void Remove(T element, int value = 1)
+        {
+            if (!_pool.ContainsKey(element))
+                throw new Exception("No such elements");
+
+            if (_pool[element] < value)
+                throw new Exception("No enough elements");
+
+            _pool[element] -= value;
         }
 
         public ReadOnlyDictionary<T, int> GetItems()
@@ -40,7 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
             var totalCount = existing.Values.Sum();
             if (totalCount == 0)
             {
-                foreach (var item in _taken)
+                foreach (var item in _taken.ToList())
                     _taken[item.Key] = 0;
                 existing = GetExisting();
                 totalCount = existing.Values.Sum();
@@ -48,7 +60,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
 
             var index = _random.GetRandom(0, totalCount);
 
-            var list = existing.ToList().OrderBy(x => x.Key);
+            var list = existing.ToList();
             var minIndex = 0;
             foreach (var item in list)
             {

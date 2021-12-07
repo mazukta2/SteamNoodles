@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Units
@@ -10,10 +11,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public FloatPoint Target { get; private set; }
         public FloatPoint Position { get; private set; }
         public bool IsServed { get; private set; }
-        public Unit(FloatPoint position, FloatPoint target)
+        public ICustomerSettings Settings { get; private set; }
+
+        public Unit(FloatPoint position, FloatPoint target, ICustomerSettings settings)
         {
             Position = position;
             Target = target;
+            Settings = settings;
         }
 
         public bool MoveToTarget(float delta)
@@ -28,7 +32,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             if (Position.IsClose(Target))
                 OnReachedPosition();
 
-            return false;    
+            return false;
+        }
+
+        public void TeleportToTarget()
+        {
+            if (Position.IsClose(Target))
+                return;
+
+            Position = Target;
+            OnReachedPosition();
         }
 
         public bool CanOrder()

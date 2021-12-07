@@ -1,13 +1,17 @@
-﻿using Assets.Scripts.Models.Buildings;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Clashes;
+using Game.Assets.Scripts.Game.Logic.Models.Effects;
+using Game.Assets.Scripts.Game.Logic.Models.Effects.Systems;
 using Game.Assets.Scripts.Game.Logic.Models.Orders;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using System;
+using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
@@ -20,6 +24,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public LevelUnits Units { get; private set; }
         public GameClashes Clashes { get; private set; }
 
+        private List<IEffectSystem> _effectSystems = new List<IEffectSystem>();
+
         public GameLevel(ILevelSettings settings, SessionRandom random, GameTime time)
         {
             if (random == null) throw new ArgumentNullException(nameof(random));
@@ -29,13 +35,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             Hand = new PlayerHand(settings.StartingHand);
             Placement = new Placement(settings, Hand);
-            Units = new LevelUnits(Placement, time, random, settings);
+            Units = new LevelUnits(settings, Placement, time, random, settings);
             Clashes = new GameClashes(settings, time);
             Customers = new CustomerManager(settings, Placement, Clashes, Units, time, random);
+
+            AddEffectSystems();
         }
 
         protected override void DisposeInner()
         {
+            RemoveEffectSystems();
+
             Hand.Dispose();
             Placement.Dispose();
             Units.Dispose();
@@ -43,6 +53,27 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Customers.Dispose();
         }
 
+        private void AddEffectSystems()
+        {
+            _effectSystems.Add(new UnitPoolEffectSystem(this, Placement, Units, Customers));
+        }
 
+        private void RemoveEffectSystems()
+        {
+            foreach (var effect in _effectSystems)
+                effect.Dispose();
+        }
+
+        public void AddCustumer(ICustomerSettings customer)
+        {
+            Units.AddCustumer(customer);
+            Customers.AddCustumer(customer);
+        }
+
+        public void RemoveCustomer(ICustomerSettings customer)
+        {
+            Units.RemoveCustomer(customer);
+            Customers.RemoveCustomer(customer);
+        }
     }
 }
