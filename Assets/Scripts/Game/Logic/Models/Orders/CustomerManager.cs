@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Clashes;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
@@ -25,9 +26,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly LevelUnits _units;
         private readonly GameTime _time;
         private readonly GameClashes _clashes;
+        private readonly GameLevel _level;
         private readonly Deck<ICustomerSettings> _pool;
 
-        public CustomerManager(IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
+        public CustomerManager(GameLevel level, IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
             _unitsSettings = unitsSettings ?? throw new Exception(nameof(unitsSettings));
             _placement = placement ?? throw new Exception(nameof(placement));
@@ -35,6 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _random = random ?? throw new Exception(nameof(random));
             _time = time ?? throw new Exception(nameof(time));
             _clashes = clashes ?? throw new Exception(nameof(clashes));
+            _level = level ?? throw new Exception(nameof(level));
 
             _pool = new Deck<ICustomerSettings>(random);
             foreach (var item in _unitsSettings.Deck)
@@ -80,7 +83,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 throw new Exception("Cant find customer");
 
             _units.TakeFromCrowd(unit);
-            CurrentCustomer = new ServingCustomerProcess(_time, _placement, unit);
+            CurrentCustomer = new ServingCustomerProcess(_time, _placement, _level, unit);
             CurrentCustomer.OnDispose += CurrentCustomer_OnDispose;
             OnCurrentCustomerChanged();
         }

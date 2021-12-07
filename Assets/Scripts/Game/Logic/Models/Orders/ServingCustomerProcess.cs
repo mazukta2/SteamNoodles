@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Stateless;
@@ -12,10 +13,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class ServingCustomerProcess : Disposable
     {
-        public ServingCustomerProcess(GameTime time, Placement placement, Unit unit)
+        public ServingCustomerProcess(GameTime time, Placement placement, GameLevel level, Unit unit)
         {
             _placement = placement;
             _time = time;
+            _level = level;
             Unit = unit;
 
             _stateMachine.Configure(State.Idle)
@@ -40,6 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         protected override void DisposeInner()
         {
+            _level.ChangeMoney(Unit.Settings.Money);
             Unit.SetServed();
             Unit.OnReachedPosition -= Unit_OnPositionReached;
 
@@ -49,6 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private Placement _placement;
         private GameTime _time;
+        private GameLevel _level;
         private GameTimer _timer;
         StateMachine<State, Triggers> _stateMachine = new StateMachine<State, Triggers>(State.Idle);
 

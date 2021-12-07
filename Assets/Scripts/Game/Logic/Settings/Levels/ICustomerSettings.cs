@@ -2,5 +2,6 @@
 {
     public interface ICustomerSettings
     {
+        int Money { get; }
     }
 }

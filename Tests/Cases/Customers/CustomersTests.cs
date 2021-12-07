@@ -70,6 +70,27 @@ namespace Game.Tests.Cases.Customers
             game.Exit();
         }
 
+        [Test]
+        public void IsCustomersGiveYourMoney()
+        {
+            var game = new GameController();
+
+            var (models, presenters, views) = game.LoadLevel();
+            var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            customer1.Money = 3;
+            views.Screen.Clashes.Value.StartClash.Click();
+
+            Assert.AreEqual(0, models.Money);
+
+            var customer = models.Customers.CurrentCustomer.Unit;
+            customer.TeleportToTarget();
+            game.PushTime(3);
+            customer.TeleportToTarget();
+            Assert.IsTrue(customer.IsServed);
+            Assert.AreEqual(3, models.Money);
+
+            game.Exit();
+        }
         [TearDown]
         public void TestDisposables()
         {

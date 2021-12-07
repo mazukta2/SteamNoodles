@@ -17,6 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
     public class GameLevel : Disposable
     {
+        public int Money { get; private set; }
         public ILevelSettings Prototype { get; private set; }
         public Placement Placement { get; private set; }
         public CustomerManager Customers { get; private set; }
@@ -37,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Placement = new Placement(settings, Hand);
             Units = new LevelUnits(settings, Placement, time, random, settings);
             Clashes = new GameClashes(settings, time);
-            Customers = new CustomerManager(settings, Placement, Clashes, Units, time, random);
+            Customers = new CustomerManager(this, settings, Placement, Clashes, Units, time, random);
 
             AddEffectSystems();
         }
@@ -74,6 +75,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         {
             Units.RemoveCustomer(customer);
             Customers.RemoveCustomer(customer);
+        }
+
+        public void ChangeMoney(int value)
+        {
+            Money += value;
         }
     }
 }

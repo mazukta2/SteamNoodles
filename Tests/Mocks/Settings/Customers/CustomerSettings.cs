@@ -5,5 +5,6 @@ namespace Tests.Mocks.Prototypes.Levels
 {
     public class CustomerSettings : ICustomerSettings
     {
+        public int Money { get; set; } = 1;
     }
 }
