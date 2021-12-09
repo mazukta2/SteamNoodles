@@ -18,27 +18,30 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
     public class GameLevel : Disposable
     {
         public int Money { get; private set; }
-        public ILevelSettings Prototype { get; private set; }
         public Placement Placement { get; private set; }
         public CustomerManager Customers { get; private set; }
+
         public PlayerHand Hand { get; private set; }
         public LevelUnits Units { get; private set; }
         public GameClashes Clashes { get; private set; }
 
         private List<IEffectSystem> _effectSystems = new List<IEffectSystem>();
 
+        private UnitServingMoneyCalculator _servingMoney;
+        private ILevelSettings _settings;
+
         public GameLevel(ILevelSettings settings, SessionRandom random, GameTime time)
         {
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             if (random == null) throw new ArgumentNullException(nameof(random));
             if (time == null) throw new ArgumentNullException(nameof(time));
-
-            Prototype = settings ?? throw new ArgumentNullException(nameof(settings));
 
             Hand = new PlayerHand(settings.StartingHand);
             Placement = new Placement(settings, Hand);
             Units = new LevelUnits(settings, Placement, time, random, settings);
             Clashes = new GameClashes(settings, time);
-            Customers = new CustomerManager(this, settings, Placement, Clashes, Units, time, random);
+            _servingMoney = new UnitServingMoneyCalculator(Placement);
+            Customers = new CustomerManager(this, settings, _servingMoney, Placement, Clashes, Units, time, random);
 
             AddEffectSystems();
         }
@@ -52,6 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Units.Dispose();
             Clashes.Dispose();
             Customers.Dispose();
+            _servingMoney.Dispose();
         }
 
         private void AddEffectSystems()

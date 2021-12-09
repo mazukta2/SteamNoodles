@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
@@ -18,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
         public Point Size => _prototype.Size;
         public Rect Rect => Size.AsCenteredRect();
         public FloatRect RealRect => Rect * CellSize;
-        public Construction[] Constructions => _constructions.ToArray();
+        public IReadOnlyCollection<Construction> Constructions => _constructions.AsReadOnly();
 
         private IPlacementSettings _prototype { get; set; }
         private PlayerHand _hand { get; set; }

@@ -38,5 +38,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
         {
             return _settings.Features;
         }
+
+        public IConstructionSettings GetSettings()
+        {
+            return _settings;
+        }
     }
 }

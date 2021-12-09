@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tests.Mocks.Prototypes.Levels;
@@ -91,6 +92,13 @@ namespace Game.Tests.Cases.Customers
 
             game.Exit();
         }
+
+        [Test]
+        public void IsCostumerServedRightTime()
+        {
+            throw new NotImplementedException();
+        }
+
         [TearDown]
         public void TestDisposables()
         {

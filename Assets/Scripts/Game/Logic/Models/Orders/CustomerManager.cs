@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Clashes;
+using Game.Assets.Scripts.Game.Logic.Models.Effects.Systems;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
@@ -27,9 +28,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly GameTime _time;
         private readonly GameClashes _clashes;
         private readonly GameLevel _level;
+        private readonly UnitServingMoneyCalculator _moneyCalculator;
         private readonly Deck<ICustomerSettings> _pool;
 
-        public CustomerManager(GameLevel level, IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
+        public CustomerManager(GameLevel level, IUnitsSettings unitsSettings, UnitServingMoneyCalculator moneyCalculator, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
             _unitsSettings = unitsSettings ?? throw new Exception(nameof(unitsSettings));
             _placement = placement ?? throw new Exception(nameof(placement));
@@ -38,13 +40,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _time = time ?? throw new Exception(nameof(time));
             _clashes = clashes ?? throw new Exception(nameof(clashes));
             _level = level ?? throw new Exception(nameof(level));
+            _moneyCalculator = moneyCalculator ?? throw new Exception(nameof(level));
 
             _pool = new Deck<ICustomerSettings>(random);
             foreach (var item in _unitsSettings.Deck)
                 _pool.Add(item.Key, item.Value);
 
             _clashes.OnClashStarted += AddOrder;
-            _clashes.OnClashEnded += RemoveOrder;
+            _clashes.OnClashEnded += CancelOrder;
 
             if (_clashes.IsInClash)
                 AddOrder();
@@ -53,11 +56,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         protected override void DisposeInner()
         {
             _clashes.OnClashStarted -= AddOrder;
-            _clashes.OnClashEnded -= RemoveOrder;
+            _clashes.OnClashEnded -= CancelOrder;
 
             if (CurrentCustomer != null)
             {
-                CurrentCustomer.OnDispose -= CurrentCustomer_OnDispose;
+                CurrentCustomer.OnDispose -= CurrentCustomer_OnFinished;
                 CurrentCustomer.Dispose();
             }
         }
@@ -76,22 +79,27 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         {
             return _pool;
         }
+
         private void AddOrder()
         {
+            if (CurrentCustomer != null)
+                throw new Exception("Remove previous cutomer before settting");
+
             var unit = FindNextCustomer();
             if (unit == null)
                 throw new Exception("Cant find customer");
 
             _units.TakeFromCrowd(unit);
-            CurrentCustomer = new ServingCustomerProcess(_time, _placement, _level, unit);
-            CurrentCustomer.OnDispose += CurrentCustomer_OnDispose;
+            CurrentCustomer = new ServingCustomerProcess(_time, _moneyCalculator, _placement, _level, unit);
+            CurrentCustomer.OnFinished += CurrentCustomer_OnFinished;
             OnCurrentCustomerChanged();
         }
 
-        private void RemoveOrder()
+        private void CancelOrder()
         {
-            CurrentCustomer.OnDispose -= CurrentCustomer_OnDispose;
+            CurrentCustomer.OnFinished -= CurrentCustomer_OnFinished;
             _units.ReturnToCrowd(CurrentCustomer.Unit);
+            CurrentCustomer.Cancel();
             CurrentCustomer.Dispose();
             CurrentCustomer = null;
             OnCurrentCustomerChanged();
@@ -103,9 +111,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             return _units.GetUnit(unitSetting);
         }
 
-        private void CurrentCustomer_OnDispose()
+        private void CurrentCustomer_OnFinished()
         {
-            RemoveOrder();
+            CurrentCustomer.OnFinished -= CurrentCustomer_OnFinished;
+            _units.ReturnToCrowd(CurrentCustomer.Unit);
+            CurrentCustomer.Dispose();
+            CurrentCustomer = null;
+            OnCurrentCustomerChanged();
             AddOrder();
         }
 
