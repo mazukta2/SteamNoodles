@@ -25,6 +25,7 @@ namespace Game.Tests.Mocks.Views.Levels
 
         protected override void DisposeInner()
         {
+            Button.Dispose();
         }
     }
 }

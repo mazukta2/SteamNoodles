@@ -12,6 +12,7 @@ namespace Game.Tests.Mocks.Views.Clashes
 
         protected override void DisposeInner()
         {
+            StartClash.Dispose();
         }
     }
 }

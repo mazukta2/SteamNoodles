@@ -1,9 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Presenters.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Game;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
 using Game.Tests.Mocks.Views.Clashes;
+using Game.Tests.Mocks.Views.Levels.Resources;
 using Game.Tests.Mocks.Views.Units;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
@@ -18,6 +20,7 @@ namespace Game.Tests.Mocks.Views.Levels
         public DisposableViewKeeper<IClashesView> Clashes { get; } = new DisposableViewKeeper<IClashesView>(CreateClashes);
         public DisposableViewKeeper<IHandView> Hand { get; } = new DisposableViewKeeper<IHandView>(CreateHand);
         public DisposableViewKeeper<ICurrentOrderView> Customers { get; } = new DisposableViewKeeper<ICurrentOrderView>(CreateOrder);
+        public DisposableViewKeeper<ILevelResourcesView> Resources { get; } = new DisposableViewKeeper<ILevelResourcesView>(CreateResources);
 
         public static IHandView CreateHand()
         {
@@ -33,11 +36,18 @@ namespace Game.Tests.Mocks.Views.Levels
         {
             return new ClashesView();
         }
+
+        public static ILevelResourcesView CreateResources()
+        {
+            return new LevelResourcesView();
+        }
+
         protected override void DisposeInner()
         {
             Clashes.Dispose();
             Hand.Dispose();
             Customers.Dispose();
+            Resources.Dispose();
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Tests.Controllers;
+using Game.Tests.Mocks.Settings.Buildings;
+using Game.Tests.Mocks.Settings.Buildings.Features;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System;
@@ -10,23 +12,14 @@ using Tests.Mocks.Prototypes.Levels;
 
 namespace Game.Tests.Cases.Customers
 {
-    public class ResourcesTests
+    public class EatingSpeedCustomerFeatureTests
     {
         [Test]
-        public void IsChangingMoneyChangeView()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IsFeatureWorking(bool added)
         {
-            var game = new GameController();
-            var (models, presenters, views) = game.LoadLevel();
-
-            Assert.AreEqual(0, models.Money);
-            Assert.AreEqual(0, views.Screen.Resources.Value.Money.GetValue());
-
-            models.ChangeMoney(2);
-
-            Assert.AreEqual(2, models.Money);
-            Assert.AreEqual(2, views.Screen.Resources.Value.Money.GetValue());
-
-            game.Exit();
+            throw new NotImplementedException();
         }
 
         [TearDown]

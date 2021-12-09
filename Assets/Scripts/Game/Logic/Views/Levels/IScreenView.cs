@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Game;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels
         DisposableViewKeeper<IClashesView> Clashes { get; }
         DisposableViewKeeper<IHandView> Hand { get; }
         DisposableViewKeeper<ICurrentOrderView> Customers { get; }
+        DisposableViewKeeper<ILevelResourcesView> Resources { get; }
     }
 }

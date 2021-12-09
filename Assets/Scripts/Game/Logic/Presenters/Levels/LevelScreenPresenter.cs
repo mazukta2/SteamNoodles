@@ -15,8 +15,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
         public CurrentOrderPresenter Order { get; private set; }
         public ClashesPresenter Clashes { get; private set; }
 
+
         private readonly GameLevel _model;
         private readonly IScreenView _view;
+
+        private LevelResourcesPresenter _resources;
 
         public LevelScreenPresenter(GameLevel model, IScreenView view, PlacementPresenter placement)
         {
@@ -24,6 +27,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
             _view = view ?? throw new ArgumentNullException(nameof(view));
             Hand = new HandPresenter(model.Hand, _view.Hand.Create(), placement);
             Clashes = new ClashesPresenter(model.Clashes, view.Clashes.Create());
+            _resources = new LevelResourcesPresenter(model, view.Resources.Create());
 
             model.Customers.OnCurrentCustomerChanged += UpdateOrder;
         }
@@ -34,6 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
             Hand.Dispose();
             Order?.Dispose();
             Clashes.Dispose();
+            _resources.Dispose();
         }
 
         private void UpdateOrder()

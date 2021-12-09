@@ -17,6 +17,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
     public class GameLevel : Disposable
     {
+        public event Action OnMoneyChanged = delegate { };
+
         public int Money { get; private set; }
         public Placement Placement { get; private set; }
         public CustomerManager Customers { get; private set; }
@@ -84,6 +86,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public void ChangeMoney(int value)
         {
             Money += value;
+            OnMoneyChanged();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
-    public interface IButtonView
+    public interface IButtonView : IView
     {
         bool IsShowing { get; }
         void SetAction(Action action);

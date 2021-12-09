@@ -14,14 +14,17 @@ namespace Game.Tests.Cases.Customers
     public class MoneyForConstructionCustomerFeatureTests
     {
         [Test]
-        public void IsMoneyByConstructionFeatureWorking()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IsFeatureWorking(bool added)
         {
             var game = new GameController();
             
             var (models, presenters, views) = game.LoadLevel();
             var construction = (ConstructionSettings)models.Hand.Cards.First().Protype;
             var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
-            customerSettings.AddFeature(new MoneyForConstructionCustomerFeatureSettings(construction) { Money = 10 });
+            if (added)
+                customerSettings.AddFeature(new MoneyForConstructionCustomerFeatureSettings(construction) { Money = 10 });
 
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
@@ -34,7 +37,10 @@ namespace Game.Tests.Cases.Customers
             game.PushTime(3);
             customer.TeleportToTarget();
             Assert.IsTrue(customer.IsServed);
-            Assert.AreEqual(11, models.Money);
+            if (added)
+                Assert.AreEqual(11, models.Money);
+            else
+                Assert.AreEqual(1, models.Money);
 
             game.Exit();
         }
