@@ -40,10 +40,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             Hand = new PlayerHand(settings.StartingHand);
             Placement = new Placement(settings, Hand);
-            Units = new LevelUnits(settings, Placement, time, random, settings);
-            Clashes = new GameClashes(settings, time);
             _servingMoney = new UnitServingMoneyCalculator(Placement);
-            Customers = new CustomerManager(this, settings, _servingMoney, Placement, Clashes, Units, time, random);
+            Units = new LevelUnits(settings, Placement, time, random, settings, _servingMoney);
+            Clashes = new GameClashes(settings, time);
+            Customers = new CustomerManager(this, settings, Placement, Clashes, Units, time, random);
 
             AddEffectSystems();
         }

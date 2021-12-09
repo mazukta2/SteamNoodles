@@ -96,7 +96,30 @@ namespace Game.Tests.Cases.Customers
         [Test]
         public void IsCostumerServedRightTime()
         {
-            throw new NotImplementedException();
+            var game = new GameController();
+
+            var (models, presenters, views) = game.LoadLevel();
+            var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            customer1.ServingTime = 5;
+            views.Screen.Clashes.Value.StartClash.Click();
+
+            Assert.AreEqual(0, models.Money);
+
+            var customer = models.Customers.CurrentCustomer.Unit;
+            Assert.IsTrue(customer.IsMoving());
+            customer.TeleportToTarget();
+
+            for (int i = 0; i < customer1.ServingTime; i++)
+            {
+                Assert.IsFalse(customer.IsServed);
+                Assert.IsFalse(customer.IsMoving());
+                game.PushTime(1);
+            }
+            Assert.IsTrue(customer.IsMoving());
+            customer.TeleportToTarget();
+            Assert.IsTrue(customer.IsServed);
+
+            game.Exit();
         }
 
         [TearDown]

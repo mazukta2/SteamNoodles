@@ -21,16 +21,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private Placement _placement;
         private GameTime _time;
         private GameLevel _level;
-        private UnitServingMoneyCalculator _moneyEffectCalculator;
         private GameTimer _timer;
         StateMachine<State, Triggers> _stateMachine = new StateMachine<State, Triggers>(State.Idle);
 
-        public ServingCustomerProcess(GameTime time, UnitServingMoneyCalculator _moneyCalculator, Placement placement, GameLevel level, Unit unit)
+        public ServingCustomerProcess(GameTime time, Placement placement, GameLevel level, Unit unit)
         {
             _placement = placement;
             _time = time;
             _level = level;
-            _moneyEffectCalculator = _moneyCalculator;
             Unit = unit;
 
             _stateMachine.Configure(State.Idle)
@@ -70,7 +68,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         
         private void Step_2_WaitForServing()
         {
-            _timer = new GameTimer(_time, 3f);
+            _timer = new GameTimer(_time, Unit.GetOrderingTime());
             _timer.OnFinished += _timer_OnFinished;
         }
 
@@ -102,14 +100,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void Finish()
         {
-            _level.ChangeMoney(_moneyEffectCalculator.GetServingMoney(Unit));
+            _level.ChangeMoney(Unit.GetServingMoney());
             Unit.SetServed();
             OnFinished();
         }
 
         public void Cancel()
         {
-            _level.ChangeMoney(_moneyEffectCalculator.GetServingMoney(Unit));
+            _level.ChangeMoney(Unit.GetServingMoney());
             Unit.SetServed();
             OnCanceled();
         }

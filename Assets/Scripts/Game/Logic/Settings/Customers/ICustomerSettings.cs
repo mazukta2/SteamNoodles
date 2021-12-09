@@ -6,6 +6,7 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
     public interface ICustomerSettings
     {
         int Money { get; }
+        int ServingTime { get; }
         IReadOnlyCollection<ICustomerFeatureSettings> Features { get; }
     }
 }

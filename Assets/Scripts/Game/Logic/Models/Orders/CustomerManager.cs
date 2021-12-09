@@ -28,10 +28,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly GameTime _time;
         private readonly GameClashes _clashes;
         private readonly GameLevel _level;
-        private readonly UnitServingMoneyCalculator _moneyCalculator;
         private readonly Deck<ICustomerSettings> _pool;
 
-        public CustomerManager(GameLevel level, IUnitsSettings unitsSettings, UnitServingMoneyCalculator moneyCalculator, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
+        public CustomerManager(GameLevel level, IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
             _unitsSettings = unitsSettings ?? throw new Exception(nameof(unitsSettings));
             _placement = placement ?? throw new Exception(nameof(placement));
@@ -40,7 +39,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _time = time ?? throw new Exception(nameof(time));
             _clashes = clashes ?? throw new Exception(nameof(clashes));
             _level = level ?? throw new Exception(nameof(level));
-            _moneyCalculator = moneyCalculator ?? throw new Exception(nameof(level));
 
             _pool = new Deck<ICustomerSettings>(random);
             foreach (var item in _unitsSettings.Deck)
@@ -90,7 +88,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 throw new Exception("Cant find customer");
 
             _units.TakeFromCrowd(unit);
-            CurrentCustomer = new ServingCustomerProcess(_time, _moneyCalculator, _placement, _level, unit);
+            CurrentCustomer = new ServingCustomerProcess(_time, _placement, _level, unit);
             CurrentCustomer.OnFinished += CurrentCustomer_OnFinished;
             OnCurrentCustomerChanged();
         }

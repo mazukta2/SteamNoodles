@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Effects.Systems;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Units
@@ -13,11 +14,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public bool IsServed { get; private set; }
         public ICustomerSettings Settings { get; private set; }
 
-        public Unit(FloatPoint position, FloatPoint target, ICustomerSettings settings)
+        private UnitServingMoneyCalculator _unitServingMoney;
+
+        public Unit(FloatPoint position, FloatPoint target, ICustomerSettings settings, UnitServingMoneyCalculator unitServingMoney)
         {
             Position = position;
             Target = target;
-            Settings = settings;
+            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _unitServingMoney = unitServingMoney ?? throw new ArgumentNullException(nameof(unitServingMoney));
         }
 
         public bool MoveToTarget(float delta)
@@ -57,6 +61,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public void SetServed()
         {
             IsServed = true;
+        }
+
+        public bool IsMoving()
+        {
+            return !Position.IsClose(Target);
+        }
+
+        public float GetOrderingTime()
+        {
+            return Settings.ServingTime;
+        }
+
+        public int GetServingMoney()
+        {
+            return _unitServingMoney.GetServingMoney(this);
         }
     }
 }

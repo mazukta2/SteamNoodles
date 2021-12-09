@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
+using Game.Assets.Scripts.Game.Logic.Models.Effects.Systems;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
@@ -25,18 +26,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private IUnitsSettings _prototype;
         private SessionRandom _random;
         private GameTime _time;
+        private UnitServingMoneyCalculator _unitServingMoney;
         private int UnitsCount = 20;
         private List<Unit> _spawnedUnits = new List<Unit>();
         private List<Unit> _crowd = new List<Unit>();
         private Deck<ICustomerSettings> _pool;
         private Rect Rect => _prototype.UnitsSpawnRect;
 
-        public LevelUnits(IUnitsSettings unitsSettings, Placement placement, Time.GameTime time, SessionRandom random, IUnitsSettings prototype)
+        public LevelUnits(IUnitsSettings unitsSettings, Placement placement, Time.GameTime time, SessionRandom random, IUnitsSettings prototype, UnitServingMoneyCalculator unitServingMoney)
         {
-            _placement = placement;
-            _prototype = prototype;
-            _random = random;
-            _time = time;
+            _placement = placement ?? throw new ArgumentNullException(nameof(placement));
+            _prototype = prototype ?? throw new ArgumentNullException(nameof(prototype));
+            _random = random ?? throw new ArgumentNullException(nameof(random));
+            _time = time ?? throw new ArgumentNullException(nameof(time));
+            _unitServingMoney = unitServingMoney ?? throw new ArgumentNullException(nameof(unitServingMoney));
+
             _pool = new Deck<ICustomerSettings>(random);
             foreach (var item in unitsSettings.Deck)
                 _pool.Add(item.Key, item.Value);
@@ -70,7 +74,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 settings = _pool.Take();
 
             var position = Rect.GetRandomFloatPoint(_random);
-            var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? Rect.X - 1 : Rect.X + Rect.Width + 1, position.Y), settings);
+            var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? Rect.X - 1 : Rect.X + Rect.Width + 1, position.Y), settings, _unitServingMoney);
             _spawnedUnits.Add(unit);
             _crowd.Add(unit);
             OnUnitSpawn(unit);
@@ -108,7 +112,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                     position = new FloatPoint(Rect.X + Rect.Width - 1, position.Y);
                     target = new FloatPoint(Rect.X - 1, position.Y);
                 }
-                var unit = new Unit(position, target, _pool.Take());
+                var unit = new Unit(position, target, _pool.Take(), _unitServingMoney);
                 _spawnedUnits.Add(unit);
                 _crowd.Add(unit);
                 OnUnitSpawn(unit);
