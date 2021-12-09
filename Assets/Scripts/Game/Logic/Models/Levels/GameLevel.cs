@@ -26,6 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public PlayerHand Hand { get; private set; }
         public LevelUnits Units { get; private set; }
         public GameClashes Clashes { get; private set; }
+        public int Service => Placement.GetConstructionsWithTag(ConstructionTag.Service);
 
         private List<IEffectSystem> _effectSystems = new List<IEffectSystem>();
 
@@ -40,7 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             Hand = new PlayerHand(settings.StartingHand);
             Placement = new Placement(settings, Hand);
-            _servingMoney = new UnitServingMoneyCalculator(Placement);
+            _servingMoney = new UnitServingMoneyCalculator(random, this, Placement);
             Units = new LevelUnits(settings, Placement, time, random, settings, _servingMoney);
             Clashes = new GameClashes(settings, time);
             Customers = new CustomerManager(this, settings, Placement, Clashes, Units, time, random);

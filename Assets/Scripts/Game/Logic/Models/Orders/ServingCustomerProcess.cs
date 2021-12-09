@@ -101,6 +101,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private void Finish()
         {
             _level.ChangeMoney(Unit.GetServingMoney());
+            _level.ChangeMoney(Unit.GetTips());
             Unit.SetServed();
             OnFinished();
         }
@@ -108,6 +109,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public void Cancel()
         {
             _level.ChangeMoney(Unit.GetServingMoney());
+            _level.ChangeMoney(Unit.GetTips());
             Unit.SetServed();
             OnCanceled();
         }

@@ -5,6 +5,7 @@ using Game.Tests.Mocks.Settings.Buildings;
 using Game.Tests.Mocks.Settings.Buildings.Features;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 using Tests.Mocks.Prototypes.Levels;
 
@@ -22,7 +23,7 @@ namespace Game.Tests.Cases.Constructions
 
             var newCustomer = new CustomerSettings();
             models.Hand.Add(new ConstructionSettings() { 
-                Features = new Assets.Scripts.Game.Logic.Settings.Constructions.IConstructionFeatureSettings[] { 
+                FeaturesList = new List<Assets.Scripts.Game.Logic.Settings.Constructions.IConstructionFeatureSettings> { 
                     new NewCustomerConstructionFeatureSettings(newCustomer)
                 }
             });

@@ -7,6 +7,7 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
     {
         int Money { get; }
         int ServingTime { get; }
+        float TipMultiplayer { get; }
         IReadOnlyCollection<ICustomerFeatureSettings> Features { get; }
     }
 }

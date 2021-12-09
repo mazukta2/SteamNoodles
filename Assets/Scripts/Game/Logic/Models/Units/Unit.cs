@@ -77,5 +77,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         {
             return _unitServingMoney.GetServingMoney(this);
         }
+
+        public int GetTips()
+        {
+            return _unitServingMoney.GetTips(this);
+        }
     }
 }

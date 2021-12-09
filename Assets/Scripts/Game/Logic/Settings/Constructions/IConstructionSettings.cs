@@ -1,7 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Settings.Constructions
@@ -12,7 +14,8 @@ namespace Game.Assets.Scripts.Game.Logic.Settings.Constructions
         Requirements Requirements { get; }
         ISprite HandIcon { get; }
         IVisual BuildingView { get; }
-        IConstructionFeatureSettings[] Features { get; }
+        IReadOnlyCollection<IConstructionFeatureSettings> Features { get; }
+        IReadOnlyDictionary<ConstructionTag, int> Tags { get; }
     }
 
     [Serializable]

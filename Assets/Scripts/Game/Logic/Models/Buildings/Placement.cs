@@ -78,5 +78,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
 
             return true;
         }
+
+        public int GetConstructionsWithTag(ConstructionTag tag)
+        {
+            return Constructions.Sum(x => x.GetTagsCount(tag));
+        }
+
     }
 }

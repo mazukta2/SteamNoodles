@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Tests.Controllers;
+using Game.Tests.Mocks.Settings.Buildings;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System;
@@ -89,6 +90,35 @@ namespace Game.Tests.Cases.Customers
             customer.TeleportToTarget();
             Assert.IsTrue(customer.IsServed);
             Assert.AreEqual(3, models.Money);
+
+            game.Exit();
+        }
+
+        [Test]
+        public void IsCostumerGivesTips()
+        {
+            var game = new GameController();
+
+            var (models, presenters, views) = game.LoadLevel();
+            var unitSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            var constructionSettings = (ConstructionSettings)models.Hand.Cards.First().Protype;
+            unitSettings.TipMultiplayer = 2;
+            constructionSettings.TagsList.Add(Assets.Scripts.Game.Logic.Models.Buildings.ConstructionTag.Service, 101);
+
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
+
+            views.Screen.Clashes.Value.StartClash.Click();
+
+            Assert.AreEqual(0, models.Money);
+            Assert.AreEqual(101, models.Service);
+
+            var customer = models.Customers.CurrentCustomer.Unit;
+            customer.TeleportToTarget();
+            game.PushTime(3);
+            customer.TeleportToTarget();
+
+            Assert.AreEqual(3, models.Money); // 1 for normal, 1*2 = tips;
 
             game.Exit();
         }

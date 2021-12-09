@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Settings.Constructions.Features;
 using System;
@@ -13,10 +14,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Effects.Systems
 {
     public class UnitServingMoneyCalculator : Disposable
     {
+        private SessionRandom _random;
         private Placement _placement;
-        public UnitServingMoneyCalculator(Placement placement)
+        private GameLevel _level;
+
+        public UnitServingMoneyCalculator(SessionRandom random, GameLevel level, Placement placement)
         {
+            _random = random;
             _placement = placement;
+            _level = level;
         }
 
         protected override void DisposeInner()
@@ -35,6 +41,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Effects.Systems
             }
 
             return money;
+        }
+
+        public int GetTips(Unit unit)
+        {
+            var settings = unit.Settings;
+            var money = settings.Money;
+
+            var chance = _random.GetRandom(0, 100);
+            if (chance < _level.Service)
+            {
+                return (int)(money * unit.Settings.TipMultiplayer);
+            }
+            return 0;
         }
     }
 }
