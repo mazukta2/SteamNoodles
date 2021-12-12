@@ -1,10 +1,9 @@
-﻿using Assets.Scripts.Logic.Prototypes.Levels;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Orders;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Buildings;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tests.Mocks.Prototypes.Levels;
@@ -13,7 +12,6 @@ namespace Game.Tests.Cases.Customers
 {
     public class CustomersTests
     {
-        #region Existance
         [Test]
         public void IsCurrentCustomerSetted()
         {
@@ -30,7 +28,27 @@ namespace Game.Tests.Cases.Customers
             game.Exit();
         }
 
-        #endregion
+        [Test]
+        public void IsCurrentConsumerChanged()
+        {
+            var game = new GameController();
+            var levelProto = new LevelSettings();
+
+            var (models, presenters, views) = game.LoadLevel(levelProto);
+            views.Screen.Clashes.Value.StartClash.Click();
+
+            Assert.IsTrue(models.Clashes.IsInClash);
+
+            var consumer = models.Customers.CurrentCustomer;
+            Assert.IsNotNull(consumer);
+            CommonTestActions.ServeCustumer(game, models);
+            Assert.IsTrue(consumer.Unit.IsServed);
+            Assert.AreNotEqual(consumer, models.Customers.CurrentCustomer);
+            Assert.AreEqual(ServingCustomerProcess.Phase.Exiting, consumer.CurrentPhase);
+            Assert.AreEqual(ServingCustomerProcess.Phase.MovingTo, models.Customers.CurrentCustomer.CurrentPhase);
+
+            game.Exit();
+        }
 
         [Test]
         public void IsCustumerPoolGiveRightCustumers()
@@ -85,9 +103,7 @@ namespace Game.Tests.Cases.Customers
             Assert.AreEqual(0, models.Money);
 
             var customer = models.Customers.CurrentCustomer.Unit;
-            customer.TeleportToTarget();
-            game.PushTime(3);
-            customer.TeleportToTarget();
+            CommonTestActions.ServeCustumer(game, models);
             Assert.IsTrue(customer.IsServed);
             Assert.AreEqual(3, models.Money);
 
@@ -113,10 +129,9 @@ namespace Game.Tests.Cases.Customers
             Assert.AreEqual(0, models.Money);
             Assert.AreEqual(101, models.Service);
 
-            var customer = models.Customers.CurrentCustomer.Unit;
-            customer.TeleportToTarget();
-            game.PushTime(3);
-            customer.TeleportToTarget();
+            Assert.AreEqual(2, models.Customers.CurrentCustomer.Unit.GetTips());
+
+            CommonTestActions.ServeCustumer(game, models);
 
             Assert.AreEqual(3, models.Money); // 1 for normal, 1*2 = tips;
 
@@ -130,7 +145,9 @@ namespace Game.Tests.Cases.Customers
 
             var (models, presenters, views) = game.LoadLevel();
             var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
-            customer1.ServingTime = 5;
+            customer1.OrderingTime = 2;
+            customer1.CookingTime = 2;
+            customer1.EatingTime = 2;
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.AreEqual(0, models.Money);
@@ -139,12 +156,46 @@ namespace Game.Tests.Cases.Customers
             Assert.IsTrue(customer.IsMoving());
             customer.TeleportToTarget();
 
-            for (int i = 0; i < customer1.ServingTime; i++)
+            for (int i = 0; i < 6; i++)
             {
                 Assert.IsFalse(customer.IsServed);
                 Assert.IsFalse(customer.IsMoving());
                 game.PushTime(1);
             }
+            Assert.IsTrue(customer.IsMoving());
+            customer.TeleportToTarget();
+            Assert.IsTrue(customer.IsServed);
+
+            game.Exit();
+        }
+
+        [Test]
+        public void IsConsumerPassAllPhases()
+        {
+            var game = new GameController();
+
+            var (models, presenters, views) = game.LoadLevel();
+            var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            customer1.OrderingTime = 2;
+            customer1.CookingTime = 2;
+            customer1.EatingTime = 2;
+            views.Screen.Clashes.Value.StartClash.Click();
+
+            Assert.AreEqual(0, models.Money);
+
+            var service = models.Customers.CurrentCustomer;
+            var customer = models.Customers.CurrentCustomer.Unit;
+            Assert.IsTrue(customer.IsMoving());
+            customer.TeleportToTarget();
+
+            Assert.AreEqual(ServingCustomerProcess.Phase.Ordering, service.CurrentPhase);
+            game.PushTime(2);
+            Assert.AreEqual(ServingCustomerProcess.Phase.WaitCooking, service.CurrentPhase);
+            game.PushTime(2);
+            Assert.AreEqual(ServingCustomerProcess.Phase.Eating, service.CurrentPhase);
+            game.PushTime(2);
+            Assert.AreEqual(ServingCustomerProcess.Phase.MovingAway, service.CurrentPhase);
+
             Assert.IsTrue(customer.IsMoving());
             customer.TeleportToTarget();
             Assert.IsTrue(customer.IsServed);

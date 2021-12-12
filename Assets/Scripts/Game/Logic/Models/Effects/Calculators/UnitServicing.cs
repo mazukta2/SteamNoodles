@@ -13,13 +13,13 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Effects.Systems
 {
-    public class UnitServingMoneyCalculator : Disposable
+    public class UnitServicing : Disposable
     {
         private SessionRandom _random;
         private Placement _placement;
         private GameLevel _level;
 
-        public UnitServingMoneyCalculator(SessionRandom random, GameLevel level, Placement placement)
+        public UnitServicing(SessionRandom random, GameLevel level, Placement placement)
         {
             _random = random;
             _placement = placement;
@@ -63,6 +63,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Effects.Systems
                 return (int)(money * tipModificator);
             }
             return 0;
+        }
+
+        public float GetEatingTime(Unit unit)
+        {
+            var calculator = new PercentCalculator();
+
+            foreach (var item in unit.Settings.Features.OfType<IEatingSpeedFeatureSettings>())
+            {
+                calculator.Add(item.TimeModificator);
+            }
+
+            return calculator.GetFor(unit.Settings.EatingTime, 1f);
         }
     }
 }

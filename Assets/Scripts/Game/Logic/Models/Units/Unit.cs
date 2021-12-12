@@ -1,7 +1,10 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Effects.Systems;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions.Features;
 using System;
+using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Units
 {
@@ -14,14 +17,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public bool IsServed { get; private set; }
         public ICustomerSettings Settings { get; private set; }
 
-        private UnitServingMoneyCalculator _unitServingMoney;
+        private UnitServicing _unitServing;
 
-        public Unit(FloatPoint position, FloatPoint target, ICustomerSettings settings, UnitServingMoneyCalculator unitServingMoney)
+        public Unit(FloatPoint position, FloatPoint target, ICustomerSettings settings, UnitServicing unitServing)
         {
             Position = position;
             Target = target;
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            _unitServingMoney = unitServingMoney ?? throw new ArgumentNullException(nameof(unitServingMoney));
+            _unitServing = unitServing ?? throw new ArgumentNullException(nameof(unitServing));
         }
 
         public bool MoveToTarget(float delta)
@@ -70,17 +73,27 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         public float GetOrderingTime()
         {
-            return Settings.ServingTime;
+            return Settings.OrderingTime;
+        }
+
+        public float GetCookingTime()
+        {
+            return Settings.CookingTime;
+        }
+
+        public float GetEatingTime()
+        {
+            return _unitServing.GetEatingTime(this);
         }
 
         public int GetServingMoney()
         {
-            return _unitServingMoney.GetServingMoney(this);
+            return _unitServing.GetServingMoney(this);
         }
 
         public int GetTips()
         {
-            return _unitServingMoney.GetTips(this);
+            return _unitServing.GetTips(this);
         }
     }
 }

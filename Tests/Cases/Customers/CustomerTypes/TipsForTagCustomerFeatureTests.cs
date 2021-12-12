@@ -38,10 +38,10 @@ namespace Game.Tests.Cases.Customers
                     TipModificator = new PercentModificator(PercentModificator.ActionType.Remove, 25f)
                 });
 
-            BuildConstruction(game, views);
+            CommonTestActions.BuildConstruction(game, views);
 
             Assert.AreEqual(0, models.Money);
-            ServeCustumer(game, models);
+            CommonTestActions.ServeCustumer(game, models);
             if (added)
                 Assert.AreEqual(150, models.Money);
             else
@@ -67,29 +67,13 @@ namespace Game.Tests.Cases.Customers
                 TipModificator = new PercentModificator(PercentModificator.ActionType.Remove, 25f)
             });
 
-            BuildConstruction(game, views);
+            CommonTestActions.BuildConstruction(game, views);
 
             Assert.AreEqual(0, models.Money);
-            ServeCustumer(game, models);
+            CommonTestActions.ServeCustumer(game, models);
             Assert.AreEqual(100, models.Money);
 
             game.Exit();
-        }
-
-        private void ServeCustumer(GameController game, GameLevel models)
-        {
-            var customer = models.Customers.CurrentCustomer.Unit;
-            customer.TeleportToTarget();
-            game.PushTime(3);
-            customer.TeleportToTarget();
-            Assert.IsTrue(customer.IsServed);
-        }
-
-        private void BuildConstruction(GameController game, ILevelView views)
-        {
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
         }
 
         [TearDown]

@@ -9,11 +9,16 @@ namespace Tests.Mocks.Prototypes.Levels
     public class CustomerSettings : ICustomerSettings
     {
         public int Money { get; set; } = 1;
-        public int ServingTime { get; set; } = 3;
 
         public float BaseTipMultiplayer { get; set; } = 1;
 
         public IReadOnlyCollection<ICustomerFeatureSettings> Features => _features.AsReadOnly();
+
+        public float OrderingTime { get; set; } = 1;
+
+        public float CookingTime { get; set; } = 1;
+
+        public float EatingTime { get; set; } = 1;
 
         public List<ICustomerFeatureSettings> _features = new List<ICustomerFeatureSettings>();
 

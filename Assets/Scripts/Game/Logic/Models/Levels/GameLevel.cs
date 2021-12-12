@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private List<IEffectSystem> _effectSystems = new List<IEffectSystem>();
 
-        private UnitServingMoneyCalculator _servingMoney;
+        private UnitServicing _servingMoney;
         private ILevelSettings _settings;
 
         public GameLevel(ILevelSettings settings, SessionRandom random, GameTime time)
@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             Hand = new PlayerHand(settings.StartingHand);
             Placement = new Placement(settings, Hand);
-            _servingMoney = new UnitServingMoneyCalculator(random, this, Placement);
+            _servingMoney = new UnitServicing(random, this, Placement);
             Units = new LevelUnits(settings, Placement, time, random, settings, _servingMoney);
             Clashes = new GameClashes(settings, time);
             Customers = new CustomerManager(this, settings, Placement, Clashes, Units, time, random);

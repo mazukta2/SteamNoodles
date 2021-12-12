@@ -26,14 +26,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private IUnitsSettings _prototype;
         private SessionRandom _random;
         private GameTime _time;
-        private UnitServingMoneyCalculator _unitServingMoney;
+        private UnitServicing _unitServingMoney;
         private int UnitsCount = 20;
         private List<Unit> _spawnedUnits = new List<Unit>();
         private List<Unit> _crowd = new List<Unit>();
         private Deck<ICustomerSettings> _pool;
         private Rect Rect => _prototype.UnitsSpawnRect;
 
-        public LevelUnits(IUnitsSettings unitsSettings, Placement placement, Time.GameTime time, SessionRandom random, IUnitsSettings prototype, UnitServingMoneyCalculator unitServingMoney)
+        public LevelUnits(IUnitsSettings unitsSettings, Placement placement, Time.GameTime time, SessionRandom random, IUnitsSettings prototype, UnitServicing unitServingMoney)
         {
             _placement = placement ?? throw new ArgumentNullException(nameof(placement));
             _prototype = prototype ?? throw new ArgumentNullException(nameof(prototype));
