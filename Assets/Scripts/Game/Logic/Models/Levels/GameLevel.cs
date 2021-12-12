@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Clashes;
 using Game.Assets.Scripts.Game.Logic.Models.Effects;
 using Game.Assets.Scripts.Game.Logic.Models.Effects.Systems;
 using Game.Assets.Scripts.Game.Logic.Models.Orders;
+using Game.Assets.Scripts.Game.Logic.Models.Rewards;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
@@ -23,6 +24,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public Placement Placement { get; private set; }
         public CustomerManager Customers { get; private set; }
 
+        private RewardCalculator _rewardCalculator;
+
         public PlayerHand Hand { get; private set; }
         public LevelUnits Units { get; private set; }
         public GameClashes Clashes { get; private set; }
@@ -39,8 +42,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             if (random == null) throw new ArgumentNullException(nameof(random));
             if (time == null) throw new ArgumentNullException(nameof(time));
 
+            _rewardCalculator = new RewardCalculator(this, random);
             Hand = new PlayerHand(settings.StartingHand);
-            Placement = new Placement(settings, Hand);
+            Placement = new Placement(settings, Hand, _rewardCalculator);
             _servingMoney = new UnitServicing(random, this, Placement);
             Units = new LevelUnits(settings, Placement, time, random, settings, _servingMoney);
             Clashes = new GameClashes(settings, time);
@@ -59,6 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Clashes.Dispose();
             Customers.Dispose();
             _servingMoney.Dispose();
+            _rewardCalculator.Dispose();
         }
 
         private void AddEffectSystems()

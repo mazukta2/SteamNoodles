@@ -85,7 +85,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
                 Ghost.MoveTo(worldPosition);
                 if (Ghost.CanPlaceGhost())
                 {
-                    _model.Place(Ghost.Card, Ghost.GetCellPosition(worldPosition));
+                    _model.Build(Ghost.Card, Ghost.GetCellPosition(worldPosition));
                     ClearGhost();
                 }
             }

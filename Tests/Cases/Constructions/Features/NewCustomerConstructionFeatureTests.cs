@@ -11,10 +11,10 @@ using Tests.Mocks.Prototypes.Levels;
 
 namespace Game.Tests.Cases.Constructions
 {
-    public class ConstructionsTypesTests
+    public class NewCustomerConstructionFeatureTests
     {
         [Test]
-        public void NewUnitTypeConstructionFeature()
+        public void IsFeatureWorking()
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
