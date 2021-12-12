@@ -101,8 +101,8 @@ namespace Game.Tests.Cases.Customers
 
             var (models, presenters, views) = game.LoadLevel();
             var unitSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
-            var constructionSettings = (ConstructionSettings)models.Hand.Cards.First().Protype;
-            unitSettings.TipMultiplayer = 2;
+            var constructionSettings = (ConstructionSettings)models.Hand.Cards.First().Settings;
+            unitSettings.BaseTipMultiplayer = 2;
             constructionSettings.TagsList.Add(Assets.Scripts.Game.Logic.Models.Buildings.ConstructionTag.Service, 101);
 
             views.Screen.Hand.Value.Cards.List.First().Button.Click();

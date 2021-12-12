@@ -11,7 +11,7 @@ namespace Tests.Mocks.Prototypes.Levels
         public int Money { get; set; } = 1;
         public int ServingTime { get; set; } = 3;
 
-        public float TipMultiplayer { get; set; } = 2;
+        public float BaseTipMultiplayer { get; set; } = 1;
 
         public IReadOnlyCollection<ICustomerFeatureSettings> Features => _features.AsReadOnly();
 

@@ -7,5 +7,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
     public enum ConstructionTag
     {
         Service,
+        Machine,
     }
 }

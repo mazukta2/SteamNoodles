@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Calculations;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Orders;
@@ -51,7 +52,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Effects.Systems
             var chance = _random.GetRandom(0, 100);
             if (chance < _level.Service)
             {
-                return (int)(money * unit.Settings.TipMultiplayer);
+                var calculator = new PercentCalculator();
+                foreach (var item in settings.Features.OfType<ITipsForConstructionTagCustomerFeatureSettings>())
+                {
+                    var count = _placement.Constructions.Sum(x => x.GetTagsCount(item.Tag));
+                    if (count > 0)
+                        calculator.Add(item.TipModificator, count);
+                }
+                var tipModificator = calculator.GetFor(unit.Settings.BaseTipMultiplayer, 0);
+                return (int)(money * tipModificator);
             }
             return 0;
         }

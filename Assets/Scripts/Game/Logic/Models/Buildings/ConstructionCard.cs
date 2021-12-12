@@ -14,7 +14,7 @@ namespace Assets.Scripts.Models.Buildings
         public Requirements Requirements => _prototype.Requirements;
         public ISprite HandIcon => _prototype.HandIcon;
         public IVisual BuildingView => _prototype.BuildingView;
-        public IConstructionSettings Protype => _prototype;
+        public IConstructionSettings Settings => _prototype;
 
         private readonly IConstructionSettings _prototype;
 

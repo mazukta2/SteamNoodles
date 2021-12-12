@@ -21,7 +21,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             
             var (models, presenters, views) = game.LoadLevel();
-            var construction = (ConstructionSettings)models.Hand.Cards.First().Protype;
+            var construction = (ConstructionSettings)models.Hand.Cards.First().Settings;
             var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
             if (added)
                 customerSettings.AddFeature(new MoneyForConstructionCustomerFeatureSettings(construction) { Money = 10 });
