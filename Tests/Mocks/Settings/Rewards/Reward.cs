@@ -11,7 +11,7 @@ namespace Game.Tests.Mocks.Settings.Rewards
     public class Reward : IReward
     {
         public IReadOnlyDictionary<IConstructionSettings, int> ToHand => ToHandSource.AsReadOnly();
-        public Dictionary<IConstructionSettings, int> ToHandSource { get; set; }
+        public Dictionary<IConstructionSettings, int> ToHandSource { get; set; } = new Dictionary<IConstructionSettings, int>();
         public int MinToHand { get; set; } = 1;
         public int MaxToHand { get; set; } = 1;
     }

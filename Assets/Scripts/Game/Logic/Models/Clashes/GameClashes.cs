@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Rewards;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using System;
@@ -12,15 +13,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
         public event Action OnClashEnded = delegate { };
 
         public bool IsInClash { get; private set; }
+        public IClashesSettings Settings => _settings;
 
         private IClashesSettings _settings;
         private GameTime _time;
+        private readonly RewardCalculator _rewardCalculator;
         private GameTimer _clashTimer;
 
-        public GameClashes(IClashesSettings settings, GameTime time)
+        public GameClashes(IClashesSettings settings, GameTime time, RewardCalculator rewardCalculator)
         {
             _settings = settings ?? throw new  ArgumentNullException(nameof(settings));
             _time = time;
+            _rewardCalculator = rewardCalculator ?? throw new ArgumentNullException(nameof(rewardCalculator));
         }
 
         protected override void DisposeInner()
@@ -51,6 +55,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
             _clashTimer.OnFinished -= StopClash;
             _clashTimer = null;
             IsInClash = false;
+
+            _rewardCalculator.Give(_settings.ClashReward);
+
             OnClashEnded();
         }
     }

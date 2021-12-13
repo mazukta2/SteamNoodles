@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
 
         private void _model_OnClashEnded()
         {
-            _view.StartClash.SetShowing(true); ;
+            _view.StartClash.SetShowing(true);
         }
     }
 }

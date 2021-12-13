@@ -35,6 +35,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Rewards
         {
             var count = _random.GetRandom(reward.MinToHand, reward.MaxToHand);
             var deck = new Deck<IConstructionSettings>(_random);
+            if (reward.ToHand.Count == 0)
+                return;
+
             foreach (var item in reward.ToHand)
                 deck.Add(item.Key, item.Value);
 

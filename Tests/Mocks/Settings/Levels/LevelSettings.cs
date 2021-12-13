@@ -2,7 +2,9 @@
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
+using Game.Assets.Scripts.Game.Logic.Settings.Rewards;
 using Game.Tests.Mocks.Settings.Buildings;
+using Game.Tests.Mocks.Settings.Rewards;
 using Game.Tests.Mocks.Views.Levels;
 using System;
 using System.Collections.Generic;
@@ -27,5 +29,7 @@ namespace Game.Tests.Mocks.Settings.Levels
         {
             { new CustomerSettings(), 1 }
         };
+
+        public IReward ClashReward { get; set; } = new Reward();
     }
 }
