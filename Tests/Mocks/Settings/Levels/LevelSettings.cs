@@ -17,6 +17,9 @@ namespace Game.Tests.Mocks.Settings.Levels
     {
         public Point Size => new Point(4, 4);
 
+
+        public int HandSize { get; set; } = 10;
+
         public IConstructionSettings[] StartingHand { get; } = new IConstructionSettings[] {
             new ConstructionSettings()
         };

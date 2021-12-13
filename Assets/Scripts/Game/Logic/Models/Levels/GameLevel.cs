@@ -43,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             if (time == null) throw new ArgumentNullException(nameof(time));
 
             _rewardCalculator = new RewardCalculator(this, random);
-            Hand = new PlayerHand(settings.StartingHand);
+            Hand = new PlayerHand(settings);
             Placement = new Placement(settings, Hand, _rewardCalculator);
             _servingMoney = new UnitServicing(random, this, Placement);
             Units = new LevelUnits(settings, Placement, time, random, settings, _servingMoney);

@@ -8,14 +8,14 @@ using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
 {
-    public interface ILevelSettings : IPlacementSettings, IUnitsSettings, IClashesSettings
+    public interface ILevelSettings : IPlacementSettings, IUnitsSettings, IClashesSettings, IHandSettings
     {
-        IConstructionSettings[] StartingHand { get; }
     }
 
-    public interface IQueueSettings
+    public interface IHandSettings
     {
-        int QueueSize { get; }
+        IConstructionSettings[] StartingHand { get; }
+        int HandSize { get; }
     }
 
     public interface IPlacementSettings

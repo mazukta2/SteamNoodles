@@ -64,11 +64,11 @@ namespace Game.Tests.Cases.Customers
                 }
             };
 
-            Assert.AreEqual(1, models.Hand.Cards.Length);
+            Assert.AreEqual(1, models.Hand.Cards.Count);
             views.Screen.Clashes.Value.StartClash.Click();
             game.PushTime(20);
             Assert.IsFalse(models.Clashes.IsInClash);
-            Assert.AreEqual(5, models.Hand.Cards.Length);
+            Assert.AreEqual(5, models.Hand.Cards.Count);
 
             game.Exit();
         }
