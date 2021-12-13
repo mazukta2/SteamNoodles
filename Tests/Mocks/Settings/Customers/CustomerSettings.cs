@@ -20,7 +20,7 @@ namespace Tests.Mocks.Prototypes.Levels
 
         public float EatingTime { get; set; } = 1;
 
-        public List<ICustomerFeatureSettings> _features = new List<ICustomerFeatureSettings>();
+        private readonly List<ICustomerFeatureSettings> _features = new List<ICustomerFeatureSettings>();
 
         
         public void AddFeature(ICustomerFeatureSettings customerFeature)

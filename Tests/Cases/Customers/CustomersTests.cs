@@ -18,7 +18,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             var levelProto = new LevelSettings();
 
-            var (models, presenters, views) = game.LoadLevel(levelProto);
+            var (models, _, views) = game.LoadLevel(levelProto);
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.IsTrue(models.Clashes.IsInClash);
@@ -34,7 +34,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             var levelProto = new LevelSettings();
 
-            var (models, presenters, views) = game.LoadLevel(levelProto);
+            var (models, _, views) = game.LoadLevel(levelProto);
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.IsTrue(models.Clashes.IsInClash);
@@ -95,7 +95,7 @@ namespace Game.Tests.Cases.Customers
         {
             var game = new GameController();
 
-            var (models, presenters, views) = game.LoadLevel();
+            var (models, _, views) = game.LoadLevel();
             var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
             customer1.Money = 3;
             views.Screen.Clashes.Value.StartClash.Click();
@@ -115,7 +115,7 @@ namespace Game.Tests.Cases.Customers
         {
             var game = new GameController();
 
-            var (models, presenters, views) = game.LoadLevel();
+            var (models, _, views) = game.LoadLevel();
             var unitSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
             var constructionSettings = (ConstructionSettings)models.Hand.Cards.First().Settings;
             unitSettings.BaseTipMultiplayer = 2;
@@ -143,7 +143,7 @@ namespace Game.Tests.Cases.Customers
         {
             var game = new GameController();
 
-            var (models, presenters, views) = game.LoadLevel();
+            var (models, _, views) = game.LoadLevel();
             var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;
@@ -174,7 +174,7 @@ namespace Game.Tests.Cases.Customers
         {
             var game = new GameController();
 
-            var (models, presenters, views) = game.LoadLevel();
+            var (models, _, views) = game.LoadLevel();
             var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;

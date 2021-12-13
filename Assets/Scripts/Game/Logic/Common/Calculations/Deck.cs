@@ -10,9 +10,9 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
 {
     public class Deck<T>
     {
-        public Dictionary<T, int> _pool = new Dictionary<T, int>();
-        public Dictionary<T, int> _taken = new Dictionary<T, int>();
-        private SessionRandom _random;
+        private readonly Dictionary<T, int> _pool = new Dictionary<T, int>();
+        private readonly Dictionary<T, int> _taken = new Dictionary<T, int>();
+        private readonly SessionRandom _random;
 
         public Deck(SessionRandom random)
         {
