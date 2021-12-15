@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using Game.Assets.Scripts.Game.Logic.Settings.Rewards;
 using Game.Tests.Mocks.Settings.Buildings;
+using Game.Tests.Mocks.Settings.Buildings.Features;
 using Game.Tests.Mocks.Settings.Rewards;
 using Game.Tests.Mocks.Views.Levels;
 using System;
@@ -22,6 +23,12 @@ namespace Game.Tests.Mocks.Settings.Levels
 
         public IConstructionSettings[] StartingHand { get; } = new IConstructionSettings[] {
             new ConstructionSettings()
+            {
+                FeaturesList = new List<IConstructionFeatureSettings>()
+                {
+                    new OrderingPlaceConstructionFeatureSettings()
+                }
+            }
         };
 
         public Rect UnitsSpawnRect { get; set; } = new Rect(-5, -5, 10, 10);

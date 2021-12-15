@@ -6,9 +6,11 @@ using Game.Assets.Scripts.Game.Logic.Models.Effects.Systems;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions.Features;
 using Stateless;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static Game.Assets.Scripts.Game.Logic.Models.Units.Unit;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
@@ -18,6 +20,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public event Action OnFinished = delegate { };
         public event Action OnCanceled = delegate { };
         public Unit Unit { get; internal set; }
+
+        private CustomerManager _customerManager;
+
         public Phase CurrentPhase => _stateMachine.State;
 
         private Placement _placement;
@@ -26,12 +31,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private GameTimer _timer;
         StateMachine<Phase, Triggers> _stateMachine = new StateMachine<Phase, Triggers>(Phase.Idle);
 
-        public ServingCustomerProcess(GameTime time, Placement placement, GameLevel level, Unit unit)
+        public ServingCustomerProcess(CustomerManager manager, GameTime time, Placement placement, GameLevel level, Unit unit)
         {
             _placement = placement;
             _time = time;
             _level = level;
             Unit = unit;
+            _customerManager = manager;
 
             _stateMachine.Configure(Phase.Idle)
                 .Permit(Triggers.Start, Phase.MovingTo);
@@ -90,12 +96,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void OrderingStarted()
         {
+            _customerManager.SetOrdering(this);
             _timer = new GameTimer(_time, Unit.GetOrderingTime());
             _timer.OnFinished += _timer_OnFinished;
         }
 
         private void WaitCookingStarted()
         {
+            _customerManager.ClearOrdering(this);
+            var places = _customerManager.GetFreePlacesToEat();
+            if (places.Count == 0)
+            {
+                _customerManager.Occupy(this, _customerManager.GetOrderingPlace());
+            }
+            else
+            {
+                _customerManager.Occupy(this, places.First());
+            }
+
             _timer.OnFinished -= _timer_OnFinished;
             _timer = new GameTimer(_time, Unit.GetCookingTime());
             _timer.OnFinished += _timer_OnFinished;
@@ -110,6 +128,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void MovingAwayStart()
         {
+            _customerManager.ClearPlacing(this);
             Unit.SetTarget(new FloatPoint(0, _placement.RealRect.yMin - _placement.CellSize * 4f));
         }
 

@@ -9,8 +9,10 @@ using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions.Features;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
@@ -49,6 +51,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
             if (_clashes.IsInClash)
                 AddOrder();
+        }
+
+        internal double IsOccupied(Construction orderingBuilding)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal double GetOrderer()
+        {
+            throw new NotImplementedException();
         }
 
         protected override void DisposeInner()
@@ -93,6 +105,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             OnCurrentCustomerChanged();
         }
 
+        internal void SetOrdering(ServingCustomerProcess servingCustomerProcess)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void ClearOrdering(ServingCustomerProcess servingCustomerProcess)
+        {
+            throw new NotImplementedException();
+        }
+
         private void CancelOrder()
         {
             CurrentCustomer.OnFinished -= CurrentCustomer_OnFinished;
@@ -101,6 +123,28 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             CurrentCustomer.Dispose();
             CurrentCustomer = null;
             OnCurrentCustomerChanged();
+        }
+
+        public ReadOnlyCollection<Construction> GetFreePlacesToEat()
+        {
+            PlacementOccupied = _placement.Constructions.First(x => x.IsFree && x.GetFeatures().OfType<IPlaceToEatConstructionFeatureSettings>().Any());
+
+            throw new NotImplementedException();
+        }
+
+        internal void ClearPlacing(ServingCustomerProcess servingCustomerProcess)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void Occupy(object v, Construction construction)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Construction GetOrderingPlace()
+        {
+            return _placement.Constructions.First(x => x.GetFeatures().OfType<IOrderingPlaceConstructionFeatureSettings>().Any());
         }
 
         private Unit FindNextCustomer()
