@@ -71,6 +71,79 @@ namespace Game.Tests.Cases.Customers
         }
 
 
+        [Test]
+        public void IsOrlderingPlaceAndTables()
+        {
+            var game = new GameController();
+            var levelProto = new LevelSettings();
+
+            var (models, _, views) = game.LoadLevel(levelProto);
+            models.Hand.Add(new ConstructionSettings()
+            {
+                FeaturesList = new List<Assets.Scripts.Game.Logic.Settings.Constructions.IConstructionFeatureSettings>()
+                {
+                    new PlaceToEatConstructionFeatureSettings()
+                }
+            });
+            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            customerSettings.OrderingTime = 1;
+            customerSettings.CookingTime = 1;
+            customerSettings.EatingTime = 10;
+
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
+
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(-0.5f, -0.5f));
+
+            Assert.AreEqual(2, models.Placement.Constructions.Count);
+
+            var orderingBuilding = models.Placement.Constructions.First();
+            var tableBuilding = models.Placement.Constructions.Last();
+            views.Screen.Clashes.Value.StartClash.Click();
+
+
+            var customerManager = models.Customers;
+            var customer1 = models.Customers.ServingCustomer;
+            customer1.Unit.TeleportToTarget();
+            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
+            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
+            game.PushTime(2); // odering and cooking for 1.
+            var customer2 = models.Customers.ServingCustomer;
+            customer2.Unit.TeleportToTarget();
+            Assert.AreNotEqual(customer2, customer1);
+            Assert.AreNotEqual(customer2.Unit, customer1.Unit);
+
+            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
+            Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
+            Assert.AreEqual(Phase.Eating, customer1.CurrentPhase);
+            Assert.AreEqual(Phase.Ordering, customer2.CurrentPhase);
+            Assert.AreEqual(customer2, customerManager.ServingCustomer);
+
+            game.PushTime(2);
+
+            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
+            Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
+            Assert.AreEqual(Phase.Eating, customer1.CurrentPhase);
+            Assert.AreEqual(Phase.Eating, customer2.CurrentPhase);
+            Assert.AreEqual(null, customerManager.ServingCustomer);
+
+            game.PushTime(8);
+
+            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
+            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
+            Assert.AreEqual(Phase.MovingAway, customer1.CurrentPhase);
+            Assert.AreEqual(Phase.Eating, customer2.CurrentPhase);
+            Assert.AreEqual(null, customerManager.ServingCustomer);
+
+            game.PushTime(2);
+            Assert.AreEqual(Phase.MovingAway, customer2.CurrentPhase);
+            Assert.AreNotEqual(null, customerManager.ServingCustomer);
+            Assert.AreNotEqual(customer2, customerManager.ServingCustomer);
+
+            game.Exit();
+        }
+
         [TearDown]
         public void TestDisposables()
         {

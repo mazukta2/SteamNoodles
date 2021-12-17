@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Models.Rewards;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
@@ -18,13 +19,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
         private IClashesSettings _settings;
         private GameTime _time;
         private readonly RewardCalculator _rewardCalculator;
+        private readonly Placement _placement;
         private GameTimer _clashTimer;
 
-        public GameClashes(IClashesSettings settings, GameTime time, RewardCalculator rewardCalculator)
+        public GameClashes(IClashesSettings settings, Placement placement, GameTime time, RewardCalculator rewardCalculator)
         {
             _settings = settings ?? throw new  ArgumentNullException(nameof(settings));
             _time = time;
             _rewardCalculator = rewardCalculator ?? throw new ArgumentNullException(nameof(rewardCalculator));
+            _placement = placement;
         }
 
         protected override void DisposeInner()
@@ -41,6 +44,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
         public void StartClash()
         {
             if (IsInClash) throw new Exception("Clash already started");
+            if (_placement.Constructions.Count == 0) throw new Exception("Not constructions to start a clash");
 
             IsInClash = true;
             _clashTimer = new GameTimer(_time, GetClashesTime());

@@ -19,6 +19,8 @@ namespace Game.Tests.Cases.Customers
             var levelProto = new LevelSettings();
 
             var (models, _, views) = game.LoadLevel(levelProto);
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.IsTrue(models.Clashes.IsInClash);

@@ -4,6 +4,7 @@ using Game.Tests.Mocks.Settings.Buildings;
 using Game.Tests.Mocks.Settings.Levels;
 using Game.Tests.Mocks.Settings.Rewards;
 using NUnit.Framework;
+using System.Linq;
 using Tests.Mocks.Prototypes.Levels;
 
 namespace Game.Tests.Cases.Customers
@@ -23,6 +24,8 @@ namespace Game.Tests.Cases.Customers
             Assert.IsNotNull(views.Screen.Clashes.Value);
             Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);
 
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.IsTrue(models.Clashes.IsInClash);
@@ -65,10 +68,12 @@ namespace Game.Tests.Cases.Customers
             };
 
             Assert.AreEqual(1, models.Hand.Cards.Count);
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
             game.PushTime(20);
             Assert.IsFalse(models.Clashes.IsInClash);
-            Assert.AreEqual(5, models.Hand.Cards.Count);
+            Assert.AreEqual(4, models.Hand.Cards.Count);
 
             game.Exit();
         }

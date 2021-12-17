@@ -48,16 +48,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             foreach (var item in _unitsSettings.Deck)
                 _pool.Add(item.Key, item.Value);
 
-            _clashes.OnClashStarted += AddOrder;
+            _clashes.OnClashStarted += TryAddOrder;
             _clashes.OnClashEnded += CancelOrder;
 
             if (_clashes.IsInClash)
-                AddOrder();
+                TryAddOrder();
         }
 
         protected override void DisposeInner()
         {
-            _clashes.OnClashStarted -= AddOrder;
+            _clashes.OnClashStarted -= TryAddOrder;
             _clashes.OnClashEnded -= CancelOrder;
 
             foreach (var item in _customers)
@@ -83,10 +83,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             return _pool;
         }
 
-        private void AddOrder()
+        private void TryAddOrder()
         {
+            if (IsOccupied(GetOrderingPlace()))
+                return;
+
             if (ServingCustomer != null)
-                throw new Exception("Remove previous cutomer before settting");
+                return;
 
             var unit = FindNextCustomer();
             if (unit == null)
@@ -103,6 +106,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public void ClearPlacing(ServingCustomerProcess servingCustomerProcess)
         {
             _tables.Remove(servingCustomerProcess);
+            TryAddOrder();
         }
 
         public void Occupy(ServingCustomerProcess servingCustomerProcess, Construction construction)
@@ -116,8 +120,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             if (ordering != null && ServingCustomer != null && ServingCustomer.CurrentPhase == ServingCustomerProcess.Phase.Ordering)
                 return true;
 
-            var place = construction.GetFeatures().OfType<IPlaceToEatConstructionFeatureSettings>().FirstOrDefault();
-            if (place != null && _tables.Values.Contains(construction))
+            if (_tables.Values.Contains(construction))
             {
                 return true;
             }
@@ -158,17 +161,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void Customer_OnFinished(ServingCustomerProcess servingCustomerProcess)
         {
-            ServingCustomer.OnStartEating -= ServingCustomer_OnStartEating;
-            ServingCustomer.OnFinished -= Customer_OnFinished;
-            _units.ReturnToCrowd(ServingCustomer.Unit);
-            ServingCustomer.Dispose();
+            servingCustomerProcess.OnStartEating -= ServingCustomer_OnStartEating;
+            servingCustomerProcess.OnFinished -= Customer_OnFinished;
+            _units.ReturnToCrowd(servingCustomerProcess.Unit);
+            servingCustomerProcess.Dispose();
+            _customers.Remove(servingCustomerProcess);
+
+            TryAddOrder();
         }
 
         private void ServingCustomer_OnStartEating(ServingCustomerProcess servingCustomerProcess)
         {
             ServingCustomer = null;
             OnCurrentCustomerChanged();
-            AddOrder();
+            TryAddOrder();
         }
 
     }

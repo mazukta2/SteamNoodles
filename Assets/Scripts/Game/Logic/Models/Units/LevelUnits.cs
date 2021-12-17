@@ -140,7 +140,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         public Unit GetUnit(ICustomerSettings unitSetting)
         {
-            var unitsOfType = Units.Where(x => x.CanOrder() && x.Settings == unitSetting);
+            var unitsOfType = _crowd.Where(x => x.CanOrder() && x.Settings == unitSetting);
             if (unitsOfType.Any())
             {
                 return unitsOfType.OrderBy(u => Math.Abs(u.Position.X)).First();
