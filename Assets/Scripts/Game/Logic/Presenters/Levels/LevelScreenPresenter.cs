@@ -43,9 +43,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
 
         private void UpdateOrder()
         {
-            if (_model.Customers.CurrentCustomer != null)
+            if (_model.Customers.ServingCustomer != null)
             {
-                Order = new CurrentOrderPresenter(_model.Customers.CurrentCustomer, _view.Customers.Create());
+                Order = new CurrentOrderPresenter(_model.Customers.ServingCustomer, _view.Customers.Create());
             }
             else
             {

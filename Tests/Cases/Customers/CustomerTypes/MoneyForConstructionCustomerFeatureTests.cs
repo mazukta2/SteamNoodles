@@ -32,7 +32,7 @@ namespace Game.Tests.Cases.Customers
 
             Assert.AreEqual(0, models.Money);
 
-            var customer = models.Customers.CurrentCustomer.Unit;
+            var customer = models.Customers.ServingCustomer.Unit;
             customer.TeleportToTarget();
             game.PushTime(3);
             customer.TeleportToTarget();

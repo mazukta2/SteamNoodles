@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
     {
         public event Action OnCurrentCustomerChanged = delegate { };
 
-        public ServingCustomerProcess CurrentCustomer { get; private set; }
+        public ServingCustomerProcess ServingCustomer { get; private set; }
 
         private readonly IUnitsSettings _unitsSettings;
         private readonly Placement _placement;
@@ -31,6 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly GameClashes _clashes;
         private readonly GameLevel _level;
         private readonly Deck<ICustomerSettings> _pool;
+        private readonly Dictionary<Construction, ServingCustomerProcess> _tables = new Dictionary<Construction, ServingCustomerProcess>();
 
         public CustomerManager(GameLevel level, IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
@@ -53,25 +54,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 AddOrder();
         }
 
-        internal double IsOccupied(Construction orderingBuilding)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal double GetOrderer()
-        {
-            throw new NotImplementedException();
-        }
-
         protected override void DisposeInner()
         {
             _clashes.OnClashStarted -= AddOrder;
             _clashes.OnClashEnded -= CancelOrder;
 
-            if (CurrentCustomer != null)
+            if (ServingCustomer != null)
             {
-                CurrentCustomer.OnDispose -= CurrentCustomer_OnFinished;
-                CurrentCustomer.Dispose();
+                ServingCustomer.OnDispose -= CurrentCustomer_OnFinished;
+                ServingCustomer.Dispose();
             }
         }
 
@@ -92,7 +83,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void AddOrder()
         {
-            if (CurrentCustomer != null)
+            if (ServingCustomer != null)
                 throw new Exception("Remove previous cutomer before settting");
 
             var unit = FindNextCustomer();
@@ -100,46 +91,52 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 throw new Exception("Cant find customer");
 
             _units.TakeFromCrowd(unit);
-            CurrentCustomer = new ServingCustomerProcess(_time, _placement, _level, unit);
-            CurrentCustomer.OnFinished += CurrentCustomer_OnFinished;
+            ServingCustomer = new ServingCustomerProcess(this, _time, _placement, _level, unit);
+            ServingCustomer.OnFinished += CurrentCustomer_OnFinished;
             OnCurrentCustomerChanged();
         }
 
-        internal void SetOrdering(ServingCustomerProcess servingCustomerProcess)
+        public void ClearPlacing(ServingCustomerProcess servingCustomerProcess)
         {
-            throw new NotImplementedException();
+            foreach (var item in _tables.Where(x => x.Value == servingCustomerProcess))
+            {
+                _tables.Remove(item.Key);
+            };
         }
 
-        internal void ClearOrdering(ServingCustomerProcess servingCustomerProcess)
+        public void Occupy(ServingCustomerProcess servingCustomerProcess, Construction construction)
         {
-            throw new NotImplementedException();
+            _tables.Add(construction, servingCustomerProcess);
+        }
+
+        public bool IsOccupied(Construction construction)
+        {
+            var ordering = construction.GetFeatures().OfType<IOrderingPlaceConstructionFeatureSettings>().FirstOrDefault();
+            if (ordering != null && ServingCustomer != null && ServingCustomer.CurrentPhase == ServingCustomerProcess.Phase.Ordering)
+                return true;
+
+            var place = construction.GetFeatures().OfType<IPlaceToEatConstructionFeatureSettings>().FirstOrDefault();
+            if (place != null && _tables.ContainsKey(construction))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void CancelOrder()
         {
-            CurrentCustomer.OnFinished -= CurrentCustomer_OnFinished;
-            _units.ReturnToCrowd(CurrentCustomer.Unit);
-            CurrentCustomer.Cancel();
-            CurrentCustomer.Dispose();
-            CurrentCustomer = null;
+            ServingCustomer.OnFinished -= CurrentCustomer_OnFinished;
+            _units.ReturnToCrowd(ServingCustomer.Unit);
+            ServingCustomer.Cancel();
+            ServingCustomer.Dispose();
+            ServingCustomer = null;
             OnCurrentCustomerChanged();
         }
 
         public ReadOnlyCollection<Construction> GetFreePlacesToEat()
         {
-            PlacementOccupied = _placement.Constructions.First(x => x.IsFree && x.GetFeatures().OfType<IPlaceToEatConstructionFeatureSettings>().Any());
-
-            throw new NotImplementedException();
-        }
-
-        internal void ClearPlacing(ServingCustomerProcess servingCustomerProcess)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void Occupy(object v, Construction construction)
-        {
-            throw new NotImplementedException();
+           return _placement.Constructions.Where(x => x.GetFeatures().OfType<IPlaceToEatConstructionFeatureSettings>().Any() && !IsOccupied(x)).ToList().AsReadOnly();
         }
 
         public Construction GetOrderingPlace()
@@ -155,10 +152,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void CurrentCustomer_OnFinished()
         {
-            CurrentCustomer.OnFinished -= CurrentCustomer_OnFinished;
-            _units.ReturnToCrowd(CurrentCustomer.Unit);
-            CurrentCustomer.Dispose();
-            CurrentCustomer = null;
+            ServingCustomer.OnFinished -= CurrentCustomer_OnFinished;
+            _units.ReturnToCrowd(ServingCustomer.Unit);
+            ServingCustomer.Dispose();
+            ServingCustomer = null;
             OnCurrentCustomerChanged();
             AddOrder();
         }

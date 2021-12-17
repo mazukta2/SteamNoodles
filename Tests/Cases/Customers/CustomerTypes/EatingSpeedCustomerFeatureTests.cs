@@ -32,9 +32,11 @@ namespace Game.Tests.Cases.Customers
                     TimeModificator = new PercentModificator(PercentModificator.ActionType.Add, 100f)
                 });
 
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
 
-            var customer = models.Customers.CurrentCustomer.Unit;
+            var customer = models.Customers.ServingCustomer.Unit;
             customer.TeleportToTarget();
 
             if (added)
@@ -72,7 +74,7 @@ namespace Game.Tests.Cases.Customers
 
             views.Screen.Clashes.Value.StartClash.Click();
 
-            var customer = models.Customers.CurrentCustomer.Unit;
+            var customer = models.Customers.ServingCustomer.Unit;
              Assert.AreEqual(1f, customer.GetEatingTime());
 
             game.Exit();

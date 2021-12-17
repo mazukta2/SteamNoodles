@@ -44,25 +44,26 @@ namespace Game.Tests.Cases.Customers
 
 
             var customerManager = models.Customers;
-            var customer = models.Customers.CurrentCustomer;
+            var customer = models.Customers.ServingCustomer;
             Assert.AreEqual(Phase.MovingTo, customer.CurrentPhase);
-            Assert.AreEqual(null, customerManager.GetOrderer());
-            Assert.AreEqual(null, customerManager.IsOccupied(tableBuilding));
-            Assert.AreEqual(null, customerManager.IsOccupied(orderingBuilding));
+            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
+            Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
             customer.Unit.TeleportToTarget();
             Assert.AreEqual(Phase.Ordering, customer.CurrentPhase);
-            Assert.AreEqual(null, customer.PlacementOccupied);
-            Assert.AreEqual(orderingBuilding, customer.OrderingOccupied);
+            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
+            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
             game.PushTime(1);
             Assert.AreEqual(Phase.WaitCooking, customer.CurrentPhase);
-            Assert.AreEqual(tableBuilding, customer.PlacementOccupied);
-            Assert.AreEqual(null, customer.OrderingOccupied);
+            Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
+            Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
             game.PushTime(1);
             Assert.AreEqual(Phase.Eating, customer.CurrentPhase);
-            Assert.AreEqual(tableBuilding, customer.PlacementOccupied);
-            Assert.AreEqual(null, customer.OrderingOccupied);
+            Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
+            Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
             game.PushTime(1);
             Assert.AreEqual(Phase.MovingAway, customer.CurrentPhase);
+            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
+            Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
 
             game.Exit();
         }

@@ -96,14 +96,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void OrderingStarted()
         {
-            _customerManager.SetOrdering(this);
             _timer = new GameTimer(_time, Unit.GetOrderingTime());
             _timer.OnFinished += _timer_OnFinished;
         }
 
         private void WaitCookingStarted()
         {
-            _customerManager.ClearOrdering(this);
             var places = _customerManager.GetFreePlacesToEat();
             if (places.Count == 0)
             {

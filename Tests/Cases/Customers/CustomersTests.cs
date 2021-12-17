@@ -23,7 +23,7 @@ namespace Game.Tests.Cases.Customers
 
             Assert.IsTrue(models.Clashes.IsInClash);
 
-            Assert.IsNotNull(models.Customers.CurrentCustomer);
+            Assert.IsNotNull(models.Customers.ServingCustomer);
 
             game.Exit();
         }
@@ -35,17 +35,19 @@ namespace Game.Tests.Cases.Customers
             var levelProto = new LevelSettings();
 
             var (models, _, views) = game.LoadLevel(levelProto);
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.IsTrue(models.Clashes.IsInClash);
 
-            var consumer = models.Customers.CurrentCustomer;
+            var consumer = models.Customers.ServingCustomer;
             Assert.IsNotNull(consumer);
             CommonTestActions.ServeCustumer(game, models);
             Assert.IsTrue(consumer.Unit.IsServed);
-            Assert.AreNotEqual(consumer, models.Customers.CurrentCustomer);
+            Assert.AreNotEqual(consumer, models.Customers.ServingCustomer);
             Assert.AreEqual(ServingCustomerProcess.Phase.Exiting, consumer.CurrentPhase);
-            Assert.AreEqual(ServingCustomerProcess.Phase.MovingTo, models.Customers.CurrentCustomer.CurrentPhase);
+            Assert.AreEqual(ServingCustomerProcess.Phase.MovingTo, models.Customers.ServingCustomer.CurrentPhase);
 
             game.Exit();
         }
@@ -60,6 +62,8 @@ namespace Game.Tests.Cases.Customers
             var customer2 = new CustomerSettings();
             models.AddCustumer(customer2);
             models.AddCustumer(customer2);
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
 
             var customers = new List<Unit>();
@@ -73,7 +77,7 @@ namespace Game.Tests.Cases.Customers
 
             void AddUnit()
             {
-                var customer = models.Customers.CurrentCustomer.Unit;
+                var customer = models.Customers.ServingCustomer.Unit;
 
                 Assert.IsFalse(customers.Contains(customer));
                 customer.TeleportToTarget();
@@ -81,7 +85,7 @@ namespace Game.Tests.Cases.Customers
                 customer.TeleportToTarget();
                 Assert.IsTrue(customer.IsServed);
                 Assert.IsNotNull(customer.Settings);
-                Assert.AreNotEqual(models.Customers.CurrentCustomer.Unit, customer);
+                Assert.AreNotEqual(models.Customers.ServingCustomer.Unit, customer);
                 Assert.IsFalse(customers.Contains(customer));
 
                 customers.Add(customer);
@@ -98,11 +102,13 @@ namespace Game.Tests.Cases.Customers
             var (models, _, views) = game.LoadLevel();
             var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
             customer1.Money = 3;
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.AreEqual(0, models.Money);
 
-            var customer = models.Customers.CurrentCustomer.Unit;
+            var customer = models.Customers.ServingCustomer.Unit;
             CommonTestActions.ServeCustumer(game, models);
             Assert.IsTrue(customer.IsServed);
             Assert.AreEqual(3, models.Money);
@@ -129,7 +135,7 @@ namespace Game.Tests.Cases.Customers
             Assert.AreEqual(0, models.Money);
             Assert.AreEqual(101, models.Service);
 
-            Assert.AreEqual(2, models.Customers.CurrentCustomer.Unit.GetTips());
+            Assert.AreEqual(2, models.Customers.ServingCustomer.Unit.GetTips());
 
             CommonTestActions.ServeCustumer(game, models);
 
@@ -148,11 +154,13 @@ namespace Game.Tests.Cases.Customers
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;
             customer1.EatingTime = 2;
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.AreEqual(0, models.Money);
 
-            var customer = models.Customers.CurrentCustomer.Unit;
+            var customer = models.Customers.ServingCustomer.Unit;
             Assert.IsTrue(customer.IsMoving());
             customer.TeleportToTarget();
 
@@ -179,12 +187,14 @@ namespace Game.Tests.Cases.Customers
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;
             customer1.EatingTime = 2;
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.AreEqual(0, models.Money);
 
-            var service = models.Customers.CurrentCustomer;
-            var customer = models.Customers.CurrentCustomer.Unit;
+            var service = models.Customers.ServingCustomer;
+            var customer = models.Customers.ServingCustomer.Unit;
             Assert.IsTrue(customer.IsMoving());
             customer.TeleportToTarget();
 

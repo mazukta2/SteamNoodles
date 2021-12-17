@@ -12,7 +12,7 @@ namespace Game.Tests.Cases
     {
         public static void ServeCustumer(GameController game, GameLevel models)
         {
-            var customer = models.Customers.CurrentCustomer.Unit;
+            var customer = models.Customers.ServingCustomer.Unit;
             customer.TeleportToTarget();
             game.PushTime(3);
             customer.TeleportToTarget();
