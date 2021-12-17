@@ -22,6 +22,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public event Action OnCurrentCustomerChanged = delegate { };
 
         public ServingCustomerProcess ServingCustomer { get; private set; }
+        public CustomersQueue Queue { get; private set; }
 
         private readonly IUnitsSettings _unitsSettings;
         private readonly Placement _placement;
@@ -34,7 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly Dictionary<ServingCustomerProcess, Construction> _tables = new Dictionary<ServingCustomerProcess, Construction>();
         private readonly List<ServingCustomerProcess> _customers = new List<ServingCustomerProcess>();
 
-        public CustomerManager(GameLevel level, IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
+        public CustomerManager(GameLevel level, IClashesSettings clashesSettings, IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
             _unitsSettings = unitsSettings ?? throw new Exception(nameof(unitsSettings));
             _placement = placement ?? throw new Exception(nameof(placement));
@@ -43,6 +44,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _time = time ?? throw new Exception(nameof(time));
             _clashes = clashes ?? throw new Exception(nameof(clashes));
             _level = level ?? throw new Exception(nameof(level));
+
+            Queue = new CustomersQueue(clashesSettings, _random);
 
             _pool = new Deck<ICustomerSettings>(random);
             foreach (var item in _unitsSettings.Deck)

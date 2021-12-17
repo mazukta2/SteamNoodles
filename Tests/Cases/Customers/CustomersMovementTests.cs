@@ -144,6 +144,35 @@ namespace Game.Tests.Cases.Customers
             game.Exit();
         }
 
+
+        [Test]
+        public void IsUnitsArePushedToQueueWorking()
+        {
+            var game = new GameController();
+            var levelProto = new LevelSettings();
+
+            var (models, _, views) = game.LoadLevel(levelProto);
+            var settings = (LevelSettings)models.Clashes.Settings;
+            settings.MinQueue = 3;
+            settings.MaxQueue = 3;
+
+            views.Screen.Hand.Value.Cards.List.First().Button.Click();
+            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
+
+            Assert.AreEqual(3, models.Customers.Queue.TargetCount);
+            Assert.AreEqual(3, models.Customers.Queue.ActualCount);
+
+            //var orderingBuilding = models.Placement.Constructions.First();
+            //var tableBuilding = models.Placement.Constructions.Last();
+            //views.Screen.Clashes.Value.StartClash.Click();
+
+            //var customerManager = models.Customers;
+            //var customer1 = models.Customers.ServingCustomer;
+            //customer1.Unit.TeleportToTarget();
+
+            game.Exit();
+        }
+
         [TearDown]
         public void TestDisposables()
         {

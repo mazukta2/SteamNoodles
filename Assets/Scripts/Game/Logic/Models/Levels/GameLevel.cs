@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             _servingMoney = new UnitServicing(random, this, Placement);
             Units = new LevelUnits(settings, Placement, time, random, settings, _servingMoney);
             Clashes = new GameClashes(settings, Placement, time, _rewardCalculator);
-            Customers = new CustomerManager(this, settings, Placement, Clashes, Units, time, random);
+            Customers = new CustomerManager(this, settings, settings, Placement, Clashes, Units, time, random);
 
             AddEffectSystems();
         }

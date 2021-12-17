@@ -26,7 +26,10 @@ namespace Game.Tests.Cases
 
             var dislosables = Disposable.GetListOfUndisposed();
             if (dislosables.Count > 0)
+            {
+                Disposable.ClearUndisopsed();
                 Assert.Fail($"Some instances {dislosables.Count} are not disposed: {dislosables.Last()}");
+            }
         }
 
     }

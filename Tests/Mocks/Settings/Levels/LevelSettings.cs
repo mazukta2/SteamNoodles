@@ -41,5 +41,9 @@ namespace Game.Tests.Mocks.Settings.Levels
         };
 
         public IReward ClashReward { get; set; } = new Reward();
+
+        public int MinQueue { get; set; } = 2;
+
+        public int MaxQueue { get; set; } = 4;
     }
 }

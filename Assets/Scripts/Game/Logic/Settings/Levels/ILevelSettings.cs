@@ -33,5 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
     {
         float ClashTime { get; }
         IReward ClashReward { get; }
+        int MinQueue { get; }
+        int MaxQueue { get; }
     }
 }
