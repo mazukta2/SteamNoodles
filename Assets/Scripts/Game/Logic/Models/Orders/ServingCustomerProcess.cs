@@ -17,8 +17,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class ServingCustomerProcess : Disposable
     {
-        public event Action OnFinished = delegate { };
-        public event Action OnCanceled = delegate { };
+        public event Action<ServingCustomerProcess> OnStartEating = delegate { };
+        public event Action<ServingCustomerProcess> OnFinished = delegate { };
+        public event Action<ServingCustomerProcess> OnCanceled = delegate { };
         public Unit Unit { get; internal set; }
 
         private CustomerManager _customerManager;
@@ -122,6 +123,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _timer.OnFinished -= _timer_OnFinished;
             _timer = new GameTimer(_time, Unit.GetEatingTime());
             _timer.OnFinished += _timer_OnFinished;
+            OnStartEating(this);
         }
 
         private void MovingAwayStart()
@@ -150,7 +152,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _level.ChangeMoney(Unit.GetServingMoney());
             _level.ChangeMoney(Unit.GetTips());
             Unit.SetServed();
-            OnFinished();
+            OnFinished(this);
         }
 
         public void Cancel()
@@ -158,7 +160,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _level.ChangeMoney(Unit.GetServingMoney());
             _level.ChangeMoney(Unit.GetTips());
             Unit.SetServed();
-            OnCanceled();
+            OnCanceled(this);
         }
 
         private enum Triggers

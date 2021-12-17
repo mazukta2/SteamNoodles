@@ -31,7 +31,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly GameClashes _clashes;
         private readonly GameLevel _level;
         private readonly Deck<ICustomerSettings> _pool;
-        private readonly Dictionary<Construction, ServingCustomerProcess> _tables = new Dictionary<Construction, ServingCustomerProcess>();
+        private readonly Dictionary<ServingCustomerProcess, Construction> _tables = new Dictionary<ServingCustomerProcess, Construction>();
+        private readonly List<ServingCustomerProcess> _customers = new List<ServingCustomerProcess>();
 
         public CustomerManager(GameLevel level, IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
         {
@@ -59,10 +60,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _clashes.OnClashStarted -= AddOrder;
             _clashes.OnClashEnded -= CancelOrder;
 
-            if (ServingCustomer != null)
+            foreach (var item in _customers)
             {
-                ServingCustomer.OnDispose -= CurrentCustomer_OnFinished;
-                ServingCustomer.Dispose();
+                item.OnFinished -= Customer_OnFinished;
+                item.OnStartEating -= ServingCustomer_OnStartEating;
+                item.Dispose();
             }
         }
 
@@ -92,21 +94,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
             _units.TakeFromCrowd(unit);
             ServingCustomer = new ServingCustomerProcess(this, _time, _placement, _level, unit);
-            ServingCustomer.OnFinished += CurrentCustomer_OnFinished;
+            ServingCustomer.OnFinished += Customer_OnFinished;
+            ServingCustomer.OnStartEating += ServingCustomer_OnStartEating;
+            _customers.Add(ServingCustomer);
             OnCurrentCustomerChanged();
         }
 
         public void ClearPlacing(ServingCustomerProcess servingCustomerProcess)
         {
-            foreach (var item in _tables.Where(x => x.Value == servingCustomerProcess))
-            {
-                _tables.Remove(item.Key);
-            };
+            _tables.Remove(servingCustomerProcess);
         }
 
         public void Occupy(ServingCustomerProcess servingCustomerProcess, Construction construction)
         {
-            _tables.Add(construction, servingCustomerProcess);
+            _tables.Add(servingCustomerProcess, construction);
         }
 
         public bool IsOccupied(Construction construction)
@@ -116,7 +117,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 return true;
 
             var place = construction.GetFeatures().OfType<IPlaceToEatConstructionFeatureSettings>().FirstOrDefault();
-            if (place != null && _tables.ContainsKey(construction))
+            if (place != null && _tables.Values.Contains(construction))
             {
                 return true;
             }
@@ -126,10 +127,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void CancelOrder()
         {
-            ServingCustomer.OnFinished -= CurrentCustomer_OnFinished;
-            _units.ReturnToCrowd(ServingCustomer.Unit);
-            ServingCustomer.Cancel();
-            ServingCustomer.Dispose();
+            if (ServingCustomer != null)
+                ServingCustomer.Cancel();
+            foreach (var item in _customers)
+            {
+                item.OnFinished -= Customer_OnFinished;
+                item.OnStartEating -= ServingCustomer_OnStartEating;
+                item.Dispose();
+                _units.ReturnToCrowd(item.Unit);
+            }
             ServingCustomer = null;
             OnCurrentCustomerChanged();
         }
@@ -150,16 +156,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             return _units.GetUnit(unitSetting);
         }
 
-        private void CurrentCustomer_OnFinished()
+        private void Customer_OnFinished(ServingCustomerProcess servingCustomerProcess)
         {
-            ServingCustomer.OnFinished -= CurrentCustomer_OnFinished;
+            ServingCustomer.OnStartEating -= ServingCustomer_OnStartEating;
+            ServingCustomer.OnFinished -= Customer_OnFinished;
             _units.ReturnToCrowd(ServingCustomer.Unit);
             ServingCustomer.Dispose();
+        }
+
+        private void ServingCustomer_OnStartEating(ServingCustomerProcess servingCustomerProcess)
+        {
             ServingCustomer = null;
             OnCurrentCustomerChanged();
             AddOrder();
         }
-
 
     }
 }

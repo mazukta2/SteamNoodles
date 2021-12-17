@@ -13,7 +13,7 @@ using static Game.Assets.Scripts.Game.Logic.Models.Orders.ServingCustomerProcess
 
 namespace Game.Tests.Cases.Customers
 {
-    public class CustomersPlacingTests
+    public class CustomersMovementTests
     {
 
         [Test]
@@ -54,10 +54,12 @@ namespace Game.Tests.Cases.Customers
             Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
             game.PushTime(1);
             Assert.AreEqual(Phase.WaitCooking, customer.CurrentPhase);
+            Assert.AreEqual(customer, models.Customers.ServingCustomer);
             Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
             Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
             game.PushTime(1);
             Assert.AreEqual(Phase.Eating, customer.CurrentPhase);
+            Assert.AreNotEqual(customer, models.Customers.ServingCustomer);
             Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
             Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
             game.PushTime(1);
@@ -67,6 +69,7 @@ namespace Game.Tests.Cases.Customers
 
             game.Exit();
         }
+
 
         [TearDown]
         public void TestDisposables()
