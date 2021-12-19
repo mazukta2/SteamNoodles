@@ -29,12 +29,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
             Clashes = new ClashesPresenter(model.Clashes, view.Clashes.Create());
             _resources = new LevelResourcesPresenter(model, view.Resources.Create());
 
-            model.Customers.OnCurrentCustomerChanged += UpdateOrder;
+            //model.Customers.OnCurrentCustomerChanged += UpdateOrder;
         }
 
         protected override void DisposeInner()
         {
-            _model.Customers.OnCurrentCustomerChanged -= UpdateOrder;
+            //_model.Customers.OnCurrentCustomerChanged -= UpdateOrder;
             Hand.Dispose();
             Order?.Dispose();
             Clashes.Dispose();
@@ -43,15 +43,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
 
         private void UpdateOrder()
         {
-            if (_model.Customers.ServingCustomer != null)
-            {
-                Order = new CurrentOrderPresenter(_model.Customers.ServingCustomer, _view.Customers.Create());
-            }
-            else
-            {
-                Order?.Dispose();
-                Order = null;
-            }
+            //if (_model.Customers.ServingCustomer != null)
+            //{
+            //    Order = new CurrentOrderPresenter(_model.Customers.ServingCustomer, _view.Customers.Create());
+            //}
+            //else
+            //{
+            //    Order?.Dispose();
+            //    Order = null;
+            //}
         }
 
     }

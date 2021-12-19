@@ -12,40 +12,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Game.Assets.Scripts.Game.Logic.Models.Units.Unit;
+using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class ServingCustomerProcess : Disposable
     {
+        public event Action<ServingCustomerProcess> OnJoinQueue = delegate { };
+        public event Action<ServingCustomerProcess> OnWaitCooking = delegate { };
         public event Action<ServingCustomerProcess> OnStartEating = delegate { };
         public event Action<ServingCustomerProcess> OnFinished = delegate { };
         public event Action<ServingCustomerProcess> OnCanceled = delegate { };
         public Unit Unit { get; internal set; }
-
-        private CustomerManager _customerManager;
-
         public Phase CurrentPhase => _stateMachine.State;
 
-        private Placement _placement;
+        private UnitPlacement _unitPlacement;
         private GameTime _time;
         private GameLevel _level;
+        private LevelUnits _units;
         private GameTimer _timer;
-        StateMachine<Phase, Triggers> _stateMachine = new StateMachine<Phase, Triggers>(Phase.Idle);
+        private StateMachine<Phase, Triggers> _stateMachine = new StateMachine<Phase, Triggers>(Phase.Idle);
 
-        public ServingCustomerProcess(CustomerManager manager, GameTime time, Placement placement, GameLevel level, Unit unit)
+        public ServingCustomerProcess(UnitPlacement unitPlacement, GameTime time, GameLevel level, LevelUnits units, Unit unit)
         {
-            _placement = placement;
             _time = time;
             _level = level;
+            _units = units;
             Unit = unit;
-            _customerManager = manager;
+            _unitPlacement = unitPlacement;
 
             _stateMachine.Configure(Phase.Idle)
                 .Permit(Triggers.Start, Phase.MovingTo);
 
             _stateMachine.Configure(Phase.MovingTo)
                 .OnEntry(MovingToStarted)
-                .Permit(Triggers.WalkingFinished, Phase.Ordering);
+                .Permit(Triggers.WalkingFinished, Phase.InQueue);
 
             _stateMachine.Configure(Phase.InQueue)
                 .OnEntry(QueueStarted)
@@ -77,6 +78,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         protected override void DisposeInner()
         {
+            _units.ReturnToCrowd(Unit);
             _stateMachine.Deactivate();
             Unit.OnReachedPosition -= Unit_OnPositionReached;
 
@@ -87,35 +89,44 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         //
         private void MovingToStarted()
         {
-            Unit.SetTarget(GetServingPoint());
+            _units.TakeFromCrowd(Unit);
+            Unit.SetTarget(_unitPlacement.GetServingPoint());
         }
 
         private void QueueStarted()
+        {
+            OnJoinQueue(this);
+        }
+
+        public void MoveToOdering()
         {
             _stateMachine.Fire(Triggers.CanOrder);
         }
 
         private void OrderingStarted()
         {
+            _unitPlacement.PlaceToOrderingTable(this);
             _timer = new GameTimer(_time, Unit.GetOrderingTime());
             _timer.OnFinished += _timer_OnFinished;
         }
 
         private void WaitCookingStarted()
         {
-            var places = _customerManager.GetFreePlacesToEat();
+            _unitPlacement.ClearPlacing(this);
+            var places = _unitPlacement.GetFreePlacesToEat();
             if (places.Count == 0)
             {
-                _customerManager.Occupy(this, _customerManager.GetOrderingPlace());
+                _unitPlacement.PlaceToTable(this, _unitPlacement.GetOrderingPlace());
             }
             else
             {
-                _customerManager.Occupy(this, places.First());
+                _unitPlacement.PlaceToTable(this, places.First());
             }
 
             _timer.OnFinished -= _timer_OnFinished;
             _timer = new GameTimer(_time, Unit.GetCookingTime());
             _timer.OnFinished += _timer_OnFinished;
+            OnWaitCooking(this);
         }
 
         private void EatingStart()
@@ -128,18 +139,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void MovingAwayStart()
         {
-            _customerManager.ClearPlacing(this);
-            Unit.SetTarget(new FloatPoint(0, _placement.RealRect.yMin - _placement.CellSize * 4f));
+            _unitPlacement.ClearPlacing(this);
+            Unit.SetTarget(_unitPlacement.GetAwayPoint());
         }
 
         private void Unit_OnPositionReached()
         {
             _stateMachine.Fire(Triggers.WalkingFinished);
-        }
-
-        private FloatPoint GetServingPoint()
-        {
-            return new FloatPoint(0, _placement.RealRect.yMin - _placement.CellSize * 1.5f);
         }
 
         private void _timer_OnFinished()
@@ -155,7 +161,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             OnFinished(this);
         }
 
-        public void Cancel()
+        public void CancelWithReturns()
         {
             _level.ChangeMoney(Unit.GetServingMoney());
             _level.ChangeMoney(Unit.GetTips());

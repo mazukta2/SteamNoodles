@@ -25,7 +25,8 @@ namespace Game.Tests.Cases.Customers
 
             Assert.IsTrue(models.Clashes.IsInClash);
 
-            Assert.IsNotNull(models.Customers.ServingCustomer);
+            models.Customers.Queue.Add();
+            Assert.AreEqual(1, models.Customers.GetCustomers().Count);
 
             game.Exit();
         }
@@ -43,13 +44,15 @@ namespace Game.Tests.Cases.Customers
 
             Assert.IsTrue(models.Clashes.IsInClash);
 
-            var consumer = models.Customers.ServingCustomer;
+            models.Customers.Queue.Add();
+            models.Customers.Queue.Add();
+            var consumer = models.Customers.GetCustomers().First();
             Assert.IsNotNull(consumer);
             CommonTestActions.ServeCustumer(game, models);
             Assert.IsTrue(consumer.Unit.IsServed);
-            Assert.AreNotEqual(consumer, models.Customers.ServingCustomer);
+            Assert.AreEqual(1, models.Customers.GetCustomers().Count());
             Assert.AreEqual(ServingCustomerProcess.Phase.Exiting, consumer.CurrentPhase);
-            Assert.AreEqual(ServingCustomerProcess.Phase.MovingTo, models.Customers.ServingCustomer.CurrentPhase);
+            Assert.AreEqual(ServingCustomerProcess.Phase.MovingTo, models.Customers.GetCustomers().First().CurrentPhase);
 
             game.Exit();
         }
@@ -60,7 +63,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             
             var (models, presenters, views) = game.LoadLevel();
-            var customer1 = models.Customers.GetCustomersPool().GetItems().First().Key;
+            var customer1 = models.Customers.GetCustomersPool().Last();
             var customer2 = new CustomerSettings();
             models.AddCustumer(customer2);
             models.AddCustumer(customer2);
@@ -79,7 +82,8 @@ namespace Game.Tests.Cases.Customers
 
             void AddUnit()
             {
-                var customer = models.Customers.ServingCustomer.Unit;
+                models.Customers.Queue.Add();
+                var customer = models.Customers.GetCustomers().First().Unit;
 
                 Assert.IsFalse(customers.Contains(customer));
                 customer.TeleportToTarget();
@@ -87,7 +91,7 @@ namespace Game.Tests.Cases.Customers
                 customer.TeleportToTarget();
                 Assert.IsTrue(customer.IsServed);
                 Assert.IsNotNull(customer.Settings);
-                Assert.AreNotEqual(models.Customers.ServingCustomer.Unit, customer);
+                Assert.IsFalse(models.Customers.GetCustomers().Any(x=> x.Unit == customer));
                 Assert.IsFalse(customers.Contains(customer));
 
                 customers.Add(customer);
@@ -102,7 +106,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
 
             var (models, _, views) = game.LoadLevel();
-            var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().Last();
             customer1.Money = 3;
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
@@ -110,7 +114,8 @@ namespace Game.Tests.Cases.Customers
 
             Assert.AreEqual(0, models.Money);
 
-            var customer = models.Customers.ServingCustomer.Unit;
+            models.Customers.Queue.Add();
+            var customer = models.Customers.GetCustomers().Last().Unit;
             CommonTestActions.ServeCustumer(game, models);
             Assert.IsTrue(customer.IsServed);
             Assert.AreEqual(3, models.Money);
@@ -124,7 +129,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
 
             var (models, _, views) = game.LoadLevel();
-            var unitSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            var unitSettings = (CustomerSettings)models.Customers.GetCustomersPool().First();
             var constructionSettings = (ConstructionSettings)models.Hand.Cards.First().Settings;
             unitSettings.BaseTipMultiplayer = 2;
             constructionSettings.TagsList.Add(Assets.Scripts.Game.Logic.Models.Buildings.ConstructionTag.Service, 101);
@@ -137,7 +142,8 @@ namespace Game.Tests.Cases.Customers
             Assert.AreEqual(0, models.Money);
             Assert.AreEqual(101, models.Service);
 
-            Assert.AreEqual(2, models.Customers.ServingCustomer.Unit.GetTips());
+            models.Customers.Queue.Add();
+            Assert.AreEqual(2, models.Customers.GetCustomers().Last().Unit.GetTips());
 
             CommonTestActions.ServeCustumer(game, models);
 
@@ -152,7 +158,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
 
             var (models, _, views) = game.LoadLevel();
-            var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().First();
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;
             customer1.EatingTime = 2;
@@ -162,7 +168,8 @@ namespace Game.Tests.Cases.Customers
 
             Assert.AreEqual(0, models.Money);
 
-            var customer = models.Customers.ServingCustomer.Unit;
+            models.Customers.Queue.Add();
+            var customer = models.Customers.GetCustomers().Last().Unit;
             Assert.IsTrue(customer.IsMoving());
             customer.TeleportToTarget();
 
@@ -185,7 +192,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
 
             var (models, _, views) = game.LoadLevel();
-            var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            var customer1 = (CustomerSettings)models.Customers.GetCustomersPool().First();
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;
             customer1.EatingTime = 2;
@@ -195,8 +202,9 @@ namespace Game.Tests.Cases.Customers
 
             Assert.AreEqual(0, models.Money);
 
-            var service = models.Customers.ServingCustomer;
-            var customer = models.Customers.ServingCustomer.Unit;
+            models.Customers.Queue.Add();
+            var service = models.Customers.GetCustomers().Last();
+            var customer = models.Customers.GetCustomers().Last().Unit;
             Assert.IsTrue(customer.IsMoving());
             customer.TeleportToTarget();
 

@@ -43,6 +43,11 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
             return new ReadOnlyDictionary<T, int>(_pool);
         }
 
+        public ReadOnlyCollection<T> GetItemsList()
+        {
+            return _pool.Keys.ToList().AsReadOnly();
+        }
+
         public T Take()
         {
             if (IsEmpty())

@@ -19,7 +19,7 @@ namespace Game.Tests.Cases.Customers
             var (models, _, views) = game.LoadLevel(levelProto);
 
             Assert.IsFalse(models.Clashes.IsInClash);
-            Assert.IsNull(models.Customers.ServingCustomer);
+            Assert.AreEqual(0, models.Customers.GetCustomers().Count());
             Assert.IsNull(views.Screen.Customers.Value);
             Assert.IsNotNull(views.Screen.Clashes.Value);
             Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);
@@ -27,11 +27,12 @@ namespace Game.Tests.Cases.Customers
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
+            models.Customers.Queue.Add();
 
             Assert.IsTrue(models.Clashes.IsInClash);
             Assert.IsFalse(views.Screen.Clashes.Value.StartClash.IsShowing);
-            Assert.IsNotNull(models.Customers.ServingCustomer);
-            Assert.IsNotNull(views.Screen.Customers.Value);
+            Assert.AreEqual(1, models.Customers.GetCustomers().Count());
+            //Assert.IsNotNull(views.Screen.Customers.Value);
 
             Assert.AreEqual(20, models.Clashes.GetClashesTime());
 
@@ -42,7 +43,7 @@ namespace Game.Tests.Cases.Customers
             game.PushTime(10);
 
             Assert.IsFalse(models.Clashes.IsInClash);
-            Assert.IsNull(models.Customers.ServingCustomer);
+            Assert.AreEqual(0, models.Customers.GetCustomers().Count());
             Assert.IsNull(views.Screen.Customers.Value);
             Assert.IsNotNull(views.Screen.Clashes.Value);
             Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);

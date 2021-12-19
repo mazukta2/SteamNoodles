@@ -25,7 +25,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
 
-            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().First();
             if (added)
                 customerSettings.AddFeature(new EatingSpeedFeatureSettings()
                 {
@@ -35,8 +35,9 @@ namespace Game.Tests.Cases.Customers
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
+            models.Customers.Queue.Add();
 
-            var customer = models.Customers.ServingCustomer.Unit;
+            var customer = models.Customers.GetCustomers().Last().Unit;
             customer.TeleportToTarget();
 
             if (added)
@@ -66,7 +67,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
 
-            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().First();
             customerSettings.AddFeature(new EatingSpeedFeatureSettings()
             {
                 TimeModificator = new PercentModificator(PercentModificator.ActionType.Remove, 100f)
@@ -75,8 +76,9 @@ namespace Game.Tests.Cases.Customers
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
+            models.Customers.Queue.Add();
 
-            var customer = models.Customers.ServingCustomer.Unit;
+            var customer = models.Customers.GetCustomers().Last().Unit;
              Assert.AreEqual(1f, customer.GetEatingTime());
 
             game.Exit();

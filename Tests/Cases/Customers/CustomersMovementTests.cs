@@ -44,35 +44,72 @@ namespace Game.Tests.Cases.Customers
 
 
             var customerManager = models.Customers;
-            var customer = models.Customers.ServingCustomer;
-            Assert.AreEqual(Phase.MovingTo, customer.CurrentPhase);
-            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
-            Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
-            customer.Unit.TeleportToTarget();
-            Assert.AreEqual(Phase.Ordering, customer.CurrentPhase);
-            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
-            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
+            models.Customers.Queue.Add();
+
+            var customer1 = models.Customers.GetCustomers().Last();
+            // first consumer moving
+            Assert.AreEqual(Phase.MovingTo, customer1.CurrentPhase);
+            Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
+            Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
+            Assert.AreEqual(1, models.Customers.GetCustomers().Count);
+            customer1.Unit.TeleportToTarget();
+
+            // first consumer ordering
+            Assert.AreEqual(Phase.Ordering, customer1.CurrentPhase);
+            Assert.AreEqual(1, models.Customers.GetCustomers().Count);
+            Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
+            Assert.AreEqual(1, models.Customers.GetCustomers().Count);
+
+            // first consumer waiting for food at table. second - is moving
             game.PushTime(1);
-            Assert.AreEqual(Phase.WaitCooking, customer.CurrentPhase);
-            Assert.AreEqual(customer, models.Customers.ServingCustomer);
-            Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
-            Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
+            models.Customers.Queue.Add();
+            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
+            var customer2 = models.Customers.GetCustomers().Last();
+            Assert.AreNotEqual(customer1, customer2);
+
+            Assert.AreEqual(Phase.WaitCooking, customer1.CurrentPhase);
+            Assert.AreEqual(Phase.MovingTo, customer2.CurrentPhase);
+
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
+            Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
+
+            // first consummer waiting for food at table. second - ordering at order place.
+            customer2.Unit.TeleportToTarget();
+
+            Assert.AreEqual(Phase.WaitCooking, customer1.CurrentPhase);
+            Assert.AreEqual(Phase.Ordering, customer2.CurrentPhase);
+
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
+
+            // first is eating, second - placed at ordering place.
             game.PushTime(1);
-            Assert.AreEqual(Phase.Eating, customer.CurrentPhase);
-            Assert.AreNotEqual(customer, models.Customers.ServingCustomer);
-            Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
-            Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
+            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
+
+
+            Assert.AreEqual(Phase.Eating, customer1.CurrentPhase);
+            Assert.AreEqual(Phase.WaitCooking, customer2.CurrentPhase);
+
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
+
+            // first is finiesh, second is eating
             game.PushTime(1);
-            Assert.AreEqual(Phase.MovingAway, customer.CurrentPhase);
-            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
-            Assert.IsFalse(customerManager.IsOccupied(orderingBuilding));
+            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
+
+            Assert.AreEqual(Phase.MovingAway, customer1.CurrentPhase);
+            Assert.AreEqual(Phase.Eating, customer2.CurrentPhase);
+
+            Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
 
             game.Exit();
         }
 
 
         [Test]
-        public void IsOrlderingPlaceAndTables()
+        public void IsOrderingPlaceAndTables()
         {
             var game = new GameController();
             var levelProto = new LevelSettings();
@@ -85,7 +122,7 @@ namespace Game.Tests.Cases.Customers
                     new PlaceToEatConstructionFeatureSettings()
                 }
             });
-            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().GetItems().First().Key;
+            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().First();
             customerSettings.OrderingTime = 1;
             customerSettings.CookingTime = 1;
             customerSettings.EatingTime = 10;
@@ -104,42 +141,62 @@ namespace Game.Tests.Cases.Customers
 
 
             var customerManager = models.Customers;
-            var customer1 = models.Customers.ServingCustomer;
+            models.Customers.Queue.Add();
+
+            // take order and cook for 1.
+            var customer1 = models.Customers.GetCustomers().Last();
             customer1.Unit.TeleportToTarget();
-            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
-            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
-            game.PushTime(2); // odering and cooking for 1.
-            var customer2 = models.Customers.ServingCustomer;
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
+            Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
+            Assert.AreEqual(1, models.Customers.GetCustomers().Count);
+
+            // first is eating, and second is ordering.
+            game.PushTime(2);
+            models.Customers.Queue.Add();
+            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
+            var customer2 = models.Customers.GetCustomers().Last();
             customer2.Unit.TeleportToTarget();
             Assert.AreNotEqual(customer2, customer1);
             Assert.AreNotEqual(customer2.Unit, customer1.Unit);
 
-            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
-            Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
             Assert.AreEqual(Phase.Eating, customer1.CurrentPhase);
             Assert.AreEqual(Phase.Ordering, customer2.CurrentPhase);
-            Assert.AreEqual(customer2, customerManager.ServingCustomer);
+            Assert.AreEqual(customer2, models.Customers.GetCustomers().Last());
+            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
 
+            // both are eating in difrent tables
             game.PushTime(2);
 
-            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
-            Assert.IsTrue(customerManager.IsOccupied(tableBuilding));
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
             Assert.AreEqual(Phase.Eating, customer1.CurrentPhase);
             Assert.AreEqual(Phase.Eating, customer2.CurrentPhase);
-            Assert.AreEqual(null, customerManager.ServingCustomer);
+            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
 
+            // first one is finihed
             game.PushTime(8);
-
-            Assert.IsTrue(customerManager.IsOccupied(orderingBuilding));
-            Assert.IsFalse(customerManager.IsOccupied(tableBuilding));
+            Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
+            Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
             Assert.AreEqual(Phase.MovingAway, customer1.CurrentPhase);
             Assert.AreEqual(Phase.Eating, customer2.CurrentPhase);
-            Assert.AreEqual(null, customerManager.ServingCustomer);
+            Assert.IsTrue(models.Customers.GetCustomers().Contains(customer1));
+            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
 
+            // second one is finihed
             game.PushTime(2);
             Assert.AreEqual(Phase.MovingAway, customer2.CurrentPhase);
-            Assert.AreNotEqual(null, customerManager.ServingCustomer);
-            Assert.AreNotEqual(customer2, customerManager.ServingCustomer);
+            Assert.IsTrue(models.Customers.GetCustomers().Contains(customer2));
+
+            // they both moved
+            customer1.Unit.TeleportToTarget();
+            customer2.Unit.TeleportToTarget();
+
+            Assert.AreEqual(Phase.Exiting, customer1.CurrentPhase);
+            Assert.AreEqual(Phase.Exiting, customer2.CurrentPhase);
+            Assert.IsFalse(models.Customers.GetCustomers().Contains(customer1));
+            Assert.IsFalse(models.Customers.GetCustomers().Contains(customer2));
 
             game.Exit();
         }

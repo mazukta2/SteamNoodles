@@ -80,13 +80,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public void AddCustumer(ICustomerSettings customer)
         {
             Units.AddCustumer(customer);
-            Customers.AddCustumer(customer);
+            Customers.AddPotentialCustumer(customer);
         }
 
         public void RemoveCustomer(ICustomerSettings customer)
         {
             Units.RemoveCustomer(customer);
-            Customers.RemoveCustomer(customer);
+            Customers.RemovePotentialCustomer(customer);
         }
 
         public void ChangeMoney(int value)

@@ -19,10 +19,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class CustomerManager : Disposable
     {
-        public event Action OnCurrentCustomerChanged = delegate { };
-
-        public ServingCustomerProcess ServingCustomer { get; private set; }
-        public CustomersQueue Queue { get; private set; }
+        public CustomersQueue Queue { get; }
+        public UnitPlacement UnitPlacement { get; }
 
         private readonly IUnitsSettings _unitsSettings;
         private readonly Placement _placement;
@@ -31,8 +29,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly GameTime _time;
         private readonly GameClashes _clashes;
         private readonly GameLevel _level;
-        private readonly Deck<ICustomerSettings> _pool;
-        private readonly Dictionary<ServingCustomerProcess, Construction> _tables = new Dictionary<ServingCustomerProcess, Construction>();
         private readonly List<ServingCustomerProcess> _customers = new List<ServingCustomerProcess>();
 
         public CustomerManager(GameLevel level, IClashesSettings clashesSettings, IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
@@ -45,140 +41,130 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _clashes = clashes ?? throw new Exception(nameof(clashes));
             _level = level ?? throw new Exception(nameof(level));
 
-            Queue = new CustomersQueue(clashesSettings, _random);
-
-            _pool = new Deck<ICustomerSettings>(random);
-            foreach (var item in _unitsSettings.Deck)
-                _pool.Add(item.Key, item.Value);
-
-            _clashes.OnClashStarted += TryAddOrder;
-            _clashes.OnClashEnded += CancelOrder;
+            UnitPlacement = new UnitPlacement(placement);
+            Queue = new CustomersQueue(clashesSettings, _unitsSettings, _level, UnitPlacement, units, time, _random);
+            Queue.OnNewCustomerInQueue += Queue_OnNewCustomerInQueue;
+            Queue.OnNewCustomerIsMovingToQueue += Queue_OnNewCustomerIsMovingToQueue;
+            
+            _clashes.OnClashStarted += TryToMoveAQueue;
+            _clashes.OnClashEnded += CloseEverything;
 
             if (_clashes.IsInClash)
-                TryAddOrder();
+                TryToMoveAQueue();
         }
 
         protected override void DisposeInner()
         {
-            _clashes.OnClashStarted -= TryAddOrder;
-            _clashes.OnClashEnded -= CancelOrder;
+            Queue.OnNewCustomerInQueue -= Queue_OnNewCustomerInQueue;
+            Queue.OnNewCustomerIsMovingToQueue -= Queue_OnNewCustomerIsMovingToQueue;
+            Queue.Dispose();
+            UnitPlacement.Dispose();
+            _clashes.OnClashStarted -= TryToMoveAQueue;
+            _clashes.OnClashEnded -= CloseEverything;
 
             foreach (var item in _customers)
             {
-                item.OnFinished -= Customer_OnFinished;
+                item.OnWaitCooking -= Item_OnWaitCooking;
                 item.OnStartEating -= ServingCustomer_OnStartEating;
+                item.OnFinished -= Customer_OnFinished;
                 item.Dispose();
             }
         }
 
-        public void AddCustumer(ICustomerSettings customer)
+        public ReadOnlyCollection<ServingCustomerProcess> GetCustomers()
         {
-            _pool.Add(customer);
+            return _customers.AsReadOnly();
         }
 
-        public void RemoveCustomer(ICustomerSettings customer)
+        public void AddPotentialCustumer(ICustomerSettings customer)
         {
-            _pool.Remove(customer);
+            Queue.AddPotentialCustumer(customer);
         }
 
-        public Deck<ICustomerSettings> GetCustomersPool()
+        public void RemovePotentialCustomer(ICustomerSettings customer)
         {
-            return _pool;
+            Queue.RemovePotentialCustomer(customer);
         }
 
-        private void TryAddOrder()
+        public IReadOnlyCollection<ICustomerSettings> GetCustomersPool()
         {
-            if (IsOccupied(GetOrderingPlace()))
+            return Queue.GetCustomersPool();
+        }
+
+        private void TryToMoveAQueue()
+        {
+            if (UnitPlacement.IsAnybodyPlacedTo(UnitPlacement.GetOrderingPlace()))
                 return;
 
-            if (ServingCustomer != null)
-                return;
-
-            var unit = FindNextCustomer();
+            var unit = Queue.Take();
             if (unit == null)
-                throw new Exception("Cant find customer");
+                return;
 
-            _units.TakeFromCrowd(unit);
-            ServingCustomer = new ServingCustomerProcess(this, _time, _placement, _level, unit);
-            ServingCustomer.OnFinished += Customer_OnFinished;
-            ServingCustomer.OnStartEating += ServingCustomer_OnStartEating;
-            _customers.Add(ServingCustomer);
-            OnCurrentCustomerChanged();
+            if (!_customers.Contains(unit))
+                throw new Exception("NotExisting unit");
+            if (unit.CurrentPhase != ServingCustomerProcess.Phase.InQueue)
+                throw new Exception("Wrong state unit");
+
+            unit.MoveToOdering();
         }
 
-        public void ClearPlacing(ServingCustomerProcess servingCustomerProcess)
+        private void CloseEverything()
         {
-            _tables.Remove(servingCustomerProcess);
-            TryAddOrder();
-        }
-
-        public void Occupy(ServingCustomerProcess servingCustomerProcess, Construction construction)
-        {
-            _tables.Add(servingCustomerProcess, construction);
-        }
-
-        public bool IsOccupied(Construction construction)
-        {
-            var ordering = construction.GetFeatures().OfType<IOrderingPlaceConstructionFeatureSettings>().FirstOrDefault();
-            if (ordering != null && ServingCustomer != null && ServingCustomer.CurrentPhase == ServingCustomerProcess.Phase.Ordering)
-                return true;
-
-            if (_tables.Values.Contains(construction))
+            foreach (var item in _customers.ToList())
             {
-                return true;
+                if (item.CurrentPhase == ServingCustomerProcess.Phase.WaitCooking || item.CurrentPhase == ServingCustomerProcess.Phase.Eating)
+                {
+                    item.CancelWithReturns();
+                }
+
+                RemoveCustomer(item);
             }
+            Queue.CancelEverithing();
+            _customers.Clear();
 
-            return false;
         }
-
-        private void CancelOrder()
-        {
-            if (ServingCustomer != null)
-                ServingCustomer.Cancel();
-            foreach (var item in _customers)
-            {
-                item.OnFinished -= Customer_OnFinished;
-                item.OnStartEating -= ServingCustomer_OnStartEating;
-                item.Dispose();
-                _units.ReturnToCrowd(item.Unit);
-            }
-            ServingCustomer = null;
-            OnCurrentCustomerChanged();
-        }
-
-        public ReadOnlyCollection<Construction> GetFreePlacesToEat()
-        {
-           return _placement.Constructions.Where(x => x.GetFeatures().OfType<IPlaceToEatConstructionFeatureSettings>().Any() && !IsOccupied(x)).ToList().AsReadOnly();
-        }
-
-        public Construction GetOrderingPlace()
-        {
-            return _placement.Constructions.First(x => x.GetFeatures().OfType<IOrderingPlaceConstructionFeatureSettings>().Any());
-        }
-
-        private Unit FindNextCustomer()
-        {
-            var unitSetting = _pool.Take();
-            return _units.GetUnit(unitSetting);
-        }
-
-        private void Customer_OnFinished(ServingCustomerProcess servingCustomerProcess)
-        {
-            servingCustomerProcess.OnStartEating -= ServingCustomer_OnStartEating;
-            servingCustomerProcess.OnFinished -= Customer_OnFinished;
-            _units.ReturnToCrowd(servingCustomerProcess.Unit);
-            servingCustomerProcess.Dispose();
-            _customers.Remove(servingCustomerProcess);
-
-            TryAddOrder();
-        }
-
         private void ServingCustomer_OnStartEating(ServingCustomerProcess servingCustomerProcess)
         {
-            ServingCustomer = null;
-            OnCurrentCustomerChanged();
-            TryAddOrder();
+            TryToMoveAQueue();
         }
 
+        private void Item_OnWaitCooking(ServingCustomerProcess obj)
+        {
+            TryToMoveAQueue();
+        }
+
+        private void Queue_OnNewCustomerInQueue(ServingCustomerProcess obj)
+        {
+            TryToMoveAQueue();
+        }
+
+        private void Queue_OnNewCustomerIsMovingToQueue(ServingCustomerProcess unit)
+        {
+            AddCustomer(unit);
+        }
+
+
+        private void Customer_OnFinished(ServingCustomerProcess unit)
+        {
+            RemoveCustomer(unit);
+            TryToMoveAQueue();
+        }
+
+        private void AddCustomer(ServingCustomerProcess unit)
+        {
+            unit.OnWaitCooking += Item_OnWaitCooking;
+            unit.OnStartEating += ServingCustomer_OnStartEating;
+            unit.OnFinished += Customer_OnFinished;
+            _customers.Add(unit);
+        }
+
+        private void RemoveCustomer(ServingCustomerProcess unit)
+        {
+            unit.OnWaitCooking -= Item_OnWaitCooking;
+            unit.OnStartEating -= ServingCustomer_OnStartEating;
+            unit.OnFinished -= Customer_OnFinished;
+            unit.Dispose();
+            _customers.Remove(unit);
+        }
     }
 }
