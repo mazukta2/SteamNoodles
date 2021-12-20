@@ -22,7 +22,7 @@ namespace Game.Tests.Cases.Customers
             
             var (models, presenters, views) = game.LoadLevel();
             var construction = (ConstructionSettings)models.Hand.Cards.First().Settings;
-            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
             if (added)
                 customerSettings.AddFeature(new MoneyForConstructionCustomerFeatureSettings(construction) { Money = 10 });
 
@@ -31,9 +31,9 @@ namespace Game.Tests.Cases.Customers
             views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.AreEqual(0, models.Money);
-            models.Customers.Queue.Add();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
 
-            var customer = models.Customers.GetCustomers().Last().Unit;
+            var customer = models.Clashes.CurrentClash.Customers.GetCustomers().Last().Unit;
             customer.TeleportToTarget();
             game.PushTime(3);
             customer.TeleportToTarget();

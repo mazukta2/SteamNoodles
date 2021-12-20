@@ -19,7 +19,7 @@ namespace Game.Tests.Cases.Customers
             var (models, _, views) = game.LoadLevel(levelProto);
 
             Assert.IsFalse(models.Clashes.IsInClash);
-            Assert.AreEqual(0, models.Customers.GetCustomers().Count());
+            Assert.AreEqual(0, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
             Assert.IsNull(views.Screen.Customers.Value);
             Assert.IsNotNull(views.Screen.Clashes.Value);
             Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);
@@ -27,23 +27,25 @@ namespace Game.Tests.Cases.Customers
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
-            models.Customers.Queue.Add();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
 
             Assert.IsTrue(models.Clashes.IsInClash);
             Assert.IsFalse(views.Screen.Clashes.Value.StartClash.IsShowing);
-            Assert.AreEqual(1, models.Customers.GetCustomers().Count());
-            //Assert.IsNotNull(views.Screen.Customers.Value);
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
 
-            Assert.AreEqual(20, models.Clashes.GetClashesTime());
+            Assert.AreEqual(6, models.Clashes.CurrentClash.NeedToServe);
+            // you need 3 seconds to serve each customer
 
-            game.PushTime(10);
+            game.PushTime(9);
 
             Assert.IsTrue(models.Clashes.IsInClash);
+            Assert.AreEqual(3, models.Clashes.CurrentClash.Served);
 
-            game.PushTime(10);
+            game.PushTime(9);
 
             Assert.IsFalse(models.Clashes.IsInClash);
-            Assert.AreEqual(0, models.Customers.GetCustomers().Count());
+            Assert.AreEqual(6, models.Clashes.CurrentClash.Served);
+            Assert.AreEqual(0, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
             Assert.IsNull(views.Screen.Customers.Value);
             Assert.IsNotNull(views.Screen.Clashes.Value);
             Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);

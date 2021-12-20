@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
 
-            _view.StartClash.SetAction(OnStartClash);
+            _view.StartClash.SetAction(HandleStartClash);
             _view.StartClash.SetShowing(true);
             _model.OnClashStarted += _model_OnClashStarted;
             _model.OnClashEnded += _model_OnClashEnded;
@@ -36,7 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
             _view.Dispose();
         }
 
-        public void OnStartClash()
+        public void HandleStartClash()
         {
             _model.StartClash();
         }

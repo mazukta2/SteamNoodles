@@ -22,7 +22,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public int Money { get; private set; }
         public Placement Placement { get; private set; }
-        public CustomerManager Customers { get; private set; }
 
         private RewardCalculator _rewardCalculator;
 
@@ -47,8 +46,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Placement = new Placement(settings, Hand, _rewardCalculator);
             _servingMoney = new UnitServicing(random, this, Placement);
             Units = new LevelUnits(settings, Placement, time, random, settings, _servingMoney);
-            Clashes = new GameClashes(settings, Placement, time, _rewardCalculator);
-            Customers = new CustomerManager(this, settings, settings, Placement, Clashes, Units, time, random);
+            Clashes = new GameClashes(settings, Placement, time, _rewardCalculator, this, settings, Units, random);
 
             AddEffectSystems();
         }
@@ -61,7 +59,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Placement.Dispose();
             Units.Dispose();
             Clashes.Dispose();
-            Customers.Dispose();
             _servingMoney.Dispose();
             _rewardCalculator.Dispose();
         }

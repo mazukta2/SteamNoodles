@@ -31,9 +31,9 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
 
     public interface IClashesSettings
     {
-        float ClashTime { get; }
         IReward ClashReward { get; }
         int MaxQueue { get; }
         float SpawnQueueTime{ get; }
+        int NeedToServe { get; }
     }
 }

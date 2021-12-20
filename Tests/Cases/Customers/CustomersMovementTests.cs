@@ -43,29 +43,29 @@ namespace Game.Tests.Cases.Customers
             views.Screen.Clashes.Value.StartClash.Click();
 
 
-            var customerManager = models.Customers;
-            models.Customers.Queue.Add();
+            var customerManager = models.Clashes.CurrentClash.Customers;
+            models.Clashes.CurrentClash.Customers.Queue.Add();
 
-            var customer1 = models.Customers.GetCustomers().Last();
+            var customer1 = models.Clashes.CurrentClash.Customers.GetCustomers().Last();
             // first consumer moving
             Assert.AreEqual(Phase.MovingTo, customer1.CurrentPhase);
             Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
             Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
-            Assert.AreEqual(1, models.Customers.GetCustomers().Count);
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
             customer1.Unit.TeleportToTarget();
 
             // first consumer ordering
             Assert.AreEqual(Phase.Ordering, customer1.CurrentPhase);
-            Assert.AreEqual(1, models.Customers.GetCustomers().Count);
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
             Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
             Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
-            Assert.AreEqual(1, models.Customers.GetCustomers().Count);
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
 
             // first consumer waiting for food at table. second - is moving
             game.PushTime(1);
-            models.Customers.Queue.Add();
-            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
-            var customer2 = models.Customers.GetCustomers().Last();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
+            var customer2 = models.Clashes.CurrentClash.Customers.GetCustomers().Last();
             Assert.AreNotEqual(customer1, customer2);
 
             Assert.AreEqual(Phase.WaitCooking, customer1.CurrentPhase);
@@ -85,7 +85,7 @@ namespace Game.Tests.Cases.Customers
 
             // first is eating, second - placed at ordering place.
             game.PushTime(1);
-            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
 
 
             Assert.AreEqual(Phase.Eating, customer1.CurrentPhase);
@@ -96,7 +96,7 @@ namespace Game.Tests.Cases.Customers
 
             // first is finiesh, second is eating
             game.PushTime(1);
-            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
 
             Assert.AreEqual(Phase.MovingAway, customer1.CurrentPhase);
             Assert.AreEqual(Phase.Eating, customer2.CurrentPhase);
@@ -122,7 +122,7 @@ namespace Game.Tests.Cases.Customers
                     new PlaceToEatConstructionFeatureSettings()
                 }
             });
-            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
             customerSettings.OrderingTime = 1;
             customerSettings.CookingTime = 1;
             customerSettings.EatingTime = 10;
@@ -140,21 +140,21 @@ namespace Game.Tests.Cases.Customers
             views.Screen.Clashes.Value.StartClash.Click();
 
 
-            var customerManager = models.Customers;
-            models.Customers.Queue.Add();
+            var customerManager = models.Clashes.CurrentClash.Customers;
+            models.Clashes.CurrentClash.Customers.Queue.Add();
 
             // take order and cook for 1.
-            var customer1 = models.Customers.GetCustomers().Last();
+            var customer1 = models.Clashes.CurrentClash.Customers.GetCustomers().Last();
             customer1.Unit.TeleportToTarget();
             Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(orderingBuilding));
             Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
-            Assert.AreEqual(1, models.Customers.GetCustomers().Count);
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
 
             // first is eating, and second is ordering.
             game.PushTime(2);
-            models.Customers.Queue.Add();
-            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
-            var customer2 = models.Customers.GetCustomers().Last();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
+            var customer2 = models.Clashes.CurrentClash.Customers.GetCustomers().Last();
             customer2.Unit.TeleportToTarget();
             Assert.AreNotEqual(customer2, customer1);
             Assert.AreNotEqual(customer2.Unit, customer1.Unit);
@@ -163,8 +163,8 @@ namespace Game.Tests.Cases.Customers
             Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
             Assert.AreEqual(Phase.Eating, customer1.CurrentPhase);
             Assert.AreEqual(Phase.Ordering, customer2.CurrentPhase);
-            Assert.AreEqual(customer2, models.Customers.GetCustomers().Last());
-            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
+            Assert.AreEqual(customer2, models.Clashes.CurrentClash.Customers.GetCustomers().Last());
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
 
             // both are eating in difrent tables
             game.PushTime(2);
@@ -173,7 +173,7 @@ namespace Game.Tests.Cases.Customers
             Assert.IsTrue(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
             Assert.AreEqual(Phase.Eating, customer1.CurrentPhase);
             Assert.AreEqual(Phase.Eating, customer2.CurrentPhase);
-            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
 
             // first one is finihed
             game.PushTime(8);
@@ -181,13 +181,13 @@ namespace Game.Tests.Cases.Customers
             Assert.IsFalse(customerManager.UnitPlacement.IsAnybodyPlacedTo(tableBuilding));
             Assert.AreEqual(Phase.MovingAway, customer1.CurrentPhase);
             Assert.AreEqual(Phase.Eating, customer2.CurrentPhase);
-            Assert.IsTrue(models.Customers.GetCustomers().Contains(customer1));
-            Assert.AreEqual(2, models.Customers.GetCustomers().Count);
+            Assert.IsTrue(models.Clashes.CurrentClash.Customers.GetCustomers().Contains(customer1));
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
 
             // second one is finihed
             game.PushTime(2);
             Assert.AreEqual(Phase.MovingAway, customer2.CurrentPhase);
-            Assert.IsTrue(models.Customers.GetCustomers().Contains(customer2));
+            Assert.IsTrue(models.Clashes.CurrentClash.Customers.GetCustomers().Contains(customer2));
 
             // they both moved
             customer1.Unit.TeleportToTarget();
@@ -195,8 +195,8 @@ namespace Game.Tests.Cases.Customers
 
             Assert.AreEqual(Phase.Exiting, customer1.CurrentPhase);
             Assert.AreEqual(Phase.Exiting, customer2.CurrentPhase);
-            Assert.IsFalse(models.Customers.GetCustomers().Contains(customer1));
-            Assert.IsFalse(models.Customers.GetCustomers().Contains(customer2));
+            Assert.IsFalse(models.Clashes.CurrentClash.Customers.GetCustomers().Contains(customer1));
+            Assert.IsFalse(models.Clashes.CurrentClash.Customers.GetCustomers().Contains(customer2));
 
             game.Exit();
         }
@@ -213,7 +213,7 @@ namespace Game.Tests.Cases.Customers
             settings.SpawnQueueTime = 5;
             settings.MaxQueue = 3;
 
-            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
             customerSettings.OrderingTime = 800;
             customerSettings.CookingTime = 800;
             customerSettings.EatingTime = 800;
@@ -222,14 +222,14 @@ namespace Game.Tests.Cases.Customers
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
 
-            Assert.AreEqual(3, models.Customers.Queue.TargetCount);
-            Assert.AreEqual(0, models.Customers.Queue.ActualCount);
+            Assert.AreEqual(3, models.Clashes.CurrentClash.Customers.Queue.TargetCount);
+            Assert.AreEqual(0, models.Clashes.CurrentClash.Customers.Queue.ActualCount);
 
-            Assert.AreEqual(1, models.Customers.Queue.GetAddingChance());
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.Queue.GetAddingChance());
 
             game.PushTime(5);
 
-            Assert.IsTrue(1 <= models.Customers.Queue.ActualCount && models.Customers.Queue.ActualCount <= 3);
+            Assert.IsTrue(1 <= models.Clashes.CurrentClash.Customers.Queue.ActualCount && models.Clashes.CurrentClash.Customers.Queue.ActualCount <= 3);
 
             game.Exit();
         }

@@ -19,6 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 {
     public class CustomerManager : Disposable
     {
+        public event Action OnCustomerServed = delegate { };
         public CustomersQueue Queue { get; }
         public UnitPlacement UnitPlacement { get; }
 

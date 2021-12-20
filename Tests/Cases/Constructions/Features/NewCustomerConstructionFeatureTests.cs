@@ -19,7 +19,7 @@ namespace Game.Tests.Cases.Constructions
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
 
-            Assert.AreEqual(1, models.Customers.GetCustomersPool().Count());
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomersPool().Count());
 
             var newCustomer = new CustomerSettings();
             models.Hand.Add(new ConstructionSettings() { 
@@ -31,7 +31,7 @@ namespace Game.Tests.Cases.Constructions
             views.Screen.Hand.Value.Cards.List.Last().Button.Click();
             views.Placement.Value.Click(System.Numerics.Vector2.Zero);
 
-            Assert.AreEqual(2, models.Customers.GetCustomersPool().Count());
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomersPool().Count());
 
             game.Exit();
         }

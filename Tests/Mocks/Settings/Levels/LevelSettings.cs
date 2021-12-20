@@ -45,5 +45,7 @@ namespace Game.Tests.Mocks.Settings.Levels
         public int MaxQueue { get; set; } = 0;
 
         public float SpawnQueueTime { get; set; } = 1000;
+
+        public int NeedToServe { get; set; } = 6;
     }
 }
