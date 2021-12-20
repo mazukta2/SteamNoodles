@@ -203,29 +203,33 @@ namespace Game.Tests.Cases.Customers
 
 
         [Test]
-        public void IsUnitsArePushedToQueueWorking()
+        public void IsUnitsArePushedOverTimeToQueueWorking()
         {
             var game = new GameController();
             var levelProto = new LevelSettings();
 
             var (models, _, views) = game.LoadLevel(levelProto);
             var settings = (LevelSettings)models.Clashes.Settings;
-            settings.MinQueue = 3;
+            settings.SpawnQueueTime = 5;
             settings.MaxQueue = 3;
+
+            var customerSettings = (CustomerSettings)models.Customers.GetCustomersPool().First();
+            customerSettings.OrderingTime = 800;
+            customerSettings.CookingTime = 800;
+            customerSettings.EatingTime = 800;
 
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.Value.StartClash.Click();
 
             Assert.AreEqual(3, models.Customers.Queue.TargetCount);
-            Assert.AreEqual(3, models.Customers.Queue.ActualCount);
+            Assert.AreEqual(0, models.Customers.Queue.ActualCount);
 
-            //var orderingBuilding = models.Placement.Constructions.First();
-            //var tableBuilding = models.Placement.Constructions.Last();
-            //views.Screen.Clashes.Value.StartClash.Click();
+            Assert.AreEqual(1, models.Customers.Queue.GetAddingChance());
 
-            //var customerManager = models.Customers;
-            //var customer1 = models.Customers.ServingCustomer;
-            //customer1.Unit.TeleportToTarget();
+            game.PushTime(5);
+
+            Assert.IsTrue(1 <= models.Customers.Queue.ActualCount && models.Customers.Queue.ActualCount <= 3);
 
             game.Exit();
         }

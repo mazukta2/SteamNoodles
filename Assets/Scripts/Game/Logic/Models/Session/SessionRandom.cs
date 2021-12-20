@@ -22,10 +22,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
         {
             return _random.NextDouble() > 0.5f;
         }
-
-        internal int GetRandom(object minQueue, object maxQueue)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

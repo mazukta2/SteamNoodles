@@ -46,11 +46,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             Queue.OnNewCustomerInQueue += Queue_OnNewCustomerInQueue;
             Queue.OnNewCustomerIsMovingToQueue += Queue_OnNewCustomerIsMovingToQueue;
             
-            _clashes.OnClashStarted += TryToMoveAQueue;
-            _clashes.OnClashEnded += CloseEverything;
+            _clashes.OnClashStarted += HandleStartClash;
+            _clashes.OnClashEnded += HandleStopClash;
 
             if (_clashes.IsInClash)
-                TryToMoveAQueue();
+                HandleStartClash();
         }
 
         protected override void DisposeInner()
@@ -59,8 +59,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             Queue.OnNewCustomerIsMovingToQueue -= Queue_OnNewCustomerIsMovingToQueue;
             Queue.Dispose();
             UnitPlacement.Dispose();
-            _clashes.OnClashStarted -= TryToMoveAQueue;
-            _clashes.OnClashEnded -= CloseEverything;
+            _clashes.OnClashStarted -= HandleStartClash;
+            _clashes.OnClashEnded -= HandleStopClash;
 
             foreach (var item in _customers)
             {
@@ -91,6 +91,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             return Queue.GetCustomersPool();
         }
 
+        private void HandleStartClash()
+        {
+            Queue.StartClash();
+            TryToMoveAQueue();
+        }
+
         private void TryToMoveAQueue()
         {
             if (UnitPlacement.IsAnybodyPlacedTo(UnitPlacement.GetOrderingPlace()))
@@ -108,7 +114,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             unit.MoveToOdering();
         }
 
-        private void CloseEverything()
+        private void HandleStopClash()
         {
             foreach (var item in _customers.ToList())
             {
@@ -119,7 +125,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
                 RemoveCustomer(item);
             }
-            Queue.CancelEverithing();
+            Queue.StopClash();
             _customers.Clear();
 
         }

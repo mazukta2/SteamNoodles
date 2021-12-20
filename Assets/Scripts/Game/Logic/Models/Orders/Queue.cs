@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public event Action<ServingCustomerProcess> OnNewCustomerIsMovingToQueue = delegate { };
         public event Action<ServingCustomerProcess> OnNewCustomerInQueue = delegate { };
 
-        public int TargetCount { get; private set; }
+        public int TargetCount => _clashesSettings.MaxQueue;
         public int ActualCount => _customers.Count;
 
         private readonly IClashesSettings _clashesSettings;
@@ -30,6 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly GameLevel _level;
         private readonly List<ServingCustomerProcess> _customers = new List<ServingCustomerProcess>();
         private readonly Deck<ICustomerSettings> _pool;
+        private GameTimer _addTimer;
 
         public CustomersQueue(IClashesSettings clashesSettings, IUnitsSettings unitSettings, GameLevel level, UnitPlacement placement, LevelUnits units, GameTime time, SessionRandom random)
         {
@@ -44,19 +45,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             foreach (var item in unitSettings.Deck)
                 _pool.Add(item.Key, item.Value);
 
-            RefreshTargetCount();
         }
 
         protected override void DisposeInner()
         {
+            if (_addTimer != null)
+                _addTimer.OnFinished -= _addTimer_OnFinished;
             foreach (var item in _customers)
                 item.OnJoinQueue -= Process_OnJoinQueue;
             _customers.Clear();
         }
 
-        private void RefreshTargetCount()
+
+        public float GetAddingChance()
         {
-            TargetCount = _random.GetRandom(_clashesSettings.MinQueue, _clashesSettings.MaxQueue);
+            return 1 - ActualCount / TargetCount;
         }
 
         public void AddPotentialCustumer(ICustomerSettings customer)
@@ -74,12 +77,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             return _pool.GetItemsList();
         }
 
-        public void CancelEverithing()
+        public void StartClash()
         {
+            _addTimer = new GameTimer(_time, _clashesSettings.SpawnQueueTime);
+            _addTimer.OnFinished += _addTimer_OnFinished;
+        }
+
+        public void StopClash()
+        {
+            _addTimer.OnFinished -= _addTimer_OnFinished;
+
             foreach (var item in _customers)
                 item.OnJoinQueue -= Process_OnJoinQueue;
             _customers.Clear();
         }
+
         public ServingCustomerProcess Take()
         {
             var queue = _customers.Where(x => x.CurrentPhase == ServingCustomerProcess.Phase.InQueue);
@@ -114,6 +126,22 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         {
             var unitSetting = _pool.Take();
             return _units.GetUnit(unitSetting);
+        }
+
+        private void _addTimer_OnFinished()
+        {
+            _addTimer.OnFinished -= _addTimer_OnFinished;
+            _addTimer = new GameTimer(_time, _clashesSettings.SpawnQueueTime);
+            _addTimer.OnFinished += _addTimer_OnFinished;
+
+            if (_random.GetRandom(0, GetAddingChance()) <= 1)
+            {
+                for (int i = 0; i < _random.GetRandom(1, 3); i++)
+                {
+                    if (ActualCount < TargetCount)
+                        Add();
+                }
+            }
         }
 
     }
