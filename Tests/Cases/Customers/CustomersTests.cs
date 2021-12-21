@@ -66,12 +66,15 @@ namespace Game.Tests.Cases.Customers
             var customer1 = (CustomerSettings)models.Units.GetPool().First();
             var customer2 = new CustomerSettings();
             var settings = (LevelSettings)models.Clashes.Settings;
-            settings.SpawnQueueTime = 0;
+            settings.SpawnQueueTime = 1;
+            settings.MaxQueue = 1;
             models.Units.AddPotentialCustumer(customer2);
             models.Units.AddPotentialCustumer(customer2);
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
+            game.PushTime(1);
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
 
             var customers = new List<Unit>();
 

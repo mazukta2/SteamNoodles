@@ -42,7 +42,7 @@ namespace Game.Tests.Mocks.Settings.Levels
 
         public IReward ClashReward { get; set; } = new Reward();
 
-        public int MaxQueue { get; set; } = 0;
+        public int MaxQueue { get; set; } = 1;
 
         public float SpawnQueueTime { get; set; } = 1000;
 

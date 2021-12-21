@@ -28,18 +28,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private readonly SessionRandom _random;
         private readonly LevelUnits _units;
         private readonly GameTime _time;
-        private readonly GameClashes _clashes;
         private readonly GameLevel _level;
         private readonly List<ServingCustomerProcess> _customers = new List<ServingCustomerProcess>();
 
-        public CustomerManager(GameLevel level, IClashesSettings clashesSettings, IUnitsSettings unitsSettings, Placement placement, GameClashes clashes, LevelUnits units, GameTime time, SessionRandom random)
+        public CustomerManager(GameLevel level, IClashesSettings clashesSettings, IUnitsSettings unitsSettings, Placement placement, LevelUnits units, GameTime time, SessionRandom random)
         {
             _unitsSettings = unitsSettings ?? throw new Exception(nameof(unitsSettings));
             _placement = placement ?? throw new Exception(nameof(placement));
             _units = units ?? throw new Exception(nameof(units));
             _random = random ?? throw new Exception(nameof(random));
             _time = time ?? throw new Exception(nameof(time));
-            _clashes = clashes ?? throw new Exception(nameof(clashes));
             _level = level ?? throw new Exception(nameof(level));
 
             UnitPlacement = new UnitPlacement(placement);
@@ -47,9 +45,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             Queue.OnNewCustomerInQueue += Queue_OnNewCustomerInQueue;
             Queue.OnNewCustomerIsMovingToQueue += Queue_OnNewCustomerIsMovingToQueue;
             
-            _clashes.OnClashStarted += HandleStartClash;
-            _clashes.OnClashEnded += HandleStopClash;
-
             _units.OnPotentialUnitAdded += AddPotentialCustumer;
             _units.OnPotentialUnitRemoved += RemovePotentialCustomer;
 
@@ -57,8 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 for (int i = 0; i < item.Value; i++)
                     AddPotentialCustumer(item.Key);
 
-            if (_clashes.IsInClash)
-                HandleStartClash();
+            TryToMoveAQueue();
         }
 
         protected override void DisposeInner()
@@ -69,15 +63,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             Queue.OnNewCustomerIsMovingToQueue -= Queue_OnNewCustomerIsMovingToQueue;
             Queue.Dispose();
             UnitPlacement.Dispose();
-            _clashes.OnClashStarted -= HandleStartClash;
-            _clashes.OnClashEnded -= HandleStopClash;
 
-            foreach (var item in _customers)
+            foreach (var item in _customers.ToList())
+                RemoveCustomer(item);
+        }
+
+        public void AbortClash()
+        {
+            foreach (var item in _customers.ToList())
             {
-                item.OnWaitCooking -= Item_OnWaitCooking;
-                item.OnStartEating -= ServingCustomer_OnStartEating;
-                item.OnFinished -= Customer_OnFinished;
-                item.Dispose();
+                if (item.CurrentPhase == ServingCustomerProcess.Phase.WaitCooking || item.CurrentPhase == ServingCustomerProcess.Phase.Eating)
+                {
+                    item.CancelWithReturns();
+                }
+
+                RemoveCustomer(item);
             }
         }
 
@@ -101,12 +101,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             return Queue.GetCustomersPool();
         }
 
-        private void HandleStartClash()
-        {
-            Queue.StartClash();
-            TryToMoveAQueue();
-        }
-
         private void TryToMoveAQueue()
         {
             if (UnitPlacement.IsAnybodyPlacedTo(UnitPlacement.GetOrderingPlace()))
@@ -124,21 +118,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             unit.MoveToOdering();
         }
 
-        private void HandleStopClash()
-        {
-            foreach (var item in _customers.ToList())
-            {
-                if (item.CurrentPhase == ServingCustomerProcess.Phase.WaitCooking || item.CurrentPhase == ServingCustomerProcess.Phase.Eating)
-                {
-                    item.CancelWithReturns();
-                }
-
-                RemoveCustomer(item);
-            }
-            Queue.StopClash();
-            _customers.Clear();
-
-        }
         private void ServingCustomer_OnStartEating(ServingCustomerProcess servingCustomerProcess)
         {
             TryToMoveAQueue();

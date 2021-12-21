@@ -16,6 +16,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
 
         public GameTimer(GameTime time, float duration)
         {
+            if (duration <= 0)
+                throw new Exception("Incorrect time");
             _time = time;
             _endTime = time.Time + duration;
 

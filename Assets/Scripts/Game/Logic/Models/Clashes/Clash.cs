@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _rewardCalculator = rewardCalculator ?? throw new ArgumentNullException(nameof(rewardCalculator));
-            Customers = new CustomerManager(level, settings, unitsSettings, placement, clashes, units, time, random);
+            Customers = new CustomerManager(level, settings, unitsSettings, placement, units, time, random);
             Customers.OnCustomerServed += _customerManager_OnCustomerServed;
         }
 

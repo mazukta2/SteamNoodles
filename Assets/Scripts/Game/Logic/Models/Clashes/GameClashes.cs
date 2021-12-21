@@ -64,6 +64,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
 
         private void _currentClash_OnClashStoped()
         {
+            _currentClash = null;
             OnClashEnded();
         }
     }

@@ -45,17 +45,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             foreach (var item in unitSettings.Deck)
                 _pool.Add(item.Key, item.Value);
 
+            _addTimer = new GameTimer(_time, _clashesSettings.SpawnQueueTime);
+            _addTimer.OnFinished += _addTimer_OnFinished;
         }
 
         protected override void DisposeInner()
         {
-            if (_addTimer != null)
-                _addTimer.OnFinished -= _addTimer_OnFinished;
+            _addTimer.OnFinished -= _addTimer_OnFinished;
             foreach (var item in _customers)
                 item.OnJoinQueue -= Process_OnJoinQueue;
             _customers.Clear();
         }
-
 
         public float GetAddingChance()
         {
@@ -75,21 +75,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         public IReadOnlyCollection<ICustomerSettings> GetCustomersPool()
         {
             return _pool.GetItemsList();
-        }
-
-        public void StartClash()
-        {
-            _addTimer = new GameTimer(_time, _clashesSettings.SpawnQueueTime);
-            _addTimer.OnFinished += _addTimer_OnFinished;
-        }
-
-        public void StopClash()
-        {
-            _addTimer.OnFinished -= _addTimer_OnFinished;
-
-            foreach (var item in _customers)
-                item.OnJoinQueue -= Process_OnJoinQueue;
-            _customers.Clear();
         }
 
         public ServingCustomerProcess Take()
