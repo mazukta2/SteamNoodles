@@ -142,6 +142,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         private void Customer_OnFinished(ServingCustomerProcess unit)
         {
             RemoveCustomer(unit);
+            OnCustomerServed();
             TryToMoveAQueue();
         }
 
