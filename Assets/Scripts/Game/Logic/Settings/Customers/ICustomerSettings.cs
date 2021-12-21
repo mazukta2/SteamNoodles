@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using System.Collections.Generic;
 
 namespace Assets.Scripts.Logic.Prototypes.Levels
@@ -11,5 +12,6 @@ namespace Assets.Scripts.Logic.Prototypes.Levels
         float EatingTime { get; }
         float BaseTipMultiplayer { get; }
         IReadOnlyCollection<ICustomerFeatureSettings> Features { get; }
+        float Speed { get; }
     }
 }

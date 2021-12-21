@@ -33,7 +33,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 return true;
 
             var direction = Target - Position;
-            Position = Position + direction.GetNormalize() * delta;
+            var movement =  delta * Settings.Speed;
+            var distance = Position.GetDistanceTo(Target);
+            if (distance < movement)
+                movement = distance;
+
+            Position = Position + direction.GetNormalize() * movement;
             OnPositionChanged();
 
             if (Position.IsClose(Target))

@@ -17,7 +17,9 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             var levelProto = new LevelSettings();
             var (models, _, views) = game.LoadLevel(levelProto);
-
+            var customerSettings = (CustomerSettings)models.Units.GetPool().First();
+            customerSettings.Speed = 1000;
+       
             Assert.IsFalse(models.Clashes.IsInClash);
 
             Assert.AreEqual(1, models.Units.GetPool().Count());
@@ -29,15 +31,25 @@ namespace Game.Tests.Cases.Customers
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
             models.Clashes.CurrentClash.Customers.Queue.Add();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
 
             Assert.IsTrue(models.Clashes.IsInClash);
             Assert.IsFalse(views.Screen.Clashes.Value.StartClash.IsShowing);
-            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
+            Assert.AreEqual(6, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
 
             Assert.AreEqual(6, models.Clashes.CurrentClash.NeedToServe);
             // you need 3 seconds to serve each customer
 
-            game.PushTime(9);
+            game.PushTime(3);
+            Assert.IsTrue(models.Clashes.IsInClash);
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Served);
+
+            game.PushTime(3);
+            game.PushTime(3);
 
             Assert.IsTrue(models.Clashes.IsInClash);
             Assert.AreEqual(3, models.Clashes.CurrentClash.Served);

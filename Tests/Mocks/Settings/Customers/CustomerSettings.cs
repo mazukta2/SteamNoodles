@@ -19,6 +19,7 @@ namespace Tests.Mocks.Prototypes.Levels
         public float CookingTime { get; set; } = 1;
 
         public float EatingTime { get; set; } = 1;
+        public float Speed { get; set; } = 1;
 
         private readonly List<ICustomerFeatureSettings> _features = new List<ICustomerFeatureSettings>();
 
@@ -27,5 +28,6 @@ namespace Tests.Mocks.Prototypes.Levels
         {
             _features.Add(customerFeature);
         }
+
     }
 }

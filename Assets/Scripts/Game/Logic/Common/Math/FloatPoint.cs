@@ -40,6 +40,11 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
             return false;
         }
 
+        public float GetDistanceTo(FloatPoint target)
+        {
+            return (float)System.Math.Sqrt((System.Math.Pow(X - target.X, 2) + System.Math.Pow(Y - target.Y, 2)));
+        }
+
         public override int GetHashCode()
         {
             return (int)(X + Y);
