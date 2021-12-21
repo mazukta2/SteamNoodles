@@ -15,15 +15,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Effects.Systems
     {
         private Placement _placement;
         private LevelUnits _units;
-        private GameLevel _level;
-        private CustomerManager _customers;
 
-        public UnitPoolEffectSystem(GameLevel level, Placement placement, LevelUnits units, CustomerManager customerManager)
+        public UnitPoolEffectSystem(Placement placement, LevelUnits units)
         {
             _placement = placement;
             _units = units;
-            _level = level;
-            _customers = customerManager;
             _placement.OnConstructionAdded += _placement_OnConstructionAdded;
             _placement.OnConstructionRemoved += _placement_OnConstructionRemoved;
         }
@@ -38,7 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Effects.Systems
         {
             foreach (var feature in obj.GetFeatures().OfType<INewCustomerConstructionFeatureSettings>())
             {
-                _level.AddCustumer(feature.Customer);
+                _units.AddPotentialCustumer(feature.Customer);
             }
         }
 
@@ -46,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Effects.Systems
         {
             foreach (var feature in obj.GetFeatures().OfType<INewCustomerConstructionFeatureSettings>())
             {
-                _level.RemoveCustomer(feature.Customer);
+                _units.RemovePotentialCustomer(feature.Customer);
             }
         }
     }

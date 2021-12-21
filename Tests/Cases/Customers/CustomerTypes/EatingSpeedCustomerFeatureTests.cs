@@ -25,7 +25,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
 
-            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Units.GetPool().First();
             if (added)
                 customerSettings.AddFeature(new EatingSpeedFeatureSettings()
                 {
@@ -67,7 +67,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
 
-            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Units.GetPool().First();
             customerSettings.AddFeature(new EatingSpeedFeatureSettings()
             {
                 TimeModificator = new PercentModificator(PercentModificator.ActionType.Remove, 100f)

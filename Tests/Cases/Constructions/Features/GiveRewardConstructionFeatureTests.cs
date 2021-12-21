@@ -24,7 +24,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
 
-            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomersPool().Count());
+            Assert.AreEqual(1, models.Units.GetPool().Count());
 
             var rewardConstr = new ConstructionSettings();
             var buildingConstr = new ConstructionSettings()

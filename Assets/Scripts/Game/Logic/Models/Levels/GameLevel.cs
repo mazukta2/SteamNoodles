@@ -65,25 +65,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private void AddEffectSystems()
         {
-            _effectSystems.Add(new UnitPoolEffectSystem(this, Placement, Units, Customers));
+            _effectSystems.Add(new UnitPoolEffectSystem(Placement, Units));
         }
 
         private void RemoveEffectSystems()
         {
             foreach (var effect in _effectSystems)
                 effect.Dispose();
-        }
-
-        public void AddCustumer(ICustomerSettings customer)
-        {
-            Units.AddCustumer(customer);
-            Customers.AddPotentialCustumer(customer);
-        }
-
-        public void RemoveCustomer(ICustomerSettings customer)
-        {
-            Units.RemoveCustomer(customer);
-            Customers.RemovePotentialCustomer(customer);
         }
 
         public void ChangeMoney(int value)

@@ -19,7 +19,8 @@ namespace Game.Tests.Cases.Customers
             var (models, _, views) = game.LoadLevel(levelProto);
 
             Assert.IsFalse(models.Clashes.IsInClash);
-            Assert.AreEqual(0, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
+
+            Assert.AreEqual(1, models.Units.GetPool().Count());
             Assert.IsNull(views.Screen.Customers.Value);
             Assert.IsNotNull(views.Screen.Clashes.Value);
             Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);

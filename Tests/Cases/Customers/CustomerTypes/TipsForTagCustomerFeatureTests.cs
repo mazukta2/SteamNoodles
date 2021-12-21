@@ -30,7 +30,7 @@ namespace Game.Tests.Cases.Customers
             constructionSettings.TagsList.Add(Assets.Scripts.Game.Logic.Models.Buildings.ConstructionTag.Service, 101);
             constructionSettings.TagsList.Add(Assets.Scripts.Game.Logic.Models.Buildings.ConstructionTag.Machine, 2);
 
-            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Units.GetPool().First();
             customerSettings.Money = 100;
             if (added)
                 customerSettings.AddFeature(new TipsForConstructionTagCustomerFeatureSettings()
@@ -61,7 +61,7 @@ namespace Game.Tests.Cases.Customers
             constructionSettings.TagsList.Add(Assets.Scripts.Game.Logic.Models.Buildings.ConstructionTag.Service, 101);
             constructionSettings.TagsList.Add(Assets.Scripts.Game.Logic.Models.Buildings.ConstructionTag.Machine, 50);
 
-            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Units.GetPool().First();
             customerSettings.Money = 100;
             customerSettings.AddFeature(new TipsForConstructionTagCustomerFeatureSettings()
             {

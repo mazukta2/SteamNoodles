@@ -63,10 +63,12 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
             
             var (models, presenters, views) = game.LoadLevel();
-            var customer1 = models.Clashes.CurrentClash.Customers.GetCustomersPool().Last();
+            var customer1 = (CustomerSettings)models.Units.GetPool().First();
             var customer2 = new CustomerSettings();
-            models.AddCustumer(customer2);
-            models.AddCustumer(customer2);
+            var settings = (LevelSettings)models.Clashes.Settings;
+            settings.SpawnQueueTime = 0;
+            models.Units.AddPotentialCustumer(customer2);
+            models.Units.AddPotentialCustumer(customer2);
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
             views.Screen.Clashes.Value.StartClash.Click();
@@ -82,7 +84,6 @@ namespace Game.Tests.Cases.Customers
 
             void AddUnit()
             {
-                models.Clashes.CurrentClash.Customers.Queue.Add();
                 var customer = models.Clashes.CurrentClash.Customers.GetCustomers().First().Unit;
 
                 Assert.IsFalse(customers.Contains(customer));
@@ -106,7 +107,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
 
             var (models, _, views) = game.LoadLevel();
-            var customer1 = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().Last();
+            var customer1 = (CustomerSettings)models.Units.GetPool().First();
             customer1.Money = 3;
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
@@ -129,7 +130,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
 
             var (models, _, views) = game.LoadLevel();
-            var unitSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var unitSettings = (CustomerSettings)models.Units.GetPool().First();
             var constructionSettings = (ConstructionSettings)models.Hand.Cards.First().Settings;
             unitSettings.BaseTipMultiplayer = 2;
             constructionSettings.TagsList.Add(Assets.Scripts.Game.Logic.Models.Buildings.ConstructionTag.Service, 101);
@@ -158,7 +159,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
 
             var (models, _, views) = game.LoadLevel();
-            var customer1 = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var customer1 = (CustomerSettings)models.Units.GetPool().First();
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;
             customer1.EatingTime = 2;
@@ -192,7 +193,7 @@ namespace Game.Tests.Cases.Customers
             var game = new GameController();
 
             var (models, _, views) = game.LoadLevel();
-            var customer1 = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var customer1 = (CustomerSettings)models.Units.GetPool().First();
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;
             customer1.EatingTime = 2;

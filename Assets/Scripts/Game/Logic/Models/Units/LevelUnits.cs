@@ -9,6 +9,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
     {
         public event Action<Unit> OnUnitSpawn = delegate { };
         public event Action<Unit> OnUnitDestroy = delegate { };
+        public event Action<ICustomerSettings> OnPotentialUnitAdded = delegate { };
+        public event Action<ICustomerSettings> OnPotentialUnitRemoved = delegate { };
         public IEnumerable<Unit> Units => _spawnedUnits;
 
 
@@ -58,14 +61,27 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _time.OnTimeChanged -= Time_OnTimeChanged;
         }
 
-        public void AddCustumer(ICustomerSettings customer)
+        public ReadOnlyCollection<ICustomerSettings> GetPool()
         {
-            _pool.Add(customer);
+            return _pool.GetItemsList();
         }
 
-        public void RemoveCustomer(ICustomerSettings customer)
+        public ReadOnlyDictionary<ICustomerSettings, int> GetFullPool()
+        {
+            return _pool.GetItems();
+        }
+
+
+        public void AddPotentialCustumer(ICustomerSettings customer)
+        {
+            _pool.Add(customer);
+            OnPotentialUnitAdded(customer);
+        }
+
+        public void RemovePotentialCustomer(ICustomerSettings customer)
         {
             _pool.Remove(customer);
+            OnPotentialUnitRemoved(customer);
         }
 
         private Unit SpawnUnit(ICustomerSettings settings = null)

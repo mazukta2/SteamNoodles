@@ -122,7 +122,7 @@ namespace Game.Tests.Cases.Customers
                     new PlaceToEatConstructionFeatureSettings()
                 }
             });
-            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Units.GetPool().First();
             customerSettings.OrderingTime = 1;
             customerSettings.CookingTime = 1;
             customerSettings.EatingTime = 10;
@@ -213,7 +213,7 @@ namespace Game.Tests.Cases.Customers
             settings.SpawnQueueTime = 5;
             settings.MaxQueue = 3;
 
-            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Units.GetPool().First();
             customerSettings.OrderingTime = 800;
             customerSettings.CookingTime = 800;
             customerSettings.EatingTime = 800;

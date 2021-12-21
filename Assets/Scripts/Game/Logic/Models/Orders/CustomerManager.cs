@@ -50,12 +50,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             _clashes.OnClashStarted += HandleStartClash;
             _clashes.OnClashEnded += HandleStopClash;
 
+            _units.OnPotentialUnitAdded += AddPotentialCustumer;
+            _units.OnPotentialUnitRemoved += RemovePotentialCustomer;
+
+            foreach (var item in _units.GetFullPool())
+                for (int i = 0; i < item.Value; i++)
+                    AddPotentialCustumer(item.Key);
+
             if (_clashes.IsInClash)
                 HandleStartClash();
         }
 
         protected override void DisposeInner()
         {
+            _units.OnPotentialUnitAdded -= AddPotentialCustumer;
+            _units.OnPotentialUnitRemoved -= RemovePotentialCustomer;
             Queue.OnNewCustomerInQueue -= Queue_OnNewCustomerInQueue;
             Queue.OnNewCustomerIsMovingToQueue -= Queue_OnNewCustomerIsMovingToQueue;
             Queue.Dispose();

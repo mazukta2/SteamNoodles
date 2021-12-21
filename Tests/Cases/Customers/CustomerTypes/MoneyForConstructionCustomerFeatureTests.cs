@@ -22,7 +22,7 @@ namespace Game.Tests.Cases.Customers
             
             var (models, presenters, views) = game.LoadLevel();
             var construction = (ConstructionSettings)models.Hand.Cards.First().Settings;
-            var customerSettings = (CustomerSettings)models.Clashes.CurrentClash.Customers.GetCustomersPool().First();
+            var customerSettings = (CustomerSettings)models.Units.GetPool().First();
             if (added)
                 customerSettings.AddFeature(new MoneyForConstructionCustomerFeatureSettings(construction) { Money = 10 });
 
