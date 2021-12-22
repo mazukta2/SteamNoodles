@@ -100,6 +100,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
             process.OnJoinQueue += Process_OnJoinQueue;
             _customers.Add(process);
             OnNewCustomerIsMovingToQueue(process);
+            if (process.CurrentPhase == ServingCustomerProcess.Phase.InQueue)
+                Process_OnJoinQueue(process);
         }
 
         private void Process_OnJoinQueue(ServingCustomerProcess obj)

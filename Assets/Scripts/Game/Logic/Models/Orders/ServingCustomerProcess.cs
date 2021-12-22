@@ -69,9 +69,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
                 .Permit(Triggers.WalkingFinished, Phase.Exiting);
 
             _stateMachine.Configure(Phase.Exiting)
+                .OnEntry(Exiting)
                 .OnEntry(Finish);
 
-            Unit.OnReachedPosition += Unit_OnPositionReached;
 
             _stateMachine.Fire(Triggers.Start);
         }
@@ -80,21 +80,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         {
             _units.ReturnToCrowd(Unit);
             _stateMachine.Deactivate();
-            Unit.OnReachedPosition -= Unit_OnPositionReached;
 
             if (_timer != null)
                 _timer.OnFinished -= _timer_OnFinished;
+
+            Unit.OnReachedPosition -= Unit_OnPositionReached;
         }
 
         //
         private void MovingToStarted()
         {
             _units.TakeFromCrowd(Unit);
+            Unit.OnReachedPosition += Unit_OnPositionReached;
             Unit.SetTarget(_unitPlacement.GetServingPoint());
         }
 
         private void QueueStarted()
         {
+            Unit.OnReachedPosition -= Unit_OnPositionReached;
             OnJoinQueue(this);
         }
 
@@ -139,8 +142,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
 
         private void MovingAwayStart()
         {
+            _timer.OnFinished -= _timer_OnFinished;
+            _timer = null;
             _unitPlacement.ClearPlacing(this);
+            Unit.OnReachedPosition += Unit_OnPositionReached;
             Unit.SetTarget(_unitPlacement.GetAwayPoint());
+        }
+
+        private void Exiting()
+        {
+            Unit.OnReachedPosition -= Unit_OnPositionReached;
         }
 
         private void Unit_OnPositionReached()

@@ -64,6 +64,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public void SetTarget(FloatPoint target)
         {
             Target = target;
+
+            var distance = Position.GetDistanceTo(Target);
+            if (Settings.Speed * 0.01f > distance)
+                TeleportToTarget();
         }
 
         public void SetServed()
