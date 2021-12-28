@@ -8,6 +8,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
     {
         Random _random = new Random();
 
+        public void SetSeed(int seed)
+        {
+            _random = new Random(seed);
+        }
+
         public int GetRandom(int minValue, int maxValue)
         {
             return _random.Next(minValue, maxValue);

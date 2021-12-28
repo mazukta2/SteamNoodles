@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using Tests.Mocks.Prototypes.Levels;
+using static Game.Assets.Scripts.Game.Logic.Models.Orders.ServingCustomerProcess;
 
 namespace Game.Tests.Cases.Customers
 {
@@ -52,7 +53,7 @@ namespace Game.Tests.Cases.Customers
             Assert.IsTrue(consumer.Unit.IsServed);
             Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
             Assert.AreEqual(ServingCustomerProcess.Phase.Exiting, consumer.CurrentPhase);
-            Assert.AreEqual(ServingCustomerProcess.Phase.MovingTo, models.Clashes.CurrentClash.Customers.GetCustomers().First().CurrentPhase);
+            Assert.AreEqual(ServingCustomerProcess.Phase.Ordering, models.Clashes.CurrentClash.Customers.GetCustomers().First().CurrentPhase);
 
             game.Exit();
         }
@@ -67,39 +68,20 @@ namespace Game.Tests.Cases.Customers
             var customer2 = new CustomerSettings();
             var settings = (LevelSettings)models.Clashes.Settings;
             settings.SpawnQueueTime = 1;
-            settings.MaxQueue = 1;
+            settings.MaxQueue = 3;
             models.Units.AddPotentialCustumer(customer2);
             models.Units.AddPotentialCustumer(customer2);
             views.Screen.Hand.Value.Cards.List.First().Button.Click();
             views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
+
             views.Screen.Clashes.Value.StartClash.Click();
-            game.PushTime(1);
-            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
+            models.Clashes.CurrentClash.Customers.Queue.Add();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
+            models.Clashes.CurrentClash.Customers.Queue.Add();
+            Assert.AreEqual(3, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
 
-            var customers = new List<Unit>();
-
-            AddUnit();
-            AddUnit();
-            AddUnit();
-
-            Assert.AreEqual(1, customers.Count(x => x.Settings == customer1));
-            Assert.AreEqual(2, customers.Count(x => x.Settings == customer2));
-
-            void AddUnit()
-            {
-                var customer = models.Clashes.CurrentClash.Customers.GetCustomers().First().Unit;
-
-                Assert.IsFalse(customers.Contains(customer));
-                customer.TeleportToTarget();
-                game.PushTime(3);
-                customer.TeleportToTarget();
-                Assert.IsTrue(customer.IsServed);
-                Assert.IsNotNull(customer.Settings);
-                Assert.IsFalse(models.Clashes.CurrentClash.Customers.GetCustomers().Any(x=> x.Unit == customer));
-                Assert.IsFalse(customers.Contains(customer));
-
-                customers.Add(customer);
-            }
+            Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count(x => x.Unit.Settings == customer1));
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomers().Count(x => x.Unit.Settings == customer2));
 
             game.Exit();
         }

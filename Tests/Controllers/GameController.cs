@@ -62,6 +62,8 @@ namespace Game.Tests.Controllers
             Model.Session.LoadLevel(proto);
             Levels.Finish();
 
+            Model.Session.Random.SetSeed(23234);
+
             return (Model.Session.CurrentLevel, Presenter.Session.CurrentLevel, View.Session.Value.CurrentLevel.Value);
         }
 
