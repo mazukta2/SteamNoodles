@@ -4,33 +4,32 @@ using Game.Assets.Scripts.Game.Logic.Views.Common;
 using GameUnity.Assets.Scripts.Unity.Common;
 using GameUnity.Assets.Scripts.Unity.Data.Ingredients;
 using System;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
 using UnityEngine;
 
 namespace Assets.Scripts.Data.Buildings
 {
     [CreateAssetMenu(menuName = "Game/" + nameof(BuildingSchemeData))]
-    public class BuildingSchemeData : ScriptableObject, IConstructionPrototype
+    public class BuildingSchemeData : ScriptableObject
     {
-        public Sprite BuildingIcon;
-        public GameObject View;
-        public Point Size;
-        public Requirements Requirements;
-        [Header("Craft")]
-        public float TimeBeforeHits = 2;
-        public float WorkPerHit = 1;
-        public IngredientData Ingredient;
+        //public Sprite BuildingIcon;
+        //public GameObject View;
+        //public Point Size;
+        //public Requirements Requirements;
+        //[Header("Craft")]
+        //public float TimeBeforeHits = 2;
+        //public float WorkPerHit = 1;
+        //public IngredientData Ingredient;
 
-        public ISprite HandIcon => new UnitySprite(BuildingIcon);
-        public IVisual BuildingView => new UnityView(View);
+        //public ISprite HandIcon => new UnitySprite(BuildingIcon);
+        //public IVisual BuildingView => new UnityView(View);
 
-        public IIngredientPrototype ProvideIngredient => Ingredient;
+        //public IIngredientPrototype ProvideIngredient => Ingredient;
 
-        public float WorkTime => TimeBeforeHits;
-        public float WorkProgressPerHit => WorkPerHit;
+        //public float WorkTime => TimeBeforeHits;
+        //public float WorkProgressPerHit => WorkPerHit;
 
-        Point IConstructionPrototype.Size => Size;
-        Requirements IConstructionPrototype.Requirements => Requirements;
+        //Point IConstructionPrototype.Size => Size;
+        //Requirements IConstructionPrototype.Requirements => Requirements;
     }
 }
 

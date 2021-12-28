@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
+    // this class is allow you to create new view and keep link to it inside class, so you cant create 2 instances of same view 
     public class DisposableViewKeeper<T> : Disposable where T : class, IView 
     {
         public T Value { get; private set; }

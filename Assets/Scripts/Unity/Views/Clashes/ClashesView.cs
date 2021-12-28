@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
 using System;
 using System.Collections;
@@ -8,11 +9,11 @@ using UnityEngine.UI;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Units
 {
-    public class ClashesView : GameMonoBehaviour, IClashesView
+    public class ClashesView : ViewMonoBehaviour, IClashesView
     {
         [SerializeField] Button _nextButton;
 
-        private Action _onStartClash;
+        public IButtonView StartClash => throw new NotImplementedException();
 
         protected void OnEnable()
         {
@@ -22,11 +23,6 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Units
         protected void OnDisable()
         {
             _nextButton.onClick.RemoveListener(OnNextClick);
-        }
-
-        public void SetStartClashAction(Action onStartClash)
-        {
-            _onStartClash = onStartClash;
         }
 
         public void ShowButton(bool v)

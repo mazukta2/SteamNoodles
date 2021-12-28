@@ -1,12 +1,11 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
-using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings
 {
-    public class BuildingScrollView : GameMonoBehaviour, IHandView
+    public class BuildingScrollView : ViewMonoBehaviour, IHandView
     {
         [SerializeField] PrototypeLink _buildingButton;
 

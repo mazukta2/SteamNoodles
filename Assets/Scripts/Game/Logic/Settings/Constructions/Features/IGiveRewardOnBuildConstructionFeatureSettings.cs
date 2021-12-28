@@ -1,10 +1,4 @@
-﻿using Assets.Scripts.Logic.Prototypes.Levels;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Settings.Rewards;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
-using System;
-using System.Collections.Generic;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
+﻿using Game.Assets.Scripts.Game.Logic.Settings.Rewards;
 
 namespace Game.Assets.Scripts.Game.Logic.Settings.Constructions.Features
 {

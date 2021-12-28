@@ -94,7 +94,9 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
             var result = new Dictionary<T, int>();
             foreach (var element in _pool)
             {
-                var taken = _taken.GetValueOrDefault(element.Key);
+                var taken = 0;
+                if (_taken.ContainsKey(element.Key))
+                    taken = _taken[element.Key];
                 result.Add(element.Key, element.Value - taken);
             }
             return result;

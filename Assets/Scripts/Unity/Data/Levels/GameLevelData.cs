@@ -13,7 +13,7 @@ using Rect = Game.Assets.Scripts.Game.Logic.Common.Math.Rect;
 namespace Assets.Scripts.Data
 {
     [CreateAssetMenu(menuName = "Game/" + nameof(GameLevelData))]
-    public class GameLevelData : ScriptableObject, ILevelPrototype
+    public class GameLevelData : ScriptableObject, ILevelSettings
     {
         [Scene]
         public string Scene;
@@ -28,7 +28,7 @@ namespace Assets.Scripts.Data
 
         Point IPlacementPrototype.Size => Size;
 
-        public void Load(Action<ILevelPrototype, ILevelView> onFinished)
+        public void Load(Action onFinished)
         {
             var loading = SceneManager.LoadSceneAsync(Scene, LoadSceneMode.Single);
             if (loading.isDone)
@@ -47,7 +47,7 @@ namespace Assets.Scripts.Data
                 var view = GameObject.FindObjectOfType<LevelView>();
                 if (view == null) throw new Exception("Cant find level view in scene");
                 
-                onFinished(this, view);
+                onFinished();
             }
         }
     }

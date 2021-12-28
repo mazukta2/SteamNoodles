@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Game.Logic.Common.Math;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
         public float GetFor(float value, float minValue = float.MinValue, float maxValue = float.MaxValue)
         {
             var modification = (1 + CalculateModificator());
-            return System.Math.Clamp(value * modification, minValue, maxValue);
+            return GameMath.Clamp(value * modification, minValue, maxValue);
         }
 
         private float CalculateModificator()

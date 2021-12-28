@@ -1,15 +1,14 @@
 using Assets.Scripts.Core;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using GameUnity.Assets.Scripts.Unity.Common;
 using System;
-using Tests.Assets.Scripts.Game.Logic.ViewModel.Levels;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
-using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Views.Buildings
 {
-    public class BuildingSchemeView : GameMonoBehaviour, IHandConstructionView
+    public class BuildingSchemeView : ViewMonoBehaviour, IHandConstructionView
     {
         [SerializeField] Image _image;
         [SerializeField] Button _button;

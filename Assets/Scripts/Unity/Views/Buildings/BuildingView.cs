@@ -1,20 +1,13 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Helpers;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using GameUnity.Assets.Scripts.Unity.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using Tests.Assets.Scripts.Game.Logic.Views;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
 using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Buildings
 {
-    public class BuildingView : GameMonoBehaviour, IConstructionView
+    public class BuildingView : ViewMonoBehaviour, IConstructionView
     {
         private UnityView _image;
         [SerializeField] private UnityEngine.Vector3 _offset;

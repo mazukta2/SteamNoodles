@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Units
 {
-    public class UnitView : GameMonoBehaviour, IUnitView
+    public class UnitView : ViewMonoBehaviour, IUnitView
     {
         public void SetPosition(FloatPoint position)
         {

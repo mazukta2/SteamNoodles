@@ -3,7 +3,6 @@ using Game.Assets.Scripts.Game.Logic.Controllers.Level;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
-using Game.Tests.Mocks.Settings.Levels;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Session

@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
+    // this class keeps link to view class, and force you to dispose previous value before you set new.
     public class DisposableViewSetter<T> : Disposable where T : class, IView 
     {
         public T Value { get; private set; }

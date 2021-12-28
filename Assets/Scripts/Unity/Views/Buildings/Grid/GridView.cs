@@ -3,12 +3,11 @@ using Assets.Scripts.Core.Prototypes;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using GameUnity.Assets.Scripts.Unity.Views.Buildings;
 using System;
-using Tests.Assets.Scripts.Game.Logic.Views;
 using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings.Grid
 {
-    public class GridView : GameMonoBehaviour, IPlacementView
+    public class GridView : ViewMonoBehaviour, IPlacementView
     {
         [SerializeField] PrototypeLink _gridPiece;
         [SerializeField] PrototypeLink _construction;

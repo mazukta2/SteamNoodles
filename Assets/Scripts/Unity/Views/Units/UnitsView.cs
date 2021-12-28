@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Units
 {
-    public class UnitsView : GameMonoBehaviour, IUnitsView
+    public class UnitsView : ViewMonoBehaviour, IUnitsView
     {
         [SerializeField] PrototypeLink _unitPrototype;
 

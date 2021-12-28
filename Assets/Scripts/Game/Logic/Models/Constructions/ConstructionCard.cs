@@ -4,7 +4,6 @@ using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 using System.Collections.Generic;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Assets.Scripts.Models.Buildings
 {

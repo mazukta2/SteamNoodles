@@ -1,10 +1,9 @@
 ﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
-using Tests.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 
-namespace Tests.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
     public class CellPresenter : Disposable
     {

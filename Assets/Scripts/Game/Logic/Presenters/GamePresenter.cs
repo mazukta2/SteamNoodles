@@ -4,7 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Session;
 using Game.Assets.Scripts.Game.Logic.Views.Game;
 using System;
 
-namespace Tests.Assets.Scripts.Game.Logic.Presenters
+namespace Game.Assets.Scripts.Game.Logic.Presenters
 {
     public class GamePresenter : Disposable
     {
@@ -22,7 +22,7 @@ namespace Tests.Assets.Scripts.Game.Logic.Presenters
                 CreatePresenter();
 
             _model.OnSessionCreated += CreatePresenter;
-            _model.OnDispose += Dispose; 
+            _model.OnDispose += Dispose;
         }
 
         protected override void DisposeInner()

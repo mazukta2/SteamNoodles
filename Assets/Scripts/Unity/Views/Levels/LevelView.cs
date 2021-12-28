@@ -3,17 +3,17 @@ using Assets.Scripts.Core.Prototypes;
 using Assets.Scripts.Views.Buildings;
 using Assets.Scripts.Views.Buildings.Grid;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
 using GameUnity.Assets.Scripts.Unity.Views.Orders;
 using GameUnity.Assets.Scripts.Unity.Views.Units;
 using System;
 using Tests.Assets.Scripts.Game.Logic.Views;
-using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using UnityEngine;
 
 namespace Assets.Scripts.Views.Levels
 {
-    public class LevelView : GameMonoBehaviour, ILevelView
+    public class LevelView : ViewMonoBehaviour, ILevelView
     {
         [SerializeField] PrototypeLink _gridPrototype;
         [SerializeField] PrototypeLink _buildingPanel;

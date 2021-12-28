@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Session
 
         private void _model_OnLoaded()
         {
-            CurrentLevel = new LevelPresenter(_model.CurrentLevel, _view.CurrentLevel.Value);
+            CurrentLevel = new LevelPresenter(_model.CurrentLevel, _view.GetCurrentLevel());
         }
 
     }

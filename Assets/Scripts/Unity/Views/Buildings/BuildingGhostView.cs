@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views.Buildings
 {
-    public class BuildingGhostView : GameMonoBehaviour, IGhostConstructionView
+    public class BuildingGhostView : ViewMonoBehaviour, IGhostConstructionView
     {
         [SerializeField] Color _activeColor;
         [SerializeField] Color _notActiveColor;

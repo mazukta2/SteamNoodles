@@ -1,8 +1,8 @@
 ﻿using Assets.Scripts.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Presenters;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using System;
-using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 
 namespace Tests.Assets.Scripts.Game.Logic.Presenters.Levels
 {

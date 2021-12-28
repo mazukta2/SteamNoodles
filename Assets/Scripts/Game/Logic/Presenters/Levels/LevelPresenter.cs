@@ -3,8 +3,8 @@ using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Units;
+using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using System;
-using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
 {

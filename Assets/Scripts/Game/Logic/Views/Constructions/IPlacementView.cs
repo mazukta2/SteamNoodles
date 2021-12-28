@@ -1,7 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 using System.Numerics;
-using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Constructions
 {
