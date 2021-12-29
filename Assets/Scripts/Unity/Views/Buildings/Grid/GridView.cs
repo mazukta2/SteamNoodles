@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using GameUnity.Assets.Scripts.Unity.Views.Buildings;
 using System;
@@ -15,6 +16,12 @@ namespace Assets.Scripts.Views.Buildings.Grid
 
         private Action<System.Numerics.Vector2> _click;
         private GameInputs _inputs = new GameInputs();
+
+        public DisposableViewKeeper<IGhostConstructionView> Ghost => throw new NotImplementedException();
+
+        public DisposableViewListKeeper<ICellView> Cells => throw new NotImplementedException();
+
+        public DisposableViewListKeeper<IConstructionView> Constructions => throw new NotImplementedException();
 
         public ICellView CreateCell()
         {

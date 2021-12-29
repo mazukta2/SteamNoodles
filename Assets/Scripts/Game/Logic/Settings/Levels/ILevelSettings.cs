@@ -10,6 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
 {
     public interface ILevelSettings : IPlacementSettings, IUnitsSettings, IClashesSettings, IHandSettings
     {
+        string SceneName { get; }
     }
 
     public interface IHandSettings

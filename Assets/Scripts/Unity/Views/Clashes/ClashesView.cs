@@ -32,7 +32,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Units
 
         private void OnNextClick()
         {
-            _onStartClash();
+            //_onStartClash();
         }
 
     }

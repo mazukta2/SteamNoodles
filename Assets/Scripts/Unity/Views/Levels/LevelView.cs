@@ -2,6 +2,7 @@
 using Assets.Scripts.Core.Prototypes;
 using Assets.Scripts.Views.Buildings;
 using Assets.Scripts.Views.Buildings.Grid;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Units;
@@ -17,20 +18,15 @@ namespace Assets.Scripts.Views.Levels
     {
         [SerializeField] PrototypeLink _gridPrototype;
         [SerializeField] PrototypeLink _buildingPanel;
-        [SerializeField] PrototypeLink _orderPanel;
         [SerializeField] PrototypeLink _unitsPrototype;
         [SerializeField] PrototypeLink _clashesPrototyp;
 
-        private Action<float> _moveTime;
+        public IScreenView Screen => throw new NotImplementedException();
+        public DisposableViewKeeper<IPlacementView> Placement => throw new NotImplementedException();
 
         public IClashesView CreateClashes()
         {
             return _clashesPrototyp.Create<ClashesView>();
-        }
-
-        public ICurrentOrderView CreateCurrentOrder()
-        {
-            return _orderPanel.Create<OrderPanel>();
         }
 
         public IHandView CreateHand()
@@ -46,17 +42,6 @@ namespace Assets.Scripts.Views.Levels
         public IUnitsView CreateUnits()
         {
             return _unitsPrototype.Create<UnitsView>();
-        }
-
-        public void SetTimeMover(Action<float> moveTime)
-        {
-            _moveTime = moveTime;
-        }
-
-        protected void Update()
-        {
-            if (_moveTime != null)
-                _moveTime(Time.deltaTime);
         }
     }
 }

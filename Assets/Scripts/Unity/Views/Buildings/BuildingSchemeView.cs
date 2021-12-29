@@ -12,16 +12,17 @@ namespace Assets.Scripts.Views.Buildings
     {
         [SerializeField] Image _image;
         [SerializeField] Button _button;
-        private Action _click;
 
-        protected void OnEnable()
+        public IButtonView Button { get; set; }
+
+        protected void Awake()
         {
-            _button.onClick.AddListener(Click);
+            Button = new UnityButton(_button);
         }
 
-        protected void OnDisable()
+        protected void OnDestroy()
         {
-            _button.onClick.RemoveListener(Click);
+            Button.Dispose();
         }
 
         public void SetIcon(ISprite icon)
@@ -32,16 +33,6 @@ namespace Assets.Scripts.Views.Buildings
         public ISprite GetIcon()
         {
             return new UnitySprite(_image.sprite);
-        }
-
-        public void SetClick(Action action)
-        {
-            _click = action;
-        }
-
-        public void Click()
-        {
-            _click();
         }
     }
 }
