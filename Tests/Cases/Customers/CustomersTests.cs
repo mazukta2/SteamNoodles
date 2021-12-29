@@ -51,6 +51,11 @@ namespace Game.Tests.Cases.Customers
             models.Clashes.CurrentClash.Customers.Queue.Add();
             var consumer = models.Clashes.CurrentClash.Customers.GetCustomers().First();
             Assert.IsNotNull(consumer);
+
+            Assert.AreEqual(2, models.Clashes.CurrentClash.Customers.GetCustomers().Count);
+            Assert.AreEqual(ServingCustomerProcess.Phase.Ordering, models.Clashes.CurrentClash.Customers.GetCustomers()[0].CurrentPhase);
+            Assert.AreEqual(ServingCustomerProcess.Phase.InQueue, models.Clashes.CurrentClash.Customers.GetCustomers()[1].CurrentPhase);
+
             CommonTestActions.ServeCustumer(game, models);
             Assert.IsTrue(consumer.Unit.IsServed);
             Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
