@@ -1,6 +1,6 @@
-﻿using System.Numerics;
-using Tests.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
-using Tests.Assets.Scripts.Game.Logic.Views;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
+using System.Numerics;
 using Tests.Tests.Mocks.Views.Common;
 
 namespace Tests.Tests.Mocks.Views.Levels

@@ -1,13 +1,11 @@
-﻿using Assets.Scripts.Logic.Prototypes.Levels;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Buildings;
-using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Linq;
 using System.Numerics;
-using Tests.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 
 namespace Game.Tests.Cases.Constructions
 {

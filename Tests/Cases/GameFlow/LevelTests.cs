@@ -29,7 +29,7 @@ namespace Game.Tests.Cases.GameFlow
             game.LoadLevel();
             Assert.IsTrue(game.Model.Session.CurrentLevel != null);
             Assert.IsTrue(game.Presenter.Session.CurrentLevel != null);
-            Assert.IsTrue(game.View.Session.Value.CurrentLevel.Value != null);
+            Assert.IsTrue(game.View.Session.Value.GetCurrentLevel() != null);
 
             game.Exit();
         }

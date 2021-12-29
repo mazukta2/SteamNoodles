@@ -1,14 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Controllers.Level;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Levels;
+using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Tests.Mocks.Settings.Levels;
 using Game.Tests.Mocks.Views.Game;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Tests.Assets.Scripts.Game.Logic.Presenters;
-using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Tests.Controllers
 {
@@ -64,7 +62,7 @@ namespace Game.Tests.Controllers
 
             Model.Session.Random.SetSeed(23234);
 
-            return (Model.Session.CurrentLevel, Presenter.Session.CurrentLevel, View.Session.Value.CurrentLevel.Value);
+            return (Model.Session.CurrentLevel, Presenter.Session.CurrentLevel, View.Session.Value.GetCurrentLevel());
         }
 
         public void SetTimeMover(Action<float> moveTime)

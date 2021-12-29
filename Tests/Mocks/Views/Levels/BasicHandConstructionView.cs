@@ -1,9 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using Game.Tests.Mocks.Views.Common;
-using NUnit.Framework.Constraints;
-using System;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
-using Tests.Assets.Scripts.Game.Logic.Views.Constructions;
 using Tests.Tests.Mocks.Views.Common;
 
 namespace Game.Tests.Mocks.Views.Levels

@@ -4,13 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Buildings;
 using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Tests.Mocks.Views.Common;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Security.Cryptography.X509Certificates;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
-using Tests.Mocks.Prototypes.Levels;
-using Tests.Tests.Mocks.Views.Common;
 
 namespace Game.Tests.Mocks.Settings.Buildings
 {

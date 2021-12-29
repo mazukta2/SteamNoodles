@@ -1,6 +1,6 @@
-﻿using Game.Tests.Mocks.Views.Common;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Tests.Mocks.Views.Common;
 using System;
-using Tests.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Tests.Tests.Mocks.Views.Common
 {

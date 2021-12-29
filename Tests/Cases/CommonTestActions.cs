@@ -1,10 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Tests.Controllers;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Tests.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Tests.Cases
 {
