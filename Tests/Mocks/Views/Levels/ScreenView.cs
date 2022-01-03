@@ -13,30 +13,10 @@ namespace Game.Tests.Mocks.Views.Levels
 {
     public class ScreenView : TestView, IScreenView
     {
-        public DisposableViewKeeper<IClashesView> Clashes { get; } = new DisposableViewKeeper<IClashesView>(CreateClashes);
-        public DisposableViewKeeper<IHandView> Hand { get; } = new DisposableViewKeeper<IHandView>(CreateHand);
-        public DisposableViewKeeper<ICurrentOrderView> Customers { get; } = new DisposableViewKeeper<ICurrentOrderView>(CreateOrder);
-        public DisposableViewKeeper<ILevelResourcesView> Resources { get; } = new DisposableViewKeeper<ILevelResourcesView>(CreateResources);
-
-        public static IHandView CreateHand()
-        {
-            return new BasicHandView();
-        }
-
-        public static ICurrentOrderView CreateOrder()
-        {
-            return new BasicCurrentOrderView();
-        }
-
-        public static IClashesView CreateClashes()
-        {
-            return new ClashesView();
-        }
-
-        public static ILevelResourcesView CreateResources()
-        {
-            return new LevelResourcesView();
-        }
+        public IClashesView Clashes { get; } = new ClashesView();
+        public IHandView Hand { get; } = new BasicHandView();
+        public ICurrentOrderView Customers { get; } = new BasicCurrentOrderView();
+        public ILevelResourcesView Resources { get; } = new LevelResourcesView();
 
         protected override void DisposeInner()
         {

@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Controllers;
 using Game.Assets.Scripts.Game.Logic.Controllers.Level;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
@@ -10,18 +11,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models
     {
         public event Action OnSessionCreated = delegate { };
         public GameSession Session { get; private set; }
-
+        public ISettingsController Settings => _controller.Settings;
 
         private readonly IGameController _controller;
 
         public GameModel(IGameController controller)
         {
             _controller = controller;
+            GameAccessPoint.SetGame(this);
         }
 
         protected override void DisposeInner()
         {
             Session?.Dispose();
+            GameAccessPoint.ClearGame();
         }
 
         public void CreateSession()

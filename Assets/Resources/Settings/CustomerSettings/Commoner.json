@@ -1,0 +1,9 @@
+{
+    "Money": 1,
+    "OrderingTime": 1,
+    "CookingTime": 1,
+    "EatingTime" : 1,
+    "BaseTipMultiplayer" : 2,
+    "Features": [],
+    "Speed" : 1
+}

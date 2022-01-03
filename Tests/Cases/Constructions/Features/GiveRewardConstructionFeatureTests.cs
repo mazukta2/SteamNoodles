@@ -46,8 +46,8 @@ namespace Game.Tests.Cases.Customers
             Assert.AreEqual(2, models.Hand.Cards.Count());
             Assert.AreEqual(buildingConstr, models.Hand.Cards.Last().Settings);
 
-            views.Screen.Hand.Value.Cards.List.Last().Button.Click();
-            views.Placement.Value.Click(System.Numerics.Vector2.Zero);
+            views.Screen.Hand.Cards.List.Last().Button.Click();
+            views.Placement.Click(System.Numerics.Vector2.Zero);
 
             Assert.AreEqual(2, models.Hand.Cards.Count());
             Assert.AreEqual(rewardConstr, models.Hand.Cards.Last().Settings);

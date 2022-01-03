@@ -17,9 +17,9 @@ namespace Game.Tests.Cases
 
         public static void BuildConstruction(GameController game, ILevelView views)
         {
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
         }
 
     }

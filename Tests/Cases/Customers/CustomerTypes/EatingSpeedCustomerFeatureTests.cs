@@ -32,9 +32,9 @@ namespace Game.Tests.Cases.Customers
                     TimeModificator = new PercentModificator(PercentModificator.ActionType.Add, 100f)
                 });
 
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
             models.Clashes.CurrentClash.Customers.Queue.Add();
 
             var customer = models.Clashes.CurrentClash.Customers.GetCustomers().Last().Unit;
@@ -73,9 +73,9 @@ namespace Game.Tests.Cases.Customers
                 TimeModificator = new PercentModificator(PercentModificator.ActionType.Remove, 100f)
             });
 
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
             models.Clashes.CurrentClash.Customers.Queue.Add();
 
             var customer = models.Clashes.CurrentClash.Customers.GetCustomers().Last().Unit;

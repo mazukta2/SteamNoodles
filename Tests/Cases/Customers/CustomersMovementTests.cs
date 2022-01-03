@@ -30,17 +30,17 @@ namespace Game.Tests.Cases.Customers
                 }
             });
 
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
 
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(-0.5f, -0.5f));
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(-0.5f, -0.5f));
 
             Assert.AreEqual(2, models.Placement.Constructions.Count);
 
             var orderingBuilding = models.Placement.Constructions.First();
             var tableBuilding = models.Placement.Constructions.Last();
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Clashes.StartClash.Click();
 
 
             var customerManager = models.Clashes.CurrentClash.Customers;
@@ -127,17 +127,17 @@ namespace Game.Tests.Cases.Customers
             customerSettings.CookingTime = 1;
             customerSettings.EatingTime = 10;
 
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
 
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(-0.5f, -0.5f));
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(-0.5f, -0.5f));
 
             Assert.AreEqual(2, models.Placement.Constructions.Count);
 
             var orderingBuilding = models.Placement.Constructions.First();
             var tableBuilding = models.Placement.Constructions.Last();
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Clashes.StartClash.Click();
 
 
             var customerManager = models.Clashes.CurrentClash.Customers;
@@ -218,9 +218,9 @@ namespace Game.Tests.Cases.Customers
             customerSettings.CookingTime = 800;
             customerSettings.EatingTime = 800;
 
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
 
             Assert.AreEqual(3, models.Clashes.CurrentClash.Customers.Queue.TargetCount);
             Assert.AreEqual(0, models.Clashes.CurrentClash.Customers.Queue.ActualCount);

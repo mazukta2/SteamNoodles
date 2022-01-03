@@ -37,11 +37,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
             return Loading;
         }
 
-        public void LoadLevel(object startLevel)
-        {
-            throw new NotImplementedException();
-        }
-
         private ILevelsController _levels;
 
         private void LevelLoaded()

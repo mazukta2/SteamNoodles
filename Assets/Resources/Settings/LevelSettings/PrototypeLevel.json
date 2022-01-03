@@ -1,0 +1,14 @@
+{
+    "Size": [ 8, 8 ],
+    "UnitsSpawnRect": [ -8, 5, 16, 3 ],
+    "Deck": {
+        "Commoner": 2
+    },
+    "ClashReward": {},
+    "MaxQueue": 2,
+    "SpawnQueueTime": 1,
+    "NeedToServe": 10,
+    "StartingHand": [],
+    "HandSize": 5,
+    "SceneName": "PolygonScene"
+}

@@ -1,14 +1,16 @@
-﻿using Assets.Scripts.Data;
+﻿using Assets.Scripts.Core.Prototypes;
+using Assets.Scripts.Data;
 using Assets.Scripts.Views.Levels;
+using Game.Assets.Scripts.Game.Logic.Controllers;
 using Game.Assets.Scripts.Game.Logic.Controllers.Level;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Game;
-using GameUnity.Assets.Scripts.Unity.Data;
 using GameUnity.Assets.Scripts.Unity.Data.Game;
 using GameUnity.Assets.Scripts.Unity.Data.Levels;
+using GameUnity.Assets.Scripts.Unity.Settings.Data;
 using GameUnity.Assets.Scripts.Unity.Views;
 using System;
 using UnityEngine;
@@ -18,24 +20,25 @@ namespace Assets.Scripts.Core
 {
     public class Game : ViewMonoBehaviour, IGameController, ILevelsController
     {
-        [SerializeField] GameView _view;
+        [SerializeField] PrototypeLink _view;
 
         public ILevelsController Levels => this;
+        public ISettingsController Settings => _settings;
 
+        private GameSettings _settings;
         private GameModel _model;
         private GamePresenter _presenter;
         private Action<float> _moveTime;
-        private MainSettings _settings;
 
         protected void Awake()
         {
             DontDestroyOnLoad(gameObject);
+            _settings = new GameSettings();
             _model = new GameModel(this);
-            _presenter = new GamePresenter(_model, _view);
-            _settings = GameSettings.Get<MainSettings>();
-
+            _presenter = new GamePresenter(_model, _view.Create<GameView>());
             _model.CreateSession();
-            _model.Session.LoadLevel(_settings.StartLevel);
+
+            _model.Session.LoadLevel(_settings.Get<MainSettings>().StartLevel);
         }
 
         protected void OnDestroy()
@@ -56,7 +59,7 @@ namespace Assets.Scripts.Core
 
         protected void Update()
         {
-            _moveTime(Time.deltaTime);
+            _moveTime?.Invoke(Time.deltaTime);
         }
 
         public void Load(string scene, Action onFinished)

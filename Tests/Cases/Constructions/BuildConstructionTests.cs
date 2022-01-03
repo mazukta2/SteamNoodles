@@ -28,7 +28,7 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            Assert.IsTrue(views.Screen.Hand.Value.Cards.List.Length > 0);
+            Assert.IsTrue(views.Screen.Hand.Cards.List.Length > 0);
             game.Exit();
         }
 
@@ -37,7 +37,7 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var item = views.Screen.Hand.Value.Cards.List.First();
+            var item = views.Screen.Hand.Cards.List.First();
             var icon = item.GetIcon();
             Assert.IsTrue(models.Hand.Cards.First().HandIcon.Equals(icon));
             game.Exit();
@@ -53,15 +53,15 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.IsNull(presenters.Placement.Ghost);
 
-            var construction = views.Screen.Hand.Value.Cards.List.First();
+            var construction = views.Screen.Hand.Cards.List.First();
             construction.Button.Click();
 
-            var view = views.Placement.Value.Ghost.Value;
+            var view = views.Placement.Ghost.Value;
             Assert.IsNotNull(view);
 
             construction.Button.Click();
 
-            Assert.IsNull(views.Placement.Value.Ghost.Value);
+            Assert.IsNull(views.Placement.Ghost.Value);
             Assert.IsTrue(view.IsDisposed);
             game.Exit();
         }
@@ -71,14 +71,14 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var construction = views.Screen.Hand.Value.Cards.List.First();
+            var construction = views.Screen.Hand.Cards.List.First();
 
             construction.Button.Click();
 
-            var view = views.Placement.Value.Ghost.Value;
+            var view = views.Placement.Ghost.Value;
             Assert.IsNotNull(view);
-            views.Placement.Value.Click(new Vector2(0f, 0f));
-            Assert.IsNull(views.Placement.Value.Ghost.Value);
+            views.Placement.Click(new Vector2(0f, 0f));
+            Assert.IsNull(views.Placement.Ghost.Value);
             Assert.IsTrue(view.IsDisposed);
             game.Exit();
         }
@@ -88,7 +88,7 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var construction = views.Screen.Hand.Value.Cards.List.First();
+            var construction = views.Screen.Hand.Cards.List.First();
 
             var cells = presenters.Placement.GetCells();
             Assert.IsTrue(cells.All(x => x.State == CellPresenter.CellState.Normal
@@ -106,10 +106,10 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var construction = views.Screen.Hand.Value.Cards.List.First();
+            var construction = views.Screen.Hand.Cards.List.First();
             construction.Button.Click();
 
-            var ghost = views.Placement.Value.Ghost.Value;
+            var ghost = views.Placement.Ghost.Value;
             ghost.GetMoveAction()(new Vector2(0, 0));
 
             var cells = presenters.Placement.GetCells();
@@ -134,18 +134,18 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            Assert.AreEqual(1, views.Screen.Hand.Value.Cards.List.Length);
+            Assert.AreEqual(1, views.Screen.Hand.Cards.List.Length);
             var proto = new ConstructionSettings
             {
                 Requirements = new Requirements() { DownEdge = true }
             };
             models.Hand.Add(proto);
 
-            Assert.AreEqual(2, views.Screen.Hand.Value.Cards.List.Length);
-            var construction = views.Screen.Hand.Value.Cards.List.Last();
+            Assert.AreEqual(2, views.Screen.Hand.Cards.List.Length);
+            var construction = views.Screen.Hand.Cards.List.Last();
             construction.Button.Click();
 
-            var ghost = views.Placement.Value.Ghost.Value;
+            var ghost = views.Placement.Ghost.Value;
 
             Assert.IsFalse(ghost.GetCanBePlacedState());
             ghost.GetMoveAction()(new Vector2(0, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4));
@@ -171,10 +171,10 @@ namespace Game.Tests.Cases.Constructions
             };
             models.Hand.Add(building);
 
-            var construction = views.Screen.Hand.Value.Cards.List.Last();
+            var construction = views.Screen.Hand.Cards.List.Last();
             construction.Button.Click();
             var worldPos = new Vector2(0f, -presenters.Placement.CellSize / 2);
-            views.Placement.Value.Ghost.Value.GetMoveAction()(worldPos);
+            views.Placement.Ghost.Value.GetMoveAction()(worldPos);
 
             var cells = presenters.Placement.GetCells();
 
@@ -205,17 +205,17 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var construction = views.Screen.Hand.Value.Cards.List.First();
+            var construction = views.Screen.Hand.Cards.List.First();
 
             construction.Button.Click();
 
             Assert.IsTrue(presenters.Placement.Ghost.CanPlaceGhost());
 
-            Assert.AreEqual(0, views.Placement.Value.Constructions.List.Length);
+            Assert.AreEqual(0, views.Placement.Constructions.List.Length);
 
-            views.Placement.Value.Click(new Vector2(0f, 0f));
+            views.Placement.Click(new Vector2(0f, 0f));
 
-            Assert.AreEqual(1, views.Placement.Value.Constructions.List.Length);
+            Assert.AreEqual(1, views.Placement.Constructions.List.Length);
             game.Exit();
         }
 
@@ -224,21 +224,21 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var construction = views.Screen.Hand.Value.Cards.List.First();
+            var construction = views.Screen.Hand.Cards.List.First();
             construction.Button.Click();
 
-            Assert.IsTrue(views.Placement.Value.Constructions.List.Length == 0);
+            Assert.IsTrue(views.Placement.Constructions.List.Length == 0);
 
-            var ghost = views.Placement.Value.Ghost.Value;
+            var ghost = views.Placement.Ghost.Value;
             var cellPos = new Point(0, -2);
             var worldPos = new Vector2(0, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4);
             ghost.GetMoveAction()(worldPos);
 
             Assert.AreEqual(cellPos, presenters.Placement.Ghost.Position);
-            views.Placement.Value.Click(worldPos);
+            views.Placement.Click(worldPos);
 
             Assert.AreEqual(presenters.Placement.GetWorldPosition(cellPos),
-                views.Placement.Value.Constructions.List.First().GetPosition());
+                views.Placement.Constructions.List.First().GetPosition());
             game.Exit();
         }
 
@@ -247,14 +247,14 @@ namespace Game.Tests.Cases.Constructions
         {
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
-            var construction = views.Screen.Hand.Value.Cards.List.First();
+            var construction = views.Screen.Hand.Cards.List.First();
             var model = models.Hand.Cards.First();
             construction.Button.Click();
-            views.Placement.Value.Click(new Vector2(0, 0));
+            views.Placement.Click(new Vector2(0, 0));
 
             Assert.IsTrue(model.BuildingView != null);
             Assert.AreEqual(model.BuildingView,
-                views.Placement.Value.Constructions.List.First().GetImage());
+                views.Placement.Constructions.List.First().GetImage());
             game.Exit();
         }
 
@@ -273,13 +273,13 @@ namespace Game.Tests.Cases.Constructions
             };
             models.Hand.Add(building);
 
-            var construction = views.Screen.Hand.Value.Cards.List.Last();
+            var construction = views.Screen.Hand.Cards.List.Last();
             construction.Button.Click();
 
-            Assert.AreEqual(0, views.Placement.Value.Constructions.List.Length);
+            Assert.AreEqual(0, views.Placement.Constructions.List.Length);
 
             var worldPos = new Vector2(0f, presenters.Placement.CellSize * 1 + presenters.Placement.CellSize / 4);
-            views.Placement.Value.Ghost.Value.GetMoveAction()(worldPos);
+            views.Placement.Ghost.Value.GetMoveAction()(worldPos);
             var position = presenters.Placement.Ghost.Position;
 
             Assert.AreEqual(new Point(0, 1), presenters.Placement.Ghost.Position);
@@ -298,7 +298,7 @@ namespace Game.Tests.Cases.Constructions
             Assert.IsTrue(models.Placement.IsFreeCell(presenters.Placement.Ghost.Card, new Point(1, -2)));
 
             worldPos = new Vector2(0f, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4);
-            views.Placement.Value.Click(worldPos);
+            views.Placement.Click(worldPos);
             Assert.AreEqual(1, presenters.Placement.GetConstructions().Length);
 
             game.Exit();
@@ -312,13 +312,13 @@ namespace Game.Tests.Cases.Constructions
             var game = new GameController();
             var (models, presenters, views) = game.LoadLevel();
 
-            Assert.AreEqual(1, views.Screen.Hand.Value.Cards.List.Length);
-            var construction = views.Screen.Hand.Value.Cards.List.First();
+            Assert.AreEqual(1, views.Screen.Hand.Cards.List.Length);
+            var construction = views.Screen.Hand.Cards.List.First();
 
             construction.Button.Click();
-            views.Placement.Value.Click(new Vector2(0f, 0f));
+            views.Placement.Click(new Vector2(0f, 0f));
 
-            Assert.AreEqual(0, views.Screen.Hand.Value.Cards.List.Length);
+            Assert.AreEqual(0, views.Screen.Hand.Cards.List.Length);
             game.Exit();
         }
         #endregion

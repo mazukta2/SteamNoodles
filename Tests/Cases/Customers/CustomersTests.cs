@@ -20,9 +20,9 @@ namespace Game.Tests.Cases.Customers
             var levelProto = new LevelSettings();
 
             var (models, _, views) = game.LoadLevel(levelProto);
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
 
             Assert.IsTrue(models.Clashes.IsInClash);
 
@@ -41,9 +41,9 @@ namespace Game.Tests.Cases.Customers
             var (models, _, views) = game.LoadLevel(levelProto);
             var customerSettings = (CustomerSettings)models.Units.GetPool().First();
             customerSettings.Speed = 1000;
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
 
             Assert.IsTrue(models.Clashes.IsInClash);
 
@@ -78,10 +78,10 @@ namespace Game.Tests.Cases.Customers
             settings.MaxQueue = 3;
             models.Units.AddPotentialCustumer(customer2);
             models.Units.AddPotentialCustumer(customer2);
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
 
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Clashes.StartClash.Click();
             models.Clashes.CurrentClash.Customers.Queue.Add();
             models.Clashes.CurrentClash.Customers.Queue.Add();
             models.Clashes.CurrentClash.Customers.Queue.Add();
@@ -101,9 +101,9 @@ namespace Game.Tests.Cases.Customers
             var (models, _, views) = game.LoadLevel();
             var customer1 = (CustomerSettings)models.Units.GetPool().First();
             customer1.Money = 3;
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
 
             Assert.AreEqual(0, models.Money);
 
@@ -127,10 +127,10 @@ namespace Game.Tests.Cases.Customers
             unitSettings.BaseTipMultiplayer = 2;
             constructionSettings.TagsList.Add(Assets.Scripts.Game.Logic.Models.Buildings.ConstructionTag.Service, 101);
 
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
 
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Clashes.StartClash.Click();
 
             Assert.AreEqual(0, models.Money);
             Assert.AreEqual(101, models.Service);
@@ -155,9 +155,9 @@ namespace Game.Tests.Cases.Customers
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;
             customer1.EatingTime = 2;
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
 
             Assert.AreEqual(0, models.Money);
 
@@ -189,9 +189,9 @@ namespace Game.Tests.Cases.Customers
             customer1.OrderingTime = 2;
             customer1.CookingTime = 2;
             customer1.EatingTime = 2;
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
 
             Assert.AreEqual(0, models.Money);
 

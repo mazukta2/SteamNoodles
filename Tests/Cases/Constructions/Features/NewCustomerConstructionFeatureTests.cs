@@ -28,8 +28,8 @@ namespace Game.Tests.Cases.Constructions
                 }
             });
 
-            views.Screen.Hand.Value.Cards.List.Last().Button.Click();
-            views.Placement.Value.Click(System.Numerics.Vector2.Zero);
+            views.Screen.Hand.Cards.List.Last().Button.Click();
+            views.Placement.Click(System.Numerics.Vector2.Zero);
 
             Assert.AreEqual(2, models.Units.GetPool().Count());
 

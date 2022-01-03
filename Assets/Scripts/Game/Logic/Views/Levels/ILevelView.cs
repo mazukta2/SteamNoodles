@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels
     public interface ILevelView : IView
     {
         public IScreenView Screen { get; }
-        public DisposableViewKeeper<IPlacementView> Placement { get; }
-        IUnitsView CreateUnits();
+        public IUnitsView Units { get; }
+        public IPlacementView Placement { get; }
     }
 }

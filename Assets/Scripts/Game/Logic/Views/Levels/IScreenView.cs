@@ -11,9 +11,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels
 {
     public interface IScreenView : IView
     {
-        DisposableViewKeeper<IClashesView> Clashes { get; }
-        DisposableViewKeeper<IHandView> Hand { get; }
-        DisposableViewKeeper<ICurrentOrderView> Customers { get; }
-        DisposableViewKeeper<ILevelResourcesView> Resources { get; }
+        IClashesView Clashes { get; }
+        IHandView Hand { get; }
+        ICurrentOrderView Customers { get; }
+        ILevelResourcesView Resources { get; }
     }
 }

@@ -14,50 +14,21 @@ namespace Game.Tests.Mocks.Views.Levels
     public class LevelView : TestView, ILevelView
     {
         public IScreenView Screen { get; private set; }
-
-        private Action<float> _moveTime;
-
-        public DisposableViewKeeper<IPlacementView> Placement { get; } = new DisposableViewKeeper<IPlacementView>(CreatePlacement);
+        public IPlacementView Placement { get; private set; }
+        public IUnitsView Units { get; private set; }
 
         public LevelView()
         {
             Screen = new ScreenView();
+            Placement = new BasicPlacementView();
+            Units = new UnitsView();
         }
 
         protected override void DisposeInner()
         {
             Screen.Dispose();
             Placement.Dispose();
-        }
-
-        public IHandView CreateHand()
-        {
-            return new BasicHandView();
-        }
-
-        private static IPlacementView CreatePlacement()
-        {
-            return new BasicPlacementView();
-        }
-
-        public ICurrentOrderView CreateCurrentOrder()
-        {
-            return new BasicCurrentOrderView();
-        }
-
-        public void SetTimeMover(Action<float> moveTime)
-        {
-            _moveTime = moveTime;
-        }
-
-        public IUnitsView CreateUnits()
-        {
-            return new UnitsView();
-        }
-
-        public IClashesView CreateClashes()
-        {
-            return new ClashesView();
+            Units.Dispose();
         }
     }
 }

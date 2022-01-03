@@ -16,32 +16,14 @@ namespace Assets.Scripts.Views.Levels
 {
     public class LevelView : ViewMonoBehaviour, ILevelView
     {
-        [SerializeField] PrototypeLink _gridPrototype;
-        [SerializeField] PrototypeLink _buildingPanel;
-        [SerializeField] PrototypeLink _unitsPrototype;
-        [SerializeField] PrototypeLink _clashesPrototyp;
+        [SerializeField] ScreenView _screenView;
+        [SerializeField] UnitsView _unitsView;
+        [SerializeField] PlacementView _placementView;
 
-        public IScreenView Screen => throw new NotImplementedException();
-        public DisposableViewKeeper<IPlacementView> Placement => throw new NotImplementedException();
+        public IScreenView Screen => _screenView;
+        public IUnitsView Units => _unitsView;
+        IPlacementView ILevelView.Placement => _placementView;
 
-        public IClashesView CreateClashes()
-        {
-            return _clashesPrototyp.Create<ClashesView>();
-        }
 
-        public IHandView CreateHand()
-        {
-            return _buildingPanel.Create<BuildingScrollView>();
-        }
-
-        public IPlacementView CreatePlacement()
-        {
-            return _gridPrototype.Create<GridView>();
-        }
-
-        public IUnitsView CreateUnits()
-        {
-            return _unitsPrototype.Create<UnitsView>();
-        }
     }
 }

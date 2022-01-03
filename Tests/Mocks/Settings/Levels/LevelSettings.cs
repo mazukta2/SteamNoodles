@@ -35,7 +35,7 @@ namespace Game.Tests.Mocks.Settings.Levels
 
         public float ClashTime { get; set; } = 20;
 
-        public Dictionary<ICustomerSettings, int> Deck { get; } = new Dictionary<ICustomerSettings, int>()
+        public IReadOnlyDictionary<ICustomerSettings, int> Deck { get; } = new Dictionary<ICustomerSettings, int>()
         {
             { new CustomerSettings(), 1 }
         };
@@ -47,5 +47,7 @@ namespace Game.Tests.Mocks.Settings.Levels
         public float SpawnQueueTime { get; set; } = 1000;
 
         public int NeedToServe { get; set; } = 6;
+
+        public string SceneName => throw new NotImplementedException();
     }
 }

@@ -41,14 +41,16 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Core
         }
 
 
-        private readonly static List<object> _undisposed = new List<object>();
-        public static List<object>  GetListOfUndisposed()
+        private readonly static List<Disposable> _undisposed = new List<Disposable>();
+        public static List<Disposable>  GetListOfUndisposed()
         {
             return _undisposed;
         }
 
         public static void ClearUndisopsed()
         {
+            foreach (var item in _undisposed)
+                item.Dispose();
             _undisposed.Clear();
         }
     }

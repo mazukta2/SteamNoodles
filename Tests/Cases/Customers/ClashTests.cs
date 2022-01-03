@@ -24,13 +24,13 @@ namespace Game.Tests.Cases.Customers
             Assert.IsFalse(models.Clashes.IsInClash);
 
             Assert.AreEqual(1, models.Units.GetPool().Count());
-            Assert.IsNull(views.Screen.Customers.Value);
-            Assert.IsNotNull(views.Screen.Clashes.Value);
-            Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);
+            Assert.IsNotNull(views.Screen.Customers);
+            Assert.IsNotNull(views.Screen.Clashes);
+            Assert.IsTrue(views.Screen.Clashes.StartClash.IsShowing);
 
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
             models.Clashes.CurrentClash.Customers.Queue.Add();
             models.Clashes.CurrentClash.Customers.Queue.Add();
             models.Clashes.CurrentClash.Customers.Queue.Add();
@@ -39,7 +39,7 @@ namespace Game.Tests.Cases.Customers
             models.Clashes.CurrentClash.Customers.Queue.Add();
 
             Assert.IsTrue(models.Clashes.IsInClash);
-            Assert.IsFalse(views.Screen.Clashes.Value.StartClash.IsShowing);
+            Assert.IsFalse(views.Screen.Clashes.StartClash.IsShowing);
             Assert.AreEqual(6, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
 
             Assert.AreEqual(6, models.Clashes.CurrentClash.NeedToServe);
@@ -74,9 +74,8 @@ namespace Game.Tests.Cases.Customers
             Assert.IsNull(models.Clashes.CurrentClash);
             Assert.AreEqual(6, clash.Served);
             Assert.AreEqual(0, clash.Customers.GetCustomers().Count());
-            Assert.IsNull(views.Screen.Customers.Value);
-            Assert.IsNotNull(views.Screen.Clashes.Value);
-            Assert.IsTrue(views.Screen.Clashes.Value.StartClash.IsShowing);
+            Assert.IsNotNull(views.Screen.Clashes);
+            Assert.IsTrue(views.Screen.Clashes.StartClash.IsShowing);
 
             game.Exit();
         }
@@ -100,9 +99,9 @@ namespace Game.Tests.Cases.Customers
             };
 
             Assert.AreEqual(1, models.Hand.Cards.Count);
-            views.Screen.Hand.Value.Cards.List.First().Button.Click();
-            views.Placement.Value.Click(new System.Numerics.Vector2(0, 0));
-            views.Screen.Clashes.Value.StartClash.Click();
+            views.Screen.Hand.Cards.List.First().Button.Click();
+            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Screen.Clashes.StartClash.Click();
             models.Clashes.CurrentClash.Customers.Queue.Add();
             Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
             game.PushTime(20);

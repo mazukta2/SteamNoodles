@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Controllers.Level;
+﻿using Game.Assets.Scripts.Game.Logic.Controllers;
+using Game.Assets.Scripts.Game.Logic.Controllers.Level;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters;
@@ -18,13 +19,23 @@ namespace Game.Tests.Controllers
         public GameView View { get; private set; }
         public GamePresenter Presenter { get; private set; }
 
-        public LevelLoadingController Levels { get; } 
+        public LevelLoadingController Levels { get; }
+        public SettingsController Settings { get; }
         ILevelsController IGameController.Levels => Levels;
+        ISettingsController IGameController.Settings => Settings;
 
         public GameController()
         {
             Levels = new LevelLoadingController(this);
+            Settings = new SettingsController();
             StartGame();
+        }
+
+        public void Dispose()
+        {
+            Presenter.Dispose();
+            Model.Dispose();
+            View.Dispose();
         }
 
         public void StartGame()

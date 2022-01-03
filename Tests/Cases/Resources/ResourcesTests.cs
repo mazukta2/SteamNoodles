@@ -1,12 +1,5 @@
-﻿using Assets.Scripts.Logic.Prototypes.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Units;
-using Game.Tests.Controllers;
-using Game.Tests.Mocks.Settings.Levels;
+﻿using Game.Tests.Controllers;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Tests.Mocks.Prototypes.Levels;
 
 namespace Game.Tests.Cases.Customers
 {
@@ -19,12 +12,12 @@ namespace Game.Tests.Cases.Customers
             var (models, presenters, views) = game.LoadLevel();
 
             Assert.AreEqual(0, models.Money);
-            Assert.AreEqual(0, views.Screen.Resources.Value.Money.GetValue());
+            Assert.AreEqual(0, views.Screen.Resources.Money.GetValue());
 
             models.ChangeMoney(2);
 
             Assert.AreEqual(2, models.Money);
-            Assert.AreEqual(2, views.Screen.Resources.Value.Money.GetValue());
+            Assert.AreEqual(2, views.Screen.Resources.Money.GetValue());
 
             game.Exit();
         }
