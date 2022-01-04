@@ -41,7 +41,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         {
             _model.OnConstructionAdded -= ConstructionAdded;
             _model.OnConstructionRemoved += ConstructionRemoved;
-            View.Dispose();
             Ghost?.Dispose();
 
             foreach (var cell in _cells)

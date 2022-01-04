@@ -13,12 +13,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
 {
     public class GameClashes : Disposable
     {
-        public event Action OnClashStarted = delegate { };
-        public event Action OnClashEnded = delegate { };
+        public event Action OnCanStartClashChanged = delegate { };
 
         public bool IsInClash => _currentClash != null;
         public Clash CurrentClash => _currentClash;
         public IClashesSettings Settings => _settings;
+        public bool CanStartClash => !IsInClash && _placement.Constructions.Count > 0;
 
         private IClashesSettings _settings;
         private GameTime _time;
@@ -41,6 +41,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _units = units ?? throw new ArgumentNullException(nameof(units));
             _random = random ?? throw new ArgumentNullException(nameof(random));
+
+            _placement.OnConstructionAdded += _placement_OnConstructionAdded;
+            _placement.OnConstructionRemoved += _placement_OnConstructionRemoved;
         }
 
         protected override void DisposeInner()
@@ -50,23 +53,35 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
                 _currentClash.OnClashStoped -= _currentClash_OnClashStoped;
                 _currentClash.Dispose();
             }
+            _placement.OnConstructionAdded -= _placement_OnConstructionAdded;
+            _placement.OnConstructionRemoved -= _placement_OnConstructionRemoved;
         }
 
         public void StartClash()
         {
-            if (IsInClash) throw new Exception("Clash already started");
-            if (_placement.Constructions.Count == 0) throw new Exception("Not constructions to start a clash");
+            if (!CanStartClash) throw new Exception("You cant strart clash now");
 
             _currentClash = new Clash(this, _level, _settings, _unitsSettings, _placement, _rewardCalculator, _units, _time, _random);
             _currentClash.OnClashStoped += _currentClash_OnClashStoped;
-            OnClashStarted();
+            OnCanStartClashChanged();
         }
 
         private void _currentClash_OnClashStoped()
         {
             _currentClash.Dispose();
             _currentClash = null;
-            OnClashEnded();
+            OnCanStartClashChanged();
         }
+
+        private void _placement_OnConstructionRemoved(Construction obj)
+        {
+            OnCanStartClashChanged();
+        }
+
+        private void _placement_OnConstructionAdded(Construction obj)
+        {
+            OnCanStartClashChanged();
+        }
+
     }
 }

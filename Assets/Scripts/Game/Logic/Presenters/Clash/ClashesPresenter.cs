@@ -24,16 +24,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
             _view = view ?? throw new ArgumentNullException(nameof(view));
 
             _view.StartClash.SetAction(HandleStartClash);
-            _view.StartClash.SetShowing(true);
-            _model.OnClashStarted += _model_OnClashStarted;
-            _model.OnClashEnded += _model_OnClashEnded;
+            UpdateShowing();
+            _model.OnCanStartClashChanged += _model_OnCanStartClashChanged;
         }
 
         protected override void DisposeInner()
         {
-            _model.OnClashStarted -= _model_OnClashStarted;
-            _model.OnClashEnded -= _model_OnClashEnded;
-            _view.Dispose();
+            _model.OnCanStartClashChanged -= _model_OnCanStartClashChanged;
         }
 
         public void HandleStartClash()
@@ -41,14 +38,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
             _model.StartClash();
         }
 
-        private void _model_OnClashStarted()
+        private void _model_OnCanStartClashChanged()
         {
-            _view.StartClash.SetShowing(false);
+            UpdateShowing();
         }
 
-        private void _model_OnClashEnded()
+        private void UpdateShowing()
         {
-            _view.StartClash.SetShowing(true);
+            _view.StartClash.SetShowing(_model.CanStartClash);
+            
         }
     }
 }

@@ -36,7 +36,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Units
                 item.Dispose();
 
             _units.Clear();
-            _view.Dispose();
         }
 
         private void SpawnUnit(Unit unit)

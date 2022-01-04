@@ -5,6 +5,7 @@ using Game.Tests.Mocks.Settings.Levels;
 using Game.Tests.Mocks.Settings.Rewards;
 using NUnit.Framework;
 using System.Linq;
+using System.Numerics;
 using Tests.Mocks.Prototypes.Levels;
 using static Game.Assets.Scripts.Game.Logic.Models.Orders.ServingCustomerProcess;
 
@@ -26,10 +27,11 @@ namespace Game.Tests.Cases.Customers
             Assert.AreEqual(1, models.Units.GetPool().Count());
             Assert.IsNotNull(views.Screen.Customers);
             Assert.IsNotNull(views.Screen.Clashes);
-            Assert.IsTrue(views.Screen.Clashes.StartClash.IsShowing);
 
             views.Screen.Hand.Cards.List.First().Button.Click();
             views.Placement.Click(new System.Numerics.Vector2(0, 0));
+
+            Assert.IsTrue(views.Screen.Clashes.StartClash.IsShowing);
             views.Screen.Clashes.StartClash.Click();
             models.Clashes.CurrentClash.Customers.Queue.Add();
             models.Clashes.CurrentClash.Customers.Queue.Add();
@@ -111,6 +113,25 @@ namespace Game.Tests.Cases.Customers
             game.Exit();
         }
 
+        [Test]
+        public void IsHidingClashButtonIfNoConstructions()
+        {
+            var game = new GameController();
+            var levelProto = new LevelSettings();
+            var (models, _, views) = game.LoadLevel(levelProto);
+
+            Assert.AreEqual(0, models.Placement.Constructions.Count);
+            Assert.IsFalse(views.Screen.Clashes.StartClash.IsShowing);
+
+            var construction = views.Screen.Hand.Cards.List.First();
+            construction.Button.Click();
+            views.Placement.Click(new Vector2(0f, 0f));
+
+            Assert.AreEqual(1, models.Placement.Constructions.Count);
+            Assert.IsTrue(views.Screen.Clashes.StartClash.IsShowing);
+
+            game.Exit();
+        }
 
         [TearDown]
         public void TestDisposables()

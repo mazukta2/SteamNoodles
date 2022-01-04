@@ -28,30 +28,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Levels
             Hand = new HandPresenter(model.Hand, _view.Hand, placement);
             Clashes = new ClashesPresenter(model.Clashes, view.Clashes);
             _resources = new LevelResourcesPresenter(model, view.Resources);
-
-            //model.Customers.OnCurrentCustomerChanged += UpdateOrder;
         }
 
         protected override void DisposeInner()
         {
-            //_model.Customers.OnCurrentCustomerChanged -= UpdateOrder;
             Hand.Dispose();
             Order?.Dispose();
             Clashes.Dispose();
             _resources.Dispose();
-        }
-
-        private void UpdateOrder()
-        {
-            //if (_model.Customers.ServingCustomer != null)
-            //{
-            //    Order = new CurrentOrderPresenter(_model.Customers.ServingCustomer, _view.Customers.Create());
-            //}
-            //else
-            //{
-            //    Order?.Dispose();
-            //    Order = null;
-            //}
         }
 
     }
