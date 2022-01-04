@@ -2,9 +2,11 @@
 using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Settings.Rewards;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
 using Game.Tests.Mocks.Settings.Rewards;
+using Game.Tests.Mocks.Views.Common;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -67,6 +69,21 @@ namespace Game.Tests.Cases.Settings
             Assert.AreEqual(3, item.Test.MaxToHand);
         }
 
+
+        [Test]
+        public void AssetsConversion()
+        {
+            var game = new GameController();
+            var testLevel = new ItsUnitySpriteWrapper();
+            game.Assets.Add("testsprie", testLevel);
+            var str = @"{ 
+                ""Test"" : ""testsprie""
+            }";
+            var item = JsonConvert.DeserializeObject<AssetsCase>(str);
+            Assert.AreEqual(testLevel, item.Test);
+            game.Dispose();
+        }
+
         [Test]
         public void MathConversion()
         {
@@ -115,6 +132,12 @@ namespace Game.Tests.Cases.Settings
             public Point Point { get; set; }
             [JsonConverter(typeof(RectConventer))]
             public Rect Rect { get; set; }
+        }
+
+        public class AssetsCase
+        {
+            [JsonConverter(typeof(AssetConventer))]
+            public ISprite Test { get; set; }
         }
 
     }

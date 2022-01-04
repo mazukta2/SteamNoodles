@@ -21,7 +21,7 @@ namespace Game.Tests.Mocks.Settings.Levels
 
         public int HandSize { get; set; } = 10;
 
-        public IConstructionSettings[] StartingHand { get; } = new IConstructionSettings[] {
+        public IReadOnlyCollection<IConstructionSettings> StartingHand { get; } = new IConstructionSettings[] {
             new ConstructionSettings()
             {
                 FeaturesList = new List<IConstructionFeatureSettings>()

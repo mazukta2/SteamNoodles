@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using Game.Assets.Scripts.Game.Logic.Settings.Rewards;
+using GameUnity.Assets.Scripts.Unity.Data.Buildings;
 using GameUnity.Assets.Scripts.Unity.Settings;
 using GameUnity.Assets.Scripts.Unity.Settings.Rewards;
 using Newtonsoft.Json;
@@ -27,7 +28,8 @@ namespace GameUnity.Assets.Scripts.Unity.Data.Levels
         public int MaxQueue { get; set; }
         public float SpawnQueueTime { get; set; } 
         public int NeedToServe { get; set; }
-        public IConstructionSettings[] StartingHand { get; set; } 
+        [JsonConverter(typeof(SettingsConventer<ConstructionSettings>))]
+        public IReadOnlyCollection<IConstructionSettings> StartingHand { get; set; } 
         public int HandSize { get; set; }
         public string SceneName { get; set; } 
     }

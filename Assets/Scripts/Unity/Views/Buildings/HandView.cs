@@ -10,7 +10,12 @@ namespace Assets.Scripts.Views.Buildings
     {
         [SerializeField] PrototypeLink _buildingButton;
 
-        public DisposableViewListKeeper<IHandConstructionView> Cards => throw new System.NotImplementedException();
+        public DisposableViewListKeeper<IHandConstructionView> Cards { get; private set; }
+
+        protected void Awake()
+        {
+            Cards = new DisposableViewListKeeper<IHandConstructionView>(CreateConstruction);
+        }
 
         public IHandConstructionView CreateConstruction()
         {

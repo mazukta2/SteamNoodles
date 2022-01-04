@@ -10,6 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Controllers
     {
         ILevelsController Levels { get; }
         ISettingsController Settings { get; }
+        IAssetsController Assets { get; }
         void SetTimeMover(Action<float> moveTime);
     }
 }

@@ -12,6 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
         public event Action OnSessionCreated = delegate { };
         public GameSession Session { get; private set; }
         public ISettingsController Settings => _controller.Settings;
+        public IAssetsController Assets => _controller.Assets;
 
         private readonly IGameController _controller;
 

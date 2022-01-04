@@ -8,7 +8,7 @@
     "MaxQueue": 2,
     "SpawnQueueTime": 1,
     "NeedToServe": 10,
-    "StartingHand": [],
+    "StartingHand": [ "SimpleShop" ],
     "HandSize": 5,
     "SceneName": "PolygonScene"
 }

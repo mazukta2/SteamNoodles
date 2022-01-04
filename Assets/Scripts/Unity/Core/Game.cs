@@ -24,8 +24,10 @@ namespace Assets.Scripts.Core
 
         public ILevelsController Levels => this;
         public ISettingsController Settings => _settings;
+        public IAssetsController Assets => _assets;
 
         private GameSettings _settings;
+        private AssetsLoader _assets;
         private GameModel _model;
         private GamePresenter _presenter;
         private Action<float> _moveTime;
@@ -34,6 +36,7 @@ namespace Assets.Scripts.Core
         {
             DontDestroyOnLoad(gameObject);
             _settings = new GameSettings();
+            _assets = new AssetsLoader();
             _model = new GameModel(this);
             _presenter = new GamePresenter(_model, _view.Create<GameView>());
             _model.CreateSession();

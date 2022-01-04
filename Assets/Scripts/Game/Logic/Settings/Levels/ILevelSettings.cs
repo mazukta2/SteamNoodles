@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
 
     public interface IHandSettings
     {
-        IConstructionSettings[] StartingHand { get; }
+        IReadOnlyCollection<IConstructionSettings> StartingHand { get; }
         int HandSize { get; }
     }
 
