@@ -34,6 +34,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Rewards
         private void GiveCardsToHand(IReward reward)
         {
             var count = _random.GetRandom(reward.MinToHand, reward.MaxToHand);
+            if (count == 0)
+                return;
+
             var deck = new Deck<IConstructionSettings>(_random);
             if (reward.ToHand.Count == 0)
                 return;
