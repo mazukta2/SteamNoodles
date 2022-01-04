@@ -27,7 +27,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             {
                 for (int y = _model.Rect.yMin; y <= _model.Rect.yMax; y++)
                 {
-                    _cells.Add(new CellPresenter(this, new Point(x, y), View.Cells.Create()));
+                    _cells.Add(new CellPresenter(this, new Point(x, y), View.Cells));
                 }
             }
 
