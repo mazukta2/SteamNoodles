@@ -24,14 +24,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Orders
         {
         }
 
-        public ReadOnlyCollection<Construction> GetFreePlacesToEat()
+        public IReadOnlyCollection<Construction> GetFreePlacesToEat()
         {
-            return _placement.Constructions.Where(x => x.GetFeatures().OfType<IPlaceToEatConstructionFeatureSettings>().Any() && !IsAnybodyPlacedTo(x)).ToList().AsReadOnly();
+            return _placement.GetConstructionsWithFeature<IPlaceToEatConstructionFeatureSettings>().Where(x => !IsAnybodyPlacedTo(x)).AsReadOnly();
         }
 
         public Construction GetOrderingPlace()
         {
-            return _placement.Constructions.First(x => x.GetFeatures().OfType<IOrderingPlaceConstructionFeatureSettings>().Any());
+            return _placement.GetConstructionsWithFeature<IOrderingPlaceConstructionFeatureSettings>().FirstOrDefault();
         }
 
         public void ClearPlacing(ServingCustomerProcess servingCustomerProcess)

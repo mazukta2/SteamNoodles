@@ -3,6 +3,8 @@
     "Requirements": { "DownEdge": true },
     "HandIcon": "Sprites/Cards/Icons/SimpleShop",
     "BuildingView": "Prefabs/Constructions/SimpleShop",
-    "Features": [],
+    "Features": [
+        { "Type": "GameUnity.Assets.Scripts.Unity.Settings.Buildings.Features.OrderingPlaceConstructionFeatureSettings" }
+    ],
     "Tags": {}
 }

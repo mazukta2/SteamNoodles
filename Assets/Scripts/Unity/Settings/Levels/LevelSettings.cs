@@ -23,7 +23,7 @@ namespace GameUnity.Assets.Scripts.Unity.Data.Levels
         [JsonConverter(typeof(SettingsDictionaryConventer<ICustomerSettings, CustomerSettings, int>))]
         public IReadOnlyDictionary<ICustomerSettings, int> Deck { get; set; }
 
-        [JsonConverter(typeof(ObjectConventer<Reward>))]
+        [JsonConverter(typeof(SpecificObjectConventer<Reward>))]
         public IReward ClashReward { get; set; }
         public int MaxQueue { get; set; }
         public float SpawnQueueTime { get; set; } 

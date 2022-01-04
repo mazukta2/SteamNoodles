@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions.Features;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
@@ -18,7 +19,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Clashes
         public bool IsInClash => _currentClash != null;
         public Clash CurrentClash => _currentClash;
         public IClashesSettings Settings => _settings;
-        public bool CanStartClash => !IsInClash && _placement.Constructions.Count > 0;
+        public bool CanStartClash => !IsInClash 
+            && _placement.Constructions.Count > 0 
+            && _placement.HasConstructionsWithFeature<IOrderingPlaceConstructionFeatureSettings>();
 
         private IClashesSettings _settings;
         private GameTime _time;

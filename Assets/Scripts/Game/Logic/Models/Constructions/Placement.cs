@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Rewards;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Settings.Constructions;
 using Game.Assets.Scripts.Game.Logic.Settings.Constructions.Features;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Buildings
         public bool Contain(Construction key)
         {
             return Constructions.Any(x => x == key);
+        }
+
+        public IReadOnlyCollection<Construction> GetConstructionsWithFeature<T>() where T : IConstructionFeatureSettings
+        {
+            return Constructions.Where(x => x.GetFeatures().OfType<T>().Any()).AsReadOnly();
+        }
+
+        public bool HasConstructionsWithFeature<T>() where T : IConstructionFeatureSettings
+        {
+            return GetConstructionsWithFeature<T>().Any();
         }
 
         public bool CanPlace(ConstructionCard scheme, Point position)

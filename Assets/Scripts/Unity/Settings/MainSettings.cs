@@ -2,7 +2,7 @@
 using GameUnity.Assets.Scripts.Unity.Data.Levels;
 using Newtonsoft.Json;
 
-namespace GameUnity.Assets.Scripts.Unity.Data.Game
+namespace GameUnity.Assets.Scripts.Unity.Settings
 {
     public class MainSettings
     {

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Core.Prototypes;
+﻿using Assets.Scripts.Core;
+using Assets.Scripts.Core.Prototypes;
 using Assets.Scripts.Data;
 using Assets.Scripts.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Controllers;
@@ -8,15 +9,15 @@ using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Game;
-using GameUnity.Assets.Scripts.Unity.Data.Game;
 using GameUnity.Assets.Scripts.Unity.Data.Levels;
+using GameUnity.Assets.Scripts.Unity.Settings;
 using GameUnity.Assets.Scripts.Unity.Settings.Data;
 using GameUnity.Assets.Scripts.Unity.Views;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Core
+namespace GameUnity.Assets.Scripts.Unity.Core
 {
     public class Game : ViewMonoBehaviour, IGameController, ILevelsController
     {
@@ -81,7 +82,7 @@ namespace Assets.Scripts.Core
 
             void Finish()
             {
-                var view = UnityEngine.Object.FindObjectOfType<LevelView>();
+                var view = FindObjectOfType<LevelView>();
                 if (view == null) throw new Exception("Cant find level view in scene");
 
                 onFinished();

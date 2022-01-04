@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
+using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Assets.Scripts.Game.Logic.Settings.Rewards;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
@@ -10,6 +11,7 @@ using Game.Tests.Mocks.Views.Common;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Game.Tests.Cases.Settings
 {
@@ -56,7 +58,7 @@ namespace Game.Tests.Cases.Settings
 
 
         [Test]
-        public void Objectonversion()
+        public void SpecificObjectConversion()
         {
             var str = @"{ 
                 ""Test"" : {
@@ -69,6 +71,39 @@ namespace Game.Tests.Cases.Settings
             Assert.AreEqual(3, item.Test.MaxToHand);
         }
 
+
+
+        [Test]
+        public void ObjectConversion()
+        {
+            var str = @"{ 
+                ""Test"" : {
+                    ""Type"": ""Game.Tests.Mocks.Settings.Rewards.Reward"",
+                    ""MinToHand"" : 1,
+                    ""MaxTohand"" : 3
+                }
+            }";
+            var item = JsonConvert.DeserializeObject<UnspecificRewardCase>(str);
+            Assert.AreEqual(1, item.Test.MinToHand);
+            Assert.AreEqual(3, item.Test.MaxToHand);
+        }
+
+        [Test]
+        public void ObjectListConversion()
+        {
+            var str = @"{ 
+                ""TestList"" : [
+                    {
+                        ""Type"": ""Game.Tests.Mocks.Settings.Rewards.Reward"",
+                        ""MinToHand"" : 1,
+                        ""MaxTohand"" : 3
+                    }
+                ]
+            }";
+            var item = JsonConvert.DeserializeObject<UnspecificRewardCase>(str);
+            Assert.AreEqual(1, item.TestList.First().MinToHand);
+            Assert.AreEqual(3, item.TestList.First().MaxToHand);
+        }
 
         [Test]
         public void AssetsConversion()
@@ -122,8 +157,16 @@ namespace Game.Tests.Cases.Settings
 
         public class RewardCase
         {
-            [JsonConverter(typeof(ObjectConventer<Reward>))]
+            [JsonConverter(typeof(SpecificObjectConventer<Reward>))]
             public IReward Test { get; set; }
+        }
+
+        public class UnspecificRewardCase
+        {
+            [JsonConverter(typeof(ObjectConventer<GameModel, IReward>))]
+            public IReward Test { get; set; }
+            [JsonConverter(typeof(ObjectConventer<GameModel, IReward>))]
+            public IReadOnlyCollection<IReward> TestList { get; set; }
         }
 
         public class MathCase
