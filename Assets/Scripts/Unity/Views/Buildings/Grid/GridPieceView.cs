@@ -21,7 +21,7 @@ namespace Assets.Scripts.Views.Buildings.Grid
 
         public void SetPosition(System.Numerics.Vector2 vector2)
         {
-            transform.position = new Vector2(vector2.X, vector2.Y);
+            transform.position = new Vector3(vector2.X, 0, vector2.Y);
         }
 
         public void SetState(CellPresenter.CellState state)
