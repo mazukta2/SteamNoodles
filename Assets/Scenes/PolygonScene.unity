@@ -152,7 +152,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1432957365}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &31542741
 PrefabInstance:
@@ -161,6 +161,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (31)
@@ -168,6 +184,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -212,6 +232,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -399,7 +427,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: d47eb07bceec58644843a6c4f977954c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -654,6 +682,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (28)
@@ -661,6 +705,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -705,6 +753,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -865,6 +921,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (12)
@@ -872,6 +944,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -916,6 +992,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -1002,7 +1086,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &219277803
 Transform:
@@ -1018,6 +1102,7 @@ Transform:
   m_Children:
   - {fileID: 980204680}
   - {fileID: 711300662}
+  - {fileID: 2068980108}
   - {fileID: 1753432345}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -1029,6 +1114,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (27)
@@ -1036,6 +1137,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -1081,6 +1186,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &223748989 stripped
@@ -1095,6 +1208,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (24)
@@ -1102,6 +1231,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -1146,6 +1279,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -1328,6 +1469,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (6)
@@ -1335,6 +1492,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -1380,6 +1541,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &305648994 stripped
@@ -1394,6 +1563,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (21)
@@ -1401,6 +1586,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -1445,6 +1634,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -1539,6 +1736,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (8)
@@ -1546,6 +1759,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -1591,6 +1808,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &377734013 stripped
@@ -1635,7 +1860,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: d47eb07bceec58644843a6c4f977954c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1737,6 +1962,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (25)
@@ -1744,6 +1985,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -1788,6 +2033,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -2017,6 +2270,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (15)
@@ -2024,6 +2293,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -2069,6 +2342,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &520181577 stripped
@@ -2083,6 +2364,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (18)
@@ -2090,6 +2387,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -2134,6 +2435,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -2182,6 +2491,55 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &534428784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 534428785}
+  - component: {fileID: 534428786}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &534428785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534428784}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1432957365}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &534428786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534428784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 5584b67f066eca34d82432a6f4181bef, type: 2}
 --- !u!1001 &566363634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2189,6 +2547,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (1)
@@ -2196,6 +2570,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -2240,6 +2618,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -2300,7 +2686,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: d47eb07bceec58644843a6c4f977954c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2413,7 +2799,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &711300662
 Transform:
@@ -7216,6 +7602,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (30)
@@ -7223,6 +7625,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -7268,6 +7674,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &736943362 stripped
@@ -7282,6 +7696,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (2)
@@ -7289,6 +7719,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -7334,6 +7768,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &755378381 stripped
@@ -7348,6 +7790,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (38)
@@ -7355,6 +7813,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -7400,6 +7862,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &770680310 stripped
@@ -7414,6 +7884,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (37)
@@ -7421,6 +7907,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -7466,6 +7956,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &782392436 stripped
@@ -7480,6 +7978,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (35)
@@ -7487,6 +8001,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -7531,6 +8049,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -7848,7 +8374,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 39908217}
   m_HandleRect: {fileID: 39908216}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7899,6 +8425,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (5)
@@ -7906,6 +8448,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -7951,6 +8497,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &900515701 stripped
@@ -7988,7 +8542,7 @@ Transform:
   m_Children:
   - {fileID: 127426527}
   m_Father: {fileID: 1432957365}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &980204679
 GameObject:
@@ -8007,7 +8561,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &980204680
 Transform:
@@ -8058,7 +8612,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: d47eb07bceec58644843a6c4f977954c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8171,7 +8725,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1865871845}
   m_HandleRect: {fileID: 1865871844}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -8222,6 +8776,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (4)
@@ -8229,6 +8799,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -8274,6 +8848,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &1027369631 stripped
@@ -8288,6 +8870,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (22)
@@ -8295,6 +8893,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -8340,6 +8942,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &1066081453 stripped
@@ -8354,6 +8964,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (26)
@@ -8361,6 +8987,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -8405,6 +9035,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -9066,6 +9704,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (7)
@@ -9073,6 +9727,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -9118,6 +9776,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &1205184027 stripped
@@ -9132,6 +9798,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (14)
@@ -9139,6 +9821,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -9183,6 +9869,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -9378,6 +10072,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (29)
@@ -9385,6 +10095,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -9430,6 +10144,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &1359020354 stripped
@@ -9444,6 +10166,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (20)
@@ -9451,6 +10189,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -9495,6 +10237,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -9565,14 +10315,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3832873, y: 1}
-    Iso: 200
-    ShutterSpeed: 0.005
-    Aperture: 16
-    BladeCount: 5
-    Curvature: {x: 2, y: 11}
-    BarrelClipping: 0.25
-    Anamorphism: 0
+    m_SensorSize: {x: 1.6647542, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -9588,6 +10331,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (23)
@@ -9595,6 +10354,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -9639,6 +10402,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -9751,12 +10522,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2068980108}
   - {fileID: 16900020}
   - {fileID: 978668746}
   - {fileID: 2040768098}
   - {fileID: 2146159006}
-  - {fileID: 1856280869}
+  - {fileID: 534428785}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9767,6 +10537,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (3)
@@ -9774,6 +10560,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -9819,6 +10609,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &1463021142 stripped
@@ -9833,6 +10631,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (9)
@@ -9840,6 +10654,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -9885,6 +10703,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &1503646848 stripped
@@ -9899,6 +10725,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (19)
@@ -9906,6 +10748,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -9950,6 +10796,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -10002,65 +10856,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
-    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Strength
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Strength
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Strength
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4285889500552426449, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Strength
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4499204628479619614, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_DynamicOccludee
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4499204628479619614, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_LightProbeUsage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4499204628479619614, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_StaticShadowCaster
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Strength
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -10105,18 +10903,6 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Range
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Intensity
-      value: 1.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
-      propertyPath: m_Shadows.m_Strength
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -10178,6 +10964,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (33)
@@ -10185,6 +10987,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -10229,6 +11035,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -10289,7 +11103,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: d47eb07bceec58644843a6c4f977954c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10328,6 +11142,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (11)
@@ -10335,6 +11165,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -10379,6 +11213,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -10522,6 +11364,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (34)
@@ -10529,6 +11387,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -10574,6 +11436,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &1616469968 stripped
@@ -10595,7 +11465,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1753432345
 Transform:
@@ -10649,7 +11519,7 @@ Transform:
   - {fileID: 782392436}
   - {fileID: 770680310}
   m_Father: {fileID: 219277803}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1799331342
 GameObject:
@@ -10793,6 +11663,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (36)
@@ -10800,6 +11686,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -10844,6 +11734,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -10912,55 +11810,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e175daa7f160d0d4c90fe0b915b3925d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1856280868
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1856280869}
-  - component: {fileID: 1856280870}
-  m_Layer: 0
-  m_Name: Global Volume
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1856280869
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1856280868}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1432957365}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1856280870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1856280868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: 6c5fc047247e05f4699b9883c8f28e7b, type: 2}
 --- !u!1001 &1857335432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10968,6 +11817,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (16)
@@ -10975,6 +11840,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -11019,6 +11888,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -11110,6 +11987,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (17)
@@ -11117,6 +12010,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -11161,6 +12058,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -11392,6 +12297,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (10)
@@ -11399,6 +12320,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -11443,6 +12368,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.379
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -11503,7 +12436,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: d47eb07bceec58644843a6c4f977954c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11567,7 +12500,7 @@ Transform:
   - {fileID: 1130300156}
   - {fileID: 189235572}
   m_Father: {fileID: 1432957365}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2068980106
 GameObject:
@@ -11639,11 +12572,11 @@ Light:
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
+  m_LightShadowCasterMode: 2
+  m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
+  m_ColorTemperature: 9428
+  m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
@@ -11657,12 +12590,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2068980106}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 6, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1432957365}
-  m_RootOrder: 0
+  m_Father: {fileID: 219277803}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &2068980109
 MonoBehaviour:
@@ -11728,6 +12661,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (32)
@@ -11735,6 +12684,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -11780,6 +12733,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
 --- !u!4 &2104843826 stripped
@@ -11794,6 +12755,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1753432345}
     m_Modifications:
+    - target: {fileID: 1529319166061537019, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2311746904701970277, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822225664164942841, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481997678163904419, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_Name
       value: City Building 1 (13)
@@ -11801,6 +12778,10 @@ PrefabInstance:
     - target: {fileID: 6733718347760972074, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092493510760543940, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_RootOrder
@@ -11845,6 +12826,14 @@ PrefabInstance:
     - target: {fileID: 7173105379882360422, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661259664570498034, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
+    - target: {fileID: 8358273701214523261, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3577af9abbc321c4d8665e13d427b9c7, type: 3}
@@ -12014,7 +13003,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1432957365}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -0.03, z: 0}
 --- !u!114 &2146159007
 MonoBehaviour:

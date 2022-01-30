@@ -37,6 +37,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Window
+    second: {fileID: 2100000, guid: cce5238b17423b9409c48759333d2740, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Window.001
+    second: {fileID: 2100000, guid: cce5238b17423b9409c48759333d2740, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Wood
     second: {fileID: 2100000, guid: 6d236ab065a8e9c4484df9069403692a, type: 2}
   - first:
