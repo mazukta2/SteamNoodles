@@ -12,7 +12,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Units
     {
         public void SetPosition(FloatPoint position)
         {
-            transform.position = position.ToUnityVector(transform.position.z);
+            transform.position = position.ToUnityVector(transform.position.y);
         }
     }
 }

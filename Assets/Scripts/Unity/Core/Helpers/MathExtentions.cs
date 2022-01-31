@@ -31,9 +31,9 @@ namespace Assets.Scripts.Core.Helpers
             return new Vector3(vector.X, vector.Y, z);
         }
 
-        public static Vector3 ToUnityVector(this FloatPoint vector, float z)
+        public static Vector3 ToUnityVector(this FloatPoint vector, float y)
         {
-            return new Vector3(vector.X, vector.Y, z);
+            return new Vector3(vector.X, y, vector.Y);
         }
 
         public static System.Numerics.Vector2 ToLogicVector(this Vector2 vector)

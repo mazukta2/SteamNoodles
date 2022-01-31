@@ -1,6 +1,6 @@
 {
     "Size": [ 8, 8 ],
-    "UnitsSpawnRect": [ -8, -5, 16, 3 ],
+    "UnitsSpawnRect": [ -8, -3.3, 16, 1.8 ],
     "Deck": {
         "Commoner": 2
     },
