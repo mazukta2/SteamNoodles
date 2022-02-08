@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Tests.Controllers;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Game.Tests.Cases
         public static void BuildConstruction(GameController game, ILevelView views)
         {
             views.Screen.Hand.Cards.List.First().Button.Click();
-            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Placement.Click(new FloatPoint(0, 0));
             views.Screen.Clashes.StartClash.Click();
         }
 

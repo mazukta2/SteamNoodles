@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Views;
 using System.Numerics;
 
@@ -8,6 +9,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Constructions
     {
         void SetState(CellPresenter.CellState state);
         CellPresenter.CellState GetState();
-        void SetPosition(Vector2 vector2);
+        void SetPosition(FloatPoint vector2);
     }
 }

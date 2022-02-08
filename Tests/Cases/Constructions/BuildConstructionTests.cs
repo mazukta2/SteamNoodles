@@ -77,7 +77,7 @@ namespace Game.Tests.Cases.Constructions
 
             var view = views.Placement.Ghost.Value;
             Assert.IsNotNull(view);
-            views.Placement.Click(new Vector2(0f, 0f));
+            views.Placement.Click(new FloatPoint(0f, 0f));
             Assert.IsNull(views.Placement.Ghost.Value);
             Assert.IsTrue(view.IsDisposed);
             game.Exit();
@@ -110,7 +110,7 @@ namespace Game.Tests.Cases.Constructions
             construction.Button.Click();
 
             var ghost = views.Placement.Ghost.Value;
-            ghost.GetMoveAction()(new Vector2(0, 0));
+            ghost.GetMoveAction()(new FloatPoint(0, 0));
 
             var cells = presenters.Placement.GetCells();
             var highlighedCells = cells.Where(x => x.State == CellPresenter.CellState.IsAvailableGhostPlace && x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace);
@@ -119,7 +119,7 @@ namespace Game.Tests.Cases.Constructions
             Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(0, 0)));
             Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(1, 0)));
 
-            ghost.GetMoveAction()(new Vector2(presenters.Placement.CellSize + presenters.Placement.CellSize / 4, 0));
+            ghost.GetMoveAction()(new FloatPoint(presenters.Placement.CellSize + presenters.Placement.CellSize / 4, 0));
 
             highlighedCells = cells.Where(x => x.State == CellPresenter.CellState.IsAvailableGhostPlace && x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace);
             Assert.AreEqual(2, highlighedCells.Count());
@@ -148,7 +148,7 @@ namespace Game.Tests.Cases.Constructions
             var ghost = views.Placement.Ghost.Value;
 
             Assert.IsFalse(ghost.GetCanBePlacedState());
-            ghost.GetMoveAction()(new Vector2(0, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4));
+            ghost.GetMoveAction()(new FloatPoint(0, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4));
 
             Assert.IsFalse(presenters.Placement.Ghost.Position == new Point(0, 2));
 
@@ -173,7 +173,7 @@ namespace Game.Tests.Cases.Constructions
 
             var construction = views.Screen.Hand.Cards.List.Last();
             construction.Button.Click();
-            var worldPos = new Vector2(0f, -presenters.Placement.CellSize / 2);
+            var worldPos = new FloatPoint(0f, -presenters.Placement.CellSize / 2);
             views.Placement.Ghost.Value.GetMoveAction()(worldPos);
 
             var cells = presenters.Placement.GetCells();
@@ -213,7 +213,7 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.AreEqual(0, views.Placement.Constructions.List.Length);
 
-            views.Placement.Click(new Vector2(0f, 0f));
+            views.Placement.Click(new FloatPoint(0f, 0f));
 
             Assert.AreEqual(1, views.Placement.Constructions.List.Length);
             game.Exit();
@@ -231,7 +231,7 @@ namespace Game.Tests.Cases.Constructions
 
             var ghost = views.Placement.Ghost.Value;
             var cellPos = new Point(0, -2);
-            var worldPos = new Vector2(0, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4);
+            var worldPos = new FloatPoint(0, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4);
             ghost.GetMoveAction()(worldPos);
 
             Assert.AreEqual(cellPos, presenters.Placement.Ghost.Position);
@@ -250,7 +250,7 @@ namespace Game.Tests.Cases.Constructions
             var construction = views.Screen.Hand.Cards.List.First();
             var model = models.Hand.Cards.First();
             construction.Button.Click();
-            views.Placement.Click(new Vector2(0, 0));
+            views.Placement.Click(new FloatPoint(0, 0));
 
             Assert.IsTrue(model.BuildingView != null);
             Assert.AreEqual(model.BuildingView,
@@ -278,7 +278,7 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.AreEqual(0, views.Placement.Constructions.List.Length);
 
-            var worldPos = new Vector2(0f, presenters.Placement.CellSize * 1 + presenters.Placement.CellSize / 4);
+            var worldPos = new FloatPoint(0f, presenters.Placement.CellSize * 1 + presenters.Placement.CellSize / 4);
             views.Placement.Ghost.Value.GetMoveAction()(worldPos);
             var position = presenters.Placement.Ghost.Position;
 
@@ -297,7 +297,7 @@ namespace Game.Tests.Cases.Constructions
             Assert.IsTrue(models.Placement.IsFreeCell(presenters.Placement.Ghost.Card, new Point(0, -2)));
             Assert.IsTrue(models.Placement.IsFreeCell(presenters.Placement.Ghost.Card, new Point(1, -2)));
 
-            worldPos = new Vector2(0f, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4);
+            worldPos = new FloatPoint(0f, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4);
             views.Placement.Click(worldPos);
             Assert.AreEqual(1, presenters.Placement.GetConstructions().Length);
 
@@ -316,7 +316,7 @@ namespace Game.Tests.Cases.Constructions
             var construction = views.Screen.Hand.Cards.List.First();
 
             construction.Button.Click();
-            views.Placement.Click(new Vector2(0f, 0f));
+            views.Placement.Click(new FloatPoint(0f, 0f));
 
             Assert.AreEqual(0, views.Screen.Hand.Cards.List.Length);
             game.Exit();

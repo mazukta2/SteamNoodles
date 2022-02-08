@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Helpers;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using GameUnity.Assets.Scripts.Unity.Common;
@@ -23,12 +24,12 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Buildings
             UpdateView();
         }
 
-        public void SetPosition(System.Numerics.Vector2 pos)
+        public void SetPosition(FloatPoint pos)
         {
-            transform.position = pos.ToUnityVector(transform.position.z) + _offset;
+            transform.position = pos.ToUnityVector(transform.position.y) + _offset;
         }
 
-        public System.Numerics.Vector2 GetPosition()
+        public FloatPoint GetPosition()
         {
             return (transform.position - _offset).ToLogicVector();
         }

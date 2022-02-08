@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Buildings;
 using Game.Tests.Mocks.Settings.Levels;
@@ -29,7 +30,7 @@ namespace Game.Tests.Cases.Customers
             Assert.IsNotNull(views.Screen.Clashes);
 
             views.Screen.Hand.Cards.List.First().Button.Click();
-            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Placement.Click(new FloatPoint(0, 0));
 
             Assert.IsTrue(views.Screen.Clashes.StartClash.IsShowing);
             views.Screen.Clashes.StartClash.Click();
@@ -102,7 +103,7 @@ namespace Game.Tests.Cases.Customers
 
             Assert.AreEqual(1, models.Hand.Cards.Count);
             views.Screen.Hand.Cards.List.First().Button.Click();
-            views.Placement.Click(new System.Numerics.Vector2(0, 0));
+            views.Placement.Click(new FloatPoint(0, 0));
             views.Screen.Clashes.StartClash.Click();
             models.Clashes.CurrentClash.Customers.Queue.Add();
             Assert.AreEqual(1, models.Clashes.CurrentClash.Customers.GetCustomers().Count());
@@ -125,7 +126,7 @@ namespace Game.Tests.Cases.Customers
 
             var construction = views.Screen.Hand.Cards.List.First();
             construction.Button.Click();
-            views.Placement.Click(new Vector2(0f, 0f));
+            views.Placement.Click(new FloatPoint(0f, 0f));
 
             Assert.AreEqual(1, models.Placement.Constructions.Count);
             Assert.IsTrue(views.Screen.Clashes.StartClash.IsShowing);

@@ -5,6 +5,8 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
     [Serializable]
     public struct FloatPoint
     {
+        public static readonly FloatPoint Zero = new FloatPoint(0, 0);
+
         public float X;
         public float Y;
 

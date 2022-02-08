@@ -22,6 +22,7 @@
     <Compile Remove="Assets\Refs\**" />
     <Compile Remove="Assets\Scenes\**" />
     <Compile Remove="Assets\Scripts\Unity\**" />
+    <Compile Remove="Assets\Scripts\Editor\**" />
     <Compile Remove="Assets\Settings\**" />
     <Compile Remove="Assets\Sounds\**" />
     <Compile Remove="Library\**" />
@@ -39,6 +40,7 @@
     <EmbeddedResource Remove="Assets\Refs\**" />
     <EmbeddedResource Remove="Assets\Scenes\**" />
     <EmbeddedResource Remove="Assets\Scripts\Unity\**" />
+    <EmbeddedResource Remove="Assets\Scripts\Editor\**" />
     <EmbeddedResource Remove="Assets\Settings\**" />
     <EmbeddedResource Remove="Assets\Sounds\**" />
     <EmbeddedResource Remove="Library\**" />
@@ -57,6 +59,7 @@
     <None Remove="Assets\Refs\**" />
     <None Remove="Assets\Scenes\**" />
     <None Remove="Assets\Scripts\Unity\**" />
+    <None Remove="Assets\Scripts\Editor\**" />
     <None Remove="Assets\Settings\**" />
     <None Remove="Assets\Sounds\**" />
     <None Remove="Library\**" />

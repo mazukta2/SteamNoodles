@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Helpers;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using GameUnity.Assets.Scripts.Unity.Common;
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Views.Buildings
 
         private bool _canBePlaced;
         private UnityView _image;
-        private Action<System.Numerics.Vector2> _move;
+        private Action<FloatPoint> _move;
 
         private GameInputs _inputs = new GameInputs();
 
@@ -38,17 +39,17 @@ namespace Assets.Scripts.Views.Buildings
             UpdateView();
         }
 
-        public Action<System.Numerics.Vector2> GetMoveAction()
+        public Action<FloatPoint> GetMoveAction()
         {
             return _move;
         }
 
-        public void PlaceTo(System.Numerics.Vector2 pos)
+        public void PlaceTo(FloatPoint pos)
         {
             transform.position = pos.ToUnityVector(transform.position.z) + _offset;
         }
 
-        public void SetMoveAction(Action<System.Numerics.Vector2> action)
+        public void SetMoveAction(Action<FloatPoint> action)
         {
             _move = action;
         }
@@ -60,9 +61,9 @@ namespace Assets.Scripts.Views.Buildings
 
         private void UpdateView()
         {
-            var sprite = GetComponentInChildren<SpriteRenderer>();
-            if (sprite != null)
-                sprite.color = _canBePlaced ? _activeColor : _notActiveColor;
+            //var sprite = GetComponentInChildren<SpriteRenderer>();
+            //if (sprite != null)
+            //    sprite.color = _canBePlaced ? _activeColor : _notActiveColor;
         }
 
         public void SetImage(IVisual image)

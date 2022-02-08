@@ -31,11 +31,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             View.Dispose();
         }
 
-        public Point GetCellPosition(Vector2 worldPosition)
+        public Point GetCellPosition(FloatPoint worldPosition)
         {
             var halfCell = _placement.CellSize / 2;
 
-            var offset = new Vector2(Card.CellSize.X * halfCell - halfCell,
+            var offset = new FloatPoint(Card.CellSize.X * halfCell - halfCell,
                 Card.CellSize.Y * halfCell - halfCell);
 
             var pos = worldPosition - offset;
@@ -52,7 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         }
 
 
-        public void MoveTo(Vector2 worldPosition)
+        public void MoveTo(FloatPoint worldPosition)
         {
             Position = GetCellPosition(worldPosition);
             View.PlaceTo(_placement.GetWorldPosition(Position));

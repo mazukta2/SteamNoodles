@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 using System.Numerics;
 
@@ -10,7 +11,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Constructions
         DisposableViewListKeeper<ICellView> Cells { get; }
         DisposableViewListKeeper<IConstructionView> Constructions { get; }
 
-        void SetClick(Action<Vector2> onClick);
-        void Click(Vector2 vector2);
+        void SetClick(Action<FloatPoint> onClick);
+        void Click(FloatPoint vector2);
     }
 }

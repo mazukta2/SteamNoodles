@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using System.Numerics;
 using Tests.Tests.Mocks.Views.Common;
@@ -9,7 +10,7 @@ namespace Tests.Tests.Mocks.Views.Levels
     {
         private CellPresenter.CellState _state;
 
-        public Vector2 Position { get; private set; }
+        public FloatPoint Position { get; private set; }
 
         public void SetState(CellPresenter.CellState state)
         {
@@ -21,7 +22,7 @@ namespace Tests.Tests.Mocks.Views.Levels
             return _state;
         }
 
-        public void SetPosition(Vector2 vector2)
+        public void SetPosition(FloatPoint vector2)
         {
             Position = vector2;
         }

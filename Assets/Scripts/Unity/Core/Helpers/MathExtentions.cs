@@ -16,34 +16,14 @@ namespace Assets.Scripts.Core.Helpers
                 rect.yMin <= position.y && position.y <= rect.yMax;
         }
 
-        public static Vector2 ToUnityVector(this System.Numerics.Vector2 vector)
-        {
-            return new Vector2(vector.X, vector.Y);
-        }
-
-        public static Vector3 ToUnityVector(this System.Numerics.Vector2 vector, float z)
-        {
-            return new Vector3(vector.X, vector.Y, z);
-        }
-
-        public static Vector3 ToUnityVector(this Point vector, float z)
-        {
-            return new Vector3(vector.X, vector.Y, z);
-        }
-
         public static Vector3 ToUnityVector(this FloatPoint vector, float y)
         {
-            return new Vector3(vector.X, y, vector.Y);
+            return new Vector3(vector.X, 0, vector.Y);
         }
 
-        public static System.Numerics.Vector2 ToLogicVector(this Vector2 vector)
+        public static FloatPoint ToLogicVector(this Vector3 vector)
         {
-            return new System.Numerics.Vector2(vector.x, vector.y);
-        }
-
-        public static System.Numerics.Vector2 ToLogicVector(this Vector3 vector)
-        {
-            return new System.Numerics.Vector2(vector.x, vector.y);
+            return new FloatPoint(vector.x, vector.z);
         }
     }
 }

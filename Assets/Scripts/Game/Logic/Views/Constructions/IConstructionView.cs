@@ -1,13 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
-using System.Numerics;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Constructions
 {
     public interface IConstructionView : IView
     {
-        void SetPosition(Vector2 pos);
-        Vector2 GetPosition();
+        void SetPosition(FloatPoint pos);
+        FloatPoint GetPosition();
         IVisual GetImage();
         void SetImage(IVisual image);
     }

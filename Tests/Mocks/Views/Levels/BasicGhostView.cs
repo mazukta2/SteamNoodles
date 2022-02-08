@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using System;
 using System.Numerics;
@@ -8,18 +9,18 @@ namespace Tests.Tests.Mocks.Views.Levels
 {
     public class BasicGhostView : TestView, IGhostConstructionView
     {
-        public Vector2 Position;
+        public FloatPoint Position;
 
-        private Action<Vector2> _move;
+        private Action<FloatPoint> _move;
         private bool _canBePlaced;
         private IVisual _image;
 
-        public void SetMoveAction(Action<Vector2> action)
+        public void SetMoveAction(Action<FloatPoint> action)
         {
             _move = action;
         }
 
-        public Action<Vector2> GetMoveAction()
+        public Action<FloatPoint> GetMoveAction()
         {
             return _move;
         }
@@ -34,7 +35,7 @@ namespace Tests.Tests.Mocks.Views.Levels
             return _canBePlaced;
         }
 
-        public void PlaceTo(Vector2 vector2)
+        public void PlaceTo(FloatPoint vector2)
         {
             Position = vector2;
         }

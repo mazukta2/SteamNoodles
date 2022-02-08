@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Prototypes;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using GameUnity.Assets.Scripts.Unity.Views.Buildings;
@@ -14,7 +15,7 @@ namespace Assets.Scripts.Views.Buildings.Grid
         [SerializeField] PrototypeLink _construction;
         [SerializeField] PrototypeLink _ghost;
 
-        private Action<System.Numerics.Vector2> _click;
+        private Action<FloatPoint> _click;
         private GameInputs _inputs = new GameInputs();
 
         public DisposableViewKeeper<IGhostConstructionView> Ghost { get; private set; }
@@ -43,12 +44,12 @@ namespace Assets.Scripts.Views.Buildings.Grid
             return _ghost.Create<BuildingGhostView>();
         }
 
-        public void Click(System.Numerics.Vector2 vector2)
+        public void Click(FloatPoint vector2)
         {
             _click(vector2);
         }
 
-        public void SetClick(Action<System.Numerics.Vector2> onClick)
+        public void SetClick(Action<FloatPoint> onClick)
         {
             _click = onClick;
         }

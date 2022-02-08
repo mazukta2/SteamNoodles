@@ -29,7 +29,7 @@ namespace Game.Tests.Cases.Constructions
             });
 
             views.Screen.Hand.Cards.List.Last().Button.Click();
-            views.Placement.Click(System.Numerics.Vector2.Zero);
+            views.Placement.Click(FloatPoint.Zero);
 
             Assert.AreEqual(2, models.Units.GetPool().Count());
 

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Assets.Scripts.Views.Buildings.Grid
             return _state;
         }
 
-        public void SetPosition(System.Numerics.Vector2 vector2)
+        public void SetPosition(FloatPoint vector2)
         {
             transform.position = new Vector3(vector2.X, 0, vector2.Y);
         }

@@ -76,7 +76,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             UpdateGhostCells();
         }
 
-        public void OnClick(Vector2 worldPosition)
+        public void OnClick(FloatPoint worldPosition)
         {
             if (Ghost != null)
             {
@@ -123,9 +123,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             }
         }
 
-        public Vector2 GetWorldPosition(Point point)
+        public FloatPoint GetWorldPosition(Point point)
         {
-            return new Vector2(point.X * _model.CellSize, point.Y * _model.CellSize);
+            return new FloatPoint(point.X * _model.CellSize, point.Y * _model.CellSize);
         }
 
         private void ConstructionRemoved(Construction obj) => UpdateConstructions();

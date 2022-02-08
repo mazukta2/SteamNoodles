@@ -45,10 +45,16 @@ namespace GameUnity.Assets.Scripts.Unity.Core
             _model.Session.LoadLevel(_settings.Get<MainSettings>().StartLevel);
         }
 
-        protected void OnDestroy()
+        protected void OnApplicationQuit()
         {
             _presenter.Dispose();
             _model.Dispose();
+        }
+
+        protected void OnDestroy()
+        {
+            if (!_model.IsDisposed)
+                throw new Exception("Model is not disposed for some reasons");
         }
 
         public void SetTimeMover(Action<float> moveTime)
