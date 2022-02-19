@@ -31,6 +31,8 @@ namespace GameUnity.Assets.Scripts.Unity.Data.Levels
         [JsonConverter(typeof(SettingsConventer<ConstructionSettings>))]
         public IReadOnlyCollection<IConstructionSettings> StartingHand { get; set; } 
         public int HandSize { get; set; }
-        public string SceneName { get; set; } 
+        public string SceneName { get; set; }
+
+        public FloatPoint Offset { get; set; }
     }
 }

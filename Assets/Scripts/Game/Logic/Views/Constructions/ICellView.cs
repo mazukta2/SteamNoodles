@@ -10,5 +10,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Constructions
         void SetState(CellPresenter.CellState state);
         CellPresenter.CellState GetState();
         void SetPosition(FloatPoint vector2);
+        FloatPoint GetPosition();
     }
 }

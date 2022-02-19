@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core;
+using Assets.Scripts.Core.Helpers;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Views.Constructions;
@@ -15,6 +16,12 @@ namespace Assets.Scripts.Views.Buildings.Grid
 
 
         private CellPresenter.CellState _state;
+
+        public FloatPoint GetPosition()
+        {
+            return transform.position.ToLogicVector();
+        }
+
         public CellPresenter.CellState GetState()
         {
             return _state;

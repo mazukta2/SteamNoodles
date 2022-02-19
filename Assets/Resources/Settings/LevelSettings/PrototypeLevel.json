@@ -1,5 +1,6 @@
 {
     "Size": [ 8, 8 ],
+	"Offset" : {"X" : 0, "Y" : 2},
     "UnitsSpawnRect": [ -8, -3.3, 16, 1.8 ],
     "Deck": {
         "Commoner": 2

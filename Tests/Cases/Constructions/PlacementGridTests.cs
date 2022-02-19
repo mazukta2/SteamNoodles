@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Tests.Controllers;
+using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Linq;
 
@@ -38,6 +39,24 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.IsTrue(cells.All(x => x.View != null));
             game.Exit();
+        }
+
+        [Test]
+        public void IsOffsetWorking()
+        {
+            var game = new GameController();
+            var levelSettings = new LevelSettings();
+            levelSettings.Offset = new FloatPoint(0, 0.5f);
+
+            var (level, levelViewModel, levelView) = game.LoadLevel(levelSettings);
+            var cells = levelView.Placement.Cells;
+            ;
+            //Assert.IsTrue(4.5*levelViewModel., cells.List.Max(x => x.GetPosition().Y));
+            //Assert.IsTrue(cells.Length > 0);
+            //Assert.AreEqual((levelViewModel.Placement.GetSize().X + 1) * (levelViewModel.Placement.GetSize().Y + 1), cells.Length);
+
+            //Assert.IsTrue(cells.All(x => x.View != null));
+            //game.Exit();
         }
 
         [TearDown]

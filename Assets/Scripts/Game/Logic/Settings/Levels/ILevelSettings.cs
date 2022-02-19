@@ -23,6 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Prototypes.Levels
     public interface IPlacementSettings
     {
         Point Size { get; }
+        FloatPoint Offset { get; }
     }
 
     public interface IUnitsSettings

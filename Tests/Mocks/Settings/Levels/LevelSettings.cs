@@ -17,7 +17,7 @@ namespace Game.Tests.Mocks.Settings.Levels
     public class LevelSettings : ILevelSettings
     {
         public Point Size => new Point(4, 4);
-
+        public FloatPoint Offset { get; set; } = new FloatPoint(0, 0);
 
         public int HandSize { get; set; } = 10;
 
