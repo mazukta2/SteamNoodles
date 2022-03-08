@@ -1,15 +1,19 @@
-﻿using Game.Tests.Cases;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Ui;
+using Game.Assets.Scripts.Game.Unity.Views.Ui.Screens;
+using Game.Assets.Scripts.Tests.Environment.Definitions.List;
+using Game.Assets.Scripts.Tests.Managers.Game;
+using Game.Assets.Scripts.Tests.Mocks.Levels;
+using Game.Tests.Cases;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Level
 {
     public class ScreenTests
     {
-        /*
         [Test]
         public void MainScreenIsOpened()
         {
-            var build = new TestGameConstructor().LoadDefinitions(new DefaultDefinitions()).LoadLevel(new HouseLevel()).Build();
+            var build = new GameTestConstructor().LoadDefinitions(new DefaultDefinitions()).AddAndLoadLevel(new BasicSellingLevel()).Build();
 
             var screenManager = build.Engine.Levels.GetCurrentLevel().FindObject<ScreenManagerView>();
             Assert.IsNotNull(screenManager);
@@ -19,7 +23,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
 
             build.Dispose();
         }
-        */
+
         [TearDown]
         public void TestDisposables()
         {

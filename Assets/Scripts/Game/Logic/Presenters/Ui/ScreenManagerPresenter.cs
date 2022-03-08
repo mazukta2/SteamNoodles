@@ -16,6 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenAssets = screenAssets ?? throw new ArgumentNullException(nameof(screenAssets));
+            _view.OnValidate();
 
             GetScreen<MainScreenView>().Open();
         }
@@ -24,7 +25,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
         {
 
         }
-
         public ScreenController GetScreen<T>() where T : ScreenView
         {
             return new ParametlessScreenController<T>(this);
@@ -45,8 +45,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
                 if (screenAsset == null)
                     throw new Exception($"Cant find {typeof(TScreen).Name} view");
 
-                _manager._view.Clear();
-                var view = _manager._view.Create(screenAsset);
+                _manager._view.Screen.Clear();
+                var view = screenAsset.Create(_manager._view.Screen);
                 view.SetManager(_manager);
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Environment.Engine.Assets;
 using Game.Assets.Scripts.Game.Logic.Common.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Unity.Views.Ui;
@@ -6,8 +7,10 @@ using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Engine
 {
-    public class AssetsLoader : IAssets
+    public class AssetsLoader : IAssets, IScreenAssets
     {
+        public IScreenAssets Screens => this;
+
         private static T LoadResource<T>(string path) where T : Object
         {
             var filePath = path;

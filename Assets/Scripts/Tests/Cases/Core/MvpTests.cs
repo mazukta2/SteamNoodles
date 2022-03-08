@@ -1,45 +1,40 @@
-﻿using Game.Tests.Cases;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters;
+using Game.Assets.Scripts.Game.Unity.Views;
+using Game.Assets.Scripts.Tests.Managers.Game;
+using Game.Assets.Scripts.Tests.Mocks.Levels;
+using Game.Tests.Cases;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Core
 {
     public class MvpTests
     {
-        /*
         [Test]
         public void ViewIsCreatingPresenter()
         {
-            var build = new TestGameConstructor().LoadLevel(new EmptyLevel()).Build();
+            var build = new GameTestConstructor().AddAndLoadLevel(new EmptyLevel()).Build();
+            var view = build.CurrentLevel.Add(new TestView());
 
-            //var obj = new GameObject();
-            //var view = obj.AddComponent<TestView>();
-            //Assert.IsTrue(view.IsInited);
-            //Assert.IsNotNull(view.Presenter);
-            //var presenter = view.Presenter;
+            Assert.IsTrue(view.IsInited);
+            Assert.IsNotNull(view.Presenter);
+            var presenter = view.Presenter;
 
-            //GameObject.DestroyImmediate(obj);
+            view.Dispose();
 
-            //Assert.IsTrue(view.IsDisposed);
-            //Assert.IsTrue(presenter.IsDisposed);
+            Assert.IsTrue(view.IsDisposed);
+            Assert.IsTrue(presenter.IsDisposed);
 
             build.Dispose();
         }
-
 
         private class TestView : View
         {
             public bool IsInited { get; private set; }
             public TestPresenter Presenter { get; private set; }
 
-            protected override BasePresenter CreatePresenter()
-            {
-                Presenter = new TestPresenter(this);
-                return Presenter;
-            }
-
             protected override void CreatedInner()
             {
-                base.CreatedInner();
+                Presenter = new TestPresenter(this);
                 IsInited = true;
             }
 
@@ -54,13 +49,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Core
             {
 
             }
-
-            protected override void DisposeInner()
-            {
-            }
         }
 
-        */
         [TearDown]
         public void TestDisposables()
         {
