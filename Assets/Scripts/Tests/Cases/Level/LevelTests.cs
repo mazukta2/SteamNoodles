@@ -1,5 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Views.Ui;
+using Game.Assets.Scripts.Game.Unity.Views;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
+using Game.Assets.Scripts.Tests.Environment.Game.ConstructorSettings;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Cases;
@@ -59,6 +62,42 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
             var build = new GameTestConstructor().AddAndLoadLevel(new EmptyLevel()).Build();
             Assert.IsNotNull(build.Engine.Levels.GetCurrentLevel());
             build.Dispose();
+        }
+
+        [Test]
+        public void DefaultPresetIsWorking()
+        {
+            var game = new GameTestConstructor(new DefaultPreset()).Build();
+            game.Dispose();
+        }
+
+        [Test]
+        public void IsSceneViewConnectedToLevel()
+        {
+            var game = new GameTestConstructor(new DefaultPreset()).Build();
+
+            var view = game.CurrentLevel.FindObject<ScreenManagerView>();
+            Assert.IsNotNull(view.Level);
+            Assert.IsNotNull(view.Level.Model);
+
+            game.Dispose();
+        }
+        
+        [Test]
+        public void IsViewConnectedToLevel()
+        {
+            var game = new GameTestConstructor(new DefaultPreset()).Build();
+
+            var view = game.CurrentLevel.Add(new TestView());
+            Assert.IsNotNull(view.Level);
+            Assert.IsNotNull(view.Level.Model);
+
+            game.Dispose();
+        }
+
+        private class TestView : View
+        {
+
         }
 
         [TearDown]

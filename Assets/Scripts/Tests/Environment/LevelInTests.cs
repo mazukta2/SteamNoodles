@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Unity.Views;
 using Game.Tests.Controllers;
 using System;
@@ -12,14 +13,16 @@ namespace Game.Assets.Scripts.Tests.Environment
         public event Action OnLoadedUpdate = delegate { };
         public bool Loaded { get => _loaded; internal set { _loaded = value; OnLoadedUpdate(); } }
 
+        public GameLevel Model { get; private set; }
 
         private bool _loaded;
         private LevelsManagerInTests _testLevelsManager;
         private List<View> _views = new List<View>();
 
-        public LevelInTests(LevelsManagerInTests testLevelsManager)
+        public LevelInTests(LevelsManagerInTests testLevelsManager, GameLevel gameLevel)
         {
             _testLevelsManager = testLevelsManager;
+            Model = gameLevel;
         }
 
         public void Dispose()

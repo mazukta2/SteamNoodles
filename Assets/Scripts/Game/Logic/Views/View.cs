@@ -20,8 +20,10 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void Awake()
         {
+            Level = FindGameObject<ILevel>();
             CreatedInner();
         }
+
         public void Dispose()
         {
             if (IsDisposed)
@@ -35,7 +37,6 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected virtual void DisposeInner() { }
 #else
-        public Tests.Environment.LevelInTests Level { get; private set; }
         public void Awake(Tests.Environment.LevelInTests level)
         {
             Level = level;
@@ -43,6 +44,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         }
 #endif
 
+        public ILevel Level { get; private set; }
         protected virtual void CreatedInner() { }
     }
 }

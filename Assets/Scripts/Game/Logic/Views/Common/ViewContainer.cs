@@ -47,7 +47,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 
         public T Create<T>(Func<Tests.Environment.LevelInTests, T> creator) where T : View
         {
-            var view = creator(Level);
+            var view = creator((Tests.Environment.LevelInTests)Level);
             _views.Add(view);
             return view;
         }

@@ -21,7 +21,9 @@ namespace Game.Tests.Controllers
         public void Dispose()
         {
             if (_level != null)
-                throw new Exception("Level unloaded");
+            {
+                _level.Dispose();
+            }
         }
 
         public ILevel GetCurrentLevel()
@@ -30,7 +32,7 @@ namespace Game.Tests.Controllers
         }
 
 
-        public void Load(ILevelDefinition prototype, Action<ILevel> onFinished)
+        public void Load(GameLevel model, ILevelDefinition prototype, Action<ILevel> onFinished)
         {
             if (_loading != null)
                 throw new Exception("Already loading");
@@ -38,7 +40,7 @@ namespace Game.Tests.Controllers
             if (_level != null)
                 throw new Exception("You must unload level firstly");
 
-            _loading = new ManagerLoadingLevel(prototype, onFinished);
+            _loading = new ManagerLoadingLevel(model, prototype, onFinished);
         }
 
         public void Unload()
@@ -62,7 +64,7 @@ namespace Game.Tests.Controllers
             if (_loading == null)
                 throw new Exception("Nothing is loading");
 
-            _level = new LevelInTests(this);
+            _level = new LevelInTests(this, _loading.Model);
             ((LevelDefinitionInTests)(_loading.Prototype)).Creator.FillLevel(_level);
             _level.Loaded = true;
             _loading.OnFinished(_level);
@@ -71,12 +73,14 @@ namespace Game.Tests.Controllers
 
         private class ManagerLoadingLevel
         {
-            public ManagerLoadingLevel(ILevelDefinition prototype, Action<ILevel> onFinished)
+            public ManagerLoadingLevel(GameLevel model, ILevelDefinition prototype, Action<ILevel> onFinished)
             {
                 Prototype = prototype;
                 OnFinished = onFinished;
+                Model = model;
             }
-
+             
+            public GameLevel Model { get; private set; }
             public ILevelDefinition Prototype { get; private set; }
             public Action<ILevel> OnFinished { get; private set; }
         }

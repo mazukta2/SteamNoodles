@@ -15,12 +15,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public PlayerHand Hand { get; private set; }
 
         private ILevelDefinition _settings;
-        private ILevel _level;
 
-        public GameLevel(ILevelDefinition settings, ILevel level, SessionRandom random, GameTime time)
+        public GameLevel(ILevelDefinition settings, SessionRandom random, GameTime time)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            _level = level ?? throw new ArgumentNullException(nameof(level));
             if (random == null) throw new ArgumentNullException(nameof(random));
             if (time == null) throw new ArgumentNullException(nameof(time));
 
@@ -29,7 +27,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         protected override void DisposeInner()
         {
-            _level.Dispose();
+            Hand.Dispose();
         }
     }
 }

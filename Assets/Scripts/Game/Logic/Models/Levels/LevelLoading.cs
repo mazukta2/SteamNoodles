@@ -2,10 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
-using Game.Assets.Scripts.Game.Logic.Views.Sources;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
@@ -16,17 +13,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         private GameSession _session;
         private ILevelDefinition _prototype;
         private ILevelsManager _levelManager;
+        private GameLevel _level;
+
+        private bool _isLoaded = false;
 
         public LevelLoading(GameSession session, ILevelsManager levelManager, ILevelDefinition levelDefinition)
         {
             _session = session;
             _prototype = levelDefinition;
             _levelManager = levelManager;
-            levelManager.Load(levelDefinition, Finished);
+            _level = new GameLevel(_prototype, _session.GameRandom, _session.Time);
+
+            levelManager.Load(_level, levelDefinition, Finished);
         }
 
         protected override void DisposeInner()
         {
+            if (!_isLoaded)
+                _level.Dispose();
         }
 
         private void Finished(ILevel lvl)
@@ -34,15 +38,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             if (IsDisposed)
                 return;
 
-            var level = new GameLevel(_prototype, lvl, _session.GameRandom, _session.Time);
-            HandleLevelModelCreated(level, lvl);
-            OnLoaded(level);
-            Dispose();
-        }
+            _isLoaded = true;
 
-        private void HandleLevelModelCreated(GameLevel level, ILevel lvl)
-        {
-            lvl.FindObject<CurrentLevelSource>()?.SetLevel(level);
+            OnLoaded(_level);
+            Dispose();
         }
     }
 }

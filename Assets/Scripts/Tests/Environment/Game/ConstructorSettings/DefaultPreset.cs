@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Environment.Game.ConstructorSettings
 {
-    public class DefaultSettings : BaseConstructorSettings
+    public class DefaultPreset : BaseConstructorSettings
     {
         public override void Fill(GameTestConstructor constructor)
         {

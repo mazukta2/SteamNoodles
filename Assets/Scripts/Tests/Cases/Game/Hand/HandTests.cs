@@ -1,14 +1,15 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
-using Game.Assets.Scripts.Game.Logic.Views.Sources;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Game.Unity.Views;
+using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Environment.Definitions.Constructions;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
-using Game.Assets.Scripts.Tests.Environment.Game.ConstructorSettings;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,28 +23,37 @@ namespace Game.Tests.Cases.Constructions
             var construction = new ConstructionDefinitionInTests();
             var game = new GameTestConstructor()
                 .LoadDefinitions(new DefaultDefinitions())
-                .AddAndLoadLevel(new LevelDefinitionInTests(new BasicSellingLevel()) {
-                        StartingHand = new List<IConstructionDefinition>() { construction }
+                .AddAndLoadLevel(new LevelDefinitionInTests(new BasicSellingLevel())
+                {
+                    StartingHand = new List<IConstructionDefinition>() { construction }
                 })
                 .Build();
 
-            var source = game.CurrentLevel.Add(new CurrentLevelSource());
             var container = game.CurrentLevel.Add(new ViewContainer());
+            var prototype = game.CurrentLevel.Add(new ViewPrototype());
+            prototype.SetCreator(Prototype);
             var hand = game.CurrentLevel.Add(new HandView()
             {
-                Level = source,
-                Cards = container
+                Cards = container,
+                CardPrototype = prototype
             });
+
             Assert.AreEqual(1, hand.Cards.Get<HandConstructionView>().Count());
 
             game.Dispose();
+
+            View Prototype(LevelInTests level)
+            {
+                return game.CurrentLevel.Add(new HandConstructionView());
+            }
         }
+
 
         //[Test]
         //public void IsHandLimitWorking()
         //{
         //    var game = new GameTestConstructor(new DefaultSettings()).Build();
-            
+
         //    //var construction1 = models.Hand.Cards.First().Settings;
         //    //var consteuction2 = new ConstructionSettings();
         //    //var settings = (LevelSettings)models.Clashes.Settings;
