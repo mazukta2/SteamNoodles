@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
             var result = new Dictionary<TKeyInterface, TValue>();
             foreach (var item in dictionary)
             {
-                result.Add(GameAccessPoint.Game.Settings.Get<TKey>(item.Key), item.Value);
+                result.Add(CoreAccessPoint.Core.Engine.Settings.Get<TKey>(item.Key), item.Value);
             }
             return (IReadOnlyDictionary<TKeyInterface, TValue>)new ReadOnlyDictionary<TKeyInterface, TValue>(result);
         }

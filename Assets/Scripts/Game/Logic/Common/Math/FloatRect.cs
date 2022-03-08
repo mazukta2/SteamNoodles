@@ -28,12 +28,6 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 
         public float yMax => Y + Height;
 
-        public bool IsInside(Point point)
-        {
-            return xMin <= point.X && point.X <= xMax &&
-                yMin <= point.Y && point.Y <= yMax;
-        }
-
         public bool IsInside(FloatPoint point)
         {
             return xMin <= point.X && point.X <= xMax &&

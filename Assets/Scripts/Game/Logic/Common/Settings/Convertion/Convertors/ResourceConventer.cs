@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
 {
-    public class SettingsConventer<T> : ReadOnlyJsonConverter
+    public class DefinitionsConventer<T> : ReadOnlyJsonConverter
     {
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -19,14 +19,14 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
                 var result = new List<T>();
                 foreach (var key in list)
                 {
-                    result.Add(GameAccessPoint.Game.Settings.Get<T>(key));
+                    result.Add(CoreAccessPoint.Core.Engine.Settings.Get<T>(key));
                 }
                 return new ReadOnlyCollection<T>(result);
             }
             else
             {
                 var key = obj.ToString();
-                return GameAccessPoint.Game.Settings.Get<T>(key);
+                return CoreAccessPoint.Core.Engine.Settings.Get<T>(key);
             }
 
         }

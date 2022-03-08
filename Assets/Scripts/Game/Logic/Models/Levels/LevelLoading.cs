@@ -1,6 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Controllers.Level;
-using Game.Assets.Scripts.Game.Logic.Prototypes.Levels;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Session;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,28 +10,32 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
     public class LevelLoading : Disposable
     {
-        public ILevelSettings Prototype { get; private set; }
+        public event Action<GameLevel> OnLoaded = delegate { };
 
+        private GameSession _session;
+        private ILevelDefinition _prototype;
+        private ILevelsManager _levelManager;
 
-        public LevelLoading(ILevelsController controller, ILevelSettings levelProto, Action onComplete)
+        public LevelLoading(GameSession session, ILevelsManager levelManager, ILevelDefinition levelDefinition)
         {
-            _onComplete = onComplete;
-            Prototype = levelProto;
-            controller.Load(levelProto, Finished);
+            _session = session;
+            _prototype = levelDefinition;
+            _levelManager = levelManager;
+            levelManager.Load(levelDefinition, Finished);
         }
 
         protected override void DisposeInner()
         {
         }
 
-        private Action _onComplete;
-
-        private void Finished()
+        private void Finished(ILevel lvl)
         {
             if (IsDisposed)
                 return;
 
-            _onComplete();
+            var level = new GameLevel(_prototype, lvl, _session.GameRandom, _session.Time);
+            OnLoaded(level);
+            Dispose();
         }
     }
 }

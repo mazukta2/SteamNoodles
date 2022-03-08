@@ -13,14 +13,14 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
             var obj = JObject.ReadFrom(reader);
             var key = obj.ToString();
 
-            if (objectType.IsAssignableFrom(typeof(ISprite)))
-            {
-                return GameAccessPoint.Game.Assets.GetSprite(key);
-            }
-            if (objectType.IsAssignableFrom(typeof(IVisual)))
-            {
-                return GameAccessPoint.Game.Assets.GetVisual(key);
-            }
+            //if (objectType.IsAssignableFrom(typeof(ISprite)))
+            //{
+            //    return GameAccessPoint.Game.Assets.GetSprite(key);
+            //}
+            //if (objectType.IsAssignableFrom(typeof(IVisual)))
+            //{
+            //    return GameAccessPoint.Game.Assets.GetVisual(key);
+            //}
             throw new Exception("Unknown type of " + objectType.Name);
         }
     }

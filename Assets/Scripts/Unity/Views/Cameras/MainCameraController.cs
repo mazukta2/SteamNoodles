@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.Core;
-using Assets.Scripts.Views.Cameras.Controllers;
+﻿using Assets.Scripts.Views.Cameras.Controllers;
 using Cinemachine;
+using GameUnity.Assets.Scripts.Unity.Engine;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
