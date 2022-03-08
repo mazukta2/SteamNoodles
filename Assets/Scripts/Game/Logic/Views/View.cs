@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using System;
 #if UNITY
@@ -20,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void Awake()
         {
-            Level = FindGameObject<ILevel>();
+            Level = CoreAccessPoint.Core.Engine.Levels.GetCurrentLevel();
             CreatedInner();
         }
 

@@ -15,7 +15,8 @@ namespace GameUnity.Assets.Scripts.Unity.Engine.Definitions
 
         public T Get<T>(string id)
         {
-            var path = typeof(T).Name + "/" + id;
+            var name = typeof(T).Name;
+            var path = name + "/" + id;
             if (_cached.ContainsKey(path))
                 return (T)_cached[path];
 

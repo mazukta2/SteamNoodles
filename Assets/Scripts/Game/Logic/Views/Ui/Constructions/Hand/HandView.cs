@@ -22,7 +22,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 
         public void OnValidate()
         {
-            if (Level == null) throw new ArgumentNullException(nameof(Level));
             if (Cards == null) throw new ArgumentNullException(nameof(Cards));
             if (CardPrototype == null) throw new ArgumentNullException(nameof(CardPrototype));
         }

@@ -1,9 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Unity.Views;
-using Game.Assets.Scripts.Tests.Environment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Game.Assets.Scripts.Game.Unity.Views;
 #if UNITY
 using UnityEngine;
 #endif
@@ -13,27 +8,25 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
     public class ViewPrototype : View
     {
 #if UNITY
-        [SerializeField] Transform _pointer;
-
+        private bool _itsOriginal = true;
         protected override void CreatedInner()
         {
+            if (!_itsOriginal)
+                Destroy(this);
+            else
+                gameObject.SetActive(false);
         }
 
         protected override void DisposeInner()
         {
         }
 
-        public void Clear()
+        public T Create<T>(ViewContainer viewContainer) where T : View
         {
-            foreach (Transform item in _pointer)
-            {
-                GameObject.Destroy(item.gameObject);
-            }
-        }
-
-        public Transform GetPointer()
-        {
-            return _pointer;
+            var go = GameObject.Instantiate(gameObject, viewContainer.GetPointer());
+            go.GetComponent<ViewPrototype>()._itsOriginal = false;
+            go.SetActive(true);
+            return go.GetComponent<T>();
         }
 
 #else

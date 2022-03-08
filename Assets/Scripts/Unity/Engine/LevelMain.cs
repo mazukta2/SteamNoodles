@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Unity.Views;
 using System.Linq;
 
@@ -6,6 +7,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 {
     public class LevelMain : View, ILevel
     {
+        public GameLevel Model { get; set; }
 
         public T FindObject<T>() where T : View
         {
@@ -15,10 +17,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         protected override void CreatedInner()
         {
-        }
-
-        protected override void DisposeInner()
-        {
+            LevelsManager.Init(this);
         }
     }
 }
