@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Unity.Views;
-using Game.Assets.Scripts.Tests.Environment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             _views.Clear();
         }
 
-        public T Create<T>(Func<LevelInTests, T> creator) where T : View
+        public T Create<T>(Func<Tests.Environment.LevelInTests, T> creator) where T : View
         {
             var view = creator(Level);
             _views.Add(view);

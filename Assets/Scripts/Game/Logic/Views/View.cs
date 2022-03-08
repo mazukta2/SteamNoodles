@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Tests.Environment;
 using System;
 #if UNITY
     using UnityEngine;
@@ -36,8 +35,8 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected virtual void DisposeInner() { }
 #else
-        public LevelInTests Level { get; private set; }
-        public void Awake(LevelInTests level)
+        public Tests.Environment.LevelInTests Level { get; private set; }
+        public void Awake(Tests.Environment.LevelInTests level)
         {
             Level = level;
             CreatedInner();

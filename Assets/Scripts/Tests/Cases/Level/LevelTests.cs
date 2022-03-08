@@ -1,26 +1,29 @@
-﻿using Game.Tests.Cases;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Tests.Environment.Definitions.List;
+using Game.Assets.Scripts.Tests.Managers.Game;
+using Game.Assets.Scripts.Tests.Mocks.Levels;
+using Game.Tests.Cases;
+using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Level
 {
     public class LevelTests
     {
-        /*
         [Test]
         public void GameIsStarting()
         {
-            var build = new TestGameConstructor().Build();
-            Assert.IsNotNull(build.Game);
+            var build = new GameTestConstructor().Build();
+            Assert.IsNotNull(build.GameModel);
             build.Dispose();
-            Assert.IsNull(build.Game);
+            Assert.IsNull(build.GameModel);
         }
-
 
         [Test]
         public void SessionIsStarting()
         {
-            var build = new TestGameConstructor().Build();
-            var session = build.Game.CreateSession();
+            var build = new GameTestConstructor().Build();
+            var session = build.GameModel.CreateSession();
             session.Dispose();
             build.Dispose();
         }
@@ -28,9 +31,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void LevelIsLoading()
         {
-            var levelDefinition = new TestLevelDefinition(new EmptyLevel());
-            var build = new TestGameConstructor().LoadDefinitions(new DefaultDefinitions()).AddLevel(levelDefinition).Build();
-            var session = build.Game.CreateSession();
+            var levelDefinition = new LevelDefinitionInTests(new EmptyLevel());
+            var build = new GameTestConstructor().LoadDefinitions(new DefaultDefinitions()).AddLevel(levelDefinition).Build();
+            var session = build.GameModel.CreateSession();
             var levelLoading = session.LoadLevel(levelDefinition);
             GameLevel loadedLevel = null;
 
@@ -53,11 +56,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void LevelShortcutIsWorking()
         {
-            var build = new TestGameConstructor().LoadLevel(new EmptyLevel()).Build();
+            var build = new GameTestConstructor().AddAndLoadLevel(new EmptyLevel()).Build();
             Assert.IsNotNull(build.Engine.Levels.GetCurrentLevel());
             build.Dispose();
         }
-        */
 
         [TearDown]
         public void TestDisposables()
