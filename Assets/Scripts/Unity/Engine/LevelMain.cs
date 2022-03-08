@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace GameUnity.Assets.Scripts.Unity.Engine
 {
-    public class LeveMain : View, ILevel
+    public class LevelMain : View, ILevel
     {
 
         public T FindObject<T>() where T : View

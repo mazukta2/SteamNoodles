@@ -24,7 +24,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
             void Finish()
             {
-                var view = GameObject.FindObjectOfType<LeveMain>();
+                var view = GameObject.FindObjectOfType<LevelMain>();
                 if (view == null) throw new Exception("Cant find level view in scene");
 
                 onFinished(view);
@@ -43,7 +43,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         public ILevel GetCurrentLevel()
         {
-            return GameObject.FindObjectOfType<LeveMain>();
+            return GameObject.FindObjectOfType<LevelMain>();
         }
 
     }

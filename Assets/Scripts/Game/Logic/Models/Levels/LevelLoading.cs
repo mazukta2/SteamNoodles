@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Views.Sources;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,8 +35,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
                 return;
 
             var level = new GameLevel(_prototype, lvl, _session.GameRandom, _session.Time);
+            HandleLevelModelCreated(level, lvl);
             OnLoaded(level);
             Dispose();
+        }
+
+        private void HandleLevelModelCreated(GameLevel level, ILevel lvl)
+        {
+            lvl.FindObject<CurrentLevelSource>()?.SetLevel(level);
         }
     }
 }

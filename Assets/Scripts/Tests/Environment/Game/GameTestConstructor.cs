@@ -1,7 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
+using System;
 
 namespace Game.Assets.Scripts.Tests.Managers.Game
 {
@@ -9,6 +11,15 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
     {
         private GameEngineInTests _engine = new GameEngineInTests();
         private LevelDefinitionInTests _loadLevel;
+
+        public GameTestConstructor()
+        {
+        }
+
+        public GameTestConstructor(BaseConstructorSettings settings)
+        {
+            settings.Fill(this);
+        }
 
         public GameTestBuild Build()
         {
@@ -39,5 +50,19 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
             _loadLevel = levelDefinition;
             return this;
         }
+
+        public GameTestConstructor AddAndLoadLevel(LevelDefinitionInTests levelDefinition)
+        {
+            AddLevel(levelDefinition);
+            _loadLevel = levelDefinition;
+            return this;
+        }
+
+        public GameTestConstructor UpdateDefinition<T>(Action<T> p)
+        {
+            p(_engine.Settings.Get<T>());
+            return this;
+        }
+
     }
 }
