@@ -1,10 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Tests.Controllers;
-using Game.Tests.Mocks.Settings.Levels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace Game.Tests.Cases.Settings
 {

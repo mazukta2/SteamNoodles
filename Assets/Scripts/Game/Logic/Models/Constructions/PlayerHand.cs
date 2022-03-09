@@ -15,11 +15,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         public IReadOnlyCollection<ConstructionCard> Cards => _cards.AsReadOnly();
         private List<ConstructionCard> _cards { get; set; } = new List<ConstructionCard>();
 
-        private IHandDefinition _definition;
+        private LevelDefinition _definition;
 
-        public PlayerHand(IHandDefinition definition, IReadOnlyCollection<IConstructionDefinition> hand)
+        public PlayerHand(LevelDefinition definition, IReadOnlyCollection<ConstructionDefinition> hand)
         {
-            _definition = definition;
+            _definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            if (hand == null) throw new ArgumentNullException(nameof(hand));
             foreach (var item in hand)
             {
                 Add(new ConstructionCard(item));
@@ -45,7 +46,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             return _cards.Contains(scheme);
         }
 
-        public void Add(IConstructionDefinition proto)
+        public void Add(ConstructionDefinition proto)
         {
             Add(new ConstructionCard(proto));
             if (_cards.Count > _definition.HandSize)

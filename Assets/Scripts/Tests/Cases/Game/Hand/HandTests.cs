@@ -9,7 +9,6 @@ using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,7 +24,7 @@ namespace Game.Tests.Cases.Constructions
                 .LoadDefinitions(new DefaultDefinitions())
                 .AddAndLoadLevel(new LevelDefinitionInTests(new BasicSellingLevel())
                 {
-                    StartingHand = new List<IConstructionDefinition>() { construction }
+                    StartingHand = new List<ConstructionDefinition>() { construction }
                 })
                 .Build();
 

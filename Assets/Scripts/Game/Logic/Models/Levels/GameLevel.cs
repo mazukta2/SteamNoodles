@@ -1,5 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
@@ -14,9 +13,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public PlayerHand Hand { get; private set; }
 
-        private ILevelDefinition _settings;
+        private LevelDefinition _settings;
 
-        public GameLevel(ILevelDefinition settings, SessionRandom random, GameTime time)
+        public GameLevel(LevelDefinition settings, SessionRandom random, GameTime time)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             if (random == null) throw new ArgumentNullException(nameof(random));

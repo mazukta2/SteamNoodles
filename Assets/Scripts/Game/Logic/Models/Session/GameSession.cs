@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
             Time.Dispose();
         }
 
-        public LevelLoading LoadLevel(ILevelDefinition definition)
+        public LevelLoading LoadLevel(LevelDefinition definition)
         {
             return new LevelLoading(this, _levelsManager, definition);
         }

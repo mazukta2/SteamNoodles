@@ -1,19 +1,16 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using GameUnity.Assets.Scripts.Unity.Data.Buildings;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GameUnity.Assets.Scripts.Unity.Engine.Definitions.Levels
+namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 {
-    public class LevelDefinition : ILevelDefinition
+    public class LevelDefinition
     {
         public string SceneName { get; set; }
 
         [JsonConverter(typeof(DefinitionsConventer<ConstructionDefinition>))]
-        public IReadOnlyCollection<IConstructionDefinition> StartingHand { get; set; }
-
+        public IReadOnlyCollection<ConstructionDefinition> StartingHand { get; set; } = new List<ConstructionDefinition>();
         public int HandSize { get; set; }
     }
 }

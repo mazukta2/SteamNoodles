@@ -11,13 +11,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public event Action<GameLevel> OnLoaded = delegate { };
 
         private GameSession _session;
-        private ILevelDefinition _prototype;
+        private LevelDefinition _prototype;
         private ILevelsManager _levelManager;
         private GameLevel _level;
 
         private bool _isLoaded = false;
 
-        public LevelLoading(GameSession session, ILevelsManager levelManager, ILevelDefinition levelDefinition)
+        public LevelLoading(GameSession session, ILevelsManager levelManager, LevelDefinition levelDefinition)
         {
             _session = session;
             _prototype = levelDefinition;

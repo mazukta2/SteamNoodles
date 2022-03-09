@@ -32,7 +32,7 @@ namespace Game.Tests.Controllers
         }
 
 
-        public void Load(GameLevel model, ILevelDefinition prototype, Action<ILevel> onFinished)
+        public void Load(GameLevel model, LevelDefinition prototype, Action<ILevel> onFinished)
         {
             if (_loading != null)
                 throw new Exception("Already loading");
@@ -73,7 +73,7 @@ namespace Game.Tests.Controllers
 
         private class ManagerLoadingLevel
         {
-            public ManagerLoadingLevel(GameLevel model, ILevelDefinition prototype, Action<ILevel> onFinished)
+            public ManagerLoadingLevel(GameLevel model, LevelDefinition prototype, Action<ILevel> onFinished)
             {
                 Prototype = prototype;
                 OnFinished = onFinished;
@@ -81,7 +81,7 @@ namespace Game.Tests.Controllers
             }
              
             public GameLevel Model { get; private set; }
-            public ILevelDefinition Prototype { get; private set; }
+            public LevelDefinition Prototype { get; private set; }
             public Action<ILevel> OnFinished { get; private set; }
         }
     }

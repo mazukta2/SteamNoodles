@@ -12,8 +12,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         //public IVisual BuildingView => _prototype.BuildingView;
         //public IConstructionSettings Settings => _prototype;
 
-        private IConstructionDefinition _definition;
-        public ConstructionCard(IConstructionDefinition definition)
+        private ConstructionDefinition _definition;
+        public ConstructionCard(ConstructionDefinition definition)
         {
             _definition = definition;
         }
