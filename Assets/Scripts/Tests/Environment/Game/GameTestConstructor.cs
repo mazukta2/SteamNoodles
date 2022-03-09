@@ -31,6 +31,12 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
             return build;
         }
 
+        public GameTestConstructor AddDefinition(string name, object obj)
+        {
+            _engine.Settings.Add(name, obj);
+            return this;
+        }
+
         public GameTestConstructor LoadDefinitions(DefinitionsMockCreator definitions)
         {
             definitions.Create(_engine);
