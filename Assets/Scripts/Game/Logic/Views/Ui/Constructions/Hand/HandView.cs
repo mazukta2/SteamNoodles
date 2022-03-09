@@ -7,12 +7,13 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class HandView : View
+    public class HandView : View<HandViewPresenter>
     {
         public ViewContainer Cards;
         public ViewPrototype CardPrototype;
 
         private HandViewPresenter _viewPresenter;
+        public override HandViewPresenter GetViewPresenter() => _viewPresenter;
         protected override void CreatedInner()
         {
             _viewPresenter = new HandViewPresenter(Level, Cards.ViewPresenter, CardPrototype.ViewPresenter);

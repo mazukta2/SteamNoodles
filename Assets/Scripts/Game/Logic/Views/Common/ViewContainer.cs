@@ -11,45 +11,28 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
-    public class ViewContainer : View
+    public class ViewContainer : View<ContainerViewPresenter>
     {
 #if UNITY
         [SerializeField] Transform _pointer;
-
-        protected override void CreatedInner()
-        {
-        }
-
-        protected override void DisposeInner()
-        {
-        }
-
-        public void Clear()
-        {
-            foreach (Transform item in _pointer)
-            {
-                GameObject.Destroy(item.gameObject);
-            }
-        }
-
-        public Transform GetPointer()
-        {
-            return _pointer;
-        }
-
-#else
+#endif
         public ContainerViewPresenter ViewPresenter { get; private set; }
+        public override ContainerViewPresenter GetViewPresenter() => ViewPresenter;
 
         protected override void CreatedInner()
         {
+#if UNITY
+            ViewPresenter = new ContainerViewPresenter(Level, _pointer);
+#else
             ViewPresenter = new ContainerViewPresenter(Level);
+#endif
         }
 
         protected override void DisposeInner()
         {
             ViewPresenter.Dispose();
         }
-#endif
+
     }
 
     // Container is keeping spawned elements
@@ -57,9 +40,17 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
     {
         private List<ViewPresenter> _views = new List<ViewPresenter>();
 
+#if UNITY
+        private Transform _pointer;
+        public ContainerViewPresenter(ILevel level, Transform pointer) : base(level)
+        {
+            _pointer = pointer;
+        }
+#else
         public ContainerViewPresenter(ILevel level) : base(level)
         {
         }
+#endif
 
         protected override void DisposeInner()
         {
@@ -71,6 +62,13 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             foreach (var item in _views)
                 item.Dispose();
             _views.Clear();
+
+#if UNITY
+            foreach (Transform item in _pointer)
+            {
+                GameObject.Destroy(item.gameObject);
+            }
+#endif
         }
 
         public T Create<T>(Func<ILevel, T> creator) where T : ViewPresenter
@@ -89,5 +87,12 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         {
             return _views.OfType<T>().AsReadOnly();
         }
+
+#if UNITY
+        public Transform GetPointer()
+        {
+            return _pointer;
+        }
+#endif
     }
 }

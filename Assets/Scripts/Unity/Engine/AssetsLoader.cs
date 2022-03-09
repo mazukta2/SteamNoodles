@@ -1,7 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Environment.Engine.Assets;
 using Game.Assets.Scripts.Game.Logic.Common.Assets;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Unity.Views;
 using Game.Assets.Scripts.Game.Unity.Views.Ui;
 using UnityEngine;
 
@@ -23,34 +26,34 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             return targetFile;
         }
 
-        public IScreenAsset<T> GetScreen<T>() where T : ScreenView
+        public ViewPrefab<T> GetScreen<T>() where T : ScreenViewPresenter
         {
-            return new InnerResource<T>(this);
+            var name = typeof(T).Name;
+            name = name.Replace("ViewPresenter", "");
+            var prefab = LoadResource<GameObject>("Prefabs/Screens/" + name);
+            if (prefab == null)
+                throw new System.Exception($"Cant find screen prefab named : {name}");
+
+            return new ScreenPrefab<T>(prefab);
+
         }
 
-        public class InnerResource<T> : IScreenAsset<T> where T : ScreenView
+        public class ScreenPrefab<T> : ViewPrefab<T> where T : ViewPresenter
         {
-            private AssetsLoader _assets;
+            private GameObject _prefab;
 
-            public InnerResource(AssetsLoader assets)
+            public ScreenPrefab(GameObject prefab)
             {
-                _assets = assets;
+                _prefab = prefab;
             }
 
-            public T Create(ViewContainer container)
+            public override T Create(ContainerViewPresenter conteiner)
             {
-                return Instantiate(container);
-            }
-
-            private T Instantiate(ViewContainer parent)
-            {
-                var name = typeof(T).Name;
-                var prefab = LoadResource<GameObject>("Prefabs/Screens/" + name);
-                if (prefab == null)
-                    throw new System.Exception($"Cant find screen prefab named : {name}");
-
-                var go = GameObject.Instantiate(prefab, parent.GetPointer());
-                return go.GetComponent<T>();
+                var go = GameObject.Instantiate(_prefab, conteiner.GetPointer());
+                var view = go.GetComponent<View<T>>();
+                if (view == null)
+                    throw new System.Exception("Cant find view preseneter " + typeof(T).Name);
+                return view.GetViewPresenter();
             }
         }
     }

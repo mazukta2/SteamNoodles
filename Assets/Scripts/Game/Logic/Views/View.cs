@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using System;
 #if UNITY
     using UnityEngine;
@@ -8,16 +9,18 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Unity.Views
 {
-    public abstract class View 
+    public abstract class View<TViewPresenter>
 #if UNITY
-        : MonoBehaviour, IDisposable
+        : MonoBehaviour, IDisposable where TViewPresenter : ViewPresenter
 #else
-        : Disposable
+        : Disposable where TViewPresenter : ViewPresenter
 #endif
     {
 #if UNITY
         public bool IsDisposed { get; private set; }
         public event Action OnDispose = delegate { };
+
+        public abstract TViewPresenter GetViewPresenter();
 
         protected void Awake()
         {

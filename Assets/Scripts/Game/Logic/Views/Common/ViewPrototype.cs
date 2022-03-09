@@ -2,7 +2,6 @@
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Unity.Views;
-using Game.Assets.Scripts.Tests.Environment;
 using System;
 #if UNITY
 using UnityEngine;
@@ -10,50 +9,50 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
-    public class ViewPrototype : View
+    public class ViewPrototype : View<PrototypeViewPresenter>
     {
 #if UNITY
         private bool _itsOriginal = true;
+        public void SetOriginal(bool v)
+        {
+            _itsOriginal = v;
+        }
+#endif
+
+        public PrototypeViewPresenter ViewPresenter { get; private set; }
+        public override PrototypeViewPresenter GetViewPresenter() => ViewPresenter;
+
         protected override void CreatedInner()
         {
+#if UNITY
+            ViewPresenter = new PrototypeViewPresenter(Level, gameObject);
             if (!_itsOriginal)
                 Destroy(this);
             else
                 gameObject.SetActive(false);
-        }
-
-        protected override void DisposeInner()
-        {
-        }
-
-        public T Create<T>(ViewContainer viewContainer) where T : View
-        {
-            var go = GameObject.Instantiate(gameObject, viewContainer.GetPointer());
-            go.GetComponent<ViewPrototype>()._itsOriginal = false;
-            go.SetActive(true);
-            return go.GetComponent<T>();
-        }
-
 #else
-
-        public PrototypeViewPresenter ViewPresenter { get; private set; }
-
-        protected override void CreatedInner()
-        {
             ViewPresenter = new PrototypeViewPresenter(Level);
+#endif
         }
 
         protected override void DisposeInner()
         {
             ViewPresenter.Dispose();
         }
-#endif
+
     }
 
     public class PrototypeViewPresenter : ViewPresenter
     {
         private IPrefab _prefab;
 
+#if UNITY
+        private GameObject _gameObject;
+        public PrototypeViewPresenter(ILevel level, GameObject gameObject) : base(level)
+        {
+            _gameObject = gameObject;
+        }
+#endif
         public PrototypeViewPresenter(ILevel level) : base(level)
         {
         }
@@ -70,8 +69,18 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         
         public T Create<T>(ContainerViewPresenter viewContainer) where T : ViewPresenter
         {
+#if UNITY
+            var go = GameObject.Instantiate(_gameObject, viewContainer.GetPointer());
+            go.GetComponent<ViewPrototype>().SetOriginal(false);
+            go.SetActive(true);
+            var view = go.GetComponent<View<T>>();
+            if (view == null)
+                throw new Exception("Cant find view preseneter " + typeof(T).Name);
+            return view.GetViewPresenter();
+#else
             var prefab = (ViewPrefab<T>)_prefab;
             return prefab.Create(viewContainer);
+#endif
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Unity.Views.Ui
 {
-    public abstract class ScreenView : View
+    public abstract class ScreenView<T> : View<T> where T : ScreenViewPresenter
     {
     }
 

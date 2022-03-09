@@ -5,9 +5,10 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
 {
-    public class MainScreenView : ScreenView
+    public class MainScreenView : ScreenView<MainScreenViewPresenter>
     {
         private MainScreenViewPresenter _viewPresenter;
+        public override MainScreenViewPresenter GetViewPresenter() => _viewPresenter;
         protected override void CreatedInner()
         {
             _viewPresenter = new MainScreenViewPresenter(Level);

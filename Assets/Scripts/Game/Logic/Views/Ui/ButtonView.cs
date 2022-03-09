@@ -7,10 +7,8 @@ using UnityEngine.UI;
 
 namespace Game.Assets.Scripts.Game.Unity.Views.Ui
 {
-    public class ButtonView : View
+    public class ButtonView : View<ButtonViewPresenter>
     {
-        private Action _action;
-
 #if UNITY
         public bool IsShowing { get => GetButton().gameObject.activeSelf; set => GetButton().gameObject.SetActive(value); }
         public bool IsActive { get => GetButton().interactable; set => GetButton().interactable = value; }
@@ -28,7 +26,10 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
         public bool IsActive { get; set; } = true;
 #endif
 
+        private Action _action;
+
         public ButtonViewPresenter ViewPresenter { get; private set; }
+        public override ButtonViewPresenter GetViewPresenter() => ViewPresenter;
 
         public void SetAction(Action action)
         {
@@ -49,26 +50,20 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
             _action();
         }
 
-#if UNITY
-        protected override void CreatedInner()
-        {
-            GetButton().onClick.AddListener(Click);
-        }
-
-        protected override void DisposeInner()
-        {
-            GetButton().onClick.RemoveListener(Click);
-        }
-#endif
-
         protected override void CreatedInner()
         {
             ViewPresenter = new ButtonViewPresenter(Level);
+#if UNITY
+            GetButton().onClick.AddListener(Click);
+#endif
         }
 
         protected override void DisposeInner()
         {
             ViewPresenter.Dispose();
+#if UNITY
+            GetButton().onClick.RemoveListener(Click);
+#endif
         }
 
     }

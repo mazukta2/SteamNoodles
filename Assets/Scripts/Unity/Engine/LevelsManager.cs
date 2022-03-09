@@ -43,7 +43,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         }
 
 
-        public void Load(GameLevel model, ILevelDefinition prototype, Action<ILevel> onFinished)
+        public void Load(GameLevel model, LevelDefinition prototype, Action<ILevel> onFinished)
         {
             _model = model;
             Load(prototype.SceneName, onFinished);

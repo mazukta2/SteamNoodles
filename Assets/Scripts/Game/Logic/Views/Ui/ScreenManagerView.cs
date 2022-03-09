@@ -7,11 +7,12 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 {
-    public class ScreenManagerView : View
+    public class ScreenManagerView : View<ScreenManagerViewPresenter>
     {
         public ViewContainer Screen;
 
         private ScreenManagerViewPresenter _viewPresenter;
+        public override ScreenManagerViewPresenter GetViewPresenter() => _viewPresenter;
 
         protected override void CreatedInner()
         {
