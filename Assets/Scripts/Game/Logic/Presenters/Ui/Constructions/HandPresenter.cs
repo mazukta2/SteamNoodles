@@ -10,13 +10,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     public class HandPresenter : BasePresenter
     {
         private readonly PlayerHand _model;
-        private readonly HandView _view;
+        private readonly HandViewPresenter _view;
 
-        public HandPresenter(PlayerHand model, HandView view) : base(view)
+        public HandPresenter(PlayerHand model, HandViewPresenter view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _model = model ?? throw new ArgumentNullException(nameof(model));
-            _view.OnValidate();
 
             foreach (var item in model.Cards)
                 ScnemeAddedHandle(item);
@@ -30,8 +29,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void ScnemeAddedHandle(ConstructionCard obj)
         {
-            var view = _view.CardPrototype.Create<HandConstructionView>(_view.Cards);
-            view.SetPresenter(new HandConstructionPresenter(view));
+            var viewPresenter = _view.CardPrototype.Create<HandConstructionViewPresenter>(_view.Cards);
+            viewPresenter.Init(obj);
         }
     }
 }

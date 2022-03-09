@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
             Engine = null;
         }
 
-        public void LoadLevel(LevelDefinitionInTests loadLevel)
+        public void LoadLevel(LevelDefinitionMock loadLevel)
         {
             var session = GameModel.CreateSession();
             var levelLoading = session.LoadLevel(loadLevel);

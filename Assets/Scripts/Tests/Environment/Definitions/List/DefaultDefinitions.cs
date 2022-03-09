@@ -13,8 +13,8 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
     {
         public override void Create(GameEngineInTests engine)
         {
-            engine.Assets.Screens.AddPrototype(new MainScreenMock());
-            engine.Settings.Add(nameof(LevelDefinitionInTests), new LevelDefinitionInTests(new EmptyLevel()));
+            engine.Assets.Screens.AddPrototype<MainScreenViewPresenter>(new MainScreenPrefab());
+            engine.Settings.Add(nameof(LevelDefinitionMock), new LevelDefinitionMock(new EmptyLevel()));
         }
     }
 }

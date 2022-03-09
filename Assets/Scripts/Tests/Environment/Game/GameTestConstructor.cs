@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
     public class GameTestConstructor
     {
         private GameEngineInTests _engine = new GameEngineInTests();
-        private LevelDefinitionInTests _loadLevel;
+        private LevelDefinitionMock _loadLevel;
 
         public GameTestConstructor()
         {
@@ -37,21 +37,21 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
             return this;
         }
 
-        public GameTestConstructor AddLevel(LevelDefinitionInTests levelDefinition)
+        public GameTestConstructor AddLevel(LevelDefinitionMock levelDefinition)
         {
             _engine.Levels.Add(levelDefinition);
             return this;
         }
 
-        public GameTestConstructor AddAndLoadLevel(LevelMockCreator mockCreator)
+        public GameTestConstructor AddAndLoadLevel(LevelPrefabMock mockCreator)
         {
-            var levelDefinition = new LevelDefinitionInTests(mockCreator);
+            var levelDefinition = new LevelDefinitionMock(mockCreator);
             AddLevel(levelDefinition);
             _loadLevel = levelDefinition;
             return this;
         }
 
-        public GameTestConstructor AddAndLoadLevel(LevelDefinitionInTests levelDefinition)
+        public GameTestConstructor AddAndLoadLevel(LevelDefinitionMock levelDefinition)
         {
             AddLevel(levelDefinition);
             _loadLevel = levelDefinition;

@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void LevelIsLoading()
         {
-            var levelDefinition = new LevelDefinitionInTests(new EmptyLevel());
+            var levelDefinition = new LevelDefinitionMock(new EmptyLevel());
             var build = new GameTestConstructor().LoadDefinitions(new DefaultDefinitions()).AddLevel(levelDefinition).Build();
             var session = build.GameModel.CreateSession();
             var levelLoading = session.LoadLevel(levelDefinition);
@@ -71,29 +71,29 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
             game.Dispose();
         }
 
-        [Test]
-        public void IsSceneViewConnectedToLevel()
-        {
-            var game = new GameTestConstructor(new DefaultPreset()).Build();
+        //[Test]
+        //public void IsSceneViewConnectedToLevel()
+        //{
+        //    var game = new GameTestConstructor(new DefaultPreset()).Build();
 
-            var view = game.CurrentLevel.FindObject<ScreenManagerView>();
-            Assert.IsNotNull(view.Level);
-            Assert.IsNotNull(view.Level.Model);
+        //    var view = game.CurrentLevel.FindObject<ScreenManagerViewPresenter>();
+        //    Assert.IsNotNull(view.Level);
+        //    Assert.IsNotNull(view.Level.Model);
 
-            game.Dispose();
-        }
+        //    game.Dispose();
+        //}
         
-        [Test]
-        public void IsViewConnectedToLevel()
-        {
-            var game = new GameTestConstructor(new DefaultPreset()).Build();
+        //[Test]
+        //public void IsViewConnectedToLevel()
+        //{
+        //    var game = new GameTestConstructor(new DefaultPreset()).Build();
 
-            var view = game.CurrentLevel.Add(new TestView());
-            Assert.IsNotNull(view.Level);
-            Assert.IsNotNull(view.Level.Model);
+        //    var view = game.CurrentLevel.Add(new TestView());
+        //    Assert.IsNotNull(view.Level);
+        //    Assert.IsNotNull(view.Level.Model);
 
-            game.Dispose();
-        }
+        //    game.Dispose();
+        //}
 
         private class TestView : View
         {

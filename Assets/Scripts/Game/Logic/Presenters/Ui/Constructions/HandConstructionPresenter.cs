@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Presenters;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Unity.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -9,7 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         //private IHandConstructionView _view;
         //private Action<ConstructionCard> _onClick;
 
-        public HandConstructionPresenter(View view) : base(view)
+        public HandConstructionPresenter(HandConstructionViewPresenter view) : base(view)
         {
         }
         //public HandConstructionPresenter(ConstructionCard model, IHandConstructionView view, Action<ConstructionCard> onClick)

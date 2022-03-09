@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Presenters;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Unity.Views;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
@@ -13,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Core
         public void ViewIsCreatingPresenter()
         {
             var build = new GameTestConstructor().AddAndLoadLevel(new EmptyLevel()).Build();
-            var view = build.CurrentLevel.Add(new TestView());
+            var view = new TestView(build.CurrentLevel);
 
             Assert.IsTrue(view.IsInited);
             Assert.IsNotNull(view.Presenter);
@@ -27,12 +29,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Core
             build.Dispose();
         }
 
-        private class TestView : View
+        private class TestView : ViewPresenter
         {
             public bool IsInited { get; private set; }
             public TestPresenter Presenter { get; private set; }
 
-            protected override void CreatedInner()
+            public TestView(ILevel level) : base(level)
             {
                 Presenter = new TestPresenter(this);
                 IsInited = true;

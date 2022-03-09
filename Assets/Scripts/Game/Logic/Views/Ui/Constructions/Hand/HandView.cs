@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Unity.Views;
 using System;
@@ -10,20 +12,30 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         public ViewContainer Cards;
         public ViewPrototype CardPrototype;
 
-        private HandPresenter _presenter;
+        private HandViewPresenter _viewPresenter;
         protected override void CreatedInner()
         {
-            _presenter = new HandPresenter(Level.Model.Hand, this);
+            _viewPresenter = new HandViewPresenter(Level, Cards.ViewPresenter, CardPrototype.ViewPresenter);
         }
 
         protected override void DisposeInner()
         {
+            _viewPresenter.Dispose();
         }
+    }
 
-        public void OnValidate()
+    public class HandViewPresenter : ViewPresenter
+    {
+        public ContainerViewPresenter Cards { get; private set; }
+        public PrototypeViewPresenter CardPrototype { get; private set; }
+
+        private HandPresenter _presenter;
+        public HandViewPresenter(ILevel level, ContainerViewPresenter cards, PrototypeViewPresenter cardPrototype) : base(level)
         {
-            if (Cards == null) throw new ArgumentNullException(nameof(Cards));
-            if (CardPrototype == null) throw new ArgumentNullException(nameof(CardPrototype));
+            Cards = cards ?? throw new ArgumentNullException(nameof(cards));
+            CardPrototype = cardPrototype ?? throw new ArgumentNullException(nameof(cardPrototype));
+
+            _presenter = new HandPresenter(level.Model.Hand, this);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Unity.Views;
 using System;
@@ -8,17 +10,32 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
     public class ScreenManagerView : View
     {
         public ViewContainer Screen;
-        private ScreenManagerPresenter _presenter;
+
+        private ScreenManagerViewPresenter _viewPresenter;
 
         protected override void CreatedInner()
         {
-            var assets = CoreAccessPoint.Core.Engine.Assets.Screens;
-            _presenter = new ScreenManagerPresenter(this, assets);
+            _viewPresenter = new ScreenManagerViewPresenter(Level, Screen.ViewPresenter);
         }
 
-        public void OnValidate()
+        protected override void DisposeInner()
         {
-            if (Screen == null) throw new ArgumentNullException(nameof(Screen));
+            _viewPresenter.Dispose();
+        }
+    }
+
+    public class ScreenManagerViewPresenter : ViewPresenter
+    {
+        public ContainerViewPresenter Screen { get; }
+
+        private ScreenManagerPresenter _presenter;
+        public ScreenManagerViewPresenter(ILevel level, ContainerViewPresenter screen) : base(level)
+        {
+            if (screen == null) throw new ArgumentNullException(nameof(screen));
+            Screen = screen;
+
+            var assets = CoreAccessPoint.Core.Engine.Assets.Screens;
+            _presenter = new ScreenManagerPresenter(this, assets);
         }
     }
 }

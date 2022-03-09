@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
+using System;
 #if UNITY_EDITOR
 using UnityEngine.UI;
 #endif
@@ -25,6 +27,8 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
         public bool IsShowing { get; set; } = true;
         public bool IsActive { get; set; } = true;
 #endif
+
+        public ButtonViewPresenter ViewPresenter { get; private set; }
 
         public void SetAction(Action action)
         {
@@ -57,6 +61,22 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
         }
 #endif
 
+        protected override void CreatedInner()
+        {
+            ViewPresenter = new ButtonViewPresenter(Level);
+        }
 
+        protected override void DisposeInner()
+        {
+            ViewPresenter.Dispose();
+        }
+
+    }
+
+    public class ButtonViewPresenter : ViewPresenter
+    {
+        public ButtonViewPresenter(ILevel level) : base(level)
+        {
+        }
     }
 }

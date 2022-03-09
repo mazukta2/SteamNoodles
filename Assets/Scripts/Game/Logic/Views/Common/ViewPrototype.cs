@@ -1,4 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Unity.Views;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
+using Game.Assets.Scripts.Game.Unity.Views;
 using Game.Assets.Scripts.Tests.Environment;
 using System;
 #if UNITY
@@ -33,21 +36,42 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 
 #else
 
-        private Func<LevelInTests, View> _creator;
-        public void SetCreator(Func<LevelInTests, View> action)
+        public PrototypeViewPresenter ViewPresenter { get; private set; }
+
+        protected override void CreatedInner()
         {
-            _creator = action;
+            ViewPresenter = new PrototypeViewPresenter(Level);
         }
 
-        public T Create<T>(ViewContainer viewContainer) where T : View
+        protected override void DisposeInner()
         {
-            return viewContainer.Create(Create);
-
-            T Create(LevelInTests level)
-            {
-                return (T)_creator(level);
-            }
+            ViewPresenter.Dispose();
         }
 #endif
+    }
+
+    public class PrototypeViewPresenter : ViewPresenter
+    {
+        private IPrefab _prefab;
+
+        public PrototypeViewPresenter(ILevel level) : base(level)
+        {
+        }
+
+        public PrototypeViewPresenter(ILevel level, IPrefab prefab) : this(level)
+        {
+            _prefab = prefab;
+        }
+
+        public void Set(IPrefab prefab)
+        {
+            _prefab = prefab;
+        }
+        
+        public T Create<T>(ContainerViewPresenter viewContainer) where T : ViewPresenter
+        {
+            var prefab = (ViewPrefab<T>)_prefab;
+            return prefab.Create(viewContainer);
+        }
     }
 }

@@ -15,10 +15,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         {
             var build = new GameTestConstructor().LoadDefinitions(new DefaultDefinitions()).AddAndLoadLevel(new BasicSellingLevel()).Build();
 
-            var screenManager = build.Engine.Levels.GetCurrentLevel().FindObject<ScreenManagerView>();
+            var screenManager = build.CurrentLevel.FindViewPresenter<ScreenManagerViewPresenter>();
             Assert.IsNotNull(screenManager);
 
-            var mainScreen = build.Engine.Levels.GetCurrentLevel().FindObject<MainScreenView>();
+            var mainScreen = build.CurrentLevel.FindViewPresenter<MainScreenViewPresenter>();
             Assert.IsNotNull(mainScreen);
 
             build.Dispose();

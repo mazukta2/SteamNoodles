@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Mocks.Levels
 {
-    public abstract class LevelMockCreator
+    public abstract class LevelPrefabMock
     {
         public abstract void FillLevel(LevelInTests level);
     }

@@ -1,9 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Game.Unity.Views;
-using Game.Assets.Scripts.Tests.Environment;
-using Game.Assets.Scripts.Tests.Environment.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Unity.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
@@ -19,31 +19,32 @@ namespace Game.Tests.Cases.Constructions
         [Test]
         public void IsFirstCardSpawned()
         {
-            var construction = new ConstructionDefinitionInTests();
+            var construction = new ConstructionDefinition();
             var game = new GameTestConstructor()
                 .LoadDefinitions(new DefaultDefinitions())
-                .AddAndLoadLevel(new LevelDefinitionInTests(new BasicSellingLevel())
+                .AddAndLoadLevel(new LevelDefinitionMock(new BasicSellingLevel())
                 {
                     StartingHand = new List<ConstructionDefinition>() { construction }
                 })
                 .Build();
 
-            var container = game.CurrentLevel.Add(new ViewContainer());
-            var prototype = game.CurrentLevel.Add(new ViewPrototype());
-            prototype.SetCreator(Prototype);
-            var hand = game.CurrentLevel.Add(new HandView()
-            {
-                Cards = container,
-                CardPrototype = prototype
-            });
+            var container = new ContainerViewPresenter(game.CurrentLevel);
+            var prototype = new PrototypeViewPresenter(game.CurrentLevel, new HandConstructionViewPrefab());
+            var hand = new HandViewPresenter(game.CurrentLevel, container, prototype);
 
-            Assert.AreEqual(1, hand.Cards.Get<HandConstructionView>().Count());
+            Assert.AreEqual(1, hand.Cards.Get<HandConstructionViewPresenter>().Count());
 
             game.Dispose();
+        }
 
-            View Prototype(LevelInTests level)
+        private class HandConstructionViewPrefab : ViewPrefab<HandConstructionViewPresenter>
+        {
+            public override HandConstructionViewPresenter Create(ContainerViewPresenter conteiner)
             {
-                return game.CurrentLevel.Add(new HandConstructionView());
+                return conteiner.Create((level) =>
+                {
+                    return new HandConstructionViewPresenter(level);
+                });
             }
         }
 

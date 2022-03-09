@@ -10,7 +10,7 @@ namespace Game.Tests.Controllers
 {
     public class LevelsManagerInTests : ILevelsManager
     {
-        private List<LevelDefinitionInTests> _availableLevels = new List<LevelDefinitionInTests>();
+        private List<LevelDefinitionMock> _availableLevels = new List<LevelDefinitionMock>();
         private ManagerLoadingLevel _loading;
         private LevelInTests _level;
 
@@ -54,7 +54,7 @@ namespace Game.Tests.Controllers
             _level = null;
         }
 
-        public void Add(LevelDefinitionInTests levelDefinition)
+        public void Add(LevelDefinitionMock levelDefinition)
         {
             _availableLevels.Add(levelDefinition);
         }
@@ -65,7 +65,7 @@ namespace Game.Tests.Controllers
                 throw new Exception("Nothing is loading");
 
             _level = new LevelInTests(this, _loading.Model);
-            ((LevelDefinitionInTests)(_loading.Prototype)).Creator.FillLevel(_level);
+            ((LevelDefinitionMock)(_loading.Prototype)).LevelPrefab.FillLevel(_level);
             _level.Loaded = true;
             _loading.OnFinished(_level);
             _loading = null;

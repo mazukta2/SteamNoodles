@@ -1,17 +1,17 @@
-﻿using Game.Assets.Scripts.Game.Unity.Views.Ui;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Unity.Views.Ui.Screens;
-using Game.Assets.Scripts.Tests.Environment;
-using System;
-using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 {
-    public class MainScreenMock : MockPrefab<MainScreenView>
+    public class MainScreenPrefab : ViewPrefab<MainScreenViewPresenter>
     {
-        public override void Spawn(LevelInTests level, MainScreenView s)
+        public override MainScreenViewPresenter Create(ContainerViewPresenter conteiner)
         {
-            var buildButton = level.Add(new ButtonView());
-            s.BuildButton = buildButton;
+            return conteiner.Create((level) =>
+            {
+                return new MainScreenViewPresenter(level);
+            });
         }
     }
 }

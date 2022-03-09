@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Unity.Views;
 using System;
@@ -9,8 +10,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters
 {
     public abstract class BasePresenter : PrivateDisposable
     {
-        private View _view;
-        public BasePresenter(View view)
+        private ViewPresenter _view;
+        public BasePresenter(ViewPresenter view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             if (_view.IsDisposed) throw new ArgumentException(nameof(view) + " is disposed");

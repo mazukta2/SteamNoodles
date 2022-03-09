@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Unity.Views;
 using System;
 using System.Collections.Generic;
@@ -36,28 +38,26 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         }
 
 #else
-        private List<View> _views = new List<View>();
-
-        public void Clear()
-        {
-            foreach (var item in _views)
-                item.Dispose();
-            _views.Clear();
-        }
-
-        public T Create<T>(Func<Tests.Environment.LevelInTests, T> creator) where T : View
-        {
-            var view = creator((Tests.Environment.LevelInTests)Level);
-            _views.Add(view);
-            return view;
-        }
-
-        public bool Has<T>()
-        {
-            return _views.OfType<T>().Any();
-        }
+        public ContainerViewPresenter ViewPresenter { get; private set; }
 
         protected override void CreatedInner()
+        {
+            ViewPresenter = new ContainerViewPresenter(Level);
+        }
+
+        protected override void DisposeInner()
+        {
+            ViewPresenter.Dispose();
+        }
+#endif
+    }
+
+    // Container is keeping spawned elements
+    public class ContainerViewPresenter : ViewPresenter
+    {
+        private List<ViewPresenter> _views = new List<ViewPresenter>();
+
+        public ContainerViewPresenter(ILevel level) : base(level)
         {
         }
 
@@ -66,11 +66,28 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             Clear();
         }
 
-        public IReadOnlyCollection<T> Get<T>()
+        public void Clear()
+        {
+            foreach (var item in _views)
+                item.Dispose();
+            _views.Clear();
+        }
+
+        public T Create<T>(Func<ILevel, T> creator) where T : ViewPresenter
+        {
+            var viewPresenter = creator(Level);
+            _views.Add(viewPresenter);
+            return viewPresenter;
+        }
+
+        public bool Has<T>()
+        {
+            return _views.OfType<T>().Any();
+        }
+
+        public IReadOnlyCollection<T> Get<T>() where T : ViewPresenter
         {
             return _views.OfType<T>().AsReadOnly();
         }
-
-#endif
     }
 }

@@ -1,5 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Unity.Views;
+﻿using Game.Assets.Scripts.Game.Unity.Views;
 
 namespace Game.Assets.Scripts.Game.Logic.Common.Assets
 {

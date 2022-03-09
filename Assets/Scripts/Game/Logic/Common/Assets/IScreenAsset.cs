@@ -5,6 +5,6 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Assets
 {
     public interface IScreenAsset<T> : IViewAsset<T> where T : ScreenView
     {
-        T Create(ViewContainer container);
+        T Create(ContainerViewPresenter container);
     }
 }

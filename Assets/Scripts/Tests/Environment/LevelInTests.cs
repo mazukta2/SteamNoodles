@@ -1,6 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Unity.Views;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Tests.Controllers;
 using System;
 using System.Collections.Generic;
@@ -11,13 +11,15 @@ namespace Game.Assets.Scripts.Tests.Environment
     public class LevelInTests : ILevel
     {
         public event Action OnLoadedUpdate = delegate { };
+
+        public event Action OnDispose = delegate { };
         public bool Loaded { get => _loaded; internal set { _loaded = value; OnLoadedUpdate(); } }
 
         public GameLevel Model { get; private set; }
 
         private bool _loaded;
         private LevelsManagerInTests _testLevelsManager;
-        private List<View> _views = new List<View>();
+        private List<ViewPresenter> _views = new List<ViewPresenter>();
 
         public LevelInTests(LevelsManagerInTests testLevelsManager, GameLevel gameLevel)
         {
@@ -27,22 +29,26 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public void Dispose()
         {
-            foreach (var item in _views)
-                item.Dispose();
-
             _testLevelsManager.Unload();
+
+            OnDispose();
+            if (_views.Count > 0)
+                throw new Exception("View presenters are not destroyed");
         }
 
-        public T FindObject<T>() where T : View
+        public T FindViewPresenter<T>() where T : ViewPresenter
         {
             return _views.OfType<T>().FirstOrDefault();
         }
 
-        public T Add<T>(T view) where T : View
+        public void Remove(ViewPresenter viewPresenter)
         {
-            _views.Add(view);
-            view.Awake(this);
-            return view;
+            _views.Remove(viewPresenter);
+        }
+
+        public void Add(ViewPresenter viewPresenter)
+        {
+            _views.Add(viewPresenter);
         }
     }
 }
