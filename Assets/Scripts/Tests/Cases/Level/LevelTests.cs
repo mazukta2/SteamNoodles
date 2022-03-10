@@ -95,10 +95,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         //    game.Dispose();
         //}
 
-        private class TestView : View
-        {
+        //private class TestView : View<>
+        //{
 
-        }
+        //}
 
         [TearDown]
         public void TestDisposables()

@@ -20,8 +20,6 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         public bool IsDisposed { get; private set; }
         public event Action OnDispose = delegate { };
 
-        public abstract TViewPresenter GetViewPresenter();
-
         protected void Awake()
         {
             Level = CoreAccessPoint.Core.Engine.Levels.GetCurrentLevel();
@@ -48,6 +46,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         }
 #endif
 
+        public abstract TViewPresenter GetViewPresenter();
         public ILevel Level { get; private set; }
         protected virtual void CreatedInner() { }
     }
