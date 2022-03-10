@@ -1,24 +1,20 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Screens;
-using System;
 
-namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
+namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 {
-    public class BuildScreenView : ScreenView<BuildScreenViewPresenter>
+    public class BuildScreenView : ScreenView
     {
-        private BuildScreenViewPresenter _viewPresenter;
-        public override BuildScreenViewPresenter GetViewPresenter() => _viewPresenter;
-        protected override void CreatedInner()
+        private BuildScreenPresenter _presenter;
+        public BuildScreenView(ILevel level) : base(level)
         {
-            _viewPresenter = new BuildScreenViewPresenter(Level);
         }
 
-        protected override void DisposeInner()
+        public override void SetManager(ScreenManagerPresenter manager)
         {
-            _viewPresenter.Dispose();
+            base.SetManager(manager);
+            _presenter = new BuildScreenPresenter(this, manager);
         }
     }
-
 }

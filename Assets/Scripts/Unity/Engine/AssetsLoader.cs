@@ -1,11 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Environment.Engine.Assets;
-using Game.Assets.Scripts.Game.Logic.Common.Assets;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Unity.Views;
-using Game.Assets.Scripts.Game.Unity.Views.Ui;
 using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Engine
@@ -26,19 +25,19 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             return targetFile;
         }
 
-        public ViewPrefab<T> GetScreen<T>() where T : ScreenViewPresenter
+        public ViewPrefab GetScreen<T>() where T : ScreenView
         {
             var name = typeof(T).Name;
-            name = name.Replace("ViewPresenter", "");
+            name = name.Replace("View", "");
             var prefab = LoadResource<GameObject>("Prefabs/Screens/" + name);
             if (prefab == null)
                 throw new System.Exception($"Cant find screen prefab named : {name}");
 
-            return new ScreenPrefab<T>(prefab);
+            return new ScreenPrefab(prefab);
 
         }
 
-        public class ScreenPrefab<T> : ViewPrefab<T> where T : ViewPresenter
+        public class ScreenPrefab : ViewPrefab
         {
             private GameObject _prefab;
 
@@ -47,13 +46,14 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                 _prefab = prefab;
             }
 
-            public override T Create(ContainerViewPresenter conteiner)
+            public override object Create<T>(ContainerView conteiner)
             {
-                var go = GameObject.Instantiate(_prefab, conteiner.GetPointer());
-                var view = go.GetComponent<View<T>>();
+                var unityConteiner = ContainerUnityView.Find(conteiner);
+                var go = GameObject.Instantiate(_prefab, unityConteiner.GetPointer());
+                var view = go.GetComponent<UnityView<T>>();
                 if (view == null)
-                    throw new System.Exception("Cant find view preseneter " + typeof(View<T>).Name);
-                return view.GetViewPresenter();
+                    throw new System.Exception("Cant find view preseneter " + typeof(UnityView<T>).Name);
+                return view.GetView();
             }
         }
     }

@@ -1,10 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters;
-using Game.Assets.Scripts.Game.Unity.Views;
+using Game.Assets.Scripts.Game.Logic.Views;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Engine
@@ -13,15 +11,16 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     {
         public GameLevel Model { get; set; }
 
-        private List<ViewPresenter> _list = new List<ViewPresenter>();
+        private List<View> _list = new List<View>();
 
         public event Action OnDispose;
 
-        public void Add(ViewPresenter viewPresenter)
+        public void Add(View viewPresenter)
         {
             _list.Add(viewPresenter);
         }
-        public void Remove(ViewPresenter viewPresenter)
+
+        public void Remove(View viewPresenter)
         {
             _list.Remove(viewPresenter);
         }

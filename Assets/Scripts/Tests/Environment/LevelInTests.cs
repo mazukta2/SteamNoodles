@@ -1,6 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Tests.Controllers;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         private bool _loaded;
         private LevelsManagerInTests _testLevelsManager;
-        private List<ViewPresenter> _views = new List<ViewPresenter>();
+        private List<View> _views = new List<View>();
 
         public LevelInTests(LevelsManagerInTests testLevelsManager, GameLevel gameLevel)
         {
@@ -36,17 +36,17 @@ namespace Game.Assets.Scripts.Tests.Environment
                 throw new Exception("View presenters are not destroyed");
         }
 
-        public T FindViewPresenter<T>() where T : ViewPresenter
+        public T FindView<T>() where T : View
         {
             return _views.OfType<T>().FirstOrDefault();
         }
 
-        public void Remove(ViewPresenter viewPresenter)
+        public void Remove(View viewPresenter)
         {
             _views.Remove(viewPresenter);
         }
 
-        public void Add(ViewPresenter viewPresenter)
+        public void Add(View viewPresenter)
         {
             _views.Add(viewPresenter);
         }

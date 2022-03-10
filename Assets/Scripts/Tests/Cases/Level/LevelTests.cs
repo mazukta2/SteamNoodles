@@ -1,6 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Views.Ui;
-using Game.Assets.Scripts.Game.Unity.Views;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Environment.Game.ConstructorSettings;
 using Game.Assets.Scripts.Tests.Managers.Game;
@@ -70,35 +68,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
             var game = new GameTestConstructor(new DefaultPreset()).Build();
             game.Dispose();
         }
-
-        //[Test]
-        //public void IsSceneViewConnectedToLevel()
-        //{
-        //    var game = new GameTestConstructor(new DefaultPreset()).Build();
-
-        //    var view = game.CurrentLevel.FindObject<ScreenManagerViewPresenter>();
-        //    Assert.IsNotNull(view.Level);
-        //    Assert.IsNotNull(view.Level.Model);
-
-        //    game.Dispose();
-        //}
-        
-        //[Test]
-        //public void IsViewConnectedToLevel()
-        //{
-        //    var game = new GameTestConstructor(new DefaultPreset()).Build();
-
-        //    var view = game.CurrentLevel.Add(new TestView());
-        //    Assert.IsNotNull(view.Level);
-        //    Assert.IsNotNull(view.Level.Model);
-
-        //    game.Dispose();
-        //}
-
-        //private class TestView : View<>
-        //{
-
-        //}
 
         [TearDown]
         public void TestDisposables()

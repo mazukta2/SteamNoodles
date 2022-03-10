@@ -1,17 +1,13 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Unity.Views;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters
 {
     public abstract class BasePresenter : PrivateDisposable
     {
-        private ViewPresenter _view;
-        public BasePresenter(ViewPresenter view)
+        private View _view;
+        public BasePresenter(View view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             if (_view.IsDisposed) throw new ArgumentException(nameof(view) + " is disposed");

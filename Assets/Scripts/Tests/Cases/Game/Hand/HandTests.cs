@@ -1,11 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
-using Game.Assets.Scripts.Game.Unity.Views.Ui;
-using Game.Assets.Scripts.Game.Unity.Views.Ui.Screens;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
@@ -30,25 +27,20 @@ namespace Game.Tests.Cases.Constructions
                 })
                 .Build();
 
-            var screenContainer = new ContainerViewPresenter(game.CurrentLevel);
-            var screenManager = new ScreenManagerViewPresenter(game.CurrentLevel, screenContainer);
-            var container = new ContainerViewPresenter(game.CurrentLevel);
-            var prototype = new PrototypeViewPresenter(game.CurrentLevel, new HandConstructionViewPrefab());
-            var hand = new HandViewPresenter(game.CurrentLevel, screenManager, container, prototype);
-
-            Assert.AreEqual(1, hand.Cards.Get<HandConstructionViewPresenter>().Count());
+            var hand = game.CurrentLevel.FindView<HandView>();
+            Assert.AreEqual(1, hand.Cards.Get<HandConstructionView>().Count());
 
             game.Dispose();
         }
 
-        private class HandConstructionViewPrefab : ViewPrefab<HandConstructionViewPresenter>
+        private class HandConstructionViewPrefab : ViewPrefab
         {
-            public override HandConstructionViewPresenter Create(ContainerViewPresenter conteiner)
+            public override object Create<T>(ContainerView conteiner)
             {
                 return conteiner.Create((level) =>
                 {
-                    var buttonView = new ButtonViewPresenter(level);
-                    return new HandConstructionViewPresenter(level, buttonView);
+                    var buttonView = new ButtonView(level);
+                    return new HandConstructionView(level, buttonView);
                 });
             }
         }

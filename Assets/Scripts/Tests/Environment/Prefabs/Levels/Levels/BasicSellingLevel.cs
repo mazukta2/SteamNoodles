@@ -8,8 +8,8 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
     {
         public override void FillLevel(LevelInTests level)
         {
-            var screenSpawnPoint = new ContainerViewPresenter(level);
-            new ScreenManagerViewPresenter(level, screenSpawnPoint);
+            var screenSpawnPoint = new ContainerView(level);
+            new ScreenManagerView(level, screenSpawnPoint);
         }
     }
 }

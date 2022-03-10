@@ -1,26 +1,25 @@
-﻿using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Game.Unity.Views;
-using Game.Assets.Scripts.Game.Unity.Views.Ui;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
+using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class HandConstructionView : View<HandConstructionViewPresenter>
+    public class HandConstructionView : View
     {
-        public ButtonView Button;
+        public ButtonView Button { get; }
 
-        private HandConstructionViewPresenter _viewPresenter;
-        public override HandConstructionViewPresenter GetViewPresenter() => _viewPresenter;
+        private HandConstructionPresenter _presenter;
 
-        protected override void CreatedInner()
+        public HandConstructionView(ILevel level, ButtonView button) : base(level)
         {
-            Button.ForceAwake();
-            _viewPresenter = new HandConstructionViewPresenter(Level, Button.ViewPresenter);
+            Button = button ?? throw new ArgumentNullException(nameof(button));
         }
 
-        protected override void DisposeInner()
+        public void Init(ScreenManagerPresenter manager, ConstructionCard construction)
         {
-            _viewPresenter.Dispose();
+            _presenter = new HandConstructionPresenter(manager, this, construction);
         }
     }
-
 }

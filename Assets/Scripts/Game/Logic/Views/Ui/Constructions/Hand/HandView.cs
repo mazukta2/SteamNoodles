@@ -1,32 +1,27 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
-using Game.Assets.Scripts.Game.Unity.Views;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class HandView : View<HandViewPresenter>
+    public class HandView : View
     {
-        public ViewContainer Cards;
-        public ViewPrototype CardPrototype;
+        public ContainerView Cards { get; private set; }
+        public PrototypeView CardPrototype { get; private set; }
 
-        private HandViewPresenter _viewPresenter;
-        public override HandViewPresenter GetViewPresenter() => _viewPresenter;
-    
-        protected override void DisposeInner()
+        private HandPresenter _presenter;
+        public HandView(ILevel level, ContainerView cards, PrototypeView cardPrototype) : base(level)
         {
-            _viewPresenter.Dispose();
+            Cards = cards ?? throw new ArgumentNullException(nameof(cards));
+            CardPrototype = cardPrototype ?? throw new ArgumentNullException(nameof(cardPrototype));
         }
 
-        public void Init(ScreenManagerViewPresenter screenManager)
+        public void SetScreen(BaseGameScreenPresenter screenPresenter)
         {
-            Cards.ForceAwake();
-            CardPrototype.ForceAwake();
-            _viewPresenter = new HandViewPresenter(Level, screenManager, Cards.ViewPresenter, CardPrototype.ViewPresenter);
+            _presenter = new HandPresenter(Level.Model.Hand, screenPresenter.Manager, this);
         }
     }
-
 }

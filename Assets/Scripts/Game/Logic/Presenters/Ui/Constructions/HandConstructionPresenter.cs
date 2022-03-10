@@ -1,8 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Screens;
-using Game.Assets.Scripts.Game.Unity.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -10,10 +8,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     public class HandConstructionPresenter : BasePresenter
     {
         private ConstructionCard _model;
-        private HandConstructionViewPresenter _view;
+        private HandConstructionView _view;
         private ScreenManagerPresenter _screenManager;
 
-        public HandConstructionPresenter(ScreenManagerPresenter screenManager,  HandConstructionViewPresenter view, ConstructionCard model) : base(view)
+        public HandConstructionPresenter(ScreenManagerPresenter screenManager,  HandConstructionView view, ConstructionCard model) : base(view)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -25,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleClick()
         {
-            _screenManager.GetScreen<BuildScreenViewPresenter>().Open();
+            _screenManager.GetScreen<BuildScreenView>().Open();
         }
 
         private void UpdateView()

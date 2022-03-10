@@ -1,7 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters;
-using Game.Assets.Scripts.Game.Unity.Views;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Cases;
@@ -29,7 +28,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Core
             build.Dispose();
         }
 
-        private class TestView : ViewPresenter
+        private class TestView : View
         {
             public bool IsInited { get; private set; }
             public TestPresenter Presenter { get; private set; }

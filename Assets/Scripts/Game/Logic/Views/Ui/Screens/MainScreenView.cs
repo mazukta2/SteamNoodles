@@ -1,23 +1,25 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Screens;
-using System;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 
-namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
+namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 {
-    public class MainScreenView : ScreenView<MainScreenViewPresenter>
+    public class MainScreenView : ScreenView
     {
-        private MainScreenViewPresenter _viewPresenter;
-        public override MainScreenViewPresenter GetViewPresenter() => _viewPresenter;
-        protected override void CreatedInner()
+        public HandView HandView;
+
+        private MainScreenPresenter _presenter;
+
+        public MainScreenView(ILevel level, HandView handView) : base(level)
         {
-            _viewPresenter = new MainScreenViewPresenter(Level);
+            HandView = handView;
         }
 
-        protected override void DisposeInner()
+        public override void SetManager(ScreenManagerPresenter manager)
         {
-            _viewPresenter.Dispose();
+            base.SetManager(manager);
+            _presenter = new MainScreenPresenter(this, manager);
         }
     }
 }

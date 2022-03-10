@@ -41771,7 +41771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1417007303}
   - component: {fileID: 1417007305}
-  - component: {fileID: 1417007304}
+  - component: {fileID: 1417007306}
   m_Layer: 0
   m_Name: ScreenManager
   m_TagString: Untagged
@@ -41799,19 +41799,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1417007304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417007302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2f7965217766ae46a428483364a35c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pointer: {fileID: 1417007303}
 --- !u!114 &1417007305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41821,10 +41808,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1417007302}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79bec1d1d6ce4ef42a76a45f6c2d5bfa, type: 3}
+  m_Script: {fileID: 11500000, guid: 16410826002199647a75ea8089dd85bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Screen: {fileID: 1417007304}
+  Screen: {fileID: 1417007306}
+--- !u!114 &1417007306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417007302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e4ea7fe7cea744f9510715308dce56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointer: {fileID: 1417007303}
 --- !u!1 &1417609186
 GameObject:
   m_ObjectHideFlags: 0

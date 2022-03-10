@@ -1,7 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters;
 using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Unity.Views;
 using System;
 
 namespace Game.Assets.Scripts.Game.Environment.Engine
@@ -10,7 +8,7 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
     {
         event Action OnDispose;
         GameLevel Model { get; }
-        void Remove(ViewPresenter viewPresenter);
-        void Add(ViewPresenter viewPresenter);
+        void Remove(View viewPresenter);
+        void Add(View viewPresenter);
     }
 }

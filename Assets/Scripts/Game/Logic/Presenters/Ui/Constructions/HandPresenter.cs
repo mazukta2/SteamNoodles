@@ -1,9 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Game.Unity.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
-using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
@@ -11,9 +8,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     {
         private readonly PlayerHand _model;
         private readonly ScreenManagerPresenter _screenManager;
-        private readonly HandViewPresenter _view;
+        private readonly HandView _view;
 
-        public HandPresenter(PlayerHand model, ScreenManagerPresenter screenManager, HandViewPresenter view) : base(view)
+        public HandPresenter(PlayerHand model, ScreenManagerPresenter screenManager, HandView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _model = model ?? throw new ArgumentNullException(nameof(model));
@@ -31,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void ScnemeAddedHandle(ConstructionCard obj)
         {
-            var viewPresenter = _view.CardPrototype.Create<HandConstructionViewPresenter>(_view.Cards);
+            var viewPresenter = _view.CardPrototype.Create<HandConstructionView>(_view.Cards);
             viewPresenter.Init(_screenManager, obj);
         }
     }
