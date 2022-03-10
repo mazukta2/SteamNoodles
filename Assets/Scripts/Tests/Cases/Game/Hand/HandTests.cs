@@ -1,8 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.ViewPresenters;
+using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Game.Logic.Views.Ui;
+using Game.Assets.Scripts.Game.Unity.Views.Ui;
 using Game.Assets.Scripts.Game.Unity.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Managers.Game;
@@ -28,9 +30,11 @@ namespace Game.Tests.Cases.Constructions
                 })
                 .Build();
 
+            var screenContainer = new ContainerViewPresenter(game.CurrentLevel);
+            var screenManager = new ScreenManagerViewPresenter(game.CurrentLevel, screenContainer);
             var container = new ContainerViewPresenter(game.CurrentLevel);
             var prototype = new PrototypeViewPresenter(game.CurrentLevel, new HandConstructionViewPrefab());
-            var hand = new HandViewPresenter(game.CurrentLevel, container, prototype);
+            var hand = new HandViewPresenter(game.CurrentLevel, screenManager, container, prototype);
 
             Assert.AreEqual(1, hand.Cards.Get<HandConstructionViewPresenter>().Count());
 
@@ -43,7 +47,8 @@ namespace Game.Tests.Cases.Constructions
             {
                 return conteiner.Create((level) =>
                 {
-                    return new HandConstructionViewPresenter(level);
+                    var buttonView = new ButtonViewPresenter(level);
+                    return new HandConstructionViewPresenter(level, buttonView);
                 });
             }
         }

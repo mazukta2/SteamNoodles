@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Unity.Views.Ui.Screens;
+﻿using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Screens;
+using Game.Assets.Scripts.Game.Unity.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens;
 using Game.Tests.Controllers;

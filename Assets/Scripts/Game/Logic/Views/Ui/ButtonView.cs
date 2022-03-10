@@ -21,34 +21,14 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
             return _button;
         }
 
-#else
-        public bool IsShowing { get; set; } = true;
-        public bool IsActive { get; set; } = true;
+        private void Click()
+        {
+            ViewPresenter.Click();
+        }
 #endif
-
-        private Action _action;
 
         public ButtonViewPresenter ViewPresenter { get; private set; }
         public override ButtonViewPresenter GetViewPresenter() => ViewPresenter;
-
-        public void SetAction(Action action)
-        {
-            _action = action;
-        }
-
-        public void Click()
-        {
-            if (!IsShowing)
-                throw new Exception("Button is not showing");
-
-            if (_action == null)
-                throw new Exception("There is no action available");
-
-            if (!IsActive)
-                return;
-
-            _action();
-        }
 
         protected override void CreatedInner()
         {
@@ -70,8 +50,33 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
 
     public class ButtonViewPresenter : ViewPresenter
     {
+        public bool IsShowing { get; set; } = true;
+        public bool IsActive { get; set; } = true;
+
+        private Action _action;
+
         public ButtonViewPresenter(ILevel level) : base(level)
         {
         }
+
+        public void SetAction(Action action)
+        {
+            _action = action;
+        }
+
+        public void Click()
+        {
+            if (!IsShowing)
+                throw new Exception("Button is not showing");
+
+            if (_action == null)
+                throw new Exception("There is no action available");
+
+            if (!IsActive)
+                return;
+
+            _action();
+        }
+
     }
 }

@@ -30,6 +30,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
         public ContainerViewPresenter Screen { get; }
 
         private ScreenManagerPresenter _presenter;
+
+        public ScreenManagerPresenter GetPresenter() => _presenter;
+
         public ScreenManagerViewPresenter(ILevel level, ContainerViewPresenter screen) : base(level)
         {
             if (screen == null) throw new ArgumentNullException(nameof(screen));

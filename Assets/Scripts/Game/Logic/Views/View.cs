@@ -20,10 +20,21 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         public bool IsDisposed { get; private set; }
         public event Action OnDispose = delegate { };
 
+        private bool _isAwake = false;
+
+        public void ForceAwake()
+        {
+            Awake();
+        }
+
         protected void Awake()
         {
+            if (_isAwake)
+                return;
+
             Level = CoreAccessPoint.Core.Engine.Levels.GetCurrentLevel();
             CreatedInner();
+            _isAwake = true;
         }
 
         public void Dispose()
@@ -39,6 +50,11 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected virtual void DisposeInner() { }
 #else
+
+        public void ForceAwake()
+        {
+        }
+
         public void Awake(Tests.Environment.LevelInTests level)
         {
             Level = level;

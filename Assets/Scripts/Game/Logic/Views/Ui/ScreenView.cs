@@ -14,10 +14,17 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
 
     public abstract class ScreenViewPresenter : ViewPresenter
     {
+        private ScreenManagerPresenter _manager;
+
         protected ScreenViewPresenter(ILevel level) : base(level)
         {
         }
 
-        public abstract void SetManager(ScreenManagerPresenter manager);
+        public virtual void SetManager(ScreenManagerPresenter manager)
+        {
+            _manager = manager;
+        }
+
+        public ScreenManagerPresenter GetManager() => _manager;
     }
 }

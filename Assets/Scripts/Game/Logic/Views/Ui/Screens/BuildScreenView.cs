@@ -6,13 +6,13 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
 {
-    public class MainScreenView : ScreenView<MainScreenViewPresenter>
+    public class BuildScreenView : ScreenView<BuildScreenViewPresenter>
     {
-        private MainScreenViewPresenter _viewPresenter;
-        public override MainScreenViewPresenter GetViewPresenter() => _viewPresenter;
+        private BuildScreenViewPresenter _viewPresenter;
+        public override BuildScreenViewPresenter GetViewPresenter() => _viewPresenter;
         protected override void CreatedInner()
         {
-            _viewPresenter = new MainScreenViewPresenter(Level);
+            _viewPresenter = new BuildScreenViewPresenter(Level);
         }
 
         protected override void DisposeInner()
@@ -20,4 +20,5 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
             _viewPresenter.Dispose();
         }
     }
+
 }

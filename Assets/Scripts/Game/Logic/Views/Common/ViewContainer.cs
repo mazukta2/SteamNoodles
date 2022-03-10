@@ -32,7 +32,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         {
             ViewPresenter.Dispose();
         }
-
     }
 
     // Container is keeping spawned elements

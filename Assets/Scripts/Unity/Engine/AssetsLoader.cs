@@ -52,7 +52,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                 var go = GameObject.Instantiate(_prefab, conteiner.GetPointer());
                 var view = go.GetComponent<View<T>>();
                 if (view == null)
-                    throw new System.Exception("Cant find view preseneter " + typeof(T).Name);
+                    throw new System.Exception("Cant find view preseneter " + typeof(View<T>).Name);
                 return view.GetViewPresenter();
             }
         }

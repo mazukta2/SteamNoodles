@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Ui;
+﻿using Game.Assets.Scripts.Game.Logic.ViewPresenters.Ui.Screens;
+using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Unity.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Managers.Game;
