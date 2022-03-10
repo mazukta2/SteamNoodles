@@ -8,17 +8,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         public ButtonUnityView Button;
 
         private HandConstructionView _viewPresenter;
-        public override HandConstructionView GetView() => _viewPresenter;
 
-        protected override void CreatedInner()
+        protected override HandConstructionView CreateView()
         {
-            Button.ForceAwake();
-            _viewPresenter = new HandConstructionView(Level, Button.ViewPresenter);
-        }
-
-        protected override void DisposeInner()
-        {
-            _viewPresenter.Dispose();
+            return new HandConstructionView(Level, Button.View);
         }
     }
 

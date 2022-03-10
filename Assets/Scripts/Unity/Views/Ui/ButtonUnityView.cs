@@ -20,23 +20,22 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
 
         private void Click()
         {
-            ViewPresenter.Click();
+            View.Click();
         }
-
-        public ButtonView ViewPresenter { get; private set; }
-        public override ButtonView GetView() => ViewPresenter;
 
         protected override void CreatedInner()
         {
-            ViewPresenter = new ButtonView(Level);
             GetButton().onClick.AddListener(Click);
         }
 
         protected override void DisposeInner()
         {
-            ViewPresenter.Dispose();
             GetButton().onClick.RemoveListener(Click);
         }
 
+        protected override ButtonView CreateView()
+        {
+            return new ButtonView(Level);
+        }
     }
 }

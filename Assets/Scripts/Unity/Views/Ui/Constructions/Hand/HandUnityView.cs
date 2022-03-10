@@ -8,20 +8,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         public ContainerUnityView Cards;
         public PrototypeUnityView CardPrototype;
 
-        private HandView _viewPresenter;
-        public override HandView GetView() => _viewPresenter;
-
-        protected override void CreatedInner()
+        protected override HandView CreateView()
         {
-            Cards.ForceAwake();
-            CardPrototype.ForceAwake();
-            _viewPresenter = new HandView(Level, Cards.ViewPresenter, CardPrototype.ViewPresenter);
+            return new HandView(Level, Cards.View, CardPrototype.View);
         }
 
-        protected override void DisposeInner()
-        {
-            _viewPresenter.Dispose();
-        }
     }
 
 }

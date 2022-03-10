@@ -7,18 +7,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
     {
         public ContainerUnityView Screen;
 
-        private ScreenManagerView _viewPresenter;
-        public override ScreenManagerView GetView() => _viewPresenter;
-
-        protected override void CreatedInner()
+        protected override ScreenManagerView CreateView()
         {
-            Screen.ForceAwake();
-            _viewPresenter = new ScreenManagerView(Level, Screen.ViewPresenter);
+            return new ScreenManagerView(Level, Screen.View);
         }
 
-        protected override void DisposeInner()
-        {
-            _viewPresenter.Dispose();
-        }
     }
 }

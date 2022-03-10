@@ -53,7 +53,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                 var view = go.GetComponent<UnityView<T>>();
                 if (view == null)
                     throw new System.Exception("Cant find view preseneter " + typeof(UnityView<T>).Name);
-                return view.GetView();
+                return view.View;
             }
         }
     }

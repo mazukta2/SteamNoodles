@@ -13,22 +13,18 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             _itsOriginal = v;
         }
 
-        public PrototypeView ViewPresenter { get; private set; }
-        public override PrototypeView GetView() => ViewPresenter;
+        protected override PrototypeView CreateView()
+        {
+            return new PrototypeView(Level, new GameObjectViewPrefab(gameObject));
+        }
 
         protected override void CreatedInner()
         {
-            ViewPresenter = new PrototypeView(Level, new GameObjectViewPrefab(gameObject));
 
             if (!_itsOriginal)
                 Destroy(this);
             else
                 gameObject.SetActive(false);
-        }
-
-        protected override void DisposeInner()
-        {
-            ViewPresenter.Dispose();
         }
 
         private class GameObjectViewPrefab : ViewPrefab
@@ -50,7 +46,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
                 if (view == null)
                     throw new Exception("Cant find view preseneter " + typeof(T).Name);
 
-                return (T)view.GetView();
+                return (T)view.View;
             }
         }
     }

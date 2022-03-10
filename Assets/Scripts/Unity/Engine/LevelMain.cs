@@ -30,7 +30,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             LevelsManager.Init(this);
         }
 
-        protected void OnDestroy()
+        protected void OnApplicationQuit()
         {
             Dispose();
         }

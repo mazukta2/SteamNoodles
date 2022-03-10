@@ -12,11 +12,13 @@ namespace Game.Assets.Scripts.Game.Unity.Views
     public abstract class UnityView<TView> : MonoBehaviour, IDisposable where TView : View
     {
         public bool IsDisposed { get; private set; }
-        public event Action OnDispose = delegate { };
+        protected ILevel Level { get; private set; }
 
         private bool _isAwake = false;
 
-        public void ForceAwake()
+        private TView _view;
+
+        protected void ForceAwake()
         {
             Awake();
         }
@@ -27,6 +29,9 @@ namespace Game.Assets.Scripts.Game.Unity.Views
                 return;
 
             Level = CoreAccessPoint.Core.Engine.Levels.GetCurrentLevel();
+
+            _view = CreateView();
+            _view.OnDispose += Dispose;
             CreatedInner();
             _isAwake = true;
         }
@@ -37,13 +42,24 @@ namespace Game.Assets.Scripts.Game.Unity.Views
                 return;
 
             IsDisposed = true;
-            OnDispose();
+            _view.OnDispose -= Dispose;
+            _view.Dispose();
             DisposeInner();
             Destroy(gameObject);
         }
 
-        public abstract TView GetView();
-        public ILevel Level { get; private set; }
+        public TView View
+        {
+            get
+            {
+                if (_view == null)
+                    ForceAwake();
+
+                return _view;
+            }
+        }
+
+        protected abstract TView CreateView();
 
         protected virtual void CreatedInner() { }
         protected virtual void DisposeInner() { }

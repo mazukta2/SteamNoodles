@@ -9,18 +9,19 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
     public class ContainerUnityView : UnityView<ContainerView>
     {
         [SerializeField] Transform _pointer;
-        public ContainerView ViewPresenter { get; private set; }
-        public override ContainerView GetView() => ViewPresenter;
+
+        protected override ContainerView CreateView()
+        {
+            return new ContainerView(Level);
+        }
 
         protected override void CreatedInner()
         {
-            ViewPresenter = new ContainerView(Level);
             _containers.Add(this);
         }
 
         protected override void DisposeInner()
         {
-            ViewPresenter.Dispose();
             _containers.Remove(this);
         }
 
@@ -28,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 
         public static ContainerUnityView Find(ContainerView conteiner)
         {
-            return _containers.First(x => x.ViewPresenter == conteiner);
+            return _containers.First(x => x.View == conteiner);
         }
 
         private static List<ContainerUnityView> _containers = new List<ContainerUnityView>();

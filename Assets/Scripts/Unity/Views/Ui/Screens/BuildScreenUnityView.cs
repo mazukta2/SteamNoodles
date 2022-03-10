@@ -4,16 +4,9 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
 {
     public class BuildScreenUnityView : ScreenUnityView<BuildScreenView>
     {
-        private BuildScreenView _viewPresenter;
-        public override BuildScreenView GetView() => _viewPresenter;
-        protected override void CreatedInner()
+        protected override BuildScreenView CreateView()
         {
-            _viewPresenter = new BuildScreenView(Level);
-        }
-
-        protected override void DisposeInner()
-        {
-            _viewPresenter.Dispose();
+            return new BuildScreenView(Level);
         }
     }
 

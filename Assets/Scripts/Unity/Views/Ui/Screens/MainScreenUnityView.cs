@@ -8,17 +8,10 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
     {
         [SerializeField] HandUnityView _hand;
 
-        private MainScreenView _viewPresenter;
-        public override MainScreenView GetView() => _viewPresenter;
-        protected override void CreatedInner()
+        protected override MainScreenView CreateView()
         {
-            _hand.ForceAwake();
-            _viewPresenter = new MainScreenView(Level, _hand.GetView());
+            return new MainScreenView(Level, _hand.View);
         }
 
-        protected override void DisposeInner()
-        {
-            _viewPresenter.Dispose();
-        }
     }
 }
