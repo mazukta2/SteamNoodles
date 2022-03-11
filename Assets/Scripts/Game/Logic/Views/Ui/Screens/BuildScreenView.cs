@@ -6,7 +6,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 {
     public class BuildScreenView : ScreenView
     {
-        private BuildScreenPresenter _presenter;
         public BuildScreenView(ILevel level) : base(level)
         {
         }
@@ -14,7 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
         public override void SetManager(ScreenManagerPresenter manager)
         {
             base.SetManager(manager);
-            _presenter = new BuildScreenPresenter(this, manager);
+            Presenter = new BuildScreenPresenter(this, manager);
         }
     }
 }

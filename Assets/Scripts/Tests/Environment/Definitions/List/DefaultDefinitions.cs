@@ -11,6 +11,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
         public override void Create(GameEngineInTests engine)
         {
             engine.Assets.Screens.AddPrototype<MainScreenView>(new MainScreenPrefab());
+            engine.Assets.Screens.AddPrototype<BuildScreenView>(new BuildScreenPrefab());
             engine.Settings.Add(nameof(LevelDefinitionMock), new LevelDefinitionMock(new EmptyLevel()));
         }
     }

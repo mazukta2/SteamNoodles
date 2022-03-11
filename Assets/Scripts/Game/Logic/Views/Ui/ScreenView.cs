@@ -10,6 +10,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
     {
         private ScreenManagerPresenter _manager;
 
+        public BaseGameScreenPresenter Presenter { get; protected set; }
+
         protected ScreenView(ILevel level) : base(level)
         {
         }

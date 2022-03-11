@@ -1,7 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Services;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Tests.Controllers;
+using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace Game.Assets.Scripts.Tests.Environment
         public bool Loaded { get => _loaded; internal set { _loaded = value; OnLoadedUpdate(); } }
 
         public GameLevel Model { get; private set; }
+        public Services Services { get; } = new Services();
 
         private bool _loaded;
         private LevelsManagerInTests _testLevelsManager;
@@ -29,6 +32,7 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public void Dispose()
         {
+            Services.Dispose();
             _testLevelsManager.Unload();
 
             OnDispose();

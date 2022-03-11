@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
+using Game.Assets.Scripts.Game.Logic.Services.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 
@@ -20,6 +21,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 
             var assets = CoreAccessPoint.Core.Engine.Assets.Screens;
             _presenter = new ScreenManagerPresenter(this, assets);
+
+            level.Services.Add(new ScreenManagerService(_presenter));
         }
     }
 }

@@ -8,6 +8,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 {
     public class ScreenManagerPresenter : BasePresenter
     {
+        public Action<BaseGameScreenPresenter> OnScreenOpened = delegate { };
+
         private readonly ScreenManagerView _view;
         private readonly IScreenAssets _screenAssets;
 
@@ -46,6 +48,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
                 _manager._view.Screen.Clear();
                 var view = (TScreen)screenPrefab.Create<TScreen>(_manager._view.Screen);
                 view.SetManager(_manager);
+
+                _manager.OnScreenOpened(view.Presenter);
             }
         }
     }

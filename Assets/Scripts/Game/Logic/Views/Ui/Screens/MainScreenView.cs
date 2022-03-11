@@ -9,8 +9,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
     {
         public HandView HandView;
 
-        private MainScreenPresenter _presenter;
-
         public MainScreenView(ILevel level, HandView handView) : base(level)
         {
             HandView = handView;
@@ -19,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
         public override void SetManager(ScreenManagerPresenter manager)
         {
             base.SetManager(manager);
-            _presenter = new MainScreenPresenter(this, manager);
+            Presenter = new MainScreenPresenter(this, manager);
         }
     }
 }

@@ -45,6 +45,16 @@ namespace Game.Tests.Cases.Constructions
             }
         }
 
+        //[Test]
+        //public void IsIconSettedInHand()
+        //{
+        //    var game = new GameController();
+        //    var (models, presenters, views) = game.LoadLevel();
+        //    var item = views.Screen.Hand.Cards.List.First();
+        //    var icon = item.GetIcon();
+        //    Assert.IsTrue(models.Hand.Cards.First().HandIcon.Equals(icon));
+        //    game.Exit();
+        //}
 
         //[Test]
         //public void IsHandLimitWorking()
