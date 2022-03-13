@@ -32,9 +32,14 @@ namespace Game.Tests.Cases.Constructions
             Assert.IsNull(game.CurrentLevel.FindView<MainScreenView>());
             Assert.IsNotNull(game.CurrentLevel.FindView<BuildScreenView>());
 
+            var buildScreen = game.CurrentLevel.FindView<BuildScreenView>();
+            buildScreen.CancelButton.Click();
+
+            Assert.IsNotNull(game.CurrentLevel.FindView<MainScreenView>());
+            Assert.IsNull(game.CurrentLevel.FindView<BuildScreenView>());
+
             game.Dispose();
         }
-
 
         [Test]
         public void IsCreatingAGhost()
@@ -51,33 +56,13 @@ namespace Game.Tests.Cases.Constructions
 
             Assert.AreEqual(1, manager.Container.Get<GhostView>().Count);
 
+            var buildScreen = game.CurrentLevel.FindView<BuildScreenView>();
+            buildScreen.CancelButton.Click();
+
+            Assert.AreEqual(0, manager.Container.Get<GhostView>().Count);
+
             game.Dispose();
         }
-
-        //#region Hand
-        //#endregion
-
-        //#region Ghost
-        //[Test]
-        //public void IsClickToSchemeEnterAndExitGhostMode()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-
-        //    Assert.IsNull(presenters.Placement.Ghost);
-
-        //    var construction = views.Screen.Hand.Cards.List.First();
-        //    construction.Button.Click();
-
-        //    var view = views.Placement.Ghost.Value;
-        //    Assert.IsNotNull(view);
-
-        //    construction.Button.Click();
-
-        //    Assert.IsNull(views.Placement.Ghost.Value);
-        //    Assert.IsTrue(view.IsDisposed);
-        //    game.Exit();
-        //}
 
         //[Test]
         //public void IsBuildingPlacingIsExitGhostMode()

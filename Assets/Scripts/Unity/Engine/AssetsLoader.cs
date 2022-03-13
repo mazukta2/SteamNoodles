@@ -49,12 +49,20 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             public override object Create<T>(ContainerView conteiner)
             {
                 var unityConteiner = ContainerUnityView.Find(conteiner);
-                var go = GameObject.Instantiate(_prefab, unityConteiner.GetPointer());
-                var view = go.GetComponent<UnityView<T>>();
-                if (view == null)
-                    throw new System.Exception("Cant find view preseneter " + typeof(UnityView<T>).Name);
-                return view.View;
+                var createdView = unityConteiner.View.Create(Creator);
+                return createdView;
+
+                T Creator(ILevel level)
+                {
+                    var go = GameObject.Instantiate(_prefab, unityConteiner.GetPointer());
+                    var view = go.GetComponent<UnityView<T>>();
+                    if (view == null)
+                        throw new System.Exception("Cant find view preseneter " + typeof(UnityView<T>).Name);
+                    return view.View;
+                }
+
             }
+
         }
     }
 }

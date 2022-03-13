@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
                 throw new Exception("Button is not showing");
 
             if (_action == null)
-                throw new Exception("There is no action available");
+                throw new Exception("There is no action setted");
 
             if (!IsActive)
                 return;

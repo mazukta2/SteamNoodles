@@ -36,6 +36,11 @@ namespace Game.Assets.Scripts.Game.Unity.Views
             _isAwake = true;
         }
 
+        protected void OnDestroy()
+        {
+            Dispose();
+        }
+
         public void Dispose()
         {
             if (IsDisposed)

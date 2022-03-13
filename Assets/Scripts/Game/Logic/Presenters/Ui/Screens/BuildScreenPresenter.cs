@@ -12,16 +12,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
+            _view.CancelButton.SetAction(CancelClick);
         }
 
         protected override void DisposeInner()
         {
         }
 
-        private void BuildClick()
+        private void CancelClick()
         {
-            //_screenManager.GetScreen<BuildScreenView>().Open();
+            _screenManager.GetScreen<MainScreenView>().Open();
         }
-
     }
 }

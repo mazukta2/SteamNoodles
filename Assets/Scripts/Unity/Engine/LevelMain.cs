@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Services;
 using Game.Assets.Scripts.Game.Logic.Views;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     public class LevelMain : MonoBehaviour, ILevel
     {
         public GameLevel Model { get; set; }
+
+        public Services Services { get; } = new Services();
 
         private List<View> _list = new List<View>();
 

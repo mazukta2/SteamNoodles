@@ -34,12 +34,5 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 
         private static List<ContainerUnityView> _containers = new List<ContainerUnityView>();
 
-        private void HandleOnClear()
-        {
-            foreach (Transform item in _pointer)
-            {
-                GameObject.Destroy(item.gameObject);
-            }
-        }
     }
 }
