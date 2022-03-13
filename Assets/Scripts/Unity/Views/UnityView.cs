@@ -64,6 +64,18 @@ namespace Game.Assets.Scripts.Game.Unity.Views
             }
         }
 
+        protected void DestroyThisCompoenent()
+        {
+            if (IsDisposed)
+                return;
+
+            IsDisposed = true;
+            _view.OnDispose -= Dispose;
+            _view.Dispose();
+            DisposeInner();
+            Destroy(this);
+        }
+
         protected abstract TView CreateView();
 
         protected virtual void CreatedInner() { }

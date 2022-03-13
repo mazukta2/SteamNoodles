@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Unity.Views;
 using System;
 using UnityEngine;
@@ -20,9 +21,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 
         protected override void CreatedInner()
         {
-
             if (!_itsOriginal)
-                Destroy(this);
+                DestroyThisCompoenent();
             else
                 gameObject.SetActive(false);
         }
@@ -39,14 +39,18 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             public override object Create<T>(ContainerView conteiner) 
             {
                 var unityContainer = ContainerUnityView.Find(conteiner);
-                var go = GameObject.Instantiate(_gameObject, unityContainer.GetPointer());
-                go.GetComponent<PrototypeUnityView>().SetOriginal(false);
-                go.SetActive(true);
-                var view = go.GetComponent<UnityView<T>>();
-                if (view == null)
-                    throw new Exception("Cant find view preseneter " + typeof(T).Name);
+                return conteiner.Create(Creator);
 
-                return (T)view.View;
+                T Creator(ILevel level)
+                {
+                    var go = GameObject.Instantiate(_gameObject, unityContainer.GetPointer());
+                    go.GetComponent<PrototypeUnityView>().SetOriginal(false);
+                    go.SetActive(true);
+                    var view = go.GetComponent<UnityView<T>>();
+                    if (view == null)
+                        throw new Exception("Cant find view " + typeof(T).Name);
+                    return (T)view.View;
+                }
             }
         }
     }

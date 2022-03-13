@@ -21,6 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
         protected override void DisposeInner()
         {
             _screenManager.OnScreenOpened -= OnScreenOpen;
+            RemoveGhost();
         }
 
         private void OnScreenOpen(BaseGameScreenPresenter screen)
