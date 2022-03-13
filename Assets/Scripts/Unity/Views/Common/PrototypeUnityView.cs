@@ -19,13 +19,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             return new PrototypeView(Level, new GameObjectViewPrefab(gameObject));
         }
 
-        protected override void CreatedInner()
+        protected override void AfterAwake()
         {
             if (!_itsOriginal)
                 DestroyThisCompoenent();
             else
                 gameObject.SetActive(false);
         }
+
 
         private class GameObjectViewPrefab : ViewPrefab
         {

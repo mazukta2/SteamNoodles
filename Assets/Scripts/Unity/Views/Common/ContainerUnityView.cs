@@ -15,12 +15,12 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             return new ContainerView(Level);
         }
 
-        protected override void CreatedInner()
+        protected override void BeforeAwake()
         {
             _containers.Add(this);
         }
 
-        protected override void DisposeInner()
+        protected override void AfterDestroy()
         {
             _containers.Remove(this);
         }

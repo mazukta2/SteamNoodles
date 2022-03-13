@@ -3,54 +3,99 @@ using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Views;
 using System;
-#if UNITY
-    using UnityEngine;
-#endif
+using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Unity.Views
 {
-    public abstract class UnityView<TView> : MonoBehaviour, IDisposable where TView : View
+    public abstract class UnityView<TView> : MonoBehaviour where TView : View
     {
-        public bool IsDisposed { get; private set; }
         protected ILevel Level { get; private set; }
 
-        private bool _isAwake = false;
+        private bool _isInited = false;
+        private bool _isAwaked;
 
         private TView _view;
 
-        protected void ForceAwake()
+        protected void ForceInit()
         {
-            Awake();
+            Init();
         }
 
         protected void Awake()
         {
-            if (_isAwake)
-                return;
+            _isAwaked = true;
+            Init();
+        }
 
+        protected void Init()
+        {
+            if (_isInited)
+                return;
+            
             Level = CoreAccessPoint.Core.Engine.Levels.GetCurrentLevel();
 
+            BeforeAwake();
+
             _view = CreateView();
-            _view.OnDispose += Dispose;
-            CreatedInner();
-            _isAwake = true;
+            _view.OnDispose += DisposedByView;
+
+            _isInited = true;
+
+            AfterAwake();
+        }
+
+        protected virtual void BeforeAwake()
+        {
+        }
+
+        protected virtual void AfterAwake()
+        {
+        }
+
+        protected void OnApplicationQuit()
+        {
+            if (_view != null && !_view.IsDisposed)
+            {
+                _view.OnDispose -= DisposedByView;
+                _view.Dispose();
+                _view = null;
+            }
         }
 
         protected void OnDestroy()
         {
-            Dispose();
+            if (_view != null && !_view.IsDisposed)
+            {
+                _view.OnDispose -= DisposedByView;
+                _view.Dispose();
+                _view = null;
+            }
+            AfterDestroy();
         }
 
-        public void Dispose()
+        protected virtual void AfterDestroy()
         {
-            if (IsDisposed)
-                return;
+        }
 
-            IsDisposed = true;
-            _view.OnDispose -= Dispose;
-            _view.Dispose();
-            DisposeInner();
-            Destroy(gameObject);
+        protected void DestroyThisCompoenent()
+        {
+            if (_view != null && !_view.IsDisposed)
+            {
+                _view.OnDispose -= DisposedByView;
+                _view.Dispose();
+                _view = null;
+            }
+
+            Destroy(this);
+        }
+
+
+        private void DisposedByView()
+        {
+            _view.OnDispose -= DisposedByView;
+            _view = null;
+            if (_isAwaked)
+                Destroy(gameObject);
         }
 
         public TView View
@@ -58,27 +103,12 @@ namespace Game.Assets.Scripts.Game.Unity.Views
             get
             {
                 if (_view == null)
-                    ForceAwake();
+                    ForceInit();
 
                 return _view;
             }
         }
 
-        protected void DestroyThisCompoenent()
-        {
-            if (IsDisposed)
-                return;
-
-            IsDisposed = true;
-            _view.OnDispose -= Dispose;
-            _view.Dispose();
-            DisposeInner();
-            Destroy(this);
-        }
-
         protected abstract TView CreateView();
-
-        protected virtual void CreatedInner() { }
-        protected virtual void DisposeInner() { }
     }
 }

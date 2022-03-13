@@ -16,6 +16,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         private List<View> _list = new List<View>();
 
+        private bool _isDisposed;
         public event Action OnDispose;
 
         public void Add(View viewPresenter)
@@ -33,6 +34,11 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             LevelsManager.Init(this);
         }
 
+        protected void OnApplicationQuit()
+        {
+            Dispose();
+        }
+
         protected void OnDestroy()
         {
             Dispose();
@@ -40,6 +46,10 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         public void Dispose()
         {
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
             OnDispose();
         }
     }

@@ -23,12 +23,12 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
             View.Click();
         }
 
-        protected override void CreatedInner()
+        protected void OnEnable()
         {
             GetButton().onClick.AddListener(Click);
         }
 
-        protected override void DisposeInner()
+        protected void OnDisable()
         {
             GetButton().onClick.RemoveListener(Click);
         }
