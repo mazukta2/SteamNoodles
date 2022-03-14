@@ -64,6 +64,40 @@ namespace Game.Tests.Cases.Constructions
             game.Dispose();
         }
 
+        [Test]
+        public void IsPlacementExits()
+        {
+            var game = Construct().Build();
+
+            var hand = game.CurrentLevel.FindView<HandView>();
+
+            game.Dispose();
+        }
+
+
+        [Test]
+        public void IsAvailableCellsIsHighlightedInGhostMode()
+        {
+            var game = Construct().Build();
+
+            //var game = new GameController();
+            //var (models, presenters, views) = game.LoadLevel();
+            //var construction = views.Screen.Hand.Cards.List.First();
+
+            //var cells = presenters.Placement.GetCells();
+            //Assert.IsTrue(cells.All(x => x.State == CellPresenter.CellState.Normal
+            //    && x.View.GetState() == CellPresenter.CellState.Normal));
+
+            //construction.Button.Click();
+
+            //Assert.IsTrue(cells.All(x => (x.State == CellPresenter.CellState.IsReadyToPlace || x.State == CellPresenter.CellState.IsAvailableGhostPlace)
+            //    && (x.View.GetState() == CellPresenter.CellState.IsReadyToPlace || x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace)));
+            //game.Exit();
+
+            game.Dispose();
+        }
+
+
         //[Test]
         //public void IsBuildingPlacingIsExitGhostMode()
         //{
@@ -78,24 +112,6 @@ namespace Game.Tests.Cases.Constructions
         //    views.Placement.Click(new FloatPoint(0f, 0f));
         //    Assert.IsNull(views.Placement.Ghost.Value);
         //    Assert.IsTrue(view.IsDisposed);
-        //    game.Exit();
-        //}
-
-        //[Test]
-        //public void IsAvailableCellsIsHighlightedInGhostMode()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-        //    var construction = views.Screen.Hand.Cards.List.First();
-
-        //    var cells = presenters.Placement.GetCells();
-        //    Assert.IsTrue(cells.All(x => x.State == CellPresenter.CellState.Normal
-        //        && x.View.GetState() == CellPresenter.CellState.Normal));
-
-        //    construction.Button.Click();
-
-        //    Assert.IsTrue(cells.All(x => (x.State == CellPresenter.CellState.IsReadyToPlace || x.State == CellPresenter.CellState.IsAvailableGhostPlace)
-        //        && (x.View.GetState() == CellPresenter.CellState.IsReadyToPlace || x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace)));
         //    game.Exit();
         //}
 
