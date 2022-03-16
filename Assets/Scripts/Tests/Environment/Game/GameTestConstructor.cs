@@ -1,9 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
 using System;
+using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Tests.Managers.Game
 {
@@ -14,6 +17,8 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
 
         public GameTestConstructor()
         {
+            LoadDefinitions(new DefaultDefinitions());
+            _loadLevel = _engine.Settings.Get<LevelDefinitionMock>("DebugLevel");
         }
 
         public GameTestConstructor(BaseConstructorSettings settings)
@@ -31,6 +36,12 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
             return build;
         }
 
+        public GameTestConstructor ClearLoading()
+        {
+            _loadLevel = null;
+            return this;
+        }
+
         public GameTestConstructor AddDefinition(string name, object obj)
         {
             _engine.Settings.Add(name, obj);
@@ -46,6 +57,7 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
         public GameTestConstructor AddLevel(LevelDefinitionMock levelDefinition)
         {
             _engine.Levels.Add(levelDefinition);
+            _engine.Settings.Add(levelDefinition.Name, levelDefinition);
             return this;
         }
 

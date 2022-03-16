@@ -12,5 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
         [JsonConverter(typeof(DefinitionsConventer<ConstructionDefinition>))]
         public IReadOnlyCollection<ConstructionDefinition> StartingHand { get; set; } = new List<ConstructionDefinition>();
         public int HandSize { get; set; }
+
+        public IReadOnlyCollection<PlacementFieldDefinition> PlacementFields { get; set; } = new List<PlacementFieldDefinition>();
     }
 }

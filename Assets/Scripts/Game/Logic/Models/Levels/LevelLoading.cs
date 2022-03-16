@@ -1,8 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using System;
+using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
@@ -17,14 +19,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private bool _isLoaded = false;
 
-        public LevelLoading(GameSession session, ILevelsManager levelManager, LevelDefinition levelDefinition)
+        public LevelLoading(GameSession session, IGameEngine gameEngine, LevelDefinition levelDefinition)
         {
-            _session = session;
-            _prototype = levelDefinition;
-            _levelManager = levelManager;
-            _level = new GameLevel(_prototype, _session.GameRandom, _session.Time);
+            _session = session ?? throw new ArgumentNullException(nameof(session));
+            _prototype = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
+            _levelManager = gameEngine.Levels ?? throw new ArgumentNullException(nameof(gameEngine));
+            if (!gameEngine.Settings.GetList<LevelDefinition>().Any(x => x == levelDefinition))
+                throw new Exception($"Can't find level {levelDefinition} in settings");
 
-            levelManager.Load(_level, levelDefinition, Finished);
+            _level = new GameLevel(_prototype, _session.GameRandom, _session.Time, gameEngine.Settings);
+
+            _levelManager.Load(_level, levelDefinition, Finished);
         }
 
         protected override void DisposeInner()

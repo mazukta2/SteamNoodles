@@ -1,4 +1,5 @@
 using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
@@ -11,11 +12,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
         public SessionRandom GameRandom { get; private set; } = new SessionRandom();
         public GameTime Time { get; private set; } = new GameTime();
 
-        private ILevelsManager _levelsManager;
+        private IGameEngine _engine;
 
-        public GameSession(ILevelsManager levelsManager)
+        public GameSession(IGameEngine engine)
         {
-            _levelsManager = levelsManager;
+            _engine = engine;
         }
 
         protected override void DisposeInner()
@@ -25,7 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
 
         public LevelLoading LoadLevel(LevelDefinition definition)
         {
-            return new LevelLoading(this, _levelsManager, definition);
+            return new LevelLoading(this, _engine, definition);
         }
 
     }

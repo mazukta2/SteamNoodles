@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Services;
 using Game.Assets.Scripts.Game.Logic.Views;
@@ -44,6 +45,12 @@ namespace Game.Assets.Scripts.Tests.Environment
         {
             return _views.OfType<T>().FirstOrDefault();
         }
+
+        public IReadOnlyCollection<T> FindViews<T>() where T : View
+        {
+            return _views.OfType<T>().AsReadOnly();
+        }
+
 
         public void Remove(View viewPresenter)
         {

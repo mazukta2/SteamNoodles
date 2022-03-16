@@ -4,12 +4,12 @@ using Game.Assets.Scripts.Game.Logic.Views.Level;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class CellPresenter : BasePresenter
+    public class PlacementCellPresenter : BasePresenter
     {
         private CellView _cellView;
         private PlacementFieldPresenter _field;
 
-        public CellPresenter(CellView view, PlacementFieldPresenter field) : base(view)
+        public PlacementCellPresenter(CellView view, PlacementFieldPresenter field) : base(view)
         {
             _cellView = view;
             _field = field;

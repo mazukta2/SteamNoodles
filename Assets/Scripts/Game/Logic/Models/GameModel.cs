@@ -6,11 +6,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models
 {
     public class GameModel : Disposable
     {
-        private readonly IGameEngine _controller;
+        private readonly IGameEngine _engine;
 
-        public GameModel(IGameEngine controller)
+        public GameModel(IGameEngine engine)
         {
-            _controller = controller;
+            _engine = engine;
         }
 
         protected override void DisposeInner()
@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
 
         public GameSession CreateSession()
         {
-            return new GameSession(_controller.Levels);
+            return new GameSession(_engine);
         }
     }
 

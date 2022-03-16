@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Core
         [Test]
         public void ViewIsCreatingPresenter()
         {
-            var build = new GameTestConstructor().AddAndLoadLevel(new EmptyLevel()).Build();
+            var build = new GameTestConstructor().Build();
             var view = new TestView(build.CurrentLevel);
 
             Assert.IsTrue(view.IsInited);

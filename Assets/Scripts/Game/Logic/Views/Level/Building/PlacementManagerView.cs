@@ -20,8 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         {
             CellsContainer = cellsContainer ?? throw new ArgumentNullException(nameof(cellsContainer));
             Cell = cellPrototype ?? throw new ArgumentNullException(nameof(cellPrototype));
-
-            Presenter = new PlacementManagerPresenter(this);
+            Presenter = new PlacementManagerPresenter(Level.Model.Constructions, this);
         }
     }
 }

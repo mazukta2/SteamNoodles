@@ -14,9 +14,9 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
             Y = y;
         }
 
-        public FloatRect AsCenteredRect()
+        public IntRect AsCenteredRect()
         {
-            return new FloatRect(-X / 2, -Y / 2, X, Y);
+            return new IntRect(-X / 2, -Y / 2, X, Y);
         }
 
         public static IntPoint operator +(IntPoint current, IntPoint other) => new IntPoint(current.X + other.X, current.Y + other.Y);

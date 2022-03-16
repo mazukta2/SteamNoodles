@@ -33,7 +33,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         public void LevelIsLoading()
         {
             var levelDefinition = new LevelDefinitionMock(new EmptyLevel());
-            var build = new GameTestConstructor().LoadDefinitions(new DefaultDefinitions()).AddLevel(levelDefinition).Build();
+            var build = new GameTestConstructor().ClearLoading().AddLevel(levelDefinition).Build();
             var session = build.GameModel.CreateSession();
             var levelLoading = session.LoadLevel(levelDefinition);
             GameLevel loadedLevel = null;
@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void LevelShortcutIsWorking()
         {
-            var build = new GameTestConstructor().AddAndLoadLevel(new EmptyLevel()).Build();
+            var build = new GameTestConstructor().Build();
             Assert.IsNotNull(build.Engine.Levels.GetCurrentLevel());
             build.Dispose();
         }

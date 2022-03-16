@@ -38,5 +38,6 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         {
             return new FloatPoint(random.GetRandom(xMin, xMax), random.GetRandom(yMin, yMax));
         }
+
     }
 }

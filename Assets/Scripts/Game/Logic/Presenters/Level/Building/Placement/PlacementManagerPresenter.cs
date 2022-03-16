@@ -1,32 +1,30 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
+using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
     public class PlacementManagerPresenter : BasePresenter
     {
-        //private Placement _model;
+        private ConstructionsManager _model;
         //private Dictionary<Construction, ConstructionPresenter> _constructions = new Dictionary<Construction, ConstructionPresenter>();
         //private List<CellPresenter> _cells = new List<CellPresenter>();
 
-        public PlacementManagerPresenter(PlacementManagerView view) : base(view)
+        public PlacementManagerPresenter(ConstructionsManager model, PlacementManagerView view) : base(view)
         {
-            //if (model == null) throw new ArgumentNullException(nameof(model));
-            //_model = model;
-            //View = view;
-            //View.SetClick(OnClick);
+            _model = model ?? throw new ArgumentNullException(nameof(model));
 
-            //for (int x = _model.Rect.xMin; x <= _model.Rect.xMax; x++)
-            //{
-            //    for (int y = _model.Rect.yMin; y <= _model.Rect.yMax; y++)
-            //    {
-            //        _cells.Add(new CellPresenter(this, new Point(x, y), View.Cells));
-            //    }
-            //}
 
             //UpdateConstructions();
             //model.OnConstructionAdded += ConstructionAdded;
-            //model.OnConstructionRemoved += ConstructionRemoved;
+            //model.OnConstructionRemoved += ConstructionRemoved;\
+
+            //View = view;
+            //View.SetClick(OnClick);
+
+
         }
 
 
