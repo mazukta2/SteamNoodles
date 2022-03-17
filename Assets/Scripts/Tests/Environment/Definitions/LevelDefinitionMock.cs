@@ -16,7 +16,7 @@ namespace Game.Tests.Mocks.Settings.Levels
             var fields = new List<PlacementFieldDefinition>();
             fields.Add(new PlacementFieldDefinition()
             {
-                Size = new IntPoint(10, 10)
+                Size = new IntPoint(9, 9)
             });
             PlacementFields = fields;
         }

@@ -35,6 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             }
 
             _ghostManager.OnGhostChanged += UpdateGhostCells;
+            _ghostManager.OnGhostPostionChanged += UpdateGhostCells;
 
             UpdateGhostCells();
         }
@@ -42,6 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         protected override void DisposeInner()
         {
             _ghostManager.OnGhostChanged -= UpdateGhostCells;
+            _ghostManager.OnGhostPostionChanged -= UpdateGhostCells;
         }
 
         private PlacementCellPresenter CreateCell(IntPoint position)

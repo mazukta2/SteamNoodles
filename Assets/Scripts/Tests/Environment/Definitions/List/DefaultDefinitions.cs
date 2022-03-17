@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens;
@@ -15,10 +16,12 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
             engine.Assets.Screens.AddPrototype<MainScreenView>(new MainScreenPrefab());
             engine.Assets.Screens.AddPrototype<BuildScreenView>(new BuildScreenPrefab());
             engine.Settings.Add(nameof(ConstructionsSettingsDefinition), new ConstructionsSettingsDefinition() { 
-                CellSize = 20,
+                CellSize = 0.5f,
             });
 
-            var construciton = new ConstructionDefinition();
+            var construciton = new ConstructionDefinition() {
+                Size = new IntPoint(2, 1),
+            };
             var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel())
             {
                 StartingHand = new List<ConstructionDefinition>() { construciton }

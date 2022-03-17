@@ -2,7 +2,7 @@
 {
     public class ConstructionsSettingsDefinition
     {
-        public int CellSize { get; set; }
+        public float CellSize { get; set; }
     }
 }
 

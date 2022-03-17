@@ -145,33 +145,30 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Dispose();
         }
 
-        //[Test]
-        //public void IsCellsBeneathGhostIsHighlighted()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-        //    var construction = views.Screen.Hand.Cards.List.First();
-        //    construction.Button.Click();
+        [Test]
+        public void IsCellsBeneathGhostIsHighlighted()
+        {
+            var game = new GameTestConstructor().Build();
 
-        //    var ghost = views.Placement.Ghost.Value;
-        //    ghost.GetMoveAction()(new FloatPoint(0, 0));
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
-        //    var cells = presenters.Placement.GetCells();
-        //    var highlighedCells = cells.Where(x => x.State == CellPresenter.CellState.IsAvailableGhostPlace && x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace);
-        //    Assert.AreEqual(2, highlighedCells.Count());
+            var cells = game.CurrentLevel.FindViews<CellView>();
+            var highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.X);
+            Assert.AreEqual(2, highlighedCells.Count());
 
-        //    Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(0, 0)));
-        //    Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(1, 0)));
+            Assert.AreEqual(new FloatPoint(0, 0), highlighedCells.First().LocalPosition);
+            Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.Last().LocalPosition);
 
-        //    ghost.GetMoveAction()(new FloatPoint(presenters.Placement.CellSize + presenters.Placement.CellSize / 4, 0));
+            game.Engine.Controls.MovePointer(new FloatPoint(0.5f, 0)); // move left
 
-        //    highlighedCells = cells.Where(x => x.State == CellPresenter.CellState.IsAvailableGhostPlace && x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace);
-        //    Assert.AreEqual(2, highlighedCells.Count());
+            highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.X);
+            Assert.AreEqual(2, highlighedCells.Count());
 
-        //    Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(1, 0)));
-        //    Assert.IsTrue(highlighedCells.Any(x => x.Position == new Point(2, 0)));
-        //    game.Exit();
-        //}
+            Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.First().LocalPosition);
+            Assert.AreEqual(new FloatPoint(1f, 0), highlighedCells.Last().LocalPosition);
+
+            game.Dispose();
+        }
 
         //[Test]
         //public void IsGhostViewChangeVisualIfItAvailable()

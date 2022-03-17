@@ -12,6 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
     public class GhostManagerPresenter : BasePresenter
     {
         public event Action OnGhostChanged = delegate { };
+        public event Action OnGhostPostionChanged = delegate { };
 
         private GhostManagerView _view;
         private ScreenManagerPresenter _screenManager;
@@ -57,14 +58,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
             _ghost = _view.GhostPrototype.Create<GhostView>(_view.Container).Init(_settings, _controls, _screenManager, _constructionsManager, buildScreen.CurrentCard);
             if (_ghost == null) throw new Exception("Empty presenter");
 
+            _ghost.OnGhostPostionChanged += UpdateGhostPosition;
+
             OnGhostChanged();
         }
 
         private void RemoveGhost()
         {
             _view.Container.Clear();
-            _ghost = null;
-            OnGhostChanged();
+            if (_ghost != null)
+            {
+                _ghost.OnGhostPostionChanged -= UpdateGhostPosition;
+                _ghost = null;
+                OnGhostChanged();
+            }
+        }
+
+        private void UpdateGhostPosition()
+        {
+            OnGhostPostionChanged();
         }
 
     }

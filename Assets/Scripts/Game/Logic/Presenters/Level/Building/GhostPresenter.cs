@@ -14,6 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class GhostPresenter : BasePresenter
     {
+        public Action OnGhostPostionChanged = delegate { };
         public ConstructionDefinition Definition { get; private set; }
         
         private readonly GhostView _view;
@@ -37,12 +38,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             Definition = card.Definition ?? throw new ArgumentNullException(nameof(card.Definition));
 
-            _controls.OnLevelClick += OnLevelClick;
+            _controls.OnLevelClick += HandleOnLevelClick;
+            _controls.OnLevelPointerMoved += HandleOnPointerMoved;
         }
 
         protected override void DisposeInner()
         {
-            _controls.OnLevelClick -= OnLevelClick;
+            _controls.OnLevelClick -= HandleOnLevelClick;
+            _controls.OnLevelPointerMoved -= HandleOnPointerMoved;
         }
 
         public IntPoint GetPosition(PlacementField placementField)
@@ -60,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             return new IntPoint((int)Math.Ceiling(mousePosX), (int)Math.Ceiling(mousePosY));
         }
 
-        private void OnLevelClick()
+        private void HandleOnLevelClick()
         {
             foreach (var field in _constructionsManager.Placements)
             {
@@ -73,18 +76,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _screenManager.GetCollection<CommonScreens>().Open<MainScreenView>();
         }
 
-        public void MoveTo(FloatPoint worldPosition)
+        private void HandleOnPointerMoved(FloatPoint worldPosition)
         {
             _worldPosition = worldPosition;
+            OnGhostPostionChanged();
             //View.PlaceTo(_placement.GetWorldPosition(Position));
             //View.SetCanBePlacedState(CanPlaceGhost());
             //_placement.UpdateGhostCells();
         }
 
-        //public bool CanPlaceGhost()
-        //{
-        //    return
-        //}
 
         //protected override void DisposeInner()
         //{

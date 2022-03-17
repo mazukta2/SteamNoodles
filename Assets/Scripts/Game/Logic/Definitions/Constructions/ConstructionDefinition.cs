@@ -25,11 +25,6 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
             }
             return result.AsReadOnly();
         }
-
-        internal object GetOccupiedSpace(object position)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     [Serializable]
