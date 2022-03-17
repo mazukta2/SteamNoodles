@@ -8,19 +8,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 {
     public abstract class ScreenView : View
     {
-        private ScreenManagerPresenter _manager;
-
         public BaseGameScreenPresenter Presenter { get; protected set; }
 
         protected ScreenView(ILevel level) : base(level)
         {
         }
-
-        public virtual void SetManager(ScreenManagerPresenter manager)
-        {
-            _manager = manager;
-        }
-
-        public ScreenManagerPresenter GetManager() => _manager;
     }
 }

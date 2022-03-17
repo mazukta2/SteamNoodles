@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Services;
 using Game.Assets.Scripts.Game.Logic.Services.Ui;
@@ -14,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         public ContainerView Container { get; private set; }
         public PrototypeView GhostPrototype { get; private set; }
 
-        private ServiceWaiter<ScreenManagerService> _wait;
+        private ServiceWaiter<ScreenManagerService, DefinitionsService> _wait;
         private GhostManagerPresenter _presenter;
 
         public GhostManagerView(ILevel level, ContainerView container, PrototypeView ghostPrototype) : base(level)
@@ -22,8 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
             Container = container ?? throw new ArgumentNullException(nameof(container));
             GhostPrototype = ghostPrototype ?? throw new ArgumentNullException(nameof(ghostPrototype));
 
-            _wait = level.Services
-                .Request<ScreenManagerService>(Load);
+            _wait = level.Services.Request<ScreenManagerService, DefinitionsService>(Load);
         }
 
         protected override void DisposeInner()
@@ -32,9 +32,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
             _wait.Dispose();
         }
 
-        private void Load(ScreenManagerService manager)
+        private void Load(ScreenManagerService manager, DefinitionsService definitionsService)
         {
-            _presenter = new GhostManagerPresenter(manager.Get(), this);
+            _presenter = new GhostManagerPresenter(manager.Get(), definitionsService.Get().Get<ConstructionsSettingsDefinition>(), this);
+            Level.Services.Add(new GhostManagerService(_presenter));
         }
     }
 }

@@ -24,6 +24,11 @@ namespace Game.Assets.Scripts.Game.Logic.Services
             return new ServiceWaiter<T>(this).Await(load);
         }
 
+        public ServiceWaiter<T1, T2> Request<T1, T2>(Action<T1, T2> load) where T1 : IService where T2 : IService
+        {
+            return new ServiceWaiter<T1, T2>(this).Await(load);
+        }
+
         public T Get<T>() where T : IService
         {
             return _services.OfType<T>().FirstOrDefault();

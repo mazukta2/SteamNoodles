@@ -18,38 +18,43 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenAssets = screenAssets ?? throw new ArgumentNullException(nameof(screenAssets));
 
-            GetScreen<MainScreenView>().Open();
+            GetCollection<CommonScreens>().Open<MainScreenView>();
         }
 
         protected override void DisposeInner()
         {
 
         }
-        public ScreenController GetScreen<T>() where T : ScreenView
+
+        public void Open<TScreen>(Action<TScreen, ScreenManagerPresenter> init) where TScreen : ScreenView
         {
-            return new ParametlessScreenController<T>(this);
+            var screenPrefab = _screenAssets.GetScreen<TScreen>();
+            if (screenPrefab == null)
+                throw new Exception($"Cant find {typeof(TScreen).Name} view");
+
+            _view.Screen.Clear();
+            var view = (TScreen)screenPrefab.Create<TScreen>(_view.Screen);
+            init(view, this);
+            OnScreenOpened(view.Presenter);
         }
 
-        public class ParametlessScreenController<TScreen> : ScreenController where TScreen : ScreenView
+        public TPreScreen GetCollection<TPreScreen>() where TPreScreen : ScreenCollection, new()
         {
-            private readonly ScreenManagerPresenter _manager;
+            var preScreen = new TPreScreen();
+            preScreen.SetManager(this);
+            return preScreen;
+        }
 
-            public ParametlessScreenController(ScreenManagerPresenter manager)
+        public class CommonScreens : ScreenCollection
+        {
+            public void Open<TScreen>() where TScreen : CommonScreenView
             {
-                _manager = manager ?? throw new ArgumentNullException(nameof(manager));
-            }
+                Manager.Open<TScreen>(Init);
 
-            public override void Open()
-            {
-                var screenPrefab = _manager._screenAssets.GetScreen<TScreen>();
-                if (screenPrefab == null)
-                    throw new Exception($"Cant find {typeof(TScreen).Name} view");
-
-                _manager._view.Screen.Clear();
-                var view = (TScreen)screenPrefab.Create<TScreen>(_manager._view.Screen);
-                view.SetManager(_manager);
-
-                _manager.OnScreenOpened(view.Presenter);
+                void Init(TScreen screenView, ScreenManagerPresenter managerPresenter)
+                {
+                    screenView.Init(managerPresenter);
+                }
             }
         }
     }

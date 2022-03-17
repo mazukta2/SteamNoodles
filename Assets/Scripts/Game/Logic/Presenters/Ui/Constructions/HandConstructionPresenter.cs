@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
+using static Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.BuildScreenView;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
@@ -23,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleClick()
         {
-            _screenManager.GetScreen<BuildScreenView>().Open();
+            _screenManager.GetCollection<BuildScreenCollection>().Open(_model);
         }
 
         private void UpdateView()

@@ -1,6 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
+using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 {
@@ -13,10 +16,21 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
             CancelButton = cancelButton;
         }
 
-        public override void SetManager(ScreenManagerPresenter manager)
+        private void Init(ScreenManagerPresenter manager, ConstructionCard constructionCard)
         {
-            base.SetManager(manager);
-            Presenter = new BuildScreenPresenter(this, manager);
+            Presenter = new BuildScreenPresenter(this, manager, constructionCard);
+        }
+
+        public class BuildScreenCollection : ScreenCollection
+        {
+            public void Open(ConstructionCard constructionCard)
+            {
+                Manager.Open<BuildScreenView>(Init);
+                void Init(BuildScreenView screenView, ScreenManagerPresenter managerPresenter)
+                {
+                    screenView.Init(managerPresenter, constructionCard);
+                }
+            }
         }
     }
 }

@@ -16,11 +16,25 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         public PrototypeView Cell { get; private set; }
         public PlacementManagerPresenter Presenter { get; private set; }
 
+        private ServiceWaiter<ScreenManagerService> _wait;
+
         public PlacementManagerView(ILevel level, ContainerView cellsContainer, PrototypeView cellPrototype) : base(level)
         {
             CellsContainer = cellsContainer ?? throw new ArgumentNullException(nameof(cellsContainer));
             Cell = cellPrototype ?? throw new ArgumentNullException(nameof(cellPrototype));
-            Presenter = new PlacementManagerPresenter(Level.Model.Constructions, this);
+            _wait = level.Services
+                .Request<ScreenManagerService>(Load);
+        }
+
+        protected override void DisposeInner()
+        {
+            base.DisposeInner();
+            _wait.Dispose();
+        }
+
+        private void Load(ScreenManagerService screenManager)
+        {
+            Presenter = new PlacementManagerPresenter(Level.Model.Constructions, screenManager.Get(), this);
         }
     }
 }

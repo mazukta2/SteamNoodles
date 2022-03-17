@@ -5,7 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 {
-    public class MainScreenView : ScreenView
+    public class MainScreenView : CommonScreenView
     {
         public HandView HandView;
 
@@ -14,9 +14,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
             HandView = handView;
         }
 
-        public override void SetManager(ScreenManagerPresenter manager)
+        public override void Init(ScreenManagerPresenter manager)
         {
-            base.SetManager(manager);
             Presenter = new MainScreenPresenter(this, manager);
         }
     }

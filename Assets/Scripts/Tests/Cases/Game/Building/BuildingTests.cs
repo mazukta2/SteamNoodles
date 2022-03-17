@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
@@ -18,6 +19,55 @@ namespace Game.Tests.Cases.Constructions
 {
     public class BuildingTests
     {
+        #region Placement
+        [Test]
+        public void IsPlacementCreateCells()
+        {
+            var game = new GameTestConstructor()
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementFields.First().Size = new IntPoint(2, 2))
+                .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
+                .Build();
+
+            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementManagerView>());
+            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementFieldView>());
+
+            var cells = game.CurrentLevel.FindViews<CellView>();
+            Assert.AreEqual(4, cells.Count());
+
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(5, 5)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-5, 5)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(5, -5)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-5, -5)));
+
+            game.Dispose();
+        }
+
+        [Test]
+        public void IsPlacementCreateCellsUnevenSize()
+        {
+            var game = new GameTestConstructor()
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementFields.First().Size = new IntPoint(3, 3))
+                .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
+                .Build();
+
+            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementManagerView>());
+            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementFieldView>());
+
+            var cells = game.CurrentLevel.FindViews<CellView>();
+            Assert.AreEqual(9, cells.Count());
+
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(10, 10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-10, 10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(10, -10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-10, -10)));
+
+            game.Dispose();
+        }
+
+        #endregion
+
+        #region BuildingScreen
+
         [Test]
         public void IsClickingActivatingBuildingScreen()
         {
@@ -66,101 +116,22 @@ namespace Game.Tests.Cases.Constructions
         }
 
         [Test]
-        public void IsPlacementCreateCells()
+        public void IsAvailableCellsIsHighlightedInGhostMode()
         {
             var game = new GameTestConstructor()
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementFields.First().Size = new IntPoint(2, 2))
-                .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementManagerView>());
-            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementFieldView>());
-
             var cells = game.CurrentLevel.FindViews<CellView>();
-            Assert.AreEqual(4, cells.Count());
+            Assert.IsTrue(cells.All(x => x.State == CellPlacementStatus.Normal));
 
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(5, 5)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-5, 5)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(5, -5)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-5, -5)));
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+
+            Assert.IsTrue(cells.All(x => (x.State == CellPlacementStatus.IsReadyToPlace || x.State == CellPlacementStatus.IsAvailableGhostPlace)));
 
             game.Dispose();
         }
 
-        //[Test]
-        //public void PlacementGridRectHasRightSize()
-        //{
-        //    var game = new GameController();
-        //    var (level, _, _) = game.LoadLevel();
-        //    var buildinGrid = level.Placement;
-        //    var rect = buildinGrid.Rect;
-        //    Assert.AreEqual(-2, rect.xMin);
-        //    Assert.AreEqual(2, rect.xMax);
-        //    Assert.AreEqual(-2, rect.yMin);
-        //    Assert.AreEqual(2, rect.yMax);
-
-        //    Assert.IsTrue(rect.IsInside(new Point(0, 0)));
-        //    Assert.IsTrue(rect.IsInside(new Point(-2, -2)));
-        //    Assert.IsTrue(rect.IsInside(new Point(2, 2)));
-        //    Assert.IsFalse(rect.IsInside(new Point(-3, -3)));
-        //    Assert.IsFalse(rect.IsInside(new Point(3, 3)));
-        //    game.Exit();
-        //}
-
-        //[Test]
-        //public void IsCellsCreated()
-        //{
-        //    var game = new GameController();
-        //    var (level, levelViewModel, levelView) = game.LoadLevel();
-        //    var cells = levelViewModel.Placement.GetCells();
-        //    Assert.IsTrue(cells.Length > 0);
-        //    Assert.AreEqual((levelViewModel.Placement.GetSize().X + 1) * (levelViewModel.Placement.GetSize().Y + 1), cells.Length);
-
-        //    Assert.IsTrue(cells.All(x => x.View != null));
-        //    game.Exit();
-        //}
-
-        //[Test]
-        //public void IsOffsetWorking()
-        //{
-        //    var game = new GameController();
-        //    var levelSettings = new LevelSettings();
-        //    levelSettings.Offset = new FloatPoint(0, 0.5f);
-
-        //    var (level, levelViewModel, levelView) = game.LoadLevel(levelSettings);
-        //    var cells = levelView.Placement.Cells;
-        //    ;
-        //    //Assert.IsTrue(4.5*levelViewModel., cells.List.Max(x => x.GetPosition().Y));
-        //    //Assert.IsTrue(cells.Length > 0);
-        //    //Assert.AreEqual((levelViewModel.Placement.GetSize().X + 1) * (levelViewModel.Placement.GetSize().Y + 1), cells.Length);
-
-        //    //Assert.IsTrue(cells.All(x => x.View != null));
-        //    //game.Exit();
-        //}
-
-        //[Test]
-        //public void IsAvailableCellsIsHighlightedInGhostMode()
-        //{
-        //    var game = Construct()
-        //        .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementFields.First().Size = new IntPoint(2, 2))
-        //        .Build();
-
-
-
-        //    //var construction = views.Screen.Hand.Cards.List.First();
-
-        //    //var cells = presenters.Placement.GetCells();
-        //    //Assert.IsTrue(cells.All(x => x.State == CellPresenter.CellState.Normal
-        //    //    && x.View.GetState() == CellPresenter.CellState.Normal));
-
-        //    //construction.Button.Click();
-
-        //    //Assert.IsTrue(cells.All(x => (x.State == CellPresenter.CellState.IsReadyToPlace || x.State == CellPresenter.CellState.IsAvailableGhostPlace)
-        //    //    && (x.View.GetState() == CellPresenter.CellState.IsReadyToPlace || x.View.GetState() == CellPresenter.CellState.IsAvailableGhostPlace)));
-        //    //game.Exit();
-
-        //    game.Dispose();
-        //}
+        #endregion
 
 
         //[Test]
