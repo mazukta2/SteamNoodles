@@ -17,9 +17,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public class GhostView : View
     {
-        private IControls _controls;
-
+        public bool CanPlace { get; set; }
         public GhostPresenter Presenter { get; private set; }
+        public FloatPoint LocalPosition { get; internal set; }
 
         public GhostView(ILevel level) : base(level)
         {
@@ -33,6 +33,5 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
             Presenter = new GhostPresenter(definition,  screenManager, constructionsManager, currentCard, controls, this);
             return Presenter;
         }
-
     }
 }

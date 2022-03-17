@@ -22,6 +22,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
         public ConstructionsSettingsDefinition ConstructionsSettings { get; private set; }
         public IntPoint Size => _field.Size;
         public IntRect Rect { get; private set; }
+        public IntPoint Offset { get; private set; }
+
         private PlacementFieldDefinition _field;
 
         public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition)

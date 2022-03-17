@@ -126,7 +126,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Dispose();
         }
 
-        #endregion
 
 
         [Test]
@@ -170,32 +169,27 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Dispose();
         }
 
-        //[Test]
-        //public void IsGhostViewChangeVisualIfItAvailable()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-        //    Assert.AreEqual(1, views.Screen.Hand.Cards.List.Length);
-        //    var proto = new ConstructionSettings
-        //    {
-        //        Requirements = new Requirements() { DownEdge = true }
-        //    };
-        //    models.Hand.Add(proto);
+        [Test]
+        public void IsGhostViewChangeVisualIfItAvailable()
+        {
+            var game = new GameTestConstructor()
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.StartingHand.First().Requirements = new Requirements() {  DownEdge = true })
+                .Build();
 
-        //    Assert.AreEqual(2, views.Screen.Hand.Cards.List.Length);
-        //    var construction = views.Screen.Hand.Cards.List.Last();
-        //    construction.Button.Click();
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
-        //    var ghost = views.Placement.Ghost.Value;
+            var ghost = game.CurrentLevel.FindView<GhostView>();
+            Assert.IsFalse(ghost.CanPlace);
 
-        //    Assert.IsFalse(ghost.GetCanBePlacedState());
-        //    ghost.GetMoveAction()(new FloatPoint(0, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4));
+            var newPos = new FloatPoint(0, -4f * 0.5f);
+            game.Engine.Controls.MovePointer(newPos); // move down
 
-        //    Assert.IsFalse(presenters.Placement.Ghost.Position == new Point(0, 2));
+            Assert.AreEqual(newPos, ghost.LocalPosition);
 
-        //    Assert.IsTrue(ghost.GetCanBePlacedState());
-        //    game.Exit();
-        //}
+            Assert.IsTrue(ghost.CanPlace);
+
+            game.Dispose();
+        }
 
         //[Test]
         //public void IsCellsBeneathGhostIsHighlightedRed()
@@ -363,6 +357,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         //    game.Exit();
         //}
         //#endregion
+        #endregion
 
         [TearDown]
         public void TestDisposables()

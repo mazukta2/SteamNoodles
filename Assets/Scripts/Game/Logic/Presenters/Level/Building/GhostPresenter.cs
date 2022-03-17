@@ -3,9 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.ScreenManagerPresenter;
@@ -48,7 +46,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _controls.OnLevelPointerMoved -= HandleOnPointerMoved;
         }
 
-        public IntPoint GetPosition(PlacementField placementField)
+        public IntPoint GetLocalPosition(PlacementField placementField)
+        {
+            return GetWorldCellPosition() + placementField.Offset;
+        }
+
+        public IntPoint GetWorldCellPosition()
         {
             var halfCell = _constructionsSettings.CellSize / 2;
 
@@ -67,9 +70,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             foreach (var field in _constructionsManager.Placements)
             {
-                if (field.CanPlace(_card, GetPosition(field)))
+                if (field.CanPlace(_card, GetLocalPosition(field)))
                 {
-                    field.Build(_card, GetPosition(field));
+                    field.Build(_card, GetLocalPosition(field));
                     break;
                 }
             }
@@ -79,56 +82,26 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private void HandleOnPointerMoved(FloatPoint worldPosition)
         {
             _worldPosition = worldPosition;
+            _view.CanPlace = CanPlace();
+            _view.LocalPosition = GetLocalPosition();
             OnGhostPostionChanged();
-            //View.PlaceTo(_placement.GetWorldPosition(Position));
-            //View.SetCanBePlacedState(CanPlaceGhost());
-            //_placement.UpdateGhostCells();
         }
 
-
-        //protected override void DisposeInner()
-        //{
-        //    _model.OnAdded -= ScnemeAddedHandle;
-        //}
-
-        //private void ScnemeAddedHandle(ConstructionCard obj)
-        //{
-        //    var viewPresenter = _view.CardPrototype.Create<HandConstructionView>(_view.Cards);
-        //    viewPresenter.Init(_screenManager, obj);
-        //}
-
-
-
-        //public ConstructionCard Card { get; }
-        //public IGhostConstructionView View { get; private set; }
-        //public Point Position { get; private set; }
-
-        //private PlacementPresenter _placement;
-
-
-        //public ConstructionGhostPresenter(PlacementPresenter placement, ConstructionCard originCard, IGhostConstructionView view)
-        //{
-        //    Card = originCard;
-        //    _placement = placement;
-        //    View = view;
-        //    View.SetMoveAction(MoveTo);
-        //    View.SetImage(Card.BuildingView);
-        //}
-
-
-        //protected override void DisposeInner()
-        //{
-        //    View.Dispose();
-        //}
-
-
-
-        //public void MoveTo(FloatPoint worldPosition)
-        //{
-        //    Position = GetCellPosition(worldPosition);
-        //    View.PlaceTo(_placement.GetWorldPosition(Position));
-        //    View.SetCanBePlacedState(CanPlaceGhost());
-        //    _placement.UpdateGhostCells();
-        //}
+        public FloatPoint GetLocalPosition()
+        {
+            var worldCell = GetWorldCellPosition();
+            return new FloatPoint(worldCell.X * _constructionsSettings.CellSize, worldCell.Y * _constructionsSettings.CellSize);
+        }
+        private bool CanPlace()
+        {
+            foreach (var field in _constructionsManager.Placements)
+            {
+                if (field.CanPlace(_card, GetLocalPosition(field)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
