@@ -10,17 +10,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 {
     public class PlacementField : Disposable
     {
+        public ConstructionsSettingsDefinition ConstructionsSettings { get; private set; }
         public IntPoint Size => _field.Size;
-        public IntRect Rect => Size.AsCenteredRect();
-        public FloatRect RealRect => Rect * _settings.CellSize;
-
-        private ConstructionsSettingsDefinition _settings;
+        public IntRect Rect { get; private set; }
         private PlacementFieldDefinition _field;
 
         public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition)
         {
-            _settings = settings;
-            _field = definition;
+            ConstructionsSettings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _field = definition ?? throw new ArgumentNullException(nameof(definition));
+
+            Rect = new IntRect(-Size.X / 2, -Size.Y / 2, Size.X, Size.Y);
         }
 
         protected override void DisposeInner()

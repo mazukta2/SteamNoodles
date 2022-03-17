@@ -1,7 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Services.Ui;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
@@ -16,9 +18,13 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         }
 
-        public PlacementCellPresenter Init(PlacementFieldPresenter field)
+        public PlacementCellPresenter Init(PlacementFieldPresenter field, IntPoint point, FloatPoint offset)
         {
-            Presenter = new PlacementCellPresenter(this, field);
+            var constructionSetttings = Level.Services.Get<DefinitionsService>().Get().Get<ConstructionsSettingsDefinition>();
+            if (constructionSetttings == null)
+                throw new Exception("Cant finde construction settings definition");
+
+            Presenter = new PlacementCellPresenter(this, field, constructionSetttings, point, offset);
             return Presenter;
         }
     }

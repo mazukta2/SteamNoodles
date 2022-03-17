@@ -22,11 +22,11 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 
         public int xMin => X;
 
-        public int xMax => X + Width;
+        public int xMax => X + Width - 1;
 
         public int yMin => Y;
 
-        public int yMax => Y + Height;
+        public int yMax => Y + Height -1;
 
         public bool IsInside(IntPoint point)
         {

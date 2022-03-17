@@ -9,8 +9,9 @@ namespace Game.Tests.Mocks.Settings.Levels
     {
         public string Name { get; set; } = "DebugLevel";
         public LevelPrefabMock LevelPrefab { get; private set; }
-        public LevelDefinitionMock(LevelPrefabMock level)
+        public LevelDefinitionMock(string name, LevelPrefabMock level)
         {
+            Name = name;
             LevelPrefab = level;
             var fields = new List<PlacementFieldDefinition>();
             fields.Add(new PlacementFieldDefinition()

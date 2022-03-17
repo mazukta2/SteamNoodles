@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
 
         public GameTestConstructor AddAndLoadLevel(LevelPrefabMock mockCreator)
         {
-            var levelDefinition = new LevelDefinitionMock(mockCreator);
+            var levelDefinition = new LevelDefinitionMock("lvl", mockCreator);
             AddLevel(levelDefinition);
             _loadLevel = levelDefinition;
             return this;

@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             {
                 for (int y = _model.Rect.yMin; y <= _model.Rect.yMax; y++)
                 {
-                    _cells.Add(view.CreateCell(new IntPoint(x, y)));
+                    _cells.Add(CreateCell(new IntPoint(x, y)));
                 }
             }
+        }
+
+        public PlacementCellPresenter CreateCell(IntPoint position)
+        {
+            return _view.Manager.Cell.Create<CellView>(_view.Manager.CellsContainer).Init(this, position, GetOffset());
+        }
+
+        private FloatPoint GetOffset()
+        {
+            var offset = FloatPoint.Zero;
+            if (_model.Size.X % 2 == 0)
+                offset += new FloatPoint(0.5f, 0);
+            if (_model.Size.Y % 2 == 0)
+                offset += new FloatPoint(0, 0.5f);
+
+            return offset * _model.ConstructionsSettings.CellSize;
         }
     }
 }

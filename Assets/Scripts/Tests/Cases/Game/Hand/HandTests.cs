@@ -20,7 +20,7 @@ namespace Game.Tests.Cases.Constructions
         {
             var construction = new ConstructionDefinition();
             var game = new GameTestConstructor()
-                .AddAndLoadLevel(new LevelDefinitionMock(new BasicSellingLevel())
+                .AddAndLoadLevel(new LevelDefinitionMock("lvl", new BasicSellingLevel())
                 {
                     StartingHand = new List<ConstructionDefinition>() { construction }
                 })

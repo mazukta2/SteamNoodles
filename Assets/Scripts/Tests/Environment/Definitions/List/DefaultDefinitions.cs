@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
             });
 
             var construciton = new ConstructionDefinition();
-            var level = new LevelDefinitionMock(new BasicSellingLevel())
+            var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel())
             {
                 StartingHand = new List<ConstructionDefinition>() { construciton }
             };

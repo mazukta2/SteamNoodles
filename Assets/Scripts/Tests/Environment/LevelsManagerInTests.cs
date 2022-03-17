@@ -1,6 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Services.Ui;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Tests.Mocks.Settings.Levels;
 using System;
@@ -65,6 +68,7 @@ namespace Game.Tests.Controllers
                 throw new Exception("Nothing is loading");
 
             _level = new LevelInTests(this, _loading.Model);
+            _level.Services.Add(new DefinitionsService(CoreAccessPoint.Core.Engine.Settings));
             ((LevelDefinitionMock)(_loading.Prototype)).LevelPrefab.FillLevel(_level);
             _level.Loaded = true;
             _loading.OnFinished(_level);
