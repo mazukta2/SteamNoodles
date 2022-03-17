@@ -24,10 +24,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             _session = session ?? throw new ArgumentNullException(nameof(session));
             _prototype = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _levelManager = gameEngine.Levels ?? throw new ArgumentNullException(nameof(gameEngine));
-            if (!gameEngine.Settings.GetList<LevelDefinition>().Any(x => x == levelDefinition))
+            if (!gameEngine.Definitions.GetList<LevelDefinition>().Any(x => x == levelDefinition))
                 throw new Exception($"Can't find level {levelDefinition} in settings");
 
-            _level = new GameLevel(_prototype, _session.GameRandom, _session.Time, gameEngine.Settings);
+            _level = new GameLevel(_prototype, _session.GameRandom, _session.Time, gameEngine.Definitions);
 
             _levelManager.Load(_level, levelDefinition, Finished);
         }

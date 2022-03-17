@@ -19,14 +19,14 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
                 var result = new List<T>();
                 foreach (var key in list)
                 {
-                    result.Add(CoreAccessPoint.Core.Engine.Settings.Get<T>(key));
+                    result.Add(CoreAccessPoint.Core.Engine.Definitions.Get<T>(key));
                 }
                 return new ReadOnlyCollection<T>(result);
             }
             else
             {
                 var key = obj.ToString();
-                return CoreAccessPoint.Core.Engine.Settings.Get<T>(key);
+                return CoreAccessPoint.Core.Engine.Definitions.Get<T>(key);
             }
 
         }

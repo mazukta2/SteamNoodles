@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
@@ -16,9 +17,11 @@ namespace Game.Tests.Controllers
         private List<LevelDefinitionMock> _availableLevels = new List<LevelDefinitionMock>();
         private ManagerLoadingLevel _loading;
         private LevelInTests _level;
+        private IGameEngine _engine;
 
-        public LevelsManagerInTests()
+        public LevelsManagerInTests(IGameEngine engine)
         {
+            _engine = engine;
         }
 
         public void Dispose()
@@ -67,8 +70,7 @@ namespace Game.Tests.Controllers
             if (_loading == null)
                 throw new Exception("Nothing is loading");
 
-            _level = new LevelInTests(this, _loading.Model);
-            _level.Services.Add(new DefinitionsService(CoreAccessPoint.Core.Engine.Settings));
+            _level = new LevelInTests(this, _engine, _loading.Model);
             ((LevelDefinitionMock)(_loading.Prototype)).LevelPrefab.FillLevel(_level);
             _level.Loaded = true;
             _loading.OnFinished(_level);

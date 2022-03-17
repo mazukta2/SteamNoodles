@@ -6,12 +6,13 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
+using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Game.Tests.Cases.Constructions
+namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 {
     public class HandTests
     {

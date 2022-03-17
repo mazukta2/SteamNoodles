@@ -6,8 +6,9 @@ namespace Game.Assets.Scripts.Game.External
     public interface IGameEngine
     {
         ILevelsManager Levels { get; }
-        IDefinitions Settings { get; }
+        IDefinitions Definitions { get; }
         IAssets Assets { get; }
+        IControls Controls { get; }
         void SetTimeMover(Action<float> moveTime);
     }
 }

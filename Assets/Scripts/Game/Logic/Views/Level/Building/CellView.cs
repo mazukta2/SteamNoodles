@@ -21,11 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         public PlacementCellPresenter Init(PlacementFieldPresenter field, IntPoint point, FloatPoint offset)
         {
-            var constructionSetttings = Level.Services.Get<DefinitionsService>().Get().Get<ConstructionsSettingsDefinition>();
-            if (constructionSetttings == null)
-                throw new Exception("Cant finde construction settings definition");
-
-            Presenter = new PlacementCellPresenter(this, field, constructionSetttings, point, offset);
+            Presenter = new PlacementCellPresenter(this, field, Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), point, offset);
             return Presenter;
         }
     }

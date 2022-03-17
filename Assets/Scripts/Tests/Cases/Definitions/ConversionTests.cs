@@ -3,12 +3,13 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
+using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace Game.Tests.Cases.Settings
+namespace Game.Assets.Scripts.Tests.Cases.Definitions
 {
     public class ConversionTests
     {

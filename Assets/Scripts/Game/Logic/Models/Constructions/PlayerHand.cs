@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             if (hand == null) throw new ArgumentNullException(nameof(hand));
             foreach (var item in hand)
             {
-                Add(new ConstructionCard(item));
+                Add(new ConstructionCard(this, item));
             }
         }
 
@@ -34,21 +34,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             _cards = null;
         }
 
-        public void Remove(ConstructionCard scheme)
+        public void Remove(ConstructionCard card)
         {
-            _cards.Remove(scheme);
-            scheme.Dispose();
-            OnRemoved(scheme);
+            _cards.Remove(card);
+            card.Dispose();
+            OnRemoved(card);
         }
 
-        public bool Contain(ConstructionCard scheme)
+        public bool Contain(ConstructionCard card)
         {
-            return _cards.Contains(scheme);
+            return _cards.Contains(card);
         }
 
-        public void Add(ConstructionDefinition proto)
+        public void Add(ConstructionDefinition definition)
         {
-            Add(new ConstructionCard(proto));
+            Add(new ConstructionCard(this, definition));
             if (_cards.Count > _definition.HandSize)
                 Remove(_cards.First());
         }

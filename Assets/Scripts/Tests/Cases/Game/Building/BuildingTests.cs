@@ -1,21 +1,16 @@
-﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
-using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
-using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Managers.Game;
-using Game.Assets.Scripts.Tests.Mocks.Levels;
+using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
-using System.Collections.Generic;
 using System.Linq;
 
-namespace Game.Tests.Cases.Constructions
+namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 {
     public class BuildingTests
     {
@@ -126,7 +121,7 @@ namespace Game.Tests.Cases.Constructions
 
             game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
-            Assert.IsTrue(cells.All(x => (x.State == CellPlacementStatus.IsReadyToPlace || x.State == CellPlacementStatus.IsAvailableGhostPlace)));
+            Assert.IsTrue(cells.All(x => x.State == CellPlacementStatus.IsReadyToPlace || x.State == CellPlacementStatus.IsAvailableGhostPlace));
 
             game.Dispose();
         }
@@ -134,22 +129,21 @@ namespace Game.Tests.Cases.Constructions
         #endregion
 
 
-        //[Test]
-        //public void IsBuildingPlacingIsExitGhostMode()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-        //    var construction = views.Screen.Hand.Cards.List.First();
+        [Test]
+        public void IsBuildingPlacingIsExitGhostMode()
+        {
+            var game = new GameTestConstructor().Build();
 
-        //    construction.Button.Click();
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
-        //    var view = views.Placement.Ghost.Value;
-        //    Assert.IsNotNull(view);
-        //    views.Placement.Click(new FloatPoint(0f, 0f));
-        //    Assert.IsNull(views.Placement.Ghost.Value);
-        //    Assert.IsTrue(view.IsDisposed);
-        //    game.Exit();
-        //}
+            Assert.IsNotNull(game.CurrentLevel.FindView<GhostView>());
+
+            game.Engine.Controls.Click();
+
+            Assert.IsNull(game.CurrentLevel.FindView<GhostView>());
+
+            game.Dispose();
+        }
 
         //[Test]
         //public void IsCellsBeneathGhostIsHighlighted()

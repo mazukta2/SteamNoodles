@@ -15,15 +15,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
     //    public event Action<Construction> OnConstructionAdded = delegate { };
     //    public event Action<Construction> OnConstructionRemoved = delegate { };
 
-    //    public Point Size => _prototype.Size;
-    //    public Rect Rect => Size.AsCenteredRect();
-    //    public FloatRect RealRect => Rect * CellSize;
         public IReadOnlyCollection<Construction> Constructions => _constructions.AsReadOnly();
 
-    //    private IPlacementSettings _prototype { get; set; }
-    //    private PlayerHand _hand { get; set; }
-
-    //    private RewardCalculator _rewardCalculator;
         private List<Construction> _constructions = new List<Construction>();
 
         public ConstructionsSettingsDefinition ConstructionsSettings { get; private set; }
@@ -41,43 +34,30 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         protected override void DisposeInner()
         {
+            foreach (var item in _constructions)
+                item.Dispose();
+            _constructions.Clear();
         }
 
-        //public Construction Build(ConstructionCard card, Point position)
-        //{
-        //    var construction = new Construction(card.Settings, position);
-        //    _constructions.Add(construction);
-        //    if (_hand.Contain(card))
-        //        _hand.Remove(card);
 
-        //    foreach (var item in construction.GetFeatures().OfType<IGiveRewardOnBuildConstructionFeatureSettings>())
-        //        _rewardCalculator.Give(item.Reward);
+        public bool CanPlace(ConstructionCard card, IntPoint position)
+        {
+            return card.Definition
+                .GetOccupiedSpace(position)
+                .All(otherPosition => IsFreeCell(card.Definition, otherPosition));
+        }
 
-        //    OnConstructionAdded(construction);
-        //    return construction;
-        //}
+        public Construction Build(ConstructionCard card, IntPoint position)
+        {
+            var construction = new Construction(card.Definition, position);
+            _constructions.Add(construction);
+            card.RemoveFromHand();
+            //foreach (var item in construction.GetFeatures().OfType<IGiveRewardOnBuildConstructionFeatureSettings>())
+            //    _rewardCalculator.Give(item.Reward);
 
-        //public bool Contain(Construction key)
-        //{
-        //    return Constructions.Any(x => x == key);
-        //}
-
-        //public IReadOnlyCollection<Construction> GetConstructionsWithFeature<T>() where T : IConstructionFeatureSettings
-        //{
-        //    return Constructions.Where(x => x.GetFeatures().OfType<T>().Any()).AsReadOnly();
-        //}
-
-        //public bool HasConstructionsWithFeature<T>() where T : IConstructionFeatureSettings
-        //{
-        //    return GetConstructionsWithFeature<T>().Any();
-        //}
-
-        //public bool CanPlace(ConstructionCard scheme, Point position)
-        //{
-        //    return scheme
-        //        .GetOccupiedSpace(position)
-        //        .All(otherPosition => IsFreeCell(scheme, otherPosition));
-        //}
+            //OnConstructionAdded(construction);
+            return construction;
+        }
 
         public bool IsFreeCell(ConstructionDefinition constructionDefinition, IntPoint position)
         {
@@ -97,6 +77,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             return true;
         }
 
+        //public bool Contain(Construction key)
+        //{
+        //    return Constructions.Any(x => x == key);
+        //}
+
+        //public IReadOnlyCollection<Construction> GetConstructionsWithFeature<T>() where T : IConstructionFeatureSettings
+        //{
+        //    return Constructions.Where(x => x.GetFeatures().OfType<T>().Any()).AsReadOnly();
+        //}
+
+        //public bool HasConstructionsWithFeature<T>() where T : IConstructionFeatureSettings
+        //{
+        //    return GetConstructionsWithFeature<T>().Any();
+        //}
         //public int GetConstructionsWithTag(ConstructionTag tag)
         //{
         //    return Constructions.Sum(x => x.GetTagsCount(tag));

@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Services;
@@ -20,15 +21,17 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public GameLevel Model { get; private set; }
         public Services Services { get; } = new Services();
+        public IGameEngine Engine { get; }
 
         private bool _loaded;
         private LevelsManagerInTests _testLevelsManager;
         private List<View> _views = new List<View>();
 
-        public LevelInTests(LevelsManagerInTests testLevelsManager, GameLevel gameLevel)
+        public LevelInTests(LevelsManagerInTests testLevelsManager, IGameEngine engine, GameLevel gameLevel)
         {
             _testLevelsManager = testLevelsManager;
             Model = gameLevel;
+            Engine = engine;
         }
 
         public void Dispose()
