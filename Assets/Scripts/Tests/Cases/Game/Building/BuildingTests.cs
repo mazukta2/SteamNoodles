@@ -274,28 +274,27 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Dispose();
         }
 
-        //[Test]
-        //public void IsConstructionPlacedInRightPosition()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-        //    var construction = views.Screen.Hand.Cards.List.First();
-        //    construction.Button.Click();
+        [Test]
+        public void IsConstructionPlacedInRightPosition()
+        {
+            var game = new GameTestConstructor()
+                .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1)
+                .Build();
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
-        //    Assert.IsTrue(views.Placement.Constructions.List.Length == 0);
+            var worldPos = new FloatPoint(0, -2);
+            game.Engine.Controls.MovePointer(worldPos);
 
-        //    var ghost = views.Placement.Ghost.Value;
-        //    var cellPos = new Point(0, -2);
-        //    var worldPos = new FloatPoint(0, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4);
-        //    ghost.GetMoveAction()(worldPos);
+            var ghost = game.CurrentLevel.FindView<GhostView>();
+            Assert.AreEqual(worldPos, ghost.LocalPosition);
 
-        //    Assert.AreEqual(cellPos, presenters.Placement.Ghost.Position);
-        //    views.Placement.Click(worldPos);
+            game.Engine.Controls.Click();
 
-        //    Assert.AreEqual(presenters.Placement.GetWorldPosition(cellPos),
-        //        views.Placement.Constructions.List.First().GetPosition());
-        //    game.Exit();
-        //}
+            var construction = game.CurrentLevel.FindView<ConstructionView>();
+            Assert.AreEqual(worldPos, construction.LocalPosition);
+
+            game.Dispose();
+        }
 
         //[Test]
         //public void IsConstructionPlacedHaveRightImage()

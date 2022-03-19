@@ -19,9 +19,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         }
 
-        public PlacementCellPresenter Init(PlacementFieldPresenter field, IntPoint point, FloatPoint offset)
+        public PlacementCellPresenter Init(PlacementFieldPresenter field, IntPoint point)
         {
-            Presenter = new PlacementCellPresenter(this, field, Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), point, offset);
+            Presenter = new PlacementCellPresenter(this, field, Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), point);
             return Presenter;
         }
     }

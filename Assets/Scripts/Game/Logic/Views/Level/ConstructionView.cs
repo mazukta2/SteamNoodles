@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using System;
@@ -9,6 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public class ConstructionView : View
     {
+        public FloatPoint LocalPosition { get; set; }
         private ConstructionPresenter _presenter;
 
         public ConstructionView(ILevel level) : base(level)

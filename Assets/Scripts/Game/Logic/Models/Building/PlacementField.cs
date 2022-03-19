@@ -51,7 +51,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         public Construction Build(ConstructionCard card, IntPoint position)
         {
-            var construction = new Construction(card.Definition, position);
+            var construction = new Construction(this, card.Definition, position);
             _constructions.Add(construction);
             card.RemoveFromHand();
             //foreach (var item in construction.GetFeatures().OfType<IGiveRewardOnBuildConstructionFeatureSettings>())
@@ -77,6 +77,23 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             }
 
             return true;
+        }
+
+        private FloatPoint GetOffset()
+        {
+            var offset = FloatPoint.Zero;
+            if (Size.X % 2 == 0)
+                offset += new FloatPoint(0.5f, 0);
+            if (Size.Y % 2 == 0)
+                offset += new FloatPoint(0, 0.5f);
+
+            return offset * ConstructionsSettings.CellSize;
+        }
+
+        public FloatPoint GetLocalPosition(IntPoint position)
+        {
+            return new FloatPoint(position.X * ConstructionsSettings.CellSize,
+                   position.Y * ConstructionsSettings.CellSize) + GetOffset();
         }
 
         //public bool Contain(Construction key)

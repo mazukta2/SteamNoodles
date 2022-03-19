@@ -13,8 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         {
             _construction = construction;
             _constructionView = view;
-            //    View.SetPosition(placement.GetWorldPosition(construction.Position));
-            //    View.SetImage(_model.GetVisual());
+            _constructionView.LocalPosition = construction.GetLocalPosition();
         }
     }
 }

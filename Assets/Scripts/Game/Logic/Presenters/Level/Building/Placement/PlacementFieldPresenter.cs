@@ -44,6 +44,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             UpdateGhostCells();
         }
 
+        public FloatPoint GetLocalPosition(IntPoint position) => _model.GetLocalPosition(position);
+
         protected override void DisposeInner()
         {
             _ghostManager.OnGhostChanged -= UpdateGhostCells;
@@ -53,18 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private PlacementCellPresenter CreateCell(IntPoint position)
         {
-            return _view.Manager.Cell.Create<CellView>(_view.Manager.CellsContainer).Init(this, position, GetOffset());
-        }
-
-        private FloatPoint GetOffset()
-        {
-            var offset = FloatPoint.Zero;
-            if (_model.Size.X % 2 == 0)
-                offset += new FloatPoint(0.5f, 0);
-            if (_model.Size.Y % 2 == 0)
-                offset += new FloatPoint(0, 0.5f);
-
-            return offset * _model.ConstructionsSettings.CellSize;
+            return _view.Manager.Cell.Create<CellView>(_view.Manager.CellsContainer).Init(this, position);
         }
 
         public void UpdateGhostCells()
