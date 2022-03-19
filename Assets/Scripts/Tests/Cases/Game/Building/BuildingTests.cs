@@ -30,10 +30,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var cells = game.CurrentLevel.FindViews<CellView>();
             Assert.AreEqual(4, cells.Count());
 
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(5, 5)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-5, 5)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(5, -5)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-5, -5)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(5, 5)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(-5, 5)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(5, -5)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(-5, -5)));
 
             game.Dispose();
         }
@@ -52,10 +52,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var cells = game.CurrentLevel.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
 
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(10, 10)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-10, 10)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(10, -10)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition == new FloatPoint(-10, -10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(10, 10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(-10, 10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(10, -10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(-10, -10)));
 
             game.Dispose();
         }
@@ -153,19 +153,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
             var cells = game.CurrentLevel.FindViews<CellView>();
-            var highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.X);
+            var highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
             Assert.AreEqual(2, highlighedCells.Count());
 
-            Assert.AreEqual(new FloatPoint(0, 0), highlighedCells.First().LocalPosition);
-            Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.Last().LocalPosition);
+            Assert.AreEqual(new FloatPoint(0, 0), highlighedCells.First().LocalPosition.Value);
+            Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.Last().LocalPosition.Value);
 
             game.Engine.Controls.MovePointer(new FloatPoint(0.5f, 0)); // move left
 
-            highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.X);
+            highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
             Assert.AreEqual(2, highlighedCells.Count());
 
-            Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.First().LocalPosition);
-            Assert.AreEqual(new FloatPoint(1f, 0), highlighedCells.Last().LocalPosition);
+            Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.First().LocalPosition.Value);
+            Assert.AreEqual(new FloatPoint(1f, 0), highlighedCells.Last().LocalPosition.Value);
 
             game.Dispose();
         }
@@ -186,7 +186,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var newPos = new FloatPoint(0, -4f * cellSize);
             game.Engine.Controls.MovePointer(newPos); // move down
 
-            Assert.AreEqual(newPos, ghost.LocalPosition);
+            Assert.AreEqual(newPos, ghost.LocalPosition.Value);
 
             Assert.IsTrue(ghost.CanPlace);
 
@@ -247,7 +247,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 for (int x = -size / 2; x <= size / 2; x++)
                     for (int y = -size / 2; y <= size / 2; y++)
                     {
-                        actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition == new FloatPoint(x, y)).State;
+                        actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition.Value == new FloatPoint(x, y)).State;
                         chkd++;
                     }
 
@@ -286,12 +286,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Engine.Controls.MovePointer(worldPos);
 
             var ghost = game.CurrentLevel.FindView<GhostView>();
-            Assert.AreEqual(worldPos, ghost.LocalPosition);
+            Assert.AreEqual(worldPos, ghost.LocalPosition.Value);
 
             game.Engine.Controls.Click();
 
             var construction = game.CurrentLevel.FindView<ConstructionView>();
-            Assert.AreEqual(worldPos, construction.LocalPosition);
+            Assert.AreEqual(worldPos, construction.LocalPosition.Value);
 
             game.Dispose();
         }
@@ -307,7 +307,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 })
                 .Build();
 
-            Assert.AreEqual(imagePath, game.CurrentLevel.FindView<HandConstructionView>().Image);
+            Assert.AreEqual(imagePath, game.CurrentLevel.FindView<HandConstructionView>().Image.Path);
 
             game.Dispose();
         }

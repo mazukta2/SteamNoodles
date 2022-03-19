@@ -20,7 +20,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             _core = new Core(_engine);
 
             _session = _core.Game.CreateSession();
-            _session.LoadLevel(_engine.Settings.Get<MainDefinition>().StartLevel);
+            _session.LoadLevel(_engine.Definitions.Get<MainDefinition>().StartLevel);
         }
 
         protected void OnApplicationQuit()

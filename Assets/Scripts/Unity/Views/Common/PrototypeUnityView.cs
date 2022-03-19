@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
                 _gameObject = gameObject;
             }
 
-            public override object Create<T>(ContainerView conteiner) 
+            public override View Create<T>(ContainerView conteiner) 
             {
                 var unityContainer = ContainerUnityView.Find(conteiner);
                 return conteiner.Create(Creator);

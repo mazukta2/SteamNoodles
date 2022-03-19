@@ -5060,7 +5060,7 @@ SpriteRenderer:
   m_Size: {x: 1.33, y: 2.95}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &6382994792827776997
@@ -5256,7 +5256,7 @@ SpriteRenderer:
   m_Size: {x: 1.78, y: 1.87}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &8001652445777294529
@@ -5269,7 +5269,7 @@ Animator:
   m_GameObject: {fileID: 7749292797795309709}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 47101e55f83c8e743a9518e14f402750, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5288,6 +5288,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7792093803026714424}
+  - component: {fileID: 4415560876749501896}
   m_Layer: 0
   m_Name: SimpleShop
   m_TagString: Untagged
@@ -5311,6 +5312,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4415560876749501896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7792093803026714425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd7e060dd4a9a084188b8fb22909e677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7792093804368555206
 GameObject:
   m_ObjectHideFlags: 0
@@ -5476,7 +5489,7 @@ SpriteRenderer:
   m_Size: {x: 1.78, y: 1.87}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7955119241570268618

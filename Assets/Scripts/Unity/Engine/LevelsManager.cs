@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using System;
@@ -11,6 +12,12 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     {
         private static LevelMain _currentLevel;
         private static GameLevel _model;
+        private static IGameEngine _engine;
+
+        public LevelsManager(IGameEngine engine)
+        {
+            _engine = engine;
+        }
 
         public void Load(string scene, Action<ILevel> onFinished)
         {
@@ -58,6 +65,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         {
             _currentLevel = levelMain;
             _currentLevel.Model = _model;
+            _currentLevel.Engine = _engine;
         }
 
     }

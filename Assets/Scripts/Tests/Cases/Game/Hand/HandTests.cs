@@ -41,7 +41,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
                 return conteiner.Create((level) =>
                 {
                     var buttonView = new ButtonView(level);
-                    return new HandConstructionView(level, buttonView);
+                    var imageView = new ImageView(level);
+                    return new HandConstructionView(level, buttonView, imageView);
                 });
             }
         }

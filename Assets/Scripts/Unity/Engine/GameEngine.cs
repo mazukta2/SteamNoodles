@@ -8,19 +8,21 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 {
     public class GameEngine : IGameEngine
     {
-        public ILevelsManager Levels { get; private set; } = new LevelsManager();
-        public IDefinitions Settings { get; private set; } = new GameDefinitions();
+        public ILevelsManager Levels { get; private set; } 
         public IAssets Assets { get; private set; } = new AssetsLoader();
+        public IDefinitions Definitions { get; private set; } = new GameDefinitions();
+        public IControls Controls => _controls;
 
-        private Action<float> _moveTime;
-        public void SetTimeMover(Action<float> moveTime)
+        private UnityControls _controls = new UnityControls();
+
+        public GameEngine()
         {
-            _moveTime = moveTime;
+            Levels = new LevelsManager(this);
         }
 
         public void Update()
         {
-            _moveTime?.Invoke(Time.deltaTime);
+            _controls.Update();
         }
     }
 }

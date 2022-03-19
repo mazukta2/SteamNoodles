@@ -8,14 +8,15 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
     public class HandConstructionView : View
     {
-        public string Image { get; set; }
         public ButtonView Button { get; }
+        public ImageView Image { get; }
 
         private HandConstructionPresenter _presenter;
 
-        public HandConstructionView(ILevel level, ButtonView button) : base(level)
+        public HandConstructionView(ILevel level, ButtonView button, ImageView view) : base(level)
         {
             Button = button ?? throw new ArgumentNullException(nameof(button));
+            Image = view ?? throw new ArgumentNullException(nameof(view));
         }
 
         public void Init(ScreenManagerPresenter manager, ConstructionCard construction)

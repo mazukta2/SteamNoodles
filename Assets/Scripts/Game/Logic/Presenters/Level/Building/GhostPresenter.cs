@@ -83,7 +83,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             _worldPosition = worldPosition;
             _view.CanPlace = CanPlace();
-            _view.LocalPosition = GetLocalPosition();
+            _view.LocalPosition.Value = GetLocalPosition();
             OnGhostPostionChanged();
         }
 

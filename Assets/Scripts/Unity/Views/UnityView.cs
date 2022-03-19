@@ -56,6 +56,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         {
             if (_view != null && !_view.IsDisposed)
             {
+                OnDisposeView(_view);
                 _view.OnDispose -= DisposedByView;
                 _view.Dispose();
                 _view = null;
@@ -66,11 +67,16 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         {
             if (_view != null && !_view.IsDisposed)
             {
+                OnDisposeView(_view);
                 _view.OnDispose -= DisposedByView;
                 _view.Dispose();
                 _view = null;
             }
             AfterDestroy();
+        }
+
+        protected virtual void OnDisposeView(TView view)
+        {
         }
 
         protected virtual void AfterDestroy()
@@ -92,6 +98,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         private void DisposedByView()
         {
+            OnDisposeView(_view);
             _view.OnDispose -= DisposedByView;
             _view = null;
             if (_isAwaked)

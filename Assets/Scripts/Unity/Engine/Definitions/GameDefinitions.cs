@@ -21,10 +21,17 @@ namespace GameUnity.Assets.Scripts.Unity.Engine.Definitions
                 return (T)_cached[path];
 
             var text = LoadResourceTextfile(path);
-            var item = JsonConvert.DeserializeObject<T>(text);
-            _cached.Add(path, item);
+            try
+            {
+                var item = JsonConvert.DeserializeObject<T>(text);
+                _cached.Add(path, item);
 
-            return item;
+                return item;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cant deserialize : " + path, ex);
+            }
         }
 
         public T Get<T>()
@@ -34,9 +41,42 @@ namespace GameUnity.Assets.Scripts.Unity.Engine.Definitions
                 return (T)_cached[path];
 
             var text = LoadResourceTextfile(path);
-            var item = JsonConvert.DeserializeObject<T>(text);
-            _cached.Add(path, item);
-            return item;
+            try
+            {
+                var item = JsonConvert.DeserializeObject<T>(text);
+                _cached.Add(path, item);
+                return item;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cant deserialize : " + path, ex);
+            }
+        }
+
+        public IReadOnlyCollection<T> GetList<T>()
+        {
+            var folderPath = typeof(T).Name;
+            var list = Resources.LoadAll<TextAsset>(folderPath);
+            var result = new List<T>();
+            foreach (var item in list)
+            {
+                var path = folderPath + "/" + item.name;
+                if (_cached.ContainsKey(path))
+                    result.Add((T)_cached[path]);
+                else
+                {
+                    try
+                    {
+                        var obj = JsonConvert.DeserializeObject<T>(item.text);
+                        _cached.Add(path, obj);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Cant deserialize : " + path, ex);
+                    }
+                }
+            }
+            return result.AsReadOnly();
         }
 
         private static string LoadResourceTextfile(string path)

@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Tests.Environment.Common;
 
 namespace Game.Assets.Scripts.Tests.Environment.Prefabs.Levels.Constructions
 {
@@ -11,7 +12,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Prefabs.Levels.Constructions
         {
             return conteiner.Create((level) =>
             {
-                return new ConstructionView(level);
+                return new ConstructionView(level, new LevelPosition());
             });
         }
     }

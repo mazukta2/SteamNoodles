@@ -8,6 +8,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services;
 using Game.Assets.Scripts.Game.Logic.Services.Ui;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,20 +18,32 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public class GhostView : View
     {
-        public bool CanPlace { get; set; }
-        public GhostPresenter Presenter { get; private set; }
-        public FloatPoint LocalPosition { get; internal set; }
+        public event Action OnUpdate = delegate { };
 
-        public GhostView(ILevel level) : base(level)
+        private bool _canPlace;
+
+        public bool CanPlace
         {
+            get => _canPlace; set
+            {
+                _canPlace = value;
+                OnUpdate();
+            }
+        }
+        public ILevelPosition LocalPosition { get; private set; }
+        public GhostPresenter Presenter { get; private set; }
+
+        public GhostView(ILevel level, ILevelPosition position) : base(level)
+        {
+            LocalPosition = position;
         }
 
         public GhostPresenter Init(ConstructionsSettingsDefinition definition, IControls controls,
             ScreenManagerPresenter screenManager,
-            ConstructionsManager constructionsManager, 
+            ConstructionsManager constructionsManager,
             ConstructionCard currentCard)
         {
-            Presenter = new GhostPresenter(definition,  screenManager, constructionsManager, currentCard, controls, this);
+            Presenter = new GhostPresenter(definition, screenManager, constructionsManager, currentCard, controls, this);
             return Presenter;
         }
     }

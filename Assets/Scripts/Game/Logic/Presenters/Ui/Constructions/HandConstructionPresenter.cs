@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void UpdateView()
         {
-            _view.Image = _model.Definition.HandImagePath;
+            _view.Image.SetImage(_model.Definition.HandImagePath);
         }
 
         private void Model_OnDispose()

@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _position = position;
             _constructionsSettingsDefinition = constructionsSettingsDefinition;
 
-            view.LocalPosition = GetPosition();
+            view.LocalPosition.Value = GetPosition();
         }
 
         private FloatPoint GetPosition() => _field.GetLocalPosition(_position);

@@ -1,5 +1,13 @@
 {
     "StartingHand": [ "SimpleShop" ],
     "HandSize": 5,
-    "SceneName": "PolygonScene"
+    "SceneName": "PolygonScene",
+	"PlacementFields" : [
+		{
+			"Size" :{
+				"X" : 11,
+				"Y" : 11,
+			}
+		}
+	]
 }

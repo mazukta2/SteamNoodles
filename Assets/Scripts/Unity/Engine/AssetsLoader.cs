@@ -25,6 +25,15 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             return targetFile;
         }
 
+        public ViewPrefab GetConstruction(string path)
+        {
+            var prefab = LoadResource<GameObject>("Assets/" + path);
+            if (prefab == null)
+                throw new System.Exception($"Cant find construction prefab named : {path}");
+
+            return new ScreenPrefab(prefab);
+        }
+
         public ViewPrefab GetScreen<T>() where T : ScreenView
         {
             var name = typeof(T).Name;
@@ -46,7 +55,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                 _prefab = prefab;
             }
 
-            public override object Create<T>(ContainerView conteiner)
+            public override View Create<T>(ContainerView conteiner)
             {
                 var unityConteiner = ContainerUnityView.Find(conteiner);
                 var createdView = unityConteiner.View.Create(Creator);
