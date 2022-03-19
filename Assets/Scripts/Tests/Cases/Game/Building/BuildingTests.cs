@@ -8,6 +8,7 @@ using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Building
@@ -175,13 +176,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var game = new GameTestConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.StartingHand.First().Requirements = new Requirements() {  DownEdge = true })
                 .Build();
+            var cellSize = 0.5f;
 
             game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
             var ghost = game.CurrentLevel.FindView<GhostView>();
             Assert.IsFalse(ghost.CanPlace);
 
-            var newPos = new FloatPoint(0, -4f * 0.5f);
+            var newPos = new FloatPoint(0, -4f * cellSize);
             game.Engine.Controls.MovePointer(newPos); // move down
 
             Assert.AreEqual(newPos, ghost.LocalPosition);
@@ -191,48 +193,68 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Dispose();
         }
 
-        //[Test]
-        //public void IsCellsBeneathGhostIsHighlightedRed()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-        //    var building = new ConstructionSettings
-        //    {
-        //        Size = new Point(2, 2),
-        //        Requirements = new Requirements()
-        //        {
-        //            DownEdge = true,
-        //        }
-        //    };
-        //    models.Hand.Add(building);
+        [Test]
+        public void IsCellsBeneathGhostIsHighlightedRed()
+        {
+            var size = 5;
+            var game = new GameTestConstructor()
+                .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1 )
+                .UpdateDefinition<LevelDefinitionMock>((d) =>
+                {
+                    d.PlacementFields.First().Size = new IntPoint(size, size);
+                    d.StartingHand.First().Size = new IntPoint(2, 2);
+                    d.StartingHand.First().Requirements = new Requirements() { DownEdge = true };
+                })
+                .Build();
 
-        //    var construction = views.Screen.Hand.Cards.List.Last();
-        //    construction.Button.Click();
-        //    var worldPos = new FloatPoint(0f, -presenters.Placement.CellSize / 2);
-        //    views.Placement.Ghost.Value.GetMoveAction()(worldPos);
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
-        //    var cells = presenters.Placement.GetCells();
+            var worldPos = new FloatPoint(0f, -1f);
+            game.Engine.Controls.MovePointer(worldPos);
 
-        //    Assert.AreEqual(CellPresenter.CellState.Normal,
-        //        cells.First(x => x.Position == new Point(-1, 0)).View.GetState());
-        //    Assert.AreEqual(CellPresenter.CellState.IsNotAvailableGhostPlace,
-        //        cells.First(x => x.Position == new Point(0, 0)).View.GetState());
-        //    Assert.AreEqual(CellPresenter.CellState.IsNotAvailableGhostPlace,
-        //        cells.First(x => x.Position == new Point(1, 0)).View.GetState());
-        //    Assert.AreEqual(CellPresenter.CellState.Normal,
-        //        cells.First(x => x.Position == new Point(-1, 0)).View.GetState());
+            var cells = game.CurrentLevel.FindViews<CellView>();
+            var actual = ToArray(cells);
+            var expected = new int[5, 5]
+            {
+                { 1,1,0,0,0 },
+                { 1,1,0,0,0 },
+                { 1,2,3,0,0 },
+                { 1,2,3,0,0 },
+                { 1,1,0,0,0 }
+            };
+            
+            Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
+            game.Dispose();
 
-        //    Assert.AreEqual(CellPresenter.CellState.IsReadyToPlace,
-        //        cells.First(x => x.Position == new Point(-1, -1)).View.GetState());
-        //    Assert.AreEqual(CellPresenter.CellState.IsAvailableGhostPlace,
-        //        cells.First(x => x.Position == new Point(0, -1)).View.GetState());
-        //    Assert.AreEqual(CellPresenter.CellState.IsAvailableGhostPlace,
-        //        cells.First(x => x.Position == new Point(1, -1)).View.GetState());
-        //    Assert.AreEqual(CellPresenter.CellState.IsReadyToPlace,
-        //        cells.First(x => x.Position == new Point(-1, -1)).View.GetState());
-        //    game.Exit();
-        //}
-        //#endregion
+            string PrintPosition(int[,] matrix)
+            {
+                var result = "";
+                for (int x = 0; x < matrix.GetLength(0); x++)
+                {
+                    for (int y = 0; y < matrix.GetLength(1); y++)
+                    {
+                        result += matrix[x, y].ToString();
+                    }
+                    result += "\r\n";
+                }
+                return result;
+            }
+
+            int[,] ToArray(IReadOnlyCollection<CellView> cells)
+            {
+                var actual = new int[size, size];
+                var chkd = 0;
+                for (int x = -size / 2; x <= size / 2; x++)
+                    for (int y = -size / 2; y <= size / 2; y++)
+                    {
+                        actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition == new FloatPoint(x, y)).State;
+                        chkd++;
+                    }
+
+                Assert.AreEqual(chkd, cells.Count());
+                return actual;
+            }
+        }
 
         //#region Build
         //[Test]
