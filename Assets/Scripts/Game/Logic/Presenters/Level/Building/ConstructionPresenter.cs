@@ -1,23 +1,20 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Level;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class ConstructionPresenter : Disposable
+    public class ConstructionPresenter : BasePresenter
     {
-        //private Construction _model;
-        //public IConstructionView View { get; private set; }
+        private Construction _construction;
+        private ConstructionView _constructionView;
 
-        //public ConstructionPresenter(PlacementPresenter placement, Construction construction, IConstructionView view)
-        //{
-        //    _model = construction;
-        //    View = view;
-        //    View.SetPosition(placement.GetWorldPosition(construction.Position));
-        //    View.SetImage(_model.GetVisual());
-        //}
-
-        //protected override void DisposeInner()
-        //{
-        //    View.Dispose();
-        //}
+        public ConstructionPresenter(Construction construction, ConstructionView view) : base(view)
+        {
+            _construction = construction;
+            _constructionView = view;
+            //    View.SetPosition(placement.GetWorldPosition(construction.Position));
+            //    View.SetImage(_model.GetVisual());
+        }
     }
 }

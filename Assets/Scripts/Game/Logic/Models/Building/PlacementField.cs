@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 {
     public class PlacementField : Disposable
     {
-    //    public event Action<Construction> OnConstructionAdded = delegate { };
+        public event Action<Construction> OnConstructionAdded = delegate { };
     //    public event Action<Construction> OnConstructionRemoved = delegate { };
 
         public IReadOnlyCollection<Construction> Constructions => _constructions.AsReadOnly();
@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             //foreach (var item in construction.GetFeatures().OfType<IGiveRewardOnBuildConstructionFeatureSettings>())
             //    _rewardCalculator.Give(item.Reward);
 
-            //OnConstructionAdded(construction);
+            OnConstructionAdded(construction);
             return construction;
         }
 

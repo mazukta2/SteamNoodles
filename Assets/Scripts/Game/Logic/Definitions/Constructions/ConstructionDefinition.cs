@@ -6,6 +6,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 {
     public class ConstructionDefinition
     {
+        public string LevelViewPath { get; set; }
         public IntPoint Size { get; set;  }
         public Requirements Requirements { get; set;  }
         //public ISprite HandIcon { get; }

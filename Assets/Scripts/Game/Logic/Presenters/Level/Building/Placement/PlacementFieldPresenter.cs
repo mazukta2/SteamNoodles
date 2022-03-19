@@ -1,13 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
-using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 {
@@ -17,14 +16,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private PlacementFieldView _view;
         private PlacementManagerPresenter _manager;
         private GhostManagerPresenter _ghostManager;
+        private IAssets _assets;
         private List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
-        public PlacementFieldPresenter(GhostManagerPresenter ghostManagerPresenter, PlacementField model, PlacementFieldView view, PlacementManagerPresenter presenter) : base(view)
+        public PlacementFieldPresenter(GhostManagerPresenter ghostManagerPresenter, PlacementField model, 
+            PlacementFieldView view, PlacementManagerPresenter presenter, IAssets assets) : base(view)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _manager = presenter ?? throw new ArgumentNullException(nameof(presenter));
             _ghostManager = ghostManagerPresenter ?? throw new ArgumentNullException(nameof(ghostManagerPresenter));
+            _assets = assets ?? throw new ArgumentNullException(nameof(assets));
 
             for (int x = _model.Rect.xMin; x <= _model.Rect.xMax; x++)
             {
@@ -37,6 +39,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             _ghostManager.OnGhostChanged += UpdateGhostCells;
             _ghostManager.OnGhostPostionChanged += UpdateGhostCells;
 
+            _model.OnConstructionAdded += HandleOnConstructionAdded;
+
             UpdateGhostCells();
         }
 
@@ -44,6 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         {
             _ghostManager.OnGhostChanged -= UpdateGhostCells;
             _ghostManager.OnGhostPostionChanged -= UpdateGhostCells;
+            _model.OnConstructionAdded -= HandleOnConstructionAdded;
         }
 
         private PlacementCellPresenter CreateCell(IntPoint position)
@@ -88,75 +93,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             }
         }
 
-        //public bool CanPlace(ConstructionCard scheme, Point position)
-        //{
-        //    return _model.CanPlace(scheme, position);
-        //}
+        private void HandleOnConstructionAdded(Construction construction)
+        {
+            var screenPrefab = _assets.GetConstruction(construction.Definition.LevelViewPath);
+            if (screenPrefab == null)
+                throw new Exception($"Cant find {construction.Definition.LevelViewPath} view");
 
-        //public Point GetSize() => _model.Size;
-
-        //public ConstructionGhostPresenter Ghost { get; private set; }
-        //public IPlacementView View { get; private set; }
-        //public float CellSize => _model.CellSize;
-
-        //public void SetGhost(ConstructionCard card)
-        //{
-        //    if (Ghost != null) throw new Exception("Ghost already existing");
-
-        //    Ghost = new ConstructionGhostPresenter(this, card, View.Ghost.Create());
-        //    UpdateGhostCells();
-        //}
-
-        //public void ClearGhost()
-        //{
-        //    Ghost?.Dispose();
-        //    Ghost = null;
-        //    UpdateGhostCells();
-        //}
-
-        //public void OnClick(FloatPoint worldPosition)
-        //{
-        //    if (Ghost != null)
-        //    {
-        //        Ghost.MoveTo(worldPosition);
-        //        if (Ghost.CanPlaceGhost())
-        //        {
-        //            _model.Build(Ghost.Card, Ghost.GetCellPosition(worldPosition));
-        //            ClearGhost();
-        //        }
-        //    }
-        //}
-
-        //public ConstructionPresenter[] GetConstructions()
-        //{
-        //    return _constructions.Values.ToArray();
-        //}
-
-        //public CellPresenter[] GetCells()
-        //{
-        //    return _cells.ToArray();
-        //}
-
-        //public FloatPoint GetWorldPosition(Point point)
-        //{
-        //    return new FloatPoint(point.X * _model.CellSize, point.Y * _model.CellSize);
-        //}
-
-        //private void ConstructionRemoved(Construction obj) => UpdateConstructions();
-        //private void ConstructionAdded(Construction obj) => UpdateConstructions();
-
-        //private void UpdateConstructions()
-        //{
-        //    var toDelete = _constructions.Where(x => !_model.Contain(x.Key));
-        //    foreach (var viewModel in toDelete)
-        //    {
-        //        _constructions.Remove(viewModel.Key);
-        //        viewModel.Value.Dispose();
-        //    }
-
-        //    var toAdd = _model.Constructions.Where(x => !_constructions.ContainsKey(x));
-        //    foreach (var model in toAdd)
-        //        _constructions.Add(model, new ConstructionPresenter(this, model, View.Constructions.Create()));
-        //}
+            _view.Manager.ConstrcutionContainer.Clear();
+            var view = (ConstructionView)screenPrefab.Create<ConstructionView>(_view.Manager.ConstrcutionContainer);
+            view.Init(construction);
+        }
     }
 }

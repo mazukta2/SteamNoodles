@@ -8,17 +8,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
     public class Construction : Disposable
     {
         public IntPoint Position { get; private set; }
-        private ConstructionDefinition _definition;
+        public ConstructionDefinition Definition { get; private set; }
 
         public Construction(ConstructionDefinition definition, IntPoint position)
         {
-            _definition = definition;
+            Definition = definition;
             Position = position;
         }
 
         public IReadOnlyCollection<IntPoint> GetOccupiedScace()
         {
-            return _definition.GetOccupiedSpace(Position);
+            return Definition.GetOccupiedSpace(Position);
         }
 
         //public IVisual GetVisual()

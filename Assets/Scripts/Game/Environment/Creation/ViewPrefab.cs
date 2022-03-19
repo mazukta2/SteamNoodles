@@ -9,6 +9,6 @@ namespace Game.Assets.Scripts.Game.Environment.Creation
     // prefab must create view presenter by request
     public abstract class ViewPrefab 
     {
-        public abstract object Create<T>(ContainerView conteiner) where T : View;
+        public abstract View Create<T>(ContainerView conteiner) where T : View;
     }
 }

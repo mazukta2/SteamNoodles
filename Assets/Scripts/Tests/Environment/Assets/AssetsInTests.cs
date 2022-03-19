@@ -1,7 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Environment.Engine.Assets;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Tests.Environment.Assets;
+using System.Collections.Generic;
 
 namespace Game.Tests.Controllers
 {
@@ -10,9 +12,26 @@ namespace Game.Tests.Controllers
         public ScreenAssetsInTests Screens { get; } = new ScreenAssetsInTests();
         IScreenAssets IAssets.Screens => Screens;
 
+        private Dictionary<string, ViewPrefab> _constructions = new Dictionary<string, ViewPrefab>();
+
         protected override void DisposeInner()
         {
             Screens.Dispose();
+            _constructions.Clear();
+        }
+
+        public ViewPrefab GetConstruction(string path)
+        {
+            if (!_constructions.ContainsKey(path))
+                throw new System.Exception("Cant find resource : " + path);
+
+            var prefab = _constructions[path];
+            return prefab;
+        }
+
+        public void AddPrefab(string path, ViewPrefab prefab)
+        {
+            _constructions.Add(path, prefab);
         }
     }
 }

@@ -255,26 +255,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 return actual;
             }
         }
+        #endregion
 
-        //#region Build
-        //[Test]
-        //public void IsConstructionPlaced()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-        //    var construction = views.Screen.Hand.Cards.List.First();
+        #region Build
+        [Test]
+        public void IsConstructionPlaced()
+        {
+            var game = new GameTestConstructor().Build();
 
-        //    construction.Button.Click();
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
-        //    Assert.IsTrue(presenters.Placement.Ghost.CanPlaceGhost());
+            Assert.IsNull(game.CurrentLevel.FindView<ConstructionView>());
 
-        //    Assert.AreEqual(0, views.Placement.Constructions.List.Length);
+            game.Engine.Controls.Click();
 
-        //    views.Placement.Click(new FloatPoint(0f, 0f));
+            Assert.IsNotNull(game.CurrentLevel.FindView<ConstructionView>());
 
-        //    Assert.AreEqual(1, views.Placement.Constructions.List.Length);
-        //    game.Exit();
-        //}
+            game.Dispose();
+        }
 
         //[Test]
         //public void IsConstructionPlacedInRightPosition()
@@ -378,7 +376,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         //    Assert.AreEqual(0, views.Screen.Hand.Cards.List.Length);
         //    game.Exit();
         //}
-        //#endregion
         #endregion
 
         [TearDown]

@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
+using Game.Assets.Scripts.Tests.Environment.Prefabs.Levels.Constructions;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens;
 using Game.Tests.Controllers;
@@ -18,9 +19,11 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
             engine.Settings.Add(nameof(ConstructionsSettingsDefinition), new ConstructionsSettingsDefinition() { 
                 CellSize = 0.5f,
             });
+            engine.Assets.AddPrefab("DebugConstruction", new BasicConstructionPrefab());
 
             var construciton = new ConstructionDefinition() {
                 Size = new IntPoint(2, 1),
+                LevelViewPath = "DebugConstruction",
             };
             var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel())
             {

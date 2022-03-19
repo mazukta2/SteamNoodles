@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
@@ -20,14 +21,15 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
 
             var cellContainer = new ContainerView(level);
             var cellPrototype = new PrototypeView(level, new CellViewPrefab());
-            var placementManager = new PlacementManagerView(level, cellContainer, cellPrototype);
+            var constrcutionContainer = new ContainerView(level);
+            var placementManager = new PlacementManagerView(level, cellContainer, cellPrototype, constrcutionContainer);
 
             new PlacementFieldView(level, placementManager, 0);
         }
 
         private class GhostViewPrefab : ViewPrefab
         {
-            public override object Create<T>(ContainerView conteiner)
+            public override View Create<T>(ContainerView conteiner)
             {
                 return conteiner.Create((level) =>
                 {
@@ -38,7 +40,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
 
         private class CellViewPrefab : ViewPrefab
         {
-            public override object Create<T>(ContainerView conteiner)
+            public override View Create<T>(ContainerView conteiner)
             {
                 return conteiner.Create((level) =>
                 {

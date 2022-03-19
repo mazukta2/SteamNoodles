@@ -92,6 +92,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             var worldCell = GetWorldCellPosition();
             return new FloatPoint(worldCell.X * _constructionsSettings.CellSize, worldCell.Y * _constructionsSettings.CellSize);
         }
+
         private bool CanPlace()
         {
             foreach (var field in _constructionsManager.Placements)
