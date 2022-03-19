@@ -8,9 +8,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
     public class ConstructionUnityView : UnityView<ConstructionView>
     {
+        [SerializeField] ContainerUnityView _container;
         protected override ConstructionView CreateView()
         {
-            return new ConstructionView(Level, new UnityLevelPosition(transform));
+            return new ConstructionView(Level, _container.View, new UnityLevelPosition(transform));
         }
 
     }

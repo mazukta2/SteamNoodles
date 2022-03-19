@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
             engine.Settings.Add(nameof(ConstructionsSettingsDefinition), new ConstructionsSettingsDefinition() { 
                 CellSize = 0.5f,
             });
-            engine.Assets.AddPrefab("DebugConstruction", new BasicConstructionPrefab());
+            engine.Assets.AddPrefab("DebugConstruction", new BasicConstructionModelPrefab());
 
             var construciton = new ConstructionDefinition() {
                 Size = new IntPoint(2, 1),

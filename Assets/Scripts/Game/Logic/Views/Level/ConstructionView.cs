@@ -12,16 +12,19 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     public class ConstructionView : View
     {
         public ILevelPosition LocalPosition { get; set; }
+        public ContainerView Container { get; set; }
+
         private ConstructionPresenter _presenter;
 
-        public ConstructionView(ILevel level, ILevelPosition position) : base(level)
+        public ConstructionView(ILevel level, ContainerView container, ILevelPosition position) : base(level)
         {
             LocalPosition = position;
+            Container = container;
         }
 
         public void Init(Construction construction)
         {
-            _presenter = new ConstructionPresenter(construction, this);
+            _presenter = new ConstructionPresenter(construction, Level.Engine.Assets, this);
         }
     }
 }

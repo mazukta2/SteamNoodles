@@ -21,12 +21,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly ConstructionCard _card;
         private readonly ConstructionsManager _constructionsManager;
         private readonly ScreenManagerPresenter _screenManager;
+        private readonly IAssets _assets;
         private FloatPoint _worldPosition;
 
         public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
             ScreenManagerPresenter screenManager,
             ConstructionsManager constructionsManager,
-            ConstructionCard card, IControls controls, GhostView view) : base(view)
+            ConstructionCard card, IControls controls, IAssets assets, GhostView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constructionsSettings = constructionsSettings ?? throw new ArgumentNullException(nameof(constructionsSettings));
@@ -34,10 +35,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _card = card ?? throw new ArgumentNullException(nameof(card));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
+            _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             Definition = card.Definition ?? throw new ArgumentNullException(nameof(card.Definition));
 
             _controls.OnLevelClick += HandleOnLevelClick;
             _controls.OnLevelPointerMoved += HandleOnPointerMoved;
+
+            _view.Container.Clear();
+            _view.Container.Create<ConstructionModelView>(_assets.GetConstruction(card.Definition.LevelViewPath));
         }
 
         protected override void DisposeInner()

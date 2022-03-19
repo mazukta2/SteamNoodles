@@ -5288,7 +5288,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7792093803026714424}
-  - component: {fileID: 4415560876749501896}
+  - component: {fileID: -1814164668822517569}
   m_Layer: 0
   m_Name: SimpleShop
   m_TagString: Untagged
@@ -5312,7 +5312,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4415560876749501896
+--- !u!114 &-1814164668822517569
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5321,7 +5321,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7792093803026714425}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd7e060dd4a9a084188b8fb22909e677, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a482811755962f41bc1e9dff944e949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7792093804368555206

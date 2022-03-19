@@ -6,13 +6,13 @@ using Game.Assets.Scripts.Tests.Environment.Common;
 
 namespace Game.Assets.Scripts.Tests.Environment.Prefabs.Levels.Constructions
 {
-    public class BasicConstructionPrefab : ViewPrefab
+    public class BasicConstructionModelPrefab : ViewPrefab
     {
         public override View Create<T>(ContainerView conteiner)
         {
             return conteiner.Create((level) =>
             {
-                return new ConstructionView(level, new LevelPosition());
+                return new ConstructionModelView(level);
             });
         }
     }

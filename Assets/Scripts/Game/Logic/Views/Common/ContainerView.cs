@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,12 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             foreach (var item in _views.ToList())
                 item.Dispose();
             _views.Clear();
+        }
+
+        public T Create<T>(ViewPrefab viewPrefab) where T : View
+        {
+            if (viewPrefab == null) throw new Exception($"Cant find view");
+            return (T)viewPrefab.Create<T>(this);
         }
 
         public T Create<T>(Func<ILevel, T> creator) where T : View

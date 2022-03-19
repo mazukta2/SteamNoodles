@@ -86,12 +86,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleOnConstructionAdded(Construction construction)
         {
-            var screenPrefab = _assets.GetConstruction(construction.Definition.LevelViewPath);
-            if (screenPrefab == null)
-                throw new Exception($"Cant find {construction.Definition.LevelViewPath} view");
-
             _view.Manager.ConstrcutionContainer.Clear();
-            var view = (ConstructionView)screenPrefab.Create<ConstructionView>(_view.Manager.ConstrcutionContainer);
+            var view = _view.Manager.ConstrcutionPrototype.Create<ConstructionView>(_view.Manager.ConstrcutionContainer);
             view.Init(construction);
         }
     }

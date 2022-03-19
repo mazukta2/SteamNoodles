@@ -13,6 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     public class PlacementManagerView : View
     {
         public ContainerView ConstrcutionContainer { get; private set; }
+        public PrototypeView ConstrcutionPrototype { get; private set; }
         public ContainerView CellsContainer { get; private set; }
         public PrototypeView Cell { get; private set; }
         public PlacementManagerPresenter Presenter { get; private set; }
@@ -20,11 +21,12 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         private ServiceWaiter<ScreenManagerService> _wait;
 
         public PlacementManagerView(ILevel level, ContainerView cellsContainer, PrototypeView cellPrototype,
-            ContainerView constructionContainer) : base(level)
+            ContainerView constructionContainer, PrototypeView constructionPrototype) : base(level)
         {
             CellsContainer = cellsContainer ?? throw new ArgumentNullException(nameof(cellsContainer));
             Cell = cellPrototype ?? throw new ArgumentNullException(nameof(cellPrototype));
             ConstrcutionContainer = constructionContainer ?? throw new ArgumentNullException(nameof(constructionContainer));
+            ConstrcutionPrototype = constructionPrototype ?? throw new ArgumentNullException(nameof(constructionPrototype));
             _wait = level.Services
                 .Request<ScreenManagerService>(Load);
         }

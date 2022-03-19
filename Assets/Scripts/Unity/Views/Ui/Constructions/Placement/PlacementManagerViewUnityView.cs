@@ -10,10 +10,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] ContainerUnityView _cellsContainer;
         [SerializeField] PrototypeUnityView _cellsPrototype;
         [SerializeField] ContainerUnityView _constructionContainer;
+        [SerializeField] PrototypeUnityView _constructionPrototype;
 
         protected override PlacementManagerView CreateView()
         {
-            return new PlacementManagerView(Level, _cellsContainer.View, _cellsPrototype.View, _constructionContainer.View);
+            return new PlacementManagerView(Level, _cellsContainer.View, _cellsPrototype.View, _constructionContainer.View, _constructionPrototype.View);
         }
 
     }

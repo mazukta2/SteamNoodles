@@ -31,11 +31,13 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
             }
         }
         public ILevelPosition LocalPosition { get; private set; }
+        public ContainerView Container { get; private set; }
         public GhostPresenter Presenter { get; private set; }
 
-        public GhostView(ILevel level, ILevelPosition position) : base(level)
+        public GhostView(ILevel level, ContainerView container, ILevelPosition position) : base(level)
         {
             LocalPosition = position;
+            Container = container;
         }
 
         public GhostPresenter Init(ConstructionsSettingsDefinition definition, IControls controls,
@@ -43,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
             ConstructionsManager constructionsManager,
             ConstructionCard currentCard)
         {
-            Presenter = new GhostPresenter(definition, screenManager, constructionsManager, currentCard, controls, this);
+            Presenter = new GhostPresenter(definition, screenManager, constructionsManager, currentCard, controls, Level.Engine.Assets, this);
             return Presenter;
         }
     }

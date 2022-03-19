@@ -19,11 +19,11 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
             var ghostPrototype = new PrototypeView(level, new GhostViewPrefab());
             new GhostManagerView(level, ghostContainer, ghostPrototype);
 
-
             var cellContainer = new ContainerView(level);
             var cellPrototype = new PrototypeView(level, new CellViewPrefab());
             var constrcutionContainer = new ContainerView(level);
-            var placementManager = new PlacementManagerView(level, cellContainer, cellPrototype, constrcutionContainer);
+            var constructionPrototype = new PrototypeView(level, new ConstructionViewPrefab());
+            var placementManager = new PlacementManagerView(level, cellContainer, cellPrototype, constrcutionContainer, constructionPrototype);
 
             new PlacementFieldView(level, placementManager, 0);
         }
@@ -34,7 +34,8 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
             {
                 return conteiner.Create((level) =>
                 {
-                    return new GhostView(level, new LevelPosition());
+                    var contrainer = new ContainerView(level);
+                    return new GhostView(level, contrainer, new LevelPosition());
                 });
             }
         }
@@ -46,6 +47,18 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
                 return conteiner.Create((level) =>
                 {
                     return new CellView(level, new LevelPosition());
+                });
+            }
+        }
+
+        private class ConstructionViewPrefab : ViewPrefab
+        {
+            public override View Create<T>(ContainerView conteiner)
+            {
+                return conteiner.Create((level) =>
+                {
+                    var c = new ContainerView(level);
+                    return new ConstructionView(level,c, new LevelPosition());
                 });
             }
         }
