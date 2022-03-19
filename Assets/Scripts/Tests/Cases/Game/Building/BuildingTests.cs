@@ -159,7 +159,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             Assert.AreEqual(new FloatPoint(0, 0), highlighedCells.First().LocalPosition.Value);
             Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.Last().LocalPosition.Value);
 
-            game.Engine.Controls.MovePointer(new FloatPoint(0.5f, 0)); // move left
+            game.Engine.Controls.MovePointer(new FloatPoint(0.75f, 0)); // move left
 
             highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
             Assert.AreEqual(2, highlighedCells.Count());
@@ -209,7 +209,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
             game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
 
-            var worldPos = new FloatPoint(0f, -1f);
+            var worldPos = new FloatPoint(0f, -0.75f);
             game.Engine.Controls.MovePointer(worldPos);
 
             var cells = game.CurrentLevel.FindViews<CellView>();

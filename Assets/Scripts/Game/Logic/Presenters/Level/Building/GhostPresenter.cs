@@ -60,8 +60,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             var halfCell = _constructionsSettings.CellSize / 2;
 
-            var offset = new FloatPoint(_constructionsSettings.CellSize * halfCell - halfCell,
-                _constructionsSettings.CellSize * halfCell - halfCell);
+            var offset = new FloatPoint(_card.Definition.Size.X * halfCell - halfCell,
+                _card.Definition.Size.Y * halfCell - halfCell);
 
             var pos = _worldPosition - offset;
 
