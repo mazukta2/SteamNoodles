@@ -296,85 +296,37 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Dispose();
         }
 
-        //[Test]
-        //public void IsConstructionPlacedHaveRightImage()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-        //    var construction = views.Screen.Hand.Cards.List.First();
-        //    var model = models.Hand.Cards.First();
-        //    construction.Button.Click();
-        //    views.Placement.Click(new FloatPoint(0, 0));
+        [Test]
+        public void IsConstructionPlacedHaveRightVisual()
+        {
+            var imagePath = "HandImage";
+            var game = new GameTestConstructor()
+                .UpdateDefinition<LevelDefinitionMock>((d) =>
+                {
+                    d.StartingHand.First().HandImagePath = imagePath;
+                })
+                .Build();
 
-        //    Assert.IsTrue(model.BuildingView != null);
-        //    Assert.AreEqual(model.BuildingView,
-        //        views.Placement.Constructions.List.First().GetImage());
-        //    game.Exit();
-        //}
+            Assert.AreEqual(imagePath, game.CurrentLevel.FindView<HandConstructionView>().Image);
 
-        //[Test]
-        //public void IsConstructionButtomRestrictionIsWorking()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
+            game.Dispose();
+        }
 
-        //    var building = new ConstructionSettings
-        //    {
-        //        Requirements = new Requirements()
-        //        {
-        //            DownEdge = true,
-        //        }
-        //    };
-        //    models.Hand.Add(building);
+        [Test]
+        public void IsRemovedFromHand()
+        {
+            var game = new GameTestConstructor().Build();
 
-        //    var construction = views.Screen.Hand.Cards.List.Last();
-        //    construction.Button.Click();
+            Assert.AreEqual(1, game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().Count);
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count);
 
-        //    Assert.AreEqual(0, views.Placement.Constructions.List.Length);
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.Engine.Controls.Click();
 
-        //    var worldPos = new FloatPoint(0f, presenters.Placement.CellSize * 1 + presenters.Placement.CellSize / 4);
-        //    views.Placement.Ghost.Value.GetMoveAction()(worldPos);
-        //    var position = presenters.Placement.Ghost.Position;
-
-        //    Assert.AreEqual(new Point(0, 1), presenters.Placement.Ghost.Position);
-        //    var space = presenters.Placement.Ghost.Card.GetOccupiedSpace(new Point(0, 1));
-        //    Assert.AreEqual(2, space.Length);
-        //    Assert.IsTrue(space.Any(x => x == new Point(0, 1)));
-        //    Assert.IsTrue(space.Any(x => x == new Point(1, 1)));
-
-        //    Assert.IsFalse(models.Placement.IsFreeCell(presenters.Placement.Ghost.Card, new Point(0, 1)));
-        //    Assert.IsFalse(models.Placement.IsFreeCell(presenters.Placement.Ghost.Card, new Point(1, 1)));
-
-        //    Assert.IsFalse(models.Placement.IsFreeCell(presenters.Placement.Ghost.Card, new Point(0, -1)));
-        //    Assert.IsFalse(models.Placement.IsFreeCell(presenters.Placement.Ghost.Card, new Point(1, -1)));
-
-        //    Assert.IsTrue(models.Placement.IsFreeCell(presenters.Placement.Ghost.Card, new Point(0, -2)));
-        //    Assert.IsTrue(models.Placement.IsFreeCell(presenters.Placement.Ghost.Card, new Point(1, -2)));
-
-        //    worldPos = new FloatPoint(0f, -presenters.Placement.CellSize * 2 - presenters.Placement.CellSize / 4);
-        //    views.Placement.Click(worldPos);
-        //    Assert.AreEqual(1, presenters.Placement.GetConstructions().Length);
-
-        //    game.Exit();
-        //}
-
-
-
-        //[Test]
-        //public void IsRemovedFromHand()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-
-        //    Assert.AreEqual(1, views.Screen.Hand.Cards.List.Length);
-        //    var construction = views.Screen.Hand.Cards.List.First();
-
-        //    construction.Button.Click();
-        //    views.Placement.Click(new FloatPoint(0f, 0f));
-
-        //    Assert.AreEqual(0, views.Screen.Hand.Cards.List.Length);
-        //    game.Exit();
-        //}
+            Assert.AreEqual(0, game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().Count);
+            Assert.AreEqual(0, game.CurrentLevel.FindViews<HandConstructionView>().Count);
+            game.Dispose();
+        }
         #endregion
 
         [TearDown]

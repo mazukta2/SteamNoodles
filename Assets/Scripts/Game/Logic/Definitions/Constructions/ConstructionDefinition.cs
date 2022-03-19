@@ -9,6 +9,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
         public string LevelViewPath { get; set; }
         public IntPoint Size { get; set;  }
         public Requirements Requirements { get; set;  }
+        public string HandImagePath { get; set; }
+
         //public ISprite HandIcon { get; }
         //public IVisual BuildingView { get; }
         //public IReadOnlyCollection<IConstructionFeatureSettings> Features { get; }

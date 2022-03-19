@@ -8,6 +8,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
     public class HandConstructionView : View
     {
+        public string Image { get; set; }
         public ButtonView Button { get; }
 
         private HandConstructionPresenter _presenter;

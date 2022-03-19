@@ -19,7 +19,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
 
             view.Button.SetAction(HandleClick);
+
+            _model.OnDispose += Model_OnDispose;
             UpdateView();
+        }
+
+        protected override void DisposeInner()
+        {
+            base.DisposeInner();
+            _model.OnDispose -= Model_OnDispose;
         }
 
         private void HandleClick()
@@ -29,13 +37,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void UpdateView()
         {
-            //_view.SetIcon(_model.HandIcon);
-            //_view.Button.SetAction(OnClick);
+            _view.Image = _model.Definition.HandImagePath;
         }
 
-        //public bool Is(ConstructionCard obj)
-        //{
-        //    return _model == obj;
-        //}
+        private void Model_OnDispose()
+        {
+            _view.Dispose();
+        }
+
     }
 }

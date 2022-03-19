@@ -22,7 +22,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 
         public void Clear()
         {
-            foreach (var item in _views)
+            foreach (var item in _views.ToList())
                 item.Dispose();
             _views.Clear();
         }
@@ -31,7 +31,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         {
             var viewPresenter = creator(Level);
             _views.Add(viewPresenter);
+            viewPresenter.OnDispose += ViewPresenter_OnDispose;
             return viewPresenter;
+
+            void ViewPresenter_OnDispose()
+            {
+                viewPresenter.OnDispose -= ViewPresenter_OnDispose;
+                _views.Remove(viewPresenter);
+            }
         }
 
         public bool Has<T>()
@@ -43,5 +50,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         {
             return _views.OfType<T>().AsReadOnly();
         }
+
     }
 }
