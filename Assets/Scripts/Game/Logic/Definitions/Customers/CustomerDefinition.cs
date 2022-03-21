@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Logic.Prototypes.Levels
 {
-    public class CustomerSettings
+    public class CustomerDefinition
     {
         //int Money { get; }
         //float OrderingTime { get; }

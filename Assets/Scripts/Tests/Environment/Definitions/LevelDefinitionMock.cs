@@ -19,6 +19,7 @@ namespace Game.Tests.Mocks.Settings.Levels
                 Size = new IntPoint(9, 9)
             });
             PlacementFields = fields;
+            CrowdUnitsAmount = 10;
         }
 
     }

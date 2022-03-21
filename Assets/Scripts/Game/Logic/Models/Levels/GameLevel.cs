@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
@@ -16,6 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public PlayerHand Hand { get; private set; }
         public ConstructionsManager Constructions { get; private set; }
+        public LevelUnits Units { get; }
 
         private LevelDefinition _settings;
 
@@ -27,12 +29,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             Hand = new PlayerHand(settings, settings.StartingHand);
             Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _settings);
+            Units = new LevelUnits(definitions.Get<UnitsSettingsDefinition>(), settings, time, random);
         }
 
         protected override void DisposeInner()
         {
             Hand.Dispose();
             Constructions.Dispose();
+            Units.Dispose();
         }
     }
 }

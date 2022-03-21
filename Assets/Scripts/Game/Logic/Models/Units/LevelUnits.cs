@@ -1,6 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Calculations;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using System;
@@ -18,43 +21,44 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         //public event Action<ICustomerSettings> OnPotentialUnitAdded = delegate { };
         //public event Action<ICustomerSettings> OnPotentialUnitRemoved = delegate { };
         public IReadOnlyCollection<Unit> Units => _spawnedUnits;
-        private List<Unit> _spawnedUnits = new List<Unit>();
 
 
-        //private Placement _placement;
-        //private IUnitsSettings _prototype;
-        //private SessionRandom _random;
-        //private GameTime _time;
+        private UnitsSettingsDefinition _unitsSettings;
+        private SessionRandom _random;
         //private UnitServicing _unitServingMoney;
         //private int UnitsCount = 20;
-        //private List<Unit> _crowd = new List<Unit>();
-        //private Deck<ICustomerSettings> _pool;
-        //private Rect Rect => _prototype.UnitsSpawnRect;
 
-        public LevelUnits(UnitsSettingsDefinition unitsSettings, GameTime time,
+        private LevelDefinition _levelDefinition;
+        private Deck<CustomerDefinition> _pool;
+        private List<Unit> _spawnedUnits = new List<Unit>();
+        private List<Unit> _crowd = new List<Unit>();
+        private GameTime _time;
+        private FloatRect UnitsField => _levelDefinition.UnitsRect;
+
+        public LevelUnits(UnitsSettingsDefinition unitsSettings, LevelDefinition levelDefinition, GameTime time,
             SessionRandom random)
         {
-            //_placement = placement ?? throw new ArgumentNullException(nameof(placement));
-            //_prototype = prototype ?? throw new ArgumentNullException(nameof(prototype));
-            //_random = random ?? throw new ArgumentNullException(nameof(random));
-            //_time = time ?? throw new ArgumentNullException(nameof(time));
+            _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
+            _unitsSettings= unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
+            _random = random ?? throw new ArgumentNullException(nameof(random));
+            _time = time ?? throw new ArgumentNullException(nameof(time));
             //_unitServingMoney = unitServingMoney ?? throw new ArgumentNullException(nameof(unitServingMoney));
 
-            //_pool = new Deck<ICustomerSettings>(random);
-            //foreach (var item in unitsSettings.Deck)
-            //    _pool.Add(item.Key, item.Value);
+            _pool = new Deck<CustomerDefinition>(random);
+            foreach (var item in levelDefinition.BaseCrowdUnits)
+                _pool.Add(item.Key, item.Value);
 
-            //for (int i = 0; i < UnitsCount; i++)
-            //{
-            //    SpawnUnit();
-            //}
+            for (int i = 0; i < levelDefinition.CrowdUnitsAmount; i++)
+            {
+                SpawnUnit();
+            }
 
-            //_time.OnTimeChanged += Time_OnTimeChanged;
+            _time.OnTimeChanged += Time_OnTimeChanged;
         }
 
         protected override void DisposeInner()
         {
-            //_time.OnTimeChanged -= Time_OnTimeChanged;
+            _time.OnTimeChanged -= Time_OnTimeChanged;
         }
 
         //public ReadOnlyCollection<ICustomerSettings> GetPool()
@@ -80,56 +84,56 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         //    OnPotentialUnitRemoved(customer);
         //}
 
-        //private Unit SpawnUnit(ICustomerSettings settings = null)
-        //{
-        //    if (settings == null)
-        //        settings = _pool.Take();
+        private Unit SpawnUnit(CustomerDefinition definition = null)
+        {
+            if (definition == null)
+                definition = _pool.Take();
 
-        //    var position = Rect.GetRandomFloatPoint(_random);
-        //    var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? Rect.X - 1 : Rect.X + Rect.Width + 1, position.Y), settings, _unitServingMoney);
-        //    _spawnedUnits.Add(unit);
-        //    _crowd.Add(unit);
-        //    OnUnitSpawn(unit);
-        //    return unit;
-        //}
+            var position = GetRandomPoint(UnitsField, _random);
+            var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, position.Y), definition);
+            _spawnedUnits.Add(unit);
+            _crowd.Add(unit);
+            OnUnitSpawn(unit);
+            return unit;
+        }
 
-        //private void Time_OnTimeChanged(float delta)
-        //{
-        //    foreach (var item in _spawnedUnits.ToArray())
-        //    {
-        //        item.MoveToTarget(delta);
-        //    }
+        private void Time_OnTimeChanged(float delta)
+        {
+            foreach (var item in _spawnedUnits.ToArray())
+            {
+                item.MoveToTarget(delta);
+            }
 
-        //    foreach (var item in _crowd.ToArray())
-        //    {
-        //        if (!Rect.IsHorisontalyInside(item.Position))
-        //        {
-        //            _spawnedUnits.Remove(item);
-        //            _crowd.Remove(item);
-        //            OnUnitDestroy(item);
-        //        }
-        //    }
+            foreach (var item in _crowd.ToArray())
+            {
+                if (!IsHorisontalyInside(UnitsField, item.Position))
+                {
+                    _spawnedUnits.Remove(item);
+                    _crowd.Remove(item);
+                    OnUnitDestroy(item);
+                }
+            }
 
-        //    if (_spawnedUnits.Count < UnitsCount)
-        //    {
-        //        var position = Rect.GetRandomFloatPoint(_random);
-        //        FloatPoint target;
-        //        if (_random.GetRandom())
-        //        {
-        //            position = new FloatPoint(Rect.X + 1, position.Y);
-        //            target = new FloatPoint(Rect.X + Rect.Width + 1, position.Y);
-        //        }
-        //        else
-        //        {
-        //            position = new FloatPoint(Rect.X + Rect.Width - 1, position.Y);
-        //            target = new FloatPoint(Rect.X - 1, position.Y);
-        //        }
-        //        var unit = new Unit(position, target, _pool.Take(), _unitServingMoney);
-        //        _spawnedUnits.Add(unit);
-        //        _crowd.Add(unit);
-        //        OnUnitSpawn(unit);
-        //    }
-        //}
+            if (_crowd.Count < _levelDefinition.CrowdUnitsAmount)
+            {
+                var position = GetRandomPoint(UnitsField, _random);
+                FloatPoint target;
+                if (_random.GetRandom())
+                {
+                    position = new FloatPoint(UnitsField.X + 1, position.Y);
+                    target = new FloatPoint(UnitsField.X + UnitsField.Width + 1, position.Y);
+                }
+                else
+                {
+                    position = new FloatPoint(UnitsField.X + UnitsField.Width - 1, position.Y);
+                    target = new FloatPoint(UnitsField.X - 1, position.Y);
+                }
+                var unit = new Unit(position, target, _pool.Take());
+                _spawnedUnits.Add(unit);
+                _crowd.Add(unit);
+                OnUnitSpawn(unit);
+            }
+        }
 
         //public void ReturnToCrowd(Unit unit)
         //{
@@ -164,5 +168,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         //{
         //    _crowd.Remove(unit);
         //}
+
+
+        public bool IsHorisontalyInside(FloatRect rect, FloatPoint point)
+        {
+            return rect.xMin <= point.X && point.X <= rect.xMax;
+        }
+
+        private FloatPoint GetRandomPoint(FloatRect rect, SessionRandom random)
+        {
+            return new FloatPoint(random.GetRandom(rect.xMin, rect.xMax), random.GetRandom(rect.yMin, rect.yMax));
+        }
+
     }
 }

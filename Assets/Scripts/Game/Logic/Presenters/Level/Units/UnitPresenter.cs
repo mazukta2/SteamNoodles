@@ -9,13 +9,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         //private IUnitView _view;
         //private Unit _model;
 
-        //public UnitPresenter(Unit model, IUnitView view)
-        //{
-        //    _view = view;
-        //    _view.SetPosition(model.Position);
-        //    _model = model;
-        //    _model.OnPositionChanged += _model_OnPositionChanged;
-        //}
+        public UnitPresenter()
+        {
+            //_view = view;
+            //_view.SetPosition(model.Position);
+            //_model = model;
+            //_model.OnPositionChanged += _model_OnPositionChanged;
+        }
 
         //protected override void DisposeInner()
         //{

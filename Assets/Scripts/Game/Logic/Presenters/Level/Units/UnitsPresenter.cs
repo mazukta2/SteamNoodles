@@ -1,7 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Level;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 {
