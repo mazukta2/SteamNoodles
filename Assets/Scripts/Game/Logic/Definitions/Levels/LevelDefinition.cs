@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
         public int CrowdUnitsAmount { get; set; }
 
-        [JsonConverter(typeof(DefinitionsConventer<CustomerDefinition>))]
+        [JsonConverter(typeof(DefinitionsDictionaryConventer<CustomerDefinition, int>))]
         public IReadOnlyDictionary<CustomerDefinition, int> BaseCrowdUnits { get; set; } = new Dictionary<CustomerDefinition, int>();
         public FloatRect UnitsRect { get; set; }
     }

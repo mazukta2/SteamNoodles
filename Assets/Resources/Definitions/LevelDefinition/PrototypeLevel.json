@@ -1,13 +1,23 @@
 {
-    "StartingHand": [ "SimpleShop" ],
-    "HandSize": 5,
-    "SceneName": "PolygonScene",
-	"PlacementFields" : [
+	"StartingHand": [ "SimpleShop" ],
+	"HandSize": 5,
+	"SceneName": "PolygonScene",
+	"PlacementFields": [
 		{
-			"Size" :{
-				"X" : 11,
-				"Y" : 11,
+			"Size": {
+				"X": 11,
+				"Y": 11
 			}
 		}
-	]
+	],
+	"CrowdUnitsAmount": 20,
+	"BaseCrowdUnits": {
+		"Commoner": 1
+	},
+	"UnitsRect": {
+		"X": -10,
+		"Y": -4.5,
+		"Width": 20,
+		"Height": 3
+	}
 }
