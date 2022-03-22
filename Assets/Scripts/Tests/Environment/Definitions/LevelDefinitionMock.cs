@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using System.Collections.Generic;
@@ -20,6 +21,10 @@ namespace Game.Tests.Mocks.Settings.Levels
             });
             PlacementFields = fields;
             CrowdUnitsAmount = 10;
+            BaseCrowdUnits = new Dictionary<CustomerDefinition, int>() {
+                { new CustomerDefinition() , 2 } 
+            };
+            UnitsRect = new FloatRect(-10, -10, 20, 20);
         }
 
     }

@@ -1,25 +1,27 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Units
 {
-    public class Unit
+    public class Unit : Disposable
     {
-        //public event Action OnPositionChanged = delegate { };
-        //public event Action OnReachedPosition = delegate { };
-        //public FloatPoint Target { get; private set; }
-        //public FloatPoint Position { get; private set; }
-        //public bool IsServed { get; private set; }
-        //public CustomerSettings Settings { get; private set; }
+        public event Action OnPositionChanged = delegate { };
+        public event Action OnReachedPosition = delegate { };
+        public FloatPoint Target { get; private set; }
+        public FloatPoint Position { get; private set; }
+        public CustomerDefinition Definition { get; private set; }
 
-        //private UnitServicing _unitServing;
+        private UnitsSettingsDefinition _unitsSettings;
 
-        public Unit(FloatPoint position, FloatPoint target, CustomerDefinition definition)
+        public Unit(FloatPoint position, FloatPoint target, CustomerDefinition definition, UnitsSettingsDefinition unitsSettings)
         {
-            //Position = position;
-            //Target = target;
-            //Settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            //_unitServing = unitServing ?? throw new ArgumentNullException(nameof(unitServing));
+            Position = position;
+            Target = target;
+            Definition = definition ?? throw new ArgumentNullException(nameof(definition));
+            _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
         }
 
         public bool MoveToTarget(float delta)
@@ -28,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 return true;
 
             var direction = Target - Position;
-            var movement = delta * Settings.Speed;
+            var movement = delta * _unitsSettings.Speed;
             var distance = Position.GetDistanceTo(Target);
             if (distance < movement)
                 movement = distance;
@@ -42,62 +44,27 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             return false;
         }
 
-        //public void TeleportToTarget()
-        //{
-        //    if (Position.IsClose(Target))
-        //        return;
+        public void TeleportToTarget()
+        {
+            if (Position.IsClose(Target))
+                return;
 
-        //    Position = Target;
-        //    OnReachedPosition();
-        //}
+            Position = Target;
+            OnReachedPosition();
+        }
 
-        //public bool CanOrder()
-        //{
-        //    return !IsServed;
-        //}
+        public void SetTarget(FloatPoint target)
+        {
+            Target = target;
 
-        //public void SetTarget(FloatPoint target)
-        //{
-        //    Target = target;
+            var distance = Position.GetDistanceTo(Target);
+            if (_unitsSettings.Speed * 0.01f > distance)
+                TeleportToTarget();
+        }
 
-        //    var distance = Position.GetDistanceTo(Target);
-        //    if (Settings.Speed * 0.01f > distance)
-        //        TeleportToTarget();
-        //}
-
-        //public void SetServed()
-        //{
-        //    IsServed = true;
-        //}
-
-        //public bool IsMoving()
-        //{
-        //    return !Position.IsClose(Target);
-        //}
-
-        //public float GetOrderingTime()
-        //{
-        //    return Settings.OrderingTime;
-        //}
-
-        //public float GetCookingTime()
-        //{
-        //    return Settings.CookingTime;
-        //}
-
-        //public float GetEatingTime()
-        //{
-        //    return _unitServing.GetEatingTime(this);
-        //}
-
-        //public int GetServingMoney()
-        //{
-        //    return _unitServing.GetServingMoney(this);
-        //}
-
-        //public int GetTips()
-        //{
-        //    return _unitServing.GetTips(this);
-        //}
+        public bool IsMoving()
+        {
+            return !Position.IsClose(Target);
+        }
     }
 }

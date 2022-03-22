@@ -17,16 +17,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
     {
         public event Action<Unit> OnUnitSpawn = delegate { };
         public event Action<Unit> OnUnitDestroy = delegate { };
-
-        //public event Action<ICustomerSettings> OnPotentialUnitAdded = delegate { };
-        //public event Action<ICustomerSettings> OnPotentialUnitRemoved = delegate { };
         public IReadOnlyCollection<Unit> Units => _spawnedUnits;
 
 
         private UnitsSettingsDefinition _unitsSettings;
         private SessionRandom _random;
-        //private UnitServicing _unitServingMoney;
-        //private int UnitsCount = 20;
 
         private LevelDefinition _levelDefinition;
         private Deck<CustomerDefinition> _pool;
@@ -42,7 +37,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _unitsSettings= unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             _time = time ?? throw new ArgumentNullException(nameof(time));
-            //_unitServingMoney = unitServingMoney ?? throw new ArgumentNullException(nameof(unitServingMoney));
 
             _pool = new Deck<CustomerDefinition>(random);
             foreach (var item in levelDefinition.BaseCrowdUnits)
@@ -59,30 +53,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         protected override void DisposeInner()
         {
             _time.OnTimeChanged -= Time_OnTimeChanged;
+            foreach (var unit in _spawnedUnits)
+                unit.Dispose();
         }
-
-        //public ReadOnlyCollection<ICustomerSettings> GetPool()
-        //{
-        //    return _pool.GetItemsList();
-        //}
-
-        //public ReadOnlyDictionary<ICustomerSettings, int> GetFullPool()
-        //{
-        //    return _pool.GetItems();
-        //}
-
-
-        //public void AddPotentialCustumer(ICustomerSettings customer)
-        //{
-        //    _pool.Add(customer);
-        //    OnPotentialUnitAdded(customer);
-        //}
-
-        //public void RemovePotentialCustomer(ICustomerSettings customer)
-        //{
-        //    _pool.Remove(customer);
-        //    OnPotentialUnitRemoved(customer);
-        //}
 
         private Unit SpawnUnit(CustomerDefinition definition = null)
         {
@@ -90,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 definition = _pool.Take();
 
             var position = GetRandomPoint(UnitsField, _random);
-            var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, position.Y), definition);
+            var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, position.Y), definition, _unitsSettings);
             _spawnedUnits.Add(unit);
             _crowd.Add(unit);
             OnUnitSpawn(unit);
@@ -128,11 +101,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                     position = new FloatPoint(UnitsField.X + UnitsField.Width - 1, position.Y);
                     target = new FloatPoint(UnitsField.X - 1, position.Y);
                 }
-                var unit = new Unit(position, target, _pool.Take());
+                var unit = new Unit(position, target, _pool.Take(), _unitsSettings);
                 _spawnedUnits.Add(unit);
                 _crowd.Add(unit);
                 OnUnitSpawn(unit);
             }
+        }
+
+        public bool IsHorisontalyInside(FloatRect rect, FloatPoint point)
+        {
+            return rect.xMin <= point.X && point.X <= rect.xMax;
+        }
+
+        private FloatPoint GetRandomPoint(FloatRect rect, SessionRandom random)
+        {
+            return new FloatPoint(random.GetRandom(rect.xMin, rect.xMax), random.GetRandom(rect.yMin, rect.yMax));
         }
 
         //public void ReturnToCrowd(Unit unit)
@@ -169,16 +152,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         //    _crowd.Remove(unit);
         //}
 
-
-        public bool IsHorisontalyInside(FloatRect rect, FloatPoint point)
-        {
-            return rect.xMin <= point.X && point.X <= rect.xMax;
-        }
-
-        private FloatPoint GetRandomPoint(FloatRect rect, SessionRandom random)
-        {
-            return new FloatPoint(random.GetRandom(rect.xMin, rect.xMax), random.GetRandom(rect.yMin, rect.yMax));
-        }
 
     }
 }

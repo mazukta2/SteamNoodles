@@ -20,7 +20,11 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
                 CellSize = 0.5f,
             });
             engine.Assets.AddPrefab("DebugConstruction", new BasicConstructionModelPrefab());
-
+            engine.Settings.Add(nameof(UnitsSettingsDefinition), new UnitsSettingsDefinition()
+            {
+                Speed = 1,
+            });
+            
             var construciton = new ConstructionDefinition() {
                 Size = new IntPoint(2, 1),
                 LevelViewPath = "DebugConstruction",
@@ -31,5 +35,6 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
             };
             engine.Settings.Add(level.Name, level);
         }
+
     }
 }

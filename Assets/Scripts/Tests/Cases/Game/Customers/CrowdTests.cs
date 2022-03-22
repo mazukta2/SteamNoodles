@@ -15,7 +15,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 15)
                 .Build();
 
-            Assert.AreEqual(15, game.CurrentLevel.FindViews<UnitView>());
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<UnitsManagerView>().Count);
+            Assert.AreEqual(15, game.CurrentLevel.FindViews<UnitView>().Count);
 
             game.Dispose();
         }

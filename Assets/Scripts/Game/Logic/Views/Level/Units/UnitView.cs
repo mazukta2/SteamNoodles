@@ -1,6 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
+using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
@@ -13,7 +16,15 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         public UnitView(ILevel level): base(level)
         {
-            _presenter = new UnitPresenter();
+        }
+
+        public void Init(Unit model)
+        {
+            _presenter = new UnitPresenter(model, this);
+        }
+
+        public void SetPosition(FloatPoint position)
+        {
         }
     }
 }
