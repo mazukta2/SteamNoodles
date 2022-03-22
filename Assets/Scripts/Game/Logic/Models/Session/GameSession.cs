@@ -10,7 +10,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
     public class GameSession : Disposable
     {
         public SessionRandom GameRandom { get; private set; } = new SessionRandom();
-        public GameTime Time { get; private set; } = new GameTime();
 
         private IGameEngine _engine;
 
@@ -21,7 +20,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
 
         protected override void DisposeInner()
         {
-            Time.Dispose();
         }
 
         public LevelLoading LoadLevel(LevelDefinition definition)

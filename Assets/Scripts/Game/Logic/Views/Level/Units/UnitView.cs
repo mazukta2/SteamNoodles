@@ -9,22 +9,18 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public class UnitView : View
     {
-        public ContainerView Container { get; private set; }
-        public PrototypeView UnitPrototype { get; private set; }
+        public ILevelPosition Position { get; }
 
         private UnitPresenter _presenter;
 
-        public UnitView(ILevel level): base(level)
+        public UnitView(ILevel level, ILevelPosition position) : base(level)
         {
+            Position = position;
         }
 
         public void Init(Unit model)
         {
             _presenter = new UnitPresenter(model, this);
-        }
-
-        public void SetPosition(FloatPoint position)
-        {
         }
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Time
 {
-    public class GameTime : Disposable
+    public class GameTime 
     {
         public event Action<float> OnTimeChanged = delegate { };
 
@@ -12,10 +12,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
         private const float _pieces = 1f;
 
         public GameTime()
-        {
-        }
-
-        protected override void DisposeInner()
         {
         }
 

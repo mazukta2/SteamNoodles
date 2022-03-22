@@ -21,6 +21,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.Dispose();
         }
 
+        [Test]
+        public void CrowdIsMoving()
+        {
+            var game = new GameTestConstructor()
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 1)
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.UnitsRect = new Scripts.Game.Logic.Common.Math.FloatRect(-10, -10, 10, 10))
+                .Build();
+
+            var unit = game.CurrentLevel.FindView<UnitView>();
+            var startingPosition = unit.Position.Value.X;
+            Assert.IsFalse(unit.IsDisposed);
+            game.Engine.Time.MoveTime(100);
+            Assert.AreNotEqual(startingPosition, unit.Position.Value.X);
+            Assert.IsTrue(unit.IsDisposed);
+
+            game.Dispose();
+        }
+
         [TearDown]
         public void TestDisposables()
         {

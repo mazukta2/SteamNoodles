@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         public UnitPresenter(Unit model, UnitView view) : base(view)
         {
             _view = view;
-            _view.SetPosition(model.Position);
+            _view.Position.Value = model.Position;
             _model = model;
             _model.OnPositionChanged += _model_OnPositionChanged;
             _model.OnDispose += _model_OnDispose;
@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void _model_OnPositionChanged()
         {
-            _view.SetPosition(_model.Position);
+            _view.Position.Value = _model.Position;
         }
 
         private void _model_OnDispose()

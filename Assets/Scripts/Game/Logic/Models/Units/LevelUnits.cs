@@ -83,6 +83,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 {
                     _spawnedUnits.Remove(item);
                     _crowd.Remove(item);
+                    item.Dispose();
                     OnUnitDestroy(item);
                 }
             }
