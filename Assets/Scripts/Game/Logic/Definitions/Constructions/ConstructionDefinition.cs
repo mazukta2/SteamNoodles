@@ -1,6 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 {
@@ -11,11 +13,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
         public Requirements Requirements { get; set;  }
         public string HandImagePath { get; set; }
         public int Points { get; internal set; }
-
-        //public ISprite HandIcon { get; }
-        //public IVisual BuildingView { get; }
-        //public IReadOnlyCollection<IConstructionFeatureSettings> Features { get; }
-        //public IReadOnlyDictionary<ConstructionTag, int> Tags { get; }
+        [JsonConverter(typeof(DefinitionsDictionaryConventer<ConstructionDefinition, int>))]
+        public Dictionary<ConstructionDefinition, int> AdjacencyPoints { get; internal set; }
 
         public IReadOnlyCollection<IntPoint> GetOccupiedSpace(IntPoint position)
         {

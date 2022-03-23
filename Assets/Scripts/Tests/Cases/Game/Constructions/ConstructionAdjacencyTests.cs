@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -7,6 +8,7 @@ using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
@@ -55,15 +57,31 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsPointsChangedByAdjacency()
         {
+            var construction1 = new ConstructionDefinition()
+            {
+                Points = 5,
+                Size = new IntPoint(2, 1),
+                LevelViewPath = "DebugConstruction",
+            };
+            construction1.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { construction1, 2 } };
+
             var game = new GameTestConstructor()
-                .UpdateDefinition<ConstructionDefinition>(x => x.Points = 5)
+                .AddDefinition("construction1", construction1)
+                .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
+                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                    StartingHand = new List<ConstructionDefinition>() { construction1, construction1 })
                 .Build();
 
-            //Assert.AreEqual(0, game.CurrentLevel.FindView<MainScreenView>().Points);
-            //game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
-            //game.Engine.Controls.Click();
+            Assert.AreEqual("0", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+            game.Engine.Controls.Click();
+            Assert.AreEqual("5", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
 
-            //Assert.AreEqual(5, game.CurrentLevel.FindView<MainScreenView>().Points);
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+            game.Engine.Controls.MovePointer(new FloatPoint(-2, 0));
+            Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
             game.Dispose();
         }

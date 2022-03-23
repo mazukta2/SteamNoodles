@@ -105,7 +105,63 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             if (!positions.All(x => Rect.IsInside(position)))
                 return 0;
 
-            return constructionDefinition.Points;
+            if (Constructions.Any(otherBuilding => otherBuilding.GetOccupiedScace().Any(pos => pos == position)))
+                return 0;
+
+
+            var adjacentPoints = 0;
+            foreach (var construction in GetAdjacentConstructions(constructionDefinition, position))
+            {
+                if (constructionDefinition.AdjacencyPoints.ContainsKey(construction.Definition))
+                {
+                    adjacentPoints += constructionDefinition.AdjacencyPoints[construction.Definition];
+                }
+            }
+
+            return constructionDefinition.Points + adjacentPoints;
+        }
+
+        private IReadOnlyCollection<IntPoint> GetListOfAdjacentCells(ConstructionDefinition constructionDefinition, IntPoint position)
+        {
+            var list = new List<IntPoint>();
+
+            foreach (var cell in constructionDefinition.GetOccupiedSpace(position))
+            {
+                AddCell(cell + new IntPoint(1, 0));
+                AddCell(cell + new IntPoint(-1, 0));
+                AddCell(cell + new IntPoint(0, 1));
+                AddCell(cell + new IntPoint(0, -1));
+            }
+
+            return list.AsReadOnly();
+
+            void AddCell(IntPoint point)
+            {
+                if (!Rect.IsInside(point))
+                    return;
+
+                if (list.Contains(point))
+                    return;
+
+                list.Add(point);
+            }
+        }
+
+        private IReadOnlyCollection<Construction> GetAdjacentConstructions(ConstructionDefinition constructionDefinition, IntPoint position)
+        {
+            var adjecentsCells = GetListOfAdjacentCells(constructionDefinition, position);
+            var adjecentConstructions = new List<Construction>();
+            foreach (var construction in _constructions)
+            {
+                foreach (var occupiedCell in construction.GetOccupiedScace())
+                {
+                    if (adjecentsCells.Any(x => x == occupiedCell))
+                    {
+                        adjecentConstructions.Add(construction);
+                    }
+                }
+            }
+            return adjecentConstructions.AsReadOnly();
         }
 
         //public bool Contain(Construction key)
