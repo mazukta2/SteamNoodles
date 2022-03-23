@@ -31,7 +31,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         {
             return Definition.GetOccupiedSpace(Position);
         }
-        
 
         //public IVisual GetVisual()
         //{

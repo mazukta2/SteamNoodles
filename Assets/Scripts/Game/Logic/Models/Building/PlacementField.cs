@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,11 +26,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
         public IntPoint Offset { get; private set; }
 
         private PlacementFieldDefinition _field;
+        private Resources _resources;
 
-        public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition)
+        public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition, Resources resources)
         {
             ConstructionsSettings = settings ?? throw new ArgumentNullException(nameof(settings));
             _field = definition ?? throw new ArgumentNullException(nameof(definition));
+            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
 
             Rect = new IntRect(-Size.X / 2, -Size.Y / 2, Size.X, Size.Y);
         }
@@ -54,6 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             var construction = new Construction(this, card.Definition, position);
             _constructions.Add(construction);
             card.RemoveFromHand();
+            GivePoints(construction);
             //foreach (var item in construction.GetFeatures().OfType<IGiveRewardOnBuildConstructionFeatureSettings>())
             //    _rewardCalculator.Give(item.Reward);
 
@@ -94,6 +98,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
         {
             return new FloatPoint(position.X * ConstructionsSettings.CellSize,
                    position.Y * ConstructionsSettings.CellSize) + GetOffset();
+        }
+
+        private void GivePoints(Construction construction)
+        {
+            _resources.Points += construction.Definition.Points;
         }
 
         //public bool Contain(Construction key)

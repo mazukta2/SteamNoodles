@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
+using Game.Assets.Scripts.Tests.Environment.Common;
 
 namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 {
@@ -16,7 +17,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
                 var container = new ContainerView(level);
                 var prototype = new PrototypeView(level, new HandConstructionViewPrefab());
                 var handView = new HandView(level, container, prototype);
-                return new MainScreenView(level, handView);
+                return new MainScreenView(level, handView, new UiText());
             });
         }
 

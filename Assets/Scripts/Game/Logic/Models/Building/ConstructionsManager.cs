@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,11 +14,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         private List<PlacementField> _placements = new List<PlacementField>();
 
-        public ConstructionsManager(ConstructionsSettingsDefinition settings, LevelDefinition levelDefinition)
+        public ConstructionsManager(ConstructionsSettingsDefinition settings, LevelDefinition levelDefinition, Resources resources)
         {
             foreach (var field in levelDefinition.PlacementFields)
             {
-                var placement = new PlacementField(settings, field);
+                var placement = new PlacementField(settings, field, resources);
                 _placements.Add(placement);
             }
         }

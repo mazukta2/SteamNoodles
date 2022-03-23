@@ -10,6 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
         public IntPoint Size { get; set;  }
         public Requirements Requirements { get; set;  }
         public string HandImagePath { get; set; }
+        public int Points { get; internal set; }
 
         //public ISprite HandIcon { get; }
         //public IVisual BuildingView { get; }

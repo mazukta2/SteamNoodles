@@ -18,6 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public PlayerHand Hand { get; private set; }
         public ConstructionsManager Constructions { get; private set; }
         public LevelUnits Units { get; }
+        public Resources Resources { get; }
 
         private LevelDefinition _settings;
 
@@ -28,7 +29,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             if (time == null) throw new ArgumentNullException(nameof(time));
 
             Hand = new PlayerHand(settings, settings.StartingHand);
-            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _settings);
+            Resources = new Resources();
+            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _settings, Resources);
             Units = new LevelUnits(definitions.Get<UnitsSettingsDefinition>(), settings, time, random);
         }
 
@@ -37,6 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Hand.Dispose();
             Constructions.Dispose();
             Units.Dispose();
+            Resources.Dispose();
         }
     }
 }

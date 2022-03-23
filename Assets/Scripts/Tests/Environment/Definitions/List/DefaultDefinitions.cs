@@ -29,6 +29,8 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
                 Size = new IntPoint(2, 1),
                 LevelViewPath = "DebugConstruction",
             };
+            engine.Settings.Add("Construction1", construciton);
+
             var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel())
             {
                 StartingHand = new List<ConstructionDefinition>() { construciton }
