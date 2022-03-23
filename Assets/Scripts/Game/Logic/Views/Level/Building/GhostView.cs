@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Services;
 using Game.Assets.Scripts.Game.Logic.Services.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
@@ -43,9 +44,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         public GhostPresenter Init(ConstructionsSettingsDefinition definition, IControls controls,
             ScreenManagerPresenter screenManager,
             ConstructionsManager constructionsManager,
-            ConstructionCard currentCard)
+            BuildScreenPresenter buildScreen)
         {
-            Presenter = new GhostPresenter(definition, screenManager, constructionsManager, currentCard, controls, Level.Engine.Assets, this);
+            Presenter = new GhostPresenter(definition, screenManager, constructionsManager, buildScreen, controls, Level.Engine.Assets, this);
             return Presenter;
         }
     }

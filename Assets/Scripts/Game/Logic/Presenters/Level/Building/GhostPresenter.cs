@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
@@ -18,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly GhostView _view;
         private readonly ConstructionsSettingsDefinition _constructionsSettings;
         private readonly IControls _controls;
-        private readonly ConstructionCard _card;
+        private readonly BuildScreenPresenter _buildScreen;
         private readonly ConstructionsManager _constructionsManager;
         private readonly ScreenManagerPresenter _screenManager;
         private readonly IAssets _assets;
@@ -27,22 +28,24 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
             ScreenManagerPresenter screenManager,
             ConstructionsManager constructionsManager,
-            ConstructionCard card, IControls controls, IAssets assets, GhostView view) : base(view)
+            BuildScreenPresenter buildScreen, IControls controls, IAssets assets, GhostView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constructionsSettings = constructionsSettings ?? throw new ArgumentNullException(nameof(constructionsSettings));
             _controls = controls ?? throw new ArgumentNullException(nameof(controls));
-            _card = card ?? throw new ArgumentNullException(nameof(card));
+            _buildScreen = buildScreen ?? throw new ArgumentNullException(nameof(buildScreen));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
-            Definition = card.Definition ?? throw new ArgumentNullException(nameof(card.Definition));
+            Definition = _buildScreen.CurrentCard.Definition ?? throw new ArgumentNullException(nameof(_buildScreen.CurrentCard.Definition));
 
             _controls.OnLevelClick += HandleOnLevelClick;
             _controls.OnLevelPointerMoved += HandleOnPointerMoved;
 
             _view.Container.Clear();
-            _view.Container.Create<ConstructionModelView>(_assets.GetConstruction(card.Definition.LevelViewPath));
+            _view.Container.Create<ConstructionModelView>(_assets.GetConstruction(_buildScreen.CurrentCard.Definition.LevelViewPath));
+
+            UpdatePoints();
         }
 
         protected override void DisposeInner()
@@ -60,8 +63,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             var halfCell = _constructionsSettings.CellSize / 2;
 
-            var offset = new FloatPoint(_card.Definition.Size.X * halfCell - halfCell,
-                _card.Definition.Size.Y * halfCell - halfCell);
+            var offset = new FloatPoint(_buildScreen.CurrentCard.Definition.Size.X * halfCell - halfCell,
+                _buildScreen.CurrentCard.Definition.Size.Y * halfCell - halfCell);
 
             var pos = _worldPosition - offset;
 
@@ -75,9 +78,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             foreach (var field in _constructionsManager.Placements)
             {
-                if (field.CanPlace(_card, GetLocalPosition(field)))
+                if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field)))
                 {
-                    field.Build(_card, GetLocalPosition(field));
+                    field.Build(_buildScreen.CurrentCard, GetLocalPosition(field));
                     break;
                 }
             }
@@ -89,6 +92,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _worldPosition = worldPosition;
             _view.CanPlace = CanPlace();
             _view.LocalPosition.Value = GetLocalPosition();
+            UpdatePoints();
             OnGhostPostionChanged();
         }
 
@@ -102,12 +106,24 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             foreach (var field in _constructionsManager.Placements)
             {
-                if (field.CanPlace(_card, GetLocalPosition(field)))
+                if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field)))
                 {
                     return true;
                 }
             }
             return false;
         }
+
+        private void UpdatePoints()
+        {
+            var points = 0;
+            foreach (var field in _constructionsManager.Placements)
+            {
+                points += field.GetPoints(_buildScreen.CurrentCard.Definition, GetLocalPosition(field));
+            }
+
+            _buildScreen.UpdatePoints(points);
+        }
+
     }
 }

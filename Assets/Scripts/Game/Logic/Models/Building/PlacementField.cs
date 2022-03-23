@@ -54,12 +54,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         public Construction Build(ConstructionCard card, IntPoint position)
         {
+            _resources.Points += GetPoints(card.Definition, position);
+
             var construction = new Construction(this, card.Definition, position);
             _constructions.Add(construction);
             card.RemoveFromHand();
-            GivePoints(construction);
-            //foreach (var item in construction.GetFeatures().OfType<IGiveRewardOnBuildConstructionFeatureSettings>())
-            //    _rewardCalculator.Give(item.Reward);
 
             OnConstructionAdded(construction);
             return construction;
@@ -100,9 +99,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
                    position.Y * ConstructionsSettings.CellSize) + GetOffset();
         }
 
-        private void GivePoints(Construction construction)
+        public int GetPoints(ConstructionDefinition constructionDefinition, IntPoint position)
         {
-            _resources.Points += construction.Definition.Points;
+            var positions = constructionDefinition.GetOccupiedSpace(position);
+            if (!positions.All(x => Rect.IsInside(position)))
+                return 0;
+
+            return constructionDefinition.Points;
         }
 
         //public bool Contain(Construction key)

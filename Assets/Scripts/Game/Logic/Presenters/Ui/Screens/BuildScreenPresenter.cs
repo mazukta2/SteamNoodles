@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
@@ -29,6 +30,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private void CancelClick()
         {
             _screenManager.GetCollection<CommonScreens>().Open<MainScreenView>();
+        }
+
+        public void UpdatePoints(int points)
+        {
+            _view.Points.Value = $"+{points}";
         }
 
     }
