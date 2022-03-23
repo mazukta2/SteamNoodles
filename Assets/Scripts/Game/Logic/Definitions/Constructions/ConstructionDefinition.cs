@@ -12,9 +12,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
         public IntPoint Size { get; set;  }
         public Requirements Requirements { get; set;  }
         public string HandImagePath { get; set; }
-        public int Points { get; internal set; }
+        public int Points { get;  set; }
         [JsonConverter(typeof(DefinitionsDictionaryConventer<ConstructionDefinition, int>))]
-        public Dictionary<ConstructionDefinition, int> AdjacencyPoints { get; internal set; }
+        public Dictionary<ConstructionDefinition, int> AdjacencyPoints { get;  set; }
 
         public IReadOnlyCollection<IntPoint> GetOccupiedSpace(IntPoint position)
         {

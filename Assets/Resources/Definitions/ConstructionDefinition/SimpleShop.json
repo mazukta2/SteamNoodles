@@ -1,13 +1,14 @@
 {
     "Size": {
-		"X" : 3,
-		"Y" : 2
-	},
+        "X": 3,
+        "Y": 2
+    },
     "Requirements": { "DownEdge": true },
     "HandImagePath": "Sprites/Cards/Icons/SimpleShop",
     "LevelViewPath": "Prefabs/Constructions/SimpleShop",
     "Features": [
         { "Type": "GameUnity.Assets.Scripts.Unity.Settings.Buildings.Features.OrderingPlaceConstructionFeatureSettings" }
     ],
-    "Tags": {}
+    "Tags": {},
+    "Points" : 3
 }
