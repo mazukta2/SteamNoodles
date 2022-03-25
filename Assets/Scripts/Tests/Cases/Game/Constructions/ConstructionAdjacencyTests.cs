@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -31,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             game.Engine.Controls.Click();
 
-            Assert.AreEqual("5", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            Assert.AreEqual("4", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
 
             game.Dispose();
         }
@@ -68,6 +69,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new GameTestConstructor()
                 .AddDefinition("construction1", construction1)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
+                .UpdateDefinition<CustomerDefinition>(x => x.ConstrcutionsReward = new Dictionary<ConstructionDefinition, int>())
                 .UpdateDefinition<LevelDefinitionMock>(x => x.
                     StartingHand = new List<ConstructionDefinition>() { construction1, construction1 })
                 .Build();
@@ -76,7 +78,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
             game.Engine.Controls.Click();
-            Assert.AreEqual("5", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            Assert.AreEqual("4", game.CurrentLevel.FindView<MainScreenView>().Points.Value); // -1 becouse turn tick
 
             game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);

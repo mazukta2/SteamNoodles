@@ -22,10 +22,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         {
             var construction = new ConstructionDefinition();
             var game = new GameTestConstructor()
-                .AddAndLoadLevel(new LevelDefinitionMock("lvl", new BasicSellingLevel())
-                {
-                    StartingHand = new List<ConstructionDefinition>() { construction }
-                })
+                .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction })
                 .Build();
 
             var hand = game.CurrentLevel.FindView<HandView>();
@@ -33,6 +30,21 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             game.Dispose();
         }
+
+        [Test]
+        public void IsYouGetNewCardsAfterBuilding()
+        {
+            var game = new GameTestConstructor()
+                .Build();
+
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.Engine.Controls.Click();
+
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
+
+            game.Dispose();
+        }
+
 
         private class HandConstructionViewPrefab : ViewPrefab
         {

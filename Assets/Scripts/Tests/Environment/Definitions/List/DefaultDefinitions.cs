@@ -1,5 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Environment.Prefabs.Levels.Constructions;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
@@ -28,12 +30,34 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
             var construciton = new ConstructionDefinition() {
                 Size = new IntPoint(2, 1),
                 LevelViewPath = "DebugConstruction",
+                Points = 1,
             };
             engine.Settings.Add("Construction1", construciton);
 
+            var customer = new CustomerDefinition()
+            {
+                ConstrcutionsReward = new Dictionary<ConstructionDefinition, int>()
+                {
+                    { construciton, 1}
+                }
+            };
+            engine.Settings.Add("Customer1", customer);
+
+            var fields = new List<PlacementFieldDefinition>();
+            fields.Add(new PlacementFieldDefinition()
+            {
+                Size = new IntPoint(9, 9)
+            });
             var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel())
             {
-                StartingHand = new List<ConstructionDefinition>() { construciton }
+                HandSize = 5,
+                PlacementFields = fields,
+                StartingHand = new List<ConstructionDefinition>() { construciton },
+                CrowdUnitsAmount = 10,
+                BaseCrowdUnits = new Dictionary<CustomerDefinition, int>() {
+                    { customer, 2 }
+                },
+                UnitsRect = new FloatRect(-10, -10, 20, 20),
             };
             engine.Settings.Add(level.Name, level);
         }

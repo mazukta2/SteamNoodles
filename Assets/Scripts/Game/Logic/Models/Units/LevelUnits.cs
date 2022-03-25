@@ -4,6 +4,8 @@ using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using System;
@@ -28,15 +30,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private List<Unit> _spawnedUnits = new List<Unit>();
         private List<Unit> _crowd = new List<Unit>();
         private GameTime _time;
+        private Resources _resources;
+        private PlayerHand _hand;
+
         private FloatRect UnitsField => _levelDefinition.UnitsRect;
 
         public LevelUnits(UnitsSettingsDefinition unitsSettings, LevelDefinition levelDefinition, GameTime time,
-            SessionRandom random)
+            SessionRandom random, Resources resources, PlayerHand hand)
         {
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _unitsSettings= unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             _time = time ?? throw new ArgumentNullException(nameof(time));
+            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            _hand = hand ?? throw new ArgumentNullException(nameof(hand));
 
             _pool = new Deck<CustomerDefinition>(random);
             foreach (var item in levelDefinition.BaseCrowdUnits)
@@ -118,6 +125,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         {
             return new FloatPoint(random.GetRandom(rect.xMin, rect.xMax), random.GetRandom(rect.yMin, rect.yMax));
         }
+
+        public void MoveQueue()
+        {
+            _resources.Points -= 1;
+
+            var customer = _levelDefinition.BaseCrowdUnits.Keys.ToList()[_random.GetRandom(0, _levelDefinition.BaseCrowdUnits.Count - 1)];
+
+            var deck = new Deck<ConstructionDefinition>(_random);
+            foreach (var item in customer.ConstrcutionsReward)
+                deck.Add(item.Key, item.Value);
+
+            if (deck.IsEmpty())
+                return;
+
+            var constrcution = deck.Take();
+            _hand.Add(constrcution);
+        }
+
 
         //public void ReturnToCrowd(Unit unit)
         //{

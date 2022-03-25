@@ -58,5 +58,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             return _views.OfType<T>().AsReadOnly();
         }
 
+        public T Add<T>(T view) where T : View
+        {
+            _views.Add(view);
+            return view;
+        }
     }
 }

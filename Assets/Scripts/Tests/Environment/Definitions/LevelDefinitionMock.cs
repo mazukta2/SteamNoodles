@@ -14,17 +14,6 @@ namespace Game.Tests.Mocks.Settings.Levels
         {
             Name = name;
             LevelPrefab = level;
-            var fields = new List<PlacementFieldDefinition>();
-            fields.Add(new PlacementFieldDefinition()
-            {
-                Size = new IntPoint(9, 9)
-            });
-            PlacementFields = fields;
-            CrowdUnitsAmount = 10;
-            BaseCrowdUnits = new Dictionary<CustomerDefinition, int>() {
-                { new CustomerDefinition() , 2 } 
-            };
-            UnitsRect = new FloatRect(-10, -10, 20, 20);
         }
 
     }

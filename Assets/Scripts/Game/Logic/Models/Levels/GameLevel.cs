@@ -30,8 +30,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             Hand = new PlayerHand(settings, settings.StartingHand);
             Resources = new Resources();
-            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _settings, Resources);
-            Units = new LevelUnits(definitions.Get<UnitsSettingsDefinition>(), settings, time, random);
+            Units = new LevelUnits(definitions.Get<UnitsSettingsDefinition>(), settings, time, random, Resources, Hand);
+            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _settings, Resources, Units);
         }
 
         protected override void DisposeInner()

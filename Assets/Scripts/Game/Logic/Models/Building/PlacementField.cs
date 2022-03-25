@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         private PlacementFieldDefinition _field;
         private Resources _resources;
+        private LevelUnits _units;
 
-        public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition, Resources resources)
+        public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition, Resources resources, LevelUnits units)
         {
             ConstructionsSettings = settings ?? throw new ArgumentNullException(nameof(settings));
             _field = definition ?? throw new ArgumentNullException(nameof(definition));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            _units = units ?? throw new ArgumentNullException(nameof(units));
+            
 
             Rect = new IntRect(-Size.X / 2, -Size.Y / 2, Size.X, Size.Y);
         }
@@ -59,6 +63,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             var construction = new Construction(this, card.Definition, position);
             _constructions.Add(construction);
             card.RemoveFromHand();
+
+            _units.MoveQueue();
 
             OnConstructionAdded(construction);
             return construction;

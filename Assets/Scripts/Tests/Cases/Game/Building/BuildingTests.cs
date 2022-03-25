@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -70,6 +71,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var game = new GameTestConstructor().Build();
 
             Assert.IsNotNull(game.CurrentLevel.FindView<MainScreenView>());
+            Assert.IsNotNull(game.CurrentLevel.FindView<HandView>());
             Assert.IsNull(game.CurrentLevel.FindView<BuildScreenView>());
 
             var hand = game.CurrentLevel.FindView<HandView>();
@@ -77,12 +79,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             view.Button.Click();
 
             Assert.IsNull(game.CurrentLevel.FindView<MainScreenView>());
+            Assert.IsNull(game.CurrentLevel.FindView<HandView>());
             Assert.IsNotNull(game.CurrentLevel.FindView<BuildScreenView>());
 
             var buildScreen = game.CurrentLevel.FindView<BuildScreenView>();
             buildScreen.CancelButton.Click();
 
             Assert.IsNotNull(game.CurrentLevel.FindView<MainScreenView>());
+            Assert.IsNotNull(game.CurrentLevel.FindView<HandView>());
             Assert.IsNull(game.CurrentLevel.FindView<BuildScreenView>());
 
             game.Dispose();
@@ -315,7 +319,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsRemovedFromHand()
         {
-            var game = new GameTestConstructor().Build();
+            var game = new GameTestConstructor()
+                .UpdateDefinition<CustomerDefinition>(x => x.ConstrcutionsReward = new Dictionary<ConstructionDefinition,int>())
+                .Build();
 
             Assert.AreEqual(1, game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().Count);
             Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count);

@@ -14,9 +14,9 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
         {
             return conteiner.Create((level) =>
             {
-                var container = new ContainerView(level);
-                var prototype = new PrototypeView(level, new HandConstructionViewPrefab());
-                var handView = new HandView(level, container, prototype);
+                var container = conteiner.Add(new ContainerView(level));
+                var prototype = conteiner.Add(new PrototypeView(level, new HandConstructionViewPrefab()));
+                var handView = conteiner.Add(new HandView(level, container, prototype));
                 return new MainScreenView(level, handView, new UiText());
             });
         }
@@ -27,8 +27,8 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
             {
                 return conteiner.Create((level) =>
                 {
-                    var buttonView = new ButtonView(level);
-                    var imageView = new ImageView(level);
+                    var buttonView = conteiner.Add(new ButtonView(level));
+                    var imageView = conteiner.Add(new ImageView(level));
                     return new HandConstructionView(level, buttonView, imageView);
                 });
             }

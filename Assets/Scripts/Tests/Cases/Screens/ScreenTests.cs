@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void MainScreenIsOpened()
         {
-            var build = new GameTestConstructor().AddAndLoadLevel(new BasicSellingLevel()).Build();
+            var build = new GameTestConstructor().Build();
 
             var screenManager = build.CurrentLevel.FindView<ScreenManagerView>();
             Assert.IsNotNull(screenManager);

@@ -1,6 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Tests.Environment.Definitions.List;
-using Game.Assets.Scripts.Tests.Environment.Game.ConstructorSettings;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Cases;
@@ -60,13 +58,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
             var build = new GameTestConstructor().Build();
             Assert.IsNotNull(build.Engine.Levels.GetCurrentLevel());
             build.Dispose();
-        }
-
-        [Test]
-        public void DefaultPresetIsWorking()
-        {
-            var game = new GameTestConstructor(new DefaultPreset()).Build();
-            game.Dispose();
         }
 
         [TearDown]
