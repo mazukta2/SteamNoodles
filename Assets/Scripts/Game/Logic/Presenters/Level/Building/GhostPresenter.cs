@@ -63,8 +63,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             var halfCell = _constructionsSettings.CellSize / 2;
 
-            var offset = new FloatPoint(_buildScreen.CurrentCard.Definition.Size.X * halfCell - halfCell,
-                _buildScreen.CurrentCard.Definition.Size.Y * halfCell - halfCell);
+            var offset = new FloatPoint(_buildScreen.CurrentCard.Definition.GetRect().Width * halfCell - halfCell,
+                _buildScreen.CurrentCard.Definition.GetRect().Height * halfCell - halfCell);
 
             var pos = _worldPosition - offset;
 

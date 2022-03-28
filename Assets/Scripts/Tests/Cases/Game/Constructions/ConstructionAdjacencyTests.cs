@@ -61,7 +61,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var construction1 = new ConstructionDefinition()
             {
                 Points = 5,
-                Size = new IntPoint(2, 1),
+                Placement = new int[,] {
+                    { 0, 0, 0 },
+                    { 0, 1, 0 },
+                    { 0, 1, 0 },
+                },
                 LevelViewPath = "DebugConstruction",
             };
             construction1.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { construction1, 2 } };

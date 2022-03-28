@@ -3,13 +3,14 @@ using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 {
     public class ConstructionDefinition
     {
         public string LevelViewPath { get; set; }
-        public IntPoint Size { get; set;  }
+        public int[,] Placement { get; set; }
         public Requirements Requirements { get; set;  }
         public string HandImagePath { get; set; }
         public int Points { get;  set; }
@@ -19,14 +20,44 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
         public IReadOnlyCollection<IntPoint> GetOccupiedSpace(IntPoint position)
         {
             var result = new List<IntPoint>();
-            for (int x = 0; x < Size.X; x++)
+
+            var occupied = new List<IntPoint>();
+            for (int x = 0; x < Placement.GetLength(0); x++)
             {
-                for (int y = 0; y < Size.Y; y++)
+                for (int y = 0; y < Placement.GetLength(1); y++)
                 {
-                    result.Add(position + new IntPoint(x, y));
+                    if (Placement[x, y] != 0)
+                        occupied.Add(new IntPoint(x, y));
                 }
             }
+
+            var minX = occupied.Min(v => v.X);
+            var maxX = occupied.Max(v => v.X);
+            var minY = occupied.Min(v => v.Y);
+            var maxY = occupied.Max(v => v.Y);
+
+            var xSize = maxX - minX + 1;
+            var ySize = maxY - minY + 1;
+
+            var startingPoint = new IntPoint(minX, minY);
+
+            foreach (var point in occupied)
+            {
+                result.Add(point + position - startingPoint);
+            }
+
             return result.AsReadOnly();
+        }
+
+        public IntRect GetRect()
+        {
+            var occupied = GetOccupiedSpace(new IntPoint(0, 0));
+            var minX = occupied.Min(v => v.X);
+            var minY = occupied.Min(v => v.Y);
+            var maxX = occupied.Max(v => v.X);
+            var maxY = occupied.Max(v => v.Y);
+
+            return new IntRect(minX, minY, maxX - minX + 1, maxY - minY + 1);
         }
     }
 

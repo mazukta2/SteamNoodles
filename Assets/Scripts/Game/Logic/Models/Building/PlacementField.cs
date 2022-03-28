@@ -81,7 +81,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             if (constructionDefinition.Requirements.DownEdge)
             {
                 var min = Rect.Y;
-                var max = Rect.Y + constructionDefinition.Size.Y;
+                var max = Rect.Y + constructionDefinition.GetRect().Height;
                 return min <= position.Y && position.Y < max;
             }
 

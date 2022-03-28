@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         }
 
         public static IntPoint operator +(IntPoint current, IntPoint other) => new IntPoint(current.X + other.X, current.Y + other.Y);
+        public static IntPoint operator -(IntPoint current, IntPoint other) => new IntPoint(current.X - other.X, current.Y - other.Y);
         public static bool operator ==(IntPoint current, IntPoint other) => current.X == other.X && current.Y == other.Y;
         public static bool operator !=(IntPoint current, IntPoint other) => current.X != other.X || current.Y != other.Y;
 

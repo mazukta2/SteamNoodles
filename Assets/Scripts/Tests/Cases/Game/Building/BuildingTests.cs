@@ -61,6 +61,105 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Dispose();
         }
 
+        [Test]
+        public void IsRectSizeCorrect()
+        {
+            TestRect(new IntRect(0, 0, 2, 2),
+                new int[,] {
+                    { 1, 1 },
+                    { 1, 1 }
+                }
+            );
+
+            TestRect(new IntRect(0, 0, 2, 2),
+                new int[,] {
+                    { 1, 1, 0 },
+                    { 1, 1, 0 }
+                }
+
+            );
+
+            TestRect(new IntRect(0, 0, 2, 2),
+                new int[,] {
+                    { 1, 1 },
+                    { 1, 1 },
+                    { 0, 0 }
+                }
+            );
+
+            TestRect(new IntRect(0, 0, 2, 2),
+                new int[,] {
+                    { 0, 1, 1 },
+                    { 0, 1, 1 },
+                }
+            );
+
+            TestRect(new IntRect(0, 0, 2, 2),
+                new int[,] {
+                    { 0, 0 },
+                    { 1, 1 },
+                    { 1, 1 },
+                }
+            );
+
+            TestRect(new IntRect(0, 0, 2, 2),
+                new int[,] {
+                    { 0, 0, 0, 0 },
+                    { 0, 1, 1, 0 },
+                    { 0, 1, 1, 0 },
+                    { 0, 0, 0, 0 },
+                }
+            );
+
+            TestRect(new IntRect(0, 0, 3, 3),
+                new int[,] {
+                    { 0, 1, 1, 1 },
+                    { 0, 1, 1, 1 },
+                    { 0, 1, 1, 1 },
+                    { 0, 0, 0, 0 },
+                }
+            );
+
+
+            TestRect(new IntRect(0, 0, 3, 3),
+                new int[,] {
+                    { 0, 0, 0, 0 },
+                    { 0, 1, 1, 1 },
+                    { 0, 1, 1, 1 },
+                    { 0, 1, 1, 1 },
+                }
+            );
+
+
+            TestRect(new IntRect(0,0, 3, 3),
+                new int[,] {
+                    { 0, 0, 0, 0, 0 },
+                    { 0, 1, 1, 1, 0 },
+                    { 0, 1, 1, 1, 0 },
+                    { 0, 1, 1, 1, 0 },
+                }
+            );
+
+            TestRect(new IntRect(0, 0, 3, 3),
+                new int[,] {
+                    { 0, 0, 0, 0, 0 },
+                    { 0, 1, 1, 1, 0 },
+                    { 0, 1, 1, 1, 0 },
+                    { 0, 1, 1, 1, 0 },
+                    { 0, 0, 0, 0, 0 },
+                }
+            );
+
+            void TestRect(IntRect expected, int[,] rect)
+            {
+                var constrcution = new ConstructionDefinition()
+                {
+                    Placement = rect,
+                };
+                Assert.AreEqual(expected, constrcution.GetRect());
+            }
+        }
+
         #endregion
 
         #region BuildingScreen
@@ -206,7 +305,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
                     d.PlacementFields.First().Size = new IntPoint(size, size);
-                    d.StartingHand.First().Size = new IntPoint(2, 2);
+                    d.StartingHand.First().Placement = new int[,]
+                    {
+                        { 1, 1 },
+                        { 1, 1 }
+                    };
                     d.StartingHand.First().Requirements = new Requirements() { DownEdge = true };
                 })
                 .Build();

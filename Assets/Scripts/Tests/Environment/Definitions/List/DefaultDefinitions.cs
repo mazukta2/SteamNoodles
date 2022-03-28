@@ -27,8 +27,13 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
                 Speed = 1,
             });
             
-            var construciton = new ConstructionDefinition() {
-                Size = new IntPoint(2, 1),
+            var construciton = new ConstructionDefinition()
+            {
+                Placement = new int[,] {
+                    { 0, 0, 0 },
+                    { 0, 1, 0 },
+                    { 0, 1, 0 },
+                },
                 LevelViewPath = "DebugConstruction",
                 Points = 1,
             };

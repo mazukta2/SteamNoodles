@@ -56,5 +56,23 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         }
 
         public static FloatRect operator *(IntRect current, float other) => new FloatRect(current.X * other, current.Y * other, current.Width * other, current.Height * other);
+
+        public override bool Equals(object obj)
+        {
+            if (obj is IntRect otherPoint)
+                return this.X == otherPoint.X && this.Y == otherPoint.Y && this.Height == otherPoint.Height && this.Width == otherPoint.Width;
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return X + Y;
+        }
+
+        public override string ToString()
+        {
+            return $"[{X}, {Y}, {Width}, {Height}]";
+        }
     }
 }
