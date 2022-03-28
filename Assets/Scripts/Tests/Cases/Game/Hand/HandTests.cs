@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Creation;
+﻿using Assets.Scripts.Logic.Prototypes.Levels;
+using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
@@ -59,40 +60,40 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             }
         }
 
-        //[Test]
-        //public void IsIconSettedInHand()
-        //{
-        //    var game = new GameController();
-        //    var (models, presenters, views) = game.LoadLevel();
-        //    var item = views.Screen.Hand.Cards.List.First();
-        //    var icon = item.GetIcon();
-        //    Assert.IsTrue(models.Hand.Cards.First().HandIcon.Equals(icon));
-        //    game.Exit();
-        //}
+        [Test]
+        public void IsIconSettedInHand()
+        {
+            var game = new GameTestConstructor()
+                .Build();
 
-        //[Test]
-        //public void IsHandLimitWorking()
-        //{
-        //    var game = new GameTestConstructor(new DefaultSettings()).Build();
+            var construction = game.Core.Engine.Definitions.Get<ConstructionDefinition>("Construction1");
 
-        //    //var construction1 = models.Hand.Cards.First().Settings;
-        //    //var consteuction2 = new ConstructionSettings();
-        //    //var settings = (LevelSettings)models.Clashes.Settings;
-        //    //settings.HandSize = 3;
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.Engine.Controls.Click();
 
-        //    //Assert.AreEqual(1, game.GameModel.CreateSession.Hand.Cards.Count());
+            Assert.AreEqual(construction.HandImagePath, game.CurrentLevel.FindView<HandConstructionView>().Image.Path);
 
-        //    //for (int i = 0; i < 5; i++)
-        //    //{
-        //    //    models.Hand.Add(consteuction2);
-        //    //}
+            game.Dispose();
+        }
 
-        //    //Assert.AreEqual(3, models.Hand.Cards.Count());
-        //    //foreach (var mod in models.Hand.Cards)
-        //    //    Assert.AreEqual(consteuction2, mod.Settings);
+        [Test]
+        public void IsHandLimitWorking()
+        {
+            //var construction1 = new ConstructionDefinition();
+            //var construction2 = new ConstructionDefinition();
 
-        //    game.Dispose();
-        //}
+            //var game = new GameTestConstructor()
+            //    .UpdateDefinition<CustomerDefinition>(x => x.ConstrcutionsReward = new Dictionary<ConstructionDefinition, int>() {
+            //        {construction1,  1},
+            //        {construction2,  1},
+            //    })
+            //    .Build();
+
+            //game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            //game.Engine.Controls.Click();
+            //Assert.AreEqual(2, game.CurrentLevel.FindViews<HandConstructionView>().Count());
+            //game.Dispose();
+        }
 
         [TearDown]
         public void TestDisposables()
