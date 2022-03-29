@@ -133,7 +133,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             var customer = _levelDefinition.BaseCrowdUnits.Keys.ToList()[_random.GetRandom(0, _levelDefinition.BaseCrowdUnits.Count - 1)];
 
             var deck = new Deck<ConstructionDefinition>(_random);
-            foreach (var item in customer.ConstrcutionsReward)
+            foreach (var item in customer.ConstructionsReward)
                 deck.Add(item.Key, item.Value);
 
             if (deck.IsEmpty())

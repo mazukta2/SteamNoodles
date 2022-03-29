@@ -1,8 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
@@ -58,6 +58,21 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
             var maxY = occupied.Max(v => v.Y);
 
             return new IntRect(minX, minY, maxX - minX + 1, maxY - minY + 1);
+        }
+
+        public void Validate()
+        {
+            if (string.IsNullOrEmpty(LevelViewPath))
+                throw new Exception($"{nameof(LevelViewPath)} is empty");
+
+            if (Placement == null || Placement.Length == 0)
+                throw new Exception($"{nameof(Placement)} is empty");
+
+            if (string.IsNullOrEmpty(HandImagePath))
+                throw new Exception($"{nameof(HandImagePath)} is empty");
+
+            if (AdjacencyPoints.Count == 0)
+                throw new Exception($"{nameof(AdjacencyPoints)} is empty");
         }
     }
 

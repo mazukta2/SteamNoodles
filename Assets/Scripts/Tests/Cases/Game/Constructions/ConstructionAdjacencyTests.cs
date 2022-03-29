@@ -73,7 +73,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new GameTestConstructor()
                 .AddDefinition("construction1", construction1)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
-                .UpdateDefinition<CustomerDefinition>(x => x.ConstrcutionsReward = new Dictionary<ConstructionDefinition, int>())
+                .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
                 .UpdateDefinition<LevelDefinitionMock>(x => x.
                     StartingHand = new List<ConstructionDefinition>() { construction1, construction1 })
                 .Build();

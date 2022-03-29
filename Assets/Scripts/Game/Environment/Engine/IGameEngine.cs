@@ -11,5 +11,6 @@ namespace Game.Assets.Scripts.Game.External
         IAssets Assets { get; }
         IControls Controls { get; }
         GameTime Time { get; }
+        void Dispose();
     }
 }

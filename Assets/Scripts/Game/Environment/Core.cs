@@ -21,6 +21,7 @@ namespace Game.Assets.Scripts.Game.Environment
         protected override void DisposeInner()
         {
             Game.Dispose();
+            Engine.Dispose();
             CoreAccessPoint.ClearCore();
         }
     }

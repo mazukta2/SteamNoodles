@@ -6,7 +6,7 @@ using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Cases;
 using NUnit.Framework;
 
-namespace Game.Assets.Scripts.Tests.Cases.Core
+namespace Game.Assets.Scripts.Tests.Cases.Basic
 {
     public class MvpTests
     {

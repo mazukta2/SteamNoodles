@@ -27,5 +27,11 @@ namespace Game.Tests.Controllers
             Assets = new AssetsInTests();
             Controls = new ControlsInTests();
         }
+
+        public void Dispose()
+        {
+            Levels.Dispose();
+            Assets.Dispose();
+        }
     }
 }

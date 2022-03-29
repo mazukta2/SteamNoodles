@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
 
             var customer = new CustomerDefinition()
             {
-                ConstrcutionsReward = new Dictionary<ConstructionDefinition, int>()
+                ConstructionsReward = new Dictionary<ConstructionDefinition, int>()
                 {
                     { construciton, 1}
                 }

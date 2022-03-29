@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Environment.Game;
@@ -7,6 +8,7 @@ using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Game.Assets.Scripts.Tests.Managers.Game
 {

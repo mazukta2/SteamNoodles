@@ -423,7 +423,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsRemovedFromHand()
         {
             var game = new GameTestConstructor()
-                .UpdateDefinition<CustomerDefinition>(x => x.ConstrcutionsReward = new Dictionary<ConstructionDefinition,int>())
+                .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition,int>())
                 .Build();
 
             Assert.AreEqual(1, game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().Count);
