@@ -102,10 +102,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
                 var text = LoadResourceTextfile(path);
                 try
                 {
-                    var item = JsonConvert.DeserializeObject<T>(text);
+                    var item = Activator.CreateInstance(typeof(T));
                     _cached.Add(path, item);
-
-                    return item;
+                    JsonConvert.PopulateObject(text, item);
+                    return (T)item;
                 }
                 catch (Exception ex)
                 {
@@ -122,9 +122,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
                 var text = LoadResourceTextfile(path);
                 try
                 {
-                    var item = JsonConvert.DeserializeObject<T>(text);
+                    var item = Activator.CreateInstance(typeof(T));
                     _cached.Add(path, item);
-                    return item;
+                    JsonConvert.PopulateObject(text, item);
+                    return (T)item;
                 }
                 catch (Exception ex)
                 {
@@ -150,8 +151,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
                         try
                         {
                             var text = File.ReadAllText(path);
-                            var obj = JsonConvert.DeserializeObject<T>(text);
+
+                            var obj = Activator.CreateInstance(typeof(T));
                             _cached.Add(path, obj);
+                            JsonConvert.PopulateObject(text, obj);
+
                             result.Add((T)_cached[path]);
                         }
                         catch (Exception ex)

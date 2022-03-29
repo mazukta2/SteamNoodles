@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
         public string HandImagePath { get; set; }
         public int Points { get;  set; }
         [JsonConverter(typeof(DefinitionsDictionaryConventer<ConstructionDefinition, int>))]
-        public Dictionary<ConstructionDefinition, int> AdjacencyPoints { get; set; } = new Dictionary<ConstructionDefinition, int>();
+        public IReadOnlyDictionary<ConstructionDefinition, int> AdjacencyPoints { get; set; } = new Dictionary<ConstructionDefinition, int>();
 
         public IReadOnlyCollection<IntPoint> GetOccupiedSpace(IntPoint position)
         {
