@@ -28,5 +28,9 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             _controls.Update();
             Time.MoveTime(UnityEngine.Time.deltaTime);
         }
+
+        public void Dispose()
+        {
+        }
     }
 }
