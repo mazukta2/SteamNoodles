@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.External;
+using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
@@ -82,9 +83,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
             return core;
         }
 
-        public class FileDefinitions : IDefinitions
+        public class FileDefinitions : BaseDefinitions
         {
-            private Dictionary<string, object> _cached = new Dictionary<string, object>();
             private DirectoryInfo _definitionFolder;
 
             public FileDefinitions(DirectoryInfo definitionFolder)
@@ -92,84 +92,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
                 _definitionFolder = definitionFolder;
             }
 
-            public T Get<T>(string id)
-            {
-                var name = typeof(T).Name;
-                var path = name + "/" + id;
-                if (_cached.ContainsKey(path))
-                    return (T)_cached[path];
-
-                var text = LoadResourceTextfile(path);
-                try
-                {
-                    var item = Activator.CreateInstance(typeof(T));
-                    _cached.Add(path, item);
-                    JsonConvert.PopulateObject(text, item);
-                    return (T)item;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Cant deserialize : " + path, ex);
-                }
-            }
-
-            public T Get<T>()
-            {
-                var path = typeof(T).Name;
-                if (_cached.ContainsKey(path))
-                    return (T)_cached[path];
-
-                var text = LoadResourceTextfile(path);
-                try
-                {
-                    var item = Activator.CreateInstance(typeof(T));
-                    _cached.Add(path, item);
-                    JsonConvert.PopulateObject(text, item);
-                    return (T)item;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Cant deserialize : " + path, ex);
-                }
-            }
-
-            public IReadOnlyCollection<T> GetList<T>()
-            {
-                var folderPath = typeof(T).Name;
-                var list = _definitionFolder.GetDirectories().First(x => x.Name == folderPath).GetFiles();
-                var result = new List<T>();
-                foreach (var item in list)
-                {
-                    if (item.Extension != ".json")
-                        continue;
-
-                    var path = _definitionFolder.FullName + "/" + folderPath + "/" + item.Name;
-                    if (_cached.ContainsKey(path))
-                        result.Add((T)_cached[path]);
-                    else
-                    {
-                        try
-                        {
-                            var text = File.ReadAllText(path);
-
-                            var obj = Activator.CreateInstance(typeof(T));
-                            _cached.Add(path, obj);
-                            JsonConvert.PopulateObject(text, obj);
-
-                            result.Add((T)_cached[path]);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception("Cant deserialize : " + path, ex);
-                        }
-                    }
-                }
-                return result.AsReadOnly();
-            }
-
-            private string LoadResourceTextfile(string path)
+            protected override string LoadResourceTextfile(string path)
             {
                 return File.ReadAllText(_definitionFolder.FullName + "/"+ path + ".json");
+            }
+
+            protected override string[] GetDefintionPaths(string folder)
+            {
+                var list = _definitionFolder.GetDirectories().First(x => x.Name == folder).GetFiles();
+                return list.Where(x => x.Extension == ".json").Select(x => folder + "/" + Path.GetFileNameWithoutExtension(x.Name)).ToArray();
             }
         }
 

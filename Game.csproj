@@ -23,7 +23,6 @@
     <Compile Remove="Assets\Refs\**" />
     <Compile Remove="Assets\Render\**" />
     <Compile Remove="Assets\Scenes\**" />
-    <Compile Remove="Assets\Scripts\Game\Logic\Definitions\NewFolder\**" />
     <Compile Remove="Assets\Scripts\Unity\**" />
     <Compile Remove="Assets\Scripts\Editor\**" />
     <Compile Remove="Assets\Settings\**" />
@@ -45,7 +44,6 @@
     <EmbeddedResource Remove="Assets\Refs\**" />
     <EmbeddedResource Remove="Assets\Render\**" />
     <EmbeddedResource Remove="Assets\Scenes\**" />
-    <EmbeddedResource Remove="Assets\Scripts\Game\Logic\Definitions\NewFolder\**" />
     <EmbeddedResource Remove="Assets\Scripts\Unity\**" />
     <EmbeddedResource Remove="Assets\Scripts\Editor\**" />
     <EmbeddedResource Remove="Assets\Settings\**" />
@@ -68,7 +66,6 @@
     <None Remove="Assets\Refs\**" />
     <None Remove="Assets\Render\**" />
     <None Remove="Assets\Scenes\**" />
-    <None Remove="Assets\Scripts\Game\Logic\Definitions\NewFolder\**" />
     <None Remove="Assets\Scripts\Unity\**" />
     <None Remove="Assets\Scripts\Editor\**" />
     <None Remove="Assets\Settings\**" />
