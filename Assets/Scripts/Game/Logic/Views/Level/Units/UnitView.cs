@@ -10,12 +10,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     public class UnitView : View
     {
         public ILevelPosition Position { get; }
+        public IRotator Rotator { get; }
 
         private UnitPresenter _presenter;
 
-        public UnitView(ILevel level, ILevelPosition position) : base(level)
+        public UnitView(ILevel level, ILevelPosition position, IRotator rotator) : base(level)
         {
             Position = position;
+            Rotator = rotator;
         }
 
         public void Init(Unit model)

@@ -10,6 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
     {
         public event Action OnPositionChanged = delegate { };
         public event Action OnReachedPosition = delegate { };
+        public event Action OnTargetChanged = delegate { };
         public FloatPoint Target { get; private set; }
         public FloatPoint Position { get; private set; }
         public CustomerDefinition Definition { get; private set; }
@@ -56,6 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public void SetTarget(FloatPoint target)
         {
             Target = target;
+            OnTargetChanged();
 
             var distance = Position.GetDistanceTo(Target);
             if (_unitsSettings.Speed * 0.01f > distance)

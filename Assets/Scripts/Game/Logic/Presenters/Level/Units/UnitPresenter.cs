@@ -16,22 +16,30 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _view = view;
             _view.Position.Value = model.Position;
             _model = model;
-            _model.OnPositionChanged += _model_OnPositionChanged;
-            _model.OnDispose += _model_OnDispose;
+            _view.Rotator.FaceTo(model.Target);
+            _model.OnPositionChanged += HandleOnPositionChanged;
+            _model.OnDispose += HandleOnDispose;
+            _model.OnTargetChanged += HandleOnTargetChanged;
         }
 
         protected override void DisposeInner()
         {
-            _model.OnPositionChanged -= _model_OnPositionChanged;
-            _model.OnDispose -= _model_OnDispose;
+            _model.OnPositionChanged -= HandleOnPositionChanged;
+            _model.OnDispose -= HandleOnDispose;
+            _model.OnTargetChanged -= HandleOnTargetChanged;
         }
 
-        private void _model_OnPositionChanged()
+        private void HandleOnPositionChanged()
         {
             _view.Position.Value = _model.Position;
         }
 
-        private void _model_OnDispose()
+        private void HandleOnTargetChanged()
+        {
+            _view.Rotator.FaceTo(_model.Target);
+        }
+
+        private void HandleOnDispose()
         {
             _view.Dispose();
         }
