@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
                 .Build();
 
             var hand = game.CurrentLevel.FindView<HandView>();
-            Assert.AreEqual(1, hand.Cards.Get<HandConstructionView>().Count());
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
 
             game.Dispose();
         }
@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var game = new GameTestConstructor()
                 .Build();
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             game.Engine.Controls.Click();
 
             Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
@@ -67,7 +67,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var construction = game.Core.Engine.Definitions.Get<ConstructionDefinition>("Construction1");
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             game.Engine.Controls.Click();
 
             Assert.AreEqual(construction.HandImagePath, game.CurrentLevel.FindView<HandConstructionView>().Image.Path);

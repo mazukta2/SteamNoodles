@@ -33,7 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
                 throw new Exception($"Cant find {typeof(TScreen).Name} view");
 
             _view.Screen.Clear();
-            var view = (TScreen)screenPrefab.Create<TScreen>(_view.Screen);
+            var view = (TScreen)_view.Screen.Spawn<TScreen>(screenPrefab);
             init(view, this);
             OnScreenOpened(view.Presenter);
         }

@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _constructionView.LocalPosition.Value = construction.GetLocalPosition();
 
             _constructionView.Container.Clear();
-            _constructionView.Container.Create<ConstructionModelView>(assets.GetConstruction(construction.Definition.LevelViewPath));
+            _constructionView.Container.Spawn<ConstructionModelView>(assets.GetConstruction(construction.Definition.LevelViewPath));
         }
     }
 }

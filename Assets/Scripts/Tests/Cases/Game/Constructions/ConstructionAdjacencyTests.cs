@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.IsNotNull(game.CurrentLevel.FindView<MainScreenView>());
             Assert.AreEqual("0", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
@@ -44,7 +44,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 5)
                 .Build();
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
@@ -79,12 +79,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .Build();
 
             Assert.AreEqual("0", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
             game.Engine.Controls.Click();
             Assert.AreEqual("4", game.CurrentLevel.FindView<MainScreenView>().Points.Value); // -1 becouse turn tick
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
             game.Engine.Controls.MovePointer(new FloatPoint(-2, 0));
             Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);

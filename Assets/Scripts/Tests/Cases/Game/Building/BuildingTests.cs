@@ -174,7 +174,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             Assert.IsNull(game.CurrentLevel.FindView<BuildScreenView>());
 
             var hand = game.CurrentLevel.FindView<HandView>();
-            var view = hand.Cards.Get<HandConstructionView>().First();
+            var view = game.CurrentLevel.FindViews<HandConstructionView>().First();
             view.Button.Click();
 
             Assert.IsNull(game.CurrentLevel.FindView<MainScreenView>());
@@ -201,7 +201,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             Assert.AreEqual(0, game.CurrentLevel.FindViews<GhostView>().Count);
 
             var hand = game.CurrentLevel.FindView<HandView>();
-            var view = hand.Cards.Get<HandConstructionView>().First();
+            var view = game.CurrentLevel.FindViews<HandConstructionView>().First();
             view.Button.Click();
 
             Assert.AreEqual(1, game.CurrentLevel.FindViews<GhostView>().Count);
@@ -223,7 +223,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var cells = game.CurrentLevel.FindViews<CellView>();
             Assert.IsTrue(cells.All(x => x.State == CellPlacementStatus.Normal));
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             Assert.IsTrue(cells.All(x => x.State == CellPlacementStatus.IsReadyToPlace || x.State == CellPlacementStatus.IsAvailableGhostPlace));
 
@@ -237,7 +237,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var game = new GameTestConstructor().Build();
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             Assert.IsNotNull(game.CurrentLevel.FindView<GhostView>());
 
@@ -253,7 +253,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var game = new GameTestConstructor().Build();
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             var cells = game.CurrentLevel.FindViews<CellView>();
             var highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
@@ -281,7 +281,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .Build();
             var cellSize = 0.5f;
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             var ghost = game.CurrentLevel.FindView<GhostView>();
             Assert.IsFalse(ghost.CanPlace);
@@ -314,7 +314,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 })
                 .Build();
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             var worldPos = new FloatPoint(0f, -0.75f);
             game.Engine.Controls.MovePointer(worldPos);
@@ -370,7 +370,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var game = new GameTestConstructor().Build();
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             Assert.IsNull(game.CurrentLevel.FindView<ConstructionView>());
 
@@ -387,7 +387,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var game = new GameTestConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1)
                 .Build();
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             var worldPos = new FloatPoint(0, -2);
             game.Engine.Controls.MovePointer(worldPos);
@@ -426,13 +426,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition,int>())
                 .Build();
 
-            Assert.AreEqual(1, game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().Count);
             Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count);
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             game.Engine.Controls.Click();
 
-            Assert.AreEqual(0, game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().Count);
             Assert.AreEqual(0, game.CurrentLevel.FindViews<HandConstructionView>().Count);
             game.Dispose();
         }
@@ -444,9 +442,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .Build();
 
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             game.Engine.Controls.Click();
-            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             game.Engine.Controls.MovePointer(new FloatPoint(-2, 0));
             game.Engine.Controls.Click();
 

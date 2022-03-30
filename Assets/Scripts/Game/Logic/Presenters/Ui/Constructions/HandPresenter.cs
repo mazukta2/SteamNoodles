@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void ScnemeAddedHandle(ConstructionCard obj)
         {
-            var viewPresenter = _view.CardPrototype.Create<HandConstructionView>(_view.Cards);
+            var viewPresenter = _view.Cards.Spawn<HandConstructionView>(_view.CardPrototype);
             viewPresenter.Init(_screenManager, obj);
         }
     }

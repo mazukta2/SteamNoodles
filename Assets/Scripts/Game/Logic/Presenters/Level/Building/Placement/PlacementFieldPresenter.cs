@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private PlacementCellPresenter CreateCell(IntPoint position)
         {
-            return _view.Manager.Cell.Create<CellView>(_view.Manager.CellsContainer).Init(this, position);
+            return _view.Manager.CellsContainer.Spawn<CellView>(_view.Manager.Cell).Init(this, position);
         }
 
         public void UpdateGhostCells()
@@ -86,7 +86,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleOnConstructionAdded(Construction construction)
         {
-            var view = _view.Manager.ConstrcutionPrototype.Create<ConstructionView>(_view.Manager.ConstrcutionContainer);
+            var view = _view.Manager.ConstrcutionContainer.Spawn<ConstructionView>(_view.Manager.ConstrcutionPrototype);
             view.Init(construction);
         }
     }

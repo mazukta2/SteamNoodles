@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         private UnitsPresenter _presenter;
 
-        public UnitsManagerView(ILevel level, TestContainerView container, TestPrototypeView prototype) : base(level)
+        public UnitsManagerView(ILevel level, IViewContainer container, IViewPrefab prototype) : base(level)
         {
             Container = container;
             UnitPrototype = prototype;
