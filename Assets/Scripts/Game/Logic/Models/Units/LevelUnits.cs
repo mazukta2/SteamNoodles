@@ -128,8 +128,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         public void MoveQueue()
         {
-            _resources.Points -= 1;
-
             var customer = _levelDefinition.BaseCrowdUnits.Keys.ToList()[_random.GetRandom(0, _levelDefinition.BaseCrowdUnits.Count - 1)];
 
             var deck = new Deck<ConstructionDefinition>(_random);
