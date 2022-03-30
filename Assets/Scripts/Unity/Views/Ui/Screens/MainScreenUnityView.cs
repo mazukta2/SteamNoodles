@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
 
         protected override MainScreenView CreateView()
         {
-            return new MainScreenView(Level, _hand.View, new UnityText(_points));
+            return new MainScreenView(Level, _hand.View, new UnityText(_points), new UnityProgressBar());
         }
 
     }

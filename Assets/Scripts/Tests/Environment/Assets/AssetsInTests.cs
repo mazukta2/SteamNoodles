@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Environment.Engine.Assets;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Tests.Environment.Assets;
@@ -20,7 +21,7 @@ namespace Game.Tests.Controllers
             _constructions.Clear();
         }
 
-        public TestViewPrefab GetConstruction(string path)
+        public IViewPrefab GetConstruction(string path)
         {
             if (!_constructions.ContainsKey(path))
                 throw new System.Exception("Cant find resource : " + path);

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
-    public class PrototypeUnityView : UnityView<PrototypeView>
+    public class PrototypeUnityView : MonoBehaviour, IViewPrefab
     {
         private bool _itsOriginal = true;
         public void SetOriginal(bool v)
@@ -14,45 +14,12 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             _itsOriginal = v;
         }
 
-        protected override PrototypeView CreateView()
-        {
-            return new PrototypeView(Level, new GameObjectViewPrefab(gameObject));
-        }
-
-        protected override void AfterAwake()
+        protected void Awake()
         {
             if (!_itsOriginal)
-                DestroyThisCompoenent();
+                Destroy(this);
             else
                 gameObject.SetActive(false);
-        }
-
-
-        private class GameObjectViewPrefab : ViewPrefab
-        {
-            private GameObject _gameObject;
-
-            public GameObjectViewPrefab(GameObject gameObject)
-            {
-                _gameObject = gameObject;
-            }
-
-            public override View Create<T>(ContainerView conteiner) 
-            {
-                var unityContainer = ContainerUnityView.Find(conteiner);
-                return conteiner.Create(Creator);
-
-                T Creator(ILevel level)
-                {
-                    var go = GameObject.Instantiate(_gameObject, unityContainer.GetPointer());
-                    go.GetComponent<PrototypeUnityView>().SetOriginal(false);
-                    go.SetActive(true);
-                    var view = go.GetComponent<UnityView<T>>();
-                    if (view == null)
-                        throw new Exception("Cant find view " + typeof(T).Name);
-                    return (T)view.View;
-                }
-            }
         }
     }
 }

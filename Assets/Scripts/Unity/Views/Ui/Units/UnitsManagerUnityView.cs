@@ -12,7 +12,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Units
 
         protected override UnitsManagerView CreateView()
         {
-            return new UnitsManagerView(Level, _container.View, _prototype.View);
+            return new UnitsManagerView(Level, _container, _prototype);
         }
 
     }

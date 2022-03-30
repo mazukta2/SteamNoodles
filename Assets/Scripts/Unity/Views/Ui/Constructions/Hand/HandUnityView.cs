@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 
         protected override HandView CreateView()
         {
-            return new HandView(Level, Cards.View, CardPrototype.View);
+            return new HandView(Level, Cards, CardPrototype);
         }
 
     }

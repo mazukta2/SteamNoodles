@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] ContainerUnityView _container;
         protected override ConstructionView CreateView()
         {
-            return new ConstructionView(Level, _container.View, new UnityLevelPosition(transform));
+            return new ConstructionView(Level, _container, new UnityLevelPosition(transform));
         }
 
     }

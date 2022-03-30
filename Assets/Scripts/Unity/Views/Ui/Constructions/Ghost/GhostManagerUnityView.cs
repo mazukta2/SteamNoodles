@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 
         protected override GhostManagerView CreateView()
         {
-            return new GhostManagerView(Level, Container.View, Prototype.View);
+            return new GhostManagerView(Level, Container, Prototype);
         }
 
     }

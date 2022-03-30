@@ -11,7 +11,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Units
     {
         protected override UnitView CreateView()
         {
-            return new UnitView(Level, new UnityLevelPosition(transform));
+            return new UnitView(Level, new UnityLevelPosition(transform), new UnityRotator(transform));
         }
 
     }

@@ -1,38 +1,53 @@
-﻿using Game.Assets.Scripts.Game.Unity.Views;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Unity.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static GameUnity.Assets.Scripts.Unity.Engine.AssetsLoader;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
-    public class ContainerUnityView : UnityView<ContainerView>
+    public class ContainerUnityView : MonoBehaviour, IViewContainer
     {
         [SerializeField] Transform _pointer;
 
-        protected override ContainerView CreateView()
+        private List<View> _spawned = new List<View>();
+
+        public T Spawn<T>(IViewPrefab prefab) where T : View
         {
-            return new ContainerView(Level);
+            if (prefab is ScreenPrefab screenPrefab)
+            {
+                var go = GameObject.Instantiate(screenPrefab.GameObject, _pointer);
+                var view = go.GetComponent<UnityView<T>>();
+                if (view == null)
+                    throw new System.Exception("Cant find view preseneter " + typeof(UnityView<T>).Name);
+                _spawned.Add(view.View);
+                return view.View;
+            }
+
+            if (prefab is PrototypeUnityView prototype)
+            {
+                var go = GameObject.Instantiate(prototype.gameObject, _pointer);
+                go.GetComponent<PrototypeUnityView>().SetOriginal(false);
+                go.SetActive(true);
+                var view = go.GetComponent<UnityView<T>>();
+                if (view == null)
+                    throw new Exception("Cant find view " + typeof(T).Name);
+                _spawned.Add(view.View);
+                return (T)view.View;
+            }
+
+            throw new Exception("Unknown prefab: " + prefab);
         }
 
-        protected override void BeforeAwake()
+        public void Clear()
         {
-            _containers.Add(this);
+            foreach (var item in _spawned)
+                item.Dispose();
+
+            _spawned.Clear();
         }
-
-        protected override void AfterDestroy()
-        {
-            _containers.Remove(this);
-        }
-
-        public Transform GetPointer() => _pointer;
-
-        public static ContainerUnityView Find(ContainerView conteiner)
-        {
-            return _containers.First(x => x.View == conteiner);
-        }
-
-        private static List<ContainerUnityView> _containers = new List<ContainerUnityView>();
 
     }
 }

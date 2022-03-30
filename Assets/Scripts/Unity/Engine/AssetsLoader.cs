@@ -25,7 +25,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             return targetFile;
         }
 
-        public ViewPrefab GetConstruction(string path)
+        public IViewPrefab GetConstruction(string path)
         {
             var prefab = LoadResource<GameObject>("Assets/" + path);
             if (prefab == null)
@@ -34,7 +34,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             return new ScreenPrefab(prefab);
         }
 
-        public ViewPrefab GetScreen<T>() where T : ScreenView
+        public IViewPrefab GetScreen<T>() where T : ScreenView
         {
             var name = typeof(T).Name;
             name = name.Replace("View", "");
@@ -46,32 +46,14 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         }
 
-        public class ScreenPrefab : ViewPrefab
+        public class ScreenPrefab : IViewPrefab
         {
-            private GameObject _prefab;
+            public GameObject GameObject { get; private set; }
 
             public ScreenPrefab(GameObject prefab)
             {
-                _prefab = prefab;
+                GameObject = prefab;
             }
-
-            public override View Create<T>(ContainerView conteiner)
-            {
-                var unityConteiner = ContainerUnityView.Find(conteiner);
-                var createdView = unityConteiner.View.Create(Creator);
-                return createdView;
-
-                T Creator(ILevel level)
-                {
-                    var go = GameObject.Instantiate(_prefab, unityConteiner.GetPointer());
-                    var view = go.GetComponent<UnityView<T>>();
-                    if (view == null)
-                        throw new System.Exception("Cant find view preseneter " + typeof(UnityView<T>).Name);
-                    return view.View;
-                }
-
-            }
-
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 
         protected override ScreenManagerView CreateView()
         {
-            return new ScreenManagerView(Level, Screen.View);
+            return new ScreenManagerView(Level, Screen);
         }
 
     }

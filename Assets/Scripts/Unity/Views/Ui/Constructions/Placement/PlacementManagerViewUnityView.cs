@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 
         protected override PlacementManagerView CreateView()
         {
-            return new PlacementManagerView(Level, _cellsContainer.View, _cellsPrototype.View, _constructionContainer.View, _constructionPrototype.View);
+            return new PlacementManagerView(Level, _cellsContainer, _cellsPrototype, _constructionContainer, _constructionPrototype);
         }
 
     }

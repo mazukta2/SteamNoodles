@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine.Assets;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine.Assets;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Tests.Environment.Common.Creation;
@@ -20,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Assets
             _list.Clear();
         }
 
-        public TestViewPrefab GetScreen<T>() where T : ScreenView
+        public IViewPrefab GetScreen<T>() where T : ScreenView
         {
             if (!_list.ContainsKey(typeof(T).Name))
                 throw new System.Exception("Cant find resource : " + typeof(T).Name);
