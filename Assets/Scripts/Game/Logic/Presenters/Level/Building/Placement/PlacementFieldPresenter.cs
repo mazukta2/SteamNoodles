@@ -86,7 +86,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleOnConstructionAdded(Construction construction)
         {
-            _view.Manager.ConstrcutionContainer.Clear();
             var view = _view.Manager.ConstrcutionPrototype.Create<ConstructionView>(_view.Manager.ConstrcutionContainer);
             view.Init(construction);
         }

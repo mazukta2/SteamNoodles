@@ -436,6 +436,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             Assert.AreEqual(0, game.CurrentLevel.FindViews<HandConstructionView>().Count);
             game.Dispose();
         }
+
+        [Test]
+        public void IsTwoConstructionsPlacing()
+        {
+            var game = new GameTestConstructor()
+                .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
+                .Build();
+
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.Engine.Controls.Click();
+            game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
+            game.Engine.Controls.MovePointer(new FloatPoint(-2, 0));
+            game.Engine.Controls.Click();
+
+            Assert.AreEqual(2, game.CurrentLevel.FindViews<ConstructionView>().Count());
+
+            game.Dispose();
+        }
         #endregion
 
         [TearDown]
