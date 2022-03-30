@@ -10,11 +10,13 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
     {
         public HandView HandView { get; set; }
         public IText Points { get; set; }
+        public IProgressBar PointsProgress { get; set; }
 
-        public MainScreenView(ILevel level, HandView handView, IText points) : base(level)
+        public MainScreenView(ILevel level, HandView handView, IText points, IProgressBar pointsProgress) : base(level)
         {
             HandView = handView;
             Points = points;
+            PointsProgress = pointsProgress;
         }
 
         public override void Init(ScreenManagerPresenter manager)

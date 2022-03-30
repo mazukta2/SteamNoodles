@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
                 var container = conteiner.Add(new TestContainerView(level));
                 var prototype = conteiner.Add(new TestPrototypeView(level, new HandConstructionViewPrefab()));
                 var handView = conteiner.Add(new HandView(level, container, prototype));
-                return new MainScreenView(level, handView, new UiText());
+                return new MainScreenView(level, handView, new UiText(), new ProgressBar());
             });
         }
 
