@@ -1,20 +1,20 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Services.Ui;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 {
     public class ScreenManagerView : View
     {
-        public ContainerView Screen { get; }
+        public TestContainerView Screen { get; }
 
         private ScreenManagerPresenter _presenter;
 
         public ScreenManagerPresenter GetPresenter() => _presenter;
 
-        public ScreenManagerView(ILevel level, ContainerView screen) : base(level)
+        public ScreenManagerView(ILevel level, TestContainerView screen) : base(level)
         {
             if (screen == null) throw new ArgumentNullException(nameof(screen));
             Screen = screen;

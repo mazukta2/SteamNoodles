@@ -1,10 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.Views;
+﻿using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Environment.Common;
+using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Mocks.Levels
 {
@@ -12,39 +12,39 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
     {
         public override void FillLevel(LevelInTests level)
         {
-            var screenSpawnPoint = new ContainerView(level);
+            var screenSpawnPoint = new TestContainerView(level);
             new ScreenManagerView(level, screenSpawnPoint);
 
-            var ghostContainer = new ContainerView(level);
-            var ghostPrototype = new PrototypeView(level, new GhostViewPrefab());
+            var ghostContainer = new TestContainerView(level);
+            var ghostPrototype = new TestPrototypeView(level, new GhostViewPrefab());
             new GhostManagerView(level, ghostContainer, ghostPrototype);
 
-            var cellContainer = new ContainerView(level);
-            var cellPrototype = new PrototypeView(level, new CellViewPrefab());
-            var constrcutionContainer = new ContainerView(level);
-            var constructionPrototype = new PrototypeView(level, new ConstructionViewPrefab());
+            var cellContainer = new TestContainerView(level);
+            var cellPrototype = new TestPrototypeView(level, new CellViewPrefab());
+            var constrcutionContainer = new TestContainerView(level);
+            var constructionPrototype = new TestPrototypeView(level, new ConstructionViewPrefab());
             var placementManager = new PlacementManagerView(level, cellContainer, cellPrototype, constrcutionContainer, constructionPrototype);
 
             new PlacementFieldView(level, placementManager, 0);
 
-            new UnitsManagerView(level, new ContainerView(level), new PrototypeView(level, new UnitViewPrefab()));
+            new UnitsManagerView(level, new TestContainerView(level), new TestPrototypeView(level, new UnitViewPrefab()));
         }
 
-        private class GhostViewPrefab : ViewPrefab
+        private class GhostViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(ContainerView conteiner)
+            public override View Create<T>(TestContainerView conteiner)
             {
                 return conteiner.Create((level) =>
                 {
-                    var contrainer = new ContainerView(level);
+                    var contrainer = new TestContainerView(level);
                     return new GhostView(level, contrainer, new LevelPosition());
                 });
             }
         }
 
-        private class CellViewPrefab : ViewPrefab
+        private class CellViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(ContainerView conteiner)
+            public override View Create<T>(TestContainerView conteiner)
             {
                 return conteiner.Create((level) =>
                 {
@@ -53,21 +53,21 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
             }
         }
 
-        private class ConstructionViewPrefab : ViewPrefab
+        private class ConstructionViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(ContainerView conteiner)
+            public override View Create<T>(TestContainerView conteiner)
             {
                 return conteiner.Create((level) =>
                 {
-                    var c = new ContainerView(level);
+                    var c = new TestContainerView(level);
                     return new ConstructionView(level,c, new LevelPosition());
                 });
             }
         }
 
-        private class UnitViewPrefab : ViewPrefab
+        private class UnitViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(ContainerView conteiner)
+            public override View Create<T>(TestContainerView conteiner)
             {
                 return conteiner.Create((level) =>
                 {

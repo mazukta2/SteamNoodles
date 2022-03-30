@@ -198,18 +198,18 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
             var manager = game.CurrentLevel.FindView<GhostManagerView>();
             Assert.IsNotNull(manager);
-            Assert.AreEqual(0, manager.Container.Get<GhostView>().Count);
+            Assert.AreEqual(0, game.CurrentLevel.FindViews<GhostView>().Count);
 
             var hand = game.CurrentLevel.FindView<HandView>();
             var view = hand.Cards.Get<HandConstructionView>().First();
             view.Button.Click();
 
-            Assert.AreEqual(1, manager.Container.Get<GhostView>().Count);
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<GhostView>().Count);
 
             var buildScreen = game.CurrentLevel.FindView<BuildScreenView>();
             buildScreen.CancelButton.Click();
 
-            Assert.AreEqual(0, manager.Container.Get<GhostView>().Count);
+            Assert.AreEqual(0, game.CurrentLevel.FindViews<GhostView>().Count);
 
             game.Dispose();
         }

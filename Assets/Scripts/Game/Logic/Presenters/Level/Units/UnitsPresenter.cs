@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void SpawnUnit(Unit item)
         {
-            var view = _unitsManagerView.UnitPrototype.Create<UnitView>(_unitsManagerView.Container);
+            var view = _unitsManagerView.Container.Spawn<UnitView>(_unitsManagerView.UnitPrototype);
             view.Init(item);
         }
     }

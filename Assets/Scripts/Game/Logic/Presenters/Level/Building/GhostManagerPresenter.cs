@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 
         private void CreateGhost(BuildScreenPresenter buildScreen)
         {
-            _ghost = _view.GhostPrototype.Create<GhostView>(_view.Container).Init(_settings, _controls, _screenManager, _constructionsManager, buildScreen);
+            _ghost = _view.Container.Spawn<GhostView>(_view.GhostPrototype).Init(_settings, _controls, _screenManager, _constructionsManager, buildScreen);
             if (_ghost == null) throw new Exception("Empty presenter");
 
             _ghost.OnGhostPostionChanged += UpdateGhostPosition;

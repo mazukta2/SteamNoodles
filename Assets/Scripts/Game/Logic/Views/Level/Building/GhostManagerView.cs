@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Services;
@@ -12,13 +13,13 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public class GhostManagerView : View
     {
-        public ContainerView Container { get; private set; }
-        public PrototypeView GhostPrototype { get; private set; }
+        public IViewContainer Container { get; private set; }
+        public IViewPrefab GhostPrototype { get; private set; }
 
         private ServiceWaiter<ScreenManagerService> _wait;
         private GhostManagerPresenter _presenter;
 
-        public GhostManagerView(ILevel level, ContainerView container, PrototypeView ghostPrototype) : base(level)
+        public GhostManagerView(ILevel level, IViewContainer container, IViewPrefab ghostPrototype) : base(level)
         {
             Container = container ?? throw new ArgumentNullException(nameof(container));
             GhostPrototype = ghostPrototype ?? throw new ArgumentNullException(nameof(ghostPrototype));

@@ -1,18 +1,19 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Game.Assets.Scripts.Game.Logic.Views.Common
+namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
 {
 
-    public class ContainerView : View
+    public class TestContainerView : View, IViewContainer
     {
         private List<View> _views = new List<View>();
 
-        public ContainerView(ILevel level) : base(level)
+        public TestContainerView(ILevel level) : base(level)
         {
         }
 
@@ -28,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             _views.Clear();
         }
 
-        public T Create<T>(ViewPrefab viewPrefab) where T : View
+        public T Create<T>(TestViewPrefab viewPrefab) where T : View
         {
             if (viewPrefab == null) throw new Exception($"Cant find view");
             return (T)viewPrefab.Create<T>(this);
@@ -62,6 +63,19 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         {
             _views.Add(view);
             return view;
+        }
+
+        public T Spawn<T>(IViewPrefab prefab) where T : View
+        {
+            if (prefab is TestPrototypeView prototypeView)
+            {
+                return prototypeView.Create<T>(this);
+            }
+            else if (prefab is TestViewPrefab viewPrefab)
+            {
+                return Create<T>(viewPrefab);
+            }
+            throw new Exception("Uknown prefab type: " + prefab);
         }
     }
 }

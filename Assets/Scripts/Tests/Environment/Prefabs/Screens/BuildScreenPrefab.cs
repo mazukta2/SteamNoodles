@@ -1,15 +1,14 @@
-﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
+﻿using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Environment.Common;
+using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 {
-    public class BuildScreenPrefab : ViewPrefab
+    public class BuildScreenPrefab : TestViewPrefab
     {
-        public override View Create<T>(ContainerView conteiner)
+        public override View Create<T>(TestContainerView conteiner)
         {
             return conteiner.Create((level) =>
             {

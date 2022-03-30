@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,11 +13,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     public class ConstructionView : View
     {
         public ILevelPosition LocalPosition { get; set; }
-        public ContainerView Container { get; set; }
+        public TestContainerView Container { get; set; }
 
         private ConstructionPresenter _presenter;
 
-        public ConstructionView(ILevel level, ContainerView container, ILevelPosition position) : base(level)
+        public ConstructionView(ILevel level, TestContainerView container, ILevelPosition position) : base(level)
         {
             LocalPosition = position;
             Container = container;

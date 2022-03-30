@@ -3,7 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Services;
 using Game.Assets.Scripts.Game.Logic.Services.Ui;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,16 +12,16 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public class PlacementManagerView : View
     {
-        public ContainerView ConstrcutionContainer { get; private set; }
-        public PrototypeView ConstrcutionPrototype { get; private set; }
-        public ContainerView CellsContainer { get; private set; }
-        public PrototypeView Cell { get; private set; }
+        public TestContainerView ConstrcutionContainer { get; private set; }
+        public TestPrototypeView ConstrcutionPrototype { get; private set; }
+        public TestContainerView CellsContainer { get; private set; }
+        public TestPrototypeView Cell { get; private set; }
         public PlacementManagerPresenter Presenter { get; private set; }
 
         private ServiceWaiter<ScreenManagerService> _wait;
 
-        public PlacementManagerView(ILevel level, ContainerView cellsContainer, PrototypeView cellPrototype,
-            ContainerView constructionContainer, PrototypeView constructionPrototype) : base(level)
+        public PlacementManagerView(ILevel level, TestContainerView cellsContainer, TestPrototypeView cellPrototype,
+            TestContainerView constructionContainer, TestPrototypeView constructionPrototype) : base(level)
         {
             CellsContainer = cellsContainer ?? throw new ArgumentNullException(nameof(cellsContainer));
             Cell = cellPrototype ?? throw new ArgumentNullException(nameof(cellPrototype));

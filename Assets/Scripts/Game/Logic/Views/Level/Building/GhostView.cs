@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
@@ -32,10 +33,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
             }
         }
         public ILevelPosition LocalPosition { get; private set; }
-        public ContainerView Container { get; private set; }
+        public IViewContainer Container { get; private set; }
         public GhostPresenter Presenter { get; private set; }
 
-        public GhostView(ILevel level, ContainerView container, ILevelPosition position) : base(level)
+        public GhostView(ILevel level, IViewContainer container, ILevelPosition position) : base(level)
         {
             LocalPosition = position;
             Container = container;

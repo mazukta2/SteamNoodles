@@ -1,8 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Environment.Engine.Assets;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Tests.Environment.Assets;
+using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 using System.Collections.Generic;
 
 namespace Game.Tests.Controllers
@@ -12,7 +12,7 @@ namespace Game.Tests.Controllers
         public ScreenAssetsInTests Screens { get; } = new ScreenAssetsInTests();
         IScreenAssets IAssets.Screens => Screens;
 
-        private Dictionary<string, ViewPrefab> _constructions = new Dictionary<string, ViewPrefab>();
+        private Dictionary<string, TestViewPrefab> _constructions = new Dictionary<string, TestViewPrefab>();
 
         protected override void DisposeInner()
         {
@@ -20,7 +20,7 @@ namespace Game.Tests.Controllers
             _constructions.Clear();
         }
 
-        public ViewPrefab GetConstruction(string path)
+        public TestViewPrefab GetConstruction(string path)
         {
             if (!_constructions.ContainsKey(path))
                 throw new System.Exception("Cant find resource : " + path);
@@ -29,7 +29,7 @@ namespace Game.Tests.Controllers
             return prefab;
         }
 
-        public void AddPrefab(string path, ViewPrefab prefab)
+        public void AddPrefab(string path, TestViewPrefab prefab)
         {
             _constructions.Add(path, prefab);
         }

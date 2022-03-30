@@ -1,10 +1,9 @@
 ﻿using Assets.Scripts.Logic.Prototypes.Levels;
-using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
@@ -47,9 +46,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
 
-        private class HandConstructionViewPrefab : ViewPrefab
+        private class HandConstructionViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(ContainerView conteiner)
+            public override View Create<T>(TestContainerView conteiner)
             {
                 return conteiner.Create((level) =>
                 {

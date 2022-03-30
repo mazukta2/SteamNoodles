@@ -1,16 +1,16 @@
-﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Environment.Engine.Assets;
+﻿using Game.Assets.Scripts.Game.Environment.Engine.Assets;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
+using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Tests.Environment.Assets
 {
     public class ScreenAssetsInTests : Disposable, IScreenAssets
     {
-        private Dictionary<string, ViewPrefab> _list = new Dictionary<string, ViewPrefab>();
+        private Dictionary<string, TestViewPrefab> _list = new Dictionary<string, TestViewPrefab>();
 
-        public void AddPrototype<T>(ViewPrefab prefab) where T : ScreenView
+        public void AddPrototype<T>(TestViewPrefab prefab) where T : ScreenView
         {
             _list.Add(typeof(T).Name, prefab);
         }
@@ -20,7 +20,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Assets
             _list.Clear();
         }
 
-        public ViewPrefab GetScreen<T>() where T : ScreenView
+        public TestViewPrefab GetScreen<T>() where T : ScreenView
         {
             if (!_list.ContainsKey(typeof(T).Name))
                 throw new System.Exception("Cant find resource : " + typeof(T).Name);

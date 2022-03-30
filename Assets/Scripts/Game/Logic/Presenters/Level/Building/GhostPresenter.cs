@@ -43,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _controls.OnLevelPointerMoved += HandleOnPointerMoved;
 
             _view.Container.Clear();
-            _view.Container.Create<ConstructionModelView>(_assets.GetConstruction(_buildScreen.CurrentCard.Definition.LevelViewPath));
+            _view.Container.Spawn<ConstructionModelView>(_assets.GetConstruction(_buildScreen.CurrentCard.Definition.LevelViewPath));
 
             UpdatePoints();
         }
