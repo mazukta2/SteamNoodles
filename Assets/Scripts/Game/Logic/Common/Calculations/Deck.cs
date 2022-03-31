@@ -1,10 +1,8 @@
-﻿using Assets.Scripts.Logic.Prototypes.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Session;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Session;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
 {
