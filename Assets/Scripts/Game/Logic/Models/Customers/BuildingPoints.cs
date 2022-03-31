@@ -6,11 +6,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 {
     public class BuildingPoints
     {
-        public int Points { get => _points; set => SetPoints(value); }
+        public event Action OnPointsChanged = delegate { };
+        public int Value { get => _points; set => SetPoints(value); }
 
         public int CurrentLevel { get; private set; }
         public int PointsForNextLevel => (int)GetPointsForLevel(CurrentLevel + 1);
-        public float Progress => (float)Points / PointsForNextLevel;
+        public float Progress => (float)Value / PointsForNextLevel;
 
         private int _points;
 
@@ -25,6 +26,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 
             while (value >= PointsForNextLevel)
                 CurrentLevel++;
+
+            OnPointsChanged();
         }
 
     }

@@ -15,11 +15,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         private List<PlacementField> _placements = new List<PlacementField>();
 
-        public ConstructionsManager(ConstructionsSettingsDefinition settings, LevelDefinition levelDefinition, Resources resources, LevelUnits units)
+        public ConstructionsManager(ConstructionsSettingsDefinition settings, LevelDefinition levelDefinition, Resources resources, GameLevel level)
         {
             foreach (var field in levelDefinition.PlacementFields)
             {
-                var placement = new PlacementField(settings, field, resources, units);
+                var placement = new PlacementField(settings, field, resources, level);
                 _placements.Add(placement);
             }
         }

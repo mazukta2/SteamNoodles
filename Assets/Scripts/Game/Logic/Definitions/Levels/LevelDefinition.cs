@@ -18,6 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
         public IReadOnlyCollection<PlacementFieldDefinition> PlacementFields { get; set; } = new List<PlacementFieldDefinition>();
 
+        public FloatPoint QueuePosition;
 
         public int CrowdUnitsAmount { get; set; }
 
@@ -48,6 +49,10 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
             if (UnitsRect.IsZero())
                 throw new Exception($"{nameof(UnitsRect)} is empty");
+
+            if (QueuePosition.IsZero())
+                throw new Exception($"{nameof(QueuePosition)} is null");
+
         }
     }
 }

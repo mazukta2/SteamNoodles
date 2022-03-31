@@ -1,5 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Units;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;

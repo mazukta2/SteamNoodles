@@ -21,39 +21,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public event Action<Unit> OnUnitDestroy = delegate { };
         public IReadOnlyCollection<Unit> Units => _spawnedUnits;
 
-
-        private UnitsSettingsDefinition _unitsSettings;
-        private SessionRandom _random;
-
-        private LevelDefinition _levelDefinition;
-        private Deck<CustomerDefinition> _pool;
         private List<Unit> _spawnedUnits = new List<Unit>();
-        private List<Unit> _crowd = new List<Unit>();
         private GameTime _time;
-        private Resources _resources;
-        private PlayerHand _hand;
 
-        private FloatRect UnitsField => _levelDefinition.UnitsRect;
-
-        public LevelUnits(UnitsSettingsDefinition unitsSettings, LevelDefinition levelDefinition, GameTime time,
-            SessionRandom random, Resources resources, PlayerHand hand)
+        public LevelUnits(GameTime time)
         {
-            _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
-            _unitsSettings= unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
-            _random = random ?? throw new ArgumentNullException(nameof(random));
             _time = time ?? throw new ArgumentNullException(nameof(time));
-            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            _hand = hand ?? throw new ArgumentNullException(nameof(hand));
-
-            _pool = new Deck<CustomerDefinition>(random);
-            foreach (var item in levelDefinition.BaseCrowdUnits)
-                _pool.Add(item.Key, item.Value);
-
-            for (int i = 0; i < levelDefinition.CrowdUnitsAmount; i++)
-            {
-                SpawnUnit();
-            }
-
             _time.OnTimeChanged += Time_OnTimeChanged;
         }
 
@@ -64,17 +37,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 unit.Dispose();
         }
 
-        private Unit SpawnUnit(CustomerDefinition definition = null)
+        public Unit SpawnUnit(Unit unit)
         {
-            if (definition == null)
-                definition = _pool.Take();
-
-            var position = GetRandomPoint(UnitsField, _random);
-            var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, position.Y), definition, _unitsSettings);
             _spawnedUnits.Add(unit);
-            _crowd.Add(unit);
             OnUnitSpawn(unit);
             return unit;
+        }
+
+        public void RemoveUnit(Unit item)
+        {
+            _spawnedUnits.Remove(item);
+            item.Dispose();
+            OnUnitDestroy(item);
         }
 
         private void Time_OnTimeChanged(float delta)
@@ -83,62 +57,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             {
                 item.MoveToTarget(delta);
             }
-
-            foreach (var item in _crowd.ToArray())
-            {
-                if (!IsHorisontalyInside(UnitsField, item.Position))
-                {
-                    _spawnedUnits.Remove(item);
-                    _crowd.Remove(item);
-                    item.Dispose();
-                    OnUnitDestroy(item);
-                }
-            }
-
-            if (_crowd.Count < _levelDefinition.CrowdUnitsAmount)
-            {
-                var position = GetRandomPoint(UnitsField, _random);
-                FloatPoint target;
-                if (_random.GetRandom())
-                {
-                    position = new FloatPoint(UnitsField.X + 1, position.Y);
-                    target = new FloatPoint(UnitsField.X + UnitsField.Width + 1, position.Y);
-                }
-                else
-                {
-                    position = new FloatPoint(UnitsField.X + UnitsField.Width - 1, position.Y);
-                    target = new FloatPoint(UnitsField.X - 1, position.Y);
-                }
-                var unit = new Unit(position, target, _pool.Take(), _unitsSettings);
-                _spawnedUnits.Add(unit);
-                _crowd.Add(unit);
-                OnUnitSpawn(unit);
-            }
-        }
-
-        public bool IsHorisontalyInside(FloatRect rect, FloatPoint point)
-        {
-            return rect.xMin <= point.X && point.X <= rect.xMax;
-        }
-
-        private FloatPoint GetRandomPoint(FloatRect rect, SessionRandom random)
-        {
-            return new FloatPoint(random.GetRandom(rect.xMin, rect.xMax), random.GetRandom(rect.yMin, rect.yMax));
-        }
-
-        public void MoveQueue()
-        {
-            var customer = _levelDefinition.BaseCrowdUnits.Keys.ToList()[_random.GetRandom(0, _levelDefinition.BaseCrowdUnits.Count - 1)];
-
-            var deck = new Deck<ConstructionDefinition>(_random);
-            foreach (var item in customer.ConstructionsReward)
-                deck.Add(item.Key, item.Value);
-
-            if (deck.IsEmpty())
-                return;
-
-            var constrcution = deck.Take();
-            _hand.Add(constrcution);
         }
 
 

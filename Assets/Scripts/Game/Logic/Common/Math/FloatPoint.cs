@@ -56,5 +56,10 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         {
             return $"[{X}, {Y}]";
         }
+
+        public bool IsZero()
+        {
+            return X == 0 && Y == 0;
+        }
     }
 }

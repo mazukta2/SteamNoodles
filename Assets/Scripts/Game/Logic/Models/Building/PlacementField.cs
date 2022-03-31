@@ -28,14 +28,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         private PlacementFieldDefinition _field;
         private Resources _resources;
-        private LevelUnits _units;
+        private GameLevel _level;
 
-        public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition, Resources resources, LevelUnits units)
+        public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition, Resources resources, GameLevel level)
         {
             ConstructionsSettings = settings ?? throw new ArgumentNullException(nameof(settings));
             _field = definition ?? throw new ArgumentNullException(nameof(definition));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            _units = units ?? throw new ArgumentNullException(nameof(units));
+            _level = level ?? throw new ArgumentNullException(nameof(level));
             
 
             Rect = new IntRect(-Size.X / 2, -Size.Y / 2, Size.X, Size.Y);
@@ -58,13 +58,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         public Construction Build(ConstructionCard card, IntPoint position)
         {
-            _resources.Points += GetPoints(card.Definition, position);
+            _resources.Points.Value += GetPoints(card.Definition, position);
 
             var construction = new Construction(this, card.Definition, position);
             _constructions.Add(construction);
             card.RemoveFromHand();
 
-            _units.MoveQueue();
+            _level.MoveQueue();
 
             OnConstructionAdded(construction);
             return construction;

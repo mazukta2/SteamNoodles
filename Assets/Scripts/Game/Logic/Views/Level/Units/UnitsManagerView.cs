@@ -2,7 +2,7 @@
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 
-namespace Game.Assets.Scripts.Game.Logic.Views.Level
+namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
     public class UnitsManagerView : View
     {

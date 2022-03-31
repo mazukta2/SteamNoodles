@@ -5,7 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Views.Level
+namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
     public class UnitView : View
     {

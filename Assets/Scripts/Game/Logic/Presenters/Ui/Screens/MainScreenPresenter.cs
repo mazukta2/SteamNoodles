@@ -17,18 +17,19 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
             view.HandView.SetScreen(this);
 
-            _resources.OnPointsChanged += HandlePointsChanged;
+            _resources.Points.OnPointsChanged += HandlePointsChanged;
             HandlePointsChanged();
         }
 
         protected override void DisposeInner()
         {
-            _resources.OnPointsChanged -= HandlePointsChanged;
+            _resources.Points.OnPointsChanged -= HandlePointsChanged;
         }
 
         private void HandlePointsChanged()
         {
-            _view.Points.Value = _resources.Points.ToString();
+            _view.Points.Value = _resources.Points.Value.ToString();
+            _view.PointsProgress.Value = _resources.Points.Progress;
         }
 
     }

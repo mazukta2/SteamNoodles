@@ -7,15 +7,8 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Tests.Environment;
-using Game.Assets.Scripts.Tests.Environment.Definitions.List;
-using Game.Assets.Scripts.Tests.Environment.Game;
-using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Controllers;
-using Game.Tests.Mocks.Settings.Levels;
-using Newtonsoft.Json;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -42,7 +35,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
 
             core.Dispose();
         }
-
 
         [Test]
         public void CustomerDefinitions()

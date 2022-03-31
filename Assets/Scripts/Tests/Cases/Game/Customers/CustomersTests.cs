@@ -1,7 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Managers.Game;
@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             void TestLevel(int currentPoints, int level)
             {
-                points.Points = currentPoints;
+                points.Value = currentPoints;
                 Assert.AreEqual(level, points.CurrentLevel);
             }
         }
@@ -56,14 +56,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.Engine.Controls.Click();
 
             var points = new BuildingPoints();
-            points.Points = 5;
+            points.Value = 5;
             Assert.AreEqual(1, points.CurrentLevel);
             Assert.AreEqual(8, points.PointsForNextLevel);
             Assert.AreEqual(0.625, points.Progress);
 
             Assert.AreEqual("5", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
             Assert.AreEqual(0.625, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.Value);
-            //Assert.AreEqual(1, game.CurrentLevel.FindViews<UnitView>().Count);
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<UnitView>().Count);
 
             game.Dispose();
         }
