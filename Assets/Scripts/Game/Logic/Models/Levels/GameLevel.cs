@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
     public class GameLevel : Disposable
     {
-        public event Action OnMoneyChanged = delegate { };
+        public event Action OnTurn = delegate { };
 
         public PlayerHand Hand { get; private set; }
         public ConstructionsManager Constructions { get; private set; }
@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             var unitSettings = definitions.Get<UnitsSettingsDefinition>();
             Units = new LevelUnits(time);
             _crowd = new LevelCrowd(unitSettings, Units, time, settings, random);
-            _queue = new LevelQueue(unitSettings, Units, settings, random, Resources.Points);
+            _queue = new LevelQueue(unitSettings, Units, settings, random, Resources.Points, this);
 
             Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _settings, Resources, this);
         }
@@ -56,7 +56,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             _queue.Dispose();
         }
 
-        public void MoveQueue()
+        public void Turn()
         {
             var customer = _settings.BaseCrowdUnits.Keys.ToList()[_random.GetRandom(0, _settings.BaseCrowdUnits.Count - 1)];
 
@@ -69,6 +69,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             var constrcution = deck.Take();
             Hand.Add(constrcution);
+
+            OnTurn();
         }
     }
 }

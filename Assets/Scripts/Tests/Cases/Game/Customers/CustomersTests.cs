@@ -44,7 +44,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         {
             var game = new GameTestConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
-                .UpdateDefinition<ConstructionDefinition>(x => x.Points = 5)
+                .UpdateDefinition<ConstructionDefinition>(x => x.Points = 9)
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 0)
                 .Build();
 
@@ -56,13 +56,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.Engine.Controls.Click();
 
             var points = new BuildingPoints();
-            points.Value = 5;
-            Assert.AreEqual(1, points.CurrentLevel);
-            Assert.AreEqual(8, points.PointsForNextLevel);
-            Assert.AreEqual(0.625, points.Progress);
+            points.Value = 9;
+            Assert.AreEqual(2, points.CurrentLevel);
+            Assert.AreEqual(15, points.PointsForNextLevel);
+            Assert.IsTrue(points.Progress != 0);
 
-            Assert.AreEqual("5", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
-            Assert.AreEqual(0.625, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.Value);
+            Assert.AreEqual("9", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            Assert.AreEqual(points.Progress, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.Value);
             Assert.AreEqual(1, game.CurrentLevel.FindViews<UnitView>().Count);
 
             game.Dispose();

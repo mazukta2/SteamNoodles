@@ -64,7 +64,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             _constructions.Add(construction);
             card.RemoveFromHand();
 
-            _level.MoveQueue();
+            _level.Turn();
 
             OnConstructionAdded(construction);
             return construction;
