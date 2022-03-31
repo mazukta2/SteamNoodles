@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.Logic.Prototypes.Levels
+namespace Game.Assets.Scripts.Game.Logic.Definitions.Customers
 {
     public class CustomerDefinition
     {
