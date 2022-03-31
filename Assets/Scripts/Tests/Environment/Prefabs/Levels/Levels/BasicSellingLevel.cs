@@ -72,7 +72,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
             {
                 return conteiner.Create((level) =>
                 {
-                    return new UnitView(level, new LevelPosition(), new Rotator());
+                    return new UnitView(level, new LevelPosition(), new Rotator(), new UnitAnimation());
                 });
             }
         }

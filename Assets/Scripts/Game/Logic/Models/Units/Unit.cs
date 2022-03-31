@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Units
@@ -68,5 +69,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         {
             return !Position.IsClose(Target);
         }
+
     }
 }
