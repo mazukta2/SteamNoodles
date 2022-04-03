@@ -11,8 +11,8 @@
 		}
 	],
 	"QueuePosition" : {
-		"X" : 1.5,
-		"Y" : 2.5
+		"X" : 0,
+		"Y" : -1.8
 	},
 	"CrowdUnitsAmount": 20,
 	"BaseCrowdUnits": {

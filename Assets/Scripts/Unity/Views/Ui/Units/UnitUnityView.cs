@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Unity.Views;
 using GameUnity.Assets.Scripts.Unity.Views.Ui.Common;
@@ -9,9 +10,11 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Units
 {
     public class UnitUnityView : UnityView<UnitView>
     {
+        [SerializeField] Animator _animator;
+
         protected override UnitView CreateView()
         {
-            return new UnitView(Level, new UnityLevelPosition(transform), new UnityRotator(transform));
+            return new UnitView(Level, new UnityLevelPosition(transform), new UnityRotator(transform), new UnityAnimator(_animator));
         }
 
     }

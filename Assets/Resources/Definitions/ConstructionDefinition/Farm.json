@@ -1,0 +1,14 @@
+{
+	"Placement" : [
+		[1],
+		[1],
+		[1]
+	],
+    "Requirements": { },
+    "HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+    "LevelViewPath": "Prefabs/Constructions/Farm",
+    "Points" : 5,
+	"AdjacencyPoints" : {
+		"SimpleShop" : 5
+	}
+}

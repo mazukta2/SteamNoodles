@@ -8,11 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 {
     public class UnityProgressBar : IProgressBar
     {
-        public float Value { get; set; }
+        private Image _progress;
+
+        public UnityProgressBar(Image progress)
+        {
+            _progress = progress;
+        }
+
+        public float Value { get => _progress.fillAmount; set => _progress.fillAmount = value; }
     }
 }

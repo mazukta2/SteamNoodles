@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using GameUnity.Assets.Scripts.Unity.Views.Ui.Common;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
 {
@@ -10,10 +11,11 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
     {
         [SerializeField] HandUnityView _hand;
         [SerializeField] TextMeshProUGUI _points;
+        [SerializeField] Image _progress;
 
         protected override MainScreenView CreateView()
         {
-            return new MainScreenView(Level, _hand.View, new UnityText(_points), new UnityProgressBar());
+            return new MainScreenView(Level, _hand.View, new UnityText(_points), new UnityProgressBar(_progress));
         }
 
     }

@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _model.OnTargetChanged += HandleOnTargetChanged;
             _model.OnReachedPosition += HandleOnReachedPosition;
 
-            PlayAnimation(model.IsMoving() ? Animations.Walk : Animations.Idle);
+            PlayAnimation(model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
         protected override void DisposeInner()
@@ -38,13 +38,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         private void HandleOnPositionChanged()
         {
             _view.Position.Value = _model.Position;
-            PlayAnimation(_model.IsMoving() ? Animations.Walk : Animations.Idle);
+            PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
         private void HandleOnTargetChanged()
         {
             _view.Rotator.FaceTo(_model.Target);
-            PlayAnimation(_model.IsMoving() ? Animations.Walk : Animations.Idle);
+            PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
         private void HandleOnDispose()
@@ -54,7 +54,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void HandleOnReachedPosition()
         {
-            PlayAnimation(_model.IsMoving() ? Animations.Walk : Animations.Idle);
+            PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
         private void PlayAnimation(Animations animations)
@@ -65,7 +65,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         public enum Animations
         {
             Idle,
-            Walk
+            Run
         }
     }
 }

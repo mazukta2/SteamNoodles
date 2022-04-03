@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using Game.Assets.Scripts.Game.Unity.Views;
 using UnityEngine;
 
