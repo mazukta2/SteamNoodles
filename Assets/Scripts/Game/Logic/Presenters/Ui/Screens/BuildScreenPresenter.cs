@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
@@ -13,11 +14,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private BuildScreenView _view;
         private ScreenManagerPresenter _screenManager;
+        private Resources _resources;
 
-        public BuildScreenPresenter(BuildScreenView view, ScreenManagerPresenter screenManager, ConstructionCard constructionCard) : base(screenManager, view)
+        public BuildScreenPresenter(BuildScreenView view, ScreenManagerPresenter screenManager, Resources resources, ConstructionCard constructionCard) : base(screenManager, view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
+            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
             _view.CancelButton.SetAction(CancelClick);
 
             CurrentCard = constructionCard;
@@ -35,6 +38,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         public void UpdatePoints(int points)
         {
             _view.Points.Value = $"+{points}";
+            _view.CurrentPoints.Value = $"{_resources.Points.Value}/{_resources.Points.PointsForNextLevel}";
+            _view.PointsProgress.Value = _resources.Points.Progress;
+            _view.PointsProgress.AdditonalValue = (float)(_resources.Points.Value + points) / _resources.Points.PointsForNextLevel;
         }
 
     }

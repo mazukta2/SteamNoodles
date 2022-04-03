@@ -7,5 +7,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
     public interface IProgressBar
     {
         float Value { get; set; }
+        float AdditonalValue { get; set; }
     }
 }

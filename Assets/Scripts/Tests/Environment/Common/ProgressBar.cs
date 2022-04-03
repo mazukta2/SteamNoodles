@@ -9,5 +9,6 @@ namespace Game.Assets.Scripts.Tests.Environment.Common
     public class ProgressBar : IProgressBar
     {
         public float Value { get; set; }
+        public float AdditonalValue { get; set; }
     }
 }

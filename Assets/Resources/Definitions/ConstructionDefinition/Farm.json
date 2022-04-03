@@ -1,8 +1,8 @@
 {
 	"Placement" : [
-		[1],
-		[1],
-		[1]
+		[1, 1],
+		[1, 1],
+		[1, 1]
 	],
     "Requirements": { },
     "HandImagePath": "Sprites/Cards/Icons/SimpleShop",

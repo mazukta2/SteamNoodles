@@ -12,16 +12,20 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
     {
         public ButtonView CancelButton { get; }
         public IText Points { get; }
+        public IText CurrentPoints { get; }
+        public IProgressBar PointsProgress { get; set; }
 
-        public BuildScreenView(ILevel level, ButtonView cancelButton, IText points) : base(level)
+        public BuildScreenView(ILevel level, ButtonView cancelButton, IText points, IText currentPoints, IProgressBar progressBar) : base(level)
         {
             CancelButton = cancelButton;
             Points = points;
+            PointsProgress = progressBar;
+            CurrentPoints = currentPoints;
         }
 
         private void Init(ScreenManagerPresenter manager, ConstructionCard constructionCard)
         {
-            Presenter = new BuildScreenPresenter(this, manager, constructionCard);
+            Presenter = new BuildScreenPresenter(this, manager, Level.Model.Resources, constructionCard);
         }
 
         public class BuildScreenCollection : ScreenCollection

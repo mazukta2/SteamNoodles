@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
             return conteiner.Create((level) =>
             {
                 var button = new ButtonView(level);
-                return new BuildScreenView(level, button, new UiText());
+                return new BuildScreenView(level, button, new UiText(), new UiText(), new ProgressBar());
             });
         }
     }
