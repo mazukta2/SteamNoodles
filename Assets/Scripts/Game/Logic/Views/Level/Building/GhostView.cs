@@ -34,12 +34,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         }
         public ILevelPosition LocalPosition { get; private set; }
         public IViewContainer Container { get; private set; }
+        public IRotator Rotator { get; }
         public GhostPresenter Presenter { get; private set; }
 
-        public GhostView(ILevel level, IViewContainer container, ILevelPosition position) : base(level)
+        public GhostView(ILevel level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
         {
             LocalPosition = position;
             Container = container;
+            Rotator = rotator;
         }
 
         public GhostPresenter Init(ConstructionsSettingsDefinition definition, IControls controls,

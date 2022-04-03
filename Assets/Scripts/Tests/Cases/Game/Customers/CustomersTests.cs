@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 0)
                 .Build();
 
-            Assert.AreEqual("0", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            Assert.AreEqual("0/3", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
             Assert.AreEqual(0, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.Value);
             Assert.AreEqual(0, game.CurrentLevel.FindViews<UnitView>().Count);
 
@@ -61,7 +61,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual(15, points.PointsForNextLevel);
             Assert.IsTrue(points.Progress != 0);
 
-            Assert.AreEqual("9", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            Assert.AreEqual("9/15", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
             Assert.AreEqual(points.Progress, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.Value);
             Assert.AreEqual(1, game.CurrentLevel.FindViews<UnitView>().Count);
 

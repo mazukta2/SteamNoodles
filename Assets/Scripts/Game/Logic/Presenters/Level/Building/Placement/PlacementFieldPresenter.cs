@@ -61,14 +61,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         public void UpdateGhostCells()
         {
             var ghost = _ghostManager.GetGhost();
-            var ocuppiedCells = ghost != null ? ghost.Definition.GetOccupiedSpace(ghost.GetLocalPosition(_model)) : null;
+            var ocuppiedCells = ghost != null ? ghost.Definition.GetOccupiedSpace(ghost.GetLocalPosition(_model), ghost.Rotation) : null;
 
             foreach (var cell in _cells)
             {
                 var state = CellPlacementStatus.Normal;
                 if (ghost != null)
                 {
-                    if (_model.IsFreeCell(ghost.Definition, cell.Position))
+                    if (_model.IsFreeCell(ghost.Definition, cell.Position, ghost.Rotation))
                         state = CellPlacementStatus.IsReadyToPlace;
 
                     if (ocuppiedCells.Any(x => x == cell.Position))

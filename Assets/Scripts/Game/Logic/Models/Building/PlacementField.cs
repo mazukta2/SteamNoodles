@@ -49,18 +49,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
         }
 
 
-        public bool CanPlace(ConstructionCard card, IntPoint position)
+        public bool CanPlace(ConstructionCard card, IntPoint position, FieldRotation rotation)
         {
             return card.Definition
-                .GetOccupiedSpace(position)
-                .All(otherPosition => IsFreeCell(card.Definition, otherPosition));
+                .GetOccupiedSpace(position, rotation)
+                .All(otherPosition => IsFreeCell(card.Definition, otherPosition, rotation));
         }
 
-        public Construction Build(ConstructionCard card, IntPoint position)
+        public Construction Build(ConstructionCard card, IntPoint position, FieldRotation rotation)
         {
-            _resources.Points.Value += GetPoints(card.Definition, position);
+            _resources.Points.Value += GetPoints(card.Definition, position, rotation);
 
-            var construction = new Construction(this, card.Definition, position);
+            var construction = new Construction(this, card.Definition, position, rotation);
             _constructions.Add(construction);
             card.RemoveFromHand();
 
@@ -70,7 +70,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             return construction;
         }
 
-        public bool IsFreeCell(ConstructionDefinition constructionDefinition, IntPoint position)
+        public bool IsFreeCell(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
         {
             if (!Rect.IsInside(position))
                 return false;
@@ -81,7 +81,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             if (constructionDefinition.Requirements.DownEdge)
             {
                 var min = Rect.Y;
-                var max = Rect.Y + constructionDefinition.GetRect().Height;
+                var max = Rect.Y + constructionDefinition.GetRect(rotation).Height;
                 return min <= position.Y && position.Y < max;
             }
 
@@ -105,9 +105,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
                    position.Y * ConstructionsSettings.CellSize) + GetOffset();
         }
 
-        public int GetPoints(ConstructionDefinition constructionDefinition, IntPoint position)
+        public int GetPoints(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
         {
-            var positions = constructionDefinition.GetOccupiedSpace(position);
+            var positions = constructionDefinition.GetOccupiedSpace(position, rotation);
             if (!positions.All(x => Rect.IsInside(position)))
                 return 0;
 
@@ -116,7 +116,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
 
             var adjacentPoints = 0;
-            foreach (var construction in GetAdjacentConstructions(constructionDefinition, position))
+            foreach (var construction in GetAdjacentConstructions(constructionDefinition, position, rotation))
             {
                 if (constructionDefinition.AdjacencyPoints.ContainsKey(construction.Definition))
                 {
@@ -127,11 +127,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             return constructionDefinition.Points + adjacentPoints;
         }
 
-        private IReadOnlyCollection<IntPoint> GetListOfAdjacentCells(ConstructionDefinition constructionDefinition, IntPoint position)
+        private IReadOnlyCollection<IntPoint> GetListOfAdjacentCells(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
         {
             var list = new List<IntPoint>();
 
-            foreach (var cell in constructionDefinition.GetOccupiedSpace(position))
+            foreach (var cell in constructionDefinition.GetOccupiedSpace(position, rotation))
             {
                 AddCell(cell + new IntPoint(1, 0));
                 AddCell(cell + new IntPoint(-1, 0));
@@ -153,9 +153,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             }
         }
 
-        private IReadOnlyCollection<Construction> GetAdjacentConstructions(ConstructionDefinition constructionDefinition, IntPoint position)
+        private IReadOnlyCollection<Construction> GetAdjacentConstructions(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
         {
-            var adjecentsCells = GetListOfAdjacentCells(constructionDefinition, position);
+            var adjecentsCells = GetListOfAdjacentCells(constructionDefinition, position, rotation);
             var adjecentConstructions = new List<Construction>();
             foreach (var construction in _constructions)
             {

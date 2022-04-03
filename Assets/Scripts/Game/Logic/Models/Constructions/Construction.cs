@@ -10,16 +10,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
     public class Construction : Disposable
     {
         public IntPoint Position { get; private set; }
+        public FieldRotation Rotation { get; private set; }
 
         private PlacementField _field;
 
         public ConstructionDefinition Definition { get; private set; }
 
-        public Construction(PlacementField field, ConstructionDefinition definition, IntPoint position)
+        public Construction(PlacementField field, ConstructionDefinition definition, IntPoint position, FieldRotation rotation)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             _field = field ?? throw new ArgumentNullException(nameof(field));
             Position = position;
+            Rotation = rotation;
         }
 
         public FloatPoint GetLocalPosition()
@@ -29,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
 
         public IReadOnlyCollection<IntPoint> GetOccupiedScace()
         {
-            return Definition.GetOccupiedSpace(Position);
+            return Definition.GetOccupiedSpace(Position, Rotation);
         }
 
         //public IVisual GetVisual()

@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Environment.Engine.Controls;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using System;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         private Vector3 _mousePosition;
         private Plane _plane = new Plane(Vector3.up, 0);
+        private float _wheel = 0;
+        public GameKeysManager Keys { get; } = new GameKeysManager();
 
         public void Update()
         {
@@ -26,8 +29,29 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             {
                 OnLevelClick();
             }
+
+            if (Input.GetKeyDown(KeyCode.R))
+                Keys.GetKey(GameKeys.RotateRight).Tap();
+
+            var wheel = Input.GetAxis("Mouse ScrollWheel");
+            if (_wheel == 0 || !SameSign(wheel, _wheel))
+            {
+                if (wheel > 0)
+                    Keys.GetKey(GameKeys.RotateRight).Tap();
+                if (wheel < 0)
+                    Keys.GetKey(GameKeys.RotateLeft).Tap();
+            }
+            _wheel = wheel;
         }
 
+        bool SameSign(float num1, float num2)
+        {
+            if (num1 > 0 && num2 < 0)
+                return false;
+            if (num1 < 0 && num2 > 0)
+                return false;
+            return true;
+        }
 
         private bool IsPointerOverUi()
         {

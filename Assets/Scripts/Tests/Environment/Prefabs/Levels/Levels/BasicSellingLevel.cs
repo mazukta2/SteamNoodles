@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
                 return conteiner.Create((level) =>
                 {
                     var contrainer = new TestContainerView(level);
-                    return new GhostView(level, contrainer, new LevelPosition());
+                    return new GhostView(level, contrainer, new LevelPosition(), new Rotator());
                 });
             }
         }

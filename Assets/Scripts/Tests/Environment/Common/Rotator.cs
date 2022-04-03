@@ -11,5 +11,9 @@ namespace Game.Assets.Scripts.Tests.Environment.Common
         public void FaceTo(FloatPoint value)
         {
         }
+
+        public void Look(FloatPoint direction)
+        {
+        }
     }
 }

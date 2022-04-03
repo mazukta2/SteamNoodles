@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 
         protected override GhostView CreateView()
         {
-            return new GhostView(Level, _container, new UnityLevelPosition(transform));
+            return new GhostView(Level, _container, new UnityLevelPosition(transform), new UnityRotator(transform));
         }
 
     }

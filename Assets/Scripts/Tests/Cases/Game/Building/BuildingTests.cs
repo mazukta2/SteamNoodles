@@ -1,6 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Environment.Engine.Controls;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -156,7 +158,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 {
                     Placement = rect,
                 };
-                Assert.AreEqual(expected, constrcution.GetRect());
+                Assert.AreEqual(expected, constrcution.GetRect(Scripts.Game.Logic.Models.Constructions.FieldRotation.Top));
             }
         }
 
@@ -320,7 +322,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Engine.Controls.MovePointer(worldPos);
 
             var cells = game.CurrentLevel.FindViews<CellView>();
-            var actual = ToArray(cells);
+            var actual = ToArray(size, cells);
             var expected = new int[5, 5]
             {
                 { 1,1,0,0,0 },
@@ -332,35 +334,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             
             Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
             game.Dispose();
-
-            string PrintPosition(int[,] matrix)
-            {
-                var result = "";
-                for (int x = 0; x < matrix.GetLength(0); x++)
-                {
-                    for (int y = 0; y < matrix.GetLength(1); y++)
-                    {
-                        result += matrix[x, y].ToString();
-                    }
-                    result += "\r\n";
-                }
-                return result;
-            }
-
-            int[,] ToArray(IReadOnlyCollection<CellView> cells)
-            {
-                var actual = new int[size, size];
-                var chkd = 0;
-                for (int x = -size / 2; x <= size / 2; x++)
-                    for (int y = -size / 2; y <= size / 2; y++)
-                    {
-                        actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition.Value == new FloatPoint(x, y)).State;
-                        chkd++;
-                    }
-
-                Assert.AreEqual(chkd, cells.Count());
-                return actual;
-            }
         }
         #endregion
 
@@ -454,10 +427,131 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         }
         #endregion
 
+        #region Rotation
+        [Test]
+        public void IsRotationWorking()
+        {
+            var size = 5;
+            var game = new GameTestConstructor()
+                .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1)
+                .UpdateDefinition<LevelDefinitionMock>((d) =>
+                {
+                    d.PlacementFields.First().Size = new IntPoint(size, size);
+                    d.StartingHand.First().Placement = new int[,]
+                    {
+                        { 1, 1 },
+                        { 1, 0 }
+                    };
+                })
+                .Build();
+
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+
+            var cells = game.CurrentLevel.FindViews<CellView>();
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,2,2,1 },
+                { 1,1,2,1,1 },
+                { 1,1,1,1,1 }
+            });
+            game.Engine.Controls.Keys.TapKey(GameKeys.RotateRight);
+            Assert.AreEqual(FieldRotation.Right, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,2,2,1 },
+                { 1,1,1,2,1 },
+                { 1,1,1,1,1 }
+            });
+            game.Engine.Controls.Keys.TapKey(GameKeys.RotateRight);
+            Assert.AreEqual(FieldRotation.Bottom, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,1,2,1 },
+                { 1,1,2,2,1 },
+                { 1,1,1,1,1 }
+            });
+            game.Engine.Controls.Keys.TapKey(GameKeys.RotateLeft);
+            Assert.AreEqual(FieldRotation.Right, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,2,2,1 },
+                { 1,1,1,2,1 },
+                { 1,1,1,1,1 }
+            });
+            game.Engine.Controls.Keys.TapKey(GameKeys.RotateLeft);
+            Assert.AreEqual(FieldRotation.Top, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,2,2,1 },
+                { 1,1,2,1,1 },
+                { 1,1,1,1,1 }
+            });
+
+            game.Engine.Controls.Keys.TapKey(GameKeys.RotateLeft);
+            Assert.AreEqual(FieldRotation.Left, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,2,1,1 },
+                { 1,1,2,2,1 },
+                { 1,1,1,1,1 }
+            });
+
+            game.Dispose();
+
+            void CheckPosition(int[,] expected)
+            {
+                var actual = ToArray(size, cells);
+                Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
+            }
+        }
+
+        #endregion
+
         [TearDown]
         public void TestDisposables()
         {
             DisposeTests.TestDisposables();
+        }
+
+        int[,] ToArray(int size, IReadOnlyCollection<CellView> cells)
+        {
+            var actual = new int[size, size];
+            var chkd = 0;
+            for (int x = -size / 2; x <= size / 2; x++)
+                for (int y = -size / 2; y <= size / 2; y++)
+                {
+                    actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition.Value == new FloatPoint(x, y)).State;
+                    chkd++;
+                }
+
+            Assert.AreEqual(chkd, cells.Count());
+            return actual;
+        }
+
+        string PrintPosition(int[,] matrix)
+        {
+            var result = "";
+            for (int x = 0; x < matrix.GetLength(0); x++)
+            {
+                for (int y = 0; y < matrix.GetLength(1); y++)
+                {
+                    result += matrix[x, y].ToString();
+                }
+                result += "\r\n";
+            }
+            return result;
         }
     }
 }

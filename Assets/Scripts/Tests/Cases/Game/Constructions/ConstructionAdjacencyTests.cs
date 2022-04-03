@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .Build();
 
             Assert.IsNotNull(game.CurrentLevel.FindView<MainScreenView>());
-            Assert.AreEqual("0", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            Assert.AreEqual("0/3", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             game.Engine.Controls.Click();
 
-            Assert.AreEqual("5", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            Assert.AreEqual("5/8", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
 
             game.Dispose();
         }
@@ -78,11 +78,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                     StartingHand = new List<ConstructionDefinition>() { construction1, construction1 })
                 .Build();
 
-            Assert.AreEqual("0", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            Assert.AreEqual("0/3", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
             game.Engine.Controls.Click();
-            Assert.AreEqual("5", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
+            Assert.AreEqual("5/8", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);

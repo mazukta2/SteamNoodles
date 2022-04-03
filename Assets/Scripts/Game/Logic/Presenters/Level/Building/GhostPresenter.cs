@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Environment.Engine.Controls;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
@@ -15,6 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     {
         public Action OnGhostPostionChanged = delegate { };
         public ConstructionDefinition Definition { get; private set; }
+        public FieldRotation Rotation { get; private set; }
         
         private readonly GhostView _view;
         private readonly ConstructionsSettingsDefinition _constructionsSettings;
@@ -24,6 +26,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly ScreenManagerPresenter _screenManager;
         private readonly IAssets _assets;
         private FloatPoint _worldPosition;
+        private KeyCommand _rotateLeft;
+        private KeyCommand _rotateRight;
 
         public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
             ScreenManagerPresenter screenManager,
@@ -39,11 +43,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             Definition = _buildScreen.CurrentCard.Definition ?? throw new ArgumentNullException(nameof(_buildScreen.CurrentCard.Definition));
 
-            _controls.OnLevelClick += HandleOnLevelClick;
-            _controls.OnLevelPointerMoved += HandleOnPointerMoved;
+            _rotateLeft = _controls.Keys.GetKey(GameKeys.RotateLeft);
+            _rotateRight = _controls.Keys.GetKey(GameKeys.RotateRight);
 
             _view.Container.Clear();
             _view.Container.Spawn<ConstructionModelView>(_assets.GetConstruction(_buildScreen.CurrentCard.Definition.LevelViewPath));
+
+            _rotateLeft.OnTap += HandleRotateLeftTap;
+            _rotateRight.OnTap += HandleRotateRightTap;
+
+            _controls.OnLevelClick += HandleOnLevelClick;
+            _controls.OnLevelPointerMoved += HandleOnPointerMoved;
 
             UpdatePoints();
         }
@@ -52,6 +62,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             _controls.OnLevelClick -= HandleOnLevelClick;
             _controls.OnLevelPointerMoved -= HandleOnPointerMoved;
+
+            _rotateLeft.OnTap -= HandleRotateLeftTap;
+            _rotateRight.OnTap -= HandleRotateRightTap;
         }
 
         public IntPoint GetLocalPosition(PlacementField placementField)
@@ -63,8 +76,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             var halfCell = _constructionsSettings.CellSize / 2;
 
-            var offset = new FloatPoint(_buildScreen.CurrentCard.Definition.GetRect().Width * halfCell - halfCell,
-                _buildScreen.CurrentCard.Definition.GetRect().Height * halfCell - halfCell);
+            var offset = new FloatPoint(_buildScreen.CurrentCard.Definition.GetRect(Rotation).Width * halfCell - halfCell,
+                _buildScreen.CurrentCard.Definition.GetRect(Rotation).Height * halfCell - halfCell);
 
             var pos = _worldPosition - offset;
 
@@ -78,9 +91,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             foreach (var field in _constructionsManager.Placements)
             {
-                if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field)))
+                if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation))
                 {
-                    field.Build(_buildScreen.CurrentCard, GetLocalPosition(field));
+                    field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
                     break;
                 }
             }
@@ -90,23 +103,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private void HandleOnPointerMoved(FloatPoint worldPosition)
         {
             _worldPosition = worldPosition;
-            _view.CanPlace = CanPlace();
-            _view.LocalPosition.Value = GetLocalPosition();
-            UpdatePoints();
-            OnGhostPostionChanged();
-        }
-
-        public FloatPoint GetLocalPosition()
-        {
-            var worldCell = GetWorldCellPosition();
-            return new FloatPoint(worldCell.X * _constructionsSettings.CellSize, worldCell.Y * _constructionsSettings.CellSize);
+            UpdatePosition();
         }
 
         private bool CanPlace()
         {
             foreach (var field in _constructionsManager.Placements)
             {
-                if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field)))
+                if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation))
                 {
                     return true;
                 }
@@ -119,10 +123,41 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             var points = 0;
             foreach (var field in _constructionsManager.Placements)
             {
-                points += field.GetPoints(_buildScreen.CurrentCard.Definition, GetLocalPosition(field));
+                points += field.GetPoints(_buildScreen.CurrentCard.Definition, GetLocalPosition(field), Rotation);
             }
 
             _buildScreen.UpdatePoints(points);
+        }
+
+        private void HandleRotateLeftTap()
+        {
+            Rotation = ConstructionRotation.RotateLeft(Rotation);
+            UpdatePosition();
+        }
+
+        private void HandleRotateRightTap()
+        {
+            Rotation = ConstructionRotation.RotateRight(Rotation);
+            UpdatePosition();
+        }
+
+        private void UpdatePosition()
+        {
+            _view.CanPlace = CanPlace();
+            _view.Rotator.Look(ConstructionRotation.ToDirection(Rotation));
+            _view.LocalPosition.Value = GetViewPosition();
+            UpdatePoints();
+            OnGhostPostionChanged();
+        }
+
+        private FloatPoint GetViewPosition()
+        {
+            var worldCell = GetWorldCellPosition();
+            var objectRect = Definition.GetRect(Rotation);
+            var rect = new FloatPoint(objectRect.Width * _constructionsSettings.CellSize, objectRect.Height * _constructionsSettings.CellSize);
+            var offset = new FloatPoint(rect.X /2 , rect.Y / 2);
+
+            return new FloatPoint(worldCell.X * _constructionsSettings.CellSize, worldCell.Y * _constructionsSettings.CellSize) + offset;
         }
 
     }

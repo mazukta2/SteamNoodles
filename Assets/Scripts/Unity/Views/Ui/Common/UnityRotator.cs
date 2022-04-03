@@ -21,7 +21,12 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 
         public void FaceTo(FloatPoint value)
         {
-            _transform.LookAt(new Vector3(value.X, 0, value.Y));
+            _transform.LookAt(new Vector3(value.X, _transform.position.y, value.Y));
+        }
+
+        public void Look(FloatPoint direction)
+        {
+            _transform.LookAt(new Vector3(_transform.position.x + direction.X, _transform.position.y, _transform.position.z + direction.Y));
         }
     }
 }
