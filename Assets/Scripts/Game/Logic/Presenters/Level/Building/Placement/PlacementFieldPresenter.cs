@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
@@ -17,16 +18,21 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private PlacementManagerPresenter _manager;
         private GhostManagerPresenter _ghostManager;
         private IAssets _assets;
+        private ConstructionsSettingsDefinition _settings;
         private List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
-        public PlacementFieldPresenter(GhostManagerPresenter ghostManagerPresenter, PlacementField model, 
-            PlacementFieldView view, PlacementManagerPresenter presenter, IAssets assets) : base(view)
+        public PlacementFieldPresenter(GhostManagerPresenter ghostManagerPresenter,
+            PlacementField model, 
+            PlacementFieldView view,
+            ConstructionsSettingsDefinition settings,
+            PlacementManagerPresenter presenter, IAssets assets) : base(view)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _manager = presenter ?? throw new ArgumentNullException(nameof(presenter));
             _ghostManager = ghostManagerPresenter ?? throw new ArgumentNullException(nameof(ghostManagerPresenter));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
             for (int x = _model.Rect.xMin; x <= _model.Rect.xMax; x++)
             {
@@ -87,7 +93,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private void HandleOnConstructionAdded(Construction construction)
         {
             var view = _view.Manager.ConstrcutionContainer.Spawn<ConstructionView>(_view.Manager.ConstrcutionPrototype);
-            view.Init(construction);
+            view.Init(construction, _settings);
         }
     }
 }

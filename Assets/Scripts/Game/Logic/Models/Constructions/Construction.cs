@@ -24,11 +24,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             Rotation = rotation;
         }
 
-        public FloatPoint GetLocalPosition()
-        {
-            return _field.GetLocalPosition(Position);
-        }
-
         public IReadOnlyCollection<IntPoint> GetOccupiedScace()
         {
             return Definition.GetOccupiedSpace(Position, Rotation);

@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Services;
@@ -36,7 +37,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         private void Init(GhostManagerService ghost)
         {
             var field = Level.Model.Constructions.Placements.ElementAt(_id);
-            _presenter = new PlacementFieldPresenter(ghost.Get(), field, this, Manager.Presenter, Level.Engine.Assets);
+            _presenter = new PlacementFieldPresenter(ghost.Get(), field, this, 
+                Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), 
+                Manager.Presenter, Level.Engine.Assets);
         }
     }
 }

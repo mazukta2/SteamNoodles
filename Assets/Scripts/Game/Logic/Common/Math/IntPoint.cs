@@ -31,5 +31,11 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         {
             return X + Y;
         }
+
+        public override string ToString()
+        {
+            return $"[{X}, {Y}]";
+        }
+
     }
 }

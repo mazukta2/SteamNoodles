@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly ConstructionsManager _constructionsManager;
         private readonly ScreenManagerPresenter _screenManager;
         private readonly IAssets _assets;
-        private FloatPoint _worldPosition;
+        private FloatPoint _pointerPosition;
         private KeyCommand _rotateLeft;
         private KeyCommand _rotateRight;
 
@@ -42,6 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             Definition = _buildScreen.CurrentCard.Definition ?? throw new ArgumentNullException(nameof(_buildScreen.CurrentCard.Definition));
+
 
             _rotateLeft = _controls.Keys.GetKey(GameKeys.RotateLeft);
             _rotateRight = _controls.Keys.GetKey(GameKeys.RotateRight);
@@ -74,17 +75,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public IntPoint GetWorldCellPosition()
         {
-            var halfCell = _constructionsSettings.CellSize / 2;
+            var position = new FieldPositionsCalculator(_constructionsSettings.CellSize, 
+                _buildScreen.CurrentCard.Definition.GetRect(Rotation));
 
-            var offset = new FloatPoint(_buildScreen.CurrentCard.Definition.GetRect(Rotation).Width * halfCell - halfCell,
-                _buildScreen.CurrentCard.Definition.GetRect(Rotation).Height * halfCell - halfCell);
-
-            var pos = _worldPosition - offset;
-
-            var mousePosX = Math.Round(pos.X / _constructionsSettings.CellSize);
-            var mousePosY = Math.Round(pos.Y / _constructionsSettings.CellSize);
-
-            return new IntPoint((int)Math.Ceiling(mousePosX), (int)Math.Ceiling(mousePosY));
+            return position.GetWorldCellPosition(_pointerPosition);
         }
 
         private void HandleOnLevelClick()
@@ -102,7 +96,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleOnPointerMoved(FloatPoint worldPosition)
         {
-            _worldPosition = worldPosition;
+            _pointerPosition = worldPosition;
             UpdatePosition();
         }
 
@@ -152,13 +146,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private FloatPoint GetViewPosition()
         {
-            var worldCell = GetWorldCellPosition();
-            var objectRect = Definition.GetRect(Rotation);
-            var rect = new FloatPoint(objectRect.Width * _constructionsSettings.CellSize, objectRect.Height * _constructionsSettings.CellSize);
-            var offset = new FloatPoint(rect.X /2 , rect.Y / 2);
+            var position = new FieldPositionsCalculator(_constructionsSettings.CellSize,
+                _buildScreen.CurrentCard.Definition.GetRect(Rotation));
 
-            return new FloatPoint(worldCell.X * _constructionsSettings.CellSize, worldCell.Y * _constructionsSettings.CellSize) + offset;
+            return position.GetViewPosition(_pointerPosition);
         }
-
     }
 }
