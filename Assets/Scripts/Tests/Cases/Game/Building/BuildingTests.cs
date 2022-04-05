@@ -223,11 +223,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .Build();
 
             var cells = game.CurrentLevel.FindViews<CellView>();
-            Assert.IsTrue(cells.All(x => x.State == CellPlacementStatus.Normal));
+            Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
-            Assert.IsTrue(cells.All(x => x.State == CellPlacementStatus.IsReadyToPlace || x.State == CellPlacementStatus.IsAvailableGhostPlace));
+            Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.IsReadyToPlace || x.State.Value == CellPlacementStatus.IsAvailableGhostPlace));
 
             game.Dispose();
         }
@@ -258,7 +258,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             var cells = game.CurrentLevel.FindViews<CellView>();
-            var highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
+            var highlighedCells = cells.Where(x => x.State.Value == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
             Assert.AreEqual(2, highlighedCells.Count());
 
             Assert.AreEqual(new FloatPoint(0, 0), highlighedCells.First().LocalPosition.Value);
@@ -266,7 +266,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
             game.Engine.Controls.MovePointer(new FloatPoint(0.75f, 0)); // move left
 
-            highlighedCells = cells.Where(x => x.State == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
+            highlighedCells = cells.Where(x => x.State.Value == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
             Assert.AreEqual(2, highlighedCells.Count());
 
             Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.First().LocalPosition.Value);
@@ -616,7 +616,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             for (int x = -size / 2; x <= size / 2; x++)
                 for (int y = -size / 2; y <= size / 2; y++)
                 {
-                    actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition.Value == new FloatPoint(x, y)).State;
+                    actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition.Value == new FloatPoint(x, y)).State.Value;
                     chkd++;
                 }
 

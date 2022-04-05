@@ -11,21 +11,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public class CellView : View
     {
-        private CellPlacementStatus _state;
-
         public event Action OnUpdate = delegate { };
         public ILevelPosition LocalPosition { get; private set; }
-        public CellPlacementStatus State
-        {
-            get => _state; set
-            {
-                _state = value; OnUpdate();
-            }
-        }
+        public IEnabler<CellPlacementStatus> State { get; private set; }
         public PlacementCellPresenter Presenter { get; private set; }
 
-        public CellView(ILevel level, ILevelPosition position) : base(level)
+        public CellView(ILevel level, IEnabler<CellPlacementStatus> state, ILevelPosition position) : base(level)
         {
+            State = state;
             LocalPosition = position;
         }
 

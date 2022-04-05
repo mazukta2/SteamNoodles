@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
@@ -49,7 +50,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
             {
                 return conteiner.Create((level) =>
                 {
-                    return new CellView(level, new LevelPosition());
+                    return new CellView(level, new Enabler<CellPlacementStatus>(), new LevelPosition());
                 });
             }
         }
@@ -61,7 +62,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
                 return conteiner.Create((level) =>
                 {
                     var c = new TestContainerView(level);
-                    return new ConstructionView(level,c, new LevelPosition());
+                    return new ConstructionView(level,c, new LevelPosition(), new Rotator());
                 });
             }
         }

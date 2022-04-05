@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
         public void SetState(CellPlacementStatus state)
         {
-            _cellView.State = state;
+            _cellView.State.Value = state;
         }
     }
 }

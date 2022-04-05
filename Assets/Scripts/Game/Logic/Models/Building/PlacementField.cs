@@ -108,12 +108,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
         public int GetPoints(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
         {
             var positions = constructionDefinition.GetOccupiedSpace(position, rotation);
-            if (!positions.All(x => Rect.IsInside(position)))
+            if (!positions.All(x => IsFreeCell(constructionDefinition, position, rotation) && Rect.IsInside(position)))
                 return 0;
 
             if (Constructions.Any(otherBuilding => otherBuilding.GetOccupiedScace().Any(pos => pos == position)))
                 return 0;
-
 
             var adjacentPoints = 0;
             foreach (var construction in GetAdjacentConstructions(constructionDefinition, position, rotation))
