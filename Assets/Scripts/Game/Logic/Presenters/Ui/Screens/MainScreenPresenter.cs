@@ -5,7 +5,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
-    public class MainScreenPresenter : BaseGameScreenPresenter
+    public class MainScreenPresenter : BaseGameScreenPresenter<MainScreenView, MainScreenPresenter>
     {
         private MainScreenView _view;
         private ScreenManagerPresenter _screenManager;

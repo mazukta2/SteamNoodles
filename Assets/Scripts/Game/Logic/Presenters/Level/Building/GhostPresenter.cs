@@ -12,7 +12,7 @@ using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.ScreenManagerPresenter
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
-    public class GhostPresenter : BasePresenter
+    public class GhostPresenter : BasePresenter<GhostView, GhostPresenter>
     {
         public Action OnGhostPostionChanged = delegate { };
         public ConstructionDefinition Definition { get; private set; }

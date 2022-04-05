@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views
 {
-    public abstract class PresenterView<T> : View, IPresenterView<T> where T : BasePresenter
+    public abstract class PresenterView<T> : View, IPresenterView<T>
     {
         public T Presenter { get; set; }
         protected PresenterView(ILevel level) : base(level)

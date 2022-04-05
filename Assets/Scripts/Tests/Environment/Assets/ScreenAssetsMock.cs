@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Assets
     {
         private Dictionary<string, MockViewPrefab> _list = new Dictionary<string, MockViewPrefab>();
 
-        public void AddPrototype<T>(MockViewPrefab prefab) where T : ScreenView
+        public void AddPrototype<T>(MockViewPrefab prefab) where T : IScreenView
         {
             _list.Add(typeof(T).Name, prefab);
         }

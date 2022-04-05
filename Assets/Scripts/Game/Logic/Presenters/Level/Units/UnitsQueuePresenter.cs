@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 {
-    public class UnitsQueuePresenter : BasePresenter
+    public class UnitsQueuePresenter : BasePresenter<UnitsQueueView, UnitsQueuePresenter>
     {
         private UnitsQueueView _unitsManagerView;
 

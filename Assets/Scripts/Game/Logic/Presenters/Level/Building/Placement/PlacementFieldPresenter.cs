@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 {
-    public class PlacementFieldPresenter : BasePresenter
+    public class PlacementFieldPresenter : BasePresenter<PlacementFieldView, PlacementFieldPresenter>
     {
         private PlacementField _model;
         private PlacementFieldView _view;
@@ -62,8 +62,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private PlacementCellPresenter CreateCell(IntPoint position)
         {
             var view = _view.Manager.CellsContainer.Spawn<CellView>(_view.Manager.Cell);
-            view.Presenter = new PlacementCellPresenter(view, this, view.Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), position);
-            return view.Presenter;
+            return new PlacementCellPresenter(view, this, view.Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), position);
         }
 
         public void UpdateGhostCells()
@@ -95,7 +94,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private void HandleOnConstructionAdded(Construction construction)
         {
             var view = _view.Manager.ConstrcutionContainer.Spawn<ConstructionView>(_view.Manager.ConstrcutionPrototype);
-            view.Presenter = new ConstructionPresenter(_settings, construction, view.Level.Engine.Assets, view);
+            new ConstructionPresenter(_settings, construction, view.Level.Engine.Assets, view);
         }
     }
 }

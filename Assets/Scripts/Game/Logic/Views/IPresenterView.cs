@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views
 {
-    public interface IPresenterView<T> : IView where T :BasePresenter
+    public interface IPresenterView<T> : IView 
     {
         T Presenter { get; set; }
     }

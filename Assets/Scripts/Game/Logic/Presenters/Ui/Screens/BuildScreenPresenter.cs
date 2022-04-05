@@ -9,7 +9,7 @@ using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.ScreenManagerPresenter
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
-    public class BuildScreenPresenter : BaseGameScreenPresenter
+    public class BuildScreenPresenter : BaseGameScreenPresenter<BuildScreenView, BuildScreenPresenter>
     {
         public ConstructionCard CurrentCard { get; }
 
@@ -50,7 +50,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             {
                 Manager.Open<BuildScreenView>(Init);
 
-                BaseGameScreenPresenter Init(BuildScreenView screenView, ScreenManagerPresenter managerPresenter)
+                object Init(BuildScreenView screenView, ScreenManagerPresenter managerPresenter)
                 {
                     return new BuildScreenPresenter(screenView, managerPresenter, screenView.Level.Model.Resources, constructionCard);
                 }

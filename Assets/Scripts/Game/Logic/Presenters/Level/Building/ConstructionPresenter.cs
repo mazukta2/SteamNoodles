@@ -6,7 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Level;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class ConstructionPresenter : BasePresenter
+    public class ConstructionPresenter : BasePresenter<ConstructionView, ConstructionPresenter>
     {
         private Construction _construction;
         private ConstructionView _constructionView;

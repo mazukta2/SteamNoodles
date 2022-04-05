@@ -4,12 +4,14 @@ using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 {
-    public class GhostManagerPresenter : BasePresenter
+    public class GhostManagerPresenter : BasePresenter<GhostManagerView, GhostManagerPresenter>
     {
         public event Action OnGhostChanged = delegate { };
         public event Action OnGhostPostionChanged = delegate { };
@@ -45,10 +47,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
             return _ghost;
         }
 
-        private void OnScreenOpen(BaseGameScreenPresenter screen)
+        private void OnScreenOpen(IScreenView screen)
         {
-            if (screen is BuildScreenPresenter buildScreen)
-                CreateGhost(buildScreen);
+            if (screen is BuildScreenView buildScreen)
+                CreateGhost(buildScreen.Presenter);
             else
                 RemoveGhost();
         }

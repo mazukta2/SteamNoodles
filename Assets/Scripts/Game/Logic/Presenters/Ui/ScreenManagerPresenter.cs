@@ -8,9 +8,9 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 {
-    public class ScreenManagerPresenter : BasePresenter
+    public class ScreenManagerPresenter : BasePresenter<ScreenManagerView, ScreenManagerPresenter>
     {
-        public Action<BaseGameScreenPresenter> OnScreenOpened = delegate { };
+        public Action<IScreenView> OnScreenOpened = delegate { };
 
         private readonly ScreenManagerView _view;
         private readonly IScreenAssets _screenAssets;
@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         }
 
-        public void Open<TScreen>(Func<TScreen, ScreenManagerPresenter, BaseGameScreenPresenter> init) where TScreen : IScreenView
+        public void Open<TScreen>(Func<TScreen, ScreenManagerPresenter, object> init) where TScreen : IScreenView
         {
             var screenPrefab = _screenAssets.GetScreen<TScreen>();
             if (screenPrefab == null)
@@ -36,8 +36,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
             _view.Screen.Clear();
             var view = (TScreen)_view.Screen.Spawn<TScreen>(screenPrefab);
-            view.ScreenPresenter = init(view, this);
-            OnScreenOpened(view.ScreenPresenter);
+            init(view, this);
+            OnScreenOpened(view);
         }
 
         public TPreScreen GetCollection<TPreScreen>() where TPreScreen : ScreenCollection, new()
@@ -49,14 +49,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         public class CommonScreens : ScreenCollection
         {
-            public void Open<TScreen>() where TScreen : ScreenView
+            public void Open<TScreen>() where TScreen : IScreenView
             {
                 Manager.Open<TScreen>(Init);
 
-                BaseGameScreenPresenter Init(TScreen screenView, ScreenManagerPresenter managerPresenter)
+                object Init(TScreen screenView, ScreenManagerPresenter managerPresenter)
                 {
                     if (screenView is MainScreenView mainScreen)
-                        return new MainScreenPresenter(mainScreen, managerPresenter, screenView.Level.Model.Resources);
+                        return new MainScreenPresenter(mainScreen, managerPresenter, mainScreen.Level.Model.Resources);
 
                     throw new Exception("Unknown screen " + typeof(TScreen));
                 }

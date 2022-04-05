@@ -7,6 +7,5 @@ namespace Game.Assets.Scripts.Game.Logic.Views
 {
     public interface IScreenView : IView
     {
-        public BaseGameScreenPresenter ScreenPresenter { get; set; }
     }
 }

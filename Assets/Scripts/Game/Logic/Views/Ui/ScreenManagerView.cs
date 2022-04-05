@@ -6,7 +6,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 {
-    public class ScreenManagerView : View
+    public class ScreenManagerView : PresenterView<ScreenManagerPresenter>
     {
         public IViewContainer Screen { get; }
 
@@ -17,7 +17,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 
             var assets = CoreAccessPoint.Core.Engine.Assets.Screens;
             var presenter = new ScreenManagerPresenter(this, assets);
-
             level.Services.Add(new ScreenManagerService(presenter));
         }
     }
