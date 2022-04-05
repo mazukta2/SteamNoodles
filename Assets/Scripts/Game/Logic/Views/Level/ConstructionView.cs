@@ -8,13 +8,11 @@ using Game.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
-    public class ConstructionView : View
+    public class ConstructionView : PresenterView<ConstructionPresenter>
     {
         public ILevelPosition LocalPosition { get; set; }
         public IRotator Rotator { get; }
         public IViewContainer Container { get; set; }
-
-        private ConstructionPresenter _presenter;
 
         public ConstructionView(ILevel level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
         {
@@ -23,10 +21,5 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
             Rotator = rotator;
         }
 
-        public void Init(Construction construction,
-            ConstructionsSettingsDefinition settings)
-        {
-            _presenter = new ConstructionPresenter(settings, construction, Level.Engine.Assets, this);
-        }
     }
 }

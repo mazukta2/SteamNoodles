@@ -18,7 +18,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
-    public class GhostView : View
+    public class GhostView : PresenterView<GhostPresenter>
     {
         public event Action OnUpdate = delegate { };
 
@@ -35,22 +35,12 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         public ILevelPosition LocalPosition { get; private set; }
         public IViewContainer Container { get; private set; }
         public IRotator Rotator { get; }
-        public GhostPresenter Presenter { get; private set; }
 
         public GhostView(ILevel level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
         {
             LocalPosition = position;
             Container = container;
             Rotator = rotator;
-        }
-
-        public GhostPresenter Init(ConstructionsSettingsDefinition definition, IControls controls,
-            ScreenManagerPresenter screenManager,
-            ConstructionsManager constructionsManager,
-            BuildScreenPresenter buildScreen)
-        {
-            Presenter = new GhostPresenter(definition, screenManager, constructionsManager, buildScreen, controls, Level.Engine.Assets, this);
-            return Presenter;
         }
     }
 }

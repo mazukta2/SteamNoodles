@@ -10,11 +10,10 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
-    public class PlacementFieldView : View
+    public class PlacementFieldView : PresenterView<PlacementFieldPresenter>
     {
         public PlacementManagerView Manager;
         private ServiceWaiter<GhostManagerService> _wait;
-        private PlacementFieldPresenter _presenter;
         private int _id;
 
         public PlacementFieldView(ILevel level, PlacementManagerView managerView, int id) : base(level)
@@ -37,7 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         private void Init(GhostManagerService ghost)
         {
             var field = Level.Model.Constructions.Placements.ElementAt(_id);
-            _presenter = new PlacementFieldPresenter(ghost.Get(), field, this, 
+            Presenter = new PlacementFieldPresenter(ghost.Get(), field, this, 
                 Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), 
                 Manager.Presenter, Level.Engine.Assets);
         }

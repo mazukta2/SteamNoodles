@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
@@ -15,7 +16,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            view.HandView.SetScreen(this);
+
+            view.HandView.Presenter = new HandPresenter(view.HandView.Level.Model.Hand, Manager, view.HandView);
 
             _resources.Points.OnPointsChanged += HandlePointsChanged;
             HandlePointsChanged();

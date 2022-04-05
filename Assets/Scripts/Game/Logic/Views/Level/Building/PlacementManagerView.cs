@@ -7,13 +7,12 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
-    public class PlacementManagerView : View
+    public class PlacementManagerView : PresenterView<PlacementManagerPresenter>
     {
         public IViewContainer ConstrcutionContainer { get; private set; }
         public IViewPrefab ConstrcutionPrototype { get; private set; }
         public IViewContainer CellsContainer { get; private set; }
         public IViewPrefab Cell { get; private set; }
-        public PlacementManagerPresenter Presenter { get; private set; }
 
         private ServiceWaiter<ScreenManagerService> _wait;
 

@@ -11,13 +11,12 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
-    public class GhostManagerView : View
+    public class GhostManagerView : PresenterView<GhostManagerPresenter>
     {
         public IViewContainer Container { get; private set; }
         public IViewPrefab GhostPrototype { get; private set; }
 
         private ServiceWaiter<ScreenManagerService> _wait;
-        private GhostManagerPresenter _presenter;
 
         public GhostManagerView(ILevel level, IViewContainer container, IViewPrefab ghostPrototype) : base(level)
         {
@@ -35,9 +34,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         private void Load(ScreenManagerService manager)
         {
-            _presenter = new GhostManagerPresenter(manager.Get(), Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), Level.Engine.Controls, 
+            Presenter = new GhostManagerPresenter(manager.Get(), Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), Level.Engine.Controls, 
                 Level.Model.Constructions, this);
-            Level.Services.Add(new GhostManagerService(_presenter));
+            Level.Services.Add(new GhostManagerService(Presenter));
         }
     }
 }

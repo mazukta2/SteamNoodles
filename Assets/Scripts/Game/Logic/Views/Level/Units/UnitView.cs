@@ -7,24 +7,17 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
-    public class UnitView : View
+    public class UnitView : PresenterView<UnitPresenter>
     {
         public ILevelPosition Position { get; }
         public IRotator Rotator { get; }
         public IAnimator Animator { get; }
-
-        private UnitPresenter _presenter;
 
         public UnitView(ILevel level, ILevelPosition position, IRotator rotator, IAnimator animator) : base(level)
         {
             Position = position;
             Rotator = rotator;
             Animator = animator;
-        }
-
-        public void Init(Unit model)
-        {
-            _presenter = new UnitPresenter(model, this);
         }
     }
 }
