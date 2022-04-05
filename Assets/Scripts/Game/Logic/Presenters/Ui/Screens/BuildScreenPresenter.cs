@@ -49,9 +49,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             public void Open(ConstructionCard constructionCard)
             {
                 Manager.Open<BuildScreenView>(Init);
-                void Init(BuildScreenView screenView, ScreenManagerPresenter managerPresenter)
+
+                BaseGameScreenPresenter Init(BuildScreenView screenView, ScreenManagerPresenter managerPresenter)
                 {
-                    screenView.Init(managerPresenter, constructionCard);
+                    return new BuildScreenPresenter(screenView, managerPresenter, screenView.Level.Model.Resources, constructionCard);
                 }
             }
         }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
-    public interface IEnabler<T> where T : Enum
+    public interface ISwitcher<T> where T : Enum
     {
         T Value { get; set; }
     }

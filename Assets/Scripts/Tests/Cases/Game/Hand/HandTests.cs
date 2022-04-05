@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Tests.Environment.Common;
 using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Tests.Cases;
@@ -49,9 +50,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         {
             public override IView CreateView<T>(ILevel level, MockContainerView container)
             {
-                var buttonView = new ButtonView(level);
-                var imageView = new ImageView(level);
-                return new HandConstructionView(level, buttonView, imageView);
+                return new HandConstructionView(level, new ButtonMock(), new ImageMock());
             }
         }
 

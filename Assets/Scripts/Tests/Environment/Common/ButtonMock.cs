@@ -1,18 +1,15 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Views.Ui
+namespace Game.Assets.Scripts.Tests.Environment.Common
 {
-    public class ButtonView : View
+    public class ButtonMock : IButton
     {
         public bool IsShowing { get; set; } = true;
         public bool IsActive { get; set; } = true;
 
         private Action _action;
-
-        public ButtonView(ILevel level) : base(level)
-        {
-        }
 
         public void SetAction(Action action)
         {

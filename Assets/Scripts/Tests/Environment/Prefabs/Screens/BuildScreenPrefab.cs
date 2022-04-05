@@ -12,8 +12,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
     {
         public override IView CreateView<T>(ILevel level, MockContainerView container)
         {
-            var button = new ButtonView(level);
-            return new BuildScreenView(level, button, new UiText(), new UiText(), new ProgressBar());
+            return new BuildScreenView(level, new ButtonMock(), new UiText(), new UiText(), new ProgressBar());
         }
     }
 }

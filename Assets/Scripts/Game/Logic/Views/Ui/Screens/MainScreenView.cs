@@ -1,12 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 {
-    public class MainScreenView : CommonScreenView
+    public class MainScreenView : ScreenView
     {
         public HandView HandView { get; set; }
         public IText Points { get; set; }
@@ -17,11 +15,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
             HandView = handView;
             Points = points;
             PointsProgress = pointsProgress;
-        }
-
-        public override void Init(ScreenManagerPresenter manager)
-        {
-            ScreenPresenter = new MainScreenPresenter(this, manager, Level.Model.Resources);
         }
     }
 }

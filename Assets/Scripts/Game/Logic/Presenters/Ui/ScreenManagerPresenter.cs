@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine.Assets;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
@@ -27,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         }
 
-        public void Open<TScreen>(Action<TScreen, ScreenManagerPresenter> init) where TScreen : IScreenView
+        public void Open<TScreen>(Func<TScreen, ScreenManagerPresenter, BaseGameScreenPresenter> init) where TScreen : IScreenView
         {
             var screenPrefab = _screenAssets.GetScreen<TScreen>();
             if (screenPrefab == null)
@@ -35,7 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
             _view.Screen.Clear();
             var view = (TScreen)_view.Screen.Spawn<TScreen>(screenPrefab);
-            init(view, this);
+            view.ScreenPresenter = init(view, this);
             OnScreenOpened(view.ScreenPresenter);
         }
 
@@ -48,13 +49,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         public class CommonScreens : ScreenCollection
         {
-            public void Open<TScreen>() where TScreen : CommonScreenView
+            public void Open<TScreen>() where TScreen : ScreenView
             {
                 Manager.Open<TScreen>(Init);
 
-                void Init(TScreen screenView, ScreenManagerPresenter managerPresenter)
+                BaseGameScreenPresenter Init(TScreen screenView, ScreenManagerPresenter managerPresenter)
                 {
-                    screenView.Init(managerPresenter);
+                    if (screenView is MainScreenView mainScreen)
+                        return new MainScreenPresenter(mainScreen, managerPresenter, screenView.Level.Model.Resources);
+
+                    throw new Exception("Unknown screen " + typeof(TScreen));
                 }
             }
         }

@@ -46,7 +46,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
         {
             public override IView CreateView<T>(ILevel level, MockContainerView container)
             {
-                return new CellView(level, new Enabler<CellPlacementStatus>(), new LevelPosition());
+                return new CellView(level, new Switcher<CellPlacementStatus>(), new LevelPosition());
             }
         }
 

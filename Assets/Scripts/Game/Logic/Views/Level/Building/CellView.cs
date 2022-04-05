@@ -13,10 +13,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     {
         public event Action OnUpdate = delegate { };
         public ILevelPosition LocalPosition { get; private set; }
-        public IEnabler<CellPlacementStatus> State { get; private set; }
+        public ISwitcher<CellPlacementStatus> State { get; private set; }
         public PlacementCellPresenter Presenter { get; private set; }
 
-        public CellView(ILevel level, IEnabler<CellPlacementStatus> state, ILevelPosition position) : base(level)
+        public CellView(ILevel level, ISwitcher<CellPlacementStatus> state, ILevelPosition position) : base(level)
         {
             State = state;
             LocalPosition = position;
