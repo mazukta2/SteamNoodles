@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine.Assets;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
@@ -26,7 +27,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         }
 
-        public void Open<TScreen>(Action<TScreen, ScreenManagerPresenter> init) where TScreen : ScreenView
+        public void Open<TScreen>(Action<TScreen, ScreenManagerPresenter> init) where TScreen : IScreenView
         {
             var screenPrefab = _screenAssets.GetScreen<TScreen>();
             if (screenPrefab == null)
@@ -35,7 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
             _view.Screen.Clear();
             var view = (TScreen)_view.Screen.Spawn<TScreen>(screenPrefab);
             init(view, this);
-            OnScreenOpened(view.Presenter);
+            OnScreenOpened(view.ScreenPresenter);
         }
 
         public TPreScreen GetCollection<TPreScreen>() where TPreScreen : ScreenCollection, new()

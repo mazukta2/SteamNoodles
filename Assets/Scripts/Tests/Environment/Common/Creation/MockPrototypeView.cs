@@ -6,14 +6,14 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
 {
     public class MockPrototypeView : View, IViewPrefab
     {
-        private TestViewPrefab _prefab;
+        private MockViewPrefab _prefab;
 
-        public MockPrototypeView(ILevel level, TestViewPrefab prefab) : base(level)
+        public MockPrototypeView(ILevel level, MockViewPrefab prefab) : base(level)
         {
             _prefab = prefab;
         }
 
-        public T Create<T>(MockContainerView viewContainer) where T : View
+        public T Create<T>(MockContainerView viewContainer) where T : IView
         {
             return (T)_prefab.CreateInContainer<T>(viewContainer);
         }

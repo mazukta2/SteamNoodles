@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 
         public void Init(ScreenManagerPresenter manager, ConstructionCard constructionCard)
         {
-            Presenter = new BuildScreenPresenter(this, manager, Level.Model.Resources, constructionCard);
+            ScreenPresenter = new BuildScreenPresenter(this, manager, Level.Model.Resources, constructionCard);
         }
 
     }

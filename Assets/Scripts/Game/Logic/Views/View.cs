@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views
 {
-    public abstract class View : Disposable
+    public abstract class View : Disposable, IView
     {
         protected ILevel Level { get; private set; }
 

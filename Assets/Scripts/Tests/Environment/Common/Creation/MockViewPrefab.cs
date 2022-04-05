@@ -8,11 +8,11 @@ using System.Text;
 namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
 {
     // prefab must create view presenter by request
-    public abstract class TestViewPrefab : IViewPrefab
+    public abstract class MockViewPrefab : IViewPrefab
     {
-        public abstract View CreateView<T>(ILevel level, MockContainerView container) where T : View;
+        public abstract IView CreateView<T>(ILevel level, MockContainerView container) where T : IView;
 
-        public View CreateInContainer<T>(MockContainerView conteiner) where T : View
+        public IView CreateInContainer<T>(MockContainerView conteiner) where T : IView
         {
             return conteiner.Create((l) => CreateView<T>(l, conteiner));
         }

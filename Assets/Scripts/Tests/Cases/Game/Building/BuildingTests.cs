@@ -226,6 +226,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<GhostView>().Count);
 
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.IsReadyToPlace || x.State.Value == CellPlacementStatus.IsAvailableGhostPlace));
 

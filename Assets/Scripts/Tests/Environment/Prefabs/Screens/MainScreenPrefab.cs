@@ -10,9 +10,9 @@ using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 {
-    public class MainScreenPrefab : TestViewPrefab
+    public class MainScreenPrefab : MockViewPrefab
     {
-        public override View CreateView<T>(ILevel level, MockContainerView container)
+        public override IView CreateView<T>(ILevel level, MockContainerView container)
         {
             var handContainer = container.Add(new MockContainerView(level));
             var prototype = container.Add(new MockPrototypeView(level, new HandConstructionViewPrefab()));
@@ -20,9 +20,9 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
             return new MainScreenView(level, handView, new UiText(), new ProgressBar());
         }
 
-        private class HandConstructionViewPrefab : TestViewPrefab
+        private class HandConstructionViewPrefab : MockViewPrefab
         {
-            public override View CreateView<T>(ILevel level, MockContainerView container)
+            public override IView CreateView<T>(ILevel level, MockContainerView container)
             {
                 var buttonView = container.Add(new ButtonView(level));
                 var imageView = container.Add(new ImageView(level));

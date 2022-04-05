@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 
         public override void Init(ScreenManagerPresenter manager)
         {
-            Presenter = new MainScreenPresenter(this, manager, Level.Model.Resources);
+            ScreenPresenter = new MainScreenPresenter(this, manager, Level.Model.Resources);
         }
     }
 }

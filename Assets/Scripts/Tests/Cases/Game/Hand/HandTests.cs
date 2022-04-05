@@ -45,9 +45,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
 
-        private class HandConstructionViewPrefab : TestViewPrefab
+        private class HandConstructionViewPrefab : MockViewPrefab
         {
-            public override View CreateView<T>(ILevel level, MockContainerView container)
+            public override IView CreateView<T>(ILevel level, MockContainerView container)
             {
                 var buttonView = new ButtonView(level);
                 var imageView = new ImageView(level);

@@ -10,10 +10,10 @@ namespace Game.Tests.Controllers
 {
     public class AssetsInTests : Disposable, IAssets
     {
-        public ScreenAssetsInTests Screens { get; } = new ScreenAssetsInTests();
+        public ScreenAssetsMock Screens { get; } = new ScreenAssetsMock();
         IScreenAssets IAssets.Screens => Screens;
 
-        private Dictionary<string, TestViewPrefab> _constructions = new Dictionary<string, TestViewPrefab>();
+        private Dictionary<string, MockViewPrefab> _constructions = new Dictionary<string, MockViewPrefab>();
 
         protected override void DisposeInner()
         {
@@ -30,7 +30,7 @@ namespace Game.Tests.Controllers
             return prefab;
         }
 
-        public void AddPrefab(string path, TestViewPrefab prefab)
+        public void AddPrefab(string path, MockViewPrefab prefab)
         {
             _constructions.Add(path, prefab);
         }

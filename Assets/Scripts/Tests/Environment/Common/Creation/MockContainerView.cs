@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
 
     public class MockContainerView : View, IViewContainer
     {
-        private List<View> _views = new List<View>();
+        private List<IView> _views = new List<IView>();
 
         public MockContainerView(ILevel level) : base(level)
         {
@@ -29,13 +29,13 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
             _views.Clear();
         }
 
-        public T Create<T>(TestViewPrefab viewPrefab) where T : View
+        public T Create<T>(MockViewPrefab viewPrefab) where T : IView
         {
             if (viewPrefab == null) throw new Exception($"Cant find view");
             return (T)viewPrefab.CreateInContainer<T>(this);
         }
 
-        public T Create<T>(Func<ILevel, T> creator) where T : View
+        public T Create<T>(Func<ILevel, T> creator) where T : IView
         {
             var viewPresenter = creator(Level);
             _views.Add(viewPresenter);
@@ -65,13 +65,13 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
             return view;
         }
 
-        public T Spawn<T>(IViewPrefab prefab) where T : View
+        public T Spawn<T>(IViewPrefab prefab) where T : IView
         {
             if (prefab is MockPrototypeView prototypeView)
             {
                 return prototypeView.Create<T>(this);
             }
-            else if (prefab is TestViewPrefab viewPrefab)
+            else if (prefab is MockViewPrefab viewPrefab)
             {
                 return Create<T>(viewPrefab);
             }

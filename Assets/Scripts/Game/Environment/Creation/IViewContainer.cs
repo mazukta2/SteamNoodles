@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Game.Environment.Creation
 {
     public interface IViewContainer
     {
-        T Spawn<T>(IViewPrefab prefab) where T : View;
+        T Spawn<T>(IViewPrefab prefab) where T : IView;
         void Clear();
     }
 }

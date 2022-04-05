@@ -33,35 +33,35 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
             new UnitsManagerView(level, new MockContainerView(level), new MockPrototypeView(level, new UnitViewPrefab()));
         }
 
-        private class GhostViewPrefab : TestViewPrefab
+        private class GhostViewPrefab : MockViewPrefab
         {
-            public override View CreateView<T>(ILevel level, MockContainerView container)
+            public override IView CreateView<T>(ILevel level, MockContainerView container)
             {
                 var contrainer = new MockContainerView(level);
                 return new GhostView(level, contrainer, new LevelPosition(), new Rotator());
             }
         }
 
-        private class CellViewPrefab : TestViewPrefab
+        private class CellViewPrefab : MockViewPrefab
         {
-            public override View CreateView<T>(ILevel level, MockContainerView container)
+            public override IView CreateView<T>(ILevel level, MockContainerView container)
             {
                 return new CellView(level, new Enabler<CellPlacementStatus>(), new LevelPosition());
             }
         }
 
-        private class ConstructionViewPrefab : TestViewPrefab
+        private class ConstructionViewPrefab : MockViewPrefab
         {
-            public override View CreateView<T>(ILevel level, MockContainerView container)
+            public override IView CreateView<T>(ILevel level, MockContainerView container)
             {
                 var c = new MockContainerView(level);
                 return new ConstructionView(level, c, new LevelPosition(), new Rotator());
             }
         }
 
-        private class UnitViewPrefab : TestViewPrefab
+        private class UnitViewPrefab : MockViewPrefab
         {
-            public override View CreateView<T>(ILevel level, MockContainerView container) 
+            public override IView CreateView<T>(ILevel level, MockContainerView container) 
             {
                 return new UnitView(level, new LevelPosition(), new Rotator(), new UnitAnimation());
             }

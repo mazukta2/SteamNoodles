@@ -8,9 +8,9 @@ using Game.Assets.Scripts.Tests.Environment.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 {
-    public class BuildScreenPrefab : TestViewPrefab
+    public class BuildScreenPrefab : MockViewPrefab
     {
-        public override View CreateView<T>(ILevel level, MockContainerView container)
+        public override IView CreateView<T>(ILevel level, MockContainerView container)
         {
             var button = new ButtonView(level);
             return new BuildScreenView(level, button, new UiText(), new UiText(), new ProgressBar());
