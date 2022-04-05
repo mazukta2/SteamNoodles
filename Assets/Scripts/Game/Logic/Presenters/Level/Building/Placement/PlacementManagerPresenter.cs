@@ -10,7 +10,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class PlacementManagerPresenter : BasePresenter<PlacementManagerView, PlacementManagerPresenter>
+    public class PlacementManagerPresenter : BasePresenter<PlacementManagerView>
     {
         private ConstructionsManager _model;
         private ScreenManagerPresenter _screenManager;

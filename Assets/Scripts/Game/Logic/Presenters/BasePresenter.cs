@@ -4,14 +4,13 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters
 {
-    public abstract class BasePresenter<TView, TPresenter> : PrivateDisposable 
-        where TView : IPresenterView<TPresenter>, IPresenterIniter<TPresenter>
-        where TPresenter : BasePresenter<TView, TPresenter>
+    public abstract class BasePresenter<TView> : PrivateDisposable, IPresenter
+        where TView : IView, IInitPresenter
     {
         private IView _view;
         public BasePresenter(TView view)
         {
-            view.SetPresenter((TPresenter)this);
+            view.SetPresenter(this);
 
             _view = view ?? throw new ArgumentNullException(nameof(view));
             if (_view.IsDisposed) throw new ArgumentException(nameof(view) + " is disposed");

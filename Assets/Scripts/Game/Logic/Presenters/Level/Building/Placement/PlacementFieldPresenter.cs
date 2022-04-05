@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 {
-    public class PlacementFieldPresenter : BasePresenter<PlacementFieldView, PlacementFieldPresenter>
+    public class PlacementFieldPresenter : BasePresenter<PlacementFieldView>
     {
         private PlacementField _model;
         private PlacementFieldView _view;

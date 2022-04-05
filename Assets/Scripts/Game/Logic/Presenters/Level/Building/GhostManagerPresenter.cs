@@ -11,7 +11,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 {
-    public class GhostManagerPresenter : BasePresenter<GhostManagerView, GhostManagerPresenter>
+    public class GhostManagerPresenter : BasePresenter<GhostManagerView>
     {
         public event Action OnGhostChanged = delegate { };
         public event Action OnGhostPostionChanged = delegate { };

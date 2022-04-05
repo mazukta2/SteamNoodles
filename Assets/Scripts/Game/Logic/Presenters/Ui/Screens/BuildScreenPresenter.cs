@@ -9,7 +9,7 @@ using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.ScreenManagerPresenter
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
-    public class BuildScreenPresenter : BaseGameScreenPresenter<BuildScreenView, BuildScreenPresenter>
+    public class BuildScreenPresenter : BasePresenter<BuildScreenView>
     {
         public ConstructionCard CurrentCard { get; }
 
@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private ScreenManagerPresenter _screenManager;
         private Resources _resources;
 
-        public BuildScreenPresenter(BuildScreenView view, ScreenManagerPresenter screenManager, Resources resources, ConstructionCard constructionCard) : base(screenManager, view)
+        public BuildScreenPresenter(BuildScreenView view, ScreenManagerPresenter screenManager, Resources resources, ConstructionCard constructionCard) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));

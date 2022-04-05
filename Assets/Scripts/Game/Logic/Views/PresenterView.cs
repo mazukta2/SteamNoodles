@@ -7,16 +7,18 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views
 {
-    public abstract class PresenterView<T> : View, IPresenterView<T>, IPresenterIniter<T>
+    public abstract class PresenterView<TPresenter> : View, 
+        IViewWith<TPresenter>, IInitPresenter 
+        where TPresenter : IPresenter
     {
-        public T Presenter { get; set; }
+        public TPresenter Presenter { get; private set; }
         protected PresenterView(ILevel level) : base(level)
         {
         }
 
-        void IPresenterIniter<T>.SetPresenter(T presenter)
+        void IInitPresenter.SetPresenter(IPresenter presenter)
         {
-            Presenter = presenter;
+            Presenter = (TPresenter)presenter;
         }
     }
 }

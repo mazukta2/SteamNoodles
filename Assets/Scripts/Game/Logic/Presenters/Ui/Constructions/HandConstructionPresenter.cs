@@ -5,7 +5,7 @@ using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.BuildScreenPre
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
-    public class HandConstructionPresenter : BasePresenter<HandConstructionView, HandConstructionPresenter>
+    public class HandConstructionPresenter : BasePresenter<HandConstructionView>
     {
         private ConstructionCard _model;
         private HandConstructionView _view;

@@ -8,7 +8,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 {
-    public class ScreenManagerPresenter : BasePresenter<ScreenManagerView, ScreenManagerPresenter>
+    public class ScreenManagerPresenter : BasePresenter<ScreenManagerView>
     {
         public Action<IScreenView> OnScreenOpened = delegate { };
 

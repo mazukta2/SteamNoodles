@@ -8,6 +8,7 @@ using System.Text;
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 {
     public abstract class ScreenView<T> : PresenterView<T>, IScreenView 
+        where T : IPresenter
     {
         protected ScreenView(ILevel level) : base(level)
         {

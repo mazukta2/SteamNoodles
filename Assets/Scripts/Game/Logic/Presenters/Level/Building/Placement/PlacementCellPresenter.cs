@@ -7,7 +7,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
-    public class PlacementCellPresenter : BasePresenter<CellView, PlacementCellPresenter>
+    public class PlacementCellPresenter : BasePresenter<CellView>
     {
         public IntPoint Position => _position;
 

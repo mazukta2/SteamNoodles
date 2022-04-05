@@ -4,7 +4,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
-    public class HandPresenter : BasePresenter<HandView, HandPresenter>
+    public class HandPresenter : BasePresenter<HandView>
     {
         private readonly PlayerHand _model;
         private readonly ScreenManagerPresenter _screenManager;

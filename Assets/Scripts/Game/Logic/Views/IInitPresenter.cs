@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views
 {
-    public interface IPresenterView<T> : IView
+    public interface IInitPresenter
     {
-        T Presenter { get; }
+        void SetPresenter(IPresenter presenter);
+
     }
 }

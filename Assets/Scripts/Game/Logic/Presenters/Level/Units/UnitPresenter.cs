@@ -6,7 +6,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 {
-    public class UnitPresenter : BasePresenter<UnitView, UnitPresenter>
+    public class UnitPresenter : BasePresenter<UnitView>
     {
         public Unit Unit => _model;
 

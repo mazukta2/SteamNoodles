@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
 
             public TestView(ILevel level) : base(level)
             {
-                Presenter = new TestPresenter(this);
+                new TestPresenter(this);
                 IsInited = true;
             }
 
@@ -43,7 +43,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
             }
         }
 
-        private class TestPresenter : BasePresenter<TestView, TestPresenter>
+        private class TestPresenter : BasePresenter<TestView>
         {
             public TestPresenter(TestView view) : base(view)
             {
