@@ -15,36 +15,36 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
     {
         public override void FillLevel(LevelInTests level)
         {
-            var screenSpawnPoint = new TestContainerView(level);
+            var screenSpawnPoint = new MockContainerView(level);
             new ScreenManagerView(level, screenSpawnPoint);
 
-            var ghostContainer = new TestContainerView(level);
-            var ghostPrototype = new TestPrototypeView(level, new GhostViewPrefab());
+            var ghostContainer = new MockContainerView(level);
+            var ghostPrototype = new MockPrototypeView(level, new GhostViewPrefab());
             new GhostManagerView(level, ghostContainer, ghostPrototype);
 
-            var cellContainer = new TestContainerView(level);
-            var cellPrototype = new TestPrototypeView(level, new CellViewPrefab());
-            var constrcutionContainer = new TestContainerView(level);
-            var constructionPrototype = new TestPrototypeView(level, new ConstructionViewPrefab());
+            var cellContainer = new MockContainerView(level);
+            var cellPrototype = new MockPrototypeView(level, new CellViewPrefab());
+            var constrcutionContainer = new MockContainerView(level);
+            var constructionPrototype = new MockPrototypeView(level, new ConstructionViewPrefab());
             var placementManager = new PlacementManagerView(level, cellContainer, cellPrototype, constrcutionContainer, constructionPrototype);
 
             new PlacementFieldView(level, placementManager, 0);
 
-            new UnitsManagerView(level, new TestContainerView(level), new TestPrototypeView(level, new UnitViewPrefab()));
+            new UnitsManagerView(level, new MockContainerView(level), new MockPrototypeView(level, new UnitViewPrefab()));
         }
 
         private class GhostViewPrefab : TestViewPrefab
         {
-            public override View CreateView<T>(ILevel level, TestContainerView container)
+            public override View CreateView<T>(ILevel level, MockContainerView container)
             {
-                var contrainer = new TestContainerView(level);
+                var contrainer = new MockContainerView(level);
                 return new GhostView(level, contrainer, new LevelPosition(), new Rotator());
             }
         }
 
         private class CellViewPrefab : TestViewPrefab
         {
-            public override View CreateView<T>(ILevel level, TestContainerView container)
+            public override View CreateView<T>(ILevel level, MockContainerView container)
             {
                 return new CellView(level, new Enabler<CellPlacementStatus>(), new LevelPosition());
             }
@@ -52,16 +52,16 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
 
         private class ConstructionViewPrefab : TestViewPrefab
         {
-            public override View CreateView<T>(ILevel level, TestContainerView container)
+            public override View CreateView<T>(ILevel level, MockContainerView container)
             {
-                var c = new TestContainerView(level);
+                var c = new MockContainerView(level);
                 return new ConstructionView(level, c, new LevelPosition(), new Rotator());
             }
         }
 
         private class UnitViewPrefab : TestViewPrefab
         {
-            public override View CreateView<T>(ILevel level, TestContainerView container) 
+            public override View CreateView<T>(ILevel level, MockContainerView container) 
             {
                 return new UnitView(level, new LevelPosition(), new Rotator(), new UnitAnimation());
             }

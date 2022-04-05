@@ -9,11 +9,11 @@ using System.Linq;
 namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
 {
 
-    public class TestContainerView : View, IViewContainer
+    public class MockContainerView : View, IViewContainer
     {
         private List<View> _views = new List<View>();
 
-        public TestContainerView(ILevel level) : base(level)
+        public MockContainerView(ILevel level) : base(level)
         {
         }
 
@@ -67,7 +67,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
 
         public T Spawn<T>(IViewPrefab prefab) where T : View
         {
-            if (prefab is TestPrototypeView prototypeView)
+            if (prefab is MockPrototypeView prototypeView)
             {
                 return prototypeView.Create<T>(this);
             }

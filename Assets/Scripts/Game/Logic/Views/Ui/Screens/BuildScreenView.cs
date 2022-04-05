@@ -23,21 +23,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
             CurrentPoints = currentPoints;
         }
 
-        private void Init(ScreenManagerPresenter manager, ConstructionCard constructionCard)
+        public void Init(ScreenManagerPresenter manager, ConstructionCard constructionCard)
         {
             Presenter = new BuildScreenPresenter(this, manager, Level.Model.Resources, constructionCard);
         }
 
-        public class BuildScreenCollection : ScreenCollection
-        {
-            public void Open(ConstructionCard constructionCard)
-            {
-                Manager.Open<BuildScreenView>(Init);
-                void Init(BuildScreenView screenView, ScreenManagerPresenter managerPresenter)
-                {
-                    screenView.Init(managerPresenter, constructionCard);
-                }
-            }
-        }
     }
 }

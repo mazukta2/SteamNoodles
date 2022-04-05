@@ -10,9 +10,9 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
     // prefab must create view presenter by request
     public abstract class TestViewPrefab : IViewPrefab
     {
-        public abstract View CreateView<T>(ILevel level, TestContainerView container) where T : View;
+        public abstract View CreateView<T>(ILevel level, MockContainerView container) where T : View;
 
-        public View CreateInContainer<T>(TestContainerView conteiner) where T : View
+        public View CreateInContainer<T>(MockContainerView conteiner) where T : View
         {
             return conteiner.Create((l) => CreateView<T>(l, conteiner));
         }

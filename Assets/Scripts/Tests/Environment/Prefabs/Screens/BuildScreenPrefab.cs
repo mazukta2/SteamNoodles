@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 {
     public class BuildScreenPrefab : TestViewPrefab
     {
-        public override View CreateView<T>(ILevel level, TestContainerView container)
+        public override View CreateView<T>(ILevel level, MockContainerView container)
         {
             var button = new ButtonView(level);
             return new BuildScreenView(level, button, new UiText(), new UiText(), new ProgressBar());

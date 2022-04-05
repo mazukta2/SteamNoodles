@@ -8,7 +8,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Prefabs.Levels.Constructions
 {
     public class BasicConstructionModelPrefab : TestViewPrefab
     {
-        public override View CreateView<T>(ILevel level, TestContainerView container)
+        public override View CreateView<T>(ILevel level, MockContainerView container)
         {
             return new ConstructionModelView(level);
         }

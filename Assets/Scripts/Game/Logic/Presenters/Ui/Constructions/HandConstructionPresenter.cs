@@ -1,8 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using static Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.BuildScreenView;
+using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.BuildScreenPresenter;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {

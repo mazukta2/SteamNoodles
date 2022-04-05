@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
@@ -43,5 +44,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _view.PointsProgress.AdditonalValue = (float)(_resources.Points.Value + points) / _resources.Points.PointsForNextLevel;
         }
 
+        public class BuildScreenCollection : ScreenCollection
+        {
+            public void Open(ConstructionCard constructionCard)
+            {
+                Manager.Open<BuildScreenView>(Init);
+                void Init(BuildScreenView screenView, ScreenManagerPresenter managerPresenter)
+                {
+                    screenView.Init(managerPresenter, constructionCard);
+                }
+            }
+        }
     }
 }

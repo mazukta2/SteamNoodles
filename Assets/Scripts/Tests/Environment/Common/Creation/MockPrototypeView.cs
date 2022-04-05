@@ -4,16 +4,16 @@ using Game.Assets.Scripts.Game.Logic.Views;
 
 namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
 {
-    public class TestPrototypeView : View, IViewPrefab
+    public class MockPrototypeView : View, IViewPrefab
     {
         private TestViewPrefab _prefab;
 
-        public TestPrototypeView(ILevel level, TestViewPrefab prefab) : base(level)
+        public MockPrototypeView(ILevel level, TestViewPrefab prefab) : base(level)
         {
             _prefab = prefab;
         }
 
-        public T Create<T>(TestContainerView viewContainer) where T : View
+        public T Create<T>(MockContainerView viewContainer) where T : View
         {
             return (T)_prefab.CreateInContainer<T>(viewContainer);
         }

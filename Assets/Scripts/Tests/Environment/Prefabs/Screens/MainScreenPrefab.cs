@@ -12,17 +12,17 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 {
     public class MainScreenPrefab : TestViewPrefab
     {
-        public override View CreateView<T>(ILevel level, TestContainerView container)
+        public override View CreateView<T>(ILevel level, MockContainerView container)
         {
-            var handContainer = container.Add(new TestContainerView(level));
-            var prototype = container.Add(new TestPrototypeView(level, new HandConstructionViewPrefab()));
+            var handContainer = container.Add(new MockContainerView(level));
+            var prototype = container.Add(new MockPrototypeView(level, new HandConstructionViewPrefab()));
             var handView = container.Add(new HandView(level, handContainer, prototype));
             return new MainScreenView(level, handView, new UiText(), new ProgressBar());
         }
 
         private class HandConstructionViewPrefab : TestViewPrefab
         {
-            public override View CreateView<T>(ILevel level, TestContainerView container)
+            public override View CreateView<T>(ILevel level, MockContainerView container)
             {
                 var buttonView = container.Add(new ButtonView(level));
                 var imageView = container.Add(new ImageView(level));
