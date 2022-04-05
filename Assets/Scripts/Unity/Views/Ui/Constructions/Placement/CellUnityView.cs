@@ -8,34 +8,30 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class CellUnityView : UnityView<CellView>
+    public class CellUnityView : UnityView<CellView>, ISwitcher<CellPlacementStatus>
     {
         [SerializeField] GameObject _normal;
         [SerializeField] GameObject _target;
         [SerializeField] GameObject _highlight;
         [SerializeField] GameObject _blocked;
+        private CellPlacementStatus _status;
+
         protected override CellView CreateView()
         {
-            return new CellView(Level, new UnityLevelPosition(transform));
+            return new CellView(Level, this, new UnityLevelPosition(transform));
         }
 
-        protected override void AfterAwake()
+        private void SetStatus(CellPlacementStatus status)
         {
-            View.OnUpdate += View_OnUpdate;
+            _status = status;
+
+            _normal.SetActive(status == CellPlacementStatus.Normal);
+            _target.SetActive(status == CellPlacementStatus.IsReadyToPlace);
+            _highlight.SetActive(status == CellPlacementStatus.IsAvailableGhostPlace);
+            _blocked.SetActive(status == CellPlacementStatus.IsNotAvailableGhostPlace);
         }
 
-        protected override void OnDisposeView(CellView view)
-        {
-            view.OnUpdate -= View_OnUpdate;
-        }
-
-        private void View_OnUpdate()
-        {
-            _normal.SetActive(View.State == CellPlacementStatus.Normal);
-            _target.SetActive(View.State == CellPlacementStatus.IsReadyToPlace);
-            _highlight.SetActive(View.State == CellPlacementStatus.IsAvailableGhostPlace);
-            _blocked.SetActive(View.State == CellPlacementStatus.IsNotAvailableGhostPlace);
-        }
+        public CellPlacementStatus Value { get => _status; set => SetStatus(value); }
 
     }
 

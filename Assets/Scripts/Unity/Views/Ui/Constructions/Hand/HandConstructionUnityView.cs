@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 
         protected override HandConstructionView CreateView()
         {
-            return new HandConstructionView(Level, _button.View, _image.View);
+            return new HandConstructionView(Level, _button, _image);
         }
     }
 

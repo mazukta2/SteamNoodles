@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Unity.Views
 {
-    public abstract class UnityView<TView> : MonoBehaviour where TView : View
+    public abstract class UnityView<TView> : MonoBehaviour where TView : class, IView
     {
         protected ILevel Level { get; private set; }
 

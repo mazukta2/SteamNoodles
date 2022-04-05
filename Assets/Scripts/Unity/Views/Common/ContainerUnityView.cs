@@ -12,9 +12,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
     {
         [SerializeField] Transform _pointer;
 
-        private List<View> _spawned = new List<View>();
+        private List<IView> _spawned = new List<IView>();
 
-        public T Spawn<T>(IViewPrefab prefab) where T : View
+        public T Spawn<T>(IViewPrefab prefab) where T : class, IView
         {
             if (prefab is ScreenPrefab screenPrefab)
             {

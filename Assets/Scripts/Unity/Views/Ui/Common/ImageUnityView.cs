@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using System;
 using UnityEngine;
@@ -6,9 +7,11 @@ using UnityEngine.UI;
 
 namespace Game.Assets.Scripts.Game.Unity.Views.Ui
 {
-    public class ImageUnityView : UnityView<ImageView>
+    public class ImageUnityView : MonoBehaviour, IImage
     {
         private Image _image;
+        public string Path { get; private set; }
+
         private Image GetImage()
         {
             if (_image == null)
@@ -16,33 +19,28 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
             return _image;
         }
 
-        protected override void AfterAwake()
+        protected void Awake()
         {
             UpdateImage();
-            View.OnImageSetted += UpdateImage;
         }
 
-        protected override void OnDisposeView(ImageView view)
-        {
-            view.OnImageSetted -= UpdateImage;
-        }
-
-        protected override ImageView CreateView()
-        {
-            return new ImageView(Level);
-        }
 
         private void UpdateImage()
         {
-            if (!string.IsNullOrEmpty(View.Path))
+            if (!string.IsNullOrEmpty(Path))
             {
-                var sprite = Resources.Load<Sprite>("Assets/"+View.Path);
+                var sprite = Resources.Load<Sprite>("Assets/"+Path);
                 if (sprite == null)
-                    throw new Exception($"Cant find {View.Path}");
+                    throw new Exception($"Cant find {Path}");
 
                 GetImage().sprite = sprite;
             }
         }
 
+        public void SetPath(string path)
+        {
+            Path = path;
+            UpdateImage();
+        }
     }
 }

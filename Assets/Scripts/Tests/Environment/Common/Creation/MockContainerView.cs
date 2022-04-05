@@ -65,7 +65,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
             return view;
         }
 
-        public T Spawn<T>(IViewPrefab prefab) where T : IView
+        public T Spawn<T>(IViewPrefab prefab) where T : class, IView
         {
             if (prefab is MockPrototypeView prototypeView)
             {

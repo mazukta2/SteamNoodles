@@ -1,16 +1,18 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Views.Ui;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game.Assets.Scripts.Game.Unity.Views.Ui
 {
-    public class ButtonUnityView : UnityView<ButtonView>
+    public class ButtonUnityView : MonoBehaviour, IButton
     {
         public bool IsShowing { get => GetButton().gameObject.activeSelf; set => GetButton().gameObject.SetActive(value); }
         public bool IsActive { get => GetButton().interactable; set => GetButton().interactable = value; }
         
         private Button _button;
+        private Action _action;
+
         private Button GetButton()
         {
             if (_button == null)
@@ -18,9 +20,9 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
             return _button;
         }
 
-        private void Click()
+        public void Click()
         {
-            View.Click();
+            _action();
         }
 
         protected void OnEnable()
@@ -33,9 +35,10 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui
             GetButton().onClick.RemoveListener(Click);
         }
 
-        protected override ButtonView CreateView()
+        public void SetAction(Action action)
         {
-            return new ButtonView(Level);
+            _action = action;
         }
+
     }
 }

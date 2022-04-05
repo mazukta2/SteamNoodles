@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         [SerializeField] Image _additionalProgress;
         protected override BuildScreenView CreateView()
         {
-            return new BuildScreenView(Level, _closeButton.View, 
+            return new BuildScreenView(Level, _closeButton, 
                 new UnityText(_additionalPoints), 
                 new UnityText(_currentPoints),
                 new UnityProgressBar(_progress, _additionalProgress));

@@ -34,7 +34,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             return new ScreenPrefab(prefab);
         }
 
-        public IViewPrefab GetScreen<T>() where T : ScreenView
+        public IViewPrefab GetScreen<T>() where T : IScreenView
         {
             var name = typeof(T).Name;
             name = name.Replace("View", "");

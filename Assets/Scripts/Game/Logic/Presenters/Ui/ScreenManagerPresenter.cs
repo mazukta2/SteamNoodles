@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         }
 
-        public void Open<TScreen>(Func<TScreen, ScreenManagerPresenter, object> init) where TScreen : IScreenView
+        public void Open<TScreen>(Func<TScreen, ScreenManagerPresenter, object> init) where TScreen : class, IScreenView
         {
             var screenPrefab = _screenAssets.GetScreen<TScreen>();
             if (screenPrefab == null)
@@ -49,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         public class CommonScreens : ScreenCollection
         {
-            public void Open<TScreen>() where TScreen : IScreenView
+            public void Open<TScreen>() where TScreen : class, IScreenView
             {
                 Manager.Open<TScreen>(Init);
 
