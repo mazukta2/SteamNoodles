@@ -20,6 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
             var position = new FieldPositionsCalculator(constrcutionsSettings.CellSize, construction.Definition.GetRect(construction.Rotation));
             _constructionView.LocalPosition.Value = position.GetViewPositionByWorldPosition(construction.Position);
+            _constructionView.Rotator.Look(ConstructionRotation.ToDirection(construction.Rotation));
 
             _constructionView.Container.Clear();
             _constructionView.Container.Spawn<ConstructionModelView>(assets.GetConstruction(construction.Definition.LevelViewPath));

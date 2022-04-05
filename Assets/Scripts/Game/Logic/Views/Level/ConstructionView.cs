@@ -11,14 +11,16 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     public class ConstructionView : View
     {
         public ILevelPosition LocalPosition { get; set; }
+        public IRotator Rotator { get; }
         public IViewContainer Container { get; set; }
 
         private ConstructionPresenter _presenter;
 
-        public ConstructionView(ILevel level, IViewContainer container, ILevelPosition position) : base(level)
+        public ConstructionView(ILevel level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
         {
             LocalPosition = position;
             Container = container;
+            Rotator = rotator;
         }
 
         public void Init(Construction construction,
