@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private void ScnemeAddedHandle(ConstructionCard obj)
         {
             var view = _view.Cards.Spawn<HandConstructionView>(_view.CardPrototype);
-            view.Presenter = new HandConstructionPresenter(_screenManager, view, obj);
+            new HandConstructionPresenter(_screenManager, view, obj);
         }
     }
 }

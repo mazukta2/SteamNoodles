@@ -7,11 +7,16 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Views
 {
-    public abstract class PresenterView<T> : View, IPresenterView<T>
+    public abstract class PresenterView<T> : View, IPresenterView<T>, IPresenterIniter<T>
     {
         public T Presenter { get; set; }
         protected PresenterView(ILevel level) : base(level)
         {
+        }
+
+        void IPresenterIniter<T>.SetPresenter(T presenter)
+        {
+            Presenter = presenter;
         }
     }
 }

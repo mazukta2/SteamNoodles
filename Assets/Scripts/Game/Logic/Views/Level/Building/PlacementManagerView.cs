@@ -35,7 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         private void Load(ScreenManagerService screenManager)
         {
-            Presenter = new PlacementManagerPresenter(Level.Model.Constructions, screenManager.Get(), this);
+            new PlacementManagerPresenter(Level.Model.Constructions, screenManager.Get(), this);
         }
     }
 }

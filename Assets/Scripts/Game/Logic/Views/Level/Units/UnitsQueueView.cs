@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
         public UnitsQueueView(ILevel level, ILevelPosition position) : base(level)
         {
             StartPosition = position;
-            Presenter = new UnitsQueuePresenter(this);
+            new UnitsQueuePresenter(this);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
 
-            view.HandView.Presenter = new HandPresenter(view.HandView.Level.Model.Hand, Manager, view.HandView);
+            new HandPresenter(view.HandView.Level.Model.Hand, Manager, view.HandView);
 
             _resources.Points.OnPointsChanged += HandlePointsChanged;
             HandlePointsChanged();

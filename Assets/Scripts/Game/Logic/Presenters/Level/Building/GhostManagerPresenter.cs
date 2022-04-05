@@ -59,7 +59,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
         {
             var view = _view.Container.Spawn<GhostView>(_view.GhostPrototype);
             _ghost = new GhostPresenter(_settings, _screenManager, _constructionsManager, buildScreen, _controls, _view.Level.Engine.Assets, view);
-            view.Presenter = _ghost;
             _ghost.OnGhostPostionChanged += UpdateGhostPosition;
 
             OnGhostChanged();

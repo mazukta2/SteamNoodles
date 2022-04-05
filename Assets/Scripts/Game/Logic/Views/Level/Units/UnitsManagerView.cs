@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
             Container = container;
             UnitPrototype = prototype;
 
-            Presenter = new UnitsPresenter(Level.Model.Units, this);
+            new UnitsPresenter(Level.Model.Units, this);
         }
     }
 }

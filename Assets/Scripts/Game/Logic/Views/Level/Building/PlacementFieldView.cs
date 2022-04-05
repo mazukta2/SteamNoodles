@@ -36,7 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         private void Init(GhostManagerService ghost)
         {
             var field = Level.Model.Constructions.Placements.ElementAt(_id);
-            Presenter = new PlacementFieldPresenter(ghost.Get(), field, this, 
+            new PlacementFieldPresenter(ghost.Get(), field, this, 
                 Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), 
                 Manager.Presenter, Level.Engine.Assets);
         }

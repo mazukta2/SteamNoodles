@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         private void Load(ScreenManagerService manager)
         {
-            Presenter = new GhostManagerPresenter(manager.Get(), Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), Level.Engine.Controls, 
+            new GhostManagerPresenter(manager.Get(), Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), Level.Engine.Controls, 
                 Level.Model.Constructions, this);
             Level.Services.Add(new GhostManagerService(Presenter));
         }
