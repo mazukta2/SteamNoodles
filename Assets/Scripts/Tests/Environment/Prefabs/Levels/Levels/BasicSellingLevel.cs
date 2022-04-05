@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -34,47 +35,35 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
 
         private class GhostViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(TestContainerView conteiner)
+            public override View CreateView<T>(ILevel level, TestContainerView container)
             {
-                return conteiner.Create((level) =>
-                {
-                    var contrainer = new TestContainerView(level);
-                    return new GhostView(level, contrainer, new LevelPosition(), new Rotator());
-                });
+                var contrainer = new TestContainerView(level);
+                return new GhostView(level, contrainer, new LevelPosition(), new Rotator());
             }
         }
 
         private class CellViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(TestContainerView conteiner)
+            public override View CreateView<T>(ILevel level, TestContainerView container)
             {
-                return conteiner.Create((level) =>
-                {
-                    return new CellView(level, new Enabler<CellPlacementStatus>(), new LevelPosition());
-                });
+                return new CellView(level, new Enabler<CellPlacementStatus>(), new LevelPosition());
             }
         }
 
         private class ConstructionViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(TestContainerView conteiner)
+            public override View CreateView<T>(ILevel level, TestContainerView container)
             {
-                return conteiner.Create((level) =>
-                {
-                    var c = new TestContainerView(level);
-                    return new ConstructionView(level,c, new LevelPosition(), new Rotator());
-                });
+                var c = new TestContainerView(level);
+                return new ConstructionView(level, c, new LevelPosition(), new Rotator());
             }
         }
 
         private class UnitViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(TestContainerView conteiner)
+            public override View CreateView<T>(ILevel level, TestContainerView container) 
             {
-                return conteiner.Create((level) =>
-                {
-                    return new UnitView(level, new LevelPosition(), new Rotator(), new UnitAnimation());
-                });
+                return new UnitView(level, new LevelPosition(), new Rotator(), new UnitAnimation());
             }
         }
     }

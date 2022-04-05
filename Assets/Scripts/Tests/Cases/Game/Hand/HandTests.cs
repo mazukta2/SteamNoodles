@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -45,14 +47,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
         private class HandConstructionViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(TestContainerView conteiner)
+            public override View CreateView<T>(ILevel level, TestContainerView container)
             {
-                return conteiner.Create((level) =>
-                {
-                    var buttonView = new ButtonView(level);
-                    var imageView = new ImageView(level);
-                    return new HandConstructionView(level, buttonView, imageView);
-                });
+                var buttonView = new ButtonView(level);
+                var imageView = new ImageView(level);
+                return new HandConstructionView(level, buttonView, imageView);
             }
         }
 

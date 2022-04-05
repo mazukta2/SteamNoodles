@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
 
         public T Create<T>(TestContainerView viewContainer) where T : View
         {
-            return (T)_prefab.Create<T>(viewContainer);
+            return (T)_prefab.CreateInContainer<T>(viewContainer);
         }
     }
 }

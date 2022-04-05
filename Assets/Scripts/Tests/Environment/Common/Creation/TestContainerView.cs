@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
         public T Create<T>(TestViewPrefab viewPrefab) where T : View
         {
             if (viewPrefab == null) throw new Exception($"Cant find view");
-            return (T)viewPrefab.Create<T>(this);
+            return (T)viewPrefab.CreateInContainer<T>(this);
         }
 
         public T Create<T>(Func<ILevel, T> creator) where T : View

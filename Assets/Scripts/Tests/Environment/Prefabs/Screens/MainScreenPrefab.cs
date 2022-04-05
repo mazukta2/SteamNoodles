@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -10,27 +12,21 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 {
     public class MainScreenPrefab : TestViewPrefab
     {
-        public override View Create<T>(TestContainerView conteiner)
+        public override View CreateView<T>(ILevel level, TestContainerView container)
         {
-            return conteiner.Create((level) =>
-            {
-                var container = conteiner.Add(new TestContainerView(level));
-                var prototype = conteiner.Add(new TestPrototypeView(level, new HandConstructionViewPrefab()));
-                var handView = conteiner.Add(new HandView(level, container, prototype));
-                return new MainScreenView(level, handView, new UiText(), new ProgressBar());
-            });
+            var handContainer = container.Add(new TestContainerView(level));
+            var prototype = container.Add(new TestPrototypeView(level, new HandConstructionViewPrefab()));
+            var handView = container.Add(new HandView(level, handContainer, prototype));
+            return new MainScreenView(level, handView, new UiText(), new ProgressBar());
         }
 
         private class HandConstructionViewPrefab : TestViewPrefab
         {
-            public override View Create<T>(TestContainerView conteiner)
+            public override View CreateView<T>(ILevel level, TestContainerView container)
             {
-                return conteiner.Create((level) =>
-                {
-                    var buttonView = conteiner.Add(new ButtonView(level));
-                    var imageView = conteiner.Add(new ImageView(level));
-                    return new HandConstructionView(level, buttonView, imageView);
-                });
+                var buttonView = container.Add(new ButtonView(level));
+                var imageView = container.Add(new ImageView(level));
+                return new HandConstructionView(level, buttonView, imageView);
             }
         }
     }
