@@ -51,9 +51,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         public bool CanPlace(ConstructionCard card, IntPoint position, FieldRotation rotation)
         {
-            return card.Definition
+            return CanPlace(card.Definition, position, rotation);
+        }
+
+        public bool CanPlace(ConstructionDefinition definition, IntPoint position, FieldRotation rotation)
+        {
+            return definition
                 .GetOccupiedSpace(position, rotation)
-                .All(otherPosition => IsFreeCell(card.Definition, otherPosition, rotation));
+                .All(otherPosition => IsFreeCell(definition, otherPosition, rotation));
         }
 
         public Construction Build(ConstructionCard card, IntPoint position, FieldRotation rotation)
@@ -107,11 +112,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         public int GetPoints(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
         {
-            var positions = constructionDefinition.GetOccupiedSpace(position, rotation);
-            if (!positions.All(x => IsFreeCell(constructionDefinition, position, rotation) && Rect.IsInside(position)))
-                return 0;
-
-            if (Constructions.Any(otherBuilding => otherBuilding.GetOccupiedScace().Any(pos => pos == position)))
+            if (!CanPlace(constructionDefinition, position, rotation))
                 return 0;
 
             var adjacentPoints = 0;
@@ -162,7 +163,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
                 {
                     if (adjecentsCells.Any(x => x == occupiedCell))
                     {
-                        adjecentConstructions.Add(construction);
+                        if (!adjecentConstructions.Contains(construction))
+                            adjecentConstructions.Add(construction);
                     }
                 }
             }

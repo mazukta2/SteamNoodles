@@ -84,5 +84,9 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
             return this;
         }
 
+        public T GetDefintiion<T>()
+        {
+            return _engine.Settings.Get<T>();
+        }
     }
 }

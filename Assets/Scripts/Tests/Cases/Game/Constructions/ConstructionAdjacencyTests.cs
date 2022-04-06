@@ -92,6 +92,58 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.Dispose();
         }
 
+        [Test]
+        public void IsNotGetPointsForBuildingInWrongPlace()
+        {
+            var constructionDefinition = new ConstructionDefinition()
+            {
+                Points = 5,
+                Placement = new int[,] {
+                    { 0, 1, 0 },
+                    { 0, 1, 0 },
+                    { 0, 1, 0 },
+                },
+                LevelViewPath = "DebugConstruction",
+            };
+            constructionDefinition.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { constructionDefinition, 2 } };
+            var game = new GameTestConstructor()
+                .AddDefinition("construction1", constructionDefinition)
+                .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
+                .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
+                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                    StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition })
+                .Build();
+
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.Engine.Controls.Click();
+
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+
+            game.Engine.Controls.MovePointer(new FloatPoint(1, 0));
+            Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+            game.Engine.Controls.MovePointer(new FloatPoint(2, 0));
+            Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+            game.Engine.Controls.MovePointer(new FloatPoint(3, 0));
+            Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+
+
+            game.Engine.Controls.MovePointer(new FloatPoint(-1, 0));
+            Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+            game.Engine.Controls.MovePointer(new FloatPoint(-2, 0));
+            Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+            game.Engine.Controls.MovePointer(new FloatPoint(-3, 0));
+            Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+
+            game.Engine.Controls.MovePointer(new FloatPoint(0, -1));
+            Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+
+            game.Engine.Controls.MovePointer(new FloatPoint(0, 1));
+            Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
+
+            game.Dispose();
+        }
+
         [TearDown]
         public void TestDisposables()
         {
