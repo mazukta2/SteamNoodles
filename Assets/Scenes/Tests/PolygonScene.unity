@@ -5097,6 +5097,7 @@ Transform:
   - {fileID: 1619960063}
   - {fileID: 1753432345}
   - {fileID: 1104447115}
+  - {fileID: 1002860256}
   - {fileID: 1017744413}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -30608,6 +30609,52 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 5
   m_ShadowAngle: 0
+--- !u!1 &1002860254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1002860256}
+  - component: {fileID: 1002860255}
+  m_Layer: 0
+  m_Name: WindZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!182 &1002860255
+WindZone:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002860254}
+  m_Enabled: 1
+  m_Mode: 0
+  m_Radius: 20
+  m_WindMain: 0.2
+  m_WindTurbulence: 1
+  m_WindPulseMagnitude: 0.5
+  m_WindPulseFrequency: 0.01
+--- !u!4 &1002860256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002860254}
+  m_LocalRotation: {x: -0.048623595, y: 0.59750044, z: 0.0363354, w: 0.7995679}
+  m_LocalPosition: {x: 0.76, y: 5.32, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 219277803}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: -6.96, y: 73.54, z: 0}
 --- !u!1 &1003370638
 GameObject:
   m_ObjectHideFlags: 0
@@ -30732,7 +30779,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9c65fa182696bb145b3993ea803235a9, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c65fa182696bb145b3993ea803235a9, type: 3}
       propertyPath: m_LocalScale.x
@@ -40881,15 +40928,15 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 189235572}
   m_Lens:
-    FieldOfView: 17.9
+    FieldOfView: 19.754068
     OrthographicSize: 4
     NearClipPlane: 1
     FarClipPlane: 100
-    Dutch: 0
-    ModeOverride: 2
+    Dutch: -0
+    ModeOverride: 3
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7592592, y: 1}
+    m_SensorSize: {x: 36, y: 24}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -57775,7 +57822,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -59817,12 +59864,12 @@ Camera:
   serializedVersion: 2
   m_ClearFlags: 2
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
-  m_projectionMatrixMode: 1
+  m_projectionMatrixMode: 2
   m_GateFitMode: 2
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 181.39
+  m_FocalLength: 68.92
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -59831,7 +59878,7 @@ Camera:
     height: 1
   near clip plane: 1
   far clip plane: 100
-  field of view: 17.9
+  field of view: 19.754068
   orthographic: 0
   orthographic size: 4
   m_Depth: -1

@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _view.Points.Value = $"+{points}";
             _view.CurrentPoints.Value = $"{_resources.Points.Value}/{_resources.Points.PointsForNextLevel}";
             _view.PointsProgress.Value = _resources.Points.Progress;
-            _view.PointsProgress.AdditonalValue = (float)(_resources.Points.Value + points) / _resources.Points.PointsForNextLevel;
+            _view.PointsProgress.AdditonalValue = _resources.Points.GetAdditionalProgress(points);
         }
 
         public class BuildScreenCollection : ScreenCollection

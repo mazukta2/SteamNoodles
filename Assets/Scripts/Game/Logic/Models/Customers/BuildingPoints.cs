@@ -11,9 +11,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 
         public int CurrentLevel { get; private set; }
         public int PointsForNextLevel => (int)GetPointsForLevel(CurrentLevel + 1);
-        public float Progress => (float)Value / PointsForNextLevel;
+        public int PointsForCurrentLevel => (int)GetPointsForLevel(CurrentLevel);
+        public float Progress => (float)(Value - PointsForCurrentLevel) / (PointsForNextLevel - PointsForCurrentLevel);
 
         private int _points;
+
+        public float GetAdditionalProgress(int points)
+        {
+            return (float)(Value - PointsForCurrentLevel + points) / (PointsForNextLevel - PointsForCurrentLevel);
+        }
 
         private float GetPointsForLevel(int level)
         {
