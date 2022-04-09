@@ -8,7 +8,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Common
 {
     public class UnitAnimation : IAnimator
     {
-        public void Play(string animation)
+        public void Play(string animation, bool startAgain = false)
         {
         }
     }
