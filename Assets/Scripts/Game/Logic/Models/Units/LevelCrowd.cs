@@ -43,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 var definition = _pool.Take();
                 var position = GetRandomPoint(UnitsField, _random);
                 var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, position.Y), 
-                    definition, _unitsSettings);
+                    definition, _unitsSettings, _random);
                 _crowd.Add(units.SpawnUnit(unit));
             }
             _time.OnTimeChanged += Time_OnTimeChanged;
@@ -83,7 +83,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                     target = new FloatPoint(UnitsField.X - 1, position.Y);
                 }
 
-                var unit = _units.SpawnUnit(new Unit(position, target, _pool.Take(), _unitsSettings));
+                var unit = _units.SpawnUnit(new Unit(position, target, _pool.Take(), _unitsSettings, _random));
                 _crowd.Add(unit);
             }
         }

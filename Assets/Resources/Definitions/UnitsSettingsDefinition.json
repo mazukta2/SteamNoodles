@@ -1,3 +1,5 @@
 {
-    "Speed": 0.195
+    "Speed": 0.4,
+    "SpeedOffset": 0.1,
+    "UnitSize" :  0.3
 }

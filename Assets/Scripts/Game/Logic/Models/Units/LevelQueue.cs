@@ -23,6 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private BuildingPoints _points;
         private GameLevel _gameLevel;
         private LevelDefinition _levelDefinition;
+        private SessionRandom _random;
         private Deck<CustomerDefinition> _pool;
         private List<Unit> _queue = new List<Unit>();
         private int _spawnedUnits;
@@ -35,6 +36,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _points = points ?? throw new ArgumentNullException(nameof(points));
             _gameLevel = gameLevel ?? throw new ArgumentNullException(nameof(gameLevel));
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
+            _random = random;
+
             _points.OnPointsChanged += HandlePointsChanged;
             _gameLevel.OnTurn += HandleTurn;
 
@@ -61,8 +64,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 _spawnedUnits++;
 
                 var definition = _pool.Take();
-                var position = _levelDefinition.QueuePosition + new FloatPoint(0.5f, 0) * (_queue.Count - 1);
-                var unit = new Unit(position, position, definition, _unitsSettings);
+                var position = _levelDefinition.QueuePosition + new FloatPoint(_unitsSettings.UnitSize, 0) * (_queue.Count - 1);
+                var unit = new Unit(position, position, definition, _unitsSettings, _random);
                 _queue.Add(_units.SpawnUnit(unit));
             }
         }

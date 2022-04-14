@@ -12,16 +12,16 @@
 	],
 	"QueuePosition" : {
 		"X" : 0,
-		"Y" : -1.8
+		"Y" : -1.6
 	},
-	"CrowdUnitsAmount": 20,
+	"CrowdUnitsAmount": 150,
 	"BaseCrowdUnits": {
 		"Commoner": 1
 	},
 	"UnitsRect": {
-		"X": -10,
+		"X": -7,
 		"Y": -4.5,
-		"Width": 20,
-		"Height": 3
+		"Width": 14,
+		"Height": 2.5
 	}
 }
