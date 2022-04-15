@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         private CellPlacementStatus _status;
 
         public CellPlacementStatus Value { get => _status; set => SetStatus(value); }
-        public ILevelPosition LocalPosition => new UnityLevelPosition(transform);
+        public ILevelPosition LocalPosition { get; private set; }
         public ISwitcher<CellPlacementStatus> State => this;
 
         private void SetStatus(CellPlacementStatus status)
@@ -30,6 +30,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
             _target.SetActive(status == CellPlacementStatus.IsReadyToPlace);
             _highlight.SetActive(status == CellPlacementStatus.IsAvailableGhostPlace);
             _blocked.SetActive(status == CellPlacementStatus.IsNotAvailableGhostPlace);
+        }
+
+        protected override void PreAwake()
+        {
+            LocalPosition = new UnityLevelPosition(transform);
         }
     }
 

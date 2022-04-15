@@ -22,7 +22,12 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         protected void Awake()
         {
             Level = CoreAccessPoint.Core.Engine.Levels.GetCurrentLevel();
+            PreAwake();
             Level.Add(this);
+        }
+
+        protected virtual void PreAwake()
+        {
         }
 
         protected void OnDestroy()

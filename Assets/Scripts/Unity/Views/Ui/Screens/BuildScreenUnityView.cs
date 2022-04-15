@@ -17,9 +17,16 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         [SerializeField] Image _additionalProgress;
 
         public IButton CancelButton => _closeButton;
-        public IText Points => new UnityText(_additionalPoints);
-        public IText CurrentPoints => new UnityText(_currentPoints);
-        public IProgressBar PointsProgress => new UnityProgressBar(_progress, _additionalProgress);
+        public IText Points { get; private set; }
+        public IText CurrentPoints { get; private set; }
+        public IProgressBar PointsProgress { get; private set; }
+
+        protected override void PreAwake()
+        {
+            Points = new UnityText(_additionalPoints);
+            CurrentPoints = new UnityText(_currentPoints);
+            PointsProgress = new UnityProgressBar(_progress, _additionalProgress);
+        }
     }
 
 }

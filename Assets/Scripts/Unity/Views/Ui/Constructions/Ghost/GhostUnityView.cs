@@ -13,10 +13,16 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     {
         [SerializeField] ContainerUnityView _container;
 
-        public ILevelPosition LocalPosition => new UnityLevelPosition(transform);
+        public ILevelPosition LocalPosition { get; private set; }
         public IViewContainer Container => _container;
-        public IRotator Rotator => new UnityRotator(transform);
+        public IRotator Rotator { get; private set; }
         public bool CanPlace { get; set; }
+
+        protected override void PreAwake()
+        {
+            LocalPosition = new UnityLevelPosition(transform);
+            Rotator = new UnityRotator(transform);
+        }
 
     }
 

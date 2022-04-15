@@ -17,7 +17,14 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         [SerializeField] Image _additionalProgress;
 
         public IHandView HandView => _hand;
-        public IText Points => new UnityText(_points);
-        public IProgressBar PointsProgress => new UnityProgressBar(_progress, _additionalProgress);
+        public IText Points { get; private set; }
+        public IProgressBar PointsProgress { get; private set; }
+
+        protected override void PreAwake()
+        {
+            Points = new UnityText(_points);
+
+            PointsProgress = new UnityProgressBar(_progress, _additionalProgress);
+        }
     }
 }
