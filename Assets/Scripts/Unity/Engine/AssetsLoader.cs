@@ -25,32 +25,40 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             return targetFile;
         }
 
+        public IViewPrefab GetPrefab(string path)
+        {
+            var prefab = LoadResource<GameObject>("Assets/" + path);
+            if (prefab == null)
+                throw new System.Exception($"Cant find prefab named : {path}");
+
+            return new GamePrefab(prefab);
+        }
+
         public IViewPrefab GetConstruction(string path)
         {
             var prefab = LoadResource<GameObject>("Assets/" + path);
             if (prefab == null)
                 throw new System.Exception($"Cant find construction prefab named : {path}");
 
-            return new ScreenPrefab(prefab);
+            return new GamePrefab(prefab);
         }
 
         public IViewPrefab GetScreen<T>() where T : IScreenView
         {
             var name = typeof(T).Name;
             name = name.Replace("View", "");
-            var prefab = LoadResource<GameObject>("Prefabs/Screens/" + name);
+            var prefab = LoadResource<GameObject>("Assets/Screens/" + name);
             if (prefab == null)
                 throw new System.Exception($"Cant find screen prefab named : {name}");
 
-            return new ScreenPrefab(prefab);
-
+            return new GamePrefab(prefab);
         }
 
-        public class ScreenPrefab : IViewPrefab
+        public class GamePrefab : IViewPrefab
         {
             public GameObject GameObject { get; private set; }
 
-            public ScreenPrefab(GameObject prefab)
+            public GamePrefab(GameObject prefab)
             {
                 GameObject = prefab;
             }

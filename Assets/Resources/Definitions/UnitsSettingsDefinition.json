@@ -1,5 +1,8 @@
 {
     "Speed": 0.4,
     "SpeedOffset": 0.1,
-    "UnitSize" :  0.3
+    "UnitSize": 0.3,
+    "Hairs": [
+        "Units/Heads/Head1/head1"
+    ]
 }

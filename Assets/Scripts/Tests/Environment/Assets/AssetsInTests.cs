@@ -30,9 +30,15 @@ namespace Game.Tests.Controllers
             return prefab;
         }
 
+        public IViewPrefab GetPrefab(string path)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void AddPrefab(string path, MockViewPrefab prefab)
         {
             _constructions.Add(path, prefab);
         }
+
     }
 }

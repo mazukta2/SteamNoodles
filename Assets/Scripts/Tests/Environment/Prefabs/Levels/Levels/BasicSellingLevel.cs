@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
         {
             public override IView CreateView<T>(ILevel level, MockContainerView container) 
             {
-                return new UnitView(level, new LevelPosition(), new Rotator(), new UnitAnimation());
+                return new UnitView(level, new LevelPosition(), new Rotator(), new UnitAnimation(), new UnitDresser());
             }
         }
     }

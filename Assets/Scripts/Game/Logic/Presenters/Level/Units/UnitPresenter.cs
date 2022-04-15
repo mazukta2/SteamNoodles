@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
@@ -12,18 +13,22 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private UnitView _view;
         private Unit _model;
+        private UnitsSettingsDefinition _settings;
 
-        public UnitPresenter(Unit model, UnitView view) : base(view)
+        public UnitPresenter(Unit model, UnitView view, UnitsSettingsDefinition unitsSettingsDefinition) : base(view)
         {
             _view = view;
-            _view.Position.Value = model.Position;
             _model = model;
+            _settings = unitsSettingsDefinition ?? throw new ArgumentNullException(nameof(unitsSettingsDefinition));
+
+            _view.Position.Value = model.Position;
             _view.Rotator.FaceTo(model.Target);
             _model.OnPositionChanged += HandleOnPositionChanged;
             _model.OnDispose += HandleOnDispose;
             _model.OnTargetChanged += HandleOnTargetChanged;
             _model.OnReachedPosition += HandleOnReachedPosition;
 
+            DressUnit();
             PlayAnimation(model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
@@ -60,6 +65,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         private void PlayAnimation(Animations animations)
         {
             _view.Animator.Play(animations.ToString());
+        }
+
+        private void DressUnit()
+        {
+            var random = new Random(_model.VisualSeed);
+            var hair = _settings.Hairs.GetRandom(random);
+
+            _view.UnitDresser.Clear();
+            _view.UnitDresser.SetHair(hair);
         }
 
         public enum Animations

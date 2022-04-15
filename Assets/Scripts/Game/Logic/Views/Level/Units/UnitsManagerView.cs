@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
@@ -14,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
             Container = container;
             UnitPrototype = prototype;
 
-            new UnitsPresenter(Level.Model.Units, this);
+            new UnitsPresenter(Level.Model.Units, this, level.Engine.Definitions.Get<UnitsSettingsDefinition>());
         }
     }
 }

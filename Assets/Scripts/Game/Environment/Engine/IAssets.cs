@@ -7,5 +7,6 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
     {
         IScreenAssets Screens { get; }
         IViewPrefab GetConstruction(string path);
+        IViewPrefab GetPrefab(string path);
     }
 }

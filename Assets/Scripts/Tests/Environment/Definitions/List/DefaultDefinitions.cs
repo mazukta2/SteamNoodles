@@ -25,6 +25,11 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
             engine.Settings.Add(nameof(UnitsSettingsDefinition), new UnitsSettingsDefinition()
             {
                 Speed = 1,
+                UnitSize = 1,
+                Hairs = new string[]
+                {
+                    "hair1"
+                }
             });
             
             var construciton = new ConstructionDefinition()

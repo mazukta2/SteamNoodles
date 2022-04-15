@@ -26,5 +26,10 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Core
         {
             return new ReadOnlyDictionary<T1, T2>(list);
         }
+
+        public static T GetRandom<T>(this T[] array, Random random)
+        {
+            return array[random.Next(array.Length)];
+        }
     }
 }

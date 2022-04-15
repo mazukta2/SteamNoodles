@@ -12,12 +12,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
         public ILevelPosition Position { get; }
         public IRotator Rotator { get; }
         public IAnimator Animator { get; }
+        public IUnitDresser UnitDresser { get; }
 
-        public UnitView(ILevel level, ILevelPosition position, IRotator rotator, IAnimator animator) : base(level)
+        public UnitView(ILevel level, ILevelPosition position, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
         {
             Position = position;
             Rotator = rotator;
             Animator = animator;
+            UnitDresser = unitDresser;
         }
     }
 }

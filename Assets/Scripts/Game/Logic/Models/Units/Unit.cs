@@ -17,6 +17,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public FloatPoint Position { get; private set; }
         public CustomerDefinition Definition { get; private set; }
 
+        public int VisualSeed { get; private set; }
+
         private UnitsSettingsDefinition _unitsSettings;
         private float _speedOffset;
 
@@ -27,6 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _speedOffset = random.GetRandom(-1, 1) * _unitsSettings.SpeedOffset;
+            VisualSeed = random.GetRandom(0, 10000);
         }
 
         public bool MoveToTarget(float delta)

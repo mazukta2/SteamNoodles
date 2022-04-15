@@ -62,6 +62,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
             core.Dispose();
         }
 
+        [Test]
+        public void UnitsSettingsDefinitions()
+        {
+            var core = CreateCore();
+            var def = core.Engine.Definitions.Get<UnitsSettingsDefinition>();
+            def.Validate();
+            core.Dispose();
+        }
+
         #region Helpers
         private Core CreateCore()
         {

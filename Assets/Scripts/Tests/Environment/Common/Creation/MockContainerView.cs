@@ -77,5 +77,10 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
             }
             throw new Exception("Uknown prefab type: " + prefab);
         }
+
+        public void Spawn(IViewPrefab prefab)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
