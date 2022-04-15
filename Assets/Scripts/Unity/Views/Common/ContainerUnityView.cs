@@ -48,6 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             {
                 var go = GameObject.Instantiate(screenPrefab.GameObject, _pointer);
                 _spawnedGo.Add(go);
+                return;
             }
 
             if (prefab is PrototypeUnityView prototype)
@@ -56,6 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
                 go.GetComponent<PrototypeUnityView>().SetOriginal(false);
                 go.SetActive(true);
                 _spawnedGo.Add(go);
+                return;
             }
 
             throw new Exception("Unknown prefab: " + prefab);
