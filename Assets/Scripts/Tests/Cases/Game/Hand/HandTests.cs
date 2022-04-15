@@ -3,15 +3,16 @@ using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Environment.Common;
 using Game.Assets.Scripts.Tests.Environment.Common.Creation;
+using Game.Assets.Scripts.Tests.Environment.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 {
@@ -48,7 +49,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
         private class HandConstructionViewPrefab : MockViewPrefab
         {
-            public override IView CreateView<T>(ILevel level, MockContainerView container)
+            public override IView CreateView<T>(LevelView level, MockContainerView container)
             {
                 return new HandConstructionView(level, new ButtonMock(), new ImageMock());
             }

@@ -4,16 +4,21 @@ using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Environment.Common;
 using Game.Assets.Scripts.Tests.Environment.Common.Creation;
+using Game.Assets.Scripts.Tests.Environment.Views.Level;
+using Game.Assets.Scripts.Tests.Environment.Views.Level.Building;
+using Game.Assets.Scripts.Tests.Environment.Views.Level.Units;
+using Game.Assets.Scripts.Tests.Environment.Views.Ui;
 
 namespace Game.Assets.Scripts.Tests.Mocks.Levels
 {
     public class BasicSellingLevel : LevelPrefabMock
     {
-        public override void FillLevel(LevelInTests level)
+        public override void FillLevel(LevelView level)
         {
             var screenSpawnPoint = new MockContainerView(level);
             new ScreenManagerView(level, screenSpawnPoint);
@@ -35,7 +40,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
 
         private class GhostViewPrefab : MockViewPrefab
         {
-            public override IView CreateView<T>(ILevel level, MockContainerView container)
+            public override IView CreateView<T>(LevelView level, MockContainerView container)
             {
                 var contrainer = new MockContainerView(level);
                 return new GhostView(level, contrainer, new LevelPosition(), new Rotator());
@@ -44,7 +49,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
 
         private class CellViewPrefab : MockViewPrefab
         {
-            public override IView CreateView<T>(ILevel level, MockContainerView container)
+            public override IView CreateView<T>(LevelView level, MockContainerView container)
             {
                 return new CellView(level, new Switcher<CellPlacementStatus>(), new LevelPosition());
             }
@@ -52,7 +57,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
 
         private class ConstructionViewPrefab : MockViewPrefab
         {
-            public override IView CreateView<T>(ILevel level, MockContainerView container)
+            public override IView CreateView<T>(LevelView level, MockContainerView container)
             {
                 var c = new MockContainerView(level);
                 return new ConstructionView(level, c, new LevelPosition(), new Rotator());
@@ -61,7 +66,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Levels
 
         private class UnitViewPrefab : MockViewPrefab
         {
-            public override IView CreateView<T>(ILevel level, MockContainerView container) 
+            public override IView CreateView<T>(LevelView level, MockContainerView container) 
             {
                 return new UnitView(level, new LevelPosition(), new Rotator(), new UnitAnimation(), new UnitDresser());
             }

@@ -24,10 +24,13 @@ namespace Game.Assets.Scripts.Tests.Environment.Assets
 
         public IViewPrefab GetScreen<T>() where T : IScreenView
         {
-            if (!_list.ContainsKey(typeof(T).Name))
+            var name = typeof(T).Name;
+            name = name.Remove(0, 1);
+
+            if (!_list.ContainsKey(name))
                 throw new System.Exception("Cant find resource : " + typeof(T).Name);
 
-            var prefab = _list[typeof(T).Name];
+            var prefab = _list[name];
             return prefab;
         }
     }

@@ -1,23 +1,21 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
-using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.ScreenManagerPresenter;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
-    public class BuildScreenPresenter : BasePresenter<BuildScreenView>
+    public class BuildScreenPresenter : BasePresenter<IBuildScreenView>
     {
         public ConstructionCard CurrentCard { get; }
 
-        private BuildScreenView _view;
+        private IBuildScreenView _view;
         private ScreenManagerPresenter _screenManager;
         private Resources _resources;
 
-        public BuildScreenPresenter(BuildScreenView view, ScreenManagerPresenter screenManager, Resources resources, ConstructionCard constructionCard) : base(view)
+        public BuildScreenPresenter(IBuildScreenView view, ScreenManagerPresenter screenManager, Resources resources, ConstructionCard constructionCard) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
@@ -33,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private void CancelClick()
         {
-            _screenManager.GetCollection<CommonScreens>().Open<MainScreenView>();
+            _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
 
         public void UpdatePoints(int points)
@@ -48,9 +46,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         {
             public void Open(ConstructionCard constructionCard)
             {
-                Manager.Open<BuildScreenView>(Init);
+                Manager.Open<IBuildScreenView>(Init);
 
-                object Init(BuildScreenView screenView, ScreenManagerPresenter managerPresenter)
+                object Init(IBuildScreenView screenView, ScreenManagerPresenter managerPresenter)
                 {
                     return new BuildScreenPresenter(screenView, managerPresenter, screenView.Level.Model.Resources, constructionCard);
                 }

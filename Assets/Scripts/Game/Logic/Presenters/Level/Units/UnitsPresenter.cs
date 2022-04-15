@@ -1,19 +1,16 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 {
-    public class UnitsPresenter : BasePresenter<UnitsManagerView>
+    public class UnitsPresenter : BasePresenter<IUnitsManagerView>
     {
-        private UnitsManagerView _unitsManagerView;
+        private IUnitsManagerView _unitsManagerView;
         private LevelUnits _model;
         private UnitsSettingsDefinition _settingsDefinition;
 
-        public UnitsPresenter(LevelUnits levelUnits, UnitsManagerView unitsManagerView, UnitsSettingsDefinition settingsDefinition) : base(unitsManagerView)
+        public UnitsPresenter(LevelUnits levelUnits, IUnitsManagerView unitsManagerView, UnitsSettingsDefinition settingsDefinition) : base(unitsManagerView)
         {
             _unitsManagerView = unitsManagerView;
             _model = levelUnits;
@@ -33,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void SpawnUnit(Unit item)
         {
-            var view = _unitsManagerView.Container.Spawn<UnitView>(_unitsManagerView.UnitPrototype);
+            var view = _unitsManagerView.Container.Spawn<IUnitView>(_unitsManagerView.UnitPrototype);
             new UnitPresenter(item, view, _settingsDefinition);
         }
     }

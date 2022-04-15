@@ -15,16 +15,16 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         private List<IView> _spawned = new List<IView>();
         private List<GameObject> _spawnedGo = new List<GameObject>();
 
-        public T Spawn<T>(IViewPrefab prefab) where T : class, IView
+        public TView Spawn<TView>(IViewPrefab prefab) where TView : class, IView
         {
             if (prefab is GamePrefab screenPrefab)
             {
                 var go = GameObject.Instantiate(screenPrefab.GameObject, _pointer);
-                var view = go.GetComponent<UnityView<T>>();
+                var view = go.GetComponent<TView>();
                 if (view == null)
-                    throw new System.Exception("Cant find view preseneter " + typeof(UnityView<T>).Name);
-                _spawned.Add(view.View);
-                return view.View;
+                    throw new System.Exception("Cant find view preseneter " + typeof(TView).Name);
+                _spawned.Add(view);
+                return view;
             }
 
             if (prefab is PrototypeUnityView prototype)
@@ -32,11 +32,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
                 var go = GameObject.Instantiate(prototype.gameObject, _pointer);
                 go.GetComponent<PrototypeUnityView>().SetOriginal(false);
                 go.SetActive(true);
-                var view = go.GetComponent<UnityView<T>>();
+                var view = go.GetComponent<TView>();
                 if (view == null)
-                    throw new Exception("Cant find view " + typeof(T).Name);
-                _spawned.Add(view.View);
-                return (T)view.View;
+                    throw new Exception("Cant find view " + typeof(TView).Name);
+                _spawned.Add(view);
+                return view;
             }
 
             throw new Exception("Unknown prefab: " + prefab);

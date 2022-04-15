@@ -8,19 +8,19 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 {
-    public class ScreenManagerPresenter : BasePresenter<ScreenManagerView>
+    public class ScreenManagerPresenter : BasePresenter<IScreenManagerView>
     {
         public Action<IScreenView> OnScreenOpened = delegate { };
 
-        private readonly ScreenManagerView _view;
+        private readonly IScreenManagerView _view;
         private readonly IScreenAssets _screenAssets;
 
-        public ScreenManagerPresenter(ScreenManagerView view, IScreenAssets screenAssets) : base(view)
+        public ScreenManagerPresenter(IScreenManagerView view, IScreenAssets screenAssets) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenAssets = screenAssets ?? throw new ArgumentNullException(nameof(screenAssets));
 
-            GetCollection<CommonScreens>().Open<MainScreenView>();
+            GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
 
         protected override void DisposeInner()
@@ -55,8 +55,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
                 object Init(TScreen screenView, ScreenManagerPresenter managerPresenter)
                 {
-                    if (screenView is MainScreenView mainScreen)
-                        return new MainScreenPresenter(mainScreen, managerPresenter, mainScreen.Level.Model.Resources);
+                    if (screenView is IMainScreenView mainScreen)
+                        return new MainScreenPresenter(mainScreen, managerPresenter, mainScreen.Level.Model.Resources, mainScreen.Level.Model);
 
                     throw new Exception("Unknown screen " + typeof(TScreen));
                 }

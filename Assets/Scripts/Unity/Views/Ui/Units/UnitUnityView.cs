@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -9,18 +10,15 @@ using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Units
 {
-    public class UnitUnityView : UnityView<UnitView>
+    public class UnitUnityView : UnityView<UnitPresenter>, IUnitView
     {
         [SerializeField] Animator _animator;
         [SerializeField] UnitRigs _rigs;
 
-        protected override UnitView CreateView()
-        {
-            return new UnitView(Level, new UnityLevelPosition(transform), 
-                new UnityRotator(transform), new UnityAnimator(_animator), 
-                new UnitDresser(_rigs, Level.Engine.Assets));
-        }
-
+        public ILevelPosition Position => new UnityLevelPosition(transform);
+        public IRotator Rotator => new UnityRotator(transform);
+        public IAnimator Animator => new UnityAnimator(_animator);
+        public IUnitDresser UnitDresser => new UnitDresser(_rigs, Level.Engine.Assets);
     }
 
 }

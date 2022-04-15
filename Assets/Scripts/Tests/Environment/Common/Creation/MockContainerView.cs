@@ -2,6 +2,8 @@
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Environment.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
     {
         private List<IView> _views = new List<IView>();
 
-        public MockContainerView(ILevel level) : base(level)
+        public MockContainerView(LevelView level) : base(level)
         {
         }
 
@@ -35,7 +37,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
             return (T)viewPrefab.CreateInContainer<T>(this);
         }
 
-        public T Create<T>(Func<ILevel, T> creator) where T : IView
+        public T Create<T>(Func<LevelView, T> creator) where T : IView
         {
             var viewPresenter = creator(Level);
             _views.Add(viewPresenter);

@@ -6,7 +6,7 @@
 	],
     "Requirements": { },
     "HandImagePath": "Sprites/Cards/Icons/SimpleShop",
-    "LevelViewPath": "Prefabs/Constructions/Farm",
+    "LevelViewPath": "Constructions/Farm",
     "Points" : 5,
 	"AdjacencyPoints" : {
 		"SimpleShop" : 5

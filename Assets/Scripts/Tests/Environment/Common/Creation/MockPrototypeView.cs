@@ -1,6 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Environment.Views;
 
 namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
 {
@@ -8,7 +10,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Common.Creation
     {
         private MockViewPrefab _prefab;
 
-        public MockPrototypeView(ILevel level, MockViewPrefab prefab) : base(level)
+        public MockPrototypeView(LevelView level, MockViewPrefab prefab) : base(level)
         {
             _prefab = prefab;
         }

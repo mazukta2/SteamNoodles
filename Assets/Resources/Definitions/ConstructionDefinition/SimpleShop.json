@@ -6,7 +6,7 @@
 	],
     "Requirements": { "DownEdge": true },
     "HandImagePath": "Sprites/Cards/Icons/SimpleShop",
-    "LevelViewPath": "Prefabs/Constructions/SimpleShop",
+    "LevelViewPath": "Constructions/SimpleShop",
     "Points" : 15,
 	"AdjacencyPoints" : {
 	}

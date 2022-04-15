@@ -12,13 +12,13 @@ using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.ScreenManagerPresenter
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
-    public class GhostPresenter : BasePresenter<GhostView>
+    public class GhostPresenter : BasePresenter<IGhostView>
     {
         public Action OnGhostPostionChanged = delegate { };
         public ConstructionDefinition Definition { get; private set; }
         public FieldRotation Rotation { get; private set; }
         
-        private readonly GhostView _view;
+        private readonly IGhostView _view;
         private readonly ConstructionsSettingsDefinition _constructionsSettings;
         private readonly IControls _controls;
         private readonly BuildScreenPresenter _buildScreen;
@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
             ScreenManagerPresenter screenManager,
             ConstructionsManager constructionsManager,
-            BuildScreenPresenter buildScreen, IControls controls, IAssets assets, GhostView view) : base(view)
+            BuildScreenPresenter buildScreen, IControls controls, IAssets assets, IGhostView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constructionsSettings = constructionsSettings ?? throw new ArgumentNullException(nameof(constructionsSettings));
@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _rotateRight = _controls.Keys.GetKey(GameKeys.RotateRight);
 
             _view.Container.Clear();
-            _view.Container.Spawn<ConstructionModelView>(_assets.GetConstruction(_buildScreen.CurrentCard.Definition.LevelViewPath));
+            _view.Container.Spawn<IConstructionModelView>(_assets.GetConstruction(_buildScreen.CurrentCard.Definition.LevelViewPath));
 
             _rotateLeft.OnTap += HandleRotateLeftTap;
             _rotateRight.OnTap += HandleRotateRightTap;
@@ -91,7 +91,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                     break;
                 }
             }
-            _screenManager.GetCollection<CommonScreens>().Open<MainScreenView>();
+            _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
 
         private void HandleOnPointerMoved(FloatPoint worldPosition)

@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Services.Ui;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Tests.Mocks.Settings.Levels;
 using System;
@@ -16,7 +17,7 @@ namespace Game.Tests.Controllers
     {
         private List<LevelDefinitionMock> _availableLevels = new List<LevelDefinitionMock>();
         private ManagerLoadingLevel _loading;
-        private LevelInTests _level;
+        private LevelView _level;
         private IGameEngine _engine;
 
         public LevelsManagerInTests(IGameEngine engine)
@@ -32,13 +33,13 @@ namespace Game.Tests.Controllers
             }
         }
 
-        public ILevel GetCurrentLevel()
+        public LevelView GetCurrentLevel()
         {
             return _level;
         }
 
 
-        public void Load(GameLevel model, LevelDefinition prototype, Action<ILevel> onFinished)
+        public void Load(GameLevel model, LevelDefinition prototype, Action<LevelView> onFinished)
         {
             if (_loading != null)
                 throw new Exception("Already loading");
@@ -70,16 +71,16 @@ namespace Game.Tests.Controllers
             if (_loading == null)
                 throw new Exception("Nothing is loading");
 
-            _level = new LevelInTests(this, _engine, _loading.Model);
+            _level = new LevelView(_engine, _loading.Model);
             ((LevelDefinitionMock)(_loading.Prototype)).LevelPrefab.FillLevel(_level);
-            _level.Loaded = true;
+            _level.FinishLoading();
             _loading.OnFinished(_level);
             _loading = null;
         }
 
         private class ManagerLoadingLevel
         {
-            public ManagerLoadingLevel(GameLevel model, LevelDefinition prototype, Action<ILevel> onFinished)
+            public ManagerLoadingLevel(GameLevel model, LevelDefinition prototype, Action<LevelView> onFinished)
             {
                 Prototype = prototype;
                 OnFinished = onFinished;
@@ -88,7 +89,7 @@ namespace Game.Tests.Controllers
              
             public GameLevel Model { get; private set; }
             public LevelDefinition Prototype { get; private set; }
-            public Action<ILevel> OnFinished { get; private set; }
+            public Action<LevelView> OnFinished { get; private set; }
         }
     }
 }

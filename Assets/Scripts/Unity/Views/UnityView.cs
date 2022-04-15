@@ -1,121 +1,45 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Unity.Views
 {
-    public abstract class UnityView<TView> : MonoBehaviour where TView : class, IView
+    public abstract class UnityView<TPresenter> : MonoBehaviour, IViewWith<TPresenter>, IInitPresenter
+        where TPresenter : IPresenter
     {
-        protected ILevel Level { get; private set; }
+        public event Action OnDispose = delegate { };
 
-        private bool _isInited = false;
-        private bool _isAwaked;
-
-        private TView _view;
-
-        protected void ForceInit()
-        {
-            Init();
-        }
+        public LevelView Level { get; private set; }
+        public TPresenter Presenter { get; private set; }
+        public bool IsDisposed { get; private set; }
 
         protected void Awake()
         {
-            _isAwaked = true;
-            Init();
-        }
-
-        protected void Init()
-        {
-            if (_isInited)
-                return;
-            
             Level = CoreAccessPoint.Core.Engine.Levels.GetCurrentLevel();
-
-            BeforeAwake();
-
-            _view = CreateView();
-            _view.OnDispose += DisposedByView;
-
-            _isInited = true;
-
-            AfterAwake();
-        }
-
-        protected virtual void BeforeAwake()
-        {
-        }
-
-        protected virtual void AfterAwake()
-        {
-        }
-
-        protected void OnApplicationQuit()
-        {
-            if (_view != null && !_view.IsDisposed)
-            {
-                OnDisposeView(_view);
-                _view.OnDispose -= DisposedByView;
-                _view.Dispose();
-                _view = null;
-            }
+            Level.Add(this);
         }
 
         protected void OnDestroy()
         {
-            if (_view != null && !_view.IsDisposed)
-            {
-                OnDisposeView(_view);
-                _view.OnDispose -= DisposedByView;
-                _view.Dispose();
-                _view = null;
-            }
-            AfterDestroy();
+            Level.Remove(this);
+            IsDisposed = true;
+            OnDispose();
         }
 
-        protected virtual void OnDisposeView(TView view)
+        public void Dispose()
         {
+            DestroyImmediate(gameObject);
         }
 
-        protected virtual void AfterDestroy()
+        void IInitPresenter.SetPresenter(IPresenter presenter)
         {
+            Presenter = (TPresenter)presenter;
         }
-
-        protected void DestroyThisCompoenent()
-        {
-            if (_view != null && !_view.IsDisposed)
-            {
-                _view.OnDispose -= DisposedByView;
-                _view.Dispose();
-                _view = null;
-            }
-
-            Destroy(this);
-        }
-
-
-        private void DisposedByView()
-        {
-            OnDisposeView(_view);
-            _view.OnDispose -= DisposedByView;
-            _view = null;
-            if (_isAwaked)
-                Destroy(gameObject);
-        }
-
-        public TView View
-        {
-            get
-            {
-                if (_view == null)
-                    ForceInit();
-
-                return _view;
-            }
-        }
-
-        protected abstract TView CreateView();
     }
 }

@@ -4,13 +4,13 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
-    public class HandPresenter : BasePresenter<HandView>
+    public class HandPresenter : BasePresenter<IHandView>
     {
         private readonly PlayerHand _model;
         private readonly ScreenManagerPresenter _screenManager;
-        private readonly HandView _view;
+        private readonly IHandView _view;
 
-        public HandPresenter(PlayerHand model, ScreenManagerPresenter screenManager, HandView view) : base(view)
+        public HandPresenter(PlayerHand model, ScreenManagerPresenter screenManager, IHandView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _model = model ?? throw new ArgumentNullException(nameof(model));
@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void ScnemeAddedHandle(ConstructionCard obj)
         {
-            var view = _view.Cards.Spawn<HandConstructionView>(_view.CardPrototype);
+            var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
             new HandConstructionPresenter(_screenManager, view, obj);
         }
     }

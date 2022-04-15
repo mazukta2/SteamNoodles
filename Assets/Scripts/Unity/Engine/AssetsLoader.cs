@@ -47,6 +47,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         {
             var name = typeof(T).Name;
             name = name.Replace("View", "");
+            name = name.Remove(0, 1);
             var prefab = LoadResource<GameObject>("Assets/Screens/" + name);
             if (prefab == null)
                 throw new System.Exception($"Cant find screen prefab named : {name}");

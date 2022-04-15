@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters;
-using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Environment.Views;
 using Game.Assets.Scripts.Tests.Managers.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Cases;
@@ -32,7 +33,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         {
             public bool IsInited { get; private set; }
 
-            public TestView(ILevel level) : base(level)
+            public TestView(LevelView level) : base(level)
             {
                 new TestPresenter(this);
                 IsInited = true;

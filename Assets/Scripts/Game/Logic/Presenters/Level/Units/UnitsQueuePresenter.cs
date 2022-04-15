@@ -1,16 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Units;
-using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 {
-    public class UnitsQueuePresenter : BasePresenter<UnitsQueueView>
+    public class UnitsQueuePresenter : BasePresenter<IUnitsQueueView>
     {
-        private UnitsQueueView _unitsManagerView;
+        private IUnitsQueueView _unitsManagerView;
 
-        public UnitsQueuePresenter(UnitsQueueView view) : base(view)
+        public UnitsQueuePresenter(IUnitsQueueView view) : base(view)
         {
             _unitsManagerView = view;
             //_model = levelUnits;

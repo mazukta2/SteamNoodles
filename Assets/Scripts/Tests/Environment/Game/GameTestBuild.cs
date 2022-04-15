@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
@@ -15,7 +16,7 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
         public Core Core { get; private set; }
 
         public GameModel GameModel => Core?.Game;
-        public LevelInTests CurrentLevel => (LevelInTests)Engine.Levels.GetCurrentLevel();
+        public LevelView CurrentLevel => (LevelView)Engine.Levels.GetCurrentLevel();
 
         private List<IDisposable> _toDispose = new List<IDisposable>();
 

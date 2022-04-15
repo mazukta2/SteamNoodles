@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Unity.Views;
 using GameUnity.Assets.Scripts.Unity.Engine.Helpers;
@@ -7,14 +9,14 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class GhostUnityView : UnityView<GhostView>
+    public class GhostUnityView : UnityView<GhostPresenter>, IGhostView
     {
         [SerializeField] ContainerUnityView _container;
 
-        protected override GhostView CreateView()
-        {
-            return new GhostView(Level, _container, new UnityLevelPosition(transform), new UnityRotator(transform));
-        }
+        public ILevelPosition LocalPosition => new UnityLevelPosition(transform);
+        public IViewContainer Container => _container;
+        public IRotator Rotator => new UnityRotator(transform);
+        public bool CanPlace { get; set; }
 
     }
 

@@ -11,10 +11,10 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 {
-    public class PlacementFieldPresenter : BasePresenter<PlacementFieldView>
+    public class PlacementFieldPresenter : BasePresenter<IPlacementFieldView>
     {
         private PlacementField _model;
-        private PlacementFieldView _view;
+        private IPlacementFieldView _view;
         private PlacementManagerPresenter _manager;
         private GhostManagerPresenter _ghostManager;
         private IAssets _assets;
@@ -22,8 +22,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(GhostManagerPresenter ghostManagerPresenter,
-            PlacementField model, 
-            PlacementFieldView view,
+            PlacementField model,
+            IPlacementFieldView view,
             ConstructionsSettingsDefinition settings,
             PlacementManagerPresenter presenter, IAssets assets) : base(view)
         {
@@ -61,7 +61,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private PlacementCellPresenter CreateCell(IntPoint position)
         {
-            var view = _view.Manager.CellsContainer.Spawn<CellView>(_view.Manager.Cell);
+            var view = _view.Manager.CellsContainer.Spawn<ICellView>(_view.Manager.Cell);
             return new PlacementCellPresenter(view, this, view.Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), position);
         }
 
@@ -93,7 +93,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleOnConstructionAdded(Construction construction)
         {
-            var view = _view.Manager.ConstrcutionContainer.Spawn<ConstructionView>(_view.Manager.ConstrcutionPrototype);
+            var view = _view.Manager.ConstrcutionContainer.Spawn<IConstructionView>(_view.Manager.ConstrcutionPrototype);
             new ConstructionPresenter(_settings, construction, view.Level.Engine.Assets, view);
         }
     }

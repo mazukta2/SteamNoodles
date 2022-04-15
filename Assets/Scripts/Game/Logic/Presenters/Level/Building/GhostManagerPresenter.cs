@@ -11,12 +11,12 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 {
-    public class GhostManagerPresenter : BasePresenter<GhostManagerView>
+    public class GhostManagerPresenter : BasePresenter<IGhostManagerView>
     {
         public event Action OnGhostChanged = delegate { };
         public event Action OnGhostPostionChanged = delegate { };
 
-        private GhostManagerView _view;
+        private IGhostManagerView _view;
         private ScreenManagerPresenter _screenManager;
         private ConstructionsManager _constructionsManager;
         private ConstructionsSettingsDefinition _settings;
@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 
         public GhostManagerPresenter(ScreenManagerPresenter screenManager, ConstructionsSettingsDefinition settings, IControls controls, 
             ConstructionsManager constructionsManager,
-            GhostManagerView view) : base(view)
+            IGhostManagerView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
@@ -49,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 
         private void OnScreenOpen(IScreenView screen)
         {
-            if (screen is BuildScreenView buildScreen)
+            if (screen is IBuildScreenView buildScreen)
                 CreateGhost(buildScreen.Presenter);
             else
                 RemoveGhost();
@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 
         private void CreateGhost(BuildScreenPresenter buildScreen)
         {
-            var view = _view.Container.Spawn<GhostView>(_view.GhostPrototype);
+            var view = _view.Container.Spawn<IGhostView>(_view.GhostPrototype);
             _ghost = new GhostPresenter(_settings, _screenManager, _constructionsManager, buildScreen, _controls, _view.Level.Engine.Assets, view);
             _ghost.OnGhostPostionChanged += UpdateGhostPosition;
 

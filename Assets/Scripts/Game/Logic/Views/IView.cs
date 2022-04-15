@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,5 +11,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views
         event Action OnDispose;
         bool IsDisposed { get; }
         void Dispose();
+        LevelView Level { get; }
     }
 }

@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using System;
 using System.Linq;
 
@@ -36,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
                 _level.Dispose();
         }
 
-        private void Finished(ILevel lvl)
+        private void Finished(LevelView lvl)
         {
             if (IsDisposed)
                 return;

@@ -1,21 +1,20 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 {
-    public class UnitPresenter : BasePresenter<UnitView>
+    public class UnitPresenter : BasePresenter<IUnitView>
     {
         public Unit Unit => _model;
 
-        private UnitView _view;
+        private IUnitView _view;
         private Unit _model;
         private UnitsSettingsDefinition _settings;
 
-        public UnitPresenter(Unit model, UnitView view, UnitsSettingsDefinition unitsSettingsDefinition) : base(view)
+        public UnitPresenter(Unit model, IUnitView view, UnitsSettingsDefinition unitsSettingsDefinition) : base(view)
         {
             _view = view;
             _model = model;

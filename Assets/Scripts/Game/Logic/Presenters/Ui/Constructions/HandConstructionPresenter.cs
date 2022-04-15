@@ -5,13 +5,13 @@ using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.BuildScreenPre
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
-    public class HandConstructionPresenter : BasePresenter<HandConstructionView>
+    public class HandConstructionPresenter : BasePresenter<IHandConstructionView>
     {
         private ConstructionCard _model;
-        private HandConstructionView _view;
+        private IHandConstructionView _view;
         private ScreenManagerPresenter _screenManager;
 
-        public HandConstructionPresenter(ScreenManagerPresenter screenManager,  HandConstructionView view, ConstructionCard model) : base(view)
+        public HandConstructionPresenter(ScreenManagerPresenter screenManager, IHandConstructionView view, ConstructionCard model) : base(view)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));

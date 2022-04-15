@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Unity.Views;
@@ -8,18 +9,18 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class CellUnityView : UnityView<CellView>, ISwitcher<CellPlacementStatus>
+    public class CellUnityView : UnityView<PlacementCellPresenter>, ISwitcher<CellPlacementStatus>, ICellView
     {
         [SerializeField] GameObject _normal;
         [SerializeField] GameObject _target;
         [SerializeField] GameObject _highlight;
         [SerializeField] GameObject _blocked;
+
         private CellPlacementStatus _status;
 
-        protected override CellView CreateView()
-        {
-            return new CellView(Level, this, new UnityLevelPosition(transform));
-        }
+        public CellPlacementStatus Value { get => _status; set => SetStatus(value); }
+        public ILevelPosition LocalPosition => new UnityLevelPosition(transform);
+        public ISwitcher<CellPlacementStatus> State => this;
 
         private void SetStatus(CellPlacementStatus status)
         {
@@ -30,9 +31,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
             _highlight.SetActive(status == CellPlacementStatus.IsAvailableGhostPlace);
             _blocked.SetActive(status == CellPlacementStatus.IsNotAvailableGhostPlace);
         }
-
-        public CellPlacementStatus Value { get => _status; set => SetStatus(value); }
-
     }
 
 }

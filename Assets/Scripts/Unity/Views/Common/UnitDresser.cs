@@ -27,8 +27,8 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Common
 
         public void SetHair(string hair)
         {
-            var hairPrefab =_assets.GetPrefab(hair);
-            _rigs.Head.Spawn(hairPrefab);
+            //var hairPrefab =_assets.GetPrefab(hair);
+            //_rigs.Head.Spawn(hairPrefab);
         }
     }
 }

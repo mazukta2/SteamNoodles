@@ -5,19 +5,19 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
-    public class MainScreenPresenter : BasePresenter<MainScreenView>
+    public class MainScreenPresenter : BasePresenter<IMainScreenView>
     {
-        private MainScreenView _view;
+        private IMainScreenView _view;
         private ScreenManagerPresenter _screenManager;
         private Resources _resources;
 
-        public MainScreenPresenter(MainScreenView view, ScreenManagerPresenter screenManager, Resources resources) : base(view)
+        public MainScreenPresenter(IMainScreenView view, ScreenManagerPresenter screenManager, Resources resources, GameLevel level) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
 
-            new HandPresenter(view.HandView.Level.Model.Hand, screenManager, view.HandView);
+            new HandPresenter(level.Hand, screenManager, view.HandView);
 
             _resources.Points.OnPointsChanged += HandlePointsChanged;
             HandlePointsChanged();

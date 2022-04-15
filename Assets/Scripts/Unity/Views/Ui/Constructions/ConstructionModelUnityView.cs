@@ -6,12 +6,8 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class ConstructionModelUnityView : UnityView<ConstructionModelView>
+    public class ConstructionModelUnityView : UnitySimpleView, IConstructionModelView
     {
-        protected override ConstructionModelView CreateView()
-        {
-            return new ConstructionModelView(Level);
-        }
 
     }
 
