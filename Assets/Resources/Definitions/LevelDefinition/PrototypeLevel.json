@@ -14,7 +14,7 @@
 		"X" : 0,
 		"Y" : -1.6
 	},
-	"CrowdUnitsAmount": 150,
+	"CrowdUnitsAmount": 50,
 	"BaseCrowdUnits": {
 		"Commoner": 1
 	},
