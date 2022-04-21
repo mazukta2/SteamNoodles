@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+﻿using Game.Assets.Scripts.Game.Environment.Engine.Controls;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
 
@@ -29,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private void ScnemeAddedHandle(ConstructionCard obj)
         {
             var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
-            new HandConstructionPresenter(_screenManager, view, obj);
+            new HandConstructionPresenter(_screenManager, view, obj, _view.Level.Pointer);
         }
     }
 }

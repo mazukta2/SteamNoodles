@@ -6,11 +6,8 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public interface IHandConstructionView : IPresenterView
+    public interface IHandConstructionTooltipView : IPresenterView
     {
-        IButton Button { get; }
-        IImage Image { get; }
-        IViewContainer TooltipContainer { get; }
-        IViewPrefab TooltipPrefab { get; }
+        IText Name { get; }
     }
 }

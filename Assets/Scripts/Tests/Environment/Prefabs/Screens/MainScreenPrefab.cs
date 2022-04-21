@@ -27,7 +27,18 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
         {
             public override IView CreateView<T>(LevelView level, MockContainerView container)
             {
-                return new HandConstructionView(level, new ButtonMock(), new ImageMock());
+                var handTooltipContainer = container.Add(new MockContainerView(level));
+                var handTooltipPrefab = container.Add(new MockPrototypeView(level, new HandConstructionTooltipViewPrefab()));
+
+                return new HandConstructionView(level, new ButtonMock(), new ImageMock(), handTooltipContainer, handTooltipPrefab);
+            }
+        }
+
+        private class HandConstructionTooltipViewPrefab : MockViewPrefab
+        {
+            public override IView CreateView<T>(LevelView level, MockContainerView container)
+            {
+                return new HandConstructionTooltipView(level, new UiText());
             }
         }
     }

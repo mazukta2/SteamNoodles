@@ -46,15 +46,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             game.Dispose();
         }
 
-
-        private class HandConstructionViewPrefab : MockViewPrefab
-        {
-            public override IView CreateView<T>(LevelView level, MockContainerView container)
-            {
-                return new HandConstructionView(level, new ButtonMock(), new ImageMock());
-            }
-        }
-
         [Test]
         public void IsIconSettedInHand()
         {
@@ -88,6 +79,28 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             //game.Engine.Controls.Click();
             //Assert.AreEqual(2, game.CurrentLevel.FindViews<HandConstructionView>().Count());
             //game.Dispose();
+        }
+
+        [Test]
+        public void IsTooltipShowing()
+        {
+            var game = new GameTestConstructor()
+                .Build();
+
+            var construction1 = game.CurrentLevel.FindViews<HandConstructionView>().First();
+            Assert.IsNotNull(construction1);
+
+            Assert.IsNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
+
+            game.Engine.Controls.PointerEnter(construction1);
+
+            Assert.IsNotNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
+
+            game.Engine.Controls.PointerExit(construction1);
+
+            Assert.IsNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
+
+            game.Dispose();
         }
 
         [TearDown]
