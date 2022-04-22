@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
-            game.Engine.Controls.Click();
+            game.Controls.Click();
 
             Assert.AreEqual("5/8", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
 
@@ -46,7 +46,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
-            game.Engine.Controls.MovePointer(new Scripts.Game.Logic.Common.Math.FloatPoint(999, 999));
+            game.Controls.MovePointer(new Scripts.Game.Logic.Common.Math.FloatPoint(999, 999));
 
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
@@ -79,12 +79,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual("0/3", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
-            game.Engine.Controls.Click();
+            game.Controls.Click();
             Assert.AreEqual("5/8", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
-            game.Engine.Controls.MovePointer(new FloatPoint(-2, 0));
+            game.Controls.MovePointer(new FloatPoint(-2, 0));
             Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
             game.Dispose();
@@ -113,30 +113,30 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .Build();
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
-            game.Engine.Controls.Click();
+            game.Controls.Click();
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
-            game.Engine.Controls.MovePointer(new FloatPoint(1, 0));
+            game.Controls.MovePointer(new FloatPoint(1, 0));
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
-            game.Engine.Controls.MovePointer(new FloatPoint(2, 0));
+            game.Controls.MovePointer(new FloatPoint(2, 0));
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
-            game.Engine.Controls.MovePointer(new FloatPoint(3, 0));
+            game.Controls.MovePointer(new FloatPoint(3, 0));
             Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
 
-            game.Engine.Controls.MovePointer(new FloatPoint(-1, 0));
+            game.Controls.MovePointer(new FloatPoint(-1, 0));
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
-            game.Engine.Controls.MovePointer(new FloatPoint(-2, 0));
+            game.Controls.MovePointer(new FloatPoint(-2, 0));
             Assert.AreEqual("+0", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
-            game.Engine.Controls.MovePointer(new FloatPoint(-3, 0));
+            game.Controls.MovePointer(new FloatPoint(-3, 0));
             Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
-            game.Engine.Controls.MovePointer(new FloatPoint(0, -1));
+            game.Controls.MovePointer(new FloatPoint(0, -1));
             Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
-            game.Engine.Controls.MovePointer(new FloatPoint(0, 1));
+            game.Controls.MovePointer(new FloatPoint(0, 1));
             Assert.AreEqual("+7", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
 
             game.Dispose();

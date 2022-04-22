@@ -10,11 +10,9 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     public class GameEngine : IGameEngine
     {
         public ILevelsManager Levels { get; private set; } 
-        public IControls Controls => _controls;
 
         public GameTime Time { get; } = new GameTime();
 
-        private UnityControls _controls = new UnityControls();
 
         public GameEngine()
         {
@@ -23,7 +21,6 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         public void Update()
         {
-            _controls.Update();
             Time.MoveTime(UnityEngine.Time.deltaTime);
         }
 

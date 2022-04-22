@@ -51,7 +51,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual(0, game.CurrentLevel.FindViews<UnitView>().Count);
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
-            game.Engine.Controls.Click();
+            game.Controls.Click();
 
             var points = new BuildingPoints();
             points.Value = 9;

@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.External;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
@@ -24,11 +25,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 
         private List<IView> _views = new List<IView>();
 
-        public LevelView(IGameEngine engine, GameLevel model)
+        public LevelView(IGameEngine engine, GameLevel model, IControls controls)
         {
             Model = model;
             Engine = engine;
-            Pointer = new PointerManager(engine.Controls);
+            Pointer = new PointerManager(controls);
         }
 
         public void Dispose()

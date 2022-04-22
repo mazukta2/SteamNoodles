@@ -25,7 +25,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             if (_currentLevel != null)
                 throw new Exception("Loading before unloading");
 
-            _currentLevel = new LevelView(_engine, _model);
+            _currentLevel = new LevelView(_engine, _model, IControls.Default);
 
             var loading = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
             if (loading.isDone)

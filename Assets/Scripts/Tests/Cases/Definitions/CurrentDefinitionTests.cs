@@ -110,17 +110,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
     public class GameEngineDefinitionsTest : IGameEngine
     {
         public LevelsManagerInTests Levels { get; }
-        public ControlsInTests Controls { get; }
         public GameTime Time { get; private set; } = new GameTime();
 
         ILevelsManager IGameEngine.Levels => Levels;
-        IControls IGameEngine.Controls => Controls;
         public LocalizationManager Localization { get; }
 
         public GameEngineDefinitionsTest()
         {
             Levels = new LevelsManagerInTests(this);
-            Controls = new ControlsInTests();
         }
 
         public void Dispose()

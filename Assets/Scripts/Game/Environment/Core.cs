@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models;
+using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 
 namespace Game.Assets.Scripts.Game.Environment
@@ -17,10 +18,12 @@ namespace Game.Assets.Scripts.Game.Environment
             Game = new GameModel(Engine);
 
             CoreAccessPoint.SetCore(this);
+            IGameKeysManager.Default = new GameKeysManager();
         }
 
         protected override void DisposeInner()
         {
+            IGameKeysManager.Default = null;
             Game.Dispose();
             Engine.Dispose();
             CoreAccessPoint.ClearCore();

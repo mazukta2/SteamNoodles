@@ -14,6 +14,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         private GameEngine _engine;
         private Core _core;
         private GameSession _session;
+        private UnityControls _controls = new UnityControls();
 
         protected void Awake()
         {
@@ -25,6 +26,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             IAssets.Default = new AssetsLoader();
             IDefinitions.Default = new GameDefinitions();
             ILocalizationManager.Default = new LocalizationManager(IDefinitions.Default, "English");
+            IControls.Default = _controls;
 
             _session = _core.Game.CreateSession();
             _session.LoadLevel(IDefinitions.Default.Get<MainDefinition>().StartLevel);
@@ -47,6 +49,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         protected void Update()
         {
             _engine.Update();
+            _controls.Update();
         }
 
     }

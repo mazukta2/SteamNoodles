@@ -6,14 +6,12 @@ using System;
 
 namespace Game.Assets.Scripts.Tests.Environment
 {
-    public class ControlsInTests : IControls
+    public class ControlsMock : IControls
     {
         public event Action OnLevelClick = delegate { };
         public event Action<FloatPoint> OnLevelPointerMoved = delegate { };
         public event Action<IView> OnPointerEnter;
         public event Action<IView> OnPointerExit;
-
-        public GameKeysManager Keys { get; } = new GameKeysManager();
 
         public void Click()
         {

@@ -13,6 +13,6 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
         event Action<FloatPoint> OnLevelPointerMoved;
         event Action<IView> OnPointerEnter;
         event Action<IView> OnPointerExit;
-        GameKeysManager Keys { get; }
+        static IControls Default { get; set; }
     }
 }

@@ -15,14 +15,12 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         public event Action<FloatPoint> OnLevelPointerMoved = delegate { };
         public event Action<IView> OnPointerEnter = delegate { };
         public event Action<IView> OnPointerExit = delegate { };
-        public GameKeysManager Keys { get; } = new GameKeysManager();
 
         private Vector3 _mousePosition;
         private Plane _plane = new Plane(Vector3.up, 0);
         private float _wheel = 0;
         private List<IView> _oldViews = new List<IView>();
         private List<IView> _newViews = new List<IView>();
-
 
         public void Update()
         {
@@ -38,15 +36,15 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             }
 
             if (Input.GetKeyDown(KeyCode.R))
-                Keys.GetKey(GameKeys.RotateRight).Tap();
+                IGameKeysManager.Default.GetKey(GameKeys.RotateRight).Tap();
 
             var wheel = Input.GetAxis("Mouse ScrollWheel");
             if (_wheel == 0 || !SameSign(wheel, _wheel))
             {
                 if (wheel > 0)
-                    Keys.GetKey(GameKeys.RotateRight).Tap();
+                    IGameKeysManager.Default.GetKey(GameKeys.RotateRight).Tap();
                 if (wheel < 0)
-                    Keys.GetKey(GameKeys.RotateLeft).Tap();
+                    IGameKeysManager.Default.GetKey(GameKeys.RotateLeft).Tap();
             }
             _wheel = wheel;
             

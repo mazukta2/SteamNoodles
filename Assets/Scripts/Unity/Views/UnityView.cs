@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void OnDestroy()
         {
-            ((UnityControls)Level.Engine.Controls).ViewDestroyed(this);
+            ((UnityControls)IControls.Default).ViewDestroyed(this);
             Level.Remove(this);
             IsDisposed = true;
             OnDispose();
@@ -58,12 +58,12 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            ((UnityControls)Level.Engine.Controls).SetPointerEnter(this);
+            ((UnityControls)IControls.Default).SetPointerEnter(this);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            ((UnityControls)Level.Engine.Controls).SetPointerExit(this);
+            ((UnityControls)IControls.Default).SetPointerExit(this);
         }
 
     }

@@ -11,16 +11,13 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
     public class GameEngineMock : IGameEngine
     {
         public LevelsManagerInTests Levels { get; }
-        public ControlsInTests Controls { get; }
         public GameTime Time { get; private set; } = new GameTime();
 
         ILevelsManager IGameEngine.Levels => Levels;
-        IControls IGameEngine.Controls => Controls;
 
         public GameEngineMock()
         {
             Levels = new LevelsManagerInTests(this);
-            Controls = new ControlsInTests();
         }
 
         public void Dispose()

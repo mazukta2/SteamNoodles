@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment;
@@ -17,9 +18,12 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
     {
         public GameEngineMock Engine { get; private set; }
         public Core Core { get; private set; }
+        public ControlsMock Controls { get; private set; }
 
         public GameModel GameModel => Core?.Game;
         public LevelView CurrentLevel => Engine.Levels.GetCurrentLevel();
+
+        public GameKeysManager Keys { get; private set; }
 
         private List<IDisposable> _toDispose = new List<IDisposable>();
         private AssetsMock _assets;
@@ -30,9 +34,13 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             Engine = gameEngine;
 
             _assets = assets;
+            Controls = new ControlsMock();
+            Keys = new GameKeysManager();
             ILocalizationManager.Default = new LocalizationManagerMock();
             IAssets.Default = _assets;
             IDefinitions.Default = definitions;
+            IControls.Default = Controls;
+            IGameKeysManager.Default = Keys;
         }
 
         public void Dispose()
@@ -40,8 +48,10 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             _assets.ClearPrefabs();
 
             ILocalizationManager.Default = null;
+            IGameKeysManager.Default = null;
             IAssets.Default = null;
             IDefinitions.Default = null;
+            IControls.Default = null;
 
             foreach (var item in _toDispose)
                 item.Dispose();

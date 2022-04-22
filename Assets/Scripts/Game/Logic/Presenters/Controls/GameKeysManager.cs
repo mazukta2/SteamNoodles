@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Controls
 {
-    public class GameKeysManager
+    public class GameKeysManager : IGameKeysManager
     {
         private Dictionary<GameKeys, KeyCommand> _keys = new Dictionary<GameKeys, KeyCommand>();
 

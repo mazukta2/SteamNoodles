@@ -21,6 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly IGhostView _view;
         private readonly ConstructionsSettingsDefinition _constructionsSettings;
         private readonly IControls _controls;
+        private readonly IGameKeysManager _gameKeysManager;
         private readonly BuildScreenPresenter _buildScreen;
         private readonly ConstructionsManager _constructionsManager;
         private readonly ScreenManagerPresenter _screenManager;
@@ -32,11 +33,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
             ScreenManagerPresenter screenManager,
             ConstructionsManager constructionsManager,
-            BuildScreenPresenter buildScreen, IControls controls, IAssets assets, IGhostView view) : base(view)
+            BuildScreenPresenter buildScreen, IControls controls, IGameKeysManager gameKeysManager, IAssets assets, IGhostView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constructionsSettings = constructionsSettings ?? throw new ArgumentNullException(nameof(constructionsSettings));
             _controls = controls ?? throw new ArgumentNullException(nameof(controls));
+            _gameKeysManager = gameKeysManager ?? throw new ArgumentNullException(nameof(gameKeysManager));
             _buildScreen = buildScreen ?? throw new ArgumentNullException(nameof(buildScreen));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
@@ -44,8 +46,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             Definition = _buildScreen.CurrentCard.Definition ?? throw new ArgumentNullException(nameof(_buildScreen.CurrentCard.Definition));
 
 
-            _rotateLeft = _controls.Keys.GetKey(GameKeys.RotateLeft);
-            _rotateRight = _controls.Keys.GetKey(GameKeys.RotateRight);
+            _rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
+            _rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
 
             _view.Container.Clear();
             _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Definition.LevelViewPath));

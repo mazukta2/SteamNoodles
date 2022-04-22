@@ -33,7 +33,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
                 .Build();
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
-            game.Engine.Controls.Click();
+            game.Controls.Click();
 
             Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
 
@@ -49,7 +49,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var construction = IDefinitions.Default.Get<ConstructionDefinition>("Construction1");
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
-            game.Engine.Controls.Click();
+            game.Controls.Click();
 
             Assert.AreEqual(construction.HandImagePath, game.CurrentLevel.FindView<HandConstructionView>().Image.Path);
 
@@ -86,11 +86,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             Assert.IsNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
 
-            game.Engine.Controls.PointerEnter(construction1);
+            game.Controls.PointerEnter(construction1);
 
             Assert.IsNotNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
 
-            game.Engine.Controls.PointerExit(construction1);
+            game.Controls.PointerExit(construction1);
 
             Assert.IsNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
 

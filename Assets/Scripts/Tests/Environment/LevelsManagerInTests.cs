@@ -71,7 +71,7 @@ namespace Game.Tests.Controllers
             if (_loading == null)
                 throw new Exception("Nothing is loading");
 
-            _level = new LevelView(_engine, _loading.Model);
+            _level = new LevelView(_engine, _loading.Model, IControls.Default);
             ((LevelDefinitionMock)(_loading.Prototype)).LevelPrefab.FillLevel(_level);
             _level.FinishLoading();
             _loading.OnFinished(_level);

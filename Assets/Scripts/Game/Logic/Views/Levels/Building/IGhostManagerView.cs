@@ -20,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         void IViewWithAutoInit.Init()
         {
-            new GhostManagerPresenter(ScreenManagerService.Default.Get(), IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), Level.Engine.Controls,
+            new GhostManagerPresenter(ScreenManagerService.Default.Get(), IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IControls.Default,
                 Level.Model.Constructions, this);
         }
     }
