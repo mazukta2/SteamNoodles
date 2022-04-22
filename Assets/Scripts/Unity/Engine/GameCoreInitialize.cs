@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using GameUnity.Assets.Scripts.Unity.Engine.Definitions;
 using System;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
             _engine = new GameEngine();
             _core = new Core(_engine);
+            new DefaultLocalizationService().Set(new LocalizationManager(_core.Engine.Definitions, "English"));
 
             _session = _core.Game.CreateSession();
             _session.LoadLevel(_engine.Definitions.Get<MainDefinition>().StartLevel);
@@ -25,6 +27,8 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         protected void OnApplicationQuit()
         {
+            new DefaultLocalizationService().Clear();
+
             _session.Dispose();
             _core.Dispose();
         }

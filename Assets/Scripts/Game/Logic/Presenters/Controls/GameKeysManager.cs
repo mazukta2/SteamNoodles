@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Game.Assets.Scripts.Game.Environment.Engine.Controls
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Controls
 {
     public class GameKeysManager
     {

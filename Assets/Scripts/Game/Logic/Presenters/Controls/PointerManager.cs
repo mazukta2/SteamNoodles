@@ -1,10 +1,11 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Game.Assets.Scripts.Game.Environment.Engine.Controls
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Controls
 {
     public class PointerManager : IDisposable
     {
@@ -14,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Environment.Engine.Controls
         public event Action OnTooltipChanged = delegate { };
 
         protected readonly List<IView> _highlightedViews = new List<IView>();
-        
+
         public PointerManager(IControls controls)
         {
             _controls = controls;

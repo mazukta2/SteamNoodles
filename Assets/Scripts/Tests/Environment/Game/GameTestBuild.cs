@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Tests.Controllers;
@@ -24,10 +25,14 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
         {
             Core = core;
             Engine = gameEngine;
+
+            new DefaultLocalizationService().Set(new LocalizationManagerMock());
         }
 
         public void Dispose()
         {
+            new DefaultLocalizationService().Clear();
+
             foreach (var item in _toDispose)
                 item.Dispose();
             _toDispose.Clear();

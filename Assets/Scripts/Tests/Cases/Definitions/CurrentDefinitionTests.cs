@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Tests.Controllers;
 using NUnit.Framework;
@@ -119,7 +120,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         IAssets IGameEngine.Assets => Assets;
         ILevelsManager IGameEngine.Levels => Levels;
         IControls IGameEngine.Controls => Controls;
-
+        public LocalizationManager Localization { get; }
 
         public GameEngineDefinitionsTest(IDefinitions definitions)
         {

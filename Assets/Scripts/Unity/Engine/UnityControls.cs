@@ -1,9 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Environment.Engine.Controls;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Presenters;
+using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Unity.Views;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

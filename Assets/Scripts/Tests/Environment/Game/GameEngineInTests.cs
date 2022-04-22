@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Tests.Environment;
 using System;
 
@@ -18,7 +19,6 @@ namespace Game.Tests.Controllers
         IAssets IGameEngine.Assets => Assets;
         ILevelsManager IGameEngine.Levels => Levels;
         IControls IGameEngine.Controls => Controls;
-
 
         public GameEngineInTests()
         {

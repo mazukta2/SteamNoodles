@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models;
+using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 
 namespace Game.Assets.Scripts.Game.Environment
 {

@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Tests.Environment.Definitions.List;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
@@ -31,6 +32,7 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
         public GameTestBuild Build()
         {
             var core = new Core(_engine);
+
             var build = new GameTestBuild(core, _engine);
             if (_loadLevel != null)
                 build.LoadLevel(_loadLevel);

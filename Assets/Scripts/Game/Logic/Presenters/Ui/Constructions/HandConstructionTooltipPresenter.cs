@@ -1,8 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine.Controls;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
-using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.BuildScreenPresenter;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
@@ -10,15 +9,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     {
         private ConstructionCard _model;
         private IHandConstructionTooltipView _view;
+        private LocalizatedString _name;
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view, ConstructionCard model) : base(view)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
 
-            _view.Name.Value = _model.Definition.Name;
+            _name = new LocalizatedString(_view.Name, _model.Definition.Name);
             _view.Points.Value = $"+{_model.Definition.Points}";
         }
 
+        protected override void DisposeInner()
+        {
+            _name.Dispose();
+        }
     }
 }

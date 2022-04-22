@@ -34,6 +34,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
             
             var construciton = new ConstructionDefinition()
             {
+                Name = "Name",
                 Placement = new int[,] {
                     { 0, 0, 0 },
                     { 0, 1, 0 },
