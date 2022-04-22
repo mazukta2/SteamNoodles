@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Unity.Views;
 using Game.Assets.Scripts.Game.Unity.Views.Ui;
@@ -10,9 +11,13 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     {
         [SerializeField] ButtonUnityView _button;
         [SerializeField] ImageUnityView _image;
+        [SerializeField] ContainerUnityView _toolitpContainer;
+        [SerializeField] PrototypeUnityView _toolitpPrototype;
 
         public IButton Button => _button;
         public IImage Image => _image;
+        public IViewContainer TooltipContainer => _toolitpContainer;
+        public IViewPrefab TooltipPrefab => _toolitpPrototype;
     }
 
 }

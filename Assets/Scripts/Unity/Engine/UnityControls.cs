@@ -1,7 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Environment.Engine.Controls;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Views;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,11 +13,16 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     {
         public event Action OnLevelClick = delegate { };
         public event Action<FloatPoint> OnLevelPointerMoved = delegate { };
+        public event Action<IView> OnPointerEnter = delegate { };
+        public event Action<IView> OnPointerExit = delegate { };
+        public GameKeysManager Keys { get; } = new GameKeysManager();
 
         private Vector3 _mousePosition;
         private Plane _plane = new Plane(Vector3.up, 0);
         private float _wheel = 0;
-        public GameKeysManager Keys { get; } = new GameKeysManager();
+        private List<IView> _oldViews = new List<IView>();
+        private List<IView> _newViews = new List<IView>();
+
 
         public void Update()
         {
@@ -42,6 +49,28 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                     Keys.GetKey(GameKeys.RotateLeft).Tap();
             }
             _wheel = wheel;
+
+            var isChanged = false;
+            foreach (var oldView in _oldViews)
+            {
+                if (!_newViews.Contains(oldView))
+                {
+                    isChanged = true;
+                    OnPointerExit(oldView);
+                }
+            }
+
+            foreach (var newView in _newViews)
+            {
+                if (!_oldViews.Contains(newView))
+                {
+                    isChanged = true;
+                    OnPointerEnter(newView);
+                }
+            }
+
+            if (isChanged)
+                _oldViews = new List<IView>(_newViews);
         }
 
         bool SameSign(float num1, float num2)
@@ -82,6 +111,16 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                 return new FloatPoint(point.x, point.z);
             }
             throw new Exception("Can't reach point");
+        }
+
+        public void SetPointerEnter(IView view)
+        {
+            _newViews.Add(view);
+        }
+
+        public void SetPointerExit(IView view)
+        {
+            _newViews.Remove(view);
         }
     }
 }

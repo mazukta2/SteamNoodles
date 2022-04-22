@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Game.Assets.Scripts.Game.Environment.Engine.Controls
@@ -41,13 +42,22 @@ namespace Game.Assets.Scripts.Game.Environment.Engine.Controls
 
         private void HandlePointerExit(IView view)
         {
+            if (!_highlightedViews.Contains(view))
+                throw new Exception($"View {view} is not exists");
+
             _highlightedViews.Remove(view);
+
             if (_highlightedViews.Count == 0)
                 ClearTooltip();
+            else
+                SetTooltip(_highlightedViews.Last());
         }
 
         private void HandlePointerEnter(IView view)
         {
+            if (_highlightedViews.Contains(view))
+                throw new Exception($"View {view} already exists");
+
             _highlightedViews.Add(view);
             SetTooltip(view);
         }
