@@ -10,7 +10,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 {
     public class LocalizatedString : ILocalizatedString
     {
-        private IText _text;
         private string _tag;
         private ILocalizationManager _localization;
         private object[] _args;

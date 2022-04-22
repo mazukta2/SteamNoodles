@@ -1,6 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.External;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
@@ -27,15 +31,39 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test]
-        public void IsYouGetNewCardsAfterBuilding()
+        public void IsYouGetNewCardsAfterLevelUp()
         {
+            var construction = ConstructionDefinitionSetups.GetDefault();
+            construction.Points = 2;
+
             var game = new GameConstructor()
+                .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction, construction })
                 .Build();
+
+            Assert.AreEqual(0, game.CurrentLevel.Model.Resources.Points.CurrentLevel);
+            Assert.AreEqual(0, game.CurrentLevel.Model.Resources.Points.Value);
+            Assert.AreEqual(3, game.CurrentLevel.Model.Resources.Points.PointsForNextLevel);
+
+            Assert.AreEqual(2, game.CurrentLevel.FindViews<HandConstructionView>().Count());
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
+            Assert.AreEqual(0, game.CurrentLevel.Model.Resources.Points.CurrentLevel);
+            Assert.AreEqual(2, game.CurrentLevel.Model.Resources.Points.Value);
+            Assert.AreEqual(3, game.CurrentLevel.Model.Resources.Points.PointsForNextLevel);
+
             Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
+
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.Controls.MovePointer(new FloatPoint(-2, 0));
+            game.Controls.Click();
+
+            Assert.AreEqual(1, game.CurrentLevel.Model.Resources.Points.CurrentLevel);
+            Assert.AreEqual(4, game.CurrentLevel.Model.Resources.Points.Value);
+            Assert.AreEqual(8, game.CurrentLevel.Model.Resources.Points.PointsForNextLevel);
+
+            Assert.AreEqual(3, game.CurrentLevel.FindViews<HandConstructionView>().Count());
 
             game.Dispose();
         }
@@ -47,9 +75,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
                 .Build();
 
             var construction = IDefinitions.Default.Get<ConstructionDefinition>("Construction1");
-
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.Click();
 
             Assert.AreEqual(construction.HandImagePath, game.CurrentLevel.FindView<HandConstructionView>().Image.Path);
 

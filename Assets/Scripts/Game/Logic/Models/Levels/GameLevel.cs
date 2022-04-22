@@ -26,28 +26,37 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public Resources Resources { get; }
 
-        private LevelDefinition _settings;
+        private LevelDefinition _definition;
         private SessionRandom _random;
+        private Deck<ConstructionDefinition> _rewardDeck;
 
         public GameLevel(LevelDefinition settings, SessionRandom random, IGameTime time, IDefinitions definitions)
         {
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _definition = settings ?? throw new ArgumentNullException(nameof(settings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             if (time == null) throw new ArgumentNullException(nameof(time));
 
             Hand = new PlayerHand(settings, settings.StartingHand);
-            Resources = new Resources();
+            Resources = new Resources(definitions.Get<ConstructionsSettingsDefinition>());
 
             var unitSettings = definitions.Get<UnitsSettingsDefinition>();
             Units = new LevelUnits(time);
             _crowd = new LevelCrowd(unitSettings, Units, time, settings, random);
             _queue = new LevelQueue(unitSettings, Units, settings, random, Resources.Points, this);
 
-            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _settings, Resources, this);
+            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _definition, Resources, this);
+
+            _rewardDeck = new Deck<ConstructionDefinition>(_random);
+            foreach (var item in _definition.ConstructionsReward)
+                _rewardDeck.Add(item.Key, item.Value);
+
+            Resources.Points.OnLevelUp += OnLevelUp;
         }
 
         protected override void DisposeInner()
         {
+            Resources.Points.OnLevelUp -= OnLevelUp;
+
             Hand.Dispose();
             Constructions.Dispose();
             Units.Dispose();
@@ -58,19 +67,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public void Turn()
         {
-            var customer = _settings.BaseCrowdUnits.Keys.ToList()[_random.GetRandom(0, _settings.BaseCrowdUnits.Count - 1)];
-
-            var deck = new Deck<ConstructionDefinition>(_random);
-            foreach (var item in customer.ConstructionsReward)
-                deck.Add(item.Key, item.Value);
-
-            if (deck.IsEmpty())
-                return;
-
-            var constrcution = deck.Take();
-            Hand.Add(constrcution);
-
             OnTurn();
         }
+
+        private void OnLevelUp()
+        {
+            if (_rewardDeck.IsEmpty())
+                return;
+
+            for (int i = 0; i < 3; i++)
+            {
+                var constrcution = _rewardDeck.Take();
+                Hand.Add(constrcution);
+            }
+        }
+
     }
 }

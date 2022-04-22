@@ -31,6 +31,8 @@ namespace Game.Assets.Scripts.Tests.Setups
             _definitions.Add(nameof(ConstructionsSettingsDefinition), new ConstructionsSettingsDefinition()
             {
                 CellSize = 0.5f,
+                LevelUpPower = 2,
+                LevelUpOffset =2,
             });
             _assets.AddPrefab("DebugConstruction", new BasicConstructionModelPrefab());
             _definitions.Add(nameof(UnitsSettingsDefinition), new UnitsSettingsDefinition()
@@ -43,25 +45,11 @@ namespace Game.Assets.Scripts.Tests.Setups
                 }
             });
 
-            var construciton = new ConstructionDefinition()
-            {
-                Name = "Name",
-                Placement = new int[,] {
-                    { 0, 0, 0 },
-                    { 0, 1, 0 },
-                    { 0, 1, 0 },
-                },
-                LevelViewPath = "DebugConstruction",
-                Points = 1,
-            };
+            var construciton = ConstructionDefinitionSetups.GetDefault();
             _definitions.Add("Construction1", construciton);
 
             var customer = new CustomerDefinition()
             {
-                ConstructionsReward = new Dictionary<ConstructionDefinition, int>()
-                {
-                    { construciton, 1}
-                }
             };
             _definitions.Add("Customer1", customer);
 
@@ -80,6 +68,10 @@ namespace Game.Assets.Scripts.Tests.Setups
                     { customer, 2 }
                 },
                 UnitsRect = new FloatRect(-10, -10, 20, 20),
+                ConstructionsReward = new Dictionary<ConstructionDefinition, int>()
+                {
+                    { construciton, 1}
+                }
             };
             _definitions.Add(level.Name, level);
         }

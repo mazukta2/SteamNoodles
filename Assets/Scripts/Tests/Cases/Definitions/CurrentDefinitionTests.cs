@@ -40,8 +40,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
             var defs = IDefinitions.Default.GetList<CustomerDefinition>();
             Assert.IsTrue(defs.Count > 0);
 
-            foreach (var level in defs)
-                level.Validate();
+            foreach (var custumer in defs)
+                custumer.Validate();
         }
 
         [Test]

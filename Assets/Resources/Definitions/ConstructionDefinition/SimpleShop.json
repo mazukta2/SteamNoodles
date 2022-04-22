@@ -8,7 +8,7 @@
 	"Requirements": { "DownEdge": true },
 	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
 	"LevelViewPath": "Constructions/SimpleShop",
-	"Points": 15,
+	"Points": 9,
 	"AdjacencyPoints": {
 	}
 }

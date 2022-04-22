@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
@@ -482,7 +483,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsRemovedFromHand()
         {
             var game = new GameConstructor()
-                .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition,int>())
+                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition,int>())
                 .Build();
 
             Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count);
@@ -497,7 +498,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsTwoConstructionsPlacing()
         {
+            var construction = ConstructionDefinitionSetups.GetDefault();
             var game = new GameConstructor()
+                .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction, construction })
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .Build();
 

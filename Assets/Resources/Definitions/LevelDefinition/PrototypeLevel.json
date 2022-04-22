@@ -1,5 +1,9 @@
 {
 	"StartingHand": [ "SimpleShop" ],
+	"ConstructionsReward": {
+		"Farm" : 10,
+		"Well" : 5
+	},
 	"HandSize": 5,
 	"SceneName": "PolygonScene",
 	"PlacementFields": [
@@ -10,9 +14,9 @@
 			}
 		}
 	],
-	"QueuePosition" : {
-		"X" : 0,
-		"Y" : -1.6
+	"QueuePosition": {
+		"X": 0,
+		"Y": -1.6
 	},
 	"CrowdUnitsAmount": 50,
 	"BaseCrowdUnits": {

@@ -1,3 +1,5 @@
 {
-    "CellSize": 0.25
+    "CellSize": 0.25,
+    "LevelUpPower" : 1.6,
+    "LevelUpOffset" : 6
 }

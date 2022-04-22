@@ -71,7 +71,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new GameConstructor()
                 .AddDefinition("construction1", construction1)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
-                .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
+                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
                 .UpdateDefinition<LevelDefinitionMock>(x => x.
                     StartingHand = new List<ConstructionDefinition>() { construction1, construction1 })
                 .Build();
@@ -107,7 +107,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new GameConstructor()
                 .AddDefinition("construction1", constructionDefinition)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
-                .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
+                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
                 .UpdateDefinition<LevelDefinitionMock>(x => x.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition })
                 .Build();

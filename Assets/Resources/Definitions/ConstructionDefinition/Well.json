@@ -1,16 +1,15 @@
 {
-	"Name": "CONSTRUCTIONS_FARM_NAME",
+	"Name": "CONSTRUCTIONS_WELL_NAME",
 	"Placement": [
-		[ 1, 1 ],
 		[ 1, 1 ],
 		[ 1, 1 ]
 	],
 	"Requirements": {},
 	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
-	"LevelViewPath": "Constructions/Farm",
+	"LevelViewPath": "Constructions/Well",
 	"Points": 2,
 	"AdjacencyPoints": {
 		"SimpleShop": 2,
-		"Well" : 3
+		"Farm": 3
 	}
 }

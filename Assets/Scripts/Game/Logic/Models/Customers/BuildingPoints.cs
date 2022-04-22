@@ -7,6 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
     public class BuildingPoints
     {
         public event Action OnPointsChanged = delegate { };
+        public event Action OnLevelUp = delegate { };
         public int Value { get => _points; set => SetPoints(value); }
 
         public int CurrentLevel { get; private set; }
@@ -15,6 +16,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
         public float Progress => (float)(Value - PointsForCurrentLevel) / (PointsForNextLevel - PointsForCurrentLevel);
 
         private int _points;
+        private float _power;
+        private float _offset;
+
+        public BuildingPoints(float power, float offset)
+        {
+            _power = power;
+            _offset = offset;
+        }
 
         public float GetAdditionalProgress(int points)
         {
@@ -23,7 +32,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 
         private float GetPointsForLevel(int level)
         {
-            return (float)(Math.Pow(level, 2) + 2 * level);
+            return (float)(Math.Pow(level, _power) + _offset * level);
         }
 
         private void SetPoints(int value)
@@ -31,7 +40,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             _points = value;
 
             while (value >= PointsForNextLevel)
+            {
                 CurrentLevel++;
+                OnLevelUp();
+            }
 
             OnPointsChanged();
         }

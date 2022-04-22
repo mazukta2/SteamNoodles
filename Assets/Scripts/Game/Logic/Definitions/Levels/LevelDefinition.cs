@@ -26,6 +26,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
         public IReadOnlyDictionary<CustomerDefinition, int> BaseCrowdUnits { get; set; } = new Dictionary<CustomerDefinition, int>();
         public FloatRect UnitsRect { get; set; }
 
+        [JsonConverter(typeof(DefinitionsDictionaryConventer<ConstructionDefinition, int>))]
+        public IReadOnlyDictionary<ConstructionDefinition, int> ConstructionsReward { get; set; } = new Dictionary<ConstructionDefinition, int>();
 
         public void Validate()
         {
@@ -53,6 +55,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
             if (QueuePosition.IsZero())
                 throw new Exception($"{nameof(QueuePosition)} is null");
 
+            if (ConstructionsReward.Count == 0)
+                throw new Exception($"{nameof(ConstructionsReward)} is empty");
         }
     }
 }
