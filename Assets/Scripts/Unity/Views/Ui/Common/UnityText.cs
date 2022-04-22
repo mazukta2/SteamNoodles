@@ -11,9 +11,15 @@ using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 {
+    [Serializable]
     public class UnityText : IText
     {
-        private TextMeshProUGUI _text;
+        [SerializeField] private TextMeshProUGUI _text;
+
+        public UnityText()
+        {
+
+        }
 
         public UnityText(TextMeshProUGUI text)
         {

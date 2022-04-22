@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 {
-    public interface ILocalizatedString : IDisposable
+    public interface ILocalizatedString 
     {
         string Get();
     }

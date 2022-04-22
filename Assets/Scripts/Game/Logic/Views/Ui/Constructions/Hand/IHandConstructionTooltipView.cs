@@ -10,5 +10,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     {
         IText Name { get; }
         IText Points { get; }
+        IText Adjacencies { get; }
     }
 }

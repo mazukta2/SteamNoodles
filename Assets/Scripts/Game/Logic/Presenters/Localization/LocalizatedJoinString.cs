@@ -8,31 +8,28 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 {
-    public class LocalizatedString : ILocalizatedString
+    public class LocalizatedJoinString : ILocalizatedString
     {
-        private IText _text;
-        private string _tag;
+        private string _separator;
+        private ILocalizatedString[] _strings;
         private ILocalizationManager _localization;
-        private object[] _args;
 
-        public LocalizatedString(string tag, params object[] args)
+        public LocalizatedJoinString(string separator, params ILocalizatedString[] strings)
         {
-            _tag = tag ?? throw new ArgumentNullException(nameof(tag));
-            _args = args ?? throw new ArgumentNullException(nameof(args));
+            _separator = separator ?? throw new ArgumentNullException(nameof(separator));
+            _strings = strings ?? throw new ArgumentNullException(nameof(strings));
             _localization = ILocalizationManager.Default ?? throw new ArgumentNullException(nameof(ILocalizationManager.Default));
-
         }
 
-        public LocalizatedString(ILocalizationManager manager, string tag, params object[] args) : this(tag, args)
+        public LocalizatedJoinString(ILocalizationManager manager, string separator, params ILocalizatedString[] strings) 
+            : this(separator, strings)
         {
             _localization = manager ?? throw new ArgumentNullException(nameof(manager));
         }
 
         public string Get()
         {
-            return _localization.Get(_tag, _args);
+            return string.Join(_separator, _strings.Select(l => l.Get()));
         }
-
-
     }
 }
