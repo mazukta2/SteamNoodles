@@ -1,14 +1,15 @@
 {
-	"Placement" : [
-		[1, 1],
-		[1, 1],
-		[1, 1]
+	"Name": "CONSTRUCTIONS_FARM_NAME",
+	"Placement": [
+		[ 1, 1 ],
+		[ 1, 1 ],
+		[ 1, 1 ]
 	],
-    "Requirements": { },
-    "HandImagePath": "Sprites/Cards/Icons/SimpleShop",
-    "LevelViewPath": "Constructions/Farm",
-    "Points" : 5,
-	"AdjacencyPoints" : {
-		"SimpleShop" : 5
+	"Requirements": {},
+	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+	"LevelViewPath": "Constructions/Farm",
+	"Points": 5,
+	"AdjacencyPoints": {
+		"SimpleShop": 5
 	}
 }

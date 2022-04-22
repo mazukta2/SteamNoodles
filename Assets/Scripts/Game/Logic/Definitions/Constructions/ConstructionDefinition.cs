@@ -10,6 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 {
     public class ConstructionDefinition
     {
+        public string Name { get; set; }
         public string LevelViewPath { get; set; }
         public int[,] Placement { get; set; }
         public Requirements Requirements { get; set;  }
@@ -100,6 +101,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 
             if (string.IsNullOrEmpty(HandImagePath))
                 throw new Exception($"{nameof(HandImagePath)} is empty");
+
+            if (string.IsNullOrEmpty(Name))
+                throw new Exception($"{nameof(Name)} is empty");
 
         }
     }

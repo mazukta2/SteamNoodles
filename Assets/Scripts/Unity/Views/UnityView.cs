@@ -37,6 +37,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void OnDestroy()
         {
+            ((UnityControls)Level.Engine.Controls).ViewDestroyed(this);
             Level.Remove(this);
             IsDisposed = true;
             OnDispose();
@@ -44,6 +45,9 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         public void Dispose()
         {
+            if (IsDisposed)
+                return;
+
             DestroyImmediate(gameObject);
         }
 

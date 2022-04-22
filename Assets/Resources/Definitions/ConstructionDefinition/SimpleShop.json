@@ -1,13 +1,14 @@
 {
-	"Placement" : [
-		[1, 1, 1],
-		[1, 1, 1],
-		[1, 1, 1],
+	"Name" : "CONSTRUCTIONS_SIMPLE_SHOP_NAME",
+	"Placement": [
+		[ 1, 1, 1 ],
+		[ 1, 1, 1 ],
+		[ 1, 1, 1 ],
 	],
-    "Requirements": { "DownEdge": true },
-    "HandImagePath": "Sprites/Cards/Icons/SimpleShop",
-    "LevelViewPath": "Constructions/SimpleShop",
-    "Points" : 15,
-	"AdjacencyPoints" : {
+	"Requirements": { "DownEdge": true },
+	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+	"LevelViewPath": "Constructions/SimpleShop",
+	"Points": 15,
+	"AdjacencyPoints": {
 	}
 }

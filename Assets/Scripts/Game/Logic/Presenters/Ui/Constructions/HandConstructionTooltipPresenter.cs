@@ -16,7 +16,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
 
-            _view.Name.Value = "TEST";
+            _view.Name.Value = _model.Definition.Name;
+            _view.Points.Value = $"+{_model.Definition.Points}";
         }
 
     }

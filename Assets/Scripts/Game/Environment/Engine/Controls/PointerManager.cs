@@ -50,7 +50,7 @@ namespace Game.Assets.Scripts.Game.Environment.Engine.Controls
             if (_highlightedViews.Count == 0)
                 ClearTooltip();
             else
-                SetTooltip(_highlightedViews.Last());
+                SetTooltip(_highlightedViews.First());
         }
 
         private void HandlePointerEnter(IView view)
@@ -59,7 +59,8 @@ namespace Game.Assets.Scripts.Game.Environment.Engine.Controls
                 throw new Exception($"View {view} already exists");
 
             _highlightedViews.Add(view);
-            SetTooltip(view);
+
+            SetTooltip(_highlightedViews.First());
         }
 
     }

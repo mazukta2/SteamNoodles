@@ -1,7 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Environment.Engine.Controls;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Unity.Views;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,28 +51,39 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                     Keys.GetKey(GameKeys.RotateLeft).Tap();
             }
             _wheel = wheel;
-
-            var isChanged = false;
+            
+            var removed = new List<IView>();
+            var added = new List<IView>();
             foreach (var oldView in _oldViews)
             {
                 if (!_newViews.Contains(oldView))
-                {
-                    isChanged = true;
-                    OnPointerExit(oldView);
-                }
+                    removed.Add(oldView);
             }
 
             foreach (var newView in _newViews)
             {
                 if (!_oldViews.Contains(newView))
-                {
-                    isChanged = true;
-                    OnPointerEnter(newView);
-                }
+                    added.Add(newView);
             }
 
-            if (isChanged)
+            if (removed.Count > 0 || added.Count > 0)
                 _oldViews = new List<IView>(_newViews);
+
+            foreach (var removedView in removed)
+            {
+                if (_newViews.Contains(removedView))
+                    throw new Exception("View is removed but contains in list");
+
+                OnPointerExit(removedView);
+            }
+
+            foreach (var addedView in added)
+            {
+                if (!_newViews.Contains(addedView))
+                    throw new Exception("View is addend but not contains in list");
+
+                OnPointerEnter(addedView);
+            }
         }
 
         bool SameSign(float num1, float num2)
@@ -122,5 +135,11 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         {
             _newViews.Remove(view);
         }
+
+        public void ViewDestroyed(IView view)
+        {
+            _newViews.RemoveAll(x => x == view);
+        }
+
     }
 }

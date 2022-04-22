@@ -13,11 +13,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     {
         [SerializeField] TextMeshProUGUI _name;
 
+        [SerializeField] TextMeshProUGUI _points;
         public IText Name { get; private set; }
+        public IText Points { get; private set; }
 
         protected override void PreAwake()
         {
             Name = new UnityText(_name);
+            Points = new UnityText(_points);
         }
     }
 
