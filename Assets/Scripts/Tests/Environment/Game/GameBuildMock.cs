@@ -3,10 +3,10 @@ using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using Game.Assets.Scripts.Tests.Environment;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
 using System;
@@ -16,31 +16,36 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
 {
     public class GameBuildMock : IDisposable
     {
-        public GameEngineMock Engine { get; private set; }
+        public LevelsManagerMock Levels { get; private set; }
         public Core Core { get; private set; }
         public ControlsMock Controls { get; private set; }
 
         public GameModel GameModel => Core?.Game;
-        public LevelView CurrentLevel => Engine.Levels.GetCurrentLevel();
+        public LevelView CurrentLevel => Levels.GetCurrentLevel();
 
         public GameKeysManager Keys { get; private set; }
+        public GameTime Time { get; private set; }
 
         private List<IDisposable> _toDispose = new List<IDisposable>();
         private AssetsMock _assets;
 
-        public GameBuildMock(Core core, GameEngineMock gameEngine, AssetsMock assets, DefinitionsMock definitions)
+        public GameBuildMock(AssetsMock assets, DefinitionsMock definitions, LevelsManagerMock levelManager)
         {
-            Core = core;
-            Engine = gameEngine;
+            Core = new Core();
+            Levels = levelManager;
 
             _assets = assets;
             Controls = new ControlsMock();
             Keys = new GameKeysManager();
+            Time = new GameTime();
+
             ILocalizationManager.Default = new LocalizationManagerMock();
             IAssets.Default = _assets;
             IDefinitions.Default = definitions;
             IControls.Default = Controls;
             IGameKeysManager.Default = Keys;
+            ILevelsManager.Default = Levels;
+            IGameTime.Default = Time;
         }
 
         public void Dispose()
@@ -52,16 +57,16 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             IAssets.Default = null;
             IDefinitions.Default = null;
             IControls.Default = null;
+            ILevelsManager.Default = null;
 
             foreach (var item in _toDispose)
                 item.Dispose();
             _toDispose.Clear();
 
             Core.Dispose();
-            Engine.Levels.Dispose();
+            Levels.Dispose();
 
             Core = null;
-            Engine = null;
         }
 
         public void LoadLevel(LevelDefinitionMock loadLevel)
@@ -71,7 +76,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             GameLevel newLevel = null;
 
             levelLoading.OnLoaded += HandleOnLoaded;
-            Engine.Levels.FinishLoading();
+            Levels.FinishLoading();
             levelLoading.OnLoaded -= HandleOnLoaded;
 
             _toDispose.Add(newLevel);

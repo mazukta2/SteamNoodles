@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using System;
 using System.Linq;
@@ -20,13 +21,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private bool _isLoaded = false;
 
-        public LevelLoading(GameSession session, IGameEngine gameEngine, LevelDefinition levelDefinition)
+        public LevelLoading(GameSession session, ILevelsManager levelsManager, LevelDefinition levelDefinition)
         {
             _session = session ?? throw new ArgumentNullException(nameof(session));
             _prototype = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
-            _levelManager = gameEngine.Levels ?? throw new ArgumentNullException(nameof(gameEngine));
+            _levelManager = levelsManager ?? throw new ArgumentNullException(nameof(levelsManager));
 
-            _level = new GameLevel(_prototype, _session.GameRandom, gameEngine.Time, IDefinitions.Default);
+            _level = new GameLevel(_prototype, _session.GameRandom, IGameTime.Default, IDefinitions.Default);
 
             _levelManager.Load(_level, levelDefinition, Finished);
         }

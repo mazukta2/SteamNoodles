@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
             GameLevel loadedLevel = null;
 
             levelLoading.OnLoaded += HandleOnLoaded;
-            build.Engine.Levels.FinishLoading();
+            build.Levels.FinishLoading();
             levelLoading.OnLoaded -= HandleOnLoaded;
             Assert.IsTrue(levelLoading.IsDisposed);
             Assert.IsNotNull(loadedLevel);
@@ -56,7 +56,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         public void LevelShortcutIsWorking()
         {
             var build = new GameConstructor().Build();
-            Assert.IsNotNull(build.Engine.Levels.GetCurrentLevel());
+            Assert.IsNotNull(build.Levels.GetCurrentLevel());
             build.Dispose();
         }
 

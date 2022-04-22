@@ -22,10 +22,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private LevelUnits _units;
         private UnitsSettingsDefinition _unitsSettings;
         private SessionRandom _random;
-        private GameTime _time;
+        private IGameTime _time;
         private Deck<CustomerDefinition> _pool;
 
-        public LevelCrowd(UnitsSettingsDefinition unitsSettings, LevelUnits units, GameTime time, LevelDefinition levelDefinition,
+        public LevelCrowd(UnitsSettingsDefinition unitsSettings, LevelUnits units, IGameTime time, LevelDefinition levelDefinition,
             SessionRandom random)
         {
             _levelDefinition = levelDefinition;

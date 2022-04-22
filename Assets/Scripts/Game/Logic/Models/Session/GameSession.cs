@@ -11,11 +11,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
     {
         public SessionRandom GameRandom { get; private set; } = new SessionRandom();
 
-        private IGameEngine _engine;
-
-        public GameSession(IGameEngine engine)
+        public GameSession()
         {
-            _engine = engine;
         }
 
         protected override void DisposeInner()
@@ -24,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
 
         public LevelLoading LoadLevel(LevelDefinition definition)
         {
-            return new LevelLoading(this, _engine, definition);
+            return new LevelLoading(this, ILevelsManager.Default, definition);
         }
 
     }

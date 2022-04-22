@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         private LevelDefinition _settings;
         private SessionRandom _random;
 
-        public GameLevel(LevelDefinition settings, SessionRandom random, GameTime time, IDefinitions definitions)
+        public GameLevel(LevelDefinition settings, SessionRandom random, IGameTime time, IDefinitions definitions)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _random = random ?? throw new ArgumentNullException(nameof(random));

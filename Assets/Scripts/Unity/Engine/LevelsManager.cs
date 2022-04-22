@@ -13,11 +13,9 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     {
         private static LevelView _currentLevel;
         private static GameLevel _model;
-        private static IGameEngine _engine;
 
-        public LevelsManager(IGameEngine engine)
+        public LevelsManager()
         {
-            _engine = engine;
         }
 
         public void Load(string scene, Action<LevelView> onFinished)
@@ -25,7 +23,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             if (_currentLevel != null)
                 throw new Exception("Loading before unloading");
 
-            _currentLevel = new LevelView(_engine, _model, IControls.Default);
+            _currentLevel = new LevelView(_model, IControls.Default);
 
             var loading = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
             if (loading.isDone)

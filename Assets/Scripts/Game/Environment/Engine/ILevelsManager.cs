@@ -10,5 +10,7 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
         void Load(GameLevel model, LevelDefinition prototype, Action<LevelView> onFinished);
         void Unload();
         LevelView GetCurrentLevel();
+
+        static ILevelsManager Default { get; set; }
     }
 }

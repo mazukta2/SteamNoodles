@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Controls
         public IView CurrentTooltip { get; private set; }
         public event Action OnTooltipChanged = delegate { };
 
-        protected readonly List<IView> _highlightedViews = new List<IView>();
+        private readonly List<IView> _highlightedViews = new List<IView>();
 
         public PointerManager(IControls controls)
         {

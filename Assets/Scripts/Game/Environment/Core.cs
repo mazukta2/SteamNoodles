@@ -9,15 +9,12 @@ namespace Game.Assets.Scripts.Game.Environment
 {
     public class Core : Disposable
     {
-        public IGameEngine Engine { get; private set; }
         public GameModel Game { get; private set; }
 
-        public Core(IGameEngine gameEngine)
+        public Core()
         {
-            Engine = gameEngine;
-            Game = new GameModel(Engine);
+            Game = new GameModel();
 
-            CoreAccessPoint.SetCore(this);
             IGameKeysManager.Default = new GameKeysManager();
         }
 
@@ -25,8 +22,6 @@ namespace Game.Assets.Scripts.Game.Environment
         {
             IGameKeysManager.Default = null;
             Game.Dispose();
-            Engine.Dispose();
-            CoreAccessPoint.ClearCore();
         }
     }
 }

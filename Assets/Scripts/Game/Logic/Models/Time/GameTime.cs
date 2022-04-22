@@ -3,7 +3,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Time
 {
-    public class GameTime 
+    public class GameTime : IGameTime
     {
         public event Action<float> OnTimeChanged = delegate { };
 

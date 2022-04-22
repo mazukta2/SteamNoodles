@@ -6,23 +6,20 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Services.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using Game.Assets.Scripts.Tests.Environment;
 using Game.Tests.Mocks.Settings.Levels;
 using System;
 using System.Collections.Generic;
 
-namespace Game.Tests.Controllers
+namespace Game.Assets.Scripts.Tests.Environment
 {
-    public class LevelsManagerInTests : ILevelsManager
+    public class LevelsManagerMock : ILevelsManager
     {
         private List<LevelDefinitionMock> _availableLevels = new List<LevelDefinitionMock>();
         private ManagerLoadingLevel _loading;
         private LevelView _level;
-        private IGameEngine _engine;
 
-        public LevelsManagerInTests(IGameEngine engine)
+        public LevelsManagerMock()
         {
-            _engine = engine;
         }
 
         public void Dispose()
@@ -71,8 +68,8 @@ namespace Game.Tests.Controllers
             if (_loading == null)
                 throw new Exception("Nothing is loading");
 
-            _level = new LevelView(_engine, _loading.Model, IControls.Default);
-            ((LevelDefinitionMock)(_loading.Prototype)).LevelPrefab.FillLevel(_level);
+            _level = new LevelView(_loading.Model, IControls.Default);
+            ((LevelDefinitionMock)_loading.Prototype).LevelPrefab.FillLevel(_level);
             _level.FinishLoading();
             _loading.OnFinished(_level);
             _loading = null;
@@ -86,7 +83,7 @@ namespace Game.Tests.Controllers
                 OnFinished = onFinished;
                 Model = model;
             }
-             
+
             public GameLevel Model { get; private set; }
             public LevelDefinition Prototype { get; private set; }
             public Action<LevelView> OnFinished { get; private set; }

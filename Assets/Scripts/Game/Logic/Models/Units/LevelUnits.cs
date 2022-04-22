@@ -12,9 +12,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public IReadOnlyCollection<Unit> Units => _spawnedUnits;
 
         private List<Unit> _spawnedUnits = new List<Unit>();
-        private GameTime _time;
+        private IGameTime _time;
 
-        public LevelUnits(GameTime time)
+        public LevelUnits(IGameTime time)
         {
             _time = time ?? throw new ArgumentNullException(nameof(time));
             _time.OnTimeChanged += Time_OnTimeChanged;

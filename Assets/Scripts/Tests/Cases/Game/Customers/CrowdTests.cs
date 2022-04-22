@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var unit = game.CurrentLevel.FindView<UnitView>();
             var startingPosition = unit.Position.Value.X;
             Assert.IsFalse(unit.IsDisposed);
-            game.Engine.Time.MoveTime(100);
+            game.Time.MoveTime(100);
             Assert.AreNotEqual(startingPosition, unit.Position.Value.X);
             Assert.IsTrue(unit.IsDisposed);
 

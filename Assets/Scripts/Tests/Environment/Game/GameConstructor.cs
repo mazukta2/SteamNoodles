@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Setups;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
@@ -10,10 +9,10 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
 {
     public class GameConstructor
     {
-        private GameEngineMock _engine = new GameEngineMock();
         private bool _disableAutoload;
         private DefinitionsMock _definitions = new DefinitionsMock();
         private AssetsMock _assets = new AssetsMock();
+        private LevelsManagerMock _levelsManager = new LevelsManagerMock();
         private DefaultSceneSetup _setup;
 
         public GameConstructor()
@@ -24,9 +23,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
 
         public GameBuildMock Build()
         {
-            var core = new Core(_engine);
-
-            var build = new GameBuildMock(core, _engine, _assets, _definitions);
+            var build = new GameBuildMock(_assets, _definitions, _levelsManager);
             if (!_disableAutoload)
             {
                 build.LoadLevel(IDefinitions.Default.Get<LevelDefinitionMock>("DebugLevel"));
@@ -43,7 +40,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
 
         public GameConstructor AddLevel(LevelDefinitionMock levelDefinition)
         {
-            _engine.Levels.Add(levelDefinition);
+            _levelsManager.Add(levelDefinition);
             _definitions.Add(levelDefinition.Name, levelDefinition);
             return this;
         }

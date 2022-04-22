@@ -20,15 +20,13 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 
         public bool IsLoaded { get; private set; }
         public GameLevel Model { get; }
-        public IGameEngine Engine { get; }
         public PointerManager Pointer { get; }
 
         private List<IView> _views = new List<IView>();
 
-        public LevelView(IGameEngine engine, GameLevel model, IControls controls)
+        public LevelView(GameLevel model, IControls controls)
         {
             Model = model;
-            Engine = engine;
             Pointer = new PointerManager(controls);
         }
 

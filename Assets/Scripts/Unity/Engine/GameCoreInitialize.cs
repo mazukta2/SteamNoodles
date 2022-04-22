@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using GameUnity.Assets.Scripts.Unity.Engine.Definitions;
 using System;
@@ -11,23 +12,23 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 {
     public class GameCoreInitialize : MonoBehaviour
     {
-        private GameEngine _engine;
         private Core _core;
         private GameSession _session;
         private UnityControls _controls = new UnityControls();
+        private GameTime _time = new GameTime();
 
         protected void Awake()
         {
             DontDestroyOnLoad(gameObject);
 
-            _engine = new GameEngine();
-            _core = new Core(_engine);
-
             IAssets.Default = new AssetsLoader();
             IDefinitions.Default = new GameDefinitions();
             ILocalizationManager.Default = new LocalizationManager(IDefinitions.Default, "English");
             IControls.Default = _controls;
+            ILevelsManager.Default = new LevelsManager();
+            IGameTime.Default = _time;
 
+            _core = new Core();
             _session = _core.Game.CreateSession();
             _session.LoadLevel(IDefinitions.Default.Get<MainDefinition>().StartLevel);
         }
@@ -48,7 +49,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         protected void Update()
         {
-            _engine.Update();
+            _time.MoveTime(UnityEngine.Time.deltaTime);
             _controls.Update();
         }
 
