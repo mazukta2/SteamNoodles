@@ -6,10 +6,8 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Services
 {
-    public class LevelServices : Disposable
+    public class GameServices : Disposable
     {
-        public Action<IService> OnServiceAdded = delegate { };
-
         private List<IService> _services = new List<IService>();
 
         protected override void DisposeInner()
@@ -27,7 +25,6 @@ namespace Game.Assets.Scripts.Game.Logic.Services
         public T Add<T>(T service) where T : IService
         {
             _services.Add(service);
-            OnServiceAdded(service);
             return service;
         }
 

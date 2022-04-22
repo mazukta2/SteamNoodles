@@ -22,7 +22,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _constructionView.Rotator.Look(ConstructionRotation.ToDirection(construction.Rotation));
 
             _constructionView.Container.Clear();
-            _constructionView.Container.Spawn<IConstructionModelView>(assets.GetConstruction(construction.Definition.LevelViewPath));
+            _constructionView.Container.Spawn<IConstructionModelView>(assets.GetPrefab(construction.Definition.LevelViewPath));
         }
     }
 }

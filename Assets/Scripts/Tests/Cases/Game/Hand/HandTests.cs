@@ -13,6 +13,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Game.External;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 {
@@ -52,7 +53,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var game = new GameTestConstructor()
                 .Build();
 
-            var construction = game.Core.Engine.Definitions.Get<ConstructionDefinition>("Construction1");
+            var construction = IDefinitions.Default.Get<ConstructionDefinition>("Construction1");
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             game.Engine.Controls.Click();

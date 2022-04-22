@@ -16,6 +16,8 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Ui
             _presenter = presenter;
         }
 
+        public static ScreenManagerService Default { get; internal set; }
+
         public ScreenManagerPresenter Get()
         {
             return _presenter;

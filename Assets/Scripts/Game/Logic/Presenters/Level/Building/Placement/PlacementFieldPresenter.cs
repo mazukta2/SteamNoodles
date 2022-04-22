@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
@@ -62,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private PlacementCellPresenter CreateCell(IntPoint position)
         {
             var view = _view.Manager.CellsContainer.Spawn<ICellView>(_view.Manager.Cell);
-            return new PlacementCellPresenter(view, this, view.Level.Engine.Definitions.Get<ConstructionsSettingsDefinition>(), position);
+            return new PlacementCellPresenter(view, this, IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), position);
         }
 
         public void UpdateGhostCells()
@@ -94,7 +95,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private void HandleOnConstructionAdded(Construction construction)
         {
             var view = _view.Manager.ConstrcutionContainer.Spawn<IConstructionView>(_view.Manager.ConstrcutionPrototype);
-            new ConstructionPresenter(_settings, construction, view.Level.Engine.Assets, view);
+            new ConstructionPresenter(_settings, construction, IAssets.Default, view);
         }
     }
 }

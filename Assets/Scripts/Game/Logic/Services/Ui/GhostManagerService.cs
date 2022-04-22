@@ -16,6 +16,8 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Ui
             _presenter = presenter;
         }
 
+        public static GhostManagerService Default { get; internal set; }
+
         public GhostManagerPresenter Get()
         {
             return _presenter;

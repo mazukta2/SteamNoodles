@@ -1,94 +1,64 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
-using Game.Assets.Scripts.Tests.Environment.Definitions.List;
+using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Environment.Game;
-using Game.Assets.Scripts.Tests.Mocks.Levels;
+using Game.Assets.Scripts.Tests.Setups;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
 using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Game.Assets.Scripts.Tests.Managers.Game
 {
     public class GameTestConstructor
     {
         private GameEngineInTests _engine = new GameEngineInTests();
-        private LevelDefinitionMock _loadLevel;
+        private bool _disableAutoload;
+        private DefinitionsMock _definitions = new DefinitionsMock();
+        private AssetsMock _assets = new AssetsMock();
+        private DefaultSceneSetup _setup;
 
         public GameTestConstructor()
         {
-            LoadDefinitions(new DefaultDefinitions());
-            _loadLevel = _engine.Settings.Get<LevelDefinitionMock>("DebugLevel");
+            _setup = new DefaultSceneSetup(_assets, _definitions);
+            _setup.Create();
         }
 
-        public GameTestConstructor(BaseConstructorSettings settings)
-        {
-            settings.Fill(this);
-        }
-
-        public GameTestBuild Build()
+        public GameBuildMock Build()
         {
             var core = new Core(_engine);
 
-            var build = new GameTestBuild(core, _engine);
-            if (_loadLevel != null)
-                build.LoadLevel(_loadLevel);
+            var build = new GameBuildMock(core, _engine, _assets, _definitions);
+            if (!_disableAutoload)
+            {
+                build.LoadLevel(IDefinitions.Default.Get<LevelDefinitionMock>("DebugLevel"));
+            }
 
             return build;
         }
 
-        public GameTestConstructor ClearLoading()
-        {
-            _loadLevel = null;
-            return this;
-        }
-
         public GameTestConstructor AddDefinition(string name, object obj)
         {
-            _engine.Settings.Add(name, obj);
-            return this;
-        }
-
-        public GameTestConstructor LoadDefinitions(DefinitionsMockCreator definitions)
-        {
-            definitions.Create(_engine);
+            _definitions.Add(name, obj);
             return this;
         }
 
         public GameTestConstructor AddLevel(LevelDefinitionMock levelDefinition)
         {
             _engine.Levels.Add(levelDefinition);
-            _engine.Settings.Add(levelDefinition.Name, levelDefinition);
+            _definitions.Add(levelDefinition.Name, levelDefinition);
             return this;
         }
 
-        public GameTestConstructor AddAndLoadLevel(LevelPrefabMock mockCreator)
+        public GameTestConstructor DisableAutoLoad() 
         {
-            var levelDefinition = new LevelDefinitionMock("lvl", mockCreator);
-            AddLevel(levelDefinition);
-            _loadLevel = levelDefinition;
-            return this;
-        }
-
-        public GameTestConstructor AddAndLoadLevel(LevelDefinitionMock levelDefinition)
-        {
-            AddLevel(levelDefinition);
-            _loadLevel = levelDefinition;
+            _disableAutoload = true;
             return this;
         }
 
         public GameTestConstructor UpdateDefinition<T>(Action<T> p)
         {
-            p(_engine.Settings.Get<T>());
+            p(_definitions.Get<T>());
             return this;
-        }
-
-        public T GetDefintiion<T>()
-        {
-            return _engine.Settings.Get<T>();
         }
     }
 }

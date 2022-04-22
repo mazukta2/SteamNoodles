@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void LevelDefinitions()
         {
             var core = CreateCore();
-            var defs = core.Engine.Definitions.GetList<LevelDefinition>();
+            var defs = IDefinitions.Default.GetList<LevelDefinition>();
             Assert.IsTrue(defs.Count > 0);
 
             foreach (var level in defs)
@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void CustomerDefinitions()
         {
             var core = CreateCore();
-            var defs = core.Engine.Definitions.GetList<CustomerDefinition>();
+            var defs = IDefinitions.Default.GetList<CustomerDefinition>();
             Assert.IsTrue(defs.Count > 0);
 
             foreach (var level in defs)
@@ -54,7 +54,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void ConstructionDefinitions()
         {
             var core = CreateCore();
-            var defs = core.Engine.Definitions.GetList<ConstructionDefinition>();
+            var defs = IDefinitions.Default.GetList<ConstructionDefinition>();
             Assert.IsTrue(defs.Count > 0);
 
             foreach (var level in defs)
@@ -67,7 +67,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void UnitsSettingsDefinitions()
         {
             var core = CreateCore();
-            var def = core.Engine.Definitions.Get<UnitsSettingsDefinition>();
+            var def = IDefinitions.Default.Get<UnitsSettingsDefinition>();
             def.Validate();
             core.Dispose();
         }
@@ -77,9 +77,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         {
             var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
             var project = currentDirectory.Parent.Parent.Parent;
-            var definitions = new DirectoryInfo(project.FullName + "/Assets/Resources/Definitions");
-
-            var engine = new GameEngineDefinitionsTest(new FileDefinitions(definitions));
+            IDefinitions.Default = new FileDefinitions(new DirectoryInfo(project.FullName + "/Assets/Resources/Definitions"));
+            var engine = new GameEngineDefinitionsTest();
             var core = new Core(engine);
 
             return core;
@@ -111,29 +110,22 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
     public class GameEngineDefinitionsTest : IGameEngine
     {
         public LevelsManagerInTests Levels { get; }
-        public IDefinitions Settings { get; }
-        public AssetsInTests Assets { get; }
         public ControlsInTests Controls { get; }
         public GameTime Time { get; private set; } = new GameTime();
 
-        IDefinitions IGameEngine.Definitions => Settings;
-        IAssets IGameEngine.Assets => Assets;
         ILevelsManager IGameEngine.Levels => Levels;
         IControls IGameEngine.Controls => Controls;
         public LocalizationManager Localization { get; }
 
-        public GameEngineDefinitionsTest(IDefinitions definitions)
+        public GameEngineDefinitionsTest()
         {
             Levels = new LevelsManagerInTests(this);
-            Settings = definitions;
-            Assets = new AssetsInTests();
             Controls = new ControlsInTests();
         }
 
         public void Dispose()
         {
             Levels.Dispose();
-            Assets.Dispose();
         }
     }
     #endregion

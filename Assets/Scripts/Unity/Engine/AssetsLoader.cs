@@ -1,18 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Environment.Engine.Assets;
-using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
-using Game.Assets.Scripts.Game.Logic.Views.Ui;
-using Game.Assets.Scripts.Game.Unity.Views;
 using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Engine
 {
-    public class AssetsLoader : IAssets, IScreenAssets
+    public class AssetsLoader : IAssets
     {
-        public IScreenAssets Screens => this;
-
         private static T LoadResource<T>(string path) where T : Object
         {
             var filePath = path;
@@ -30,27 +23,6 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             var prefab = LoadResource<GameObject>("Assets/" + path);
             if (prefab == null)
                 throw new System.Exception($"Cant find prefab named : {path}");
-
-            return new GamePrefab(prefab);
-        }
-
-        public IViewPrefab GetConstruction(string path)
-        {
-            var prefab = LoadResource<GameObject>("Assets/" + path);
-            if (prefab == null)
-                throw new System.Exception($"Cant find construction prefab named : {path}");
-
-            return new GamePrefab(prefab);
-        }
-
-        public IViewPrefab GetScreen<T>() where T : IScreenView
-        {
-            var name = typeof(T).Name;
-            name = name.Replace("View", "");
-            name = name.Remove(0, 1);
-            var prefab = LoadResource<GameObject>("Assets/Screens/" + name);
-            if (prefab == null)
-                throw new System.Exception($"Cant find screen prefab named : {name}");
 
             return new GamePrefab(prefab);
         }

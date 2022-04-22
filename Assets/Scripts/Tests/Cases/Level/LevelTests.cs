@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         public void LevelIsLoading()
         {
             var levelDefinition = new LevelDefinitionMock("lvl", new EmptyLevel());
-            var build = new GameTestConstructor().ClearLoading().AddLevel(levelDefinition).Build();
+            var build = new GameTestConstructor().DisableAutoLoad().AddLevel(levelDefinition).Build();
             var session = build.GameModel.CreateSession();
             var levelLoading = session.LoadLevel(levelDefinition);
             GameLevel loadedLevel = null;

@@ -1,8 +1,6 @@
-﻿using Game.Assets.Scripts.Tests.Environment.Definitions.List;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui;
+﻿using Game.Assets.Scripts.Tests.Environment.Views.Ui;
 using Game.Assets.Scripts.Tests.Environment.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Managers.Game;
-using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Tests.Cases;
 using NUnit.Framework;
 

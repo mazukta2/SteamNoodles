@@ -10,12 +10,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 {
     public class LocalizatedString : Disposable, ILocalizatedString
     {
-        private static DefaultLocalizationService _defaultLocalizationService;
-        static LocalizatedString()
-        {
-            _defaultLocalizationService = new DefaultLocalizationService();
-        }
-
         private IText _text;
         private string _tag;
         private ILocalizationManager _localization;
@@ -25,15 +19,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
         {
             _text = text ?? throw new ArgumentNullException(nameof(text));
             _tag = tag ?? throw new ArgumentNullException(nameof(tag));
-            _localization = _defaultLocalizationService.Get() ?? throw new ArgumentNullException(nameof(_defaultLocalizationService));
+            _localization = ILocalizationManager.Default ?? throw new ArgumentNullException(nameof(ILocalizationManager.Default));
 
             UpdateText();
             _localization.OnChangeLanguage += UpdateText;
         }
 
-        public LocalizatedString(ILocalizationManagerService manager, IText text, string tag, params object[] args) : this(text, tag, args)
+        public LocalizatedString(ILocalizationManager manager, IText text, string tag, params object[] args) : this(text, tag, args)
         {
-            _localization = manager?.Get() ?? throw new ArgumentNullException(nameof(manager));
+            _localization = manager ?? throw new ArgumentNullException(nameof(manager));
         }
 
         protected override void DisposeInner()

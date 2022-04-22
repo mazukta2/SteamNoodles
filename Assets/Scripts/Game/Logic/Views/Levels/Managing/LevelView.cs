@@ -17,7 +17,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
         public event Action OnDispose = delegate { };
         public event Action OnLoaded = delegate { };
 
-        public LevelServices Services { get; } = new LevelServices();
         public bool IsLoaded { get; private set; }
         public GameLevel Model { get; }
         public IGameEngine Engine { get; }
@@ -34,7 +33,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 
         public void Dispose()
         {
-            Services.Dispose();
+            ScreenManagerService.Default?.Dispose();
+            ScreenManagerService.Default = null;
+            GhostManagerService.Default?.Dispose();
+            GhostManagerService.Default = null;
+
             Pointer.Dispose();
             OnDispose();
 
@@ -70,14 +73,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
             if (screenManager != null)
             {
                 InitView(screenManager);
-                Services.Add(new ScreenManagerService(screenManager.Presenter));
+                ScreenManagerService.Default = new ScreenManagerService(screenManager.Presenter);
             }
 
             var ghostManager = _views.OfType<IGhostManagerView>().FirstOrDefault();
             if (ghostManager != null)
             {
                 InitView(ghostManager);
-                Services.Add(new GhostManagerService(ghostManager.Presenter));
+                GhostManagerService.Default = new GhostManagerService(ghostManager.Presenter);
             }
 
             while (initing.Count > 0)

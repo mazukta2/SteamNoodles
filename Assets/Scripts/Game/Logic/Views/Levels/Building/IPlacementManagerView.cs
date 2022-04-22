@@ -17,8 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         void IViewWithAutoInit.Init()
         {
-            var service = Level.Services.Get<ScreenManagerService>();
-            new PlacementManagerPresenter(Level.Model.Constructions, service.Get(), this);
+            new PlacementManagerPresenter(Level.Model.Constructions, ScreenManagerService.Default.Get(), this);
         }
     }
 }

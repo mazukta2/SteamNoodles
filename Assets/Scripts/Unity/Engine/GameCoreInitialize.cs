@@ -1,4 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using GameUnity.Assets.Scripts.Unity.Engine.Definitions;
@@ -19,15 +21,18 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
             _engine = new GameEngine();
             _core = new Core(_engine);
-            new DefaultLocalizationService().Set(new LocalizationManager(_core.Engine.Definitions, "English"));
+
+            IAssets.Default = new AssetsLoader();
+            IDefinitions.Default = new GameDefinitions();
+            ILocalizationManager.Default = new LocalizationManager(IDefinitions.Default, "English");
 
             _session = _core.Game.CreateSession();
-            _session.LoadLevel(_engine.Definitions.Get<MainDefinition>().StartLevel);
+            _session.LoadLevel(IDefinitions.Default.Get<MainDefinition>().StartLevel);
         }
 
         protected void OnApplicationQuit()
         {
-            new DefaultLocalizationService().Clear();
+            ILocalizationManager.Default = null;
 
             _session.Dispose();
             _core.Dispose();

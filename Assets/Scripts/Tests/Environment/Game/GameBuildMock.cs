@@ -1,4 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
@@ -11,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Tests.Managers.Game
 {
-    public class GameTestBuild : IDisposable
+    public class GameBuildMock : IDisposable
     {
         public GameEngineInTests Engine { get; private set; }
         public Core Core { get; private set; }
@@ -20,25 +22,32 @@ namespace Game.Assets.Scripts.Tests.Managers.Game
         public LevelView CurrentLevel => (LevelView)Engine.Levels.GetCurrentLevel();
 
         private List<IDisposable> _toDispose = new List<IDisposable>();
+        private AssetsMock _assets;
 
-        public GameTestBuild(Core core, GameEngineInTests gameEngine)
+        public GameBuildMock(Core core, GameEngineInTests gameEngine, AssetsMock assets, DefinitionsMock definitions)
         {
             Core = core;
             Engine = gameEngine;
 
-            new DefaultLocalizationService().Set(new LocalizationManagerMock());
+            _assets = assets;
+            ILocalizationManager.Default = new LocalizationManagerMock();
+            IAssets.Default = _assets;
+            IDefinitions.Default = definitions;
         }
 
         public void Dispose()
         {
-            new DefaultLocalizationService().Clear();
+            _assets.ClearPrefabs();
+
+            ILocalizationManager.Default = null;
+            IAssets.Default = null;
+            IDefinitions.Default = null;
 
             foreach (var item in _toDispose)
                 item.Dispose();
             _toDispose.Clear();
 
             Core.Dispose();
-            Engine.Assets.Dispose();
             Engine.Levels.Dispose();
 
             Core = null;

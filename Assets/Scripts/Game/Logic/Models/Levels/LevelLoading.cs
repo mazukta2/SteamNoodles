@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             _prototype = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _levelManager = gameEngine.Levels ?? throw new ArgumentNullException(nameof(gameEngine));
 
-            _level = new GameLevel(_prototype, _session.GameRandom, gameEngine.Time, gameEngine.Definitions);
+            _level = new GameLevel(_prototype, _session.GameRandom, gameEngine.Time, IDefinitions.Default);
 
             _levelManager.Load(_level, levelDefinition, Finished);
         }

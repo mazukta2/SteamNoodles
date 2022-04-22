@@ -10,8 +10,6 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     public class GameEngine : IGameEngine
     {
         public ILevelsManager Levels { get; private set; } 
-        public IAssets Assets { get; private set; } = new AssetsLoader();
-        public IDefinitions Definitions { get; private set; } = new GameDefinitions();
         public IControls Controls => _controls;
 
         public GameTime Time { get; } = new GameTime();

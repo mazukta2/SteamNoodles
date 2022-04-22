@@ -1,28 +1,41 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Environment.Prefabs.Levels.Constructions;
 using Game.Assets.Scripts.Tests.Environment.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
+using System;
 using System.Collections.Generic;
 
-namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
+namespace Game.Assets.Scripts.Tests.Setups
 {
-    public class DefaultDefinitions : DefinitionsMockCreator
+    public class DefaultSceneSetup
     {
-        public override void Create(GameEngineInTests engine)
+        private AssetsMock _assets;
+        private DefinitionsMock _definitions;
+
+        public DefaultSceneSetup(AssetsMock assets, DefinitionsMock definitions)
         {
-            engine.Assets.Screens.AddPrototype<MainScreenView>(new MainScreenPrefab());
-            engine.Assets.Screens.AddPrototype<BuildScreenView>(new BuildScreenPrefab());
-            engine.Settings.Add(nameof(ConstructionsSettingsDefinition), new ConstructionsSettingsDefinition() { 
+            _assets = assets;
+            _definitions = definitions;
+        }
+
+        public void Create()
+        {
+            _assets.AddPrefab("Screens/MainScreen", new MainScreenPrefab());
+            _assets.AddPrefab("Screens/BuildScreen", new BuildScreenPrefab());
+            _definitions.Add(nameof(ConstructionsSettingsDefinition), new ConstructionsSettingsDefinition()
+            {
                 CellSize = 0.5f,
             });
-            engine.Assets.AddPrefab("DebugConstruction", new BasicConstructionModelPrefab());
-            engine.Settings.Add(nameof(UnitsSettingsDefinition), new UnitsSettingsDefinition()
+            _assets.AddPrefab("DebugConstruction", new BasicConstructionModelPrefab());
+            _definitions.Add(nameof(UnitsSettingsDefinition), new UnitsSettingsDefinition()
             {
                 Speed = 1,
                 UnitSize = 1,
@@ -31,7 +44,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
                     "hair1"
                 }
             });
-            
+
             var construciton = new ConstructionDefinition()
             {
                 Name = "Name",
@@ -43,7 +56,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
                 LevelViewPath = "DebugConstruction",
                 Points = 1,
             };
-            engine.Settings.Add("Construction1", construciton);
+            _definitions.Add("Construction1", construciton);
 
             var customer = new CustomerDefinition()
             {
@@ -52,7 +65,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
                     { construciton, 1}
                 }
             };
-            engine.Settings.Add("Customer1", customer);
+            _definitions.Add("Customer1", customer);
 
             var fields = new List<PlacementFieldDefinition>();
             fields.Add(new PlacementFieldDefinition()
@@ -70,7 +83,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Definitions.List
                 },
                 UnitsRect = new FloatRect(-10, -10, 20, 20),
             };
-            engine.Settings.Add(level.Name, level);
+            _definitions.Add(level.Name, level);
         }
 
     }

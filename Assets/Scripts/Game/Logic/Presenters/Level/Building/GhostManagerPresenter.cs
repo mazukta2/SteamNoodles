@@ -58,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
         private void CreateGhost(BuildScreenPresenter buildScreen)
         {
             var view = _view.Container.Spawn<IGhostView>(_view.GhostPrototype);
-            _ghost = new GhostPresenter(_settings, _screenManager, _constructionsManager, buildScreen, _controls, _view.Level.Engine.Assets, view);
+            _ghost = new GhostPresenter(_settings, _screenManager, _constructionsManager, buildScreen, _controls, IAssets.Default, view);
             _ghost.OnGhostPostionChanged += UpdateGhostPosition;
 
             OnGhostChanged();

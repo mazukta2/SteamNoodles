@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
@@ -17,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 
         void IViewWithAutoInit.Init()
         {
-            new UnitModelPresenter(this, Level.Engine.Definitions.Get<UnitsSettingsDefinition>());
+            new UnitModelPresenter(this, IDefinitions.Default.Get<UnitsSettingsDefinition>());
         }
 
     }

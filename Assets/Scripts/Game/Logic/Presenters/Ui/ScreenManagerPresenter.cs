@@ -1,4 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine.Assets;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views;
@@ -13,9 +13,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
         public Action<IScreenView> OnScreenOpened = delegate { };
 
         private readonly IScreenManagerView _view;
-        private readonly IScreenAssets _screenAssets;
+        private readonly IAssets _screenAssets;
 
-        public ScreenManagerPresenter(IScreenManagerView view, IScreenAssets screenAssets) : base(view)
+        public ScreenManagerPresenter(IScreenManagerView view, IAssets screenAssets) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenAssets = screenAssets ?? throw new ArgumentNullException(nameof(screenAssets));
@@ -30,12 +30,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         public void Open<TScreen>(Func<TScreen, ScreenManagerPresenter, object> init) where TScreen : class, IScreenView
         {
-            var screenPrefab = _screenAssets.GetScreen<TScreen>();
+            var name = typeof(TScreen).Name;
+            name = name.Replace("View", "");
+            name = name.Remove(0, 1); 
+            var screenPrefab = _screenAssets.GetPrefab($"Screens/{name}");
             if (screenPrefab == null)
-                throw new Exception($"Cant find {typeof(TScreen).Name} view");
+                throw new Exception($"Cant find {name} view");
 
             _view.Screen.Clear();
-            var view = (TScreen)_view.Screen.Spawn<TScreen>(screenPrefab);
+            var view = _view.Screen.Spawn<TScreen>(screenPrefab);
             init(view, this);
             OnScreenOpened(view);
         }

@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _rotateRight = _controls.Keys.GetKey(GameKeys.RotateRight);
 
             _view.Container.Clear();
-            _view.Container.Spawn<IConstructionModelView>(_assets.GetConstruction(_buildScreen.CurrentCard.Definition.LevelViewPath));
+            _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Definition.LevelViewPath));
 
             _rotateLeft.OnTap += HandleRotateLeftTap;
             _rotateRight.OnTap += HandleRotateRightTap;

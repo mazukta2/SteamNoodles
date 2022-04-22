@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
@@ -25,7 +26,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Units
             Position = new UnityLevelPosition(transform);
             Rotator = new UnityRotator(transform);
             Animator = new UnityAnimator(_animator);
-            UnitDresser = new UnitDresser(_rigs, Level.Engine.Assets);
+            UnitDresser = new UnitDresser(_rigs, IAssets.Default);
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Game.Assets.Scripts.Game.External;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -19,14 +20,14 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
                 var result = new List<T>();
                 foreach (var key in list)
                 {
-                    result.Add(CoreAccessPoint.Core.Engine.Definitions.Get<T>(key));
+                    result.Add(IDefinitions.Default.Get<T>(key));
                 }
                 return new ReadOnlyCollection<T>(result);
             }
             else
             {
                 var key = obj.ToString();
-                return CoreAccessPoint.Core.Engine.Definitions.Get<T>(key);
+                return IDefinitions.Default.Get<T>(key);
             }
 
         }

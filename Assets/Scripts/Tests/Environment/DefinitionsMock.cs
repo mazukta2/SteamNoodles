@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Game.Tests.Controllers
 {
-    public class DefinitionsInTests : IDefinitions
+    public class DefinitionsMock : IDefinitions
     {
         private Dictionary<string, object> _list = new Dictionary<string, object>();
         public T Get<T>()
