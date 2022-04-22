@@ -1,16 +1,14 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Tests.Environment;
-using Game.Assets.Scripts.Tests.Environment.Prefabs.Levels.Constructions;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui.Screens;
-using Game.Assets.Scripts.Tests.Mocks.Levels;
 using Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Constructions;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Screens;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
-using System;
 using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Tests.Setups

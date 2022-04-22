@@ -1,6 +1,6 @@
-﻿using Game.Assets.Scripts.Tests.Environment.Views.Ui;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui.Screens;
-using Game.Assets.Scripts.Tests.Managers.Game;
+﻿using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Views.Ui;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using Game.Tests.Cases;
 using NUnit.Framework;
 
@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void MainScreenIsOpened()
         {
-            var build = new GameTestConstructor().Build();
+            var build = new GameConstructor().Build();
 
             var screenManager = build.CurrentLevel.FindView<ScreenManagerView>();
             Assert.IsNotNull(screenManager);

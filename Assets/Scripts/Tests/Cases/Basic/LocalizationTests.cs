@@ -1,9 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Presenters;
-using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using Game.Assets.Scripts.Tests.Environment.Views;
-using Game.Assets.Scripts.Tests.Managers.Game;
-using Game.Assets.Scripts.Tests.Mocks.Levels;
+﻿using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Tests.Cases;
 using NUnit.Framework;
 
@@ -14,7 +9,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         [Test]
         public void IsLocalizationStringWorking()
         {
-            var build = new GameTestConstructor().Build();
+            var build = new GameConstructor().Build();
           
 
 

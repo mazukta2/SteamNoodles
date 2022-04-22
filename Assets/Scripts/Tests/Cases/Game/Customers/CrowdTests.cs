@@ -1,5 +1,5 @@
-﻿using Game.Assets.Scripts.Tests.Environment.Views.Level.Units;
-using Game.Assets.Scripts.Tests.Managers.Game;
+﻿using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Views.Level.Units;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsCrowdUnitsSpawned()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 15)
                 .Build();
 
@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void CrowdIsMoving()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 1)
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.UnitsRect = new Scripts.Game.Logic.Common.Math.FloatRect(-10, -10, 10, 10))
                 .Build();

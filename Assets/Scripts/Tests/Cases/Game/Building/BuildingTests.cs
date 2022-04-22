@@ -4,11 +4,11 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
-using Game.Assets.Scripts.Tests.Environment.Views.Level;
-using Game.Assets.Scripts.Tests.Environment.Views.Level.Building;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui.Screens;
-using Game.Assets.Scripts.Tests.Managers.Game;
+using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Views.Level;
+using Game.Assets.Scripts.Tests.Views.Level.Building;
+using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsPlacementCreateCells()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementFields.First().Size = new IntPoint(2, 2))
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
@@ -45,7 +45,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsPlacementCreateCellsUnevenSize()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementFields.First().Size = new IntPoint(3, 3))
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
@@ -170,7 +170,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsClickingActivatingBuildingScreen()
         {
-            var game = new GameTestConstructor().Build();
+            var game = new GameConstructor().Build();
 
             Assert.IsNotNull(game.CurrentLevel.FindView<MainScreenView>());
             Assert.IsNotNull(game.CurrentLevel.FindView<HandView>());
@@ -197,7 +197,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsCreatingAGhost()
         {
-            var game = new GameTestConstructor().Build();
+            var game = new GameConstructor().Build();
 
             var manager = game.CurrentLevel.FindView<GhostManagerView>();
             Assert.IsNotNull(manager);
@@ -220,7 +220,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsAvailableCellsIsHighlightedInGhostMode()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .Build();
 
             var cells = game.CurrentLevel.FindViews<CellView>();
@@ -239,7 +239,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsBuildingPlacingIsExitGhostMode()
         {
-            var game = new GameTestConstructor().Build();
+            var game = new GameConstructor().Build();
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
@@ -255,7 +255,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsCellsBeneathGhostIsHighlighted()
         {
-            var game = new GameTestConstructor().Build();
+            var game = new GameConstructor().Build();
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
@@ -280,7 +280,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsGhostViewChangeVisualIfItAvailable()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.StartingHand.First().Requirements = new Requirements() {  DownEdge = true })
                 .Build();
             var cellSize = 0.5f;
@@ -304,7 +304,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsCellsBeneathGhostIsHighlightedRed()
         {
             var size = 5;
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1 )
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
@@ -343,7 +343,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsConstructionPlaced()
         {
-            var game = new GameTestConstructor().Build();
+            var game = new GameConstructor().Build();
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
@@ -428,7 +428,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsConstructionPlacedInRightPosition()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1)
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
@@ -466,7 +466,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsConstructionPlacedHaveRightVisual()
         {
             var imagePath = "HandImage";
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
                     d.StartingHand.First().HandImagePath = imagePath;
@@ -481,7 +481,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsRemovedFromHand()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition,int>())
                 .Build();
 
@@ -497,7 +497,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsTwoConstructionsPlacing()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .Build();
 
@@ -518,7 +518,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsRotationWorking()
         {
             var size = 5;
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1)
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {

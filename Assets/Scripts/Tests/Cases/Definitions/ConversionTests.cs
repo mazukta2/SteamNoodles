@@ -1,10 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Tests.Environment;
-using Game.Assets.Scripts.Tests.Managers.Game;
-using Game.Assets.Scripts.Tests.Mocks.Levels;
+using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Tests.Cases;
-using Game.Tests.Mocks.Settings.Levels;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -24,7 +20,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void SettingsConversion()
         {
             var commmonField = new CommonCase();
-            var build = new GameTestConstructor()
+            var build = new GameConstructor()
                 .AddDefinition("testDef", commmonField)
                 .Build();
 
@@ -42,7 +38,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void DictionarySettingsConversion()
         {
             var commmonField = new CommonCase();
-            var build = new GameTestConstructor()
+            var build = new GameConstructor()
                 .AddDefinition("testDef", commmonField)
                 .Build();
 

@@ -1,19 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Logic.Views.Ui;
-using Game.Assets.Scripts.Tests.Environment.Common;
-using Game.Assets.Scripts.Tests.Environment.Common.Creation;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Tests.Managers.Game;
+using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using Game.Assets.Scripts.Game.External;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 {
@@ -23,7 +16,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         public void IsFirstCardSpawned()
         {
             var construction = new ConstructionDefinition();
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction })
                 .Build();
 
@@ -36,7 +29,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test]
         public void IsYouGetNewCardsAfterBuilding()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .Build();
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
@@ -50,7 +43,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test]
         public void IsIconSettedInHand()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .Build();
 
             var construction = IDefinitions.Default.Get<ConstructionDefinition>("Construction1");
@@ -85,7 +78,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test]
         public void IsTooltipShowing()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .Build();
 
             var construction1 = game.CurrentLevel.FindViews<HandConstructionView>().First();

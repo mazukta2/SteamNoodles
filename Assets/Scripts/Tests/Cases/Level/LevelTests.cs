@@ -1,6 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Tests.Managers.Game;
-using Game.Assets.Scripts.Tests.Mocks.Levels;
+using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void GameIsStarting()
         {
-            var build = new GameTestConstructor().Build();
+            var build = new GameConstructor().Build();
             Assert.IsNotNull(build.GameModel);
             build.Dispose();
             Assert.IsNull(build.GameModel);
@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void SessionIsStarting()
         {
-            var build = new GameTestConstructor().Build();
+            var build = new GameConstructor().Build();
             var session = build.GameModel.CreateSession();
             session.Dispose();
             build.Dispose();
@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         public void LevelIsLoading()
         {
             var levelDefinition = new LevelDefinitionMock("lvl", new EmptyLevel());
-            var build = new GameTestConstructor().DisableAutoLoad().AddLevel(levelDefinition).Build();
+            var build = new GameConstructor().DisableAutoLoad().AddLevel(levelDefinition).Build();
             var session = build.GameModel.CreateSession();
             var levelLoading = session.LoadLevel(levelDefinition);
             GameLevel loadedLevel = null;
@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void LevelShortcutIsWorking()
         {
-            var build = new GameTestConstructor().Build();
+            var build = new GameConstructor().Build();
             Assert.IsNotNull(build.Engine.Levels.GetCurrentLevel());
             build.Dispose();
         }

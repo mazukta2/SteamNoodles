@@ -11,20 +11,20 @@ using Game.Tests.Mocks.Settings.Levels;
 using System;
 using System.Collections.Generic;
 
-namespace Game.Assets.Scripts.Tests.Managers.Game
+namespace Game.Assets.Scripts.Tests.Environment.Game
 {
     public class GameBuildMock : IDisposable
     {
-        public GameEngineInTests Engine { get; private set; }
+        public GameEngineMock Engine { get; private set; }
         public Core Core { get; private set; }
 
         public GameModel GameModel => Core?.Game;
-        public LevelView CurrentLevel => (LevelView)Engine.Levels.GetCurrentLevel();
+        public LevelView CurrentLevel => Engine.Levels.GetCurrentLevel();
 
         private List<IDisposable> _toDispose = new List<IDisposable>();
         private AssetsMock _assets;
 
-        public GameBuildMock(Core core, GameEngineInTests gameEngine, AssetsMock assets, DefinitionsMock definitions)
+        public GameBuildMock(Core core, GameEngineMock gameEngine, AssetsMock assets, DefinitionsMock definitions)
         {
             Core = core;
             Engine = gameEngine;

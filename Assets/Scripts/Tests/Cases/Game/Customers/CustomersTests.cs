@@ -1,14 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
-using Game.Assets.Scripts.Tests.Environment.Views.Level.Units;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui.Screens;
-using Game.Assets.Scripts.Tests.Managers.Game;
+using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Views.Level.Units;
+using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
@@ -42,7 +40,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsPointsConvertsToQueueSize()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 9)
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 0)

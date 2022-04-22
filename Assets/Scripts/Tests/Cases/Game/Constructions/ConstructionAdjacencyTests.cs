@@ -1,11 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Tests.Environment.Views.Ui.Screens;
-using Game.Assets.Scripts.Tests.Managers.Game;
+using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
@@ -19,7 +17,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsPointsForBuildingWorking()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 5)
                 .Build();
 
@@ -40,7 +38,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsNotGetPointsForBuildingOutsideField()
         {
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 5)
                 .Build();
 
@@ -70,7 +68,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             };
             construction1.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { construction1, 2 } };
 
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .AddDefinition("construction1", construction1)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
@@ -106,7 +104,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 LevelViewPath = "DebugConstruction",
             };
             constructionDefinition.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { constructionDefinition, 2 } };
-            var game = new GameTestConstructor()
+            var game = new GameConstructor()
                 .AddDefinition("construction1", constructionDefinition)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<CustomerDefinition>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
