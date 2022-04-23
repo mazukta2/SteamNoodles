@@ -11,6 +11,7 @@
 	"AdjacencyPoints": {
 		"SimpleShop": 2,
 		"Farm": 3,
-		"Boiler": 5
+		"Boiler": 5,
+		"Pen":  2
 	}
 }

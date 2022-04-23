@@ -1,0 +1,14 @@
+{
+	"Name": "CONSTRUCTIONS_WINDMILL_NAME",
+	"Placement": [
+		[ 1 ]
+	],
+	"Requirements": {},
+	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+	"LevelViewPath": "Constructions/Windmill",
+	"Points": 5,
+	"AdjacencyPoints": {
+		"Windmill": -15,
+		"Farm" : 2
+	}
+}

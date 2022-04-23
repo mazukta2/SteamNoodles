@@ -3,6 +3,9 @@
         "CONSTRUCTIONS_FARM_NAME": "Farm",
         "CONSTRUCTIONS_SIMPLE_SHOP_NAME": "Little Shop",
         "CONSTRUCTIONS_WELL_NAME": "Well",
-        "CONSTRUCTIONS_BOILER_NAME": "Boiler"
+        "CONSTRUCTIONS_BOILER_NAME": "Boiler",
+        "CONSTRUCTIONS_WINDMILL_NAME": "Windmill",
+        "CONSTRUCTIONS_PEN_NAME": "Pen",
+        "CONSTRUCTIONS_AQUARIUM_NAME" : "Aquarium"
     }
 }

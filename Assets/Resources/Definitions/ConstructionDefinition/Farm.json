@@ -11,6 +11,8 @@
 	"Points": 2,
 	"AdjacencyPoints": {
 		"SimpleShop": 2,
-		"Well" : 3
+		"Well": 3,
+		"Windmill": 2,
+		"Pen" : 3
 	}
 }

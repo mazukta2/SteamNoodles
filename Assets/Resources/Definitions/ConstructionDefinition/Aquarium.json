@@ -1,0 +1,14 @@
+{
+	"Name" : "CONSTRUCTIONS_AQUARIUM_NAME",
+	"Placement": [
+		[ 1, 1 ],
+		[ 1, 1 ],
+	],
+	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+	"LevelViewPath": "Constructions/Aquarium",
+	"Points": 4,
+	"AdjacencyPoints": {
+		"Well": 4,
+		"Boiler" : -5
+	}
+}

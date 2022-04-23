@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Helpers;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
@@ -36,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         public void UpdatePoints(int points)
         {
-            _view.Points.Value = $"+{points}";
+            _view.Points.Value = $"{points.GetSignedNumber()}";
             _view.CurrentPoints.Value = $"{_resources.Points.Value}/{_resources.Points.PointsForNextLevel}";
             _view.PointsProgress.Value = _resources.Points.Progress;
             _view.PointsProgress.AdditonalValue = _resources.Points.GetAdditionalProgress(points);

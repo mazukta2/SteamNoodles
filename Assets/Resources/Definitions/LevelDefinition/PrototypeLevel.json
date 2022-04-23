@@ -1,9 +1,12 @@
 {
 	"StartingHand": [ "SimpleShop" ],
 	"ConstructionsReward": {
-		"Farm": 10,
-		"Well": 5,
-		"Boiler": 5
+		"Farm": 5,
+		"Well": 2,
+		"Boiler": 2,
+		"Windmill": 4,
+		"Pen": 4,
+		"Aquarium" : 3
 	},
 	"HandSize": 5,
 	"SceneName": "PolygonScene",

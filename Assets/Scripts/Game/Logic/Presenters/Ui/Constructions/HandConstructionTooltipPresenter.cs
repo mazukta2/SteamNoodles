@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Helpers;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
@@ -24,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             var bonuses = new List<ILocalizatedString>();
             foreach (var bonus in _model.Definition.AdjacencyPoints)
             {
-                bonuses.Add(new LocalizatedFormatString("{0} (+{1})", new LocalizatedString(bonus.Key.Name), bonus.Value));
+                bonuses.Add(new LocalizatedFormatString("{0} ({1})", new LocalizatedString(bonus.Key.Name), bonus.Value.GetSignedNumber()));
             }
 
             _adjecensy = new LocalizatedText(_view.Adjacencies, new LocalizatedJoinString(", ", bonuses.ToArray()));
