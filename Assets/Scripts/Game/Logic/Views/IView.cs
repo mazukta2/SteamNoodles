@@ -12,5 +12,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views
         bool IsDisposed { get; }
         void Dispose();
         LevelView Level { get; }
+        bool IsHighlihgted { get; }
+        event Action OnHighlihgtedEnter;
+        event Action OnHighlihgtedExit;
     }
 }

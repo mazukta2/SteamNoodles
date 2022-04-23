@@ -1,9 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Unity.Views;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,8 +22,8 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         private Vector3 _mousePosition;
         private Plane _plane = new Plane(Vector3.up, 0);
         private float _wheel = 0;
-        private List<IView> _oldViews = new List<IView>();
-        private List<IView> _newViews = new List<IView>();
+
+        private List<IView> _highlightedViews = new List<IView>();
 
         public void Update()
         {
@@ -47,39 +50,6 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                     IGameKeysManager.Default.GetKey(GameKeys.RotateLeft).Tap();
             }
             _wheel = wheel;
-            
-            var removed = new List<IView>();
-            var added = new List<IView>();
-            foreach (var oldView in _oldViews)
-            {
-                if (!_newViews.Contains(oldView))
-                    removed.Add(oldView);
-            }
-
-            foreach (var newView in _newViews)
-            {
-                if (!_oldViews.Contains(newView))
-                    added.Add(newView);
-            }
-
-            if (removed.Count > 0 || added.Count > 0)
-                _oldViews = new List<IView>(_newViews);
-
-            foreach (var removedView in removed)
-            {
-                if (_newViews.Contains(removedView))
-                    throw new Exception("View is removed but contains in list");
-
-                OnPointerExit(removedView);
-            }
-
-            foreach (var addedView in added)
-            {
-                if (!_newViews.Contains(addedView))
-                    throw new Exception("View is addend but not contains in list");
-
-                OnPointerEnter(addedView);
-            }
         }
 
         bool SameSign(float num1, float num2)
@@ -121,21 +91,5 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             }
             throw new Exception("Can't reach point");
         }
-
-        public void SetPointerEnter(IView view)
-        {
-            _newViews.Add(view);
-        }
-
-        public void SetPointerExit(IView view)
-        {
-            _newViews.Remove(view);
-        }
-
-        public void ViewDestroyed(IView view)
-        {
-            _newViews.RemoveAll(x => x == view);
-        }
-
     }
 }

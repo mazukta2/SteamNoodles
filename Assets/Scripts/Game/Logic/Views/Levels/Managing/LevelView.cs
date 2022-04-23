@@ -20,14 +20,12 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 
         public bool IsLoaded { get; private set; }
         public GameLevel Model { get; }
-        public PointerManager Pointer { get; }
 
         private List<IView> _views = new List<IView>();
 
         public LevelView(GameLevel model, IControls controls)
         {
             Model = model;
-            Pointer = new PointerManager(controls);
         }
 
         public void Dispose()
@@ -37,7 +35,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
             GhostManagerService.Default?.Dispose();
             GhostManagerService.Default = null;
 
-            Pointer.Dispose();
             OnDispose();
 
             if (_views.Count > 0)

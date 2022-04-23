@@ -13,9 +13,12 @@ namespace Game.Assets.Scripts.Game.Unity.Views
     public abstract class UnitySimpleView : MonoBehaviour, IView
     {
         public event Action OnDispose = delegate { };
+        public event Action OnHighlihgtedEnter = delegate { };
+        public event Action OnHighlihgtedExit = delegate { };
 
         public LevelView Level { get; private set; }
         public bool IsDisposed { get; private set; }
+        public bool IsHighlihgted { get; private set; }
 
         protected void Awake()
         {

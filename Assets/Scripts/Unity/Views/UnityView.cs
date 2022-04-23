@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using GameUnity.Assets.Scripts.Unity.Engine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,10 +20,14 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         where TPresenter : IPresenter
     {
         public event Action OnDispose = delegate { };
+        public bool IsHighlihgted { get; private set; }
+        public event Action OnHighlihgtedEnter = delegate { };
+        public event Action OnHighlihgtedExit = delegate { };
 
         public LevelView Level { get; private set; }
         public TPresenter Presenter { get; private set; }
         public bool IsDisposed { get; private set; }
+
 
         protected void Awake()
         {
@@ -37,7 +42,6 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void OnDestroy()
         {
-            ((UnityControls)IControls.Default).ViewDestroyed(this);
             Level.Remove(this);
             IsDisposed = true;
             OnDispose();
@@ -58,13 +62,15 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            ((UnityControls)IControls.Default).SetPointerEnter(this);
+            IsHighlihgted = true;
+            OnHighlihgtedEnter();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            ((UnityControls)IControls.Default).SetPointerExit(this);
+            IsHighlihgted = false;
+            OnHighlihgtedExit();
         }
-
     }
+
 }

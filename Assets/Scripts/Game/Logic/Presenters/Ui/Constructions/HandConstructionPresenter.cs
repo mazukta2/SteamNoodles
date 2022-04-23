@@ -11,21 +11,19 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private ConstructionCard _model;
         private IHandConstructionView _view;
         private ScreenManagerPresenter _screenManager;
-        private PointerManager _pointer;
 
         public HandConstructionPresenter(ScreenManagerPresenter screenManager, 
-            IHandConstructionView view, ConstructionCard model,
-            PointerManager pointer) : base(view)
+            IHandConstructionView view, ConstructionCard model) : base(view)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
-            _pointer = pointer ?? throw new ArgumentNullException(nameof(pointer));
 
             view.Button.SetAction(HandleClick);
 
             _model.OnDispose += Model_OnDispose;
-            _pointer.OnTooltipChanged += OnTooltipChanged;
+            _view.OnHighlihgtedEnter += _view_OnHighlihgtedEnter;
+            _view.OnHighlihgtedExit += _view_OnHighlihgtedExit;
             UpdateView();
         }
 
@@ -34,7 +32,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             base.DisposeInner();
             _view.TooltipContainer.Clear();
             _model.OnDispose -= Model_OnDispose;
-            _pointer.OnTooltipChanged -= OnTooltipChanged;
+            _view.OnHighlihgtedEnter -= _view_OnHighlihgtedEnter;
+            _view.OnHighlihgtedExit -= _view_OnHighlihgtedExit;
         }
 
         private void HandleClick()
@@ -52,16 +51,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _view.Dispose();
         }
 
-        private void OnTooltipChanged()
+        private void _view_OnHighlihgtedEnter()
         {
-            if (_pointer.CurrentTooltip == _view)
-            {
-                _view.TooltipContainer.Clear();
-                var tooltip = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
-                new HandConstructionTooltipPresenter(tooltip, _model);
-            }
-            else
-                _view.TooltipContainer.Clear();
+            _view.TooltipContainer.Clear();
+            var tooltip = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
+            new HandConstructionTooltipPresenter(tooltip, _model);
+        }
+
+        private void _view_OnHighlihgtedExit()
+        {
+            _view.TooltipContainer.Clear();
         }
 
     }
