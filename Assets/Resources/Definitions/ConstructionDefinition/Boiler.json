@@ -1,0 +1,14 @@
+{
+	"Name" : "CONSTRUCTIONS_BOILER_NAME",
+	"Placement": [
+		[ 1, 1, 0 ],
+		[ 1, 1, 1 ],
+		[ 1, 1, 1 ],
+	],
+	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+	"LevelViewPath": "Constructions/Boiler",
+	"Points": 3,
+	"AdjacencyPoints": {
+		"Well": 5
+	}
+}

@@ -10,6 +10,7 @@
 	"Points": 2,
 	"AdjacencyPoints": {
 		"SimpleShop": 2,
-		"Farm": 3
+		"Farm": 3,
+		"Boiler": 5
 	}
 }

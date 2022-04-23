@@ -2,6 +2,7 @@
     "Values": {
         "CONSTRUCTIONS_FARM_NAME": "Farm",
         "CONSTRUCTIONS_SIMPLE_SHOP_NAME": "Little Shop",
-        "CONSTRUCTIONS_WELL_NAME": "Well"
+        "CONSTRUCTIONS_WELL_NAME": "Well",
+        "CONSTRUCTIONS_BOILER_NAME": "Boiler"
     }
 }
