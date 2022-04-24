@@ -11,5 +11,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public interface IConstructionModelView : IView
     {
+        IAnimator Animator { get; }
+        public enum Animations
+        {
+            Idle,
+            Dragging,
+        }
     }
 }

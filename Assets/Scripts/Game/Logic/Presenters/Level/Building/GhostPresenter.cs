@@ -50,7 +50,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
 
             _view.Container.Clear();
-            _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Definition.LevelViewPath));
+            var modelView = _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Definition.LevelViewPath));
+            modelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
 
             _rotateLeft.OnTap += HandleRotateLeftTap;
             _rotateRight.OnTap += HandleRotateRightTap;

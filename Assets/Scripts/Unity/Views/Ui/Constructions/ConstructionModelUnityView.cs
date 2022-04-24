@@ -8,7 +8,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
     public class ConstructionModelUnityView : UnitySimpleView, IConstructionModelView
     {
-
+        [SerializeField] UnityAnimator _animator;
+        public IAnimator Animator => _animator;
     }
 
 }

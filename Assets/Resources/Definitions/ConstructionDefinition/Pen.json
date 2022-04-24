@@ -10,6 +10,7 @@
 	"Points": 3,
 	"AdjacencyPoints": {
 		"Farm": 3,
-		"Well" : 2
+		"Well": 2,
+		"Pen": 2
 	}
 }

@@ -1,14 +1,19 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 {
+    [Serializable]
     public class UnityAnimator : IAnimator
     {
-        private Animator _animator;
+        [SerializeField] private Animator _animator;
         private string _currentAnimation;
 
+        public UnityAnimator()
+        {
+        }
 
         public UnityAnimator(Animator animator)
         {

@@ -9,9 +9,9 @@
 	"LevelViewPath": "Constructions/Well",
 	"Points": 2,
 	"AdjacencyPoints": {
-		"SimpleShop": 2,
+		"Aquarium": 4,
 		"Farm": 3,
 		"Boiler": 5,
-		"Pen":  2
+		"Pen": 2
 	}
 }
