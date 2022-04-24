@@ -16,11 +16,15 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] GameObject _highlight;
         [SerializeField] GameObject _blocked;
 
+        [SerializeField] UnityAnimator _animator;
+
         private CellPlacementStatus _status;
 
         public CellPlacementStatus Value { get => _status; set => SetStatus(value); }
         public ILevelPosition LocalPosition { get; private set; }
         public ISwitcher<CellPlacementStatus> State => this;
+
+        public IAnimator Animator => _animator;
 
         private void SetStatus(CellPlacementStatus status)
         {

@@ -13,5 +13,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     {
         ILevelPosition LocalPosition { get; }
         ISwitcher<CellPlacementStatus> State { get; }
+        IAnimator Animator { get; }
     }
 }

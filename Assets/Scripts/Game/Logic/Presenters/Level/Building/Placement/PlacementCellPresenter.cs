@@ -31,6 +31,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         public void SetState(CellPlacementStatus state)
         {
             _cellView.State.Value = state;
+            if (state == CellPlacementStatus.IsAvailableGhostPlace)
+                _cellView.Animator.Play(CellAnimations.Highlighed.ToString());
+            else
+                _cellView.Animator.Play(CellAnimations.Idle.ToString());
+        }
+
+        public enum CellAnimations
+        {
+            Idle,
+            Highlighed
         }
     }
 }
