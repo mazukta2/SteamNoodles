@@ -10,6 +10,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     {
         [SerializeField] UnityAnimator _animator;
         public IAnimator Animator => _animator;
+        [SerializeField] UnityAnimator _borderAnimator;
+        public IAnimator BorderAnimator => _borderAnimator;
+
     }
 
 }

@@ -112,6 +112,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator:
     _animator: {fileID: 3981130270432994149}
+  _borderAnimator:
+    _animator: {fileID: 6667532207215761327}
 --- !u!95 &3981130270432994149
 Animator:
   serializedVersion: 4
@@ -204,5 +206,10 @@ PrefabInstance:
 --- !u!4 &2265607924601137521 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6972423439229732075, guid: 085c94625af9c66499d398bdc0fb1898, type: 3}
+  m_PrefabInstance: {fileID: 9201426104551501210}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6667532207215761327 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2537177494425844277, guid: 085c94625af9c66499d398bdc0fb1898, type: 3}
   m_PrefabInstance: {fileID: 9201426104551501210}
   m_PrefabAsset: {fileID: 0}

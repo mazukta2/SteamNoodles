@@ -29,6 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private FloatPoint _pointerPosition;
         private KeyCommand _rotateLeft;
         private KeyCommand _rotateRight;
+        private IConstructionModelView _modelView;
 
         public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
             ScreenManagerPresenter screenManager,
@@ -50,8 +51,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
 
             _view.Container.Clear();
-            var modelView = _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Definition.LevelViewPath));
-            modelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
+            _modelView = _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Definition.LevelViewPath));
+            _modelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
 
             _rotateLeft.OnTap += HandleRotateLeftTap;
             _rotateRight.OnTap += HandleRotateRightTap;
@@ -140,7 +141,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void UpdatePosition()
         {
-            _view.CanPlace = CanPlace();
+            _modelView.BorderAnimator.Play(CanPlace() ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
             _view.Rotator.Look(ConstructionRotation.ToDirection(Rotation));
             _view.LocalPosition.Value = GetViewPosition();
             UpdatePoints();
