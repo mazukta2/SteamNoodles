@@ -124,7 +124,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 points += field.GetPoints(_buildScreen.CurrentCard.Definition, GetLocalPosition(field), Rotation);
             }
 
-            _buildScreen.UpdatePoints(points);
+            _buildScreen.UpdatePoints(GetViewPosition(), points);
         }
 
         private void HandleRotateLeftTap()

@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
     public interface IBuildScreenView : IScreenView
     {
         IButton CancelButton { get; }
-        IText Points { get; }
+        IWorldText Points { get; }
         IText CurrentPoints { get; }
         IProgressBar PointsProgress { get; }
         BuildScreenPresenter Presenter { get; }

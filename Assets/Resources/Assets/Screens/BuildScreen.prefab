@@ -323,7 +323,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _closeButton: {fileID: 8749702937790851856}
-  _additionalPoints: {fileID: 4735452459556822765}
+  _additionalPoints:
+    _text: {fileID: 4735452459556822765}
+    _screenOffset: {x: 0, y: 260}
   _currentPoints: {fileID: 1628808957928285858}
   _progress: {fileID: 2053993952412152790}
   _additionalProgress: {fileID: 3969783787767984110}
@@ -360,11 +362,11 @@ RectTransform:
   m_Father: {fileID: 6078679380546646407}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -45.3}
-  m_SizeDelta: {x: 935, y: 179.8474}
-  m_Pivot: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 294.7}
+  m_SizeDelta: {x: 400, y: 400}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3122640260163430634
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -428,7 +430,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

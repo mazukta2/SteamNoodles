@@ -10,11 +10,11 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
     public class BuildScreenView : ScreenView<BuildScreenPresenter>, IBuildScreenView
     {
         public IButton CancelButton { get; }
-        public IText Points { get; }
+        public IWorldText Points { get; }
         public IText CurrentPoints { get; }
         public IProgressBar PointsProgress { get; set; }
 
-        public BuildScreenView(LevelView level, IButton cancelButton, IText points, IText currentPoints, IProgressBar progressBar) : base(level)
+        public BuildScreenView(LevelView level, IButton cancelButton, IWorldText points, IText currentPoints, IProgressBar progressBar) : base(level)
         {
             CancelButton = cancelButton;
             Points = points;
