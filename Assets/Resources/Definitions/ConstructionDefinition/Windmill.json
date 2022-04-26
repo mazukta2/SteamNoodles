@@ -4,7 +4,7 @@
 		[ 1 ]
 	],
 	"Requirements": {},
-	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+	"HandImagePath": "Sprites/Cards/Icons/random/Hospital64",
 	"LevelViewPath": "Constructions/Windmill",
 	"Points": 5,
 	"AdjacencyPoints": {

@@ -4,7 +4,7 @@
 		[ 1, 1 ],
 		[ 1, 1 ],
 	],
-	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+	"HandImagePath": "Sprites/Cards/Icons/random/Smuglers",
 	"LevelViewPath": "Constructions/Aquarium",
 	"Points": 4,
 	"AdjacencyPoints": {

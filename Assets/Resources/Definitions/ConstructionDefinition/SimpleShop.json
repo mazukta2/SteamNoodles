@@ -1,12 +1,12 @@
 {
-	"Name" : "CONSTRUCTIONS_SIMPLE_SHOP_NAME",
+	"Name": "CONSTRUCTIONS_SIMPLE_SHOP_NAME",
 	"Placement": [
 		[ 1, 1, 1 ],
 		[ 1, 1, 1 ],
-		[ 1, 1, 1 ],
+		[ 1, 1, 1 ]
 	],
 	"Requirements": { "DownEdge": true },
-	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+	"HandImagePath": "Sprites/Cards/Icons/random/Tavern",
 	"LevelViewPath": "Constructions/SimpleShop",
 	"Points": 9,
 	"AdjacencyPoints": {

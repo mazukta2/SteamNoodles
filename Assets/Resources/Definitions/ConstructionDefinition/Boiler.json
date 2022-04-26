@@ -5,7 +5,7 @@
 		[ 1, 1, 1 ],
 		[ 1, 1, 1 ],
 	],
-	"HandImagePath": "Sprites/Cards/Icons/SimpleShop",
+	"HandImagePath": "Sprites/Cards/Icons/random/WaterPump64",
 	"LevelViewPath": "Constructions/Boiler",
 	"Points": 3,
 	"AdjacencyPoints": {
