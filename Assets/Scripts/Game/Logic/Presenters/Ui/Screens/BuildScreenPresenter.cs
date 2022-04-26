@@ -94,7 +94,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             foreach (var item in newBonuses)
             {
                 var text =_bonuses[item.Key].Text;
-                text.Value = $"{item.Value.GetSignedNumber()}";
+                text.Value = $"{item.Value}";
 
                 var position = new FieldPositionsCalculator(_constrcutionsSettings.CellSize, item.Key.Definition.GetRect(item.Key.Rotation));
                 text.Position = position.GetViewPositionByWorldPosition(item.Key.Position);
