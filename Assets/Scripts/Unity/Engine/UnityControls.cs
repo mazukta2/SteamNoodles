@@ -50,6 +50,15 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                     IGameKeysManager.Default.GetKey(GameKeys.RotateLeft).Tap();
             }
             _wheel = wheel;
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#else
+                Application.Quit();
+#endif
+            }    
         }
 
         bool SameSign(float num1, float num2)
