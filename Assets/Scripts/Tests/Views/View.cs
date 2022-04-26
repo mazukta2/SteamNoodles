@@ -28,5 +28,17 @@ namespace Game.Assets.Scripts.Tests.Views
             Level.Remove(this);
             base.Dispose(disposing);
         }
+
+        public void SetHighlight(bool highlight)
+        {
+            if (IsHighlihgted == highlight)
+                return;
+
+            IsHighlihgted = highlight;
+            if (IsHighlihgted)
+                OnHighlihgtedEnter();
+            else
+                OnHighlihgtedExit();
+        }
     }
 }

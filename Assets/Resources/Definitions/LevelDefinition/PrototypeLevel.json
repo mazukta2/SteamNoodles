@@ -6,18 +6,16 @@
 		"Boiler": 2,
 		"Windmill": 4,
 		"Pen": 4,
-		"Aquarium" : 3
+		"Aquarium": 3
 	},
 	"HandSize": 5,
 	"SceneName": "PolygonScene",
-	"PlacementFields": [
-		{
-			"Size": {
-				"X": 11,
-				"Y": 11
-			}
+	"PlacementField": {
+		"Size": {
+			"X": 11,
+			"Y": 11
 		}
-	],
+	},
 	"QueuePosition": {
 		"X": 0,
 		"Y": -1.6

@@ -14,13 +14,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     public interface IPlacementFieldView : IPresenterView, IViewWithAutoInit
     {
         IPlacementManagerView Manager { get; }
-        int Id { get; }
 
         void IViewWithAutoInit.Init()
         {
-            var field = Level.Model.Constructions.Placements.ElementAt(Id);
-
-            new PlacementFieldPresenter(GhostManagerService.Default.Get(), field, this,
+            new PlacementFieldPresenter(GhostManagerService.Default.Get(), Level.Model.Constructions.Placement, this,
                 IDefinitions.Default.Get<ConstructionsSettingsDefinition>(),
                 Manager.Presenter, IAssets.Default);
         }

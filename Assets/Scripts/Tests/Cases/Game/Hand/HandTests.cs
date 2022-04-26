@@ -111,11 +111,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             Assert.IsNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
 
-            game.Controls.PointerEnter(construction1);
+            construction1.SetHighlight(true);
 
             Assert.IsNotNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
 
-            game.Controls.PointerExit(construction1);
+            construction1.SetHighlight(false);
 
             Assert.IsNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
 

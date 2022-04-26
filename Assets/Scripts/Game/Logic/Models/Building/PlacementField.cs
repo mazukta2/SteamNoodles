@@ -127,6 +127,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             return constructionDefinition.Points + adjacentPoints;
         }
 
+        public IReadOnlyDictionary<Construction, int> GetAdjacencyPoints(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
+        {
+            var result = new Dictionary<Construction, int>();
+            if (!CanPlace(constructionDefinition, position, rotation))
+                return result;
+
+            var adjacentPoints = 0;
+            foreach (var construction in GetAdjacentConstructions(constructionDefinition, position, rotation))
+            {
+                if (constructionDefinition.AdjacencyPoints.ContainsKey(construction.Definition))
+                {
+                    result.Add(construction, constructionDefinition.AdjacencyPoints[construction.Definition]);
+                }
+            }
+
+            return result.AsReadOnly();
+        }
+
         private IReadOnlyCollection<IntPoint> GetListOfAdjacentCells(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
         {
             var list = new List<IntPoint>();
@@ -170,24 +188,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             }
             return adjecentConstructions.AsReadOnly();
         }
-
-        //public bool Contain(Construction key)
-        //{
-        //    return Constructions.Any(x => x == key);
-        //}
-
-        //public IReadOnlyCollection<Construction> GetConstructionsWithFeature<T>() where T : IConstructionFeatureSettings
-        //{
-        //    return Constructions.Where(x => x.GetFeatures().OfType<T>().Any()).AsReadOnly();
-        //}
-
-        //public bool HasConstructionsWithFeature<T>() where T : IConstructionFeatureSettings
-        //{
-        //    return GetConstructionsWithFeature<T>().Any();
-        //}
-        //public int GetConstructionsWithTag(ConstructionTag tag)
-        //{
-        //    return Constructions.Sum(x => x.GetTagsCount(tag));
-        //}
     }
 }

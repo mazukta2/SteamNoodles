@@ -10,8 +10,6 @@ namespace Game.Assets.Scripts.Tests.Environment
     {
         public event Action OnLevelClick = delegate { };
         public event Action<FloatPoint> OnLevelPointerMoved = delegate { };
-        public event Action<IView> OnPointerEnter;
-        public event Action<IView> OnPointerExit;
 
         public void Click()
         {
@@ -23,14 +21,5 @@ namespace Game.Assets.Scripts.Tests.Environment
             OnLevelPointerMoved(floatPoint);
         }
 
-        internal void PointerEnter(IView view)
-        {
-            OnPointerEnter(view);
-        }
-
-        public void PointerExit(IView view)
-        {
-            OnPointerExit(view);
-        }
     }
 }

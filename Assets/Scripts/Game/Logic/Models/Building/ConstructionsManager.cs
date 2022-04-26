@@ -11,23 +11,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 {
     public class ConstructionsManager : Disposable
     {
-        public IReadOnlyCollection<PlacementField> Placements => _placements;
+        public PlacementField Placement => _placements;
 
-        private List<PlacementField> _placements = new List<PlacementField>();
+        private PlacementField _placements;
 
         public ConstructionsManager(ConstructionsSettingsDefinition settings, LevelDefinition levelDefinition, Resources resources, GameLevel level)
         {
-            foreach (var field in levelDefinition.PlacementFields)
-            {
-                var placement = new PlacementField(settings, field, resources, level);
-                _placements.Add(placement);
-            }
+            _placements = new PlacementField(settings, levelDefinition.PlacementField, resources, level);
         }
+
         protected override void DisposeInner()
         {
-            foreach (var item in _placements)
-                item.Dispose();
-            _placements.Clear();
+            _placements.Dispose();
         }
     }
 }

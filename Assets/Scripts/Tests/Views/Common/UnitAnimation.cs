@@ -8,8 +8,10 @@ namespace Game.Assets.Scripts.Tests.Views.Common
 {
     public class UnitAnimation : IAnimator
     {
+        public string Animation { get; private set; }
         public void Play(string animation, bool startAgain = false)
         {
+            Animation = animation;
         }
     }
 }

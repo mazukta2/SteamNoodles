@@ -29,27 +29,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             return Definition.GetOccupiedSpace(Position, Rotation);
         }
 
-        //public IVisual GetVisual()
-        //{
-        //    return _settings.BuildingView;
-        //}
-
-        //public IReadOnlyCollection<IConstructionFeatureSettings> GetFeatures()
-        //{
-        //    return _settings.Features;
-        //}
-
-        //public IConstructionSettings GetSettings()
-        //{
-        //    return _settings;
-        //}
-
-        //public int GetTagsCount(ConstructionTag tag)
-        //{
-        //    if (_settings.Tags.ContainsKey(tag))
-        //        return _settings.Tags[tag];
-
-        //    return 0;
-        //}
     }
 }

@@ -16,14 +16,10 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
     public class PlacementFieldView : PresenterView<PlacementFieldPresenter>, IPlacementFieldView
     {
         public IPlacementManagerView Manager { get; }
-        public int Id { get; }
 
-        public PlacementFieldView(LevelView level, PlacementManagerView managerView, int id) : base(level)
+        public PlacementFieldView(LevelView level, PlacementManagerView managerView) : base(level)
         {
             if (managerView == null) throw new ArgumentNullException(nameof(managerView));
-            if (id < 0) throw new ArgumentNullException(nameof(id));
-            if (id >= Level.Model.Constructions.Placements.Count) throw new ArgumentNullException(nameof(id));
-            Id = id;
             Manager = managerView;
         }
     }

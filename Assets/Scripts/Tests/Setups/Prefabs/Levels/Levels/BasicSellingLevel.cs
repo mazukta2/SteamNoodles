@@ -27,7 +27,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
             var constructionPrototype = new PrototypeViewMock(level, new ConstructionViewPrefab());
             var placementManager = new PlacementManagerView(level, cellContainer, cellPrototype, constrcutionContainer, constructionPrototype);
 
-            new PlacementFieldView(level, placementManager, 0);
+            new PlacementFieldView(level, placementManager);
 
             new UnitsManagerView(level, new ContainerViewMock(level), new PrototypeViewMock(level, new UnitViewPrefab()));
         }

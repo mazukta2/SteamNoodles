@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
         public IReadOnlyCollection<ConstructionDefinition> StartingHand { get; set; } = new List<ConstructionDefinition>();
         public int HandSize { get; set; }
 
-        public IReadOnlyCollection<PlacementFieldDefinition> PlacementFields { get; set; } = new List<PlacementFieldDefinition>();
+        public PlacementFieldDefinition PlacementField { get; set; }
 
         public FloatPoint QueuePosition;
 
@@ -40,8 +40,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
             if (HandSize <= 0)
                 throw new Exception($"{nameof(HandSize)} is zero");
 
-            if (PlacementFields.Count == 0)
-                throw new Exception($"{nameof(PlacementFields)} is empty");
+            if (PlacementField == null)
+                throw new Exception($"{nameof(PlacementField)} is empty");
 
             if (CrowdUnitsAmount <= 0)
                 throw new Exception($"{nameof(CrowdUnitsAmount)} is zero");

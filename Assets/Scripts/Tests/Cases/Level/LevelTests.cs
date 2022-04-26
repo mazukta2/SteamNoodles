@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
@@ -30,7 +31,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         [Test]
         public void LevelIsLoading()
         {
-            var levelDefinition = new LevelDefinitionMock("lvl", new EmptyLevel());
+            var levelDefinition = LevelDefinitionSetups.GetEmpty("lvl");
             var build = new GameConstructor().DisableAutoLoad().AddLevel(levelDefinition).Build();
             var session = build.GameModel.CreateSession();
             var levelLoading = session.LoadLevel(levelDefinition);

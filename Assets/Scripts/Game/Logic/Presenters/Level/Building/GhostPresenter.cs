@@ -60,7 +60,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _controls.OnLevelClick += HandleOnLevelClick;
             _controls.OnLevelPointerMoved += HandleOnPointerMoved;
 
-            UpdatePoints();
+            UpdatePosition();
         }
 
         protected override void DisposeInner()
@@ -87,13 +87,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleOnLevelClick()
         {
-            foreach (var field in _constructionsManager.Placements)
+            var field = _constructionsManager.Placement;
+            if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation))
             {
-                if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation))
-                {
-                    field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
-                    break;
-                }
+                field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
             }
             _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
@@ -105,13 +102,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         }
 
         private bool CanPlace()
-        {
-            foreach (var field in _constructionsManager.Placements)
+    {
+            if (_constructionsManager.Placement.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(_constructionsManager.Placement), Rotation))
             {
-                if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation))
-                {
-                    return true;
-                }
+                return true;
             }
             return false;
         }
@@ -119,12 +113,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private void UpdatePoints()
         {
             var points = 0;
-            foreach (var field in _constructionsManager.Placements)
-            {
-                points += field.GetPoints(_buildScreen.CurrentCard.Definition, GetLocalPosition(field), Rotation);
-            }
+            points += _constructionsManager.Placement.GetPoints(_buildScreen.CurrentCard.Definition, 
+                GetLocalPosition(_constructionsManager.Placement), Rotation);
 
-            _buildScreen.UpdatePoints(GetViewPosition(), points);
+            _buildScreen.UpdatePoints(GetViewPosition(), points, 
+                _constructionsManager.Placement
+                .GetAdjacencyPoints(_buildScreen.CurrentCard.Definition, GetLocalPosition(_constructionsManager.Placement), Rotation));
         }
 
         private void HandleRotateLeftTap()

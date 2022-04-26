@@ -53,26 +53,7 @@ namespace Game.Assets.Scripts.Tests.Setups
             };
             _definitions.Add("Customer1", customer);
 
-            var fields = new List<PlacementFieldDefinition>();
-            fields.Add(new PlacementFieldDefinition()
-            {
-                Size = new IntPoint(9, 9)
-            });
-            var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel())
-            {
-                HandSize = 5,
-                PlacementFields = fields,
-                StartingHand = new List<ConstructionDefinition>() { construciton },
-                CrowdUnitsAmount = 10,
-                BaseCrowdUnits = new Dictionary<CustomerDefinition, int>() {
-                    { customer, 2 }
-                },
-                UnitsRect = new FloatRect(-10, -10, 20, 20),
-                ConstructionsReward = new Dictionary<ConstructionDefinition, int>()
-                {
-                    { construciton, 1}
-                }
-            };
+            var level = LevelDefinitionSetups.GetDefault(customer, construciton);
             _definitions.Add(level.Name, level);
         }
 

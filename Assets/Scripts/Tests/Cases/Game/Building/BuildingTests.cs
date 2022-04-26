@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Setups;
+using Game.Assets.Scripts.Tests.Views.Common;
 using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
@@ -25,7 +26,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsPlacementCreateCells()
         {
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementFields.First().Size = new IntPoint(2, 2))
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementField.Size = new IntPoint(2, 2))
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
 
@@ -47,7 +48,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsPlacementCreateCellsUnevenSize()
         {
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementFields.First().Size = new IntPoint(3, 3))
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementField.Size = new IntPoint(3, 3))
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
 
@@ -289,14 +290,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
 
             var ghost = game.CurrentLevel.FindView<GhostView>();
-            Assert.IsFalse(ghost.CanPlace);
+            var model = game.CurrentLevel.FindView<ConstructionModelView>();
+            Assert.AreEqual("Dragging", ((UnitAnimation)model.Animator).Animation);
+            Assert.AreEqual("Disallowed", ((UnitAnimation)model.BorderAnimator).Animation);
 
             var newPos = new FloatPoint(0.25f, -4f * cellSize);
             game.Controls.MovePointer(newPos); // move down
 
             Assert.AreEqual(newPos, ghost.LocalPosition.Value);
 
-            Assert.IsTrue(ghost.CanPlace);
+            Assert.AreEqual("Dragging", ((UnitAnimation)model.Animator).Animation);
+            Assert.AreEqual("Idle", ((UnitAnimation)model.BorderAnimator).Animation);
 
             game.Dispose();
         }
@@ -309,7 +313,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1 )
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
-                    d.PlacementFields.First().Size = new IntPoint(size, size);
+                    d.PlacementField.Size = new IntPoint(size, size);
                     d.StartingHand.First().Placement = new int[,]
                     {
                         { 1, 1 },
@@ -525,7 +529,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1)
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
-                    d.PlacementFields.First().Size = new IntPoint(size, size);
+                    d.PlacementField.Size = new IntPoint(size, size);
                     d.StartingHand.First().Placement = new int[,]
                     {
                         { 1, 1 },

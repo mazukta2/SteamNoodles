@@ -23,7 +23,6 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
 {
     public class GhostView : PresenterView<GhostPresenter>, IGhostView
     {
-        public bool CanPlace { get; set; }
         public ILevelPosition LocalPosition { get; private set; }
         public IViewContainer Container { get; private set; }
         public IRotator Rotator { get; }
