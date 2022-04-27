@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         [SerializeField] TextMeshProUGUI _points;
         [SerializeField] Image _progress;
         [SerializeField] Image _additionalProgress;
+        [SerializeField] Image _negativeProgress;
 
         public IHandView HandView => _hand;
         public IText Points { get; private set; }
@@ -24,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         {
             Points = new UnityText(_points);
 
-            PointsProgress = new UnityProgressBar(_progress, _additionalProgress);
+            PointsProgress = new UnityProgressBar(_progress, _additionalProgress, _negativeProgress);
         }
     }
 }

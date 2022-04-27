@@ -16,6 +16,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         [SerializeField] TextMeshProUGUI _currentPoints;
         [SerializeField] Image _progress;
         [SerializeField] Image _additionalProgress;
+        [SerializeField] Image _negativeProgress;
         [SerializeField] ContainerUnityView _adjacencyConteiner;
         [SerializeField] PrototypeUnityView _adjacencyPrefab;
 
@@ -30,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         protected override void PreAwake()
         {
             CurrentPoints = new UnityText(_currentPoints);
-            PointsProgress = new UnityProgressBar(_progress, _additionalProgress);
+            PointsProgress = new UnityProgressBar(_progress, _additionalProgress, _negativeProgress);
         }
     }
 
