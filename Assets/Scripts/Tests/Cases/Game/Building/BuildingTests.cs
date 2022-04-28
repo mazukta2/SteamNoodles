@@ -462,7 +462,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.Controls.Click();
 
             var construction = game.CurrentLevel.FindView<ConstructionView>();
-            Assert.AreEqual(new FloatPoint(-1.5f, -2), construction.LocalPosition.Value);
+            Assert.AreEqual(new FloatPoint(-1.5f, -2), construction.Position.Value);
 
             game.Dispose();
         }

@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using Game.Tests.Cases;
@@ -80,6 +81,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("+5", game.CurrentLevel.FindView<BuildScreenView>().Points.Value);
             game.Controls.Click();
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<ConstructionView>().Count);
             Assert.AreEqual("5/8", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();

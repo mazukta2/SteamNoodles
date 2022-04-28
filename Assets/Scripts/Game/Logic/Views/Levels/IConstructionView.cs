@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public interface IConstructionView : IPresenterView
     {
-        ILevelPosition LocalPosition { get;}
+        ILevelPosition Position { get;}
         IRotator Rotator { get; }
         IViewContainer Container { get;}
     }

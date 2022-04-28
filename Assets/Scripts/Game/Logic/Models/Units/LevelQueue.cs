@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
@@ -21,25 +22,32 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private LevelUnits _units;
         private UnitsSettingsDefinition _unitsSettings;
         private BuildingPoints _points;
-        private GameLevel _gameLevel;
+        private TurnManager _turnManager;
         private LevelDefinition _levelDefinition;
+        private ConstructionsManager _constructionsManager;
         private SessionRandom _random;
         private Deck<CustomerDefinition> _pool;
         private List<Unit> _queue = new List<Unit>();
+        private float _queueStartingPosition;
 
-        public LevelQueue(UnitsSettingsDefinition unitsSettings, LevelUnits units, LevelDefinition levelDefinition,
-            SessionRandom random, BuildingPoints points, Levels.GameLevel gameLevel)
+        public LevelQueue(UnitsSettingsDefinition unitsSettings, 
+            LevelUnits units, LevelDefinition levelDefinition,
+            SessionRandom random, BuildingPoints points,
+            ConstructionsManager constructionsManager,
+            TurnManager turnManager)
         {
             _units = units;
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _points = points ?? throw new ArgumentNullException(nameof(points));
-            _gameLevel = gameLevel ?? throw new ArgumentNullException(nameof(gameLevel));
+            _turnManager = turnManager ?? throw new ArgumentNullException(nameof(turnManager));
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
+            _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _random = random;
-
+            
             _points.OnLevelUp += _points_OnLevelUp;
             _points.OnLevelDown += _points_OnLevelDown;
-            _gameLevel.OnTurn += HandleTurn;
+            _turnManager.OnTurn += HandleTurn;
+            _constructionsManager.Placement.OnConstructionAdded += Placement_OnConstructionAdded;
 
             _pool = new Deck<CustomerDefinition>(random);
             foreach (var item in levelDefinition.BaseCrowdUnits)
@@ -48,12 +56,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         protected override void DisposeInner()
         {
+            _constructionsManager.Placement.OnConstructionAdded -= Placement_OnConstructionAdded;
             _points.OnLevelUp -= _points_OnLevelUp;
             _points.OnLevelDown -= _points_OnLevelDown;
-            _gameLevel.OnTurn -= HandleTurn;
+            _turnManager.OnTurn -= HandleTurn;
             foreach (var unit in _queue)
                 _units.RemoveUnit(unit);
             _queue.Clear();
+        }
+
+        private void Placement_OnConstructionAdded(Construction construction)
+        {
+            _queueStartingPosition = construction.GetWorldPosition().X;
         }
 
         private void HandleTurn()
@@ -64,6 +78,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         {
             var definition = _pool.Take();
             var position = _levelDefinition.QueuePosition + new FloatPoint(_unitsSettings.UnitSize, 0) * (_queue.Count - 1);
+            position.X = _queueStartingPosition;
             var unit = new Unit(position, position, definition, _unitsSettings, _random);
             _queue.Add(_units.SpawnUnit(unit));
         }

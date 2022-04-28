@@ -13,13 +13,13 @@ namespace Game.Assets.Scripts.Tests.Views.Level
 {
     public class ConstructionView : PresenterView<ConstructionPresenter>, IConstructionView
     {
-        public ILevelPosition LocalPosition { get; set; }
+        public ILevelPosition Position { get; set; }
         public IRotator Rotator { get; }
         public IViewContainer Container { get; set; }
 
         public ConstructionView(LevelView level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
         {
-            LocalPosition = position;
+            Position = position;
             Container = container;
             Rotator = rotator;
         }

@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _constrcutionsSettings = constrcutionsSettings;
 
             var position = new FieldPositionsCalculator(constrcutionsSettings.CellSize, construction.Definition.GetRect(construction.Rotation));
-            _constructionView.LocalPosition.Value = position.GetViewPositionByWorldPosition(construction.Position);
+            _constructionView.Position.Value = position.GetViewPositionByWorldPosition(construction.CellPosition);
             _constructionView.Rotator.Look(ConstructionRotation.ToDirection(construction.Rotation));
 
             _constructionView.Container.Clear();

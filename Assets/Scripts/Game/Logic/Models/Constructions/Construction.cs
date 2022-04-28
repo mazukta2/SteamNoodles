@@ -9,25 +9,30 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
 {
     public class Construction : Disposable
     {
-        public IntPoint Position { get; private set; }
+        public IntPoint CellPosition { get; private set; }
         public FieldRotation Rotation { get; private set; }
-
-        private PlacementField _field;
 
         public ConstructionDefinition Definition { get; private set; }
 
-        public Construction(PlacementField field, ConstructionDefinition definition, IntPoint position, FieldRotation rotation)
+        private FieldPositionsCalculator _fieldPositions;
+
+        public Construction(ConstructionsSettingsDefinition settingsDefinition, ConstructionDefinition definition, IntPoint position, FieldRotation rotation)
         {
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-            _field = field ?? throw new ArgumentNullException(nameof(field));
-            Position = position;
+            CellPosition = position;
             Rotation = rotation;
+
+            _fieldPositions = new FieldPositionsCalculator(settingsDefinition.CellSize, Definition.GetRect(Rotation));
         }
 
         public IReadOnlyCollection<IntPoint> GetOccupiedScace()
         {
-            return Definition.GetOccupiedSpace(Position, Rotation);
+            return Definition.GetOccupiedSpace(CellPosition, Rotation);
         }
 
+        public FloatPoint GetWorldPosition()
+        {
+            return _fieldPositions.GetViewPositionByWorldPosition(CellPosition);
+        }
     }
 }

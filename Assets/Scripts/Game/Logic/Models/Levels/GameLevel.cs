@@ -15,8 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
     public class GameLevel : Disposable
     {
-        public event Action OnTurn = delegate { };
-
+        public TurnManager TurnManager { get; }
         public PlayerHand Hand { get; private set; }
         public ConstructionsManager Constructions { get; private set; }
         public LevelUnits Units { get; }
@@ -36,15 +35,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             _random = random ?? throw new ArgumentNullException(nameof(random));
             if (time == null) throw new ArgumentNullException(nameof(time));
 
+            TurnManager = new TurnManager();
             Hand = new PlayerHand(settings, settings.StartingHand);
             Resources = new Resources(definitions.Get<ConstructionsSettingsDefinition>());
 
             var unitSettings = definitions.Get<UnitsSettingsDefinition>();
             Units = new LevelUnits(time);
             _crowd = new LevelCrowd(unitSettings, Units, time, settings, random);
-            _queue = new LevelQueue(unitSettings, Units, settings, random, Resources.Points, this);
 
-            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _definition, Resources, this);
+            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _definition, Resources, TurnManager);
+            _queue = new LevelQueue(unitSettings, Units, settings, random, Resources.Points, Constructions, TurnManager);
 
             _rewardDeck = new Deck<ConstructionDefinition>(_random);
             foreach (var item in _definition.ConstructionsReward)
@@ -57,17 +57,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         {
             Resources.Points.OnMaxLevelUp -= OnLevelUp;
 
+            TurnManager.Dispose();
             Hand.Dispose();
             Constructions.Dispose();
             Units.Dispose();
             Resources.Dispose();
             _crowd.Dispose();
             _queue.Dispose();
-        }
-
-        public void Turn()
-        {
-            OnTurn();
         }
 
         private void OnLevelUp()

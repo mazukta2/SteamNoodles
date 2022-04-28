@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Units;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
@@ -62,6 +63,32 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual("9/15", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
             Assert.AreEqual(points.Progress, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.MainValue);
             Assert.AreEqual(2, game.CurrentLevel.FindViews<UnitView>().Count);
+
+            game.Dispose();
+        }
+
+
+        [Test]
+        public void IsQueuePositioningIsRight()
+        {
+            var game = new GameConstructor()
+                .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
+                .UpdateDefinition<ConstructionDefinition>(x => x.Points = 3)
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 0)
+                .Build();
+
+            Assert.AreEqual(0, game.CurrentLevel.FindViews<UnitView>().Count);
+
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.Controls.Click();
+
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<UnitView>().Count);
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<ConstructionView>().Count);
+
+            var building = game.CurrentLevel.FindView<ConstructionView>();
+            var unit = game.CurrentLevel.FindView<UnitView>();
+
+            Assert.AreEqual(building.Position.Value.X, unit.Position.Value.X);
 
             game.Dispose();
         }

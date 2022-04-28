@@ -15,9 +15,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         private PlacementField _placements;
 
-        public ConstructionsManager(ConstructionsSettingsDefinition settings, LevelDefinition levelDefinition, Resources resources, GameLevel level)
+        public ConstructionsManager(ConstructionsSettingsDefinition settings, LevelDefinition levelDefinition, Resources resources, TurnManager turnManager)
         {
-            _placements = new PlacementField(settings, levelDefinition.PlacementField, resources, level);
+            _placements = new PlacementField(settings, levelDefinition.PlacementField, resources, turnManager);
         }
 
         protected override void DisposeInner()
