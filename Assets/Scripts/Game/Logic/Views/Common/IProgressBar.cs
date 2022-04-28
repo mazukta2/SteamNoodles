@@ -6,7 +6,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
     public interface IProgressBar
     {
-        float Value { get; set; }
-        float AdditonalValue { get; set; }
+        float MainValue { get; set; }
+        float AddedValue { get; set; }
+        float RemovedValue { get; set; }
     }
 }

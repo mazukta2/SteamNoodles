@@ -47,7 +47,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .Build();
 
             Assert.AreEqual("0/3", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
-            Assert.AreEqual(0, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.Value);
+            Assert.AreEqual(0, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.MainValue);
             Assert.AreEqual(0, game.CurrentLevel.FindViews<UnitView>().Count);
 
             game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
@@ -60,8 +60,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.IsTrue(points.Progress != 0);
 
             Assert.AreEqual("9/15", game.CurrentLevel.FindView<MainScreenView>().Points.Value);
-            Assert.AreEqual(points.Progress, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.Value);
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<UnitView>().Count);
+            Assert.AreEqual(points.Progress, game.CurrentLevel.FindView<MainScreenView>().PointsProgress.MainValue);
+            Assert.AreEqual(2, game.CurrentLevel.FindViews<UnitView>().Count);
 
             game.Dispose();
         }

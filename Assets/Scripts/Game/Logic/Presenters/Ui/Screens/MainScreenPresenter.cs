@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private void HandlePointsChanged()
         {
             _view.Points.Value = $"{_resources.Points.Value}/{_resources.Points.PointsForNextLevel}";
-            _view.PointsProgress.Value = _resources.Points.Progress;
+            _view.PointsProgress.MainValue = _resources.Points.Progress;
         }
 
     }

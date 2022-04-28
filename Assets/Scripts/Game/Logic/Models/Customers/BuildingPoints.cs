@@ -8,9 +8,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
     {
         public event Action OnPointsChanged = delegate { };
         public event Action OnLevelUp = delegate { };
+        public event Action OnMaxLevelUp = delegate { };
+        public event Action OnLevelDown = delegate { };
         public int Value { get => _points; set => SetPoints(value); }
 
         public int CurrentLevel { get; private set; }
+        public int MaxCurrentLevel { get; private set; }
         public int PointsForNextLevel => (int)GetPointsForLevel(CurrentLevel + 1);
         public int PointsForCurrentLevel => (int)GetPointsForLevel(CurrentLevel);
         public float Progress => (float)(Value - PointsForCurrentLevel) / (PointsForNextLevel - PointsForCurrentLevel);
@@ -25,28 +28,44 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             _offset = offset;
         }
 
-        public float GetAdditionalProgress(int points)
+        public BuildingPoints GetChangedValue(int additionalPoints)
         {
-            return (float)(Value - PointsForCurrentLevel + points) / (PointsForNextLevel - PointsForCurrentLevel);
+            var newBuildingPoints = new BuildingPoints(_power, _offset);
+            newBuildingPoints.Value = _points + additionalPoints;
+            return newBuildingPoints;
         }
 
         private float GetPointsForLevel(int level)
         {
+            if (level < 0)
+                return 0;
+
             return (float)(Math.Pow(level, _power) + _offset * level);
         }
 
-        private void SetPoints(int value)
+        private void SetPoints(int newPointsvalue)
         {
-            _points = value;
+            _points = newPointsvalue;
 
-            while (value >= PointsForNextLevel)
+            while (newPointsvalue >= PointsForNextLevel)
             {
                 CurrentLevel++;
                 OnLevelUp();
+
+                if (CurrentLevel > MaxCurrentLevel)
+                {
+                    MaxCurrentLevel = CurrentLevel;
+                    OnMaxLevelUp();
+                }
+            }
+
+            while (newPointsvalue < PointsForCurrentLevel)
+            {
+                CurrentLevel--;
+                OnLevelDown();
             }
 
             OnPointsChanged();
         }
-
     }
 }

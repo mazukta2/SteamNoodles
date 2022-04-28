@@ -50,12 +50,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             foreach (var item in _definition.ConstructionsReward)
                 _rewardDeck.Add(item.Key, item.Value);
 
-            Resources.Points.OnLevelUp += OnLevelUp;
+            Resources.Points.OnMaxLevelUp += OnLevelUp;
         }
 
         protected override void DisposeInner()
         {
-            Resources.Points.OnLevelUp -= OnLevelUp;
+            Resources.Points.OnMaxLevelUp -= OnLevelUp;
 
             Hand.Dispose();
             Constructions.Dispose();

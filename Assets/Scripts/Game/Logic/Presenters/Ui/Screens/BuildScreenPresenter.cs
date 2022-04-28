@@ -50,8 +50,26 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _view.Points.Value = $"{points.GetSignedNumber()}";
             _view.Points.Position = position;
             _view.CurrentPoints.Value = $"{_resources.Points.Value}/{_resources.Points.PointsForNextLevel}";
-            _view.PointsProgress.Value = _resources.Points.Progress;
-            _view.PointsProgress.AdditonalValue = _resources.Points.GetAdditionalProgress(points);
+
+            var newPoints =_resources.Points.GetChangedValue(points);
+            if (newPoints.Value < _resources.Points.Value)
+            {
+                _view.PointsProgress.MainValue = newPoints.Progress;
+                if (newPoints.CurrentLevel == _resources.Points.CurrentLevel)
+                    _view.PointsProgress.RemovedValue = _resources.Points.Progress;
+                else
+                    _view.PointsProgress.RemovedValue = 1;
+                _view.PointsProgress.AddedValue = 0;
+            }
+            else
+            {
+                _view.PointsProgress.MainValue = _resources.Points.Progress;
+                if (newPoints.CurrentLevel == _resources.Points.CurrentLevel)
+                    _view.PointsProgress.AddedValue = newPoints.Progress;
+                else
+                    _view.PointsProgress.AddedValue = 1;
+                _view.PointsProgress.RemovedValue = 0;
+            }
 
             UpdateBonuses(bonuses);
         }

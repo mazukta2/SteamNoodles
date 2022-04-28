@@ -26,7 +26,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private SessionRandom _random;
         private Deck<CustomerDefinition> _pool;
         private List<Unit> _queue = new List<Unit>();
-        private int _spawnedUnits;
 
         public LevelQueue(UnitsSettingsDefinition unitsSettings, LevelUnits units, LevelDefinition levelDefinition,
             SessionRandom random, BuildingPoints points, Levels.GameLevel gameLevel)
@@ -38,44 +37,42 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _random = random;
 
-            _points.OnPointsChanged += HandlePointsChanged;
+            _points.OnLevelUp += _points_OnLevelUp;
+            _points.OnLevelDown += _points_OnLevelDown;
             _gameLevel.OnTurn += HandleTurn;
 
             _pool = new Deck<CustomerDefinition>(random);
             foreach (var item in levelDefinition.BaseCrowdUnits)
                 _pool.Add(item.Key, item.Value);
-
-            HandlePointsChanged();
         }
 
         protected override void DisposeInner()
         {
-            _points.OnPointsChanged += HandlePointsChanged;
+            _points.OnLevelUp -= _points_OnLevelUp;
+            _points.OnLevelDown -= _points_OnLevelDown;
             _gameLevel.OnTurn -= HandleTurn;
             foreach (var unit in _queue)
                 _units.RemoveUnit(unit);
             _queue.Clear();
         }
 
-        private void HandlePointsChanged()
-        {
-            while (_points.CurrentLevel > _spawnedUnits)
-            {
-                _spawnedUnits++;
-
-                var definition = _pool.Take();
-                var position = _levelDefinition.QueuePosition + new FloatPoint(_unitsSettings.UnitSize, 0) * (_queue.Count - 1);
-                var unit = new Unit(position, position, definition, _unitsSettings, _random);
-                _queue.Add(_units.SpawnUnit(unit));
-            }
-        }
-
         private void HandleTurn()
         {
-            if (_queue.Count == 0)
-                return;
+        }
 
-            _units.RemoveUnit(_queue.First());
+        private void _points_OnLevelUp()
+        {
+            var definition = _pool.Take();
+            var position = _levelDefinition.QueuePosition + new FloatPoint(_unitsSettings.UnitSize, 0) * (_queue.Count - 1);
+            var unit = new Unit(position, position, definition, _unitsSettings, _random);
+            _queue.Add(_units.SpawnUnit(unit));
+        }
+
+        private void _points_OnLevelDown()
+        {
+            var unit = _queue.Last();
+            _queue.Remove(unit);
+            _units.RemoveUnit(unit);
         }
 
     }

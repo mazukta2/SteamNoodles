@@ -81,24 +81,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             game.Dispose();
         }
 
-        [Test]
-        public void IsHandLimitWorking()
-        {
-            //var construction1 = new ConstructionDefinition();
-            //var construction2 = new ConstructionDefinition();
-
-            //var game = new GameTestConstructor()
-            //    .UpdateDefinition<CustomerDefinition>(x => x.ConstrcutionsReward = new Dictionary<ConstructionDefinition, int>() {
-            //        {construction1,  1},
-            //        {construction2,  1},
-            //    })
-            //    .Build();
-
-            //game.CurrentLevel.FindView<HandView>().Cards.Get<HandConstructionView>().First().Button.Click();
-            //game.Engine.Controls.Click();
-            //Assert.AreEqual(2, game.CurrentLevel.FindViews<HandConstructionView>().Count());
-            //game.Dispose();
-        }
 
         [Test]
         public void IsTooltipShowing()
