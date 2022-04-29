@@ -45,7 +45,7 @@ namespace Game.Assets.Scripts.Tests.Setups
                 }
             });
 
-            var construciton = ConstructionDefinitionSetups.GetDefault();
+            var construciton = ConstructionSetups.GetDefault();
             _definitions.Add("Construction1", construciton);
 
             var customer = new CustomerDefinition()

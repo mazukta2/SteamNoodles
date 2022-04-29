@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Tests.Setups
     {
         public static LevelDefinitionMock GetDefault()
         {
-            var construciton = ConstructionDefinitionSetups.GetDefault();
+            var construciton = ConstructionSetups.GetDefault();
             var customer = new CustomerDefinition()
             {
             };
@@ -47,7 +47,7 @@ namespace Game.Assets.Scripts.Tests.Setups
 
         public static LevelDefinitionMock GetEmpty(string name)
         {
-            var construciton = ConstructionDefinitionSetups.GetDefault();
+            var construciton = ConstructionSetups.GetDefault();
             var customer = new CustomerDefinition()
             {
             };

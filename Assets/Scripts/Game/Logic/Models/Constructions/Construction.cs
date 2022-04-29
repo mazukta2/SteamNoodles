@@ -34,5 +34,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         {
             return _fieldPositions.GetViewPositionByWorldPosition(CellPosition);
         }
+
+        public void Destroy()
+        {
+            Dispose();
+        }
     }
 }

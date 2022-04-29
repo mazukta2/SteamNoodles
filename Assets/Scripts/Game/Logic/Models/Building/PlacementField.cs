@@ -15,7 +15,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
     public class PlacementField : Disposable
     {
         public event Action<Construction> OnConstructionAdded = delegate { };
-    //    public event Action<Construction> OnConstructionRemoved = delegate { };
 
         public IReadOnlyCollection<Construction> Constructions => _constructions.AsReadOnly();
 
@@ -43,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         protected override void DisposeInner()
         {
-            foreach (var item in _constructions)
+            foreach (var item in _constructions.ToList())
                 item.Dispose();
             _constructions.Clear();
         }
@@ -66,6 +65,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             var points = GetPoints(card.Definition, position, rotation);
 
             var construction = new Construction(ConstructionsSettings, card.Definition, position, rotation);
+            construction.OnDispose += Construction_OnDispose;
             _constructions.Add(construction);
             card.RemoveFromHand();
             OnConstructionAdded(construction);
@@ -75,6 +75,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             _turnManager.Turn();
 
             return construction;
+
+            void Construction_OnDispose()
+            {
+                construction.OnDispose -= Construction_OnDispose;
+                _constructions.Remove(construction);
+            }
         }
 
         public bool IsFreeCell(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)

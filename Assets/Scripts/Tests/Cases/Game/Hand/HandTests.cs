@@ -33,7 +33,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test]
         public void IsYouGetNewCardsAfterLevelUp()
         {
-            var construction = ConstructionDefinitionSetups.GetDefault();
+            var construction = ConstructionSetups.GetDefault();
             construction.Points = 2;
 
             var game = new GameConstructor()

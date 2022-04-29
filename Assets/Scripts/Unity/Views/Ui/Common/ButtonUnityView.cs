@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace Game.Assets.Scripts.Game.Unity.Views.Ui
 {
+    [RequireComponent(typeof(Button))]
     public class ButtonUnityView : MonoBehaviour, IButton
     {
         public bool IsShowing { get => GetButton().gameObject.activeSelf; set => GetButton().gameObject.SetActive(value); }

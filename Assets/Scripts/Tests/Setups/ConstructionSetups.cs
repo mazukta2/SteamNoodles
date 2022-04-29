@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Setups
 {
-    public class ConstructionDefinitionSetups
+    public class ConstructionSetups
     {
         public static ConstructionDefinition GetDefault()
         {

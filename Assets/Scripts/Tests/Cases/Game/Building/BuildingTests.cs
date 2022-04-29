@@ -502,7 +502,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         [Test]
         public void IsTwoConstructionsPlacing()
         {
-            var construction = ConstructionDefinitionSetups.GetDefault();
+            var construction = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction, construction })
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)

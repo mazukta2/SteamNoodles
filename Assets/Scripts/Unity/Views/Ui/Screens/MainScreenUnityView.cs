@@ -16,10 +16,12 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         [SerializeField] Image _progress;
         [SerializeField] Image _additionalProgress;
         [SerializeField] Image _negativeProgress;
+        [SerializeField] ButtonUnityView _nextWave;
 
         public IHandView HandView => _hand;
         public IText Points { get; private set; }
         public IProgressBar PointsProgress { get; private set; }
+        public IButton NextWaveButton => _nextWave;
 
         protected override void PreAwake()
         {

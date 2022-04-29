@@ -23,6 +23,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
             _constructionView.Container.Clear();
             _constructionView.Container.Spawn<IConstructionModelView>(assets.GetPrefab(construction.Definition.LevelViewPath));
+
+            _construction.OnDispose += _constructionView.Dispose;
+        }
+
+        protected override void DisposeInner()
+        {
+            _construction.OnDispose -= _constructionView.Dispose;
         }
     }
 }

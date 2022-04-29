@@ -59,7 +59,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
                 object Init(TScreen screenView, ScreenManagerPresenter managerPresenter)
                 {
                     if (screenView is IMainScreenView mainScreen)
-                        return new MainScreenPresenter(mainScreen, managerPresenter, mainScreen.Level.Model.Resources, mainScreen.Level.Model);
+                        return new MainScreenPresenter(mainScreen, managerPresenter, mainScreen.Level.Model.Resources, 
+                            mainScreen.Level.Model.Hand,
+                            mainScreen.Level.Model.Constructions);
 
                     throw new Exception("Unknown screen " + typeof(TScreen));
                 }
