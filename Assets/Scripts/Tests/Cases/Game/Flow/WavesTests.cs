@@ -49,6 +49,41 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         }
 
 
+        [Test]
+        public void IsEndWaveButtonProgress()
+        {
+            var constructionDefinition = ConstructionSetups.GetDefault();
+            var game = new GameConstructor()
+                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                    StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
+                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 2)
+                .Build();
+
+            Assert.AreEqual(0, game.CurrentLevel.FindView<MainScreenView>().NextWaveProgress.Value);
+            Assert.IsFalse(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.Controls.Click();
+
+            Assert.AreEqual(0.5f, game.CurrentLevel.FindView<MainScreenView>().NextWaveProgress.Value);
+            Assert.IsFalse(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
+
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.Controls.MovePointer(new FloatPoint(-1, 0));
+            game.Controls.Click();
+
+            Assert.AreEqual(1f, game.CurrentLevel.FindView<MainScreenView>().NextWaveProgress.Value);
+            Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
+
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.Controls.MovePointer(new FloatPoint(-2, 0));
+            game.Controls.Click();
+
+            Assert.AreEqual(1f, game.CurrentLevel.FindView<MainScreenView>().NextWaveProgress.Value);
+            Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
+
+            game.Dispose();
+        }
+
         [TearDown]
         public void TestDisposables()
         {

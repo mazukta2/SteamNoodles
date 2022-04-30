@@ -14,10 +14,11 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
     {
         public IHandView HandView { get; set; }
         public IText Points { get; set; }
-        public IProgressBar PointsProgress { get; set; }
+        public IPointsProgressBar PointsProgress { get; set; }
         public IButton NextWaveButton { get; set; } = new ButtonMock();
+        public IProgressBar NextWaveProgress { get; set; } = new ProgressBar();
 
-        public MainScreenView(LevelView level, HandView handView, IText points, IProgressBar pointsProgress) : base(level)
+        public MainScreenView(LevelView level, HandView handView, IText points, IPointsProgressBar pointsProgress) : base(level)
         {
             HandView = handView;
             Points = points;

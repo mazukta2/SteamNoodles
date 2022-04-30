@@ -6,8 +6,10 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Views.Common
 {
-    public class ProgressBar : IProgressBar
+    public class PointsProgressBar : IPointsProgressBar
     {
-        public float Value { get; set; }
+        public float MainValue { get; set; }
+        public float AddedValue { get; set; }
+        public float RemovedValue { get; set; }
     }
 }

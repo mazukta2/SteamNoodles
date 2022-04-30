@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         public IButton CancelButton => _closeButton;
         public IWorldText Points => _additionalPoints;
         public IText CurrentPoints { get; private set; }
-        public IProgressBar PointsProgress { get; private set; }
+        public IPointsProgressBar PointsProgress { get; private set; }
 
         public IViewContainer AdjacencyContainer => _adjacencyConteiner;
         public IViewPrefab AdjacencyPrefab => _adjacencyPrefab;
@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         protected override void PreAwake()
         {
             CurrentPoints = new UnityText(_currentPoints);
-            PointsProgress = new UnityProgressBar(_progress, _additionalProgress, _negativeProgress);
+            PointsProgress = new UnityPointProgressBar(_progress, _additionalProgress, _negativeProgress);
         }
     }
 

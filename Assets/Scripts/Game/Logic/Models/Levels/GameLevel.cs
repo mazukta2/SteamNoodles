@@ -24,14 +24,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         private LevelQueue _queue;
 
         public Resources Resources { get; }
+        public LevelDefinition Definition { get; private set; }
 
-        private LevelDefinition _definition;
         private SessionRandom _random;
         private Deck<ConstructionDefinition> _rewardDeck;
 
         public GameLevel(LevelDefinition settings, SessionRandom random, IGameTime time, IDefinitions definitions)
         {
-            _definition = settings ?? throw new ArgumentNullException(nameof(settings));
+            Definition = settings ?? throw new ArgumentNullException(nameof(settings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             if (time == null) throw new ArgumentNullException(nameof(time));
 
@@ -43,11 +43,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Units = new LevelUnits(time);
             _crowd = new LevelCrowd(unitSettings, Units, time, settings, random);
 
-            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), _definition, Resources, TurnManager);
+            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), Definition, Resources, TurnManager);
             _queue = new LevelQueue(unitSettings, Units, settings, random, Resources.Points, Constructions, TurnManager);
 
             _rewardDeck = new Deck<ConstructionDefinition>(_random);
-            foreach (var item in _definition.ConstructionsReward)
+            foreach (var item in Definition.ConstructionsReward)
                 _rewardDeck.Add(item.Key, item.Value);
 
             Resources.Points.OnMaxLevelUp += OnLevelUp;

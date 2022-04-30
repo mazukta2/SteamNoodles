@@ -141,7 +141,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             if (!CanPlace(constructionDefinition, position, rotation))
                 return result;
 
-            var adjacentPoints = 0;
             foreach (var construction in GetAdjacentConstructions(constructionDefinition, position, rotation))
             {
                 if (constructionDefinition.AdjacencyPoints.ContainsKey(construction.Definition))

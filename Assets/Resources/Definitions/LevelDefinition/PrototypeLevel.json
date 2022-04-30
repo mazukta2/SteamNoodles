@@ -29,5 +29,6 @@
 		"Y": -4.5,
 		"Width": 14,
 		"Height": 2.5
-	}
+	},
+	"ConstructionsForNextWave" : 8
 }

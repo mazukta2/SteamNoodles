@@ -9,7 +9,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
     {
         IHandView HandView { get; }
         IText Points { get; }
-        IProgressBar PointsProgress { get; }
+        IPointsProgressBar PointsProgress { get; }
         IButton NextWaveButton { get; }
+        IProgressBar NextWaveProgress { get; }
     }
 }
