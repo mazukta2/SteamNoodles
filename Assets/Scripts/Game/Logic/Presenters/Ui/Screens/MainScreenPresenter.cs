@@ -14,26 +14,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private IMainScreenView _view;
         private ScreenManagerPresenter _screenManager;
         private Resources _resources;
-        private ConstructionsManager _constructionsManager;
-        private LevelDefinition _levelDefinition;
+        private PlacementField _constructionsManager;
+        private FlowManager _turnManager;
 
         public MainScreenPresenter(IMainScreenView view, ScreenManagerPresenter screenManager, 
             Resources resources, PlayerHand hand,
-            ConstructionsManager constructionsManager,
-            LevelDefinition levelDefinition) : base(view)
+            PlacementField constructionsManager,
+            LevelDefinition levelDefinition,
+            FlowManager turnManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
-            _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
+            _turnManager = turnManager ?? throw new ArgumentNullException(nameof(turnManager));
 
             new HandPresenter(hand, screenManager, view.HandView);
 
             _resources.Points.OnPointsChanged += HandlePointsChanged;
-            _constructionsManager.Placement.OnConstructionAdded += Placement_OnConstructionAdded;
+            _constructionsManager.OnConstructionAdded += Placement_OnConstructionAdded;
             _view.NextWaveButton.SetAction(NextWaveClick);
-            _view.NextWaveButton.IsActive = CanNextWaveClick();
+            _view.NextWaveButton.IsActive = _turnManager.CanNextWaveClick();
             UpdateNextWaveProgress();
             HandlePointsChanged();
         }
@@ -41,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         protected override void DisposeInner()
         {
             _resources.Points.OnPointsChanged -= HandlePointsChanged;
-            _constructionsManager.Placement.OnConstructionAdded -= Placement_OnConstructionAdded;
+            _constructionsManager.OnConstructionAdded -= Placement_OnConstructionAdded;
         }
 
         private void HandlePointsChanged()
@@ -52,32 +53,18 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private void NextWaveClick()
         {
-            if (!CanNextWaveClick())
-                throw new Exception("Not enough constructions");
-
-            while (_constructionsManager.Placement.Constructions.Count > 1)
-            {
-                _constructionsManager.Placement.Constructions.Last().Destroy();
-            }
-        }
-
-        private bool CanNextWaveClick()
-        {
-            if (_constructionsManager.Placement.Constructions.Count < _levelDefinition.ConstructionsForNextWave)
-                return false;
-
-            return true;
+            _turnManager.NextWave();
         }
 
         private void Placement_OnConstructionAdded(Construction obj)
         {
-            _view.NextWaveButton.IsActive = CanNextWaveClick();
+            _view.NextWaveButton.IsActive = _turnManager.CanNextWaveClick();
             UpdateNextWaveProgress();
         }
 
         private void UpdateNextWaveProgress()
         {
-            _view.NextWaveProgress.Value = Math.Min(1, _constructionsManager.Placement.Constructions.Count / (float)_levelDefinition.ConstructionsForNextWave);
+            _view.NextWaveProgress.Value = _turnManager.GetWaveProgress();
         }
 
     }

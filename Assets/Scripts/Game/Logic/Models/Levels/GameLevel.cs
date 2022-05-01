@@ -15,9 +15,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
     public class GameLevel : Disposable
     {
-        public TurnManager TurnManager { get; }
+        public FlowManager TurnManager { get; }
         public PlayerHand Hand { get; private set; }
-        public ConstructionsManager Constructions { get; private set; }
+        public PlacementField Constructions { get; private set; }
         public LevelUnits Units { get; }
 
         private LevelCrowd _crowd;
@@ -27,7 +27,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public LevelDefinition Definition { get; private set; }
 
         private SessionRandom _random;
-        private Deck<ConstructionDefinition> _rewardDeck;
 
         public GameLevel(LevelDefinition settings, SessionRandom random, IGameTime time, IDefinitions definitions)
         {
@@ -35,7 +34,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             _random = random ?? throw new ArgumentNullException(nameof(random));
             if (time == null) throw new ArgumentNullException(nameof(time));
 
-            TurnManager = new TurnManager();
             Hand = new PlayerHand(settings, settings.StartingHand);
             Resources = new Resources(definitions.Get<ConstructionsSettingsDefinition>());
 
@@ -43,12 +41,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Units = new LevelUnits(time);
             _crowd = new LevelCrowd(unitSettings, Units, time, settings, random);
 
-            Constructions = new ConstructionsManager(definitions.Get<ConstructionsSettingsDefinition>(), Definition, Resources, TurnManager);
+            Constructions = new PlacementField(definitions.Get<ConstructionsSettingsDefinition>(), Definition.PlacementField, Resources);
+            TurnManager = new FlowManager(Definition, random, Constructions, Hand);
             _queue = new LevelQueue(unitSettings, Units, settings, random, Resources.Points, Constructions, TurnManager);
-
-            _rewardDeck = new Deck<ConstructionDefinition>(_random);
-            foreach (var item in Definition.ConstructionsReward)
-                _rewardDeck.Add(item.Key, item.Value);
 
             Resources.Points.OnMaxLevelUp += OnLevelUp;
         }
@@ -68,14 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private void OnLevelUp()
         {
-            if (_rewardDeck.IsEmpty())
-                return;
-
-            for (int i = 0; i < 3; i++)
-            {
-                var constrcution = _rewardDeck.Take();
-                Hand.Add(constrcution);
-            }
+            TurnManager.GiveCards();
         }
 
     }

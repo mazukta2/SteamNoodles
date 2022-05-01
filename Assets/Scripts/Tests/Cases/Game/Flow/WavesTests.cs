@@ -84,6 +84,27 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.Dispose();
         }
 
+        [Test]
+        public void IsEndWaveButtonGiveYouNewBuildings()
+        {
+            var constructionDefinition = ConstructionSetups.GetDefault();
+            var game = new GameConstructor()
+                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                    StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
+                .Build();
+
+            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.Controls.Click();
+
+            Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
+            game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.Click();
+
+            Assert.AreEqual(3, game.CurrentLevel.FindViews<HandConstructionView>().Count());
+
+            game.Dispose();
+        }
+
+
         [TearDown]
         public void TestDisposables()
         {

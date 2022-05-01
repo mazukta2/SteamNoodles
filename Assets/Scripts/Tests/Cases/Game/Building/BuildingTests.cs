@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
@@ -30,7 +29,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementManagerView>());
             Assert.IsNotNull(game.CurrentLevel.FindView<PlacementFieldView>());
 
             var cells = game.CurrentLevel.FindViews<CellView>();
@@ -52,7 +50,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementManagerView>());
             Assert.IsNotNull(game.CurrentLevel.FindView<PlacementFieldView>());
 
             var cells = game.CurrentLevel.FindViews<CellView>();

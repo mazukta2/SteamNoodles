@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly IControls _controls;
         private readonly IGameKeysManager _gameKeysManager;
         private readonly BuildScreenPresenter _buildScreen;
-        private readonly ConstructionsManager _constructionsManager;
+        private readonly PlacementField _constructionsManager;
         private readonly ScreenManagerPresenter _screenManager;
         private readonly IAssets _assets;
         private FloatPoint _pointerPosition;
@@ -33,7 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
             ScreenManagerPresenter screenManager,
-            ConstructionsManager constructionsManager,
+            PlacementField constructionsManager,
             BuildScreenPresenter buildScreen, IControls controls, IGameKeysManager gameKeysManager, IAssets assets, IGhostView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -87,7 +87,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleOnLevelClick()
         {
-            var field = _constructionsManager.Placement;
+            var field = _constructionsManager;
             if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation))
             {
                 field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
@@ -103,7 +103,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private bool CanPlace()
     {
-            if (_constructionsManager.Placement.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(_constructionsManager.Placement), Rotation))
+            if (_constructionsManager.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(_constructionsManager), Rotation))
             {
                 return true;
             }
@@ -113,12 +113,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private void UpdatePoints()
         {
             var points = 0;
-            points += _constructionsManager.Placement.GetPoints(_buildScreen.CurrentCard.Definition, 
-                GetLocalPosition(_constructionsManager.Placement), Rotation);
+            points += _constructionsManager.GetPoints(_buildScreen.CurrentCard.Definition, 
+                GetLocalPosition(_constructionsManager), Rotation);
 
             _buildScreen.UpdatePoints(GetViewPosition(), points, 
-                _constructionsManager.Placement
-                .GetAdjacencyPoints(_buildScreen.CurrentCard.Definition, GetLocalPosition(_constructionsManager.Placement), Rotation));
+                _constructionsManager
+                .GetAdjacencyPoints(_buildScreen.CurrentCard.Definition, GetLocalPosition(_constructionsManager), Rotation));
         }
 
         private void HandleRotateLeftTap()

@@ -16,7 +16,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
     {
         private PlacementField _model;
         private IPlacementFieldView _view;
-        private PlacementManagerPresenter _manager;
         private GhostManagerPresenter _ghostManager;
         private IAssets _assets;
         private ConstructionsSettingsDefinition _settings;
@@ -25,12 +24,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         public PlacementFieldPresenter(GhostManagerPresenter ghostManagerPresenter,
             PlacementField model,
             IPlacementFieldView view,
-            ConstructionsSettingsDefinition settings,
-            PlacementManagerPresenter presenter, IAssets assets) : base(view)
+            ConstructionsSettingsDefinition settings, IAssets assets) : base(view)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _manager = presenter ?? throw new ArgumentNullException(nameof(presenter));
             _ghostManager = ghostManagerPresenter ?? throw new ArgumentNullException(nameof(ghostManagerPresenter));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
@@ -62,7 +59,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private PlacementCellPresenter CreateCell(IntPoint position)
         {
-            var view = _view.Manager.CellsContainer.Spawn<ICellView>(_view.Manager.Cell);
+            var view = _view.CellsContainer.Spawn<ICellView>(_view.Cell);
             return new PlacementCellPresenter(view, this, IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), position);
         }
 
@@ -94,7 +91,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleOnConstructionAdded(Construction construction)
         {
-            var view = _view.Manager.ConstrcutionContainer.Spawn<IConstructionView>(_view.Manager.ConstrcutionPrototype);
+            var view = _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype);
             new ConstructionPresenter(_settings, construction, IAssets.Default, view);
         }
     }

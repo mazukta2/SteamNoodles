@@ -21,13 +21,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
             var ghostPrototype = new PrototypeViewMock(level, new GhostViewPrefab());
             new GhostManagerView(level, ghostContainer, ghostPrototype);
 
-            var cellContainer = new ContainerViewMock(level);
-            var cellPrototype = new PrototypeViewMock(level, new CellViewPrefab());
-            var constrcutionContainer = new ContainerViewMock(level);
-            var constructionPrototype = new PrototypeViewMock(level, new ConstructionViewPrefab());
-            var placementManager = new PlacementManagerView(level, cellContainer, cellPrototype, constrcutionContainer, constructionPrototype);
-
-            new PlacementFieldView(level, placementManager);
+            new PlacementFieldView(level, new ConstructionViewPrefab(), new CellViewPrefab());
 
             new UnitsManagerView(level, new ContainerViewMock(level), new PrototypeViewMock(level, new UnitViewPrefab()));
         }

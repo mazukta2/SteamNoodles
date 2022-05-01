@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
     public class PlacementField : Disposable
     {
         public event Action<Construction> OnConstructionAdded = delegate { };
+        public event Action<Construction> OnConstructionBuilded = delegate { };
 
         public IReadOnlyCollection<Construction> Constructions => _constructions.AsReadOnly();
 
@@ -27,16 +28,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
         private PlacementFieldDefinition _field;
         private Resources _resources;
-        private TurnManager _turnManager;
+        private FlowManager _turnManager;
 
-        public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition, Resources resources, TurnManager turnManager)
+        public PlacementField(ConstructionsSettingsDefinition settings, PlacementFieldDefinition definition, Resources resources)
         {
             ConstructionsSettings = settings ?? throw new ArgumentNullException(nameof(settings));
             _field = definition ?? throw new ArgumentNullException(nameof(definition));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            _turnManager = turnManager ?? throw new ArgumentNullException(nameof(turnManager));
             
-
             Rect = new IntRect(-Size.X / 2, -Size.Y / 2, Size.X, Size.Y);
         }
 
@@ -72,7 +71,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
 
             _resources.Points.Value += points;
 
-            _turnManager.Turn();
+            OnConstructionBuilded(construction);
 
             return construction;
 

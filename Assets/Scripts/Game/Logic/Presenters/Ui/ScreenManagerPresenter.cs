@@ -64,7 +64,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
                         return new MainScreenPresenter(mainScreen, managerPresenter, mainScreen.Level.Model.Resources, 
                             mainScreen.Level.Model.Hand,
                             mainScreen.Level.Model.Constructions,
-                            mainScreen.Level.Model.Definition);
+                            mainScreen.Level.Model.Definition, mainScreen.Level.Model.TurnManager);
 
                     throw new Exception("Unknown screen " + typeof(TScreen));
                 }

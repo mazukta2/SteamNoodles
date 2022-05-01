@@ -22,9 +22,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private LevelUnits _units;
         private UnitsSettingsDefinition _unitsSettings;
         private BuildingPoints _points;
-        private TurnManager _turnManager;
+        private FlowManager _turnManager;
         private LevelDefinition _levelDefinition;
-        private ConstructionsManager _constructionsManager;
+        private PlacementField _constructionsManager;
         private SessionRandom _random;
         private Deck<CustomerDefinition> _pool;
         private List<Unit> _queue = new List<Unit>();
@@ -33,8 +33,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public LevelQueue(UnitsSettingsDefinition unitsSettings, 
             LevelUnits units, LevelDefinition levelDefinition,
             SessionRandom random, BuildingPoints points,
-            ConstructionsManager constructionsManager,
-            TurnManager turnManager)
+            PlacementField constructionsManager,
+            FlowManager turnManager)
         {
             _units = units;
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
@@ -47,7 +47,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _points.OnLevelUp += _points_OnLevelUp;
             _points.OnLevelDown += _points_OnLevelDown;
             _turnManager.OnTurn += HandleTurn;
-            _constructionsManager.Placement.OnConstructionAdded += Placement_OnConstructionAdded;
+            _constructionsManager.OnConstructionAdded += Placement_OnConstructionAdded;
 
             _pool = new Deck<CustomerDefinition>(random);
             foreach (var item in levelDefinition.BaseCrowdUnits)
@@ -56,7 +56,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         protected override void DisposeInner()
         {
-            _constructionsManager.Placement.OnConstructionAdded -= Placement_OnConstructionAdded;
+            _constructionsManager.OnConstructionAdded -= Placement_OnConstructionAdded;
             _points.OnLevelUp -= _points_OnLevelUp;
             _points.OnLevelDown -= _points_OnLevelDown;
             _turnManager.OnTurn -= HandleTurn;

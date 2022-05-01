@@ -19,13 +19,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 
         private IGhostManagerView _view;
         private ScreenManagerPresenter _screenManager;
-        private ConstructionsManager _constructionsManager;
+        private PlacementField _constructionsManager;
         private ConstructionsSettingsDefinition _settings;
         private IControls _controls;
         private GhostPresenter _ghost;
 
-        public GhostManagerPresenter(ScreenManagerPresenter screenManager, ConstructionsSettingsDefinition settings, IControls controls, 
-            ConstructionsManager constructionsManager,
+        public GhostManagerPresenter(ScreenManagerPresenter screenManager, ConstructionsSettingsDefinition settings, IControls controls,
+            PlacementField constructionsManager,
             IGhostManagerView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
