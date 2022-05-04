@@ -13,6 +13,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] UnityAnimator _borderAnimator;
         public IAnimator BorderAnimator => _borderAnimator;
 
+        [SerializeField] UnityShrinker _shrinker;
+        public IFloat Shrink => _shrinker;
     }
 
 }

@@ -46,7 +46,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             Definition = _buildScreen.CurrentCard.Definition ?? throw new ArgumentNullException(nameof(_buildScreen.CurrentCard.Definition));
 
-
             _rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
             _rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
 
@@ -83,6 +82,19 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 _buildScreen.CurrentCard.Definition.GetRect(Rotation));
 
             return position.GetWorldCellPosition(_pointerPosition);
+        }
+
+        public FloatPoint GetWorldPosition()
+        {
+            var position = new FieldPositionsCalculator(_constructionsSettings.CellSize,
+                _buildScreen.CurrentCard.Definition.GetRect(Rotation));
+
+            return position.GetViewPositionByWorldPosition(position.GetWorldCellPosition(_pointerPosition));
+        }
+
+        public FloatPoint GetTargetPosition()
+        {
+            return _pointerPosition;
         }
 
         private void HandleOnLevelClick()

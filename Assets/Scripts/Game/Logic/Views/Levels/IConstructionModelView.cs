@@ -13,6 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     {
         IAnimator Animator { get; }
         IAnimator BorderAnimator { get; }
+        IFloat Shrink { get; }
 
         public enum Animations
         {

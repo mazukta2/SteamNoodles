@@ -18,6 +18,9 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         public IAnimator Animator { get; } = new AnimatorMock();
 
         public IAnimator BorderAnimator { get; } = new AnimatorMock();
+
+        public IFloat Shrink { get; } = new FloatMock();
+
         public ConstructionModelView(LevelView level) : base(level)
         {
         }
