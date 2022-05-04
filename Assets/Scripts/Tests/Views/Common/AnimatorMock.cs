@@ -6,10 +6,15 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Views.Common
 {
-    public class UnitAnimation : IAnimator
+    public class AnimatorMock : IAnimator
     {
         public string Animation { get; private set; }
         public void Play(string animation, bool startAgain = false)
+        {
+            Animation = animation;
+        }
+
+        public void SwitchTo(string animation)
         {
             Animation = animation;
         }

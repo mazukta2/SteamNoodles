@@ -15,9 +15,9 @@ namespace Game.Assets.Scripts.Tests.Views.Level
 {
     public class ConstructionModelView : View, IConstructionModelView
     {
-        public IAnimator Animator { get; } = new UnitAnimation();
+        public IAnimator Animator { get; } = new AnimatorMock();
 
-        public IAnimator BorderAnimator { get; } = new UnitAnimation();
+        public IAnimator BorderAnimator { get; } = new AnimatorMock();
         public ConstructionModelView(LevelView level) : base(level)
         {
         }

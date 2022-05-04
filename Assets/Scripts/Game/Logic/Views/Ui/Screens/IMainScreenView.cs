@@ -11,6 +11,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
         IText Points { get; }
         IPointsProgressBar PointsProgress { get; }
         IButton NextWaveButton { get; }
+        IButton FailWaveButton { get; }
         IProgressBar NextWaveProgress { get; }
+        IAnimator WaveButtonAnimator { get; }
     }
 }

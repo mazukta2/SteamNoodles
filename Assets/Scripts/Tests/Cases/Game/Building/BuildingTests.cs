@@ -288,16 +288,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
             var ghost = game.CurrentLevel.FindView<GhostView>();
             var model = game.CurrentLevel.FindView<ConstructionModelView>();
-            Assert.AreEqual("Dragging", ((UnitAnimation)model.Animator).Animation);
-            Assert.AreEqual("Disallowed", ((UnitAnimation)model.BorderAnimator).Animation);
+            Assert.AreEqual("Dragging", ((AnimatorMock)model.Animator).Animation);
+            Assert.AreEqual("Disallowed", ((AnimatorMock)model.BorderAnimator).Animation);
 
             var newPos = new FloatPoint(0.25f, -4f * cellSize);
             game.Controls.MovePointer(newPos); // move down
 
             Assert.AreEqual(newPos, ghost.LocalPosition.Value);
 
-            Assert.AreEqual("Dragging", ((UnitAnimation)model.Animator).Animation);
-            Assert.AreEqual("Idle", ((UnitAnimation)model.BorderAnimator).Animation);
+            Assert.AreEqual("Dragging", ((AnimatorMock)model.Animator).Animation);
+            Assert.AreEqual("Idle", ((AnimatorMock)model.BorderAnimator).Animation);
 
             game.Dispose();
         }

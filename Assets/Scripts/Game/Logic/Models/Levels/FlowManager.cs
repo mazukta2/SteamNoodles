@@ -50,8 +50,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public void NextWave()
         {
-            if (!CanNextWaveClick())
-                throw new Exception("Not enough constructions");
+            if (!CanNextWave())
+                throw new Exception("Cant start next wave");
+
+            while (_constructionsManager.Constructions.Count > 1)
+            {
+                _constructionsManager.Constructions.Last().Destroy();
+            }
+
+            GiveCards();
+        }
+
+        public void FailWave()
+        {
+            if (!CanFailWave())
+                throw new Exception("Cant fail wave");
 
             while (_constructionsManager.Constructions.Count > 1)
             {
@@ -73,9 +86,34 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             }
         }
 
-        public bool CanNextWaveClick()
+        public bool CanProcessNextWave()
         {
+            if (_constructionsManager.Constructions.Count < 1)
+                return false;
+
+            return true;
+        }
+
+        public bool CanNextWave()
+        {
+            if (!CanProcessNextWave())
+                return false;
+
             if (_constructionsManager.Constructions.Count < _levelDefinition.ConstructionsForNextWave)
+                return false;
+
+            return true;
+        }
+
+        public bool CanFailWave()
+        {
+            if (CanNextWave())
+                return false;
+
+            if (_constructionsManager.Constructions.Count < 1)
+                return false;
+
+            if (_hand.Cards.Count > 0)
                 return false;
 
             return true;

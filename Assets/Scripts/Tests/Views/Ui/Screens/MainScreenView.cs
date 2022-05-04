@@ -16,7 +16,10 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
         public IText Points { get; set; }
         public IPointsProgressBar PointsProgress { get; set; }
         public IButton NextWaveButton { get; set; } = new ButtonMock();
+        public IButton FailWaveButton { get; set; } = new ButtonMock();
         public IProgressBar NextWaveProgress { get; set; } = new ProgressBar();
+        public AnimatorMock WaveButtonAnimator { get; set; } = new AnimatorMock();
+        IAnimator IMainScreenView.WaveButtonAnimator => WaveButtonAnimator;
 
         public MainScreenView(LevelView level, HandView handView, IText points, IPointsProgressBar pointsProgress) : base(level)
         {

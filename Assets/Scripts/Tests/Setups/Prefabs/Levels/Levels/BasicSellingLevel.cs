@@ -56,7 +56,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
         {
             public override IView CreateView<T>(LevelView level, ContainerViewMock container)
             {
-                return new UnitView(level, new LevelPosition(), new Rotator(), new UnitAnimation(), new UnitDresser());
+                return new UnitView(level, new LevelPosition(), new Rotator(), new AnimatorMock(), new UnitDresser());
             }
         }
     }

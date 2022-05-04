@@ -17,6 +17,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private PlacementField _constructionsManager;
         private FlowManager _turnManager;
 
+        private static string _lastAnimation;
+
         public MainScreenPresenter(IMainScreenView view, ScreenManagerPresenter screenManager, 
             Resources resources, PlayerHand hand,
             PlacementField constructionsManager,
@@ -34,9 +36,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _resources.Points.OnPointsChanged += HandlePointsChanged;
             _constructionsManager.OnConstructionAdded += Placement_OnConstructionAdded;
             _view.NextWaveButton.SetAction(NextWaveClick);
-            _view.NextWaveButton.IsActive = _turnManager.CanNextWaveClick();
-            UpdateNextWaveProgress();
+            _view.FailWaveButton.SetAction(FailWaveClick);
+            UpdateWaveProgress();
             HandlePointsChanged();
+            _view.PointsProgress.RemovedValue = 0;
+            _view.PointsProgress.AddedValue = 0;
         }
 
         protected override void DisposeInner()
@@ -54,18 +58,53 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private void NextWaveClick()
         {
             _turnManager.NextWave();
+            UpdateWaveProgress();
+        }
+
+        private void FailWaveClick()
+        {
+            _turnManager.FailWave();
+            UpdateWaveProgress();
         }
 
         private void Placement_OnConstructionAdded(Construction obj)
         {
-            _view.NextWaveButton.IsActive = _turnManager.CanNextWaveClick();
-            UpdateNextWaveProgress();
+            UpdateWaveProgress();
         }
 
-        private void UpdateNextWaveProgress()
+        private void UpdateWaveProgress()
         {
+            _view.NextWaveButton.IsActive = _turnManager.CanNextWave();
+            _view.FailWaveButton.IsActive = _turnManager.CanFailWave();
             _view.NextWaveProgress.Value = _turnManager.GetWaveProgress();
+
+            var animation = GetCurrentWaveButtonAnimation().ToString();
+            if (string.IsNullOrEmpty(_lastAnimation) || animation != _lastAnimation)
+            {
+                _lastAnimation = GetCurrentWaveButtonAnimation().ToString();
+                _view.WaveButtonAnimator.Play(_lastAnimation);
+            }
+            else
+            {
+                _view.WaveButtonAnimator.SwitchTo(_lastAnimation);
+            }
         }
 
+        private WaveButtonAnimations GetCurrentWaveButtonAnimation()
+        {
+            if (_turnManager.CanFailWave())
+                return WaveButtonAnimations.FailWave;
+            else if (_turnManager.CanProcessNextWave())
+                return WaveButtonAnimations.NextWave;
+            else
+                return WaveButtonAnimations.None;
+        }
+
+        public enum WaveButtonAnimations
+        {
+            None,
+            NextWave,
+            FailWave
+        }
     }
 }

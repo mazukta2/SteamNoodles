@@ -26,7 +26,16 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
                 return;
 
             _currentAnimation = animation;
-            _animator.SetTrigger(animation);
+            _animator.CrossFade(animation, 0.1f);
+        }
+
+        public void SwitchTo(string animation)
+        {
+            if (animation.Equals(_currentAnimation))
+                return;
+
+            _currentAnimation = animation;
+            _animator.Play(animation, 0, 1);
         }
     }
 }

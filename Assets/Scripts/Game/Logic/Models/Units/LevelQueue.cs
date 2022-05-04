@@ -78,7 +78,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         {
             var definition = _pool.Take();
             var position = _levelDefinition.QueuePosition + new FloatPoint(_unitsSettings.UnitSize, 0) * (_queue.Count - 1);
-            position.X = _queueStartingPosition;
+            if (_queue.Count == 0)
+                position.X = _queueStartingPosition;
             var unit = new Unit(position, position, definition, _unitsSettings, _random);
             _queue.Add(_units.SpawnUnit(unit));
         }

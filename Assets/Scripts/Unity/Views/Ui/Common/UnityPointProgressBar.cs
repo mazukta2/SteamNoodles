@@ -12,11 +12,16 @@ using UnityEngine.UI;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 {
+    [Serializable]
     public class UnityPointProgressBar : IPointsProgressBar
     {
-        private Image _progress;
-        private Image _additionalProgress;
-        private Image _negativeProgress;
+        [SerializeField] private Image _progress;
+        [SerializeField] private Image _additionalProgress;
+        [SerializeField] private Image _negativeProgress;
+
+        public UnityPointProgressBar()
+        {
+        }
 
         public UnityPointProgressBar(Image progress, Image additional, Image negative)
         {
