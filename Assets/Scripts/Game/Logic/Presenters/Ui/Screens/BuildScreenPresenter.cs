@@ -115,7 +115,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
                 text.Value = $"{item.Value}";
 
                 var position = new FieldPositionsCalculator(_constrcutionsSettings.CellSize, item.Key.Definition.GetRect(item.Key.Rotation));
-                text.Position = position.GetViewPositionByWorldPosition(item.Key.CellPosition);
+                text.Position = position.GetPositionByWorldPosition(item.Key.CellPosition);
             }
         }
 

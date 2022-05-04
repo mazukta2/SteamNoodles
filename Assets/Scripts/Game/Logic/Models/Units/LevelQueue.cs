@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private SessionRandom _random;
         private Deck<CustomerDefinition> _pool;
         private List<Unit> _queue = new List<Unit>();
-        private float _queueStartingPosition;
+        private float? _queueStartingPosition;
 
         public LevelQueue(UnitsSettingsDefinition unitsSettings, 
             LevelUnits units, LevelDefinition levelDefinition,
@@ -67,7 +67,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         private void Placement_OnConstructionAdded(Construction construction)
         {
-            _queueStartingPosition = construction.GetWorldPosition().X;
+            if (_queueStartingPosition == null)
+                _queueStartingPosition = construction.GetWorldPosition().X + construction.GetWorldOffset().X;
         }
 
         private void HandleTurn()
@@ -77,9 +78,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private void _points_OnLevelUp()
         {
             var definition = _pool.Take();
-            var position = _levelDefinition.QueuePosition + new FloatPoint(_unitsSettings.UnitSize, 0) * (_queue.Count - 1);
-            if (_queue.Count == 0)
-                position.X = _queueStartingPosition;
+            var startPosition = new FloatPoint(_queueStartingPosition.Value, _levelDefinition.QueuePosition.Y);
+            var position = startPosition + new FloatPoint(_unitsSettings.UnitSize, 0) * (_queue.Count - 1);
             var unit = new Unit(position, position, definition, _unitsSettings, _random);
             _queue.Add(_units.SpawnUnit(unit));
         }

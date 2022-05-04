@@ -89,7 +89,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             var position = new FieldPositionsCalculator(_constructionsSettings.CellSize,
                 _buildScreen.CurrentCard.Definition.GetRect(Rotation));
 
-            return position.GetViewPositionByWorldPosition(position.GetWorldCellPosition(_pointerPosition));
+            return position.GetPositionByWorldPosition(position.GetWorldCellPosition(_pointerPosition));
         }
 
         public FloatPoint GetTargetPosition()
@@ -159,7 +159,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             var position = new FieldPositionsCalculator(_constructionsSettings.CellSize,
                 _buildScreen.CurrentCard.Definition.GetRect(Rotation));
 
-            return position.GetViewPosition(_pointerPosition);
+            return position.GetWorldPositionInGrid(_pointerPosition);
         }
     }
 }

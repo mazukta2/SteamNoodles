@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _ghostManager = ghostManagerPresenter ?? throw new ArgumentNullException(nameof(ghostManagerPresenter));
 
             var position = new FieldPositionsCalculator(constrcutionsSettings.CellSize, construction.Definition.GetRect(construction.Rotation));
-            _constructionView.Position.Value = position.GetViewPositionByWorldPosition(construction.CellPosition);
+            _constructionView.Position.Value = position.GetPositionByWorldPosition(construction.CellPosition);
             _constructionView.Rotator.Look(ConstructionRotation.ToDirection(construction.Rotation));
 
             _constructionView.Container.Clear();

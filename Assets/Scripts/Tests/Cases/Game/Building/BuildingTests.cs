@@ -367,15 +367,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
                 // from -0.5 to 0.5 its 0, 0
                 Assert.AreEqual(new IntPoint(0, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(0, 0)));
-                Assert.AreEqual(new FloatPoint(0, 0), fieldPoisition.GetViewPosition(new FloatPoint(0, 0)));
+                Assert.AreEqual(new FloatPoint(0, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0, 0)));
 
                 // from 0.5 to 1.5 its 1, 0
                 Assert.AreEqual(new IntPoint(1, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(0.6f, 0)));
-                Assert.AreEqual(new FloatPoint(1, 0), fieldPoisition.GetViewPosition(new FloatPoint(0.6f, 0)));
+                Assert.AreEqual(new FloatPoint(1, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0.6f, 0)));
 
                 // from 1.5 to 2.5 its 2, 0
                 Assert.AreEqual(new IntPoint(2, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(1.6f, 0)));
-                Assert.AreEqual(new FloatPoint(2, 0), fieldPoisition.GetViewPosition(new FloatPoint(1.6f, 0)));
+                Assert.AreEqual(new FloatPoint(2, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(1.6f, 0)));
             }
 
             {
@@ -383,15 +383,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
                 // from 0 to 1 its 0, 0
                 Assert.AreEqual(new IntPoint(0, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(0.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(0.5f, 0.5f), fieldPoisition.GetViewPosition(new FloatPoint(0.1f, 0)));
+                Assert.AreEqual(new FloatPoint(0.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0.1f, 0)));
 
                 // from 1 to 2 its 1, 0
                 Assert.AreEqual(new IntPoint(1, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(1.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(1.5f, 0.5f), fieldPoisition.GetViewPosition(new FloatPoint(1.1f, 0)));
+                Assert.AreEqual(new FloatPoint(1.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(1.1f, 0)));
 
                 // from 2 to 3 its 2, 0
                 Assert.AreEqual(new IntPoint(2, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(2.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(2.5f, 0.5f), fieldPoisition.GetViewPosition(new FloatPoint(2.1f, 0)));
+                Assert.AreEqual(new FloatPoint(2.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(2.1f, 0)));
             }
 
             {
@@ -399,15 +399,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
                 // from -0.5 to 0.5 its 0, 0
                 Assert.AreEqual(new IntPoint(-1, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(0, 0)));
-                Assert.AreEqual(new FloatPoint(0, 0), fieldPoisition.GetViewPosition(new FloatPoint(0, 0)));
+                Assert.AreEqual(new FloatPoint(0, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0, 0)));
 
                 // from 0.5 to 1.5 its 1, 0
                 Assert.AreEqual(new IntPoint(0, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(0.6f, 0)));
-                Assert.AreEqual(new FloatPoint(1, 0), fieldPoisition.GetViewPosition(new FloatPoint(0.6f, 0)));
+                Assert.AreEqual(new FloatPoint(1, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0.6f, 0)));
 
                 // from 1.5 to 2.5 its 2, 0
                 Assert.AreEqual(new IntPoint(1, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(1.6f, 0)));
-                Assert.AreEqual(new FloatPoint(2, 0), fieldPoisition.GetViewPosition(new FloatPoint(1.6f, 0)));
+                Assert.AreEqual(new FloatPoint(2, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(1.6f, 0)));
             }
 
             {
@@ -415,15 +415,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
                 // from 0 to 1 its 0, 0
                 Assert.AreEqual(new IntPoint(-1, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(0.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(0.5f, 0.5f), fieldPoisition.GetViewPosition(new FloatPoint(0.1f, 0.1f)));
+                Assert.AreEqual(new FloatPoint(0.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0.1f, 0.1f)));
 
                 // from 1 to 2 its 1, 0
                 Assert.AreEqual(new IntPoint(0, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(1.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(1.5f, 0.5f), fieldPoisition.GetViewPosition(new FloatPoint(1.1f, 0.1f)));
+                Assert.AreEqual(new FloatPoint(1.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(1.1f, 0.1f)));
 
                 // from 2 to 3 its 2, 0
                 Assert.AreEqual(new IntPoint(1, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(2.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(2.5f, 0.5f), fieldPoisition.GetViewPosition(new FloatPoint(2.1f, 0.1f)));
+                Assert.AreEqual(new FloatPoint(2.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(2.1f, 0.1f)));
             }
         }
 

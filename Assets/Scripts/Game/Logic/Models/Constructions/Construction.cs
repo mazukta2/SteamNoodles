@@ -32,7 +32,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
 
         public FloatPoint GetWorldPosition()
         {
-            return _fieldPositions.GetViewPositionByWorldPosition(CellPosition);
+            return _fieldPositions.GetPositionByWorldPosition(CellPosition);
+        }
+
+        public FloatPoint GetWorldOffset()
+        {
+            return _fieldPositions.GetOffset();
         }
 
         public void Destroy()

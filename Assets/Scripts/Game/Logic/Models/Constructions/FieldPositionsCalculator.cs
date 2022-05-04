@@ -28,22 +28,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             return new IntPoint((int)Math.Ceiling(mousePosX), (int)Math.Ceiling(mousePosY));
         }
 
-        public FloatPoint GetViewPosition(FloatPoint pointer)
+        public FloatPoint GetWorldPositionInGrid(FloatPoint pointer)
         {
             var worldCell = GetWorldCellPosition(pointer);
-
-            return GetViewPositionByWorldPosition(worldCell);
-            //var offset = GetViewOffsetPosition();
-            //return new FloatPoint(worldCell.X * _cellSize, worldCell.Y * _cellSize) + offset;
+            return GetPositionByWorldPosition(worldCell);
         }
 
-        public FloatPoint GetViewPositionByWorldPosition(IntPoint worldCell)
+        public FloatPoint GetPositionByWorldPosition(IntPoint worldCell)
         {
-            var offset = GetViewOffsetPosition();
+            var offset = GetOffset();
             return new FloatPoint(worldCell.X * _cellSize, worldCell.Y * _cellSize) + offset;
         }
 
-        private FloatPoint GetViewOffsetPosition()
+        public FloatPoint GetOffset()
         {
             var halfCell = _cellSize / 2;
             var offset = new FloatPoint(_size.Width * halfCell - halfCell, _size.Height * halfCell - halfCell);
