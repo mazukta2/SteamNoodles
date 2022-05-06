@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
@@ -11,13 +12,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private ConstructionCard _model;
         private IHandConstructionView _view;
         private ScreenManagerPresenter _screenManager;
+        private PlacementField _field;
 
         public HandConstructionPresenter(ScreenManagerPresenter screenManager, 
-            IHandConstructionView view, ConstructionCard model) : base(view)
+            IHandConstructionView view, ConstructionCard model, PlacementField field) : base(view)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
+            _field = field ?? throw new ArgumentNullException(nameof(field));
 
             view.Button.SetAction(HandleClick);
 
@@ -55,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             _view.TooltipContainer.Clear();
             var tooltip = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
-            new HandConstructionTooltipPresenter(tooltip, _model);
+            new HandConstructionTooltipPresenter(tooltip, _model, _field);
         }
 
         private void _view_OnHighlihgtedExit()

@@ -767,7 +767,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'farm (+1), farm (+1), farm (+1), farm (+1), farm (+1), farm (+1), farm
-    (+1), farm (+1), farm (+1), farm (+1), '
+    (+1), farm (+1), <style="Highlight"><size=110%>farm (+1)</size></style>, farm
+    (+1), '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: eb51ae45b2a938942ac1140dc3b2f50b, type: 2}
   m_sharedMaterial: {fileID: -3810476270546444741, guid: eb51ae45b2a938942ac1140dc3b2f50b, type: 2}

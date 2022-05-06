@@ -12,5 +12,19 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Helpers
         {
             return value.ToString("+#;-#;0");
         }
+
+        public static string Style(this string text, TextStyles style)
+        {
+            if (style == TextStyles.Highlight)
+                return $"<style=\"Highlight\">{text}</style>";
+
+            return text;
+        }
+
+        public enum TextStyles
+        {
+            None,
+            Highlight,
+        }
     }
 }

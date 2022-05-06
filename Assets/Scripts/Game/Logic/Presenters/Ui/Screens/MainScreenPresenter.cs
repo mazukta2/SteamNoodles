@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _turnManager = turnManager ?? throw new ArgumentNullException(nameof(turnManager));
 
-            new HandPresenter(hand, screenManager, view.HandView);
+            new HandPresenter(hand, screenManager, view.HandView, constructionsManager);
 
             _resources.Points.OnPointsChanged += HandlePointsChanged;
             _constructionsManager.OnConstructionAdded += Placement_OnConstructionAdded;
