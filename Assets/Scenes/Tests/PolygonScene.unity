@@ -2129,6 +2129,7 @@ GameObject:
   - component: {fileID: 669944279}
   - component: {fileID: 669944278}
   - component: {fileID: 669944280}
+  - component: {fileID: 669944281}
   m_Layer: 0
   m_Name: GridPiece
   m_TagString: Untagged
@@ -2180,8 +2181,7 @@ MonoBehaviour:
   _target: {fileID: 627845256}
   _highlight: {fileID: 1015293894}
   _blocked: {fileID: 1367822994}
-  _animator:
-    _animator: {fileID: 669944280}
+  _animator: {fileID: 669944281}
 --- !u!95 &669944280
 Animator:
   serializedVersion: 4
@@ -2202,6 +2202,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &669944281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669944276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b248a66ad444a43a6acdc8129e5fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 669944280}
 --- !u!1 &686288938
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,19 +13,18 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Units
 {
     public class UnitModelUnityView : UnityView<UnitModelPresenter>, IUnitModelView
     {
-        [SerializeField] Animator _animator;
+        [SerializeField] UnityAnimator _animator;
         [SerializeField] UnitRigs _rigs;
 
         public ILevelPosition Position { get; private set; }
         public IRotator Rotator { get; private set; }
-        public IAnimator Animator { get; private set; }
+        public IAnimator Animator => _animator;
         public IUnitDresser UnitDresser { get; private set; }
 
         protected override void PreAwake()
         {
             Position = new UnityLevelPosition(transform);
             Rotator = new UnityRotator(transform);
-            Animator = new UnityAnimator(_animator);
             UnitDresser = new UnitDresser(_rigs, IAssets.Default);
         }
 

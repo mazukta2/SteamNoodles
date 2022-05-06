@@ -14,6 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private ConstructionsSettingsDefinition _constrcutionsSettings;
         private GhostManagerPresenter _ghostManager;
         private IConstructionModelView _modelView;
+        private bool _dropFinished;
 
         public ConstructionPresenter(ConstructionsSettingsDefinition constrcutionsSettings, 
             Construction construction, IAssets assets, IConstructionView view,
@@ -30,7 +31,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
             _constructionView.Container.Clear();
             _modelView = _constructionView.Container.Spawn<IConstructionModelView>(assets.GetPrefab(construction.Definition.LevelViewPath));
+            _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
 
+            _modelView.Animator.OnFinished += DropFinished;
             _construction.OnDispose += _constructionView.Dispose;
             _ghostManager.OnGhostChanged += UpdateGhost;
             _ghostManager.OnGhostPostionChanged += UpdateGhost;
@@ -38,6 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
         protected override void DisposeInner()
         {
+            _modelView.Animator.OnFinished -= DropFinished;
             _ghostManager.OnGhostChanged -= UpdateGhost;
             _ghostManager.OnGhostPostionChanged -= UpdateGhost;
             _construction.OnDispose -= _constructionView.Dispose;
@@ -45,6 +49,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
         public void UpdateGhost()
         {
+            if (!_dropFinished)
+                return;
+
             var ghost = _ghostManager.GetGhost();
             if (ghost != null)
             {
@@ -61,5 +68,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
                 _modelView.Shrink.Value = 1;
             }
         }
+
+        private void DropFinished()
+        {
+            _modelView.Animator.OnFinished -= DropFinished;
+            _modelView.Animator.SwitchTo(IConstructionModelView.Animations.Idle.ToString());
+            _dropFinished = true;
+            UpdateGhost();
+        }
+
     }
 }

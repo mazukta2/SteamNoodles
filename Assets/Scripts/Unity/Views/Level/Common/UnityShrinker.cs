@@ -9,27 +9,25 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
     public class UnityShrinker : MonoBehaviour, IFloat
     {
         [SerializeField] float _speed = 1;
+        [SerializeField] float _valueTarget = 1;
+        float _internalValueTarget = 1;
+        private bool _disableAnimationControl;
 
-        private float _valueTarget;
-        public float Value { get => _valueTarget; set => SetValue(value); }
+        public float Value { get => _internalValueTarget; set => SetValue(value); }
 
         private void SetValue(float value)
         {
-            _valueTarget = value;
-            StopAllCoroutines();
-            if (gameObject.activeSelf && gameObject.activeInHierarchy)
-                StartCoroutine(MoveToTarget());
+            _internalValueTarget = value;
+            _disableAnimationControl = true;
         }
 
-        private IEnumerator MoveToTarget()
+        protected void Update()
         {
-            while (_valueTarget != gameObject.transform.localScale.y)
+            var tagret = _disableAnimationControl ? _internalValueTarget : _valueTarget;
+            if (tagret != gameObject.transform.localScale.y)
             {
-                var value = Mathf.MoveTowards(gameObject.transform.localScale.y, _valueTarget, Time.deltaTime * _speed);
-
+                var value = Mathf.MoveTowards(gameObject.transform.localScale.y, tagret, Time.deltaTime * _speed);
                 gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, value, gameObject.transform.localScale.z);
-
-                yield return null;
             }
         }
     }

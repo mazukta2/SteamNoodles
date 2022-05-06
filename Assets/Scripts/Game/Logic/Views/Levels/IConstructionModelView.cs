@@ -19,6 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         {
             Idle,
             Dragging,
+            Drop,
         }
 
         public enum BorderAnimations

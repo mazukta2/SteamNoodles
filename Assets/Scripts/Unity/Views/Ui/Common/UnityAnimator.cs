@@ -6,19 +6,11 @@ using UnityEngine;
 namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 {
     [Serializable]
-    public class UnityAnimator : IAnimator
+    public class UnityAnimator : MonoBehaviour, IAnimator
     {
+        public event Action OnFinished = delegate { };
         [SerializeField] private Animator _animator;
         private string _currentAnimation;
-
-        public UnityAnimator()
-        {
-        }
-
-        public UnityAnimator(Animator animator)
-        {
-            _animator = animator;
-        }
 
         public void Play(string animation, bool startAgain = false)
         {
@@ -26,7 +18,8 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
                 return;
 
             _currentAnimation = animation;
-            _animator.CrossFade(animation, 0.1f);
+            StopAllCoroutines();
+            StartCoroutine(CrosFadeState(_currentAnimation));
         }
 
         public void SwitchTo(string animation)
@@ -36,6 +29,28 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 
             _currentAnimation = animation;
             _animator.Play(animation, 0, 1);
+        }
+
+        public IEnumerator CrosFadeState(string name)
+        {
+            _animator.CrossFade(name, 0.1f);
+
+            while (true)
+            {
+                var state = _animator.GetCurrentAnimatorStateInfo(0);
+                if (state.IsName(name))
+                {
+                    if (state.loop)
+                        yield break;
+
+                    if (state.normalizedTime >= 1)
+                    {
+                        OnFinished();
+                        yield break;
+                    }
+                }
+                yield return null;
+            }
         }
     }
 }
