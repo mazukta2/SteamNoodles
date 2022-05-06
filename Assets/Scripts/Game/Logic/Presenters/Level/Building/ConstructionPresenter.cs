@@ -13,17 +13,19 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private IConstructionView _constructionView;
         private ConstructionsSettingsDefinition _constrcutionsSettings;
         private GhostManagerPresenter _ghostManager;
+        private IControls _controls;
         private IConstructionModelView _modelView;
         private bool _dropFinished;
 
         public ConstructionPresenter(ConstructionsSettingsDefinition constrcutionsSettings, 
             Construction construction, IAssets assets, IConstructionView view,
-            GhostManagerPresenter ghostManagerPresenter) : base(view)
+            GhostManagerPresenter ghostManagerPresenter, IControls controls) : base(view)
         {
             _construction = construction;
             _constructionView = view;
             _constrcutionsSettings = constrcutionsSettings;
             _ghostManager = ghostManagerPresenter ?? throw new ArgumentNullException(nameof(ghostManagerPresenter));
+            _controls = controls;
 
             var position = new FieldPositionsCalculator(constrcutionsSettings.CellSize, construction.Definition.GetRect(construction.Rotation));
             _constructionView.Position.Value = position.GetPositionByWorldPosition(construction.CellPosition);
@@ -32,6 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _constructionView.Container.Clear();
             _modelView = _constructionView.Container.Spawn<IConstructionModelView>(assets.GetPrefab(construction.Definition.LevelViewPath));
             _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
+            _controls.ShakeCamera();
 
             _modelView.Animator.OnFinished += DropFinished;
             _construction.OnDispose += _constructionView.Dispose;

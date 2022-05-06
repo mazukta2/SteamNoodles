@@ -9,8 +9,10 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
 {
     public interface IControls
     {
+        void ShakeCamera();
         event Action OnLevelClick;
         event Action<FloatPoint> OnLevelPointerMoved;
+        FloatPoint PointerLevelPosition { get; }
         static IControls Default { get; set; }
     }
 }

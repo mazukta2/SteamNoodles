@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Unity.Views;
+using GameUnity.Assets.Scripts.Unity.Views.Level.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,20 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     {
         public event Action OnLevelClick = delegate { };
         public event Action<FloatPoint> OnLevelPointerMoved = delegate { };
-        public event Action<IView> OnPointerEnter = delegate { };
-        public event Action<IView> OnPointerExit = delegate { };
 
         private Vector3 _mousePosition;
         private Plane _plane = new Plane(Vector3.up, 0);
         private float _wheel = 0;
 
-        private List<IView> _highlightedViews = new List<IView>();
+        public FloatPoint PointerLevelPosition { get; private set; }
 
         public void Update()
         {
             if (Vector3.Distance(_mousePosition, Input.mousePosition) > 0.01f)
             {
                 _mousePosition = Input.mousePosition;
-                OnLevelPointerMoved(GetMouseWorldPosition());
+                PointerLevelPosition = GetMouseWorldPosition();
+                OnLevelPointerMoved(PointerLevelPosition);
             }
 
             if (IsTapedOnLevel())
@@ -99,6 +99,11 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                 return new FloatPoint(point.x, point.z);
             }
             throw new Exception("Can't reach point");
+        }
+
+        public void ShakeCamera()
+        {
+            UnityShaker.Instance.Shake();
         }
     }
 }

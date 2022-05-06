@@ -59,7 +59,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _controls.OnLevelClick += HandleOnLevelClick;
             _controls.OnLevelPointerMoved += HandleOnPointerMoved;
 
-            UpdatePosition();
+            HandleOnPointerMoved(_controls.PointerLevelPosition);
         }
 
         protected override void DisposeInner()

@@ -8,6 +8,8 @@ namespace Game.Assets.Scripts.Tests.Environment
 {
     public class ControlsMock : IControls
     {
+        public FloatPoint PointerLevelPosition { get; private set; }
+
         public event Action OnLevelClick = delegate { };
         public event Action<FloatPoint> OnLevelPointerMoved = delegate { };
 
@@ -18,8 +20,12 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public void MovePointer(FloatPoint floatPoint)
         {
+            PointerLevelPosition = floatPoint;
             OnLevelPointerMoved(floatPoint);
         }
 
+        public void ShakeCamera()
+        {
+        }
     }
 }

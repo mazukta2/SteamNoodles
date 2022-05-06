@@ -92,7 +92,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private void HandleOnConstructionAdded(Construction construction)
         {
             var view = _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype);
-            new ConstructionPresenter(_settings, construction, IAssets.Default, view, _ghostManager);
+            new ConstructionPresenter(_settings, construction, IAssets.Default, view, _ghostManager, IControls.Default);
         }
     }
 }
