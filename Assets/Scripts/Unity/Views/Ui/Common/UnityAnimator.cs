@@ -10,6 +10,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
     {
         public event Action OnFinished = delegate { };
         [SerializeField] private Animator _animator;
+        [SerializeField] private float _crossTime = 0.1f; 
         private string _currentAnimation;
 
         public void Play(string animation, bool startAgain = false)
@@ -33,7 +34,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 
         public IEnumerator CrosFadeState(string name)
         {
-            _animator.CrossFade(name, 0.1f);
+            _animator.CrossFade(name, _crossTime);
 
             while (true)
             {
