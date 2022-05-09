@@ -4,7 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
-    public interface IGhostView : IPresenterView
+    public interface IGhostView : IViewWithPresenter
     {
         ILevelPosition LocalPosition { get; }
         IViewContainer Container { get; }

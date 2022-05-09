@@ -6,7 +6,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public interface IHandConstructionTooltipView : IPresenterView
+    public interface IHandConstructionTooltipView : IViewWithPresenter
     {
         IText Name { get; }
         IText Points { get; }

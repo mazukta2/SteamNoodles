@@ -6,7 +6,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public interface IHandConstructionView : IPresenterView
+    public interface IHandConstructionView : IViewWithPresenter
     {
         IButton Button { get; }
         IImage Image { get; }

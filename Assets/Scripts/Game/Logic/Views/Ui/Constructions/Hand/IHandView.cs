@@ -2,7 +2,7 @@
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public interface IHandView : IPresenterView
+    public interface IHandView : IViewWithPresenter
     {
         IViewContainer Cards { get;  }
         IViewPrefab CardPrototype { get; }

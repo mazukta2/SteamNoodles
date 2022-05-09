@@ -7,7 +7,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
-    public interface IUnitView : IPresenterView
+    public interface IUnitView : IViewWithPresenter
     {
         ILevelPosition Position { get; }
         IRotator Rotator { get; }

@@ -10,17 +10,13 @@ using System.Text;
 namespace Game.Assets.Scripts.Tests.Views
 {
     public abstract class PresenterView<TPresenter> : View,
-        IViewWith<TPresenter>, IInitPresenter
+        IViewWithGenericPresenter<TPresenter>
         where TPresenter : IPresenter
     {
-        public TPresenter Presenter { get; private set; }
+        public TPresenter Presenter { get; set; }
+        IPresenter IViewWithPresenter.Presenter { get => Presenter; set => Presenter = (TPresenter)value; }
         protected PresenterView(LevelView level) : base(level)
         {
-        }
-
-        void IInitPresenter.SetPresenter(IPresenter presenter)
-        {
-            Presenter = (TPresenter)presenter;
         }
     }
 }

@@ -8,7 +8,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
-    public interface IConstructionView : IPresenterView
+    public interface IConstructionView : IViewWithPresenter
     {
         ILevelPosition Position { get;}
         IRotator Rotator { get; }

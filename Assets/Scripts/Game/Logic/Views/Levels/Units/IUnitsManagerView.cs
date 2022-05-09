@@ -6,7 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
-    public interface IUnitsManagerView : IPresenterView, IViewWithAutoInit
+    public interface IUnitsManagerView : IViewWithPresenter, IViewWithAutoInit
     {
         IViewContainer Container { get; }
         IViewPrefab UnitPrototype { get; }

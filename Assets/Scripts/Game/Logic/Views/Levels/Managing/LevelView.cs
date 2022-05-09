@@ -1,12 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters;
-using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
-using Game.Assets.Scripts.Game.Logic.Services;
-using Game.Assets.Scripts.Game.Logic.Services.Ui;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
@@ -33,10 +31,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 
         public void Dispose()
         {
-            ScreenManagerService.Default?.Dispose();
-            ScreenManagerService.Default = null;
-            GhostManagerService.Default?.Dispose();
-            GhostManagerService.Default = null;
+            IScreenManagerPresenter.Default = null;
+            IGhostManagerPresenter.Default = null;
+            IPointPieceSpawnerPresenter.Default = null;
 
             OnDispose();
 
@@ -71,21 +68,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
         public void FinishLoading()
         {
             var initing = _views.OfType<IViewWithAutoInit>().ToList();
-
-            var screenManager = _views.OfType<IScreenManagerView>().FirstOrDefault();
-            if (screenManager != null)
-            {
-                InitView(screenManager);
-                ScreenManagerService.Default = new ScreenManagerService(screenManager.Presenter);
-            }
-
-            var ghostManager = _views.OfType<IGhostManagerView>().FirstOrDefault();
-            if (ghostManager != null)
-            {
-                InitView(ghostManager);
-                GhostManagerService.Default = new GhostManagerService(ghostManager.Presenter);
-            }
-
+            IScreenManagerPresenter.Default = InitDefaultValue<IScreenManagerView, ScreenManagerPresenter>();
+            IGhostManagerPresenter.Default = InitDefaultValue<IGhostManagerView, GhostManagerPresenter>();
             IPointPieceSpawnerPresenter.Default = InitDefaultValue<IPointPieceSpawner, PointPieceSpawnerPresenter>();
 
             while (initing.Count > 0)
@@ -101,7 +85,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
             }
 
             TPresenter InitDefaultValue<TView, TPresenter>() 
-                where TView : IPresenterView, IViewWithAutoInit, IViewWithPresenter<TPresenter>
+                where TView : IViewWithPresenter, IViewWithAutoInit, IViewWithGenericPresenter<TPresenter>
                 where TPresenter : class, IPresenter
             {
                 var view = _views.OfType<TView>().FirstOrDefault();

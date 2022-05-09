@@ -5,13 +5,12 @@ using Game.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 {
-    public interface IBuildScreenView : IScreenView
+    public interface IBuildScreenView : IScreenView, IViewWithGenericPresenter<BuildScreenPresenter>
     {
         IButton CancelButton { get; }
         IWorldText Points { get; }
         IText CurrentPoints { get; }
         IPointsProgressBar PointsProgress { get; }
-        BuildScreenPresenter Presenter { get; }
         IViewContainer AdjacencyContainer { get; }
         IViewPrefab AdjacencyPrefab { get; }
     }

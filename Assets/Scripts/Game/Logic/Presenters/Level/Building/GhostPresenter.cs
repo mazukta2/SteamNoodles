@@ -109,9 +109,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                     GetLocalPosition(_constructionsManager), Rotation);
 
                 var construction = field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
-                new BuildingPointsAnimation(construction, points, 
-                    IPointPieceSpawnerPresenter.Default, 
-                    IDefinitions.Default.Get<ConstructionsSettingsDefinition>()).Play();
+                //new BuildingPointsAnimation(construction, points, 
+                //    IPointPieceSpawnerPresenter.Default, 
+                //    IDefinitions.Default.Get<ConstructionsSettingsDefinition>()).Play();
             }
             _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
