@@ -14,7 +14,7 @@ using UnityEngine.EventSystems;
 namespace Game.Assets.Scripts.Game.Unity.Views
 {
     public abstract class UnityView<TPresenter> : MonoBehaviour, 
-        IViewWith<TPresenter>, IInitPresenter,
+        IViewWithGenericPresenter<TPresenter>,
         IPointerEnterHandler,
         IPointerExitHandler
         where TPresenter : IPresenter
@@ -25,9 +25,9 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         public event Action OnHighlihgtedExit = delegate { };
 
         public LevelView Level { get; private set; }
-        public TPresenter Presenter { get; private set; }
+        public TPresenter Presenter { get; set; }
         public bool IsDisposed { get; private set; }
-
+        IPresenter IViewWithPresenter.Presenter { get => Presenter; set => Presenter = (TPresenter)value; }
 
         protected void Awake()
         {
@@ -53,11 +53,6 @@ namespace Game.Assets.Scripts.Game.Unity.Views
                 return;
 
             DestroyImmediate(gameObject);
-        }
-
-        void IInitPresenter.SetPresenter(IPresenter presenter)
-        {
-            Presenter = (TPresenter)presenter;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
