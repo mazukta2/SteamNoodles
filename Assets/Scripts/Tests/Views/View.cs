@@ -10,12 +10,12 @@ namespace Game.Assets.Scripts.Tests.Views
 {
     public abstract class View : Disposable, IView
     {
-        public LevelView Level { get; private set; }
+        public ILevelView Level { get; private set; }
         public bool IsHighlihgted { get; private set; }
         public event Action OnHighlihgtedEnter = delegate { };
         public event Action OnHighlihgtedExit = delegate { };
 
-        public View(LevelView level)
+        public View(ILevelView level)
         {
             Level = level;
             Level.OnDispose += Dispose;

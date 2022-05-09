@@ -6,11 +6,11 @@ using System;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui
 {
-    public class ScreenManagerView : PresenterView<ScreenManagerPresenter>, IScreenManagerView
+    public class ScreenManagerView : ViewWithPresenter<ScreenManagerPresenter>, IScreenManagerView
     {
         public IViewContainer Screen { get; }
 
-        public ScreenManagerView(LevelView level, IViewContainer screen) : base(level)
+        public ScreenManagerView(ILevelView level, IViewContainer screen) : base(level)
         {
             if (screen == null) throw new ArgumentNullException(nameof(screen));
             Screen = screen;

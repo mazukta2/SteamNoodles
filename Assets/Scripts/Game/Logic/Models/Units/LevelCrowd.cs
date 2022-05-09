@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _crowd.Clear();
         }
 
-        private void Time_OnTimeChanged(float delta)
+        private void Time_OnTimeChanged(float oldTime, float newTime)
         {
             foreach (var item in _crowd.ToArray())
             {

@@ -10,14 +10,14 @@ using System;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Units
 {
-    public class UnitView : PresenterView<UnitPresenter>, IUnitView
+    public class UnitView : ViewWithPresenter<UnitPresenter>, IUnitView
     {
         public ILevelPosition Position { get; }
         public IRotator Rotator { get; }
         public IAnimator Animator { get; }
         public IUnitDresser UnitDresser { get; }
 
-        public UnitView(LevelView level, ILevelPosition position, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
+        public UnitView(ILevelView level, ILevelPosition position, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
         {
             Position = position;
             Rotator = rotator;

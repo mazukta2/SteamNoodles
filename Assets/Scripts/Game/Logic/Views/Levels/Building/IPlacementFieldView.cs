@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 
@@ -16,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 
         void IViewWithDefaultPresenter.Init()
         {
-            new PlacementFieldPresenter(IGhostManagerPresenter.Default, Level.Model.Constructions, this,
+            new PlacementFieldPresenter(IGhostManagerPresenter.Default, ICurrentLevel.Default.Constructions, this,
                 IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IAssets.Default);
         }
     }

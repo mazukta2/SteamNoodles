@@ -11,13 +11,13 @@ using Game.Assets.Scripts.Tests.Views;
 
 namespace Game.Assets.Scripts.Tests.Views.Level
 {
-    public class ConstructionView : PresenterView<ConstructionPresenter>, IConstructionView
+    public class ConstructionView : ViewWithPresenter<ConstructionPresenter>, IConstructionView
     {
         public ILevelPosition Position { get; set; }
         public IRotator Rotator { get; }
         public IViewContainer Container { get; set; }
 
-        public ConstructionView(LevelView level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
+        public ConstructionView(ILevelView level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
         {
             Position = position;
             Container = container;

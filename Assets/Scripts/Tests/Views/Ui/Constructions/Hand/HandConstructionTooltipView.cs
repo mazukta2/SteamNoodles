@@ -8,13 +8,13 @@ using System;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
 {
-    public class HandConstructionTooltipView : PresenterView<HandConstructionTooltipPresenter>, IHandConstructionTooltipView
+    public class HandConstructionTooltipView : ViewWithPresenter<HandConstructionTooltipPresenter>, IHandConstructionTooltipView
     {
         public IText Name { get; }
         public IText Points { get; }
         public IText Adjacencies { get; }
 
-        public HandConstructionTooltipView(LevelView level, IText name, IText points) : base(level)
+        public HandConstructionTooltipView(ILevelView level, IText name, IText points) : base(level)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Points = points ?? throw new ArgumentNullException(nameof(points));

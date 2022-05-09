@@ -9,14 +9,14 @@ using Game.Assets.Scripts.Tests.Views;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
 {
-    public class HandConstructionView : PresenterView<HandConstructionPresenter>, IHandConstructionView
+    public class HandConstructionView : ViewWithPresenter<HandConstructionPresenter>, IHandConstructionView
     {
         public IButton Button { get; }
         public IImage Image { get; }
         public IViewContainer TooltipContainer { get; }
         public IViewPrefab TooltipPrefab { get; }
 
-        public HandConstructionView(LevelView level, IButton button, IImage view, IViewContainer tooltipContainer, IViewPrefab tooltipPrefab) : base(level)
+        public HandConstructionView(ILevelView level, IButton button, IImage view, IViewContainer tooltipContainer, IViewPrefab tooltipPrefab) : base(level)
         {
             Button = button ?? throw new ArgumentNullException(nameof(button));
             Image = view ?? throw new ArgumentNullException(nameof(view));

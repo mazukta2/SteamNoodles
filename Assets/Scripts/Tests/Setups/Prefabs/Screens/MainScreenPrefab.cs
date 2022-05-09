@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 {
     public class MainScreenPrefab : ViewPrefabMock
     {
-        public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+        public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
         {
             var handContainer = container.Add(new ContainerViewMock(level));
             var prototype = container.Add(new PrototypeViewMock(level, new HandConstructionViewPrefab()));
@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 
         private class HandConstructionViewPrefab : ViewPrefabMock
         {
-            public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
             {
                 var handTooltipContainer = container.Add(new ContainerViewMock(level));
                 var handTooltipPrefab = container.Add(new PrototypeViewMock(level, new HandConstructionTooltipViewPrefab()));
@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
 
         private class HandConstructionTooltipViewPrefab : ViewPrefabMock
         {
-            public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
             {
                 return new HandConstructionTooltipView(level, new UiText(), new UiText());
             }

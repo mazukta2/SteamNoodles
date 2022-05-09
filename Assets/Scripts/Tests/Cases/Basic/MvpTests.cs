@@ -27,11 +27,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
             build.Dispose();
         }
 
-        private class TestView : PresenterView<TestPresenter>
+        private class TestView : ViewWithPresenter<TestPresenter>
         {
             public bool IsInited { get; private set; }
 
-            public TestView(LevelView level) : base(level)
+            public TestView(ILevelView level) : base(level)
             {
                 new TestPresenter(this);
                 IsInited = true;

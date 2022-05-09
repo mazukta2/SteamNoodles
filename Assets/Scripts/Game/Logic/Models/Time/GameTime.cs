@@ -5,11 +5,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
 {
     public class GameTime : IGameTime
     {
-        public event Action<float> OnTimeChanged = delegate { };
+        public event Action<float, float> OnTimeChanged = delegate { };
 
         public float Time { get; private set; }
 
-        private const float _pieces = 1f;
+        private const float _pieceSize = 1f;
 
         public GameTime()
         {
@@ -20,15 +20,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Time
             if (time < 0)
                 throw new Exception("Can't be null");
 
-            while (time > _pieces)
+            var oldTime = 0f;
+            while (time > _pieceSize)
             {
-                Time += _pieces;
-                time -= _pieces;
-                OnTimeChanged(_pieces);
+                oldTime = Time;
+                Time += _pieceSize;
+                time -= _pieceSize;
+                OnTimeChanged(oldTime, oldTime + _pieceSize);
             }
 
+            oldTime = Time;
             Time += time;
-            OnTimeChanged(time);
+            OnTimeChanged(oldTime, Time);
         }
     }
 }

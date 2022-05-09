@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Environment
         }
 
 
-        public void Load(GameLevel model, LevelDefinition prototype, Action<LevelView> onFinished)
+        public void Load(GameLevel model, LevelDefinition prototype, Action<ILevelView> onFinished)
         {
             if (_loading != null)
                 throw new Exception("Already loading");
@@ -52,6 +52,7 @@ namespace Game.Assets.Scripts.Tests.Environment
                 throw new Exception("You must load level firstly");
 
             _level = null;
+            ICurrentLevel.Default = null;
         }
 
         public void Add(LevelDefinitionMock levelDefinition)
@@ -64,7 +65,8 @@ namespace Game.Assets.Scripts.Tests.Environment
             if (_loading == null)
                 throw new Exception("Nothing is loading");
 
-            _level = new LevelView(_loading.Model, IControls.Default);
+            _level = new LevelView(_loading.Model);
+            ICurrentLevel.Default = _level.Model;
             ((LevelDefinitionMock)_loading.Prototype).LevelPrefab.FillLevel(_level);
             _level.FinishLoading();
             _loading.OnFinished(_level);
@@ -73,7 +75,7 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         private class ManagerLoadingLevel
         {
-            public ManagerLoadingLevel(GameLevel model, LevelDefinition prototype, Action<LevelView> onFinished)
+            public ManagerLoadingLevel(GameLevel model, LevelDefinition prototype, Action<ILevelView> onFinished)
             {
                 Prototype = prototype;
                 OnFinished = onFinished;
@@ -82,7 +84,7 @@ namespace Game.Assets.Scripts.Tests.Environment
 
             public GameLevel Model { get; private set; }
             public LevelDefinition Prototype { get; private set; }
-            public Action<LevelView> OnFinished { get; private set; }
+            public Action<ILevelView> OnFinished { get; private set; }
         }
     }
 }

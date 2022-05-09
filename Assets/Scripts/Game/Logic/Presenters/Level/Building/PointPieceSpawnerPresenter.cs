@@ -17,17 +17,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         protected override void DisposeInner()
         {
             base.DisposeInner();
-            foreach (var piece in _pieces)
+            foreach (var piece in _pieces.ToArray())
                 piece.Dispose();
             _pieces.Clear();
         }
 
-        public void Spawn()
+        public IPieceView Spawn()
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(nameof(PointPieceSpawnerPresenter));
 
-            _pieces.Add(_view.Container.Spawn<IPieceView>(_view.PiecePrefab));
+            var piece = _view.Container.Spawn<IPieceView>(_view.PiecePrefab);
+            _pieces.Add(piece);
+            piece.OnDispose += Piece_OnDispose;
+            return piece;
+
+            void Piece_OnDispose()
+            {
+                piece.OnDispose -= Piece_OnDispose;
+                _pieces.Remove(piece);
+            }
         }
+
     }
 }

@@ -7,11 +7,11 @@ using Game.Assets.Scripts.Tests.Views;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Units
 {
-    public class UnitsQueueView : PresenterView<UnitsQueuePresenter>, IUnitsQueueView
+    public class UnitsQueueView : ViewWithPresenter<UnitsQueuePresenter>, IUnitsQueueView
     {
         public ILevelPosition StartPosition { get; private set; }
 
-        public UnitsQueueView(LevelView level, ILevelPosition position) : base(level)
+        public UnitsQueueView(ILevelView level, ILevelPosition position) : base(level)
         {
             StartPosition = position;
         }

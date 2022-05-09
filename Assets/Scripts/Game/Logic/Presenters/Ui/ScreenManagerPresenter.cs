@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views;
@@ -61,10 +62,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
                 object Init(TScreen screenView, ScreenManagerPresenter managerPresenter)
                 {
                     if (screenView is IMainScreenView mainScreen)
-                        return new MainScreenPresenter(mainScreen, managerPresenter, mainScreen.Level.Model.Resources, 
-                            mainScreen.Level.Model.Hand,
-                            mainScreen.Level.Model.Constructions,
-                            mainScreen.Level.Model.Definition, mainScreen.Level.Model.TurnManager);
+                        return new MainScreenPresenter(mainScreen, managerPresenter, ICurrentLevel.Default.Resources,
+                            ICurrentLevel.Default.Hand,
+                            ICurrentLevel.Default.Constructions,
+                            ICurrentLevel.Default.Definition, ICurrentLevel.Default.TurnManager);
 
                     throw new Exception("Unknown screen " + typeof(TScreen));
                 }

@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Tests.Views.Common.Creation
     // prefab must create view presenter by request
     public abstract class ViewPrefabMock : IViewPrefab
     {
-        public abstract IView CreateView<T>(LevelView level, ContainerViewMock container) where T : IView;
+        public abstract IView CreateView<T>(ILevelView level, ContainerViewMock container) where T : IView;
 
         public IView CreateInContainer<T>(ContainerViewMock conteiner) where T : IView
         {

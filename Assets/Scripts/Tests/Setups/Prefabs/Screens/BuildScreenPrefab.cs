@@ -8,7 +8,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Screens
 {
     public class BuildScreenPrefab : ViewPrefabMock
     {
-        public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+        public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
         {
             return new BuildScreenView(level, new ButtonMock(), new UiWorldText(), new UiText(), new PointsProgressBar());
         }

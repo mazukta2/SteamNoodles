@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Views;
@@ -8,12 +9,12 @@ using Game.Assets.Scripts.Tests.Views.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Building
 {
-    public class PieceSpawnerView : PresenterView<PointPieceSpawnerPresenter>, IPointPieceSpawner
+    public class PieceSpawnerView : ViewWithPresenter<PointPieceSpawnerPresenter>, IPointPieceSpawner
     {
         public IViewContainer Container { get; }
         public IViewPrefab PiecePrefab { get; }
 
-        public PieceSpawnerView(LevelView level) : base(level)
+        public PieceSpawnerView(ILevelView level) : base(level)
         {
             Container = new ContainerViewMock(level);
             PiecePrefab = new PiecePrefabMock();
@@ -21,10 +22,11 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
 
         private class PiecePrefabMock : ViewPrefabMock
         {
-            public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
             {
                 return new PieceView(level);
             }
         }
+
     }
 }

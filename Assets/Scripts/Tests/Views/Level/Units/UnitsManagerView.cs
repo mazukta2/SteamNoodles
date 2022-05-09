@@ -8,12 +8,12 @@ using Game.Assets.Scripts.Tests.Views;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Units
 {
-    public class UnitsManagerView : PresenterView<UnitsPresenter>, IUnitsManagerView
+    public class UnitsManagerView : ViewWithPresenter<UnitsPresenter>, IUnitsManagerView
     {
         public IViewContainer Container { get; private set; }
         public IViewPrefab UnitPrototype { get; private set; }
 
-        public UnitsManagerView(LevelView level, IViewContainer container, IViewPrefab prototype) : base(level)
+        public UnitsManagerView(ILevelView level, IViewContainer container, IViewPrefab prototype) : base(level)
         {
             Container = container;
             UnitPrototype = prototype;

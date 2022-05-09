@@ -6,14 +6,14 @@ using Game.Assets.Scripts.Tests.Views.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Building
 {
-    public class PlacementFieldView : PresenterView<PlacementFieldPresenter>, IPlacementFieldView
+    public class PlacementFieldView : ViewWithPresenter<PlacementFieldPresenter>, IPlacementFieldView
     {
         public IViewContainer ConstrcutionContainer { get; private set; }
         public IViewPrefab ConstrcutionPrototype { get; private set; }
         public IViewContainer CellsContainer { get; private set; }
         public IViewPrefab Cell { get; private set; }
 
-        public PlacementFieldView(LevelView level, ViewPrefabMock construction, ViewPrefabMock cell) : base(level)
+        public PlacementFieldView(ILevelView level, ViewPrefabMock construction, ViewPrefabMock cell) : base(level)
         {
             ConstrcutionContainer = new ContainerViewMock(level);
             Cell = new PrototypeViewMock(level, cell);

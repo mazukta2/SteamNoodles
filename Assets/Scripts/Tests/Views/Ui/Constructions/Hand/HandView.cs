@@ -9,11 +9,11 @@ using System;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
 {
-    public class HandView : PresenterView<HandPresenter>, IHandView
+    public class HandView : ViewWithPresenter<HandPresenter>, IHandView
     {
         public IViewContainer Cards { get; private set; }
         public IViewPrefab CardPrototype { get; private set; }
-        public HandView(LevelView level, IViewContainer cards, IViewPrefab cardPrototype) : base(level)
+        public HandView(ILevelView level, IViewContainer cards, IViewPrefab cardPrototype) : base(level)
         {
             Cards = cards ?? throw new ArgumentNullException(nameof(cards));
             CardPrototype = cardPrototype ?? throw new ArgumentNullException(nameof(cardPrototype));

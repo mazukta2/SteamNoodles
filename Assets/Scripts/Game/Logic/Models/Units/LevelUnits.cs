@@ -41,11 +41,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             OnUnitDestroy(item);
         }
 
-        private void Time_OnTimeChanged(float delta)
+        private void Time_OnTimeChanged(float oldTime, float newTime)
         {
             foreach (var item in _spawnedUnits.ToArray())
             {
-                item.MoveToTarget(delta);
+                item.MoveToTarget(newTime - oldTime);
             }
         }
 

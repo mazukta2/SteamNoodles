@@ -1,8 +1,13 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Helpers;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,74 +15,91 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
 {
     public class BuildingPointsAnimation : Disposable
     {
-        private int SpawnTime => _constructionsSettingsDefinition.PieceSpawningTime.ToMs();
-        private int MoveTime => _constructionsSettingsDefinition.PieceMovingTime.ToMs();
-
-        private Construction _construction;
-        private int _points;
-        private Task _task;
+        private int _pointsToSpawn;
         private PointPieceSpawnerPresenter _pointPieceSpawner;
         private readonly ConstructionsSettingsDefinition _constructionsSettingsDefinition;
-        private CancellationTokenSource _tokenSource;
+        private readonly IGameTime _time;
+        private float _remainTimeToProcess;
+        private BezierCurve _bezierCurve;
+        private Dictionary<IPieceView, float> _pieces = new Dictionary<IPieceView, float>();
 
-        public BuildingPointsAnimation(Construction construction, int points, PointPieceSpawnerPresenter pointPieceSpawner, ConstructionsSettingsDefinition constructionsSettingsDefinition)
+        public BuildingPointsAnimation(BezierCurve bezierCurve, int points, PointPieceSpawnerPresenter pointPieceSpawner,
+            ConstructionsSettingsDefinition constructionsSettingsDefinition, IGameTime time)
         {
-            _construction = construction ?? throw new ArgumentNullException(nameof(construction));
-            _points = points;
+            _bezierCurve = bezierCurve;
+            _pointsToSpawn = points;
             _pointPieceSpawner = pointPieceSpawner ?? throw new ArgumentNullException(nameof(pointPieceSpawner));
             _constructionsSettingsDefinition = constructionsSettingsDefinition ?? throw new ArgumentNullException(nameof(constructionsSettingsDefinition));
-            _construction.OnDispose += Dispose;
+            _time = time ?? throw new ArgumentNullException(nameof(time));
+            _time.OnTimeChanged += _time_OnTimeChanged;
             _pointPieceSpawner.OnDispose += Dispose;
-
-            _tokenSource = new CancellationTokenSource();
         }
 
         protected override void DisposeInner()
         {
-            _construction.OnDispose -= Dispose;
             _pointPieceSpawner.OnDispose -= Dispose;
-            _tokenSource.Cancel();
+            _time.OnTimeChanged -= _time_OnTimeChanged;
+
+            foreach (var item in _pieces.ToList())
+                item.Key.Dispose();
         }
 
         public void Play()
         {
-            if (_task != null || IsDisposed)
+            if (IsDisposed)
                 throw new Exception("Cant play animation");
 
-            _task = Task.Run(PlayAnimation, _tokenSource.Token);
+            if (_pointsToSpawn <= 0 || _constructionsSettingsDefinition.PieceMovingTime == 0)
+                Dispose();
+            else
+                SpawnPiece(_time.Time);
         }
 
-        public void PlayAnimation()
+        private void _time_OnTimeChanged(float oldTime, float newTime)
         {
-            if (_tokenSource.IsCancellationRequested)
-                return;
+            var timeToProcess = _remainTimeToProcess + newTime - oldTime;
+            var timeForEveryPiece = _constructionsSettingsDefinition.PieceSpawningTime / _pointsToSpawn;
 
-            var amount = _points;
-            var timeForEveryPiece = SpawnTime / amount;
-
-            var passedTime = 0;
-            for (int i = 0; i < amount; i++)
+            while (_pointsToSpawn > 0 && timeToProcess >= timeForEveryPiece)
             {
-                SpawnPiece();
-                Thread.Sleep(timeForEveryPiece);
+                timeToProcess -= timeForEveryPiece;
+                SpawnPiece(newTime - timeToProcess);
+            }
+            _remainTimeToProcess = timeToProcess;
 
-                if (_tokenSource.IsCancellationRequested)
-                    return;
-
-                passedTime += timeForEveryPiece;
+            foreach (var item in _pieces.ToList())
+            {
+                var timePassed = newTime - item.Value;
+                SetPosition(item.Key, timePassed);
+                if (timePassed >= _constructionsSettingsDefinition.PieceMovingTime)
+                {
+                    item.Key.Dispose();
+                }
             }
 
-            Thread.Sleep(MoveTime);
-
-            if (_tokenSource.IsCancellationRequested)
-                return;
-
-            Dispose();
+            if (_pieces.Count == 0)
+                Dispose();
         }
 
-        private void SpawnPiece()
+        private void SpawnPiece(float time)
         {
-            _pointPieceSpawner.Spawn();
+            var piece = _pointPieceSpawner.Spawn();
+            piece.OnDispose += Piece_OnDispose;
+            _pieces.Add(piece, time);
+            _pointsToSpawn--;
+
+            void Piece_OnDispose()
+            {
+                piece.OnDispose -= Piece_OnDispose;
+                _pieces.Remove(piece);
+            }
         }
+
+        private void SetPosition(IPieceView key, float timePassed)
+        {
+            var process = Math.Min(1, timePassed / _constructionsSettingsDefinition.PieceMovingTime);
+            key.Position.Value = _bezierCurve.GetPosition(process);
+        }
+
     }
 }

@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
 {
     public interface ILevelsManager
     {
-        void Load(GameLevel model, LevelDefinition prototype, Action<LevelView> onFinished);
+        void Load(GameLevel model, LevelDefinition prototype, Action<ILevelView> onFinished);
         void Unload();
         LevelView GetCurrentLevel();
 

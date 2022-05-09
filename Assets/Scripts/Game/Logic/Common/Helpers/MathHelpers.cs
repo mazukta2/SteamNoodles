@@ -7,5 +7,10 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Helpers
         {
             return (int)(value * 1000);
         }
+
+        public static float Lerp(float firstFloat, float secondFloat, float t)
+        {
+            return firstFloat * (1 - t) + secondFloat * t;
+        }
     }
 }

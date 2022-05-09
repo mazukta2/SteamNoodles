@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
         public IViewContainer AdjacencyContainer { get; }
         public IViewPrefab AdjacencyPrefab { get; }
 
-        public BuildScreenView(LevelView level, IButton cancelButton, IWorldText points, IText currentPoints, IPointsProgressBar progressBar) : base(level)
+        public BuildScreenView(ILevelView level, IButton cancelButton, IWorldText points, IText currentPoints, IPointsProgressBar progressBar) : base(level)
         {
             CancelButton = cancelButton;
             Points = points;
@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
 
         public class AdjecencyPrefab : ViewPrefabMock
         {
-            public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
             {
                 return new AdjecencyTextView(level);
             }

@@ -9,13 +9,13 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Views
 {
-    public abstract class PresenterView<TPresenter> : View,
+    public abstract class ViewWithPresenter<TPresenter> : View,
         IViewWithGenericPresenter<TPresenter>
         where TPresenter : IPresenter
     {
         public TPresenter Presenter { get; set; }
         IPresenter IViewWithPresenter.Presenter { get => Presenter; set => Presenter = (TPresenter)value; }
-        protected PresenterView(LevelView level) : base(level)
+        protected ViewWithPresenter(ILevelView level) : base(level)
         {
         }
     }

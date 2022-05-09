@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Tests.Views.Common.Creation
     {
         private ViewPrefabMock _prefab;
 
-        public PrototypeViewMock(LevelView level, ViewPrefabMock prefab) : base(level)
+        public PrototypeViewMock(ILevelView level, ViewPrefabMock prefab) : base(level)
         {
             _prefab = prefab;
         }

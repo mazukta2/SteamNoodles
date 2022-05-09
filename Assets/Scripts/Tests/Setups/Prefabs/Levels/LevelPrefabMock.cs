@@ -4,6 +4,6 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels
 {
     public abstract class LevelPrefabMock
     {
-        public abstract void FillLevel(LevelView level);
+        public abstract void FillLevel(ILevelView level);
     }
 }

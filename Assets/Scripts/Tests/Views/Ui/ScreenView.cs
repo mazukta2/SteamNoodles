@@ -10,10 +10,10 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui
 {
-    public abstract class ScreenView<T> : PresenterView<T>, IScreenView
+    public abstract class ScreenView<T> : ViewWithPresenter<T>, IScreenView
         where T : IPresenter
     {
-        protected ScreenView(LevelView level) : base(level)
+        protected ScreenView(ILevelView level) : base(level)
         {
         }
 

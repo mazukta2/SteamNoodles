@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
         public AnimatorMock WaveButtonAnimator { get; set; } = new AnimatorMock();
         IAnimator IMainScreenView.WaveButtonAnimator => WaveButtonAnimator;
 
-        public MainScreenView(LevelView level, HandView handView, IText points, IPointsProgressBar pointsProgress) : base(level)
+        public MainScreenView(ILevelView level, HandView handView, IText points, IPointsProgressBar pointsProgress) : base(level)
         {
             HandView = handView;
             Points = points;

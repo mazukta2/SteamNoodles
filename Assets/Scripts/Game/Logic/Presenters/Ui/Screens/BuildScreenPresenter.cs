@@ -82,8 +82,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
                 object Init(IBuildScreenView screenView, ScreenManagerPresenter managerPresenter)
                 {
-                    return new BuildScreenPresenter(screenView, managerPresenter, 
-                        screenView.Level.Model.Resources, constructionCard, 
+                    return new BuildScreenPresenter(screenView, managerPresenter,
+                        ICurrentLevel.Default.Resources, constructionCard, 
                         IDefinitions.Default.Get<ConstructionsSettingsDefinition>());
                 }
             }

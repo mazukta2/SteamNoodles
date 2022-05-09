@@ -1,12 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
@@ -17,7 +13,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 {
-    public class LevelView
+    public class LevelView : ILevelView
     {
         public event Action OnDispose = delegate { };
         public event Action OnLoaded = delegate { };
@@ -27,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 
         private List<IView> _views = new List<IView>();
 
-        public LevelView(GameLevel model, IControls controls)
+        public LevelView(GameLevel model)
         {
             Model = model;
         }

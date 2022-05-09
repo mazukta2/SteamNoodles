@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 {
     public class BasicSellingLevel : LevelPrefabMock
     {
-        public override void FillLevel(LevelView level)
+        public override void FillLevel(ILevelView level)
         {
             var screenSpawnPoint = new ContainerViewMock(level);
             new ScreenManagerView(level, screenSpawnPoint);
@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
         private class GhostViewPrefab : ViewPrefabMock
         {
-            public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
             {
                 var contrainer = new ContainerViewMock(level);
                 return new GhostView(level, contrainer, new LevelPosition(), new Rotator());
@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
         private class CellViewPrefab : ViewPrefabMock
         {
-            public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
             {
                 return new CellView(level, new Switcher<CellPlacementStatus>(), new LevelPosition());
             }
@@ -47,7 +47,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
         private class ConstructionViewPrefab : ViewPrefabMock
         {
-            public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
             {
                 var c = new ContainerViewMock(level);
                 return new ConstructionView(level, c, new LevelPosition(), new Rotator());
@@ -56,7 +56,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
         private class UnitViewPrefab : ViewPrefabMock
         {
-            public override IView CreateView<T>(LevelView level, ContainerViewMock container)
+            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
             {
                 return new UnitView(level, new LevelPosition(), new Rotator(), new AnimatorMock(), new UnitDresser());
             }

@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Tests.Views.Common.Creation
     {
         private List<IView> _views = new List<IView>();
 
-        public ContainerViewMock(LevelView level) : base(level)
+        public ContainerViewMock(ILevelView level) : base(level)
         {
         }
 
@@ -36,7 +36,7 @@ namespace Game.Assets.Scripts.Tests.Views.Common.Creation
             return (T)viewPrefab.CreateInContainer<T>(this);
         }
 
-        public T Create<T>(Func<LevelView, T> creator) where T : IView
+        public T Create<T>(Func<ILevelView, T> creator) where T : IView
         {
             var viewPresenter = creator(Level);
             _views.Add(viewPresenter);
