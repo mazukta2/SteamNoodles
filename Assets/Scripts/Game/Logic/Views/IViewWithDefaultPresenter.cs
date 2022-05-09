@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Views
 {
-    public interface IViewWithAutoInit
+    public interface IViewWithDefaultPresenter
     {
         void Init();
     }

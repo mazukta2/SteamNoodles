@@ -7,12 +7,12 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
-    public interface IGhostManagerView : IViewWithGenericPresenter<GhostManagerPresenter>, IViewWithAutoInit
+    public interface IGhostManagerView : IViewWithGenericPresenter<GhostManagerPresenter>, IViewWithDefaultPresenter
     {
         IViewContainer Container { get;  }
         IViewPrefab GhostPrototype { get; }
 
-        void IViewWithAutoInit.Init()
+        void IViewWithDefaultPresenter.Init()
         {
             new GhostManagerPresenter(IScreenManagerPresenter.Default, IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IControls.Default,
                 Level.Model.Constructions, this);

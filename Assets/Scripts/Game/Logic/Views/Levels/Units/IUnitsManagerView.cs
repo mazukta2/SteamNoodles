@@ -6,12 +6,12 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
-    public interface IUnitsManagerView : IViewWithPresenter, IViewWithAutoInit
+    public interface IUnitsManagerView : IViewWithPresenter, IViewWithDefaultPresenter
     {
         IViewContainer Container { get; }
         IViewPrefab UnitPrototype { get; }
 
-        void IViewWithAutoInit.Init()
+        void IViewWithDefaultPresenter.Init()
         {
             new UnitsPresenter(Level.Model.Units, this, IDefinitions.Default.Get<UnitsSettingsDefinition>());
         }

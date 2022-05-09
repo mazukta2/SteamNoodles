@@ -9,14 +9,14 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
-    public interface IUnitModelView : IViewWithPresenter, IViewWithAutoInit
+    public interface IUnitModelView : IViewWithPresenter, IViewWithDefaultPresenter
     {
         ILevelPosition Position { get; }
         IRotator Rotator { get; }
         IAnimator Animator { get; }
         IUnitDresser UnitDresser { get; }
 
-        void IViewWithAutoInit.Init()
+        void IViewWithDefaultPresenter.Init()
         {
             new UnitModelPresenter(this, IDefinitions.Default.Get<UnitsSettingsDefinition>());
         }

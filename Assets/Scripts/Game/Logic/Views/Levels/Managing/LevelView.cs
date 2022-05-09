@@ -1,9 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
@@ -67,35 +70,54 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 
         public void FinishLoading()
         {
-            var initing = _views.OfType<IViewWithAutoInit>().ToList();
-            IScreenManagerPresenter.Default = InitDefaultValue<IScreenManagerView, ScreenManagerPresenter>();
-            IGhostManagerPresenter.Default = InitDefaultValue<IGhostManagerView, GhostManagerPresenter>();
-            IPointPieceSpawnerPresenter.Default = InitDefaultValue<IPointPieceSpawner, PointPieceSpawnerPresenter>();
-
-            while (initing.Count > 0)
-                InitView(initing.First());
+            InitViews();
 
             IsLoaded = true;
             OnLoaded();
+        }
 
-            void InitView(IViewWithAutoInit view)
+        private void InitViews()
+        {
+            var initing = _views.OfType<IViewWithDefaultPresenter>().ToList();
+            
+            IScreenManagerPresenter.Default = SetPresenterForViewAndGetFirst<IScreenManagerView, ScreenManagerPresenter>();
+            IGhostManagerPresenter.Default = SetPresenterForViewAndGetFirst<IGhostManagerView, GhostManagerPresenter>();
+            IPointPieceSpawnerPresenter.Default = SetPresenterForViewAndGetFirst<IPointPieceSpawner, PointPieceSpawnerPresenter>();
+
+            while (initing.Count > 0)
             {
+                var view = initing.First();
                 initing.Remove(view);
                 view.Init();
             }
 
-            TPresenter InitDefaultValue<TView, TPresenter>() 
-                where TView : IViewWithPresenter, IViewWithAutoInit, IViewWithGenericPresenter<TPresenter>
+            IEnumerable<TView> SetPresenterForView<TView, TPresenter>()
+                where TView : IViewWithPresenter, IViewWithDefaultPresenter
                 where TPresenter : class, IPresenter
             {
-                var view = _views.OfType<TView>().FirstOrDefault();
-                if (view != null)
+                var views = _views.OfType<TView>().ToList();
+                foreach (var item in views)
                 {
-                    InitView(view);
-                    return view.Presenter;
+                    initing.Remove(item);
+                    item.Init();
                 }
-                return null;
+                return views;
             }
+
+            TPresenter SetPresenterForViewAndGetFirst<TView, TPresenter>()
+                where TView : IViewWithPresenter, IViewWithDefaultPresenter
+                where TPresenter : class, IPresenter
+            {
+                var items = SetPresenterForView<TView, TPresenter>();
+                if (items.Count() > 1)
+                    throw new Exception("More then one singleton view");
+
+                if (items.Count() == 0)
+                    return null;
+
+                return (TPresenter)items.First().Presenter;
+            }
+
         }
     }
 }
