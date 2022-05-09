@@ -75,6 +75,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 3)
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 0)
+                .UpdateDefinition<UnitsSettingsDefinition>(x => x.UnitSize = 0)
                 .Build();
 
             Assert.AreEqual(0, game.CurrentLevel.FindViews<UnitView>().Count);
@@ -88,7 +89,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var building = game.CurrentLevel.FindView<ConstructionView>();
             var unit = game.CurrentLevel.FindView<UnitView>();
 
-            Assert.AreEqual(building.Position.Value.X, unit.Position.Value.X);
+            Assert.AreEqual(building.Position.Value.X + 0.5f, unit.Position.Value.X);
 
             game.Dispose();
         }

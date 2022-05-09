@@ -2,10 +2,13 @@
 using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Services;
 using Game.Assets.Scripts.Game.Logic.Services.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using System;
 using System.Collections.Generic;
@@ -43,21 +46,25 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 
         public T FindView<T>() where T : IView
         {
-            return _views.OfType<T>().FirstOrDefault();
+            return _views.ToList().OfType<T>().FirstOrDefault();
         }
 
         public IReadOnlyCollection<T> FindViews<T>() where T : IView
         {
-            return _views.OfType<T>().AsReadOnly();
+            return _views.ToList().OfType<T>().AsReadOnly();
         }
 
         public void Remove(IView view)
         {
+            if (view == null)
+                throw new Exception("View can't be null");
             _views.Remove(view);
         }
 
         public void Add(IView view)
         {
+            if (view == null)
+                throw new Exception("View can't be null");
             _views.Add(view);
         }
 
@@ -79,6 +86,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
                 GhostManagerService.Default = new GhostManagerService(ghostManager.Presenter);
             }
 
+            IPointPieceSpawnerPresenter.Default = InitDefaultValue<IPointPieceSpawner, PointPieceSpawnerPresenter>();
+
             while (initing.Count > 0)
                 InitView(initing.First());
 
@@ -89,6 +98,19 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
             {
                 initing.Remove(view);
                 view.Init();
+            }
+
+            TPresenter InitDefaultValue<TView, TPresenter>() 
+                where TView : IPresenterView, IViewWithAutoInit, IViewWithPresenter<TPresenter>
+                where TPresenter : class, IPresenter
+            {
+                var view = _views.OfType<TView>().FirstOrDefault();
+                if (view != null)
+                {
+                    InitView(view);
+                    return view.Presenter;
+                }
+                return null;
             }
         }
     }

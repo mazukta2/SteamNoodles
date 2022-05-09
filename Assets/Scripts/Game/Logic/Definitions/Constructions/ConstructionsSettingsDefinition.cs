@@ -7,6 +7,14 @@
         public float LevelUpOffset { get; set; }
         public float GhostShrinkDistance { get; set; }
         public float GhostHalfShrinkDistance { get; set; }
+
+        public float PieceSpawningTime { get; set; }
+        public float PieceMovingTime { get; set; }
+
+        public void Validate()
+        {
+
+        }
     }
 }
 

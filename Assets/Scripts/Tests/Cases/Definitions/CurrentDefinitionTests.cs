@@ -63,6 +63,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
             def.Validate();
         }
 
+
+        [Test]
+        public void ConstructionsSettingsDefinitions()
+        {
+            CreateDefinitions();
+            var def = IDefinitions.Default.Get<ConstructionsSettingsDefinition>();
+            def.Validate();
+        }
+
         #region Helpers
         private void CreateDefinitions()
         {

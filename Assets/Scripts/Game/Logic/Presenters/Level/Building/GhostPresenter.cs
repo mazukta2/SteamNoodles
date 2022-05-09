@@ -1,9 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
@@ -102,7 +105,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             var field = _constructionsManager;
             if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation))
             {
-                field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
+                var points =_constructionsManager.GetPoints(_buildScreen.CurrentCard.Definition,
+                    GetLocalPosition(_constructionsManager), Rotation);
+
+                var construction = field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
+                new BuildingPointsAnimation(construction, points, 
+                    IPointPieceSpawnerPresenter.Default, 
+                    IDefinitions.Default.Get<ConstructionsSettingsDefinition>()).Play();
             }
             _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }

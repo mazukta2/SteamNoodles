@@ -24,6 +24,8 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
             new PlacementFieldView(level, new ConstructionViewPrefab(), new CellViewPrefab());
 
             new UnitsManagerView(level, new ContainerViewMock(level), new PrototypeViewMock(level, new UnitViewPrefab()));
+
+            new PieceSpawnerView(level);
         }
 
         private class GhostViewPrefab : ViewPrefabMock
