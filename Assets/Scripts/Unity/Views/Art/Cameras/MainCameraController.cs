@@ -100,12 +100,6 @@ namespace Assets.Scripts.Views.Cameras
             _currentCameraController.SetEnable(true);
         }
         
-        public Vector3 ScreenToWorld(Vector2 screenPos)
-        {
-            var pos = _camera.ScreenToWorldPoint(screenPos);
-            return new Vector3(pos.x, pos.y, 0);
-        }
-
         public Vector3 WorldToUISpace(Canvas parentCanvas, Vector3 worldPos)
         {
             //Convert the world for screen point so that it can be used with ScreenPointToLocalPointInRectangle function

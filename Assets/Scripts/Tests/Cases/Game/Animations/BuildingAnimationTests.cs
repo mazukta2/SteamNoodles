@@ -67,6 +67,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test]
+        public void IsBezierCurvePositionsWorking()
+        {
+            var curve = new BezierCurve(new FloatPoint3D(1,1,1), new FloatPoint3D(-1, 1, -1), new FloatPoint3D(1, 3, 1), new FloatPoint3D(-1, 3, -1));
+            Assert.AreEqual(new FloatPoint3D(0, 2.5f, 0), curve.GetPosition(0.5f));
+        }
+
+        [Test]
         public void IsPieceReachesDestination()
         {
             var definitions = new ConstructionsSettingsDefinition();
@@ -88,10 +95,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             level.Dispose();
         }
 
-        private Construction CreateConstruction(ConstructionsSettingsDefinition definitions)
+        [Test]
+        public void IsPiecePositionRight()
         {
-            var constructionDefinition = ConstructionSetups.GetDefault();
-            return new Construction(definitions, constructionDefinition, new IntPoint(0, 0), FieldRotation.Top);
+            var definitions = new ConstructionsSettingsDefinition();
+            definitions.PieceSpawningTime = 1;
+            definitions.PieceMovingTime = 2;
+
+            var time = new GameTime();
+            time.MoveTime(10);
+            var level = new SingleLevelView();
+            var curve = new BezierCurve(new FloatPoint3D(1, 1, 1), new FloatPoint3D(-1, 1, -1), new FloatPoint3D(1, 3, 1), new FloatPoint3D(-1, 3, -1));
+            var animation = new BuildingPointsAnimation(curve, 1, CreatePieceSpawner(level), definitions, time);
+            animation.Play();
+            time.MoveTime(1);
+            var piece = level.FindView<PieceView>();
+            Assert.AreEqual(new FloatPoint3D(0, 2.5f, 0), piece.Position.Value);
+
+            level.Dispose();
         }
 
         private PointPieceSpawnerPresenter CreatePieceSpawner(SingleLevelView level)

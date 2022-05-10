@@ -23,6 +23,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         protected void Awake()
         {
             Level = ILevelsManager.Default.GetCurrentLevel();
+            PreAwake();
             Level.Add(this);
         }
 
@@ -36,6 +37,10 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         public void Dispose()
         {
             DestroyImmediate(gameObject);
+        }
+
+        protected virtual void PreAwake()
+        {
         }
 
     }

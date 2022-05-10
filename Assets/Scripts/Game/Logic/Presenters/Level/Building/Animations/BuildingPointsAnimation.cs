@@ -49,6 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
             if (IsDisposed)
                 throw new Exception("Cant play animation");
 
+
             if (_pointsToSpawn <= 0 || _constructionsSettingsDefinition.PieceMovingTime == 0)
                 Dispose();
             else
@@ -69,9 +70,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
 
             foreach (var item in _pieces.ToList())
             {
-                var timePassed = newTime - item.Value;
-                SetPosition(item.Key, timePassed);
-                if (timePassed >= _constructionsSettingsDefinition.PieceMovingTime)
+                var timePassedFromSpawn = newTime - item.Value;
+                SetPosition(item.Key, timePassedFromSpawn);
+                if (timePassedFromSpawn >= _constructionsSettingsDefinition.PieceMovingTime)
                 {
                     item.Key.Dispose();
                 }
@@ -81,11 +82,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
                 Dispose();
         }
 
-        private void SpawnPiece(float time)
+        private void SpawnPiece(float currentTime)
         {
             var piece = _pointPieceSpawner.Spawn();
             piece.OnDispose += Piece_OnDispose;
-            _pieces.Add(piece, time);
+            _pieces.Add(piece, currentTime);
+            SetPosition(piece, 0);
             _pointsToSpawn--;
 
             void Piece_OnDispose()
@@ -95,9 +97,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
             }
         }
 
-        private void SetPosition(IPieceView key, float timePassed)
+        private void SetPosition(IPieceView key, float timePassedFromSpawn)
         {
-            var process = Math.Min(1, timePassed / _constructionsSettingsDefinition.PieceMovingTime);
+            var process = Math.Min(1, timePassedFromSpawn / _constructionsSettingsDefinition.PieceMovingTime);
             key.Position.Value = _bezierCurve.GetPosition(process);
         }
 

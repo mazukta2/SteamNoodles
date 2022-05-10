@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         void IViewWithDefaultPresenter.Init()
         {
             new GhostManagerPresenter(IScreenManagerPresenter.Default, IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IControls.Default,
-                ICurrentLevel.Default.Constructions, this);
+                ICurrentLevel.Default.Constructions, this, ICurrentLevel.Default.Time);
         }
     }
 }

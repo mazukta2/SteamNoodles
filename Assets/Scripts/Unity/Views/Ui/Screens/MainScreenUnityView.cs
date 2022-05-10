@@ -24,6 +24,5 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         public IProgressBar NextWaveProgress => _nextWaveProgress;
         public IButton FailWaveButton => _failWave;
         public IAnimator WaveButtonAnimator => _waveButtonAnimator;
-
     }
 }

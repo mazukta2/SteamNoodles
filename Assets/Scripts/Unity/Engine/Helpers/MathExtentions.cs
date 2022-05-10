@@ -21,5 +21,14 @@ namespace GameUnity.Assets.Scripts.Unity.Engine.Helpers
             transform.position = new Vector3(vector.X, 0, vector.Y);
         }
 
+        public static void SetPosition(this Transform transform, FloatPoint3D vector)
+        {
+            transform.position = new Vector3(vector.X, vector.Y, vector.Z);
+        }
+
+        public static Vector3 ToVector(this FloatPoint3D vector)
+        {
+            return new Vector3(vector.X, vector.Y, vector.Z);
+        }
     }
 }

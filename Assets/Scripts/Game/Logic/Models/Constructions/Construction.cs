@@ -44,5 +44,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         {
             Dispose();
         }
+
+        public FloatPoint3D GetViewPosition()
+        {
+            var world = GetWorldPosition();
+            return new FloatPoint3D(world.X, 0, world.Y);
+        }
     }
 }

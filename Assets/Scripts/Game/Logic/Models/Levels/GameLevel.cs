@@ -25,6 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public Resources Resources { get; }
         public LevelDefinition Definition { get; private set; }
+        public IGameTime Time { get; }
 
         private SessionRandom _random;
 
@@ -32,7 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         {
             Definition = settings ?? throw new ArgumentNullException(nameof(settings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
-            if (time == null) throw new ArgumentNullException(nameof(time));
+            Time = time ?? throw new ArgumentNullException(nameof(time));
 
             Hand = new PlayerHand(settings, settings.StartingHand);
             Resources = new Resources(definitions.Get<ConstructionsSettingsDefinition>());

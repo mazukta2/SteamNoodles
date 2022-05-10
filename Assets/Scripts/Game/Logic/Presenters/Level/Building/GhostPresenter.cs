@@ -4,11 +4,14 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Game.Logic.Views.Ui;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.ScreenManagerPresenter;
@@ -22,6 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public FieldRotation Rotation { get; private set; }
         
         private readonly IGhostView _view;
+        private readonly IGameTime _time;
         private readonly ConstructionsSettingsDefinition _constructionsSettings;
         private readonly IControls _controls;
         private readonly IGameKeysManager _gameKeysManager;
@@ -37,9 +41,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
             ScreenManagerPresenter screenManager,
             PlacementField constructionsManager,
-            BuildScreenPresenter buildScreen, IControls controls, IGameKeysManager gameKeysManager, IAssets assets, IGhostView view) : base(view)
+            BuildScreenPresenter buildScreen, IControls controls, IGameKeysManager gameKeysManager, IAssets assets, IGhostView view, IGameTime time) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
+            _time = time;
             _constructionsSettings = constructionsSettings ?? throw new ArgumentNullException(nameof(constructionsSettings));
             _controls = controls ?? throw new ArgumentNullException(nameof(controls));
             _gameKeysManager = gameKeysManager ?? throw new ArgumentNullException(nameof(gameKeysManager));
@@ -109,9 +114,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                     GetLocalPosition(_constructionsManager), Rotation);
 
                 var construction = field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
-                //new BuildingPointsAnimation(construction, points, 
-                //    IPointPieceSpawnerPresenter.Default, 
-                //    IDefinitions.Default.Get<ConstructionsSettingsDefinition>()).Play();
+                var curve = new BezierCurve(construction.GetViewPosition(),
+                    IPointAttractionPositionView.Default.PointsAttractionPoint.Value,
+                    construction.GetViewPosition() + new FloatPoint3D(0, 4, 0),
+                    IPointAttractionPositionView.Default.PointsAttractionControlPoint.Value);
+
+                new BuildingPointsAnimation(curve, points,
+                    IPointPieceSpawnerPresenter.Default,
+                    IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), _time).Play();
             }
             _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }

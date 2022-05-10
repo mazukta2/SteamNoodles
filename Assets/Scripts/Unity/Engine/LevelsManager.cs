@@ -23,7 +23,8 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             if (_currentLevel != null)
                 throw new Exception("Loading before unloading");
 
-            _currentLevel = new LevelView(_model, IControls.Default);
+            _currentLevel = new LevelView(_model);
+            ICurrentLevel.Default = _model;
 
             var loading = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
             if (loading.isDone)
@@ -50,10 +51,11 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             _currentLevel.Dispose();
             _currentLevel = null;
             _model = null;
+            ICurrentLevel.Default = null;
         }
 
 
-        public void Load(GameLevel model, LevelDefinition prototype, Action<LevelView> onFinished)
+        public void Load(GameLevel model, LevelDefinition prototype, Action<ILevelView> onFinished)
         {
             _model = model;
             Load(prototype.SceneName, onFinished);

@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
@@ -18,6 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
         public event Action OnGhostPostionChanged = delegate { };
 
         private IGhostManagerView _view;
+        private readonly IGameTime _time;
         private ScreenManagerPresenter _screenManager;
         private PlacementField _constructionsManager;
         private ConstructionsSettingsDefinition _settings;
@@ -26,9 +28,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 
         public GhostManagerPresenter(ScreenManagerPresenter screenManager, ConstructionsSettingsDefinition settings, IControls controls,
             PlacementField constructionsManager,
-            IGhostManagerView view) : base(view)
+            IGhostManagerView view, IGameTime time) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
+            _time = time;
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
@@ -59,7 +62,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
         private void CreateGhost(BuildScreenPresenter buildScreen)
         {
             var view = _view.Container.Spawn<IGhostView>(_view.GhostPrototype);
-            _ghost = new GhostPresenter(_settings, _screenManager, _constructionsManager, buildScreen, _controls, IGameKeysManager.Default, IAssets.Default, view);
+            _ghost = new GhostPresenter(_settings, _screenManager, _constructionsManager, buildScreen, 
+                _controls, IGameKeysManager.Default, IAssets.Default, view, _time);
             _ghost.OnGhostPostionChanged += UpdateGhostPosition;
 
             OnGhostChanged();

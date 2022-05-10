@@ -5,6 +5,6 @@
     "GhostShrinkDistance": 2,
     "GhostHalfShrinkDistance": 1,
     "PieceSpawningTime" : 0.4,
-    "PieceMovingTime" : 1
+    "PieceMovingTime" : 0.8
 
 }

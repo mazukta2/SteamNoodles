@@ -208,6 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 1923878694447671585}
+  _crossTime: 0.1
 --- !u!1 &2357518103476723132
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,6 +714,10 @@ MonoBehaviour:
   _nextWaveProgress:
     _progress: {fileID: 5878960145575178078}
   _waveButtonAnimator: {fileID: 1353140879545978473}
+  _pointsAttractionPoint:
+    _transform: {fileID: 0}
+  _pointsAttractionControlPoint:
+    _transform: {fileID: 0}
 --- !u!1 &6334335757578086737
 GameObject:
   m_ObjectHideFlags: 0
