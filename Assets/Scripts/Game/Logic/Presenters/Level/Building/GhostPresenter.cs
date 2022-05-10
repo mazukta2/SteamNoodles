@@ -105,23 +105,18 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             return _pointerPosition;
         }
 
+        public int GetPointChanges()
+        {
+            return _constructionsManager.GetPoints(_buildScreen.CurrentCard.Definition,
+                GetLocalPosition(_constructionsManager), Rotation);
+        }
+
         private void HandleOnLevelClick()
         {
             var field = _constructionsManager;
             if (field.CanPlace(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation))
             {
-                var points =_constructionsManager.GetPoints(_buildScreen.CurrentCard.Definition,
-                    GetLocalPosition(_constructionsManager), Rotation);
-
-                var construction = field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
-                var curve = new BezierCurve(construction.GetViewPosition(),
-                    IPointAttractionPositionView.Default.PointsAttractionPoint.Value,
-                    construction.GetViewPosition() + new FloatPoint3D(0, 4, 0),
-                    IPointAttractionPositionView.Default.PointsAttractionControlPoint.Value);
-
-                new BuildingPointsAnimation(curve, points,
-                    IPointPieceSpawnerPresenter.Default,
-                    IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), _time).Play();
+                field.Build(_buildScreen.CurrentCard, GetLocalPosition(field), Rotation);
             }
             _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
@@ -151,6 +146,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 _constructionsManager
                 .GetAdjacencyPoints(_buildScreen.CurrentCard.Definition, GetLocalPosition(_constructionsManager), Rotation));
         }
+
 
         private void HandleRotateLeftTap()
         {

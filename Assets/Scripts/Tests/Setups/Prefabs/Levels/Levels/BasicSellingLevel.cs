@@ -27,7 +27,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
             new PieceSpawnerView(level);
 
-            new PointAttractionPositionView(level);
+            new PointCounterWidgetView(level);
         }
 
         private class GhostViewPrefab : ViewPrefabMock

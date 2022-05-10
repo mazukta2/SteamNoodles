@@ -9,8 +9,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
     {
         IButton CancelButton { get; }
         IWorldText Points { get; }
-        IText CurrentPoints { get; }
-        IPointsProgressBar PointsProgress { get; }
         IViewContainer AdjacencyContainer { get; }
         IViewPrefab AdjacencyPrefab { get; }
     }

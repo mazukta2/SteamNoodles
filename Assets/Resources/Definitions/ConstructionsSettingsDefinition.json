@@ -4,7 +4,8 @@
     "LevelUpOffset": 8,
     "GhostShrinkDistance": 2,
     "GhostHalfShrinkDistance": 1,
-    "PieceSpawningTime" : 0.4,
-    "PieceMovingTime" : 0.8
-
+    "PieceSpawningTime": 0.4,
+    "PieceMovingTime": 0.8,
+    "PointsSliderFrequency": 0.1,
+    "PointsSliderSpeed" : 0.05
 }

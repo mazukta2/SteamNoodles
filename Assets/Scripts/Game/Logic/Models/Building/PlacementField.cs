@@ -16,6 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
     {
         public event Action<Construction> OnConstructionAdded = delegate { };
         public event Action<Construction> OnConstructionBuilded = delegate { };
+        public event Action<Construction, int> OnPointChangedDuringConstruction = delegate { };
 
         public IReadOnlyCollection<Construction> Constructions => _constructions.AsReadOnly();
 
@@ -72,6 +73,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             _resources.Points.Value += points;
 
             OnConstructionBuilded(construction);
+            OnPointChangedDuringConstruction(construction, points);
 
             return construction;
 

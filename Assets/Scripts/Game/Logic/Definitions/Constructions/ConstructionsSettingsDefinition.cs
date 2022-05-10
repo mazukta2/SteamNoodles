@@ -10,6 +10,8 @@
 
         public float PieceSpawningTime { get; set; }
         public float PieceMovingTime { get; set; }
+        public float PointsSliderFrequency { get; set; }
+        public float PointsSliderSpeed { get; set; }
 
         public void Validate()
         {

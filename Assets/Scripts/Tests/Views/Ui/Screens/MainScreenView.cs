@@ -13,22 +13,15 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
     public class MainScreenView : ScreenView<MainScreenPresenter>, IMainScreenView
     {
         public IHandView HandView { get; set; }
-        public IText Points { get; set; }
-        public IPointsProgressBar PointsProgress { get; set; }
         public IButton NextWaveButton { get; set; } = new ButtonMock();
         public IButton FailWaveButton { get; set; } = new ButtonMock();
         public IProgressBar NextWaveProgress { get; set; } = new ProgressBar();
         public AnimatorMock WaveButtonAnimator { get; set; } = new AnimatorMock();
         IAnimator IMainScreenView.WaveButtonAnimator => WaveButtonAnimator;
 
-        public IPosition PointsAttractionPoint { get; } = new PositionMock();
-        public IPosition PointsAttractionControlPoint { get; } = new PositionMock();
-
-        public MainScreenView(ILevelView level, HandView handView, IText points, IPointsProgressBar pointsProgress) : base(level)
+        public MainScreenView(ILevelView level, HandView handView) : base(level)
         {
             HandView = handView;
-            Points = points;
-            PointsProgress = pointsProgress;
         }
     }
 }

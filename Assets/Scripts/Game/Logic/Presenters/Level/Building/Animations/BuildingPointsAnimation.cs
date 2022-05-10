@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
 {
     public class BuildingPointsAnimation : Disposable
     {
+        public event Action OnPieceReachDestination = delegate { };
         private int _pointsToSpawn;
         private PointPieceSpawnerPresenter _pointPieceSpawner;
         private readonly ConstructionsSettingsDefinition _constructionsSettingsDefinition;
@@ -51,7 +52,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
 
 
             if (_pointsToSpawn <= 0 || _constructionsSettingsDefinition.PieceMovingTime == 0)
+            {
+                for (int i = 0; i < _pointsToSpawn; i++)
+                    OnPieceReachDestination();
                 Dispose();
+            }
             else
                 SpawnPiece(_time.Time);
         }
@@ -75,6 +80,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
                 if (timePassedFromSpawn >= _constructionsSettingsDefinition.PieceMovingTime)
                 {
                     item.Key.Dispose();
+                    OnPieceReachDestination();
                 }
             }
 

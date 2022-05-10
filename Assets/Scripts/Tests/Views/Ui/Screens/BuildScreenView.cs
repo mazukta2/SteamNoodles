@@ -15,18 +15,14 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
     {
         public IButton CancelButton { get; }
         public IWorldText Points { get; }
-        public IText CurrentPoints { get; }
-        public IPointsProgressBar PointsProgress { get; set; }
 
         public IViewContainer AdjacencyContainer { get; }
         public IViewPrefab AdjacencyPrefab { get; }
 
-        public BuildScreenView(ILevelView level, IButton cancelButton, IWorldText points, IText currentPoints, IPointsProgressBar progressBar) : base(level)
+        public BuildScreenView(ILevelView level, IButton cancelButton, IWorldText points) : base(level)
         {
             CancelButton = cancelButton;
             Points = points;
-            PointsProgress = progressBar;
-            CurrentPoints = currentPoints;
             AdjacencyContainer = new ContainerViewMock(level);
             AdjacencyPrefab = new AdjecencyPrefab();
 

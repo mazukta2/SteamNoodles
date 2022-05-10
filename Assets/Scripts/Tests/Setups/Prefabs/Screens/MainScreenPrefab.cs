@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
             var handContainer = container.Add(new ContainerViewMock(level));
             var prototype = container.Add(new PrototypeViewMock(level, new HandConstructionViewPrefab()));
             var handView = container.Add(new HandView(level, handContainer, prototype));
-            return new MainScreenView(level, handView, new UiText(), new PointsProgressBar());
+            return new MainScreenView(level, handView);
         }
 
         private class HandConstructionViewPrefab : ViewPrefabMock

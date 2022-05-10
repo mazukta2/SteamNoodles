@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Views.Common
 {
-    public class PointsProgressBar : IPointsProgressBar
+    public class PointsProgressBarMock : IPointsProgressBar
     {
         public float MainValue { get; set; }
         public float AddedValue { get; set; }

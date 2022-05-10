@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Unity.Views;
 using GameUnity.Assets.Scripts.Unity.Engine.Helpers;
@@ -7,13 +8,19 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class PointAttractionPositionUnityView : UnitySimpleView, IPointAttractionPositionView
+    public class PointCounterWidgetUnityView : UnityView<PointCounterWidgetPresenter>, IPointCounterWidgetView
     {
         [SerializeField] UnityPosition _pointsAttractionPoint;
         [SerializeField] UnityPosition _pointsAttractionControlPoint;
+        [SerializeField] UnityText _points;
+        [SerializeField] UnityPointProgressBar _progress;
+        [SerializeField] UnityAnimator _animator;
 
         public IPosition PointsAttractionPoint => _pointsAttractionPoint;
         public IPosition PointsAttractionControlPoint => _pointsAttractionControlPoint;
+        public IText Points => _points;
+        public IPointsProgressBar PointsProgress => _progress;
+        public IAnimator Animator => _animator;
 
         void OnDrawGizmos()
         {

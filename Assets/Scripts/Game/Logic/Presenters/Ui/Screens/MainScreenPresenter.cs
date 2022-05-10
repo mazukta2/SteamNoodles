@@ -14,46 +14,31 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
     {
         private IMainScreenView _view;
         private ScreenManagerPresenter _screenManager;
-        private Resources _resources;
         private PlacementField _constructionsManager;
         private FlowManager _turnManager;
 
         private static string _lastAnimation;
 
-        public MainScreenPresenter(IMainScreenView view, ScreenManagerPresenter screenManager, 
-            Resources resources, PlayerHand hand,
+        public MainScreenPresenter(IMainScreenView view, ScreenManagerPresenter screenManager, PlayerHand hand,
             PlacementField constructionsManager,
-            LevelDefinition levelDefinition,
             FlowManager turnManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
-            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _turnManager = turnManager ?? throw new ArgumentNullException(nameof(turnManager));
 
             new HandPresenter(hand, screenManager, view.HandView, constructionsManager);
 
-            _resources.Points.OnPointsChanged += HandlePointsChanged;
             _constructionsManager.OnConstructionAdded += Placement_OnConstructionAdded;
             _view.NextWaveButton.SetAction(NextWaveClick);
             _view.FailWaveButton.SetAction(FailWaveClick);
             UpdateWaveProgress();
-            HandlePointsChanged();
-            _view.PointsProgress.RemovedValue = 0;
-            _view.PointsProgress.AddedValue = 0;
         }
 
         protected override void DisposeInner()
         {
-            _resources.Points.OnPointsChanged -= HandlePointsChanged;
             _constructionsManager.OnConstructionAdded -= Placement_OnConstructionAdded;
-        }
-
-        private void HandlePointsChanged()
-        {
-            _view.Points.Value = $"{_resources.Points.Value}/{_resources.Points.PointsForNextLevel}";
-            _view.PointsProgress.MainValue = _resources.Points.Progress;
         }
 
         private void NextWaveClick()

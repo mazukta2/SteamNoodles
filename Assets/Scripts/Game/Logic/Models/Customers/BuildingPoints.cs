@@ -28,9 +28,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             _offset = offset;
         }
 
+        public BuildingPoints Copy()
+        {
+            var c = new BuildingPoints(_power, _offset);
+            c._points = _points;
+            return c;
+        }
+
         public BuildingPoints GetChangedValue(int additionalPoints)
         {
-            var newBuildingPoints = new BuildingPoints(_power, _offset);
+            var newBuildingPoints = Copy();
             newBuildingPoints.Value = _points + additionalPoints;
             return newBuildingPoints;
         }
