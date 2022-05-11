@@ -29,7 +29,6 @@ namespace Game.Assets.Scripts.Tests.Setups
             };
             var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel())
             {
-                HandSize = 5,
                 PlacementField = fields,
                 StartingHand = new List<ConstructionDefinition>() { construciton },
                 CrowdUnitsAmount = 10,
@@ -57,7 +56,6 @@ namespace Game.Assets.Scripts.Tests.Setups
             };
             var level = new LevelDefinitionMock(name, new EmptyLevel())
             {
-                HandSize = 5,
                 PlacementField = fields,
                 StartingHand = new List<ConstructionDefinition>() { construciton },
                 CrowdUnitsAmount = 10,

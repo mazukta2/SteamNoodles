@@ -7,9 +7,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
 {
     public class ConstructionCard : Disposable
     {
+        public event Action<int> OnAdded = delegate { };
+        public event Action<int> OnRemoved = delegate { };
         public ConstructionDefinition Definition { get; }
+        public int Amount { get => _amount; set => ChangeAmount(value); }
 
         private PlayerHand _hand;
+        private int _amount = 1;
 
         public ConstructionCard(PlayerHand hand, ConstructionDefinition definition)
         {
@@ -17,9 +21,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             _hand = hand ?? throw new ArgumentNullException(nameof(hand));
         }
 
-        public void RemoveFromHand()
+        private void ChangeAmount(int newValue)
         {
-            _hand.Remove(this);
+            var diff = newValue - _amount;
+            _amount = newValue;
+            if (diff > 0)
+            {
+                OnAdded(diff);
+            }
+            else if (diff < 0)
+            {
+                OnRemoved(-diff);
+                if (_amount <= 0)
+                    _hand.Remove(this);
+            }
         }
+
     }
 }

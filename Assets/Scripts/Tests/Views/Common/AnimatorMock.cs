@@ -14,14 +14,19 @@ namespace Game.Assets.Scripts.Tests.Views.Common
 
         public void Play(string animation, bool startAgain = false)
         {
+            var oldAnimation = Animation;
             Animation = animation;
-            OnFinished();
+
+            if (startAgain || oldAnimation != animation)
+                OnFinished();
         }
 
         public void SwitchTo(string animation)
         {
+            var oldAnimation = Animation;
             Animation = animation;
-            OnFinished();
+            if (oldAnimation != animation)
+                OnFinished();
         }
     }
 }

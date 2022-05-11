@@ -24,6 +24,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
             view.Button.SetAction(HandleClick);
 
+            _model.OnAdded += _model_OnAdded;
+            _model.OnRemoved += _model_OnRemoved;
             _model.OnDispose += Model_OnDispose;
             _view.OnHighlihgtedEnter += _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit += _view_OnHighlihgtedExit;
@@ -34,9 +36,21 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             base.DisposeInner();
             _view.TooltipContainer.Clear();
+            _model.OnAdded -= _model_OnAdded;
+            _model.OnRemoved -= _model_OnRemoved;
             _model.OnDispose -= Model_OnDispose;
             _view.OnHighlihgtedEnter -= _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit -= _view_OnHighlihgtedExit;
+        }
+
+        private void _model_OnAdded(int obj)
+        {
+            UpdateView();
+        }
+
+        private void _model_OnRemoved(int obj)
+        {
+            UpdateView();
         }
 
         private void HandleClick()
@@ -47,6 +61,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private void UpdateView()
         {
             _view.Image.SetPath(_model.Definition.HandImagePath);
+            _view.Amount.Value = _model.Amount.ToString();
         }
 
         private void Model_OnDispose()

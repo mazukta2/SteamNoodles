@@ -136,7 +136,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
             game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.Click();
 
-            Assert.AreEqual(3, game.CurrentLevel.FindViews<HandConstructionView>().Count());
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
+            Assert.AreEqual("3", game.CurrentLevel.FindView<HandConstructionView>().Amount.Value);
 
             game.Dispose();
         }
@@ -157,7 +158,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().FailWaveButton.IsActive);
             game.CurrentLevel.FindView<MainScreenView>().FailWaveButton.Click();
 
-            Assert.AreEqual(3, game.CurrentLevel.FindViews<HandConstructionView>().Count());
+            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
+            Assert.AreEqual("3", game.CurrentLevel.FindView<HandConstructionView>().Amount.Value);
 
             game.Dispose();
         }

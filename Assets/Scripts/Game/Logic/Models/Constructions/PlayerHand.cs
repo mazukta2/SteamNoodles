@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             if (hand == null) throw new ArgumentNullException(nameof(hand));
             foreach (var item in hand)
             {
-                Add(new ConstructionCard(this, item));
+                Add(item);
             }
         }
 
@@ -48,16 +48,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
 
         public void Add(ConstructionDefinition definition)
         {
-            Add(new ConstructionCard(this, definition));
-            if (_cards.Count > _definition.HandSize)
-                Remove(_cards.First());
-        }
+            var card = _cards.FirstOrDefault(x => x.Definition == definition);
+            if (card != null)
+            {
+                card.Amount++;
+            }
+            else
+            {
+                card = new ConstructionCard(this, definition);
+                _cards.Add(card);
+                OnAdded(card);
+            }
 
-        private void Add(ConstructionCard buildingScheme)
-        {
-            _cards.Add(buildingScheme);
-            OnAdded(buildingScheme);
         }
-
     }
 }

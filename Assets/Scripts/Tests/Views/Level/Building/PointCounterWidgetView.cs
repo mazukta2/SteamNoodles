@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
     {
         public IPosition PointsAttractionPoint { get; set; } = new PositionMock();
         public IPosition PointsAttractionControlPoint { get; set; } = new PositionMock();
-        public IText Points { get; set; } = new UiText();
+        public IText Points { get; set; } = new TextMock();
         public IPointsProgressBar PointsProgress { get; set; } = new PointsProgressBarMock();
         public IAnimator Animator { get; set; } = new AnimatorMock();
 

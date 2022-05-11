@@ -12,5 +12,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         IImage Image { get; }
         IViewContainer TooltipContainer { get; }
         IViewPrefab TooltipPrefab { get; }
+        IText Amount { get; }
     }
 }

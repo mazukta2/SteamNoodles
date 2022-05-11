@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
         {
             public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
             {
-                return new HandConstructionTooltipView(level, new UiText(), new UiText());
+                return new HandConstructionTooltipView(level, new TextMock(), new TextMock());
             }
         }
     }

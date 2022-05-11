@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Points = points ?? throw new ArgumentNullException(nameof(points));
-            Adjacencies = new UiText();
+            Adjacencies = new TextMock();
         }
     }
 }

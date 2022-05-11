@@ -1,31 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!1386491679 &1
-PresetManager:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_DefaultPresets:
-  - first:
-      m_NativeTypeID: 1020
-      m_ManagedTypePPtr: {fileID: 0}
-      m_ManagedTypeFallback: 
-    second:
-    - m_Preset: {fileID: 0}
-      m_Filter: 
-      m_Disabled: 0
-  - first:
-      m_NativeTypeID: 1006
-      m_ManagedTypePPtr: {fileID: 0}
-      m_ManagedTypeFallback: 
-    second:
-    - m_Preset: {fileID: 0}
-      m_Filter: 
-      m_Disabled: 0
-  - first:
-      m_NativeTypeID: 108
-      m_ManagedTypePPtr: {fileID: 0}
-      m_ManagedTypeFallback: 
-    second:
-    - m_Preset: {fileID: 0}
-      m_Filter: 
-      m_Disabled: 0
+version https://git-lfs.github.com/spec/v1
+oid sha256:7a2ae74d2ceae1b6c01acef9e25fe2e85c359b3a5e38d72ff25658257d487754
+size 688

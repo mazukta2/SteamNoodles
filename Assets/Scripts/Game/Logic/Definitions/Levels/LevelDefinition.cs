@@ -14,7 +14,6 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
         [JsonConverter(typeof(DefinitionsConventer<ConstructionDefinition>))]
         public IReadOnlyCollection<ConstructionDefinition> StartingHand { get; set; } = new List<ConstructionDefinition>();
-        public int HandSize { get; set; }
 
         public PlacementFieldDefinition PlacementField { get; set; }
 
@@ -38,9 +37,6 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
             if (StartingHand.Count == 0)
                 throw new Exception($"{nameof(StartingHand)} is empty");
-
-            if (HandSize <= 0)
-                throw new Exception($"{nameof(HandSize)} is zero");
 
             if (PlacementField == null)
                 throw new Exception($"{nameof(PlacementField)} is empty");
