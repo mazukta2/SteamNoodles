@@ -26,25 +26,25 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
                 .Build();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<ConstructionView>().Count);
-            var firstBuilding = game.CurrentLevel.FindView<ConstructionView>();
+            Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
+            var firstBuilding = game.LevelCollection.FindView<ConstructionView>();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.MovePointer(new FloatPoint(-1, 0));
             game.Controls.Click();
-            Assert.AreEqual(2, game.CurrentLevel.FindViews<ConstructionView>().Count);
+            Assert.AreEqual(2, game.LevelCollection.FindViews<ConstructionView>().Count);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.MovePointer(new FloatPoint(-2, 0));
             game.Controls.Click();
-            Assert.AreEqual(3, game.CurrentLevel.FindViews<ConstructionView>().Count);
+            Assert.AreEqual(3, game.LevelCollection.FindViews<ConstructionView>().Count);
 
-            game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.Click();
+            game.LevelCollection.FindView<MainScreenView>().NextWaveButton.Click();
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<ConstructionView>().Count);
-            Assert.AreEqual(firstBuilding, game.CurrentLevel.FindView<ConstructionView>());
+            Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
+            Assert.AreEqual(firstBuilding, game.LevelCollection.FindView<ConstructionView>());
 
             game.Dispose();
         }
@@ -61,27 +61,27 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
                 .Build();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<ConstructionView>().Count);
-            var firstBuilding = game.CurrentLevel.FindView<ConstructionView>();
+            Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
+            var firstBuilding = game.LevelCollection.FindView<ConstructionView>();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.MovePointer(new FloatPoint(-1, 0));
             game.Controls.Click();
-            Assert.AreEqual(2, game.CurrentLevel.FindViews<ConstructionView>().Count);
+            Assert.AreEqual(2, game.LevelCollection.FindViews<ConstructionView>().Count);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.MovePointer(new FloatPoint(-2, 0));
             game.Controls.Click();
-            Assert.AreEqual(3, game.CurrentLevel.FindViews<ConstructionView>().Count);
+            Assert.AreEqual(3, game.LevelCollection.FindViews<ConstructionView>().Count);
 
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<HandConstructionView>().Count);
-            Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().FailWaveButton.IsActive);
-            game.CurrentLevel.FindView<MainScreenView>().FailWaveButton.Click();
+            Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
+            Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
+            game.LevelCollection.FindView<MainScreenView>().FailWaveButton.Click();
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<ConstructionView>().Count);
-            Assert.AreEqual(firstBuilding, game.CurrentLevel.FindView<ConstructionView>());
+            Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
+            Assert.AreEqual(firstBuilding, game.LevelCollection.FindView<ConstructionView>());
 
             game.Dispose();
         }
@@ -96,27 +96,27 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 2)
                 .Build();
 
-            Assert.AreEqual(0, game.CurrentLevel.FindView<MainScreenView>().NextWaveProgress.Value);
-            Assert.IsFalse(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            Assert.AreEqual(0, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
+            Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(0.5f, game.CurrentLevel.FindView<MainScreenView>().NextWaveProgress.Value);
-            Assert.IsFalse(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
+            Assert.AreEqual(0.5f, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
+            Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.MovePointer(new FloatPoint(-1, 0));
             game.Controls.Click();
 
-            Assert.AreEqual(1f, game.CurrentLevel.FindView<MainScreenView>().NextWaveProgress.Value);
-            Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
+            Assert.AreEqual(1f, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
+            Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.MovePointer(new FloatPoint(-2, 0));
             game.Controls.Click();
 
-            Assert.AreEqual(1f, game.CurrentLevel.FindView<MainScreenView>().NextWaveProgress.Value);
-            Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
+            Assert.AreEqual(1f, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
+            Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
 
             game.Dispose();
         }
@@ -130,14 +130,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
                 .Build();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
-            game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.Click();
+            Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
+            game.LevelCollection.FindView<MainScreenView>().NextWaveButton.Click();
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
-            Assert.AreEqual("3", game.CurrentLevel.FindView<HandConstructionView>().Amount.Value);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
+            Assert.AreEqual("3", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
 
             game.Dispose();
         }
@@ -152,14 +152,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
                 .Build();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().FailWaveButton.IsActive);
-            game.CurrentLevel.FindView<MainScreenView>().FailWaveButton.Click();
+            Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
+            game.LevelCollection.FindView<MainScreenView>().FailWaveButton.Click();
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
-            Assert.AreEqual("3", game.CurrentLevel.FindView<HandConstructionView>().Amount.Value);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
+            Assert.AreEqual("3", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
 
             game.Dispose();
         }
@@ -175,25 +175,25 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition })
                 .Build();
 
-            Assert.IsFalse(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
-            Assert.IsFalse(game.CurrentLevel.FindView<MainScreenView>().FailWaveButton.IsActive);
-            Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.None.ToString(), game.CurrentLevel.FindView<MainScreenView>().WaveButtonAnimator.Animation);
+            Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
+            Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
+            Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.None.ToString(), game.LevelCollection.FindView<MainScreenView>().WaveButtonAnimator.Animation);
             
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.IsFalse(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
-            Assert.IsFalse(game.CurrentLevel.FindView<MainScreenView>().FailWaveButton.IsActive);
-            Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.NextWave.ToString(), game.CurrentLevel.FindView<MainScreenView>().WaveButtonAnimator.Animation);
+            Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
+            Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
+            Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.NextWave.ToString(), game.LevelCollection.FindView<MainScreenView>().WaveButtonAnimator.Animation);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.MovePointer(new FloatPoint(-1, 0));
             game.Controls.Click();
 
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<HandConstructionView>().Count);
-            Assert.IsFalse(game.CurrentLevel.FindView<MainScreenView>().NextWaveButton.IsActive);
-            Assert.IsTrue(game.CurrentLevel.FindView<MainScreenView>().FailWaveButton.IsActive);
-            Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.FailWave.ToString(), game.CurrentLevel.FindView<MainScreenView>().WaveButtonAnimator.Animation);
+            Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
+            Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
+            Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
+            Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.FailWave.ToString(), game.LevelCollection.FindView<MainScreenView>().WaveButtonAnimator.Animation);
 
             game.Dispose();
         }

@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using System.Linq;
@@ -19,16 +20,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private static string _lastAnimation;
 
-        public MainScreenPresenter(IMainScreenView view, ScreenManagerPresenter screenManager, PlayerHand hand,
+        public MainScreenPresenter(IMainScreenView view, ScreenManagerPresenter screenManager,
             PlacementField constructionsManager,
-            FlowManager turnManager) : base(view)
+            FlowManager turnManager, HandPresenter handPresenter) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _turnManager = turnManager ?? throw new ArgumentNullException(nameof(turnManager));
 
-            new HandPresenter(hand, screenManager, view.HandView, constructionsManager);
+            handPresenter.Mode = HandPresenter.Modes.Choose;
 
             _constructionsManager.OnConstructionAdded += Placement_OnConstructionAdded;
             _view.NextWaveButton.SetAction(NextWaveClick);

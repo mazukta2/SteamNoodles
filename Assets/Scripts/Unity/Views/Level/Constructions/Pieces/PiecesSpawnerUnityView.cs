@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class PiecesSpawnerUnityView : UnityView<PointPieceSpawnerPresenter>, IPointPieceSpawner
+    public class PiecesSpawnerUnityView : UnityView<PointPieceSpawnerPresenter>, IPointPieceSpawnerView
     {
         [SerializeField] ContainerUnityView _container;
         [SerializeField] PrototypeUnityView _prefab;
 
-        IViewContainer IPointPieceSpawner.Container => _container;
-        IViewPrefab IPointPieceSpawner.PiecePrefab => _prefab;
+        IViewContainer IPointPieceSpawnerView.Container => _container;
+        IViewPrefab IPointPieceSpawnerView.PiecePrefab => _prefab;
 
         protected override void PreAwake()
         {

@@ -20,7 +20,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var definitions = new ConstructionsSettingsDefinition();
 
             var time = new GameTime();
-            var level = new SingleLevelView();
+            var level = new ViewsCollection();
 
             var curve = new BezierCurve(FloatPoint3D.Zero, FloatPoint3D.One, new FloatPoint3D(1, 0, 0), new FloatPoint3D(1, 0, 0));
             var animation = new BuildingPointsAnimation(curve, 10, CreatePieceSpawner(level), definitions, time);
@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var time = new GameTime();
             time.MoveTime(10);
-            var level = new SingleLevelView();
+            var level = new ViewsCollection();
             var curve = new BezierCurve(FloatPoint3D.Zero, FloatPoint3D.One, new FloatPoint3D(1, 0, 0), new FloatPoint3D(1, 0, 0));
             var animation = new BuildingPointsAnimation(curve, 10, CreatePieceSpawner(level), definitions, time);
             animation.Play();
@@ -82,7 +82,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var time = new GameTime();
             time.MoveTime(10);
-            var level = new SingleLevelView();
+            var level = new ViewsCollection();
             var curve = new BezierCurve(FloatPoint3D.Zero, FloatPoint3D.One, FloatPoint3D.One, FloatPoint3D.Zero);
             var animation = new BuildingPointsAnimation(curve, 1, CreatePieceSpawner(level), definitions, time);
             animation.Play();
@@ -104,7 +104,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var time = new GameTime();
             time.MoveTime(10);
-            var level = new SingleLevelView();
+            var level = new ViewsCollection();
             var curve = new BezierCurve(new FloatPoint3D(1, 1, 1), new FloatPoint3D(-1, 1, -1), new FloatPoint3D(1, 3, 1), new FloatPoint3D(-1, 3, -1));
             var animation = new BuildingPointsAnimation(curve, 1, CreatePieceSpawner(level), definitions, time);
             animation.Play();
@@ -115,7 +115,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             level.Dispose();
         }
 
-        private PointPieceSpawnerPresenter CreatePieceSpawner(SingleLevelView level)
+        private PointPieceSpawnerPresenter CreatePieceSpawner(ViewsCollection level)
         {
             var view = new PieceSpawnerView(level);
             return new PointPieceSpawnerPresenter(view);

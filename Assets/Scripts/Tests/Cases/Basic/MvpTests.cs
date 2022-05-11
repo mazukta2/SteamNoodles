@@ -10,10 +10,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
     public class MvpTests
     {
         [Test]
+        public void IsBuildedAndDisposed()
+        {
+            var build = new GameConstructor().Build();
+            build.Dispose();
+        }
+
+        [Test]
         public void ViewIsCreatingPresenter()
         {
             var build = new GameConstructor().Build();
-            var view = new TestView(build.CurrentLevel);
+            var view = new TestView(build.LevelCollection);
 
             Assert.IsTrue(view.IsInited);
             Assert.IsNotNull(view.Presenter);
@@ -31,7 +38,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         {
             public bool IsInited { get; private set; }
 
-            public TestView(ILevelView level) : base(level)
+            public TestView(IViewsCollection level) : base(level)
             {
                 new TestPresenter(this);
                 IsInited = true;

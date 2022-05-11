@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
     {
         public ILevelPosition StartPosition { get; private set; }
 
-        public UnitsQueueView(ILevelView level, ILevelPosition position) : base(level)
+        public UnitsQueueView(IViewsCollection level, ILevelPosition position) : base(level)
         {
             StartPosition = position;
         }

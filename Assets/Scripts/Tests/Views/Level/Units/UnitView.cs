@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
         public IAnimator Animator { get; }
         public IUnitDresser UnitDresser { get; }
 
-        public UnitView(ILevelView level, ILevelPosition position, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
+        public UnitView(IViewsCollection level, ILevelPosition position, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
         {
             Position = position;
             Rotator = rotator;

@@ -13,10 +13,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         {
             var build = new GameConstructor().Build();
 
-            var screenManager = build.CurrentLevel.FindView<ScreenManagerView>();
+            var screenManager = build.LevelCollection.FindView<ScreenManagerView>();
             Assert.IsNotNull(screenManager);
 
-            var mainScreen = build.CurrentLevel.FindView<MainScreenView>();
+            var mainScreen = build.LevelCollection.FindView<MainScreenView>();
             Assert.IsNotNull(mainScreen);
 
             build.Dispose();

@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,69 +13,29 @@ namespace Game.Assets.Scripts.Tests.Views.Common.Creation
 
     public class ContainerViewMock : View, IViewContainer
     {
-        private List<IView> _views = new List<IView>();
+        public IReadOnlyCollection<IView> Views => _collection.Views;
+        private ViewsCollection _collection = new ViewsCollection();
 
-        public ContainerViewMock(ILevelView level) : base(level)
+        public ContainerViewMock(IViewsCollection level) : base(level)
         {
         }
 
         protected override void DisposeInner()
         {
-            Clear();
+            _collection.Dispose();
         }
 
         public void Clear()
         {
-            foreach (var item in _views.ToList())
-                item.Dispose();
-            _views.Clear();
-        }
-
-        public T Create<T>(ViewPrefabMock viewPrefab) where T : IView
-        {
-            if (viewPrefab == null) throw new Exception($"Cant find view");
-            return (T)viewPrefab.CreateInContainer<T>(this);
-        }
-
-        public T Create<T>(Func<ILevelView, T> creator) where T : IView
-        {
-            var viewPresenter = creator(Level);
-            _views.Add(viewPresenter);
-            viewPresenter.OnDispose += ViewPresenter_OnDispose;
-            return viewPresenter;
-
-            void ViewPresenter_OnDispose()
-            {
-                viewPresenter.OnDispose -= ViewPresenter_OnDispose;
-                _views.Remove(viewPresenter);
-            }
-        }
-
-        public bool Has<T>()
-        {
-            return _views.OfType<T>().Any();
-        }
-
-        public IReadOnlyCollection<T> Get<T>() where T : View
-        {
-            return _views.OfType<T>().AsReadOnly();
-        }
-
-        public T Add<T>(T view) where T : View
-        {
-            _views.Add(view);
-            return view;
+            _collection.Clear();
         }
 
         public T Spawn<T>(IViewPrefab prefab) where T : class, IView
         {
-            if (prefab is PrototypeViewMock prototypeView)
+            if (prefab is ViewCollectionPrefabMock viewPrefabMock)
             {
-                return prototypeView.Create<T>(this);
-            }
-            else if (prefab is ViewPrefabMock viewPrefab)
-            {
-                return Create<T>(viewPrefab);
+                viewPrefabMock.Fill(_collection);
+                return FindViews<T>().Last();
             }
             throw new Exception("Uknown prefab type: " + prefab);
         }
@@ -82,6 +43,26 @@ namespace Game.Assets.Scripts.Tests.Views.Common.Creation
         public void Spawn(IViewPrefab prefab)
         {
             throw new NotImplementedException();
+        }
+
+        public T FindView<T>(bool recursively = true) where T : IView
+        {
+            return _collection.FindView<T>(recursively);
+        }
+
+        public IReadOnlyCollection<T> FindViews<T>(bool recursively = true) where T : IView
+        {
+            return _collection.FindViews<T>(recursively);
+        }
+
+        public void Remove(IView view)
+        {
+            _collection.Remove(view);
+        }
+
+        public void Add(IView view)
+        {
+            _collection.Add(view);
         }
     }
 }

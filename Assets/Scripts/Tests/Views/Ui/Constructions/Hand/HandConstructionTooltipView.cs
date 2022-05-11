@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         public IText Points { get; }
         public IText Adjacencies { get; }
 
-        public HandConstructionTooltipView(ILevelView level, IText name, IText points) : base(level)
+        public HandConstructionTooltipView(IViewsCollection level, IText name, IText points) : base(level)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Points = points ?? throw new ArgumentNullException(nameof(points));

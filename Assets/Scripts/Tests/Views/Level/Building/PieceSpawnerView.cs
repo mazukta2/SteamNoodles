@@ -1,30 +1,29 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Building
 {
-    public class PieceSpawnerView : ViewWithPresenter<PointPieceSpawnerPresenter>, IPointPieceSpawner
+    public class PieceSpawnerView : ViewWithPresenter<PointPieceSpawnerPresenter>, IPointPieceSpawnerView
     {
         public IViewContainer Container { get; }
         public IViewPrefab PiecePrefab { get; }
 
-        public PieceSpawnerView(ILevelView level) : base(level)
+        public PieceSpawnerView(IViewsCollection level) : base(level)
         {
             Container = new ContainerViewMock(level);
             PiecePrefab = new PiecePrefabMock();
         }
 
-        private class PiecePrefabMock : ViewPrefabMock
+        private class PiecePrefabMock : ViewCollectionPrefabMock
         {
-            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
+            public override void Fill(IViewsCollection collection)
             {
-                return new PieceView(level);
+                new PieceView(collection);
             }
         }
 

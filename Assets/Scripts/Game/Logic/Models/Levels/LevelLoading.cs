@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
                 _level.Dispose();
         }
 
-        private void Finished(ILevelView lvl)
+        private void Finished(IViewsCollection lvl)
         {
             if (IsDisposed)
                 return;

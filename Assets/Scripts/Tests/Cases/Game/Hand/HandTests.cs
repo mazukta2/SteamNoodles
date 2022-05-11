@@ -24,8 +24,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction })
                 .Build();
 
-            var hand = game.CurrentLevel.FindView<HandView>();
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
+            var hand = game.LevelCollection.FindView<HandView>();
+            Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
 
             game.Dispose();
         }
@@ -40,33 +40,33 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction, construction })
                 .Build();
 
-            Assert.AreEqual(0, game.CurrentLevel.Model.Resources.Points.CurrentLevel);
-            Assert.AreEqual(0, game.CurrentLevel.Model.Resources.Points.Value);
-            Assert.AreEqual(3, game.CurrentLevel.Model.Resources.Points.PointsForNextLevel);
+            Assert.AreEqual(0, ICurrentLevel.Default.Resources.Points.CurrentLevel);
+            Assert.AreEqual(0, ICurrentLevel.Default.Resources.Points.Value);
+            Assert.AreEqual(3, ICurrentLevel.Default.Resources.Points.PointsForNextLevel);
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
-            Assert.AreEqual("2", game.CurrentLevel.FindView<HandConstructionView>().Amount.Value);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
+            Assert.AreEqual("2", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(0, game.CurrentLevel.Model.Resources.Points.CurrentLevel);
-            Assert.AreEqual(2, game.CurrentLevel.Model.Resources.Points.Value);
-            Assert.AreEqual(3, game.CurrentLevel.Model.Resources.Points.PointsForNextLevel);
+            Assert.AreEqual(0, ICurrentLevel.Default.Resources.Points.CurrentLevel);
+            Assert.AreEqual(2, ICurrentLevel.Default.Resources.Points.Value);
+            Assert.AreEqual(3, ICurrentLevel.Default.Resources.Points.PointsForNextLevel);
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
-            Assert.AreEqual("1", game.CurrentLevel.FindView<HandConstructionView>().Amount.Value);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
+            Assert.AreEqual("1", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.MovePointer(new FloatPoint(-2, 0));
             game.Controls.Click();
 
-            Assert.AreEqual(1, game.CurrentLevel.Model.Resources.Points.CurrentLevel);
-            Assert.AreEqual(4, game.CurrentLevel.Model.Resources.Points.Value);
-            Assert.AreEqual(8, game.CurrentLevel.Model.Resources.Points.PointsForNextLevel);
+            Assert.AreEqual(1, ICurrentLevel.Default.Resources.Points.CurrentLevel);
+            Assert.AreEqual(4, ICurrentLevel.Default.Resources.Points.Value);
+            Assert.AreEqual(8, ICurrentLevel.Default.Resources.Points.PointsForNextLevel);
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count());
-            Assert.AreEqual("3", game.CurrentLevel.FindView<HandConstructionView>().Amount.Value);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
+            Assert.AreEqual("3", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
 
             game.Dispose();
         }
@@ -79,7 +79,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var construction = IDefinitions.Default.Get<ConstructionDefinition>("Construction1");
 
-            Assert.AreEqual(construction.HandImagePath, game.CurrentLevel.FindView<HandConstructionView>().Image.Path);
+            Assert.AreEqual(construction.HandImagePath, game.LevelCollection.FindView<HandConstructionView>().Image.Path);
 
             game.Dispose();
         }
@@ -91,18 +91,18 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var game = new GameConstructor()
                 .Build();
 
-            var construction1 = game.CurrentLevel.FindViews<HandConstructionView>().First();
+            var construction1 = game.LevelCollection.FindViews<HandConstructionView>().First();
             Assert.IsNotNull(construction1);
 
-            Assert.IsNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
+            Assert.IsNull(game.LevelCollection.FindView<HandConstructionTooltipView>());
 
             construction1.SetHighlight(true);
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
+            Assert.IsNotNull(game.LevelCollection.FindView<HandConstructionTooltipView>());
 
             construction1.SetHighlight(false);
 
-            Assert.IsNull(game.CurrentLevel.FindView<HandConstructionTooltipView>());
+            Assert.IsNull(game.LevelCollection.FindView<HandConstructionTooltipView>());
 
             game.Dispose();
         }

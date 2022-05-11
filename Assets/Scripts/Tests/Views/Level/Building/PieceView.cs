@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
     public class PieceView : View, IPieceView
     {
         public IPosition Position { get; } = new PositionMock();
-        public PieceView(ILevelView level) : base(level)
+        public PieceView(IViewsCollection level) : base(level)
         {
         }
 

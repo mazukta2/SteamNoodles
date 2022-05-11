@@ -2,9 +2,9 @@
 
 namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 {
-    public class EmptyLevel : LevelPrefabMock
+    public class EmptyLevel : ViewCollectionPrefabMock
     {
-        public override void FillLevel(ILevelView level)
+        public override void Fill(IViewsCollection level)
         {
         }
     }

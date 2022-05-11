@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ namespace Game.Assets.Scripts.Tests.Environment
 {
     public class AssetsMock : IAssets
     {
-        private Dictionary<string, ViewPrefabMock> _prefabs = new Dictionary<string, ViewPrefabMock>();
+        private Dictionary<string, ViewCollectionPrefabMock> _prefabs = new Dictionary<string, ViewCollectionPrefabMock>();
 
         public IViewPrefab GetPrefab(string path)
         {
@@ -19,7 +20,7 @@ namespace Game.Assets.Scripts.Tests.Environment
             return prefab;
         }
 
-        public void AddPrefab(string path, ViewPrefabMock prefab)
+        public void AddPrefab(string path, ViewCollectionPrefabMock prefab)
         {
             _prefabs.Add(path, prefab);
         }

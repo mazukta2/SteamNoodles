@@ -12,9 +12,9 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
         public ILevelPosition LocalPosition { get; private set; }
         public IViewContainer Container { get; private set; }
         public IRotator Rotator { get; }
-        public IPointPieceSpawner PieceSpawner { get; }
+        public IPointPieceSpawnerView PieceSpawner { get; }
 
-        public GhostView(ILevelView level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
+        public GhostView(IViewsCollection level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
         {
             LocalPosition = position;
             Container = container;

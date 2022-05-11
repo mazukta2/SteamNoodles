@@ -15,8 +15,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 15)
                 .Build();
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<UnitsManagerView>().Count);
-            Assert.AreEqual(15, game.CurrentLevel.FindViews<UnitView>().Count);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<UnitsManagerView>().Count);
+            Assert.AreEqual(15, game.LevelCollection.FindViews<UnitView>().Count);
 
             game.Dispose();
         }
@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.UnitsRect = new Scripts.Game.Logic.Common.Math.FloatRect(-10, -10, 10, 10))
                 .Build();
 
-            var unit = game.CurrentLevel.FindView<UnitView>();
+            var unit = game.LevelCollection.FindView<UnitView>();
             var startingPosition = unit.Position.Value.X;
             Assert.IsFalse(unit.IsDisposed);
             game.Time.MoveTime(100);

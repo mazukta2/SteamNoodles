@@ -3,14 +3,14 @@ using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.ScreenManagerPresenter;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
@@ -19,30 +19,22 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         public ConstructionCard CurrentCard { get; }
 
         private IBuildScreenView _view;
-        private ScreenManagerPresenter _screenManager;
-        private Resources _resources;
         private ConstructionsSettingsDefinition _constrcutionsSettings;
         private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
-        public BuildScreenPresenter(IBuildScreenView view, ScreenManagerPresenter screenManager, 
-            Resources resources, ConstructionCard constructionCard, ConstructionsSettingsDefinition constrcutionsSettings) : base(view)
+        public BuildScreenPresenter(IBuildScreenView view,
+            ConstructionCard constructionCard, ConstructionsSettingsDefinition constrcutionsSettings, HandPresenter handPresenter) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
-            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
             _constrcutionsSettings = constrcutionsSettings ?? throw new ArgumentNullException(nameof(constrcutionsSettings));
-            _view.CancelButton.SetAction(CancelClick);
 
+            handPresenter.Mode = HandPresenter.Modes.Build;
+            
             CurrentCard = constructionCard;
         }
 
         protected override void DisposeInner()
         {
-        }
-
-        private void CancelClick()
-        {
-            _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
 
         public void UpdatePoints(FloatPoint position, int points, IReadOnlyDictionary<Construction, int> bonuses)
@@ -61,9 +53,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
                 object Init(IBuildScreenView screenView, ScreenManagerPresenter managerPresenter)
                 {
-                    return new BuildScreenPresenter(screenView, managerPresenter,
-                        ICurrentLevel.Default.Resources, constructionCard, 
-                        IDefinitions.Default.Get<ConstructionsSettingsDefinition>());
+                    return new BuildScreenPresenter(screenView, constructionCard, 
+                        IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IHandView.Default.Presenter);
                 }
             }
         }

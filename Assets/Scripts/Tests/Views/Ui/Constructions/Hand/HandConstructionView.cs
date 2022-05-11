@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         public IViewPrefab TooltipPrefab { get; }
         public IText Amount { get; } = new TextMock();
 
-        public HandConstructionView(ILevelView level, IButton button, IImage view, IViewContainer tooltipContainer, IViewPrefab tooltipPrefab) : base(level)
+        public HandConstructionView(IViewsCollection level, IButton button, IImage view, IViewContainer tooltipContainer, IViewPrefab tooltipPrefab) : base(level)
         {
             Button = button ?? throw new ArgumentNullException(nameof(button));
             Image = view ?? throw new ArgumentNullException(nameof(view));

@@ -1,10 +1,24 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public interface IHandView : IViewWithPresenter
+    public interface IHandView : IViewWithGenericPresenter<HandPresenter>, IViewWithDefaultPresenter
     {
         IViewContainer Cards { get;  }
         IViewPrefab CardPrototype { get; }
+        IButton CancelButton { get; }
+        IAnimator Animator { get; }
+
+        static IHandView Default { get; set; }
+
+        void IViewWithDefaultPresenter.InitDefaultPresenter()
+        {
+            Default = this;
+            new HandPresenter(ICurrentLevel.Default.Hand, IScreenManagerView.Default.Presenter, this, ICurrentLevel.Default.Constructions);
+        }
     }
 }

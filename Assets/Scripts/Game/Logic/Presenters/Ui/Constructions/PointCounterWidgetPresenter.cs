@@ -10,6 +10,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions;
 using System;
 using System.Collections.Generic;
@@ -76,7 +77,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 IPointCounterWidgetView.Default.PointsAttractionControlPoint.Value);
 
             var animation = new BuildingPointsAnimation(curve, pointsAdded,
-                IPointPieceSpawnerPresenter.Default,
+                IPointPieceSpawnerView.Default.Presenter,
                 IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), _time);
             animation.OnPieceReachDestination += OnPieceReachDestination;
             animation.OnDispose += Animation_OnDispose;

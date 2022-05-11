@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Views.Level;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions
 {
@@ -16,11 +17,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions
 
         static IPointCounterWidgetView Default { get; set; }
 
-        void IViewWithDefaultPresenter.Init()
+        void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
             Default = this; 
             new PointCounterWidgetPresenter(ICurrentLevel.Default.Resources, 
-                IGhostManagerPresenter.Default, 
+                IGhostManagerView.Default.Presenter, 
                 ICurrentLevel.Default.Constructions, ICurrentLevel.Default.Time, this);
         }
     }

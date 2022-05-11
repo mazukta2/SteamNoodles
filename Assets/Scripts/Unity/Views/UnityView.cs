@@ -24,16 +24,16 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         public event Action OnHighlihgtedEnter = delegate { };
         public event Action OnHighlihgtedExit = delegate { };
 
-        public LevelView Level { get; private set; }
+        public IViewsCollection Collection { get; private set; }
         public TPresenter Presenter { get; set; }
         public bool IsDisposed { get; private set; }
         IPresenter IViewWithPresenter.Presenter { get => Presenter; set => Presenter = (TPresenter)value; }
 
         protected void Awake()
         {
-            Level = ILevelsManager.Default.GetCurrentLevel();
+            Collection = ILevelsManager.Default.Collection;
             PreAwake();
-            Level.Add(this);
+            Collection.Add(this);
         }
 
         protected virtual void PreAwake()
@@ -42,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void OnDestroy()
         {
-            Level.Remove(this);
+            Collection.Remove(this);
             IsDisposed = true;
             OnDispose();
         }

@@ -6,8 +6,8 @@ namespace Game.Tests.Mocks.Settings.Levels
     public class LevelDefinitionMock : LevelDefinition
     {
         public string Name { get; set; } = "DebugLevel";
-        public LevelPrefabMock LevelPrefab { get; private set; }
-        public LevelDefinitionMock(string name, LevelPrefabMock level)
+        public ViewCollectionPrefabMock LevelPrefab { get; private set; }
+        public LevelDefinitionMock(string name, ViewCollectionPrefabMock level)
         {
             Name = name;
             LevelPrefab = level;

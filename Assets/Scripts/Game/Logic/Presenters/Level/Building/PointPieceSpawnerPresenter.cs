@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 {
-    public class PointPieceSpawnerPresenter : BasePresenter<IPointPieceSpawner>
+    public class PointPieceSpawnerPresenter : BasePresenter<IPointPieceSpawnerView>
     {
-        private IPointPieceSpawner _view;
+        private IPointPieceSpawnerView _view;
         private List<IPieceView> _pieces = new List<IPieceView>();
 
-        public PointPieceSpawnerPresenter(IPointPieceSpawner view) : base(view)
+        public PointPieceSpawnerPresenter(IPointPieceSpawnerView view) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
         }

@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Building
@@ -13,12 +14,12 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
         public IViewContainer CellsContainer { get; private set; }
         public IViewPrefab Cell { get; private set; }
 
-        public PlacementFieldView(ILevelView level, ViewPrefabMock construction, ViewPrefabMock cell) : base(level)
+        public PlacementFieldView(IViewsCollection level, ViewCollectionPrefabMock construction, ViewCollectionPrefabMock cell) : base(level)
         {
             ConstrcutionContainer = new ContainerViewMock(level);
-            Cell = new PrototypeViewMock(level, cell);
+            Cell = cell;
             CellsContainer = new ContainerViewMock(level);
-            ConstrcutionPrototype = new PrototypeViewMock(level, construction);
+            ConstrcutionPrototype = construction;
         }
     }
 }

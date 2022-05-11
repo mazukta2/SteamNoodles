@@ -1,16 +1,15 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Common;
-using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 
 namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Screens
 {
-    public class BuildScreenPrefab : ViewPrefabMock
+    public class BuildScreenPrefab : ViewCollectionPrefabMock
     {
-        public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
+        public override void Fill(IViewsCollection collection)
         {
-            return new BuildScreenView(level, new ButtonMock(), new UiWorldText());
+            new BuildScreenView(collection, new UiWorldText());
         }
     }
 }

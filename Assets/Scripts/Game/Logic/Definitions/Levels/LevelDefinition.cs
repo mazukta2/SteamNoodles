@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
         public PlacementFieldDefinition PlacementField { get; set; }
 
-        public FloatPoint QueuePosition;
+        public FloatPoint QueuePosition { get; set; }
 
         public int CrowdUnitsAmount { get; set; }
 
@@ -29,6 +29,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
         public IReadOnlyDictionary<ConstructionDefinition, int> ConstructionsReward { get; set; } = new Dictionary<ConstructionDefinition, int>();
 
         public int ConstructionsForNextWave { get; set; }
+
+        [JsonConverter(typeof(ObjectConventer<LevelStarter, LevelStarter>))]
+        public LevelStarter Starter { get; set; }
 
         public void Validate()
         {
@@ -58,6 +61,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
             if (ConstructionsForNextWave == 0)
                 throw new Exception($"{nameof(ConstructionsForNextWave)} is empty");
+
+            if (Starter == null)
+                throw new Exception($"{nameof(Starter)} is empty");
         }
     }
 }

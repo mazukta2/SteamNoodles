@@ -7,9 +7,10 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
 {
     public interface ILevelsManager
     {
-        void Load(GameLevel model, LevelDefinition prototype, Action<ILevelView> onFinished);
+        void Load(GameLevel model, LevelDefinition prototype, Action<IViewsCollection> onFinished);
         void Unload();
-        LevelView GetCurrentLevel();
+
+        IViewsCollection Collection { get; }
 
         static ILevelsManager Default { get; set; }
     }

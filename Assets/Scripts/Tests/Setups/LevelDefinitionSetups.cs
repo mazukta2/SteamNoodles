@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
 using Game.Tests.Mocks.Settings.Levels;
 using System;
@@ -39,7 +40,8 @@ namespace Game.Assets.Scripts.Tests.Setups
                 ConstructionsReward = new Dictionary<ConstructionDefinition, int>()
                 {
                     { construciton, 1}
-                }
+                },
+                Starter = new MainLevelStarter()
             };
             return level;
         }
@@ -66,7 +68,8 @@ namespace Game.Assets.Scripts.Tests.Setups
                 ConstructionsReward = new Dictionary<ConstructionDefinition, int>()
                 {
                     { construciton, 1}
-                }
+                },
+                Starter = new EmptyLevelStarter()
             };
             return level;
         }

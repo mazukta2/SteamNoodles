@@ -15,7 +15,7 @@ namespace Assets.Scripts.Tests.Views.Ui.Screens.Elements
     {
         public IWorldText Text { get; } = new UiWorldText();
 
-        public AdjecencyTextView(ILevelView level) : base(level)
+        public AdjecencyTextView(IViewsCollection level) : base(level)
         {
         }
     }

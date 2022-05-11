@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Level.Units;
@@ -22,20 +23,20 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { })
                 .Build();
 
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<HandConstructionView>().Count);
-            game.CurrentLevel.Model.Hand.Add(constructionDef1);
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count);
-            game.CurrentLevel.Model.Hand.Add(constructionDef2);
-            Assert.AreEqual(2, game.CurrentLevel.FindViews<HandConstructionView>().Count);
-            game.CurrentLevel.Model.Hand.Add(constructionDef1);
-            Assert.AreEqual(2, game.CurrentLevel.FindViews<HandConstructionView>().Count);
+            Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
+            ICurrentLevel.Default.Hand.Add(constructionDef1);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count);
+            ICurrentLevel.Default.Hand.Add(constructionDef2);
+            Assert.AreEqual(2, game.LevelCollection.FindViews<HandConstructionView>().Count);
+            ICurrentLevel.Default.Hand.Add(constructionDef1);
+            Assert.AreEqual(2, game.LevelCollection.FindViews<HandConstructionView>().Count);
 
-            game.CurrentLevel.Model.Hand.Cards.First().Amount--;
-            Assert.AreEqual(2, game.CurrentLevel.FindViews<HandConstructionView>().Count);
-            game.CurrentLevel.Model.Hand.Cards.First().Amount--;
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count);
-            game.CurrentLevel.Model.Hand.Cards.First().Amount--;
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<HandConstructionView>().Count);
+            ICurrentLevel.Default.Hand.Cards.First().Amount--;
+            Assert.AreEqual(2, game.LevelCollection.FindViews<HandConstructionView>().Count);
+            ICurrentLevel.Default.Hand.Cards.First().Amount--;
+            Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count);
+            ICurrentLevel.Default.Hand.Cards.First().Amount--;
+            Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
 
             game.Dispose();
         }
@@ -48,22 +49,22 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { })
                 .Build();
 
-            game.CurrentLevel.Model.Hand.Add(constructionDef1);
-            Assert.AreEqual(1, game.CurrentLevel.Model.Hand.Cards.First().Amount);
-            Assert.AreEqual("1", game.CurrentLevel.FindViews<HandConstructionView>().First().Amount.Value);
+            ICurrentLevel.Default.Hand.Add(constructionDef1);
+            Assert.AreEqual(1, ICurrentLevel.Default.Hand.Cards.First().Amount);
+            Assert.AreEqual("1", game.LevelCollection.FindViews<HandConstructionView>().First().Amount.Value);
 
-            game.CurrentLevel.Model.Hand.Add(constructionDef1);
-            Assert.AreEqual(2, game.CurrentLevel.Model.Hand.Cards.First().Amount);
-            Assert.AreEqual("2", game.CurrentLevel.FindViews<HandConstructionView>().First().Amount.Value);
+            ICurrentLevel.Default.Hand.Add(constructionDef1);
+            Assert.AreEqual(2, ICurrentLevel.Default.Hand.Cards.First().Amount);
+            Assert.AreEqual("2", game.LevelCollection.FindViews<HandConstructionView>().First().Amount.Value);
 
-            game.CurrentLevel.Model.Hand.Cards.First().Amount--;
-            Assert.AreEqual(1, game.CurrentLevel.Model.Hand.Cards.First().Amount);
-            Assert.AreEqual("1", game.CurrentLevel.FindViews<HandConstructionView>().First().Amount.Value);
+            ICurrentLevel.Default.Hand.Cards.First().Amount--;
+            Assert.AreEqual(1, ICurrentLevel.Default.Hand.Cards.First().Amount);
+            Assert.AreEqual("1", game.LevelCollection.FindViews<HandConstructionView>().First().Amount.Value);
 
-            game.CurrentLevel.Model.Hand.Cards.First().Amount--;
+            ICurrentLevel.Default.Hand.Cards.First().Amount--;
 
-            Assert.AreEqual(0, game.CurrentLevel.Model.Hand.Cards.Count);
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<HandConstructionView>().Count);
+            Assert.AreEqual(0, ICurrentLevel.Default.Hand.Cards.Count);
+            Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
 
             game.Dispose();
         }

@@ -29,9 +29,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementFieldView>());
+            Assert.IsNotNull(game.LevelCollection.FindView<PlacementFieldView>());
 
-            var cells = game.CurrentLevel.FindViews<CellView>();
+            var cells = game.LevelCollection.FindViews<CellView>();
             Assert.AreEqual(4, cells.Count());
 
             Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(5, 5)));
@@ -50,9 +50,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<PlacementFieldView>());
+            Assert.IsNotNull(game.LevelCollection.FindView<PlacementFieldView>());
 
-            var cells = game.CurrentLevel.FindViews<CellView>();
+            var cells = game.LevelCollection.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
 
             Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(10, 10)));
@@ -171,24 +171,23 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var game = new GameConstructor().Build();
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<MainScreenView>());
-            Assert.IsNotNull(game.CurrentLevel.FindView<HandView>());
-            Assert.IsNull(game.CurrentLevel.FindView<BuildScreenView>());
+            Assert.IsNotNull(game.LevelCollection.FindView<MainScreenView>());
+            Assert.IsNotNull(game.LevelCollection.FindView<HandView>());
+            Assert.IsNull(game.LevelCollection.FindView<BuildScreenView>());
 
-            var hand = game.CurrentLevel.FindView<HandView>();
-            var view = game.CurrentLevel.FindViews<HandConstructionView>().First();
+            var hand = game.LevelCollection.FindView<HandView>();
+            var view = game.LevelCollection.FindViews<HandConstructionView>().First();
             view.Button.Click();
 
-            Assert.IsNull(game.CurrentLevel.FindView<MainScreenView>());
-            Assert.IsNull(game.CurrentLevel.FindView<HandView>());
-            Assert.IsNotNull(game.CurrentLevel.FindView<BuildScreenView>());
+            Assert.IsNull(game.LevelCollection.FindView<MainScreenView>());
+            Assert.AreEqual("Build", game.LevelCollection.FindView<HandView>().Animator.Animation);
+            Assert.IsNotNull(game.LevelCollection.FindView<BuildScreenView>());
 
-            var buildScreen = game.CurrentLevel.FindView<BuildScreenView>();
-            buildScreen.CancelButton.Click();
+            hand.CancelButton.Click();
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<MainScreenView>());
-            Assert.IsNotNull(game.CurrentLevel.FindView<HandView>());
-            Assert.IsNull(game.CurrentLevel.FindView<BuildScreenView>());
+            Assert.IsNotNull(game.LevelCollection.FindView<MainScreenView>());
+            Assert.AreEqual("Choose", game.LevelCollection.FindView<HandView>().Animator.Animation);
+            Assert.IsNull(game.LevelCollection.FindView<BuildScreenView>());
 
             game.Dispose();
         }
@@ -198,20 +197,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var game = new GameConstructor().Build();
 
-            var manager = game.CurrentLevel.FindView<GhostManagerView>();
+            var manager = game.LevelCollection.FindView<GhostManagerView>();
             Assert.IsNotNull(manager);
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<GhostView>().Count);
+            Assert.AreEqual(0, game.LevelCollection.FindViews<GhostView>().Count);
 
-            var hand = game.CurrentLevel.FindView<HandView>();
-            var view = game.CurrentLevel.FindViews<HandConstructionView>().First();
+            var hand = game.LevelCollection.FindView<HandView>();
+            var view = game.LevelCollection.FindViews<HandConstructionView>().First();
             view.Button.Click();
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<GhostView>().Count);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<GhostView>().Count);
 
-            var buildScreen = game.CurrentLevel.FindView<BuildScreenView>();
-            buildScreen.CancelButton.Click();
+            hand.CancelButton.Click();
 
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<GhostView>().Count);
+            Assert.AreEqual(0, game.LevelCollection.FindViews<GhostView>().Count);
 
             game.Dispose();
         }
@@ -222,31 +220,29 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var game = new GameConstructor()
                 .Build();
 
-            var cells = game.CurrentLevel.FindViews<CellView>();
+            var cells = game.LevelCollection.FindViews<CellView>();
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<GhostView>().Count);
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            Assert.AreEqual(1, game.LevelCollection.FindViews<GhostView>().Count);
 
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.IsReadyToPlace || x.State.Value == CellPlacementStatus.IsAvailableGhostPlace));
 
             game.Dispose();
         }
 
-
-
         [Test]
         public void IsBuildingPlacingIsExitGhostMode()
         {
             var game = new GameConstructor().Build();
             
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<GhostView>());
+            Assert.IsNotNull(game.LevelCollection.FindView<GhostView>());
 
             game.Controls.Click();
 
-            Assert.IsNull(game.CurrentLevel.FindView<GhostView>());
+            Assert.IsNull(game.LevelCollection.FindView<GhostView>());
 
             game.Dispose();
         }
@@ -256,9 +252,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var game = new GameConstructor().Build();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
 
-            var cells = game.CurrentLevel.FindViews<CellView>();
+            var cells = game.LevelCollection.FindViews<CellView>();
             var highlighedCells = cells.Where(x => x.State.Value == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
             Assert.AreEqual(2, highlighedCells.Count());
 
@@ -284,10 +280,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .Build();
             var cellSize = 0.5f;
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
 
-            var ghost = game.CurrentLevel.FindView<GhostView>();
-            var model = game.CurrentLevel.FindView<ConstructionModelView>();
+            var ghost = game.LevelCollection.FindView<GhostView>();
+            var model = game.LevelCollection.FindView<ConstructionModelView>();
             Assert.AreEqual("Dragging", ((AnimatorMock)model.Animator).Animation);
             Assert.AreEqual("Disallowed", ((AnimatorMock)model.BorderAnimator).Animation);
 
@@ -320,12 +316,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 })
                 .Build();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
 
             var worldPos = new FloatPoint(0f, -0.75f);
             game.Controls.MovePointer(worldPos);
 
-            var cells = game.CurrentLevel.FindViews<CellView>();
+            var cells = game.LevelCollection.FindViews<CellView>();
             var actual = ToArray(size, cells);
             var expected = new int[5, 5]
             {
@@ -347,13 +343,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var game = new GameConstructor().Build();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
 
-            Assert.IsNull(game.CurrentLevel.FindView<ConstructionView>());
+            Assert.IsNull(game.LevelCollection.FindView<ConstructionView>());
 
             game.Controls.Click();
 
-            Assert.IsNotNull(game.CurrentLevel.FindView<ConstructionView>());
+            Assert.IsNotNull(game.LevelCollection.FindView<ConstructionView>());
 
             game.Dispose();
         }
@@ -441,8 +437,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                     };
                 })
                 .Build();
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
-            var ghost = game.CurrentLevel.FindView<GhostView>();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            var ghost = game.LevelCollection.FindView<GhostView>();
 
             // -0.5 to 0.5
             game.Controls.MovePointer(new FloatPoint(0, 0f));
@@ -458,7 +454,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
             game.Controls.Click();
 
-            var construction = game.CurrentLevel.FindView<ConstructionView>();
+            var construction = game.LevelCollection.FindView<ConstructionView>();
             Assert.AreEqual(new FloatPoint(-1.5f, -2), construction.Position.Value);
 
             game.Dispose();
@@ -475,7 +471,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 })
                 .Build();
 
-            Assert.AreEqual(imagePath, game.CurrentLevel.FindView<HandConstructionView>().Image.Path);
+            Assert.AreEqual(imagePath, game.LevelCollection.FindView<HandConstructionView>().Image.Path);
 
             game.Dispose();
         }
@@ -487,12 +483,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition,int>())
                 .Build();
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<HandConstructionView>().Count);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<HandConstructionView>().Count);
+            Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
             game.Dispose();
         }
 
@@ -505,13 +501,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .Build();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.MovePointer(new FloatPoint(-2, 0));
             game.Controls.Click();
 
-            Assert.AreEqual(2, game.CurrentLevel.FindViews<ConstructionView>().Count());
+            Assert.AreEqual(2, game.LevelCollection.FindViews<ConstructionView>().Count());
 
             game.Dispose();
         }
@@ -535,9 +531,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 })
                 .Build();
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
 
-            var cells = game.CurrentLevel.FindViews<CellView>();
+            var cells = game.LevelCollection.FindViews<CellView>();
             CheckPosition(new int[5, 5]
             {
                 { 1,1,1,1,1 },
@@ -547,7 +543,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 { 1,1,1,1,1 }
             });
             game.Keys.TapKey(GameKeys.RotateRight);
-            Assert.AreEqual(FieldRotation.Right, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            Assert.AreEqual(FieldRotation.Right, game.LevelCollection.FindView<GhostView>().Presenter.Rotation);
             CheckPosition(new int[5, 5]
             {
                 { 1,1,1,1,1 },
@@ -557,7 +553,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 { 1,1,1,1,1 }
             });
             game.Keys.TapKey(GameKeys.RotateRight);
-            Assert.AreEqual(FieldRotation.Bottom, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            Assert.AreEqual(FieldRotation.Bottom, game.LevelCollection.FindView<GhostView>().Presenter.Rotation);
             CheckPosition(new int[5, 5]
             {
                 { 1,1,1,1,1 },
@@ -567,7 +563,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 { 1,1,1,1,1 }
             });
             game.Keys.TapKey(GameKeys.RotateLeft);
-            Assert.AreEqual(FieldRotation.Right, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            Assert.AreEqual(FieldRotation.Right, game.LevelCollection.FindView<GhostView>().Presenter.Rotation);
             CheckPosition(new int[5, 5]
             {
                 { 1,1,1,1,1 },
@@ -577,7 +573,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 { 1,1,1,1,1 }
             });
             game.Keys.TapKey(GameKeys.RotateLeft);
-            Assert.AreEqual(FieldRotation.Top, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            Assert.AreEqual(FieldRotation.Top, game.LevelCollection.FindView<GhostView>().Presenter.Rotation);
             CheckPosition(new int[5, 5]
             {
                 { 1,1,1,1,1 },
@@ -588,7 +584,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             });
 
             game.Keys.TapKey(GameKeys.RotateLeft);
-            Assert.AreEqual(FieldRotation.Left, game.CurrentLevel.FindView<GhostView>().Presenter.Rotation);
+            Assert.AreEqual(FieldRotation.Left, game.LevelCollection.FindView<GhostView>().Presenter.Rotation);
             CheckPosition(new int[5, 5]
             {
                 { 1,1,1,1,1 },

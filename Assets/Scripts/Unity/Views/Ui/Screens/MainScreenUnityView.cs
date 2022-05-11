@@ -9,13 +9,11 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
 {
     public class MainScreenUnityView : ScreenUnityView<MainScreenPresenter>, IMainScreenView
     {
-        [SerializeField] HandUnityView _hand;
         [SerializeField] ButtonUnityView _nextWave;
         [SerializeField] ButtonUnityView _failWave;
         [SerializeField] UnityProgressBar _nextWaveProgress;
         [SerializeField] UnityAnimator _waveButtonAnimator;
 
-        public IHandView HandView => _hand;
         public IButton NextWaveButton => _nextWave;
         public IProgressBar NextWaveProgress => _nextWaveProgress;
         public IButton FailWaveButton => _failWave;

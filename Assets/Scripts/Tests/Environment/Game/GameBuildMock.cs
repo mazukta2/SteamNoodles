@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         public ControlsMock Controls { get; private set; }
 
         public GameModel GameModel => Core?.Game;
-        public LevelView CurrentLevel => Levels.GetCurrentLevel();
+        public IViewsCollection LevelCollection => Levels.Controller.Collection;
 
         public GameKeysManager Keys { get; private set; }
         public GameTime Time { get; private set; }

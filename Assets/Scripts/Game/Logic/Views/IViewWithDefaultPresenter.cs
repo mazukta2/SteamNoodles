@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Views
 {
-    public interface IViewWithDefaultPresenter
+    public interface IViewWithDefaultPresenter : IView
     {
-        void Init();
+        void InitDefaultPresenter();
     }
 }

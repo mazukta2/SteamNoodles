@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Core
 {
     public abstract class Disposable : PrivateDisposable, IDisposable
     {
-        public new void Dispose()
+        public new virtual void Dispose()
         {
             base.Dispose();
         }

@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
         IViewContainer Container { get; }
         IViewPrefab UnitPrototype { get; }
 
-        void IViewWithDefaultPresenter.Init()
+        void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
             new UnitsPresenter(ICurrentLevel.Default.Units, this, IDefinitions.Default.Get<UnitsSettingsDefinition>());
         }

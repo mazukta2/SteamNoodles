@@ -7,7 +7,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens
 {
     public interface IBuildScreenView : IScreenView, IViewWithGenericPresenter<BuildScreenPresenter>
     {
-        IButton CancelButton { get; }
         IWorldText Points { get; }
         IViewContainer AdjacencyContainer { get; }
         IViewPrefab AdjacencyPrefab { get; }

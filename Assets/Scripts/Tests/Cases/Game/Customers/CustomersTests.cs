@@ -48,11 +48,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 0)
                 .Build();
 
-            Assert.AreEqual("0/3", game.CurrentLevel.FindView<PointCounterWidgetView>().Points.Value);
-            Assert.AreEqual(0, game.CurrentLevel.FindView<PointCounterWidgetView>().PointsProgress.MainValue);
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<UnitView>().Count);
+            Assert.AreEqual("0/3", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
+            Assert.AreEqual(0, game.LevelCollection.FindView<PointCounterWidgetView>().PointsProgress.MainValue);
+            Assert.AreEqual(0, game.LevelCollection.FindViews<UnitView>().Count);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
             var points = new BuildingPoints(2, 2);
@@ -61,9 +61,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual(15, points.PointsForNextLevel);
             Assert.IsTrue(points.Progress != 0);
 
-            Assert.AreEqual("9/15", game.CurrentLevel.FindView<PointCounterWidgetView>().Points.Value);
-            Assert.AreEqual(points.Progress, game.CurrentLevel.FindView<PointCounterWidgetView>().PointsProgress.MainValue);
-            Assert.AreEqual(2, game.CurrentLevel.FindViews<UnitView>().Count);
+            Assert.AreEqual("9/15", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
+            Assert.AreEqual(points.Progress, game.LevelCollection.FindView<PointCounterWidgetView>().PointsProgress.MainValue);
+            Assert.AreEqual(2, game.LevelCollection.FindViews<UnitView>().Count);
 
             game.Dispose();
         }
@@ -79,16 +79,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<UnitsSettingsDefinition>(x => x.UnitSize = 0)
                 .Build();
 
-            Assert.AreEqual(0, game.CurrentLevel.FindViews<UnitView>().Count);
+            Assert.AreEqual(0, game.LevelCollection.FindViews<UnitView>().Count);
 
-            game.CurrentLevel.FindViews<HandConstructionView>().First().Button.Click();
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<UnitView>().Count);
-            Assert.AreEqual(1, game.CurrentLevel.FindViews<ConstructionView>().Count);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<UnitView>().Count);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
 
-            var building = game.CurrentLevel.FindView<ConstructionView>();
-            var unit = game.CurrentLevel.FindView<UnitView>();
+            var building = game.LevelCollection.FindView<ConstructionView>();
+            var unit = game.LevelCollection.FindView<UnitView>();
 
             Assert.AreEqual(building.Position.Value.X + 0.5f, unit.Position.Value.X);
 

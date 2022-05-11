@@ -1,18 +1,18 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Unity.Views;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using static GameUnity.Assets.Scripts.Unity.Engine.AssetsLoader;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
-    public class ContainerUnityView : MonoBehaviour, IViewContainer
+    public class ContainerUnityView : UnitySimpleView, IViewContainer
     {
         [SerializeField] Transform _pointer;
 
-        private List<IView> _spawned = new List<IView>();
+        private ViewsCollection _viewsCollection = new ViewsCollection();
         private List<GameObject> _spawnedGo = new List<GameObject>();
 
         public TView Spawn<TView>(IViewPrefab prefab) where TView : class, IView
@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
                 var view = go.GetComponent<TView>();
                 if (view == null)
                     throw new System.Exception("Cant find view preseneter " + typeof(TView).Name);
-                _spawned.Add(view);
+                _viewsCollection.Add(view);
                 return view;
             }
 
@@ -35,7 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
                 var view = go.GetComponent<TView>();
                 if (view == null)
                     throw new Exception("Cant find view " + typeof(TView).Name);
-                _spawned.Add(view);
+                _viewsCollection.Add(view);
                 return view;
             }
 
@@ -65,15 +65,32 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 
         public void Clear()
         {
-            foreach (var item in _spawned)
-                item.Dispose();
+            _viewsCollection.Clear();
 
             foreach (var item in _spawnedGo)
                 Destroy(item);
 
-            _spawned.Clear();
             _spawnedGo.Clear();
         }
 
+        public T FindView<T>(bool recursively = true) where T : IView
+        {
+            return _viewsCollection.FindView<T>(recursively);
+        }
+
+        public IReadOnlyCollection<T> FindViews<T>(bool recursively = true) where T : IView
+        {
+            return _viewsCollection.FindViews<T>(recursively);
+        }
+
+        public void Remove(IView view)
+        {
+            _viewsCollection.Add(view);
+        }
+
+        public void Add(IView view)
+        {
+            _viewsCollection.Remove(view);
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level
 
         public IFloat Shrink { get; } = new FloatMock();
 
-        public ConstructionModelView(ILevelView level) : base(level)
+        public ConstructionModelView(IViewsCollection level) : base(level)
         {
         }
 

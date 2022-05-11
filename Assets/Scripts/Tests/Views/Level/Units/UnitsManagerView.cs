@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
         public IViewContainer Container { get; private set; }
         public IViewPrefab UnitPrototype { get; private set; }
 
-        public UnitsManagerView(ILevelView level, IViewContainer container, IViewPrefab prototype) : base(level)
+        public UnitsManagerView(IViewsCollection level, IViewContainer container, IViewPrefab prototype) : base(level)
         {
             Container = container;
             UnitPrototype = prototype;

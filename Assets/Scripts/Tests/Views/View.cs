@@ -10,22 +10,20 @@ namespace Game.Assets.Scripts.Tests.Views
 {
     public abstract class View : Disposable, IView
     {
-        public ILevelView Level { get; private set; }
+        public IViewsCollection Collection { get; private set; }
         public bool IsHighlihgted { get; private set; }
         public event Action OnHighlihgtedEnter = delegate { };
         public event Action OnHighlihgtedExit = delegate { };
 
-        public View(ILevelView level)
+        public View(IViewsCollection collection)
         {
-            Level = level;
-            Level.OnDispose += Dispose;
-            Level.Add(this);
+            Collection = collection;
+            Collection.Add(this);
         }
 
         protected override void Dispose(bool disposing)
         {
-            Level.OnDispose -= Dispose;
-            Level.Remove(this);
+            Collection.Remove(this);
             base.Dispose(disposing);
         }
 

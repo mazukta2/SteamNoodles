@@ -7,60 +7,63 @@ using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Level.Units;
 using Game.Assets.Scripts.Tests.Views.Ui;
+using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 
 namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 {
-    public class BasicSellingLevel : LevelPrefabMock
+    public class BasicSellingLevel : ViewCollectionPrefabMock
     {
-        public override void FillLevel(ILevelView level)
+        public override void Fill(IViewsCollection collection)
         {
-            var screenSpawnPoint = new ContainerViewMock(level);
-            new ScreenManagerView(level, screenSpawnPoint);
+            var screenSpawnPoint = new ContainerViewMock(collection);
+            new ScreenManagerView(collection, screenSpawnPoint);
 
-            var ghostContainer = new ContainerViewMock(level);
-            var ghostPrototype = new PrototypeViewMock(level, new GhostViewPrefab());
-            new GhostManagerView(level, ghostContainer, ghostPrototype);
+            var ghostContainer = new ContainerViewMock(collection);
+            var ghostPrototype = new GhostViewPrefab();
+            new GhostManagerView(collection, ghostContainer, ghostPrototype);
 
-            new PlacementFieldView(level, new ConstructionViewPrefab(), new CellViewPrefab());
+            new PlacementFieldView(collection, new ConstructionViewPrefab(), new CellViewPrefab());
 
-            new UnitsManagerView(level, new ContainerViewMock(level), new PrototypeViewMock(level, new UnitViewPrefab()));
+            new UnitsManagerView(collection, new ContainerViewMock(collection), new UnitViewPrefab());
 
-            new PieceSpawnerView(level);
+            new PieceSpawnerView(collection);
 
-            new PointCounterWidgetView(level);
+            new PointCounterWidgetView(collection);
+
+            new HandView(collection);
         }
 
-        private class GhostViewPrefab : ViewPrefabMock
+        private class GhostViewPrefab : ViewCollectionPrefabMock
         {
-            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
+            public override void Fill(IViewsCollection collection)
             {
-                var contrainer = new ContainerViewMock(level);
-                return new GhostView(level, contrainer, new LevelPosition(), new Rotator());
+                var contrainer = new ContainerViewMock(collection);
+                new GhostView(collection, contrainer, new LevelPosition(), new Rotator());
             }
         }
 
-        private class CellViewPrefab : ViewPrefabMock
+        private class CellViewPrefab : ViewCollectionPrefabMock
         {
-            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
+            public override void Fill(IViewsCollection collection)
             {
-                return new CellView(level, new Switcher<CellPlacementStatus>(), new LevelPosition());
+                new CellView(collection, new Switcher<CellPlacementStatus>(), new LevelPosition());
             }
         }
 
-        private class ConstructionViewPrefab : ViewPrefabMock
+        private class ConstructionViewPrefab : ViewCollectionPrefabMock
         {
-            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
+            public override void Fill(IViewsCollection collection)
             {
-                var c = new ContainerViewMock(level);
-                return new ConstructionView(level, c, new LevelPosition(), new Rotator());
+                var c = new ContainerViewMock(collection);
+                new ConstructionView(collection, c, new LevelPosition(), new Rotator());
             }
         }
 
-        private class UnitViewPrefab : ViewPrefabMock
+        private class UnitViewPrefab : ViewCollectionPrefabMock
         {
-            public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
+            public override void Fill(IViewsCollection collection)
             {
-                return new UnitView(level, new LevelPosition(), new Rotator(), new AnimatorMock(), new UnitDresser());
+                new UnitView(collection, new LevelPosition(), new Rotator(), new AnimatorMock(), new UnitDresser());
             }
         }
     }

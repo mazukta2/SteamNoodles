@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
 
         public IAnimator Animator { get; } = new AnimatorMock();
 
-        public CellView(ILevelView level, ISwitcher<CellPlacementStatus> state, ILevelPosition position) : base(level)
+        public CellView(IViewsCollection level, ISwitcher<CellPlacementStatus> state, ILevelPosition position) : base(level)
         {
             State = state;
             LocalPosition = position;

@@ -11,19 +11,21 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 {
     public class LevelsManager : ILevelsManager
     {
-        private static LevelView _currentLevel;
+        private static LevelController _currentLevel;
         private static GameLevel _model;
+
+        public IViewsCollection Collection => _currentLevel.Collection;
 
         public LevelsManager()
         {
         }
 
-        public void Load(string scene, Action<LevelView> onFinished)
+        public void Load(string scene, Action<IViewsCollection> onFinished)
         {
             if (_currentLevel != null)
                 throw new Exception("Loading before unloading");
 
-            _currentLevel = new LevelView(_model);
+            _currentLevel = new LevelController(_model.Definition);
             ICurrentLevel.Default = _model;
 
             var loading = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
@@ -40,8 +42,9 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
             void Finish()
             {
-                _currentLevel.FinishLoading();
-                onFinished(_currentLevel);
+                _currentLevel.Initialize();
+                onFinished(_currentLevel.Collection);
+                _currentLevel.Start();
             }
         }
 
@@ -55,15 +58,10 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         }
 
 
-        public void Load(GameLevel model, LevelDefinition prototype, Action<ILevelView> onFinished)
+        public void Load(GameLevel model, LevelDefinition prototype, Action<IViewsCollection> onFinished)
         {
             _model = model;
             Load(prototype.SceneName, onFinished);
-        }
-
-        public LevelView GetCurrentLevel()
-        {
-            return _currentLevel;
         }
 
     }

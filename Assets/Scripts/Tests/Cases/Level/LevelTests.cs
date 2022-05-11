@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         public void LevelShortcutIsWorking()
         {
             var build = new GameConstructor().Build();
-            Assert.IsNotNull(build.Levels.GetCurrentLevel());
+            Assert.IsNotNull(build.Levels.Controller.Collection);
             build.Dispose();
         }
 

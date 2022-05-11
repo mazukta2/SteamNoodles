@@ -3,12 +3,16 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Building
 {
-    public interface IPointPieceSpawner : IViewWithDefaultPresenter, IViewWithGenericPresenter<PointPieceSpawnerPresenter>
+    public interface IPointPieceSpawnerView : IViewWithDefaultPresenter, IViewWithGenericPresenter<PointPieceSpawnerPresenter>
     {
         IViewContainer Container { get; }
         IViewPrefab PiecePrefab { get; }
-        void IViewWithDefaultPresenter.Init()
+
+        static IPointPieceSpawnerView Default { get; set; }
+
+        void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
+            Default = this;
             Presenter = new PointPieceSpawnerPresenter(this);
         }
     }

@@ -15,9 +15,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         IViewContainer CellsContainer { get; }
         IViewPrefab Cell { get; }
 
-        void IViewWithDefaultPresenter.Init()
+        void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            new PlacementFieldPresenter(IGhostManagerPresenter.Default, ICurrentLevel.Default.Constructions, this,
+            new PlacementFieldPresenter(IGhostManagerView.Default.Presenter, ICurrentLevel.Default.Constructions, this,
                 IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IAssets.Default);
         }
     }

@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         public IRotator Rotator { get; }
         public IViewContainer Container { get; set; }
 
-        public ConstructionView(ILevelView level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
+        public ConstructionView(IViewsCollection level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
         {
             Position = position;
             Container = container;

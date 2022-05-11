@@ -1,20 +1,15 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
-using Game.Assets.Scripts.Game.Logic.Views.Ui;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.ScreenManagerPresenter;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {

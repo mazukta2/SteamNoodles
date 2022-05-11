@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
         IAnimator Animator { get; }
         IUnitDresser UnitDresser { get; }
 
-        void IViewWithDefaultPresenter.Init()
+        void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
             new UnitModelPresenter(this, IDefinitions.Default.Get<UnitsSettingsDefinition>());
         }

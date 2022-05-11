@@ -5,11 +5,11 @@ using Game.Assets.Scripts.Tests.Views.Level;
 
 namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Constructions
 {
-    public class BasicConstructionModelPrefab : ViewPrefabMock
+    public class BasicConstructionModelPrefab : ViewCollectionPrefabMock
     {
-        public override IView CreateView<T>(ILevelView level, ContainerViewMock container)
+        public override void Fill(IViewsCollection collection)
         {
-            return new ConstructionModelView(level);
+            new ConstructionModelView(collection);
         }
     }
 }
