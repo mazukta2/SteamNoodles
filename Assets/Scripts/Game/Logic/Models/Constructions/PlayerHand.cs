@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
 {
     public class PlayerHand : Disposable
     {
-        public event Action<ConstructionCard> OnAdded = delegate { };
+        public event Action<ConstructionCard, ConstructionSource> OnAdded = delegate { };
         public event Action<ConstructionCard> OnRemoved = delegate { };
 
         public IReadOnlyCollection<ConstructionCard> Cards => _cards.AsReadOnly();
@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             if (hand == null) throw new ArgumentNullException(nameof(hand));
             foreach (var item in hand)
             {
-                Add(item);
+                Add(item, ConstructionSource.StartingHand);
             }
         }
 
@@ -46,20 +46,27 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             return _cards.Contains(card);
         }
 
-        public void Add(ConstructionDefinition definition)
+        public void Add(ConstructionDefinition definition, ConstructionSource source)
         {
             var card = _cards.FirstOrDefault(x => x.Definition == definition);
             if (card != null)
             {
-                card.Amount++;
+                card.Add(1, source);
             }
             else
             {
                 card = new ConstructionCard(this, definition);
                 _cards.Add(card);
-                OnAdded(card);
+                OnAdded(card, source);
             }
 
+        }
+
+        public enum ConstructionSource
+        {
+            StartingHand,
+            LevelUp,
+            NewWave
         }
     }
 }

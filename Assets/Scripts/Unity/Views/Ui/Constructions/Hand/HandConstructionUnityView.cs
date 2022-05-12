@@ -15,12 +15,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] ContainerUnityView _toolitpContainer;
         [SerializeField] PrototypeUnityView _toolitpPrototype;
         [SerializeField] UnityText _amount;
+        [SerializeField] UnityAnimator _animator;
 
         public IButton Button => _button;
         public IImage Image => _image;
         public IViewContainer TooltipContainer => _toolitpContainer;
         public IViewPrefab TooltipPrefab => _toolitpPrototype;
         public IText Amount => _amount;
+        public IAnimator Animator => _animator;
     }
 
 }

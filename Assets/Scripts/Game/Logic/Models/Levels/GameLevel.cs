@@ -64,7 +64,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private void OnLevelUp()
         {
-            TurnManager.GiveCards();
+            TurnManager.GiveCards(PlayerHand.ConstructionSource.LevelUp);
         }
 
     }

@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         public IViewContainer TooltipContainer { get; }
         public IViewPrefab TooltipPrefab { get; }
         public IText Amount { get; } = new TextMock();
+        public IAnimator Animator { get; } = new AnimatorMock();
 
         public HandConstructionView(IViewsCollection level, IButton button, IImage view, IViewContainer tooltipContainer, IViewPrefab tooltipPrefab) : base(level)
         {

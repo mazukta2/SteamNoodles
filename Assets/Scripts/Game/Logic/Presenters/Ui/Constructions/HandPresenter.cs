@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _field = field ?? throw new ArgumentNullException(nameof(field));
 
             foreach (var item in model.Cards)
-                ScnemeAddedHandle(item);
+                ScnemeAddedHandle(item, PlayerHand.ConstructionSource.StartingHand);
             _model.OnAdded += ScnemeAddedHandle;
 
             _view.CancelButton.SetAction(CancelClick);
@@ -36,10 +36,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _model.OnAdded -= ScnemeAddedHandle;
         }
 
-        private void ScnemeAddedHandle(ConstructionCard obj)
+        private void ScnemeAddedHandle(ConstructionCard obj, PlayerHand.ConstructionSource source)
         {
             var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
-            new HandConstructionPresenter(_screenManager, view, obj, _field);
+            new HandConstructionPresenter(_screenManager, view, obj, _field, source);
         }
 
         private void CancelClick()

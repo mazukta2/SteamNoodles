@@ -58,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
                 _constructionsManager.Constructions.Last().Destroy();
             }
 
-            GiveCards();
+            GiveCards(PlayerHand.ConstructionSource.NewWave);
         }
 
         public void FailWave()
@@ -71,10 +71,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
                 _constructionsManager.Constructions.Last().Destroy();
             }
 
-            GiveCards();
+            GiveCards(PlayerHand.ConstructionSource.NewWave);
         }
 
-        public void GiveCards()
+        public void GiveCards(PlayerHand.ConstructionSource source)
         {
             if (_rewardDeck.IsEmpty())
                 return;
@@ -82,7 +82,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             for (int i = 0; i < 3; i++)
             {
                 var constrcution = _rewardDeck.Take();
-                _hand.Add(constrcution);
+                _hand.Add(constrcution, source);
             }
         }
 

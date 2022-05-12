@@ -66,7 +66,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             var construction = new Construction(ConstructionsSettings, card.Definition, position, rotation);
             construction.OnDispose += Construction_OnDispose;
             _constructions.Add(construction);
-            card.Amount--;
+            card.Remove(1);
             OnConstructionAdded(construction);
 
             _resources.Points.Value += points;
