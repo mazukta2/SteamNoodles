@@ -14,37 +14,28 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Units
 {
-    public class LevelCrowd : Disposable
+    public class LevelCrowd : Disposable, ICrowd
     {
         private FloatRect UnitsField => _levelDefinition.UnitsRect;
         private List<Unit> _crowd = new List<Unit>();
         private LevelDefinition _levelDefinition;
-        private LevelUnits _units;
-        private UnitsSettingsDefinition _unitsSettings;
+        private readonly IUnits _unitsController;
         private SessionRandom _random;
         private IGameTime _time;
-        private Deck<CustomerDefinition> _pool;
 
-        public LevelCrowd(UnitsSettingsDefinition unitsSettings, LevelUnits units, IGameTime time, LevelDefinition levelDefinition,
+        public LevelCrowd(IUnits unitsController, IGameTime time, LevelDefinition levelDefinition,
             SessionRandom random)
         {
             _levelDefinition = levelDefinition;
-            _units = units;
-            _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
+            _unitsController = unitsController ?? throw new ArgumentNullException(nameof(unitsController));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             _time = time ?? throw new ArgumentNullException(nameof(time));
 
-            _pool = new Deck<CustomerDefinition>(random);
-            foreach (var item in levelDefinition.BaseCrowdUnits)
-                _pool.Add(item.Key, item.Value);
-
             for (int i = 0; i < levelDefinition.CrowdUnitsAmount; i++)
             {
-                var definition = _pool.Take();
                 var position = GetRandomPoint(UnitsField, _random);
-                var unit = new Unit(position, new FloatPoint(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, position.Y), 
-                    definition, _unitsSettings, _random);
-                _crowd.Add(units.SpawnUnit(unit));
+                _crowd.Add(_unitsController.SpawnUnit(position,
+                    new FloatPoint(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, position.Y)));
             }
             _time.OnTimeChanged += Time_OnTimeChanged;
         }
@@ -52,9 +43,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         protected override void DisposeInner()
         {
             _time.OnTimeChanged -= Time_OnTimeChanged;
-            foreach (var unit in _crowd)
-                _units.RemoveUnit(unit);
-            _crowd.Clear();
         }
 
         private void Time_OnTimeChanged(float oldTime, float newTime)
@@ -63,7 +51,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             {
                 if (!IsHorisontalyInside(UnitsField, item.Position))
                 {
-                    _units.RemoveUnit(item);
+                    _unitsController.DestroyUnit(item);
                     _crowd.Remove(item);
                 }
             }
@@ -83,7 +71,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                     target = new FloatPoint(UnitsField.X - 1, position.Y);
                 }
 
-                var unit = _units.SpawnUnit(new Unit(position, target, _pool.Take(), _unitsSettings, _random));
+                var unit = _unitsController.SpawnUnit(position, target);
                 _crowd.Add(unit);
             }
         }
@@ -97,6 +85,22 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             return new FloatPoint(random.GetRandom(rect.xMin, rect.xMax), random.GetRandom(rect.yMin, rect.yMax));
         }
 
+        public void SendToCrowd(Unit unit, CrowdDirection direction)
+        {
+            var position = GetRandomPoint(UnitsField, _random);
+            FloatPoint target;
+            if (direction == CrowdDirection.Right)
+                target = new FloatPoint(UnitsField.X + UnitsField.Width + 1, position.Y);
+            else
+                target = new FloatPoint(UnitsField.X - 1, position.Y);
+            unit.SetTarget(target);
+            _crowd.Add(unit);
+        }
 
+        public enum CrowdDirection
+        {
+            Left,
+            Right
+        }
     }
 }

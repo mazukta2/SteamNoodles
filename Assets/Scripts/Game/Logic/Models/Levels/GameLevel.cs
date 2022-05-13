@@ -1,15 +1,14 @@
 ﻿using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
-using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
@@ -20,8 +19,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public PlacementField Constructions { get; private set; }
         public LevelUnits Units { get; }
 
+        private LevelCustomers _customers;
         private LevelCrowd _crowd;
-        private LevelQueue _queue;
+        private CustomerQueue _queue;
 
         public Resources Resources { get; }
         public LevelDefinition Definition { get; private set; }
@@ -39,12 +39,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Resources = new Resources(definitions.Get<ConstructionsSettingsDefinition>());
 
             var unitSettings = definitions.Get<UnitsSettingsDefinition>();
-            Units = new LevelUnits(time);
-            _crowd = new LevelCrowd(unitSettings, Units, time, settings, random);
 
             Constructions = new PlacementField(definitions.Get<ConstructionsSettingsDefinition>(), Definition.PlacementField, Resources);
+            Units = new LevelUnits(time, definitions.Get<UnitsSettingsDefinition>(), settings, _random);
             TurnManager = new FlowManager(Definition, random, Constructions, Hand);
-            _queue = new LevelQueue(unitSettings, Units, settings, random, Resources.Points, Constructions, TurnManager);
+            TurnManager.OnTurn += TurnManager_OnTurn;
+
+            _customers = new LevelCustomers(Constructions, settings, Resources);
+            _crowd = new LevelCrowd(Units, time, settings, random);
+            _queue = new CustomerQueue(_customers, Units, _crowd);
 
             Resources.Points.OnMaxLevelUp += OnLevelUp;
         }
@@ -52,6 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         protected override void DisposeInner()
         {
             Resources.Points.OnMaxLevelUp -= OnLevelUp;
+            TurnManager.OnTurn -= TurnManager_OnTurn;
 
             TurnManager.Dispose();
             Hand.Dispose();
@@ -60,6 +64,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Resources.Dispose();
             _crowd.Dispose();
             _queue.Dispose();
+            _customers.Dispose();
         }
 
         private void OnLevelUp()
@@ -67,5 +72,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             TurnManager.GiveCards(PlayerHand.ConstructionSource.LevelUp);
         }
 
+        private void TurnManager_OnTurn()
+        {
+            _queue.ServeCustomer();
+        }
     }
 }
