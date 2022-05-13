@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
         {
             public override void Fill(IViewsCollection collection)
             {
-                new UnitView(collection, new LevelPosition(), new Rotator(), new AnimatorMock(), new UnitDresser());
+                new UnitView(collection, new Rotator(), new AnimatorMock(), new UnitDresser());
             }
         }
     }

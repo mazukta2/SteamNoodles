@@ -29,16 +29,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             return FieldRotation.Top;
         }
 
-        public static FloatPoint ToDirection(FieldRotation rotation)
+        public static FloatPoint3D ToDirection(FieldRotation rotation)
         {
             if (rotation == FieldRotation.Top)
-                return new FloatPoint(0, 1);
+                return new FloatPoint3D(0, 0, 1);
             if (rotation == FieldRotation.Right)
-                return new FloatPoint(1, 0);
+                return new FloatPoint3D(1, 0, 0);
             if (rotation == FieldRotation.Bottom)
-                return new FloatPoint(0, -1);
+                return new FloatPoint3D(0, 0, -1);
 
-            return new FloatPoint(-1, 0);
+            return new FloatPoint3D(-1, 0, 0);
         }
     }
 

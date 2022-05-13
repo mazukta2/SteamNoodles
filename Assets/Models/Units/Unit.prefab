@@ -49,6 +49,8 @@ MonoBehaviour:
   _animator: {fileID: 8847637733258925980}
   _rigs:
     Head: {fileID: 4997861876253368125}
+  _unityPosition:
+    _transform: {fileID: 4997861878193465968}
 --- !u!114 &8847637733258925980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 4997861877149491818}
+  _crossTime: 0.1
 --- !u!1001 &4997861877149491823
 PrefabInstance:
   m_ObjectHideFlags: 0

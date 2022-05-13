@@ -19,14 +19,14 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
             _transform = transform;
         }
 
-        public void FaceTo(FloatPoint value)
+        public void FaceTo(FloatPoint3D value)
         {
-            _transform.LookAt(new Vector3(value.X, _transform.position.y, value.Y));
+            _transform.LookAt(value.ToVector());
         }
 
-        public void Look(FloatPoint direction)
+        public void Look(FloatPoint3D direction)
         {
-            _transform.LookAt(new Vector3(_transform.position.x + direction.X, _transform.position.y, _transform.position.z + direction.Y));
+            _transform.LookAt(_transform.position + direction.ToVector());
         }
     }
 }

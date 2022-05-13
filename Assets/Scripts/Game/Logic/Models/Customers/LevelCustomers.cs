@@ -21,11 +21,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
-        public FloatPoint GetQueueFirstPosition()
+        public FloatPoint3D GetQueueFirstPosition()
         {
             var construction = _placementField.Constructions.First();
-            var queueStartingPosition = construction.GetWorldPosition().X + construction.GetWorldOffset().X;
-            return new FloatPoint(queueStartingPosition, _levelDefinition.QueuePosition.Y);
+            var queueStartingPosition = construction.GetViewPosition().X;
+            return new FloatPoint3D(queueStartingPosition, 0, _levelDefinition.QueuePosition.Y);
         }
 
 

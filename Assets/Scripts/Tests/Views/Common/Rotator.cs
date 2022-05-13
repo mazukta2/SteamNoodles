@@ -8,11 +8,11 @@ namespace Game.Assets.Scripts.Tests.Views.Common
 {
     public class Rotator : IRotator
     {
-        public void FaceTo(FloatPoint value)
+        public void FaceTo(FloatPoint3D value)
         {
         }
 
-        public void Look(FloatPoint direction)
+        public void Look(FloatPoint3D direction)
         {
         }
     }

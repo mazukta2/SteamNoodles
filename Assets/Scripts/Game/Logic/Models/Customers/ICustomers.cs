@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 {
     public interface ICustomers
     {
-        FloatPoint GetQueueFirstPosition();
+        FloatPoint3D GetQueueFirstPosition();
         int GetQueueSize();
     }
 }

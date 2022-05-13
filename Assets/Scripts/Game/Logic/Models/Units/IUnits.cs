@@ -5,8 +5,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
     public interface IUnits
     {
         float GetUnitSize();
-        Unit SpawnUnit(FloatPoint pos);
-        Unit SpawnUnit(FloatPoint pos, FloatPoint target)
+        Unit SpawnUnit(FloatPoint3D pos);
+        Unit SpawnUnit(FloatPoint3D pos, FloatPoint3D target)
         {
             var unit = SpawnUnit(pos);
             unit.SetTarget(target);

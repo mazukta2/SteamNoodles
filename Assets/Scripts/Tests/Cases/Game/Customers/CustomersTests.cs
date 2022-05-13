@@ -116,36 +116,36 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             queue.ServeCustomer();
 
             Assert.AreEqual(1, uc.Units.Count);
-            Assert.AreEqual(new FloatPoint(1, 0), uc.Units.First().Position);
-            Assert.AreEqual(new FloatPoint(0, 0), uc.Units.First().Target);
+            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new FloatPoint3D(0, 0, 0), uc.Units.First().Target);
             Assert.AreEqual(0, cr.Units.Count);
 
             uc.QueueSize = 1;
             queue.ServeCustomer();
 
             Assert.AreEqual(2, uc.Units.Count);
-            Assert.AreEqual(new FloatPoint(1, 0), uc.Units.First().Position);
-            Assert.AreEqual(new FloatPoint(0, 0), uc.Units.First().Target);
+            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new FloatPoint3D(0, 0, 0), uc.Units.First().Target);
             Assert.AreEqual(1, cr.Units.Count);
 
             uc.QueueSize = 2;
             queue.ServeCustomer();
 
             Assert.AreEqual(4, uc.Units.Count);
-            Assert.AreEqual(new FloatPoint(1, 0), uc.Units.First().Position);
-            Assert.AreEqual(new FloatPoint(0, 0), uc.Units.First().Target);
-            Assert.AreEqual(new FloatPoint(2, 0), uc.Units.Last().Position);
-            Assert.AreEqual(new FloatPoint(1, 0), uc.Units.Last().Target);
+            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new FloatPoint3D(0, 0, 0), uc.Units.First().Target);
+            Assert.AreEqual(new FloatPoint3D(2, 0, 0), uc.Units.Last().Position);
+            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.Last().Target);
             Assert.AreEqual(2, cr.Units.Count);
 
             uc.QueueSize = 2;
             queue.ServeCustomer();
 
             Assert.AreEqual(5, uc.Units.Count);
-            Assert.AreEqual(new FloatPoint(1, 0), uc.Units.First().Position);
-            Assert.AreEqual(new FloatPoint(0, 0), uc.Units.First().Target);
-            Assert.AreEqual(new FloatPoint(2, 0), uc.Units.Last().Position);
-            Assert.AreEqual(new FloatPoint(1, 0), uc.Units.Last().Target);
+            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new FloatPoint3D(0, 0, 0), uc.Units.First().Target);
+            Assert.AreEqual(new FloatPoint3D(2, 0, 0), uc.Units.Last().Position);
+            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.Last().Target);
             Assert.AreEqual(3, cr.Units.Count);
 
             queue.Dispose();
@@ -161,9 +161,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             public List<Unit> Units = new List<Unit>();
             public int QueueSize { get; set; }
 
-            public FloatPoint GetQueueFirstPosition()
+            public FloatPoint3D GetQueueFirstPosition()
             {
-                return new FloatPoint(0, 0);
+                return new FloatPoint3D(0, 0, 0);
             }
 
             public float GetUnitSize()
@@ -171,7 +171,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 return 1;
             }
 
-            public Unit SpawnUnit(FloatPoint pos)
+            public Unit SpawnUnit(FloatPoint3D pos)
             {
                 var unit = new Unit(pos, pos, Def, SettingsDef, Random);
                 Units.Add(unit);

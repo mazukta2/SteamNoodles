@@ -13,8 +13,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public event Action OnPositionChanged = delegate { };
         public event Action OnReachedPosition = delegate { };
         public event Action OnTargetChanged = delegate { };
-        public FloatPoint Target { get; private set; }
-        public FloatPoint Position { get; private set; }
+        public FloatPoint3D Target { get; private set; }
+        public FloatPoint3D Position { get; private set; }
         public CustomerDefinition Definition { get; private set; }
 
         public int VisualSeed { get; private set; }
@@ -22,7 +22,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private UnitsSettingsDefinition _unitsSettings;
         private float _speedOffset;
 
-        public Unit(FloatPoint position, FloatPoint target, CustomerDefinition definition, UnitsSettingsDefinition unitsSettings, SessionRandom random)
+        public Unit(FloatPoint3D position, FloatPoint3D target, CustomerDefinition definition, UnitsSettingsDefinition unitsSettings, SessionRandom random)
         {
             Position = position;
             Target = target;
@@ -44,6 +44,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 movement = distance;
 
             Position = Position + direction.GetNormalize() * movement;
+            if (Position.Y != 0)
+                throw new Exception();
             OnPositionChanged();
 
             if (Position.IsClose(Target))
@@ -61,8 +63,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             OnReachedPosition();
         }
 
-        public void SetTarget(FloatPoint target)
+        public void SetTarget(FloatPoint3D target)
         {
+            if (target.Y != 0)
+                throw new Exception();
             Target = target;
             OnTargetChanged();
 

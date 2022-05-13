@@ -6,20 +6,20 @@ using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views;
+using Game.Assets.Scripts.Tests.Views.Common;
 using System;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Units
 {
     public class UnitView : ViewWithPresenter<UnitPresenter>, IUnitView
     {
-        public ILevelPosition Position { get; }
+        public IPosition Position { get; } = new PositionMock();
         public IRotator Rotator { get; }
         public IAnimator Animator { get; }
         public IUnitDresser UnitDresser { get; }
 
-        public UnitView(IViewsCollection level, ILevelPosition position, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
+        public UnitView(IViewsCollection level, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
         {
-            Position = position;
             Rotator = rotator;
             Animator = animator;
             UnitDresser = unitDresser;

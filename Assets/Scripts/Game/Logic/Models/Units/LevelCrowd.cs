@@ -35,7 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             {
                 var position = GetRandomPoint(UnitsField, _random);
                 _crowd.Add(_unitsController.SpawnUnit(position,
-                    new FloatPoint(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, position.Y)));
+                    new FloatPoint3D(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, 0, position.Z)));
             }
             _time.OnTimeChanged += Time_OnTimeChanged;
         }
@@ -59,40 +59,40 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             if (_crowd.Count < _levelDefinition.CrowdUnitsAmount)
             {
                 var position = GetRandomPoint(UnitsField, _random);
-                FloatPoint target;
+                FloatPoint3D target;
                 if (_random.GetRandom())
                 {
-                    position = new FloatPoint(UnitsField.X + 1, position.Y);
-                    target = new FloatPoint(UnitsField.X + UnitsField.Width + 1, position.Y);
+                    position = new FloatPoint3D(UnitsField.X + 1, 0, position.Z);
+                    target = new FloatPoint3D(UnitsField.X + UnitsField.Width + 1, 0, position.Z);
                 }
                 else
                 {
-                    position = new FloatPoint(UnitsField.X + UnitsField.Width - 1, position.Y);
-                    target = new FloatPoint(UnitsField.X - 1, position.Y);
+                    position = new FloatPoint3D(UnitsField.X + UnitsField.Width - 1, 0, position.Z);
+                    target = new FloatPoint3D(UnitsField.X - 1, 0, position.Z);
                 }
 
                 var unit = _unitsController.SpawnUnit(position, target);
                 _crowd.Add(unit);
             }
         }
-        public bool IsHorisontalyInside(FloatRect rect, FloatPoint point)
+        public bool IsHorisontalyInside(FloatRect rect, FloatPoint3D point)
         {
             return rect.xMin <= point.X && point.X <= rect.xMax;
         }
 
-        private FloatPoint GetRandomPoint(FloatRect rect, SessionRandom random)
+        private FloatPoint3D GetRandomPoint(FloatRect rect, SessionRandom random)
         {
-            return new FloatPoint(random.GetRandom(rect.xMin, rect.xMax), random.GetRandom(rect.yMin, rect.yMax));
+            return new FloatPoint3D(random.GetRandom(rect.xMin, rect.xMax), 0, random.GetRandom(rect.yMin, rect.yMax));
         }
 
         public void SendToCrowd(Unit unit, CrowdDirection direction)
         {
             var position = GetRandomPoint(UnitsField, _random);
-            FloatPoint target;
+            FloatPoint3D target;
             if (direction == CrowdDirection.Right)
-                target = new FloatPoint(UnitsField.X + UnitsField.Width + 1, position.Y);
+                target = new FloatPoint3D(UnitsField.X + UnitsField.Width + 1, 0, position.Z);
             else
-                target = new FloatPoint(UnitsField.X - 1, position.Y);
+                target = new FloatPoint3D(UnitsField.X - 1, 0, position.Z);
             unit.SetTarget(target);
             _crowd.Add(unit);
         }

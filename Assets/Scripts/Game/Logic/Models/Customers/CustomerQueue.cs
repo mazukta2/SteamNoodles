@@ -58,9 +58,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 _queue[i].SetTarget(GetPositionFor(i));
         }
 
-        private FloatPoint GetPositionFor(int index)
+        private FloatPoint3D GetPositionFor(int index)
         {
-            return _customers.GetQueueFirstPosition() + new FloatPoint(_unitsController.GetUnitSize(), 0) * index;
+            return _customers.GetQueueFirstPosition() + new FloatPoint3D(_unitsController.GetUnitSize(), 0, 0) * index;
         }
     }
 }

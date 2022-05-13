@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
     public interface IUnitView : IViewWithPresenter
     {
-        ILevelPosition Position { get; }
+        IPosition Position { get; }
         IRotator Rotator { get; }
         IAnimator Animator { get; }
         IUnitDresser UnitDresser { get; }
