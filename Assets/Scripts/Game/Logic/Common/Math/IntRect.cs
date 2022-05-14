@@ -34,13 +34,13 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
                 yMin <= point.Y && point.Y <= yMax;
         }
 
-        public bool IsInside(FloatPoint point)
+        public bool IsInside(FloatPoint3D point)
         {
             return xMin <= point.X && point.X <= xMax &&
-                yMin <= point.Y && point.Y <= yMax;
+                yMin <= point.Z && point.Z <= yMax;
         }
 
-        public bool IsHorisontalyInside(FloatPoint point)
+        public bool IsHorisontalyInside(FloatPoint3D point)
         {
             return xMin <= point.X && point.X <= xMax;
         }
@@ -48,11 +48,6 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         public IntPoint GetRandomPoint(SessionRandom random)
         {
             return new IntPoint(random.GetRandom(xMin, xMax), random.GetRandom(yMin, yMax));
-        }
-
-        public FloatPoint GetRandomFloatPoint(SessionRandom random)
-        {
-            return new FloatPoint(random.GetRandom((float)xMin, (float)xMax), random.GetRandom((float)yMin, (float)yMax));
         }
 
         public static FloatRect operator *(IntRect current, float other) => new FloatRect(current.X * other, current.Y * other, current.Width * other, current.Height * other);

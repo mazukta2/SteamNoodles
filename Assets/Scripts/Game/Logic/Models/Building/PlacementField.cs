@@ -103,18 +103,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             return true;
         }
 
-        private FloatPoint GetOffset()
-        {
-            var offset = FloatPoint.Zero;
-            if (Size.X % 2 == 0)
-                offset += new FloatPoint(0.5f, 0);
-            if (Size.Y % 2 == 0)
-                offset += new FloatPoint(0, 0.5f);
-
-            return offset * ConstructionsSettings.CellSize;
-        }
-
-
         public int GetPoints(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
         {
             if (!CanPlace(constructionDefinition, position, rotation))

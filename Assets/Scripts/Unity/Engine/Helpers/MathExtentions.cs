@@ -16,11 +16,6 @@ namespace GameUnity.Assets.Scripts.Unity.Engine.Helpers
                 rect.yMin <= position.y && position.y <= rect.yMax;
         }
 
-        public static void SetPosition(this Transform transform, FloatPoint vector)
-        {
-            transform.position = new Vector3(vector.X, 0, vector.Y);
-        }
-
         public static void SetPosition(this Transform transform, FloatPoint3D vector)
         {
             transform.position = new Vector3(vector.X, vector.Y, vector.Z);

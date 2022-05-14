@@ -33,14 +33,14 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             return Input.GetMouseButtonDown(0) && !IsPointerOverUi();
         }
 
-        public FloatPoint GetMouseWorldPosition()
+        public FloatPoint3D GetMouseWorldPosition()
         {
             float distance;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (_plane.Raycast(ray, out distance))
             {
                 var point = ray.GetPoint(distance);
-                return new FloatPoint(point.x, point.z);
+                return new FloatPoint3D(point.x, 0, point.z);
             }
             throw new Exception("Can't reach point");
         }

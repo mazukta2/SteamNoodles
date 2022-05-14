@@ -1,10 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Session;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Game.Assets.Scripts.Game.Logic.Common.Math
+﻿namespace Game.Assets.Scripts.Game.Logic.Common.Math
 {
     public struct FloatRect
     {
@@ -29,15 +23,10 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 
         public float yMax => Y + Height;
 
-        public bool IsInside(FloatPoint point)
+        public bool IsInside(FloatPoint3D point)
         {
             return xMin <= point.X && point.X <= xMax &&
-                yMin <= point.Y && point.Y <= yMax;
-        }
-
-        public FloatPoint GetRandomPoint(SessionRandom random)
-        {
-            return new FloatPoint(random.GetRandom(xMin, xMax), random.GetRandom(yMin, yMax));
+                yMin <= point.Z && point.Z <= yMax;
         }
 
         public bool IsZero()

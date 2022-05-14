@@ -6,6 +6,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
     public interface IUnitsQueueView : IViewWithPresenter
     {
-        ILevelPosition StartPosition { get; }
+        IPosition StartPosition { get; }
     }
 }

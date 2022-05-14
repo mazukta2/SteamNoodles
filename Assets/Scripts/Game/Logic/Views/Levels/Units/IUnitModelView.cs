@@ -11,8 +11,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {
     public interface IUnitModelView : IViewWithPresenter, IViewWithDefaultPresenter
     {
-        ILevelPosition Position { get; }
-        IRotator Rotator { get; }
         IAnimator Animator { get; }
         IUnitDresser UnitDresser { get; }
 

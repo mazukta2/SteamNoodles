@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
         {
             var construction = _placementField.Constructions.First();
             var queueStartingPosition = construction.GetWorldPosition().X;
-            return new FloatPoint3D(queueStartingPosition, 0, _levelDefinition.QueuePosition.Y);
+            return new FloatPoint3D(queueStartingPosition, 0, _levelDefinition.QueuePosition.Z);
         }
 
 

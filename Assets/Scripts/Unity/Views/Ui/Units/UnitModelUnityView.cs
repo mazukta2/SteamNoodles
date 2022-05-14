@@ -16,15 +16,11 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Units
         [SerializeField] UnityAnimator _animator;
         [SerializeField] UnitRigs _rigs;
 
-        public ILevelPosition Position { get; private set; }
-        public IRotator Rotator { get; private set; }
         public IAnimator Animator => _animator;
         public IUnitDresser UnitDresser { get; private set; }
 
         protected override void PreAwake()
         {
-            Position = new UnityLevelPosition(transform);
-            Rotator = new UnityRotator(transform);
             UnitDresser = new UnitDresser(_rigs, IAssets.Default);
         }
 
