@@ -20,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
             Z = z;
         }
 
-        public static FloatPoint3D operator +(FloatPoint3D current, FloatPoint3D other) => new FloatPoint3D(current.X + other.X, current.Y + other.Y, current.Z - other.Z);
+        public static FloatPoint3D operator +(FloatPoint3D current, FloatPoint3D other) => new FloatPoint3D(current.X + other.X, current.Y + other.Y, current.Z + other.Z);
         public static FloatPoint3D operator -(FloatPoint3D current, FloatPoint3D other) => new FloatPoint3D(current.X - other.X, current.Y - other.Y, current.Z - other.Z);
         public static bool operator ==(FloatPoint3D current, FloatPoint3D other) => current.X == other.X && current.Y == other.Y && current.Z == other.Z;
         public static bool operator !=(FloatPoint3D current, FloatPoint3D other) => current.X != other.X || current.Y != other.Y || current.Z != other.Z;
@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         public FloatPoint3D GetNormalize()
         {
             var distance = (float)System.Math.Sqrt(X * X + Y * Y + Z * Z);
-            return new FloatPoint3D(X / distance, Y / distance, Z/ distance);
+            return new FloatPoint3D(X / distance, Y / distance, Z / distance);
         }
 
         public override bool Equals(object obj)

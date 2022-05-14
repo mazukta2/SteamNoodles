@@ -4,8 +4,10 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Level.Units;
@@ -95,7 +97,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var building = game.LevelCollection.FindView<ConstructionView>();
             var unit = game.LevelCollection.FindView<UnitView>();
 
-            Assert.AreEqual(building.Position.Value.X + 0.5f, unit.Position.Value.X);
+            Assert.AreEqual(building.Position.Value.X, unit.Position.Value.X);
 
             game.Dispose();
         }
@@ -153,6 +155,49 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         }
         #endregion
 
+        [Test]
+        public void IsLevelCrowdGetUnitsCorrectly()
+        {
+            var uc = new UnitControllerMock();
+            uc.SettingsDef.Speed = 1;
+            var time = uc.Time;
+            var level = LevelDefinitionSetups.GetDefault();
+            level.UnitsRect = new FloatRect(-10, -4, 20, 8);
+            level.CrowdUnitsAmount = 0;
+            var crowd = new LevelCrowd(uc, time, level, uc.Random);
+
+            var unit = uc.SpawnUnit(new FloatPoint3D(0, 0, 0));
+            crowd.SendToCrowd(unit, LevelCrowd.CrowdDirection.Left);
+            Assert.AreEqual(new FloatPoint3D(0, 0, 0), unit.Position);
+            Assert.AreEqual(-10, unit.Target.X);
+            Assert.AreEqual(0, unit.Target.Y);
+            Assert.GreaterOrEqual(unit.Target.Z, - 4);
+            Assert.LessOrEqual(unit.Target.Z, 4);
+            Assert.IsFalse(unit.IsDisposed);
+            time.MoveTime(1);
+            Assert.IsFalse(unit.IsDisposed);
+            time.MoveTime(100);
+            Assert.AreEqual(unit.Target, unit.Position);
+            Assert.IsTrue(unit.IsDisposed);
+
+            var unit2 = uc.SpawnUnit(new FloatPoint3D(0, 0, 0));
+            crowd.SendToCrowd(unit2, LevelCrowd.CrowdDirection.Right);
+            Assert.AreEqual(new FloatPoint3D(0, 0, 0), unit2.Position);
+            Assert.AreEqual(10, unit2.Target.X);
+            Assert.AreEqual(0, unit2.Target.Y);
+            Assert.GreaterOrEqual(unit2.Target.Z, -4);
+            Assert.LessOrEqual(unit2.Target.Z, 4);
+            Assert.IsFalse(unit2.IsDisposed);
+            time.MoveTime(1);
+            Assert.IsFalse(unit2.IsDisposed);
+            time.MoveTime(100);
+            Assert.AreEqual(unit2.Target, unit2.Position);
+            Assert.IsTrue(unit2.IsDisposed);
+
+            crowd.Dispose();
+            uc.Dispose();
+        }
+
         class UnitControllerMock : Disposable, IUnits, ICustomers
         {
             public CustomerDefinition Def { get; } = new CustomerDefinition();
@@ -160,6 +205,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             public SessionRandom Random { get; } = new SessionRandom();
             public List<Unit> Units = new List<Unit>();
             public int QueueSize { get; set; }
+            public GameTime Time { get; set; } = new GameTime();
 
             public FloatPoint3D GetQueueFirstPosition()
             {
@@ -173,7 +219,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             public Unit SpawnUnit(FloatPoint3D pos)
             {
-                var unit = new Unit(pos, pos, Def, SettingsDef, Random);
+                var unit = new Unit(pos, pos, Def, SettingsDef, Random, Time);
                 Units.Add(unit);
                 return unit;
             }

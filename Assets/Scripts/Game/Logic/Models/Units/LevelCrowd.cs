@@ -34,8 +34,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             for (int i = 0; i < levelDefinition.CrowdUnitsAmount; i++)
             {
                 var position = GetRandomPoint(UnitsField, _random);
-                _crowd.Add(_unitsController.SpawnUnit(position,
-                    new FloatPoint3D(_random.GetRandom() ? UnitsField.X - 1 : UnitsField.X + UnitsField.Width + 1, 0, position.Z)));
+                var target = GetRandomPointDirection(_random.GetRandom() ? CrowdDirection.Left : CrowdDirection.Right);
+                _crowd.Add(_unitsController.SpawnUnit(position, target));
             }
             _time.OnTimeChanged += Time_OnTimeChanged;
         }
@@ -49,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         {
             foreach (var item in _crowd.ToArray())
             {
-                if (!IsHorisontalyInside(UnitsField, item.Position))
+                if (!item.IsMoving())
                 {
                     _unitsController.DestroyUnit(item);
                     _crowd.Remove(item);
@@ -58,26 +58,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
             if (_crowd.Count < _levelDefinition.CrowdUnitsAmount)
             {
-                var position = GetRandomPoint(UnitsField, _random);
-                FloatPoint3D target;
-                if (_random.GetRandom())
-                {
-                    position = new FloatPoint3D(UnitsField.X + 1, 0, position.Z);
-                    target = new FloatPoint3D(UnitsField.X + UnitsField.Width + 1, 0, position.Z);
-                }
-                else
-                {
-                    position = new FloatPoint3D(UnitsField.X + UnitsField.Width - 1, 0, position.Z);
-                    target = new FloatPoint3D(UnitsField.X - 1, 0, position.Z);
-                }
+                var direction = _random.GetRandom() ? CrowdDirection.Left : CrowdDirection.Right;
+                var target = GetRandomPointDirection(direction);
+                var targetOposite = GetRandomPointDirection(direction == CrowdDirection.Right ? CrowdDirection.Left : CrowdDirection.Right);
+                var position = new FloatPoint3D(targetOposite.X, 0, target.Z);
 
                 var unit = _unitsController.SpawnUnit(position, target);
                 _crowd.Add(unit);
             }
-        }
-        public bool IsHorisontalyInside(FloatRect rect, FloatPoint3D point)
-        {
-            return rect.xMin <= point.X && point.X <= rect.xMax;
         }
 
         private FloatPoint3D GetRandomPoint(FloatRect rect, SessionRandom random)
@@ -87,14 +75,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         public void SendToCrowd(Unit unit, CrowdDirection direction)
         {
-            var position = GetRandomPoint(UnitsField, _random);
-            FloatPoint3D target;
-            if (direction == CrowdDirection.Right)
-                target = new FloatPoint3D(UnitsField.X + UnitsField.Width + 1, 0, position.Z);
-            else
-                target = new FloatPoint3D(UnitsField.X - 1, 0, position.Z);
-            unit.SetTarget(target);
+            unit.SetTarget(GetRandomPointDirection(direction));
             _crowd.Add(unit);
+        }
+
+        public FloatPoint3D GetRandomPointDirection(CrowdDirection direction)
+        {
+            var position = GetRandomPoint(UnitsField, _random);
+            if (direction == CrowdDirection.Right)
+                return new FloatPoint3D(UnitsField.X + UnitsField.Width, 0, position.Z);
+            else
+                return new FloatPoint3D(UnitsField.X, 0, position.Z);
         }
 
         public enum CrowdDirection

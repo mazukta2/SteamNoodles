@@ -30,7 +30,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _time = time ?? throw new ArgumentNullException(nameof(time));
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
-            _time.OnTimeChanged += Time_OnTimeChanged;
 
             _pool = new Deck<CustomerDefinition>(random);
             foreach (var item in levelDefinition.BaseCrowdUnits)
@@ -39,7 +38,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         protected override void DisposeInner()
         {
-            _time.OnTimeChanged -= Time_OnTimeChanged;
             foreach (var unit in _spawnedUnits)
                 unit.Dispose();
         }
@@ -51,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         public Unit SpawnUnit(FloatPoint3D position, CustomerDefinition definition)
         {
-            return SpawnUnit(new Unit(position, position, definition, _unitsSettings, _random));
+            return SpawnUnit(new Unit(position, position, definition, _unitsSettings, _random, _time));
         }
 
         public Unit SpawnUnit(Unit unit)
@@ -66,14 +64,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _spawnedUnits.Remove(unit);
             unit.Dispose();
             OnUnitDestroy(unit);
-        }
-
-        private void Time_OnTimeChanged(float oldTime, float newTime)
-        {
-            foreach (var item in _spawnedUnits.ToArray())
-            {
-                item.MoveToTarget(newTime - oldTime);
-            }
         }
 
         public float GetUnitSize()

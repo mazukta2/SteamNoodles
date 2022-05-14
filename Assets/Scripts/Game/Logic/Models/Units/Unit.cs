@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 
@@ -20,19 +21,33 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public int VisualSeed { get; private set; }
 
         private UnitsSettingsDefinition _unitsSettings;
+        private IGameTime _time;
         private float _speedOffset;
 
-        public Unit(FloatPoint3D position, FloatPoint3D target, CustomerDefinition definition, UnitsSettingsDefinition unitsSettings, SessionRandom random)
+        public Unit(FloatPoint3D position, FloatPoint3D target, CustomerDefinition definition, 
+            UnitsSettingsDefinition unitsSettings, SessionRandom random, IGameTime time)
         {
             Position = position;
             Target = target;
             Definition = definition ?? throw new ArgumentNullException(nameof(definition));
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
+            _time = time;
             _speedOffset = random.GetRandom(-1, 1) * _unitsSettings.SpeedOffset;
             VisualSeed = random.GetRandom(0, 10000);
+            _time.OnTimeChanged += Time_OnTimeChanged;
         }
 
-        public bool MoveToTarget(float delta)
+        protected override void DisposeInner()
+        {
+            _time.OnTimeChanged -= Time_OnTimeChanged;
+        }
+
+        private void Time_OnTimeChanged(float oldTime, float newTime)
+        {
+            MoveToTarget(newTime - oldTime);
+        }
+
+        private bool MoveToTarget(float delta)
         {
             if (Position.IsClose(Target))
                 return true;
@@ -43,13 +58,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             if (distance < movement)
                 movement = distance;
 
-            Position = Position + direction.GetNormalize() * movement;
+            var normalizeDirection = direction.GetNormalize();
+            Position = Position + normalizeDirection * movement;
             if (Position.Y != 0)
                 throw new Exception();
             OnPositionChanged();
 
             if (Position.IsClose(Target))
+            {
+                Position = Target;
                 OnReachedPosition();
+            }
 
             return false;
         }
