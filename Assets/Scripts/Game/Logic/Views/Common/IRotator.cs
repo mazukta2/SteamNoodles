@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
     public interface IRotator
     {
-        void FaceTo(FloatPoint3D value);
-        void Look(FloatPoint3D direction);
+        FloatPoint3D GetDirection();
+        void LookAtDirection(FloatPoint3D direction);
     }
 }

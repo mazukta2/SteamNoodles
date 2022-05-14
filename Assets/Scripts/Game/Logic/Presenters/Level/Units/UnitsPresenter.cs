@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 
@@ -31,7 +32,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         private void SpawnUnit(Unit item)
         {
             var view = _unitsManagerView.Container.Spawn<IUnitView>(_unitsManagerView.UnitPrototype);
-            new UnitPresenter(item, view, _settingsDefinition);
+            new UnitPresenter(item, view, _settingsDefinition, IGameTime.Default);
         }
     }
 }

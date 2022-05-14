@@ -154,7 +154,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private void UpdatePosition()
         {
             _modelView.BorderAnimator.Play(CanPlace() ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
-            _view.Rotator.Look(ConstructionRotation.ToDirection(Rotation));
+            _view.Rotator.LookAtDirection(ConstructionRotation.ToDirection(Rotation));
             _view.LocalPosition.Value = GetWorldPosition();
             UpdatePoints();
             OnGhostPostionChanged();

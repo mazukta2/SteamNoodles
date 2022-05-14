@@ -8,6 +8,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
         public float SpeedOffset { get; set; }
         public float UnitSize { get; set; }
         public string[] Hairs { get; set; }
+        public float RotationSpeed { get; set; }
 
         public void Validate()
         {
@@ -19,6 +20,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 
             if (Hairs == null || Hairs.Length == 0)
                 throw new Exception($"{nameof(Hairs)} is empty");
+
+            if (RotationSpeed == 0)
+                throw new Exception($"{nameof(RotationSpeed)} is empty");
         }
     }
 }

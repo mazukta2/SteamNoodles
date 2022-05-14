@@ -25,5 +25,10 @@ namespace GameUnity.Assets.Scripts.Unity.Engine.Helpers
         {
             return new Vector3(vector.X, vector.Y, vector.Z);
         }
+
+        public static FloatPoint3D ToVector(this Vector3 vector)
+        {
+            return new FloatPoint3D(vector.x, vector.y, vector.z);
+        }
     }
 }

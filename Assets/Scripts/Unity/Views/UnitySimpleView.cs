@@ -29,19 +29,27 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void OnDestroy()
         {
-            Collection.Remove(this);
-            IsDisposed = true;
-            OnDispose();
+            DisposeInner();
         }
 
         public void Dispose()
         {
-            DestroyImmediate(gameObject);
+            DisposeInner();
+            Destroy(gameObject);
         }
 
         protected virtual void PreAwake()
         {
         }
 
+        private void DisposeInner()
+        {
+            if (IsDisposed)
+                return;
+
+            Collection.Remove(this);
+            IsDisposed = true;
+            OnDispose();
+        }
     }
 }

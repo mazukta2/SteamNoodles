@@ -44,6 +44,17 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
             return new FloatPoint3D(X / distance, Y / distance, Z / distance);
         }
 
+        public FloatPoint3D MoveTowards(FloatPoint3D target, float speed)
+        {
+            var direction = target - this;
+            var normalizeDirection = direction.GetNormalize();
+            var distanceToMove = normalizeDirection * speed;
+            if (GetDistanceTo(target) > speed)
+                return this + normalizeDirection * speed;
+            else
+                return target;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is FloatPoint3D otherPoint)

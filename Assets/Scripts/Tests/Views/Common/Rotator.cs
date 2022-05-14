@@ -8,12 +8,21 @@ namespace Game.Assets.Scripts.Tests.Views.Common
 {
     public class Rotator : IRotator
     {
-        public void FaceTo(FloatPoint3D value)
+        private FloatPoint3D Direction { get; set; }
+
+        public FloatPoint3D GetDirection()
         {
+            return Direction;
         }
 
-        public void Look(FloatPoint3D direction)
+        public void LookAtDirection(FloatPoint3D direction)
         {
+            Direction = direction;
+        }
+
+        public FloatPoint3D MoveTowards(FloatPoint3D target, float speed)
+        {
+            return target;
         }
     }
 }

@@ -42,17 +42,23 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void OnDestroy()
         {
-            Collection.Remove(this);
-            IsDisposed = true;
-            OnDispose();
+            DisposeInner();
         }
 
         public void Dispose()
         {
+            DisposeInner();
+            Destroy(gameObject);
+        }
+
+        private void DisposeInner()
+        {
             if (IsDisposed)
                 return;
 
-            DestroyImmediate(gameObject);
+            Collection.Remove(this);
+            IsDisposed = true;
+            OnDispose();
         }
 
         public void OnPointerEnter(PointerEventData eventData)

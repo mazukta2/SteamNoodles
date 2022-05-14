@@ -1,6 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using System;
 
@@ -13,15 +15,18 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         private IUnitView _view;
         private Unit _model;
         private UnitsSettingsDefinition _settings;
+        private UnitRotator _rotator;
 
-        public UnitPresenter(Unit model, IUnitView view, UnitsSettingsDefinition unitsSettingsDefinition) : base(view)
+        public UnitPresenter(Unit model, IUnitView view, UnitsSettingsDefinition unitsSettingsDefinition, IGameTime time) : base(view)
         {
             _view = view;
             _model = model;
             _settings = unitsSettingsDefinition ?? throw new ArgumentNullException(nameof(unitsSettingsDefinition));
+            _rotator = new UnitRotator(view.Rotator, time, 0.1f, unitsSettingsDefinition.RotationSpeed);
 
             _view.Position.Value = model.Position;
-            _view.Rotator.FaceTo(model.Target);
+            _rotator.Direction = model.Target - model.Position;
+            _rotator.Skip();
             _model.OnPositionChanged += HandleOnPositionChanged;
             _model.OnDispose += HandleOnDispose;
             _model.OnTargetChanged += HandleOnTargetChanged;
@@ -34,6 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         protected override void DisposeInner()
         {
+            _rotator.Dispose();
             _model.OnPositionChanged -= HandleOnPositionChanged;
             _model.OnDispose -= HandleOnDispose;
             _model.OnTargetChanged -= HandleOnTargetChanged;
@@ -49,7 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void HandleOnTargetChanged()
         {
-            _view.Rotator.FaceTo(_model.Target);
+            _rotator.Direction = _model.Target - _model.Position;
             PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
@@ -65,7 +71,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void HandleOnLookAt(Common.Math.FloatPoint3D obj)
         {
-            _view.Rotator.FaceTo(obj);
+            _rotator.Direction = obj - _model.Position;
         }
 
         private void PlayAnimation(Animations animations)
