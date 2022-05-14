@@ -42,12 +42,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 unit.Dispose();
         }
 
-        public Unit SpawnUnit(FloatPoint3D pos)
+        public Unit SpawnUnit(GameVector3 pos)
         {
             return SpawnUnit(pos, _pool.Take());
         }
 
-        public Unit SpawnUnit(FloatPoint3D position, CustomerDefinition definition)
+        public Unit SpawnUnit(GameVector3 position, CustomerDefinition definition)
         {
             return SpawnUnit(new Unit(position, position, definition, _unitsSettings, _random, _time));
         }

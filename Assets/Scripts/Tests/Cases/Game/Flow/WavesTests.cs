@@ -32,12 +32,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var firstBuilding = game.LevelCollection.FindView<ConstructionView>();
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.MovePointer(new FloatPoint3D(-1, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-1, 0, 0));
             game.Controls.Click();
             Assert.AreEqual(2, game.LevelCollection.FindViews<ConstructionView>().Count);
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.MovePointer(new FloatPoint3D(-2, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-2, 0, 0));
             game.Controls.Click();
             Assert.AreEqual(3, game.LevelCollection.FindViews<ConstructionView>().Count);
 
@@ -67,12 +67,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var firstBuilding = game.LevelCollection.FindView<ConstructionView>();
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.MovePointer(new FloatPoint3D(-1, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-1, 0, 0));
             game.Controls.Click();
             Assert.AreEqual(2, game.LevelCollection.FindViews<ConstructionView>().Count);
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.MovePointer(new FloatPoint3D(-2, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-2, 0, 0));
             game.Controls.Click();
             Assert.AreEqual(3, game.LevelCollection.FindViews<ConstructionView>().Count);
 
@@ -105,14 +105,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.MovePointer(new FloatPoint3D(-1, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-1, 0, 0));
             game.Controls.Click();
 
             Assert.AreEqual(1f, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
             Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.MovePointer(new FloatPoint3D(-2, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-2, 0, 0));
             game.Controls.Click();
 
             Assert.AreEqual(1f, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
@@ -187,7 +187,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.NextWave.ToString(), game.LevelCollection.FindView<MainScreenView>().WaveButtonAnimator.Animation);
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.MovePointer(new FloatPoint3D(-1, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-1, 0, 0));
             game.Controls.Click();
 
             Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);

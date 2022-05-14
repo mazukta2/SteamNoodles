@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             view.LocalPosition.Value = GetPosition();
         }
 
-        private FloatPoint3D GetPosition() => _fieldPositions.GetMapPositionByGridPosition(_position, new IntRect(0, 0, 1, 1));
+        private GameVector3 GetPosition() => _fieldPositions.GetMapPositionByGridPosition(_position, new IntRect(0, 0, 1, 1));
 
         public void SetState(CellPlacementStatus state)
         {

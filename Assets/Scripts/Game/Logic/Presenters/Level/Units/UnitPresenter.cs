@@ -76,7 +76,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
-        private void HandleOnLookAt(Common.Math.FloatPoint3D target, bool skip)
+        private void HandleOnLookAt(Common.Math.GameVector3 target, bool skip)
         {
             _rotator.Direction = (target - _model.Position).ToQuaternion();
             if (skip)

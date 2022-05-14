@@ -58,7 +58,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             Assert.AreEqual("1", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.MovePointer(new FloatPoint3D(-2, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-2, 0, 0));
             game.Controls.Click();
 
             Assert.AreEqual(1, ICurrentLevel.Default.Resources.Points.CurrentLevel);

@@ -14,7 +14,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Vector2 _screenOffset;
 
-        private FloatPoint3D _position;
+        private GameVector3 _position;
 
         public UnityWorldText()
         {
@@ -22,7 +22,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
         }
 
         public string Value { get => _text.text; set => Set(value); }
-        public FloatPoint3D Position { get => _position;
+        public GameVector3 Position { get => _position;
             set {
                 _position = value;
                 UpdateView();

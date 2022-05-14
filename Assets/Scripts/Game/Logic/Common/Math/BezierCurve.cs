@@ -8,12 +8,12 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
     {
         // based on https://www.habrador.com/tutorials/interpolation/2-bezier-curve/
 
-        public FloatPoint3D Start { get; private set; }
-        public FloatPoint3D StartControl { get; private set; }
-        public FloatPoint3D EndControl { get; private set; }
-        public FloatPoint3D End { get; private set; }
+        public GameVector3 Start { get; private set; }
+        public GameVector3 StartControl { get; private set; }
+        public GameVector3 EndControl { get; private set; }
+        public GameVector3 End { get; private set; }
 
-        public BezierCurve(FloatPoint3D start, FloatPoint3D end, FloatPoint3D controlStart, FloatPoint3D controlEnd)
+        public BezierCurve(GameVector3 start, GameVector3 end, GameVector3 controlStart, GameVector3 controlEnd)
         {
             Start = start;
             End = end;
@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
             EndControl = controlEnd;
         }
 
-        public FloatPoint3D GetPosition(float time)
+        public GameVector3 GetPosition(float time)
         {
             if (time < 0 || time > 1)
                 throw new ArgumentException(nameof(time));
@@ -30,12 +30,12 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
         }
 
         //Display without having to press play
-        public IReadOnlyCollection<FloatPoint3D> GetLine()
+        public IReadOnlyCollection<GameVector3> GetLine()
         {
-            var line = new List<FloatPoint3D>();
+            var line = new List<GameVector3>();
             
             //The start position of the line
-            FloatPoint3D lastPos = Start;
+            GameVector3 lastPos = Start;
             line.Add(Start);
 
             //The resolution of the line
@@ -51,7 +51,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
                 float t = i * resolution;
 
                 //Find the coordinates between the control points with a Catmull-Rom spline
-                FloatPoint3D newPos = DeCasteljausAlgorithm(t);
+                GameVector3 newPos = DeCasteljausAlgorithm(t);
 
                 line.Add(newPos);
             }
@@ -59,16 +59,16 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
             return line.AsReadOnly();
         }
 
-        FloatPoint3D DeCasteljausAlgorithm(float t)
+        GameVector3 DeCasteljausAlgorithm(float t)
         {
-            var Q0 = FloatPoint3D.Lerp(Start, StartControl, t);
-            var Q1 = FloatPoint3D.Lerp(StartControl, EndControl, t);
-            var Q2 = FloatPoint3D.Lerp(EndControl, End, t);
+            var Q0 = GameVector3.Lerp(Start, StartControl, t);
+            var Q1 = GameVector3.Lerp(StartControl, EndControl, t);
+            var Q2 = GameVector3.Lerp(EndControl, End, t);
 
-            var R0 = FloatPoint3D.Lerp(Q0, Q1, t);
-            var R1 = FloatPoint3D.Lerp(Q1, Q2, t);
+            var R0 = GameVector3.Lerp(Q0, Q1, t);
+            var R1 = GameVector3.Lerp(Q1, Q2, t);
 
-            var B  = FloatPoint3D.Lerp(R0, R1, t);
+            var B  = GameVector3.Lerp(R0, R1, t);
 
             return B;
         }

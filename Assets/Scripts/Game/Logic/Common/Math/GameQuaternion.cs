@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 
 		public const float kEpsilon = 1E-06f; // should probably be used in the 0 tests in LookRotation or Slerp
 
-		public FloatPoint3D xyz
+		public GameVector3 xyz
 		{
 			set
 			{
@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 			}
 			get
 			{
-				return new FloatPoint3D(X, Y, Z);
+				return new GameVector3(X, Y, Z);
 			}
 		}
 		/// <summary>
@@ -112,7 +112,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 		/// <summary>
 		///   <para>Returns the euler angle representation of the rotation.</para>
 		/// </summary>
-		public FloatPoint3D eulerAngles
+		public GameVector3 eulerAngles
 		{
 			get
 			{
@@ -164,7 +164,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 		/// </summary>
 		/// <param name="v">The vector part</param>
 		/// <param name="w">The w part</param>
-		public GameQuaternion(FloatPoint3D v, float w)
+		public GameQuaternion(GameVector3 v, float w)
 		{
 			this.X = v.X;
 			this.Y = v.Y;
@@ -229,13 +229,13 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 		/// </summary>
 		/// <param name="angle"></param>
 		/// <param name="axis"></param>
-		public static GameQuaternion AngleAxis(float angle, FloatPoint3D axis)
+		public static GameQuaternion AngleAxis(float angle, GameVector3 axis)
 		{
 			return GameQuaternion.AngleAxis(angle, ref axis);
 		}
-		private static GameQuaternion AngleAxis(float degress, ref FloatPoint3D axis)
+		private static GameQuaternion AngleAxis(float degress, ref GameVector3 axis)
 		{
-			if (System.Math.Sqrt(FloatPoint3D.Dot(axis, axis)) == 0)
+			if (System.Math.Sqrt(GameVector3.Dot(axis, axis)) == 0)
 				return identity;
 			//if (axis.sqrMagnitude == 0.0f)
 			//	return identity;
@@ -252,7 +252,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 
 			return Normalize(result);
 		}
-		public void ToAngleAxis(out float angle, out FloatPoint3D axis)
+		public void ToAngleAxis(out float angle, out GameVector3 axis)
 		{
 			GameQuaternion.ToAxisAngleRad(this, out axis, out angle);
 			angle *= radToDeg;
@@ -262,7 +262,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 		/// </summary>
 		/// <param name="fromDirection"></param>
 		/// <param name="toDirection"></param>
-		public static GameQuaternion FromToRotation(FloatPoint3D fromDirection, FloatPoint3D toDirection)
+		public static GameQuaternion FromToRotation(GameVector3 fromDirection, GameVector3 toDirection)
 		{
 			return RotateTowards(LookRotation(fromDirection), LookRotation(toDirection), float.MaxValue);
 		}
@@ -271,7 +271,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 		/// </summary>
 		/// <param name="fromDirection"></param>
 		/// <param name="toDirection"></param>
-		public void SetFromToRotation(FloatPoint3D fromDirection, FloatPoint3D toDirection)
+		public void SetFromToRotation(GameVector3 fromDirection, GameVector3 toDirection)
 		{
 			this = GameQuaternion.FromToRotation(fromDirection, toDirection);
 		}
@@ -280,22 +280,22 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 		/// </summary>
 		/// <param name="forward">The direction to look in.</param>
 		/// <param name="upwards">The vector that defines in which direction up is.</param>
-		public static GameQuaternion LookRotation(FloatPoint3D forward, [DefaultValue("FloatPoint3D.Up")] FloatPoint3D upwards)
+		public static GameQuaternion LookRotation(GameVector3 forward, [DefaultValue("FloatPoint3D.Up")] GameVector3 upwards)
 		{
 			return GameQuaternion.LookRotation(ref forward, ref upwards);
 		}
-		public static GameQuaternion LookRotation(FloatPoint3D forward)
+		public static GameQuaternion LookRotation(GameVector3 forward)
 		{
-			FloatPoint3D up = new FloatPoint3D(0,1,0);
+			GameVector3 up = new GameVector3(0,1,0);
 			return GameQuaternion.LookRotation(ref forward, ref up);
 		}
 		// from http://answers.unity3d.com/questions/467614/what-is-the-source-code-of-quaternionlookrotation.html
-		private static GameQuaternion LookRotation(ref FloatPoint3D forward, ref FloatPoint3D up)
+		private static GameQuaternion LookRotation(ref GameVector3 forward, ref GameVector3 up)
 		{
 
 			forward = forward.GetNormalize();
-			FloatPoint3D right = FloatPoint3D.Cross(up, forward).GetNormalize();
-			up = FloatPoint3D.Cross(forward, right);
+			GameVector3 right = GameVector3.Cross(up, forward).GetNormalize();
+			up = GameVector3.Cross(forward, right);
 			var m00 = right.X;
 			var m01 = right.Y;
 			var m02 = right.Z;
@@ -347,9 +347,9 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 			quaternion.W = (m01 - m10) * num2;
 			return quaternion;
 		}
-		public void SetLookRotation(FloatPoint3D view)
+		public void SetLookRotation(GameVector3 view)
 		{
-			FloatPoint3D up = FloatPoint3D.Up;
+			GameVector3 up = GameVector3.Up;
 			this.SetLookRotation(view, up);
 		}
 		/// <summary>
@@ -357,7 +357,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 		/// </summary>
 		/// <param name="view">The direction to look in.</param>
 		/// <param name="up">The vector that defines in which direction up is.</param>
-		public void SetLookRotation(FloatPoint3D view, [DefaultValue("FloatPoint3D.up")] FloatPoint3D up)
+		public void SetLookRotation(GameVector3 view, [DefaultValue("FloatPoint3D.up")] GameVector3 up)
 		{
 			this = GameQuaternion.LookRotation(view, up);
 		}
@@ -404,7 +404,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 			}
 
 
-			float cosHalfAngle = a.W * b.W + FloatPoint3D.Dot(a.xyz, b.xyz);
+			float cosHalfAngle = a.W * b.W + GameVector3.Dot(a.xyz, b.xyz);
 
 			if (cosHalfAngle >= 1.0f || cosHalfAngle <= -1.0f)
 			{
@@ -528,18 +528,18 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 		/// <param name="z"></param>
 		public static GameQuaternion Euler(float x, float y, float z)
 		{
-			return GameQuaternion.FromEulerRad(new FloatPoint3D((float)x, (float)y, (float)z) * degToRad);
+			return GameQuaternion.FromEulerRad(new GameVector3((float)x, (float)y, (float)z) * degToRad);
 		}
 		/// <summary>
 		///   <para>Returns a rotation that rotates z degrees around the z axis, x degrees around the x axis, and y degrees around the y axis (in that order).</para>
 		/// </summary>
 		/// <param name="euler"></param>
-		public static GameQuaternion Euler(FloatPoint3D euler)
+		public static GameQuaternion Euler(GameVector3 euler)
 		{
 			return GameQuaternion.FromEulerRad(euler * degToRad);
 		}
 		// from http://stackoverflow.com/questions/12088610/conversion-between-euler-quaternion-like-in-unity3d-engine
-		private static FloatPoint3D ToEulerRad(GameQuaternion rotation)
+		private static GameVector3 ToEulerRad(GameQuaternion rotation)
 		{
 			float sqw = rotation.W * rotation.W;
 			float sqx = rotation.X * rotation.X;
@@ -547,7 +547,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 			float sqz = rotation.Z * rotation.Z;
 			float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
 			float test = rotation.X * rotation.W - rotation.Y * rotation.Z;
-			FloatPoint3D v;
+			GameVector3 v;
 
 			if (test > 0.4995f * unit)
 			{ // singularity at north pole
@@ -569,7 +569,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 			v.Z = (float)System.Math.Atan2(2f * q.X * q.Y + 2f * q.Z * q.W, 1 - 2f * (q.Y * q.Y + q.Z * q.Z));      // Roll
 			return NormalizeAngles(v * radToDeg);
 		}
-		private static FloatPoint3D NormalizeAngles(FloatPoint3D angles)
+		private static GameVector3 NormalizeAngles(GameVector3 angles)
 		{
 			angles.X = NormalizeAngle(angles.X);
 			angles.Y = NormalizeAngle(angles.Y);
@@ -585,7 +585,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 			return angle;
 		}
 		// from http://stackoverflow.com/questions/11492299/quaternion-to-euler-angles-algorithm-how-to-convert-to-y-up-and-between-ha
-		private static GameQuaternion FromEulerRad(FloatPoint3D euler)
+		private static GameQuaternion FromEulerRad(GameVector3 euler)
 		{
 			var yaw = euler.X;
 			var pitch = euler.Y;
@@ -607,7 +607,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 			return result;
 
 		}
-		private static void ToAxisAngleRad(GameQuaternion q, out FloatPoint3D axis, out float angle)
+		private static void ToAxisAngleRad(GameQuaternion q, out GameVector3 axis, out float angle)
 		{
 			if (System.Math.Abs(q.W) > 1.0f)
 				q.Normalize();
@@ -621,7 +621,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 			{
 				// This occurs when the angle is zero. 
 				// Not a problem: just set an arbitrary normalized axis.
-				axis = new FloatPoint3D(1, 0, 0);
+				axis = new GameVector3(1, 0, 0);
 			}
 		}
 		#region Obsolete methods
@@ -722,7 +722,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 		{
 			return new GameQuaternion(lhs.W * rhs.X + lhs.X * rhs.W + lhs.Y * rhs.Z - lhs.Z * rhs.Y, lhs.W * rhs.Y + lhs.Y * rhs.W + lhs.Z * rhs.X - lhs.X * rhs.Z, lhs.W * rhs.Z + lhs.Z * rhs.W + lhs.X * rhs.Y - lhs.Y * rhs.X, lhs.W * rhs.W - lhs.X * rhs.X - lhs.Y * rhs.Y - lhs.Z * rhs.Z);
 		}
-		public static FloatPoint3D operator *(GameQuaternion rotation, FloatPoint3D point)
+		public static GameVector3 operator *(GameQuaternion rotation, GameVector3 point)
 		{
 			float num = rotation.X * 2f;
 			float num2 = rotation.Y * 2f;
@@ -736,7 +736,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 			float num10 = rotation.W * num;
 			float num11 = rotation.W * num2;
 			float num12 = rotation.W * num3;
-			FloatPoint3D result;
+			GameVector3 result;
 			result.X = (1f - (num5 + num6)) * point.X + (num7 - num12) * point.Y + (num8 + num11) * point.Z;
 			result.Y = (num7 + num12) * point.X + (1f - (num4 + num6)) * point.Y + (num9 - num10) * point.Z;
 			result.Z = (num8 - num11) * point.X + (num9 + num10) * point.Z + (1f - (num4 + num5)) * point.Z;

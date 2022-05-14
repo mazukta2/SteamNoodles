@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             Assert.AreEqual("+5", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
 
-            game.Controls.MovePointer(new Scripts.Game.Logic.Common.Math.FloatPoint3D(999, 0, 999));
+            game.Controls.MovePointer(new Scripts.Game.Logic.Common.Math.GameVector3(999, 0, 999));
 
             Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
 
@@ -87,7 +87,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            game.Controls.MovePointer(new FloatPoint3D(-2, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-2, 0, 0));
             Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
 
             game.Dispose();
@@ -121,25 +121,25 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
 
-            game.Controls.MovePointer(new FloatPoint3D(1, 0, 0));
+            game.Controls.MovePointer(new GameVector3(1, 0, 0));
             Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            game.Controls.MovePointer(new FloatPoint3D(2, 0, 0));
+            game.Controls.MovePointer(new GameVector3(2, 0, 0));
             Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            game.Controls.MovePointer(new FloatPoint3D(3, 0, 0));
+            game.Controls.MovePointer(new GameVector3(3, 0, 0));
             Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
 
 
-            game.Controls.MovePointer(new FloatPoint3D(-1, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-1, 0, 0));
             Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            game.Controls.MovePointer(new FloatPoint3D(-2, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-2, 0, 0));
             Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            game.Controls.MovePointer(new FloatPoint3D(-3, 0, 0));
+            game.Controls.MovePointer(new GameVector3(-3, 0, 0));
             Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
 
-            game.Controls.MovePointer(new FloatPoint3D(0, 0, -1));
+            game.Controls.MovePointer(new GameVector3(0, 0, -1));
             Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
 
-            game.Controls.MovePointer(new FloatPoint3D(0, 0, 1));
+            game.Controls.MovePointer(new GameVector3(0, 0, 1));
             Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
 
             game.Dispose();

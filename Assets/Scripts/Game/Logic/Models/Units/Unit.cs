@@ -14,9 +14,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public event Action OnPositionChanged = delegate { };
         public event Action OnReachedPosition = delegate { };
         public event Action OnTargetChanged = delegate { };
-        public event Action<FloatPoint3D, bool> OnLookAt = delegate { };
-        public FloatPoint3D Target { get; private set; }
-        public FloatPoint3D Position { get; private set; }
+        public event Action<GameVector3, bool> OnLookAt = delegate { };
+        public GameVector3 Target { get; private set; }
+        public GameVector3 Position { get; private set; }
         public CustomerDefinition Definition { get; private set; }
 
         public int VisualSeed { get; private set; }
@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private float _speedOffset;
         private float _currentSpeed;
 
-        public Unit(FloatPoint3D position, FloatPoint3D target, CustomerDefinition definition, 
+        public Unit(GameVector3 position, GameVector3 target, CustomerDefinition definition, 
             UnitsSettingsDefinition unitsSettings, SessionRandom random, IGameTime time)
         {
             Position = position;
@@ -94,7 +94,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             return false;
         }
 
-        public void LookAt(FloatPoint3D target, bool skip = false)
+        public void LookAt(GameVector3 target, bool skip = false)
         {
             if (IsMoving())
                 throw new Exception("Can't look while moving");
@@ -114,7 +114,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             OnReachedPosition();
         }
 
-        public void SetTarget(FloatPoint3D target)
+        public void SetTarget(GameVector3 target)
         {
             if (target.Y != 0)
                 throw new Exception();

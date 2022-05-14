@@ -22,7 +22,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var time = new GameTime();
             var level = new ViewsCollection();
 
-            var curve = new BezierCurve(FloatPoint3D.Zero, FloatPoint3D.One, new FloatPoint3D(1, 0, 0), new FloatPoint3D(1, 0, 0));
+            var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, new GameVector3(1, 0, 0), new GameVector3(1, 0, 0));
             var animation = new BuildingPointsAnimation(curve, 10, CreatePieceSpawner(level), definitions, time);
             animation.Play();
             Assert.IsTrue(animation.IsDisposed);
@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var time = new GameTime();
             time.MoveTime(10);
             var level = new ViewsCollection();
-            var curve = new BezierCurve(FloatPoint3D.Zero, FloatPoint3D.One, new FloatPoint3D(1, 0, 0), new FloatPoint3D(1, 0, 0));
+            var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, new GameVector3(1, 0, 0), new GameVector3(1, 0, 0));
             var animation = new BuildingPointsAnimation(curve, 10, CreatePieceSpawner(level), definitions, time);
             animation.Play();
             Assert.IsFalse(animation.IsDisposed);
@@ -60,17 +60,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test]
         public void IsBezierCurveWorking()
         {
-            var curve = new BezierCurve(FloatPoint3D.Zero, FloatPoint3D.One, FloatPoint3D.One, FloatPoint3D.Zero);
-            Assert.AreEqual(new FloatPoint3D(0f, 0f, 0f), curve.GetPosition(0));
-            Assert.AreEqual(new FloatPoint3D(0.5f, 0.5f, 0.5f), curve.GetPosition(0.5f));
-            Assert.AreEqual(new FloatPoint3D(1f, 1f, 1f), curve.GetPosition(1f));
+            var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, GameVector3.One, GameVector3.Zero);
+            Assert.AreEqual(new GameVector3(0f, 0f, 0f), curve.GetPosition(0));
+            Assert.AreEqual(new GameVector3(0.5f, 0.5f, 0.5f), curve.GetPosition(0.5f));
+            Assert.AreEqual(new GameVector3(1f, 1f, 1f), curve.GetPosition(1f));
         }
 
         [Test]
         public void IsBezierCurvePositionsWorking()
         {
-            var curve = new BezierCurve(new FloatPoint3D(1,1,1), new FloatPoint3D(-1, 1, -1), new FloatPoint3D(1, 3, 1), new FloatPoint3D(-1, 3, -1));
-            Assert.AreEqual(new FloatPoint3D(0, 2.5f, 0), curve.GetPosition(0.5f));
+            var curve = new BezierCurve(new GameVector3(1,1,1), new GameVector3(-1, 1, -1), new GameVector3(1, 3, 1), new GameVector3(-1, 3, -1));
+            Assert.AreEqual(new GameVector3(0, 2.5f, 0), curve.GetPosition(0.5f));
         }
 
         [Test]
@@ -83,14 +83,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var time = new GameTime();
             time.MoveTime(10);
             var level = new ViewsCollection();
-            var curve = new BezierCurve(FloatPoint3D.Zero, FloatPoint3D.One, FloatPoint3D.One, FloatPoint3D.Zero);
+            var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, GameVector3.One, GameVector3.Zero);
             var animation = new BuildingPointsAnimation(curve, 1, CreatePieceSpawner(level), definitions, time);
             animation.Play();
             time.MoveTime(1);
             var piece = level.FindView<PieceView>();
-            Assert.AreEqual(new FloatPoint3D(0.5f, 0.5f, 0.5f), piece.Position.Value);
+            Assert.AreEqual(new GameVector3(0.5f, 0.5f, 0.5f), piece.Position.Value);
             time.MoveTime(1);
-            Assert.AreEqual(new FloatPoint3D(1f, 1f, 1f), piece.Position.Value);
+            Assert.AreEqual(new GameVector3(1f, 1f, 1f), piece.Position.Value);
 
             level.Dispose();
         }
@@ -105,12 +105,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var time = new GameTime();
             time.MoveTime(10);
             var level = new ViewsCollection();
-            var curve = new BezierCurve(new FloatPoint3D(1, 1, 1), new FloatPoint3D(-1, 1, -1), new FloatPoint3D(1, 3, 1), new FloatPoint3D(-1, 3, -1));
+            var curve = new BezierCurve(new GameVector3(1, 1, 1), new GameVector3(-1, 1, -1), new GameVector3(1, 3, 1), new GameVector3(-1, 3, -1));
             var animation = new BuildingPointsAnimation(curve, 1, CreatePieceSpawner(level), definitions, time);
             animation.Play();
             time.MoveTime(1);
             var piece = level.FindView<PieceView>();
-            Assert.AreEqual(new FloatPoint3D(0, 2.5f, 0), piece.Position.Value);
+            Assert.AreEqual(new GameVector3(0, 2.5f, 0), piece.Position.Value);
 
             level.Dispose();
         }

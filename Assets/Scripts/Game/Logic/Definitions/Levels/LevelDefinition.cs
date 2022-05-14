@@ -17,8 +17,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
         public PlacementFieldDefinition PlacementField { get; set; }
 
-        public FloatPoint3D QueuePosition { get; set; }
-        public FloatPoint3D QueueFirstPositionOffset { get; set; }
+        public GameVector3 QueuePosition { get; set; }
+        public GameVector3 QueueFirstPositionOffset { get; set; }
 
         public int CrowdUnitsAmount { get; set; }
 

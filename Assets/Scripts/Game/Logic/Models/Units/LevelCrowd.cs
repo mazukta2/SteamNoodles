@@ -61,16 +61,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 var direction = _random.GetRandom() ? CrowdDirection.Left : CrowdDirection.Right;
                 var target = GetRandomPointDirection(direction);
                 var targetOposite = GetRandomPointDirection(direction == CrowdDirection.Right ? CrowdDirection.Left : CrowdDirection.Right);
-                var position = new FloatPoint3D(targetOposite.X, 0, target.Z);
+                var position = new GameVector3(targetOposite.X, 0, target.Z);
 
                 var unit = _unitsController.SpawnUnit(position, target);
                 _crowd.Add(unit);
             }
         }
 
-        private FloatPoint3D GetRandomPoint(FloatRect rect, SessionRandom random)
+        private GameVector3 GetRandomPoint(FloatRect rect, SessionRandom random)
         {
-            return new FloatPoint3D(random.GetRandom(rect.xMin, rect.xMax), 0, random.GetRandom(rect.yMin, rect.yMax));
+            return new GameVector3(random.GetRandom(rect.xMin, rect.xMax), 0, random.GetRandom(rect.yMin, rect.yMax));
         }
 
         public void SendToCrowd(Unit unit, CrowdDirection direction)
@@ -79,13 +79,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _crowd.Add(unit);
         }
 
-        public FloatPoint3D GetRandomPointDirection(CrowdDirection direction)
+        public GameVector3 GetRandomPointDirection(CrowdDirection direction)
         {
             var position = GetRandomPoint(UnitsField, _random);
             if (direction == CrowdDirection.Right)
-                return new FloatPoint3D(UnitsField.X + UnitsField.Width, 0, position.Z);
+                return new GameVector3(UnitsField.X + UnitsField.Width, 0, position.Z);
             else
-                return new FloatPoint3D(UnitsField.X, 0, position.Z);
+                return new GameVector3(UnitsField.X, 0, position.Z);
         }
 
         public enum CrowdDirection

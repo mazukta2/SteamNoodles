@@ -45,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             {
                 var pos = GetPositionFor(_queue.Count + 1);
                 var unit = _unitsController.SpawnUnit(pos);
-                unit.LookAt(_customers.GetQueueFirstPosition() + new FloatPoint3D(-1, 0, 0), true);
+                unit.LookAt(_customers.GetQueueFirstPosition() + new GameVector3(-1, 0, 0), true);
                 unit.OnReachedPosition += Unit_OnReachedPosition;
                 _queue.Add(unit);
             }
@@ -69,18 +69,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             {
                 if (!_queue[0].IsMoving())
                 {
-                    _queue[0].LookAt(_customers.GetQueueFirstPosition() + _customers.GetQueueFirstPositionOffset() + new FloatPoint3D(0, 0, 1));
+                    _queue[0].LookAt(_customers.GetQueueFirstPosition() + _customers.GetQueueFirstPositionOffset() + new GameVector3(0, 0, 1));
                 }
             }
         }
 
-        private FloatPoint3D GetPositionFor(int index)
+        private GameVector3 GetPositionFor(int index)
         {
-            var offset = FloatPoint3D.Zero;
+            var offset = GameVector3.Zero;
             if (index == 0)
                 offset = _customers.GetQueueFirstPositionOffset();
 
-            return _customers.GetQueueFirstPosition() + offset + new FloatPoint3D(_unitsController.GetUnitSize(), 0, 0) * index;
+            return _customers.GetQueueFirstPosition() + offset + new GameVector3(_unitsController.GetUnitSize(), 0, 0) * index;
         }
     }
 }

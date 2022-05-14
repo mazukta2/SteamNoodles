@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         }
 
         // any position to cell position
-        public IntPoint GetGridPositionByMapPosition(FloatPoint3D position, IntRect objectSize)
+        public IntPoint GetGridPositionByMapPosition(GameVector3 position, IntRect objectSize)
         {
             var offset = GetOffset(objectSize);
 
@@ -26,24 +26,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         }
 
         // cell position to position on map
-        public FloatPoint3D GetMapPositionByGridPosition(IntPoint worldCell, IntRect objectSize)
+        public GameVector3 GetMapPositionByGridPosition(IntPoint worldCell, IntRect objectSize)
         {
             var offset = GetOffset(objectSize);
-            return new FloatPoint3D(worldCell.X * _cellSize, 0, worldCell.Y * _cellSize) + offset;
+            return new GameVector3(worldCell.X * _cellSize, 0, worldCell.Y * _cellSize) + offset;
         }
 
         // any position to position on map
-        public FloatPoint3D GetAlignWithAGrid(FloatPoint3D position, IntRect objectSize)
+        public GameVector3 GetAlignWithAGrid(GameVector3 position, IntRect objectSize)
         {
             var worldCell = GetGridPositionByMapPosition(position, objectSize);
             return GetMapPositionByGridPosition(worldCell, objectSize);
         }
 
         // object offset
-        public FloatPoint3D GetOffset(IntRect objectSize)
+        public GameVector3 GetOffset(IntRect objectSize)
         {
             var halfCell = _cellSize / 2;
-            var offset = new FloatPoint3D(objectSize.Width * halfCell - halfCell, 0, objectSize.Height * halfCell - halfCell);
+            var offset = new GameVector3(objectSize.Width * halfCell - halfCell, 0, objectSize.Height * halfCell - halfCell);
             return offset;
         }
     }

@@ -23,7 +23,7 @@
 
         public float yMax => Y + Height;
 
-        public bool IsInside(FloatPoint3D point)
+        public bool IsInside(GameVector3 point)
         {
             return xMin <= point.X && point.X <= xMax &&
                 yMin <= point.Z && point.Z <= yMax;

@@ -8,6 +8,6 @@ namespace Game.Assets.Scripts.Tests.Views.Common
 {
     public class PositionMock : IPosition
     {
-        public FloatPoint3D Value { get; set; }
+        public GameVector3 Value { get; set; }
     }
 }

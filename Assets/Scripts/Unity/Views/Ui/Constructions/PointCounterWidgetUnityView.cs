@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 
         void OnDrawGizmos()
         {
-            var beizer = new BezierCurve(new FloatPoint3D(0, 0, 0), _pointsAttractionPoint.Value, new FloatPoint3D(0, 4, 0), _pointsAttractionControlPoint.Value);
+            var beizer = new BezierCurve(new GameVector3(0, 0, 0), _pointsAttractionPoint.Value, new GameVector3(0, 4, 0), _pointsAttractionControlPoint.Value);
 
             //The Bezier curve's color
             Gizmos.color = Color.white;

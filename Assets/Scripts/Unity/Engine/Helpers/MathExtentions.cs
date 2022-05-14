@@ -16,19 +16,19 @@ namespace GameUnity.Assets.Scripts.Unity.Engine.Helpers
                 rect.yMin <= position.y && position.y <= rect.yMax;
         }
 
-        public static void SetPosition(this Transform transform, FloatPoint3D vector)
+        public static void SetPosition(this Transform transform, GameVector3 vector)
         {
             transform.position = new Vector3(vector.X, vector.Y, vector.Z);
         }
 
-        public static Vector3 ToVector(this FloatPoint3D vector)
+        public static Vector3 ToVector(this GameVector3 vector)
         {
             return new Vector3(vector.X, vector.Y, vector.Z);
         }
 
-        public static FloatPoint3D ToVector(this Vector3 vector)
+        public static GameVector3 ToVector(this Vector3 vector)
         {
-            return new FloatPoint3D(vector.x, vector.y, vector.z);
+            return new GameVector3(vector.x, vector.y, vector.z);
         }
     }
 }

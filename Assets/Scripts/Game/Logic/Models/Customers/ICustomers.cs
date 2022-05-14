@@ -7,8 +7,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 {
     public interface ICustomers
     {
-        FloatPoint3D GetQueueFirstPosition();
-        FloatPoint3D GetQueueFirstPositionOffset();
+        GameVector3 GetQueueFirstPosition();
+        GameVector3 GetQueueFirstPositionOffset();
         int GetQueueSize();
     }
 }

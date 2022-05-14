@@ -9,6 +9,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 {
     public interface IPosition
     {
-        FloatPoint3D Value { get; set; }
+        GameVector3 Value { get; set; }
     }
 }

@@ -15,14 +15,14 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
     {
         [SerializeField] private Transform _transform;
 
-        public FloatPoint3D Value { get => Get(); set => Set(value); }
+        public GameVector3 Value { get => Get(); set => Set(value); }
 
-        private FloatPoint3D Get()
+        private GameVector3 Get()
         {
-            return new FloatPoint3D(_transform.position.x, _transform.position.y, _transform.position.z);
+            return new GameVector3(_transform.position.x, _transform.position.y, _transform.position.z);
         }
 
-        public void Set(FloatPoint3D floatPoint)
+        public void Set(GameVector3 floatPoint)
         {
             _transform.SetPosition(floatPoint);
         }

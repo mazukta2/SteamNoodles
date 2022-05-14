@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         {
         }
 
-        public void UpdatePoints(FloatPoint3D position, int points, IReadOnlyDictionary<Construction, int> bonuses)
+        public void UpdatePoints(GameVector3 position, int points, IReadOnlyDictionary<Construction, int> bonuses)
         {
             _view.Points.Value = $"{points.GetSignedNumber()}";
             _view.Points.Position = position;

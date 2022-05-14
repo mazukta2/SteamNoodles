@@ -120,36 +120,36 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             queue.ServeCustomer();
 
             Assert.AreEqual(1, uc.Units.Count);
-            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.First().Position);
-            Assert.AreEqual(new FloatPoint3D(0, 0, 0), uc.Units.First().Target);
+            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
             Assert.AreEqual(0, cr.Units.Count);
 
             uc.QueueSize = 1;
             queue.ServeCustomer();
 
             Assert.AreEqual(2, uc.Units.Count);
-            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.First().Position);
-            Assert.AreEqual(new FloatPoint3D(0, 0, 0), uc.Units.First().Target);
+            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
             Assert.AreEqual(1, cr.Units.Count);
 
             uc.QueueSize = 2;
             queue.ServeCustomer();
 
             Assert.AreEqual(4, uc.Units.Count);
-            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.First().Position);
-            Assert.AreEqual(new FloatPoint3D(0, 0, 0), uc.Units.First().Target);
-            Assert.AreEqual(new FloatPoint3D(2, 0, 0), uc.Units.Last().Position);
-            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.Last().Target);
+            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
+            Assert.AreEqual(new GameVector3(2, 0, 0), uc.Units.Last().Position);
+            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.Last().Target);
             Assert.AreEqual(2, cr.Units.Count);
 
             uc.QueueSize = 2;
             queue.ServeCustomer();
 
             Assert.AreEqual(5, uc.Units.Count);
-            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.First().Position);
-            Assert.AreEqual(new FloatPoint3D(0, 0, 0), uc.Units.First().Target);
-            Assert.AreEqual(new FloatPoint3D(2, 0, 0), uc.Units.Last().Position);
-            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units.Last().Target);
+            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
+            Assert.AreEqual(new GameVector3(2, 0, 0), uc.Units.Last().Position);
+            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.Last().Target);
             Assert.AreEqual(3, cr.Units.Count);
 
             queue.Dispose();
@@ -166,7 +166,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             uc.SettingsDef.SpeedUpDistance = 1;
             uc.SettingsDef.MinSpeed = 0.5f;
             uc.SettingsDef.RotationSpeed = 0.5f;
-            uc.FirstPositionOffset = new FloatPoint3D(0, 0, 1);
+            uc.FirstPositionOffset = new GameVector3(0, 0, 1);
 
             IGameTime.Default = uc.Time;
             var cr = new CrowdMock();
@@ -178,13 +178,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             uc.QueueSize = 2;
             queue.ServeCustomer();
 
-            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units[0].Position);
-            Assert.AreEqual(new FloatPoint3D(2, 0, 0), uc.Units[1].Position);
+            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units[0].Position);
+            Assert.AreEqual(new GameVector3(2, 0, 0), uc.Units[1].Position);
 
             var views = collection.FindViews<UnitView>().ToList();
             var originalRotation = views[0].Rotator.Rotation;
-            Assert.AreEqual(new FloatPoint3D(-1, 0, 0), views[0].Rotator.Rotation.ToVector().GetRound());
-            Assert.AreEqual(new FloatPoint3D(-1, 0, 0), views[1].Rotator.Rotation.ToVector().GetRound());
+            Assert.AreEqual(new GameVector3(-1, 0, 0), views[0].Rotator.Rotation.ToVector().GetRound());
+            Assert.AreEqual(new GameVector3(-1, 0, 0), views[1].Rotator.Rotation.ToVector().GetRound());
 
             var timePassed = 0.1f;
             uc.Time.MoveTime(timePassed);
@@ -192,13 +192,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var firstUnitTraget = uc.GetQueueFirstPosition() + uc.FirstPositionOffset;
             Assert.AreEqual(firstUnitTraget, uc.Units[0].Target);
             Assert.AreEqual(0.6f, uc.Units[0].GetCurrentSpeed());
-            var targetRotation = (firstUnitTraget - new FloatPoint3D(1, 0, 0)).ToQuaternion();
+            var targetRotation = (firstUnitTraget - new GameVector3(1, 0, 0)).ToQuaternion();
             
-            Assert.AreEqual(new FloatPoint3D(1, 0, 0).MoveTowards(firstUnitTraget, 0.6f * timePassed), uc.Units[0].Position);
-            Assert.AreEqual(new FloatPoint3D(1.95f, 0, 0), uc.Units[1].Position);
+            Assert.AreEqual(new GameVector3(1, 0, 0).MoveTowards(firstUnitTraget, 0.6f * timePassed), uc.Units[0].Position);
+            Assert.AreEqual(new GameVector3(1.95f, 0, 0), uc.Units[1].Position);
             AssertHelpers.CompareVectors(GameQuaternion.RotateTowards(originalRotation, targetRotation, 0.5f * timePassed).ToVector(), 
                 views[0].Rotator.Rotation.ToVector(), 0.01f);
-            Assert.AreEqual(new FloatPoint3D(-1, 0, 0), views[1].Rotator.Rotation.ToVector().GetRound());
+            Assert.AreEqual(new GameVector3(-1, 0, 0), views[1].Rotator.Rotation.ToVector().GetRound());
 
             collection.Dispose();
             queue.Dispose();
@@ -216,9 +216,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             level.CrowdUnitsAmount = 0;
             var crowd = new LevelCrowd(uc, time, level, uc.Random);
 
-            var unit = uc.SpawnUnit(new FloatPoint3D(0, 0, 0));
+            var unit = uc.SpawnUnit(new GameVector3(0, 0, 0));
             crowd.SendToCrowd(unit, LevelCrowd.CrowdDirection.Left);
-            Assert.AreEqual(new FloatPoint3D(0, 0, 0), unit.Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), unit.Position);
             Assert.AreEqual(-10, unit.Target.X);
             Assert.AreEqual(0, unit.Target.Y);
             Assert.GreaterOrEqual(unit.Target.Z, - 4);
@@ -230,9 +230,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual(unit.Target, unit.Position);
             Assert.IsTrue(unit.IsDisposed);
 
-            var unit2 = uc.SpawnUnit(new FloatPoint3D(0, 0, 0));
+            var unit2 = uc.SpawnUnit(new GameVector3(0, 0, 0));
             crowd.SendToCrowd(unit2, LevelCrowd.CrowdDirection.Right);
-            Assert.AreEqual(new FloatPoint3D(0, 0, 0), unit2.Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), unit2.Position);
             Assert.AreEqual(10, unit2.Target.X);
             Assert.AreEqual(0, unit2.Target.Y);
             Assert.GreaterOrEqual(unit2.Target.Z, -4);
@@ -257,19 +257,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             public event Action<Unit> OnUnitSpawn = delegate { };
 
-            public FloatPoint3D FirstPositionOffset { get; set; } = FloatPoint3D.Zero;
+            public GameVector3 FirstPositionOffset { get; set; } = GameVector3.Zero;
 
             public int QueueSize { get; set; }
             public GameTime Time { get; set; } = new GameTime();
 
             IReadOnlyCollection<Unit> IUnits.Units => Units.AsReadOnly();
 
-            public FloatPoint3D GetQueueFirstPosition()
+            public GameVector3 GetQueueFirstPosition()
             {
-                return new FloatPoint3D(0, 0, 0);
+                return new GameVector3(0, 0, 0);
             }
 
-            public FloatPoint3D GetQueueFirstPositionOffset()
+            public GameVector3 GetQueueFirstPositionOffset()
             {
                 return FirstPositionOffset;
             }
@@ -279,7 +279,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 return 1;
             }
 
-            public Unit SpawnUnit(FloatPoint3D pos)
+            public Unit SpawnUnit(GameVector3 pos)
             {
                 var unit = new Unit(pos, pos, Def, SettingsDef, Random, Time);
                 Units.Add(unit);

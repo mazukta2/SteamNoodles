@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             Dispose();
         }
 
-        public FloatPoint3D GetWorldPosition()
+        public GameVector3 GetWorldPosition()
         {
             return _fieldPositions.GetMapPositionByGridPosition(CellPosition, GetSize());
         }

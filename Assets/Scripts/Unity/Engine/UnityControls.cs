@@ -16,13 +16,13 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     public class UnityControls : IControls
     {
         public event Action OnLevelClick = delegate { };
-        public event Action<FloatPoint3D> OnLevelPointerMoved = delegate { };
+        public event Action<GameVector3> OnLevelPointerMoved = delegate { };
 
         private Vector3 _mousePosition;
         private Plane _plane = new Plane(Vector3.up, 0);
         private float _wheel = 0;
 
-        public FloatPoint3D PointerLevelPosition { get; private set; }
+        public GameVector3 PointerLevelPosition { get; private set; }
 
         public void Update()
         {
@@ -89,14 +89,14 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             return Input.GetMouseButtonDown(0) && !IsPointerOverUi();
         }
 
-        public FloatPoint3D GetMouseWorldPosition()
+        public GameVector3 GetMouseWorldPosition()
         {
             float distance;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (_plane.Raycast(ray, out distance))
             {
                 var point = ray.GetPoint(distance);
-                return new FloatPoint3D(point.x, 0, point.z);
+                return new GameVector3(point.x, 0, point.z);
             }
             throw new Exception("Can't reach point");
         }

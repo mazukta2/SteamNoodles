@@ -34,13 +34,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         public static GameQuaternion ToDirection(FieldRotation rotation)
         {
             if (rotation == FieldRotation.Top)
-                return new FloatPoint3D(0, 0, 1).ToQuaternion();
+                return new GameVector3(0, 0, 1).ToQuaternion();
             if (rotation == FieldRotation.Right)
-                return new FloatPoint3D(1, 0, 0).ToQuaternion();
+                return new GameVector3(1, 0, 0).ToQuaternion();
             if (rotation == FieldRotation.Bottom)
-                return new FloatPoint3D(0, 0, -1).ToQuaternion();
+                return new GameVector3(0, 0, -1).ToQuaternion();
 
-            return new FloatPoint3D(-1, 0, 0).ToQuaternion();
+            return new GameVector3(-1, 0, 0).ToQuaternion();
         }
     }
 

@@ -73,7 +73,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             var curve = new BezierCurve(construction.GetWorldPosition(),
                 IPointCounterWidgetView.Default.PointsAttractionPoint.Value,
-                construction.GetWorldPosition() + new FloatPoint3D(0, 4, 0),
+                construction.GetWorldPosition() + new GameVector3(0, 4, 0),
                 IPointCounterWidgetView.Default.PointsAttractionControlPoint.Value);
 
             var animation = new BuildingPointsAnimation(curve, pointsAdded,

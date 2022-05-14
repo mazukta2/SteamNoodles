@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common
         private IGameTime _time;
         private float _frequency;
         private float _speed;
-        private GameQuaternion _value = GameQuaternion.LookRotation(FloatPoint3D.Forward);
+        private GameQuaternion _value = GameQuaternion.LookRotation(GameVector3.Forward);
         private float _remainTimeToProcess;
 
         public UnitRotator(IRotator rotator, IGameTime time, float frequency, float speed)

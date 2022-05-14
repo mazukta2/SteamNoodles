@@ -16,13 +16,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         [Test]
         public void IsQuaterinonConverable()
         {
-            TestFor(new FloatPoint3D(1, 1, 1));
-            TestFor(new FloatPoint3D(1, -1, 1));
-            TestFor(new FloatPoint3D(-1, 1, 1));
-            TestFor(new FloatPoint3D(1, 1, -1));
-            TestFor(new FloatPoint3D(-1, -1, -1));
+            TestFor(new GameVector3(1, 1, 1));
+            TestFor(new GameVector3(1, -1, 1));
+            TestFor(new GameVector3(-1, 1, 1));
+            TestFor(new GameVector3(1, 1, -1));
+            TestFor(new GameVector3(-1, -1, -1));
 
-            void TestFor(FloatPoint3D point)
+            void TestFor(GameVector3 point)
             {
                 var direction = point.GetNormalize();
                 var q = direction.ToQuaternion();

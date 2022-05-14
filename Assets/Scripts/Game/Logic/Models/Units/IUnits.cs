@@ -9,8 +9,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         event Action<Unit> OnUnitSpawn;
         IReadOnlyCollection<Unit> Units { get; }
         float GetUnitSize();
-        Unit SpawnUnit(FloatPoint3D pos);
-        Unit SpawnUnit(FloatPoint3D pos, FloatPoint3D target)
+        Unit SpawnUnit(GameVector3 pos);
+        Unit SpawnUnit(GameVector3 pos, GameVector3 target)
         {
             var unit = SpawnUnit(pos);
             unit.SetTarget(target);

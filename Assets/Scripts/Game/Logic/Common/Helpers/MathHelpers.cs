@@ -16,12 +16,12 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Helpers
             return firstFloat * (1 - t) + secondFloat * t;
         }
 
-        public static FloatPoint3D ToVector(this GameQuaternion quaternion)
+        public static GameVector3 ToVector(this GameQuaternion quaternion)
         {
-            return quaternion * FloatPoint3D.Forward;
+            return quaternion * GameVector3.Forward;
         }
 
-        public static GameQuaternion ToQuaternion(this FloatPoint3D forward)
+        public static GameQuaternion ToQuaternion(this GameVector3 forward)
         {
             if (forward.IsZero())
                 throw new System.Exception("Wrong direction");

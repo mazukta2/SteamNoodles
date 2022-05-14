@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly PlacementField _constructionsManager;
         private readonly ScreenManagerPresenter _screenManager;
         private readonly IAssets _assets;
-        private FloatPoint3D _pointerPosition;
+        private GameVector3 _pointerPosition;
         private KeyCommand _rotateLeft;
         private KeyCommand _rotateRight;
         private IConstructionModelView _modelView;
@@ -84,7 +84,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             return _positionCalculator.GetGridPositionByMapPosition(_pointerPosition, GetSize());
         }
 
-        public FloatPoint3D GetWorldPosition()
+        public GameVector3 GetWorldPosition()
         {
             return _positionCalculator.GetAlignWithAGrid(_pointerPosition, GetSize());
         }
@@ -94,7 +94,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             return _buildScreen.CurrentCard.Definition.GetRect(Rotation);
         }
 
-        public FloatPoint3D GetTargetPosition()
+        public GameVector3 GetTargetPosition()
         {
             return _pointerPosition;
         }
@@ -113,7 +113,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
 
-        private void HandleOnPointerMoved(FloatPoint3D worldPosition)
+        private void HandleOnPointerMoved(GameVector3 worldPosition)
         {
             _pointerPosition = worldPosition;
             UpdatePosition();

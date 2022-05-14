@@ -9,6 +9,6 @@ namespace Game.Assets.Scripts.Tests.Views.Common
     public class UiWorldText : IWorldText
     {
         public string Value { get; set; } = "";
-        public FloatPoint3D Position { get; set; }
+        public GameVector3 Position { get; set; }
     }
 }
