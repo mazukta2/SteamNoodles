@@ -6,7 +6,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public interface IGhostView : IViewWithPresenter
     {
-        ILevelPosition LocalPosition { get; }
+        IPosition LocalPosition { get; }
         IViewContainer Container { get; }
         IRotator Rotator { get; }
     }

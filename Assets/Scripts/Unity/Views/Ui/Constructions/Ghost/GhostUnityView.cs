@@ -12,15 +12,15 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     public class GhostUnityView : UnityView<GhostPresenter>, IGhostView
     {
         [SerializeField] ContainerUnityView _container;
+        [SerializeField] UnityPosition _position;
 
-        public ILevelPosition LocalPosition { get; private set; }
+        public IPosition LocalPosition => _position;
         public IViewContainer Container => _container;
         public IRotator Rotator { get; private set; }
         public bool CanPlace { get; set; }
 
         protected override void PreAwake()
         {
-            LocalPosition = new UnityLevelPosition(transform);
             Rotator = new UnityRotator(transform);
         }
 

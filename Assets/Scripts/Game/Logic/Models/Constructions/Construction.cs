@@ -22,7 +22,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             CellPosition = position;
             Rotation = rotation;
 
-            _fieldPositions = new FieldPositionsCalculator(settingsDefinition.CellSize, Definition.GetRect(Rotation));
+            _fieldPositions = new FieldPositionsCalculator(settingsDefinition.CellSize);
+        }
+
+        public IntRect GetSize()
+        {
+            return Definition.GetRect(Rotation);
         }
 
         public IReadOnlyCollection<IntPoint> GetOccupiedScace()
@@ -30,25 +35,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             return Definition.GetOccupiedSpace(CellPosition, Rotation);
         }
 
-        public FloatPoint GetWorldPosition()
-        {
-            return _fieldPositions.GetPositionByWorldPosition(CellPosition);
-        }
-
-        public FloatPoint GetWorldOffset()
-        {
-            return _fieldPositions.GetOffset();
-        }
-
         public void Destroy()
         {
             Dispose();
         }
 
-        public FloatPoint3D GetViewPosition()
+        public FloatPoint3D GetWorldPosition()
         {
-            var world = GetWorldPosition();
-            return new FloatPoint3D(world.X, 0, world.Y);
+            return _fieldPositions.GetMapPositionByGridPosition(CellPosition, GetSize());
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
     public interface ICellView : IViewWithPresenter
     {
-        ILevelPosition LocalPosition { get; }
+        IPosition LocalPosition { get; }
         ISwitcher<CellPlacementStatus> State { get; }
         IAnimator Animator { get; }
     }

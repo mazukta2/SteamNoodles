@@ -8,42 +8,42 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
     public class FieldPositionsCalculator
     {
         private float _cellSize;
-        private IntRect _size;
 
-        public FieldPositionsCalculator(float cellSize, IntRect size)
+        public FieldPositionsCalculator(float cellSize)
         {
             _cellSize = cellSize;
-            _size = size;
         }
 
-        public IntPoint GetWorldCellPosition(FloatPoint pointer)
+        // any position to cell position
+        public IntPoint GetGridPositionByMapPosition(FloatPoint3D position, IntRect objectSize)
         {
-            var halfCell = _cellSize / 2;
+            var offset = GetOffset(objectSize);
 
-            var offset = new FloatPoint(_size.Width * halfCell - halfCell, _size.Height * halfCell - halfCell);
-
-            var pos = pointer - offset;
+            var pos = position - offset;
             var mousePosX = Math.Round(pos.X / _cellSize);
-            var mousePosY = Math.Round(pos.Y / _cellSize);
+            var mousePosY = Math.Round(pos.Z / _cellSize);
             return new IntPoint((int)Math.Ceiling(mousePosX), (int)Math.Ceiling(mousePosY));
         }
 
-        public FloatPoint GetWorldPositionInGrid(FloatPoint pointer)
+        // cell position to position on map
+        public FloatPoint3D GetMapPositionByGridPosition(IntPoint worldCell, IntRect objectSize)
         {
-            var worldCell = GetWorldCellPosition(pointer);
-            return GetPositionByWorldPosition(worldCell);
+            var offset = GetOffset(objectSize);
+            return new FloatPoint3D(worldCell.X * _cellSize, 0, worldCell.Y * _cellSize) + offset;
         }
 
-        public FloatPoint GetPositionByWorldPosition(IntPoint worldCell)
+        // any position to position on map
+        public FloatPoint3D GetAlignWithAGrid(FloatPoint3D position, IntRect objectSize)
         {
-            var offset = GetOffset();
-            return new FloatPoint(worldCell.X * _cellSize, worldCell.Y * _cellSize) + offset;
+            var worldCell = GetGridPositionByMapPosition(position, objectSize);
+            return GetMapPositionByGridPosition(worldCell, objectSize);
         }
 
-        public FloatPoint GetOffset()
+        // object offset
+        public FloatPoint3D GetOffset(IntRect objectSize)
         {
             var halfCell = _cellSize / 2;
-            var offset = new FloatPoint(_size.Width * halfCell - halfCell, _size.Height * halfCell - halfCell);
+            var offset = new FloatPoint3D(objectSize.Width * halfCell - halfCell, 0, objectSize.Height * halfCell - halfCell);
             return offset;
         }
     }

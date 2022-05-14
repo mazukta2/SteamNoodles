@@ -11,14 +11,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     public class ConstructionUnityView : UnityView<ConstructionPresenter>, IConstructionView
     {
         [SerializeField] ContainerUnityView _container;
+        [SerializeField] UnityPosition _position;
 
-        public ILevelPosition Position { get; private set; }
+        public IPosition Position => _position;
         public IRotator Rotator { get; private set; }
         public IViewContainer Container => _container;
 
         protected override void PreAwake()
         {
-            Position = new UnityLevelPosition(transform);
             Rotator = new UnityRotator(transform);
         }
     }

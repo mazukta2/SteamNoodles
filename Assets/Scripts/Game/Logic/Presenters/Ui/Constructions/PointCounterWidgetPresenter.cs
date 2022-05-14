@@ -71,9 +71,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleOnPointsChangedDuringConstruction(Construction construction, int pointsAdded)
         {
-            var curve = new BezierCurve(construction.GetViewPosition(),
+            var curve = new BezierCurve(construction.GetWorldPosition(),
                 IPointCounterWidgetView.Default.PointsAttractionPoint.Value,
-                construction.GetViewPosition() + new FloatPoint3D(0, 4, 0),
+                construction.GetWorldPosition() + new FloatPoint3D(0, 4, 0),
                 IPointCounterWidgetView.Default.PointsAttractionControlPoint.Value);
 
             var animation = new BuildingPointsAnimation(curve, pointsAdded,

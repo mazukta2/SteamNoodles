@@ -64,6 +64,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
             if (Starter == null)
                 throw new Exception($"{nameof(Starter)} is empty");
+
+            if (PlacementField.Size.X % 2 == 0 || PlacementField.Size.Y % 2 == 0)
+                throw new Exception("Even sized fields are not supported. Sorry :(");
         }
     }
 }

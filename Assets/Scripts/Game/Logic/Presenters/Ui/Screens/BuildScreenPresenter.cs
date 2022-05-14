@@ -16,6 +16,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
     public class BuildScreenPresenter : BasePresenter<IBuildScreenView>
     {
+        private FieldPositionsCalculator _positionCalculator;
+
         public ConstructionCard CurrentCard { get; }
 
         private IBuildScreenView _view;
@@ -29,7 +31,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _constrcutionsSettings = constrcutionsSettings ?? throw new ArgumentNullException(nameof(constrcutionsSettings));
 
             handPresenter.Mode = HandPresenter.Modes.Build;
-            
+            _positionCalculator = new FieldPositionsCalculator(_constrcutionsSettings.CellSize);
+
             CurrentCard = constructionCard;
         }
 
@@ -37,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         {
         }
 
-        public void UpdatePoints(FloatPoint position, int points, IReadOnlyDictionary<Construction, int> bonuses)
+        public void UpdatePoints(FloatPoint3D position, int points, IReadOnlyDictionary<Construction, int> bonuses)
         {
             _view.Points.Value = $"{points.GetSignedNumber()}";
             _view.Points.Position = position;
@@ -84,8 +87,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
                 var text =_bonuses[item.Key].Text;
                 text.Value = $"{item.Value}";
 
-                var position = new FieldPositionsCalculator(_constrcutionsSettings.CellSize, item.Key.Definition.GetRect(item.Key.Rotation));
-                text.Position = position.GetPositionByWorldPosition(item.Key.CellPosition);
+                text.Position = _positionCalculator.GetMapPositionByGridPosition(item.Key.CellPosition, item.Key.Definition.GetRect(item.Key.Rotation));
             }
         }
 

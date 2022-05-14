@@ -25,7 +25,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
         public ConstructionsSettingsDefinition ConstructionsSettings { get; private set; }
         public IntPoint Size => _field.Size;
         public IntRect Rect { get; private set; }
-        public IntPoint Offset { get; private set; }
 
         private PlacementFieldDefinition _field;
         private Resources _resources;
@@ -35,7 +34,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             ConstructionsSettings = settings ?? throw new ArgumentNullException(nameof(settings));
             _field = definition ?? throw new ArgumentNullException(nameof(definition));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            
+
+            if (Size.X % 2 == 0 || Size.Y % 2 == 0)
+                throw new Exception("Even sized fields are not supported. Sorry :(");
+
             Rect = new IntRect(-Size.X / 2, -Size.Y / 2, Size.X, Size.Y);
         }
 
@@ -112,11 +114,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             return offset * ConstructionsSettings.CellSize;
         }
 
-        public FloatPoint GetLocalPosition(IntPoint position)
-        {
-            return new FloatPoint(position.X * ConstructionsSettings.CellSize,
-                   position.Y * ConstructionsSettings.CellSize) + GetOffset();
-        }
 
         public int GetPoints(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)
         {

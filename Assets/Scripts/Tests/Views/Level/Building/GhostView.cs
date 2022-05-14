@@ -4,19 +4,19 @@ using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Views.Common;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Building
 {
     public class GhostView : ViewWithPresenter<GhostPresenter>, IGhostView
     {
-        public ILevelPosition LocalPosition { get; private set; }
+        public IPosition LocalPosition { get; private set; } = new PositionMock();
         public IViewContainer Container { get; private set; }
         public IRotator Rotator { get; }
         public IPointPieceSpawnerView PieceSpawner { get; }
 
-        public GhostView(IViewsCollection level, IViewContainer container, ILevelPosition position, IRotator rotator) : base(level)
+        public GhostView(IViewsCollection level, IViewContainer container, IRotator rotator) : base(level)
         {
-            LocalPosition = position;
             Container = container;
             Rotator = rotator;
             PieceSpawner = new PieceSpawnerView(level);

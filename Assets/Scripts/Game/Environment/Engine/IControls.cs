@@ -11,8 +11,8 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
     {
         void ShakeCamera();
         event Action OnLevelClick;
-        event Action<FloatPoint> OnLevelPointerMoved;
-        FloatPoint PointerLevelPosition { get; }
+        event Action<FloatPoint3D> OnLevelPointerMoved;
+        FloatPoint3D PointerLevelPosition { get; }
         static IControls Default { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Assets.Scripts.Views.Cameras;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
+using GameUnity.Assets.Scripts.Unity.Engine.Helpers;
 using TMPro;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Vector2 _screenOffset;
 
-        private FloatPoint _position;
+        private FloatPoint3D _position;
 
         public UnityWorldText()
         {
@@ -21,7 +22,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
         }
 
         public string Value { get => _text.text; set => Set(value); }
-        public FloatPoint Position { get => _position;
+        public FloatPoint3D Position { get => _position;
             set {
                 _position = value;
                 UpdateView();
@@ -38,7 +39,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
         private void UpdateView()
         {
             
-            var pos = MainCameraController.Instance.WorldToUISpace(_text.canvas, new Vector3(_position.X, 0, _position.Y));
+            var pos = MainCameraController.Instance.WorldToUISpace(_text.canvas, _position.ToVector());
             _text.transform.position = pos + (Vector3)_screenOffset;
         }
 

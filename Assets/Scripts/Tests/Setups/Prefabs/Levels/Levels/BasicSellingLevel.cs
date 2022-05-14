@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
             public override void Fill(IViewsCollection collection)
             {
                 var contrainer = new ContainerViewMock(collection);
-                new GhostView(collection, contrainer, new LevelPosition(), new Rotator());
+                new GhostView(collection, contrainer, new Rotator());
             }
         }
 
@@ -46,7 +46,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
         {
             public override void Fill(IViewsCollection collection)
             {
-                new CellView(collection, new Switcher<CellPlacementStatus>(), new LevelPosition());
+                new CellView(collection, new Switcher<CellPlacementStatus>());
             }
         }
 
@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
             public override void Fill(IViewsCollection collection)
             {
                 var c = new ContainerViewMock(collection);
-                new ConstructionView(collection, c, new LevelPosition(), new Rotator());
+                new ConstructionView(collection, c, new Rotator());
             }
         }
 

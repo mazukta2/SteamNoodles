@@ -2324,6 +2324,8 @@ MonoBehaviour:
   _highlight: {fileID: 1015293894}
   _blocked: {fileID: 1367822994}
   _animator: {fileID: 669944281}
+  _position:
+    _transform: {fileID: 669944277}
 --- !u!95 &669944280
 Animator:
   serializedVersion: 4
@@ -8079,6 +8081,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _container: {fileID: 956523083}
+  _position:
+    _transform: {fileID: 956523085}
 --- !u!4 &956523085
 Transform:
   m_ObjectHideFlags: 0
@@ -10912,6 +10916,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _container: {fileID: 1862191896}
+  _position:
+    _transform: {fileID: 1517330427}
 --- !u!1 &1526078197
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,15 +9,14 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
 {
     public class CellView : ViewWithPresenter<PlacementCellPresenter>, ICellView
     {
-        public ILevelPosition LocalPosition { get; private set; }
+        public IPosition LocalPosition { get; private set; } = new PositionMock();
         public ISwitcher<CellPlacementStatus> State { get; private set; }
 
         public IAnimator Animator { get; } = new AnimatorMock();
 
-        public CellView(IViewsCollection level, ISwitcher<CellPlacementStatus> state, ILevelPosition position) : base(level)
+        public CellView(IViewsCollection level, ISwitcher<CellPlacementStatus> state) : base(level)
         {
             State = state;
-            LocalPosition = position;
         }
     }
 }

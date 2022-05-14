@@ -48,8 +48,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             UpdateGhostCells();
         }
 
-        public FloatPoint GetLocalPosition(IntPoint position) => _model.GetLocalPosition(position);
-
         protected override void DisposeInner()
         {
             _ghostManager.OnGhostChanged -= UpdateGhostCells;
@@ -66,7 +64,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         public void UpdateGhostCells()
         {
             var ghost = _ghostManager.GetGhost();
-            var ocuppiedCells = ghost != null ? ghost.Definition.GetOccupiedSpace(ghost.GetLocalPosition(_model), ghost.Rotation) : null;
+            var ocuppiedCells = ghost != null ? ghost.Definition.GetOccupiedSpace(ghost.GetGridPosition(), ghost.Rotation) : null;
 
             foreach (var cell in _cells)
             {

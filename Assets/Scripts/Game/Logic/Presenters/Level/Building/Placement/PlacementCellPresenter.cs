@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
@@ -14,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private PlacementFieldPresenter _field;
         private IntPoint _position;
         private ConstructionsSettingsDefinition _constructionsSettingsDefinition;
+        private FieldPositionsCalculator _fieldPositions;
 
         public PlacementCellPresenter(ICellView view, PlacementFieldPresenter field, 
             ConstructionsSettingsDefinition constructionsSettingsDefinition, IntPoint position) : base(view)
@@ -22,11 +24,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _field = field ?? throw new ArgumentNullException(nameof(field));
             _position = position;
             _constructionsSettingsDefinition = constructionsSettingsDefinition;
+            _fieldPositions = new FieldPositionsCalculator(constructionsSettingsDefinition.CellSize);
 
             view.LocalPosition.Value = GetPosition();
         }
 
-        private FloatPoint GetPosition() => _field.GetLocalPosition(_position);
+        private FloatPoint3D GetPosition() => _fieldPositions.GetMapPositionByGridPosition(_position, new IntRect(0, 0, 1, 1));
 
         public void SetState(CellPlacementStatus state)
         {

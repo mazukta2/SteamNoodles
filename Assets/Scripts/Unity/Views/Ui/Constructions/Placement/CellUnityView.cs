@@ -17,11 +17,12 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] GameObject _blocked;
 
         [SerializeField] UnityAnimator _animator;
+        [SerializeField] UnityPosition _position;
 
         private CellPlacementStatus _status;
 
         public CellPlacementStatus Value { get => _status; set => SetStatus(value); }
-        public ILevelPosition LocalPosition { get; private set; }
+        public IPosition LocalPosition => _position;
         public ISwitcher<CellPlacementStatus> State => this;
 
         public IAnimator Animator => _animator;
@@ -36,10 +37,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
             _blocked.SetActive(status == CellPlacementStatus.IsNotAvailableGhostPlace);
         }
 
-        protected override void PreAwake()
-        {
-            LocalPosition = new UnityLevelPosition(transform);
-        }
     }
 
 }

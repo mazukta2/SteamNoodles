@@ -13,6 +13,7 @@ using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,24 +23,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
     {
         #region Placement
         [Test]
-        public void IsPlacementCreateCells()
+        public void IsCellCalculationIsCorrect()
         {
-            var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementField.Size = new IntPoint(2, 2))
-                .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
-                .Build();
-
-            Assert.IsNotNull(game.LevelCollection.FindView<PlacementFieldView>());
-
-            var cells = game.LevelCollection.FindViews<CellView>();
-            Assert.AreEqual(4, cells.Count());
-
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(5, 5)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(-5, 5)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(5, -5)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(-5, -5)));
-
-            game.Dispose();
+            var calculator = new FieldPositionsCalculator(10);
+            var size = new IntRect(0, 0, 1, 1);
+            Assert.AreEqual(new FloatPoint3D(0, 0, 0), calculator.GetMapPositionByGridPosition(new IntPoint(0, 0), size));
+            Assert.AreEqual(new FloatPoint3D(10, 0, -10), calculator.GetMapPositionByGridPosition(new IntPoint(1, -1), size));
         }
 
         [Test]
@@ -55,10 +44,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var cells = game.LevelCollection.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
 
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(10, 10)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(-10, 10)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(10, -10)));
-            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint(-10, -10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint3D(10, 0, 10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint3D(-10, 0, 10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint3D(10, 0, -10)));
+            Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new FloatPoint3D(-10, 0, -10)));
 
             game.Dispose();
         }
@@ -258,16 +247,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var highlighedCells = cells.Where(x => x.State.Value == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
             Assert.AreEqual(2, highlighedCells.Count());
 
-            Assert.AreEqual(new FloatPoint(0, 0), highlighedCells.First().LocalPosition.Value);
-            Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.Last().LocalPosition.Value);
+            Assert.AreEqual(new FloatPoint3D(0, 0, 0), highlighedCells.First().LocalPosition.Value);
+            Assert.AreEqual(new FloatPoint3D(0.5f, 0, 0), highlighedCells.Last().LocalPosition.Value);
 
-            game.Controls.MovePointer(new FloatPoint(0.75f, 0)); // move left
+            game.Controls.MovePointer(new FloatPoint3D(0.75f, 0, 0)); // move left
 
             highlighedCells = cells.Where(x => x.State.Value == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
             Assert.AreEqual(2, highlighedCells.Count());
 
-            Assert.AreEqual(new FloatPoint(0.5f, 0), highlighedCells.First().LocalPosition.Value);
-            Assert.AreEqual(new FloatPoint(1f, 0), highlighedCells.Last().LocalPosition.Value);
+            Assert.AreEqual(new FloatPoint3D(0.5f, 0, 0), highlighedCells.First().LocalPosition.Value);
+            Assert.AreEqual(new FloatPoint3D(1f, 0, 0), highlighedCells.Last().LocalPosition.Value);
 
             game.Dispose();
         }
@@ -287,7 +276,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             Assert.AreEqual("Dragging", ((AnimatorMock)model.Animator).Animation);
             Assert.AreEqual("Disallowed", ((AnimatorMock)model.BorderAnimator).Animation);
 
-            var newPos = new FloatPoint(0.25f, -4f * cellSize);
+            var newPos = new FloatPoint3D(0.25f, 0, -4f * cellSize);
             game.Controls.MovePointer(newPos); // move down
 
             Assert.AreEqual(newPos, ghost.LocalPosition.Value);
@@ -318,7 +307,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
 
-            var worldPos = new FloatPoint(0f, -0.75f);
+            var worldPos = new FloatPoint3D(0f, 0, -0.75f);
             game.Controls.MovePointer(worldPos);
 
             var cells = game.LevelCollection.FindViews<CellView>();
@@ -359,67 +348,71 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsOffsetRight()
         {
             {
-                var fieldPoisition = new FieldPositionsCalculator(1, new IntRect(0, 0, 1, 1));
+                var fieldPoisition = new FieldPositionsCalculator(1);
+                var size = new IntRect(0, 0, 1, 1);
 
                 // from -0.5 to 0.5 its 0, 0
-                Assert.AreEqual(new IntPoint(0, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(0, 0)));
-                Assert.AreEqual(new FloatPoint(0, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0, 0)));
+                Assert.AreEqual(new IntPoint(0, 0), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(0, 0, 0), size));
+                Assert.AreEqual(new FloatPoint3D(0, 0, 0), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(0, 0, 0), size));
 
                 // from 0.5 to 1.5 its 1, 0
-                Assert.AreEqual(new IntPoint(1, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(0.6f, 0)));
-                Assert.AreEqual(new FloatPoint(1, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0.6f, 0)));
+                Assert.AreEqual(new IntPoint(1, 0), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(0.6f, 0, 0), size));
+                Assert.AreEqual(new FloatPoint3D(1, 0, 0), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(0.6f, 0, 0), size));
 
                 // from 1.5 to 2.5 its 2, 0
-                Assert.AreEqual(new IntPoint(2, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(1.6f, 0)));
-                Assert.AreEqual(new FloatPoint(2, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(1.6f, 0)));
+                Assert.AreEqual(new IntPoint(2, 0), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(1.6f, 0, 0), size));
+                Assert.AreEqual(new FloatPoint3D(2, 0, 0), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(1.6f, 0, 0), size));
             }
 
             {
-                var fieldPoisition = new FieldPositionsCalculator(1, new IntRect(0, 0, 2, 2));
+                var fieldPoisition = new FieldPositionsCalculator(1);
+                var size = new IntRect(0, 0, 2, 2);
 
                 // from 0 to 1 its 0, 0
-                Assert.AreEqual(new IntPoint(0, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(0.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(0.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0.1f, 0)));
+                Assert.AreEqual(new IntPoint(0, 0), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(0.1f, 0, 0.1f), size));
+                Assert.AreEqual(new FloatPoint3D(0.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(0.1f, 0, 0), size));
 
                 // from 1 to 2 its 1, 0
-                Assert.AreEqual(new IntPoint(1, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(1.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(1.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(1.1f, 0)));
+                Assert.AreEqual(new IntPoint(1, 0), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(1.1f, 0, 0.1f), size));
+                Assert.AreEqual(new FloatPoint3D(1.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(1.1f, 0, 0), size));
 
                 // from 2 to 3 its 2, 0
-                Assert.AreEqual(new IntPoint(2, 0), fieldPoisition.GetWorldCellPosition(new FloatPoint(2.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(2.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(2.1f, 0)));
+                Assert.AreEqual(new IntPoint(2, 0), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(2.1f, 0, 0.1f), size));
+                Assert.AreEqual(new FloatPoint3D(2.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(2.1f, 0, 0), size));
             }
 
             {
-                var fieldPoisition = new FieldPositionsCalculator(1, new IntRect(0, 0, 3, 3));
+                var fieldPoisition = new FieldPositionsCalculator(1);
+                var size = new IntRect(0, 0, 3, 3);
 
                 // from -0.5 to 0.5 its 0, 0
-                Assert.AreEqual(new IntPoint(-1, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(0, 0)));
-                Assert.AreEqual(new FloatPoint(0, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0, 0)));
+                Assert.AreEqual(new IntPoint(-1, -1), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(0, 0, 0), size));
+                Assert.AreEqual(new FloatPoint3D(0, 0, 0), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(0, 0, 0), size));
 
                 // from 0.5 to 1.5 its 1, 0
-                Assert.AreEqual(new IntPoint(0, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(0.6f, 0)));
-                Assert.AreEqual(new FloatPoint(1, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0.6f, 0)));
+                Assert.AreEqual(new IntPoint(0, -1), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(0.6f, 0, 0), size));
+                Assert.AreEqual(new FloatPoint3D(1, 0, 0), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(0.6f, 0, 0), size));
 
                 // from 1.5 to 2.5 its 2, 0
-                Assert.AreEqual(new IntPoint(1, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(1.6f, 0)));
-                Assert.AreEqual(new FloatPoint(2, 0), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(1.6f, 0)));
+                Assert.AreEqual(new IntPoint(1, -1), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(1.6f, 0, 0), size));
+                Assert.AreEqual(new FloatPoint3D(2, 0, 0), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(1.6f, 0, 0), size));
             }
 
             {
-                var fieldPoisition = new FieldPositionsCalculator(1, new IntRect(0, 0, 4, 4));
+                var fieldPoisition = new FieldPositionsCalculator(1);
+                var size = new IntRect(0, 0, 4, 4);
 
                 // from 0 to 1 its 0, 0
-                Assert.AreEqual(new IntPoint(-1, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(0.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(0.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(0.1f, 0.1f)));
+                Assert.AreEqual(new IntPoint(-1, -1), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(0.1f, 0, 0.1f), size));
+                Assert.AreEqual(new FloatPoint3D(0.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(0.1f, 0, 0.1f), size));
 
                 // from 1 to 2 its 1, 0
-                Assert.AreEqual(new IntPoint(0, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(1.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(1.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(1.1f, 0.1f)));
+                Assert.AreEqual(new IntPoint(0, -1), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(1.1f, 0, 0.1f), size));
+                Assert.AreEqual(new FloatPoint3D(1.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(1.1f, 0, 0.1f), size));
 
                 // from 2 to 3 its 2, 0
-                Assert.AreEqual(new IntPoint(1, -1), fieldPoisition.GetWorldCellPosition(new FloatPoint(2.1f, 0.1f)));
-                Assert.AreEqual(new FloatPoint(2.5f, 0.5f), fieldPoisition.GetWorldPositionInGrid(new FloatPoint(2.1f, 0.1f)));
+                Assert.AreEqual(new IntPoint(1, -1), fieldPoisition.GetGridPositionByMapPosition(new FloatPoint3D(2.1f, 0, 0.1f), size));
+                Assert.AreEqual(new FloatPoint3D(2.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new FloatPoint3D(2.1f, 0, 0.1f), size));
             }
         }
 
@@ -441,21 +434,21 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var ghost = game.LevelCollection.FindView<GhostView>();
 
             // -0.5 to 0.5
-            game.Controls.MovePointer(new FloatPoint(0, 0f));
-            Assert.AreEqual(new FloatPoint(0.5f, 0), ghost.LocalPosition.Value);
+            game.Controls.MovePointer(new FloatPoint3D(0, 0, 0f));
+            Assert.AreEqual(new FloatPoint3D(0.5f, 0, 0), ghost.LocalPosition.Value);
 
             // -0.5 to -1.5
-            game.Controls.MovePointer(new FloatPoint(-0.9f, -1f));
-            Assert.AreEqual(new FloatPoint(-0.5f, -1), ghost.LocalPosition.Value);
+            game.Controls.MovePointer(new FloatPoint3D(-0.9f, 0, -1f));
+            Assert.AreEqual(new FloatPoint3D(-0.5f, 0, -1), ghost.LocalPosition.Value);
 
             // -1.5 to -2.5
-            game.Controls.MovePointer(new FloatPoint(-1.9f, -2f));
-            Assert.AreEqual(new FloatPoint(-1.5f, -2), ghost.LocalPosition.Value);
+            game.Controls.MovePointer(new FloatPoint3D(-1.9f, 0, -2f));
+            Assert.AreEqual(new FloatPoint3D(-1.5f, 0, -2), ghost.LocalPosition.Value);
 
             game.Controls.Click();
 
             var construction = game.LevelCollection.FindView<ConstructionView>();
-            Assert.AreEqual(new FloatPoint(-1.5f, -2), construction.Position.Value);
+            Assert.AreEqual(new FloatPoint3D(-1.5f, 0, -2), construction.Position.Value);
 
             game.Dispose();
         }
@@ -504,7 +497,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            game.Controls.MovePointer(new FloatPoint(-2, 0));
+            game.Controls.MovePointer(new FloatPoint3D(-2, 0, 0));
             game.Controls.Click();
 
             Assert.AreEqual(2, game.LevelCollection.FindViews<ConstructionView>().Count());
@@ -618,7 +611,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             for (int x = -size / 2; x <= size / 2; x++)
                 for (int y = -size / 2; y <= size / 2; y++)
                 {
-                    actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition.Value == new FloatPoint(x, y)).State.Value;
+                    actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition.Value == new FloatPoint3D(x, 0, y)).State.Value;
                     chkd++;
                 }
 
