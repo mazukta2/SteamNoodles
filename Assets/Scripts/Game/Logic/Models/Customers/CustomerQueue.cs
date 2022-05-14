@@ -35,6 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             var first = _queue.FirstOrDefault();
             if (first != null)
             {
+                first.OnReachedPosition -= Unit_OnReachedPosition;
                 _queue.Remove(first);
                 _crowd.SendToCrowd(first, LevelCrowd.CrowdDirection.Left);
             }
@@ -43,13 +44,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             while (size > _queue.Count)
             {
                 var pos = GetPositionFor(_queue.Count + 1);
-                _queue.Add(_unitsController.SpawnUnit(pos));
+                var unit = _unitsController.SpawnUnit(pos);
+                unit.OnReachedPosition += Unit_OnReachedPosition;
+                _queue.Add(unit);
             }
 
             // remove units
             while (size < _queue.Count)
             {
                 var last = _queue.Last();
+                last.OnReachedPosition -= Unit_OnReachedPosition;
                 _queue.Remove(last);
                 _crowd.SendToCrowd(last, LevelCrowd.CrowdDirection.Right);
             }
@@ -58,9 +62,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 _queue[i].SetTarget(GetPositionFor(i));
         }
 
+        private void Unit_OnReachedPosition()
+        {
+            if (_queue.Count > 0)
+            {
+                if (!_queue[0].IsMoving())
+                {
+                    _queue[0].LookAt(_customers.GetQueueFirstPosition() + _customers.GetQueueFirstPositionOffset() + new FloatPoint3D(0, 0, 1));
+                }
+            }
+        }
+
         private FloatPoint3D GetPositionFor(int index)
         {
-            return _customers.GetQueueFirstPosition() + new FloatPoint3D(_unitsController.GetUnitSize(), 0, 0) * index;
+            var offset = FloatPoint3D.Zero;
+            if (index == 0)
+                offset = _customers.GetQueueFirstPositionOffset();
+
+            return _customers.GetQueueFirstPosition() + offset + new FloatPoint3D(_unitsController.GetUnitSize(), 0, 0) * index;
         }
     }
 }

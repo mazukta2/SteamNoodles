@@ -18,6 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
         public PlacementFieldDefinition PlacementField { get; set; }
 
         public FloatPoint3D QueuePosition { get; set; }
+        public FloatPoint3D QueueFirstPositionOffset { get; set; }
 
         public int CrowdUnitsAmount { get; set; }
 
@@ -55,6 +56,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
             if (QueuePosition.IsZero())
                 throw new Exception($"{nameof(QueuePosition)} is null");
+
+            if (QueueFirstPositionOffset.IsZero())
+                throw new Exception($"{nameof(QueueFirstPositionOffset)} is null");
 
             if (ConstructionsReward.Count == 0)
                 throw new Exception($"{nameof(ConstructionsReward)} is empty");

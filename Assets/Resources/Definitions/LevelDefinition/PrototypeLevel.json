@@ -20,6 +20,11 @@
 		"Y": 0,
 		"Z": -1.6
 	},
+	"QueueFirstPositionOffset": {
+		"X": 0,
+		"Y": 0,
+		"Z": 0.2
+	},
 	"CrowdUnitsAmount": 50,
 	"BaseCrowdUnits": {
 		"Commoner": 1

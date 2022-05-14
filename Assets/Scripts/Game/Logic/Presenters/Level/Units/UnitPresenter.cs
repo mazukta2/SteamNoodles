@@ -26,6 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _model.OnDispose += HandleOnDispose;
             _model.OnTargetChanged += HandleOnTargetChanged;
             _model.OnReachedPosition += HandleOnReachedPosition;
+            _model.OnLookAt += HandleOnLookAt;
 
             DressUnit();
             PlayAnimation(model.IsMoving() ? Animations.Run : Animations.Idle);
@@ -37,6 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _model.OnDispose -= HandleOnDispose;
             _model.OnTargetChanged -= HandleOnTargetChanged;
             _model.OnReachedPosition -= HandleOnReachedPosition;
+            _model.OnLookAt -= HandleOnLookAt;
         }
 
         private void HandleOnPositionChanged()
@@ -59,6 +61,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         private void HandleOnReachedPosition()
         {
             PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
+        }
+
+        private void HandleOnLookAt(Common.Math.FloatPoint3D obj)
+        {
+            _view.Rotator.FaceTo(obj);
         }
 
         private void PlayAnimation(Animations animations)

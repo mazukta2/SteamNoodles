@@ -28,6 +28,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             return new FloatPoint3D(queueStartingPosition, 0, _levelDefinition.QueuePosition.Z);
         }
 
+        public FloatPoint3D GetQueueFirstPositionOffset()
+        {
+            return _levelDefinition.QueueFirstPositionOffset;
+        }
 
         public int GetQueueSize()
         {

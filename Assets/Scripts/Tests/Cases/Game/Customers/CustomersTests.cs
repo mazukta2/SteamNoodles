@@ -212,6 +212,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 return new FloatPoint3D(0, 0, 0);
             }
 
+            public FloatPoint3D GetQueueFirstPositionOffset()
+            {
+                return FloatPoint3D.Zero;
+            }
+
             public float GetUnitSize()
             {
                 return 1;

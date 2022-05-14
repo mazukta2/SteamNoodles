@@ -14,6 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public event Action OnPositionChanged = delegate { };
         public event Action OnReachedPosition = delegate { };
         public event Action OnTargetChanged = delegate { };
+        public event Action<FloatPoint3D> OnLookAt = delegate { };
         public FloatPoint3D Target { get; private set; }
         public FloatPoint3D Position { get; private set; }
         public CustomerDefinition Definition { get; private set; }
@@ -71,6 +72,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             }
 
             return false;
+        }
+
+        public void LookAt(FloatPoint3D target)
+        {
+            if (IsMoving())
+                throw new Exception("Can't look while moving");
+            
+            OnLookAt(target);
         }
 
         public void TeleportToTarget()
