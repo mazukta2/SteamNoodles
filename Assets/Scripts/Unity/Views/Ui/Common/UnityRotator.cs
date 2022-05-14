@@ -25,7 +25,10 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
             if (_transform == null)
                 throw new System.Exception("wtf");
 
-            _transform.LookAt(_transform.position + direction.ToVector());
+            if (direction.IsZero())
+                return;
+
+            _transform.forward = direction.ToVector().normalized;
             _direction = direction;
         }
     }

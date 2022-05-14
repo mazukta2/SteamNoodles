@@ -73,9 +73,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
-        private void HandleOnLookAt(Common.Math.FloatPoint3D obj)
+        private void HandleOnLookAt(Common.Math.FloatPoint3D obj, bool skip)
         {
             _rotator.Direction = obj - _model.Position;
+            if (skip)
+                _rotator.Skip();
         }
 
         private void PlayAnimation(Animations animations)

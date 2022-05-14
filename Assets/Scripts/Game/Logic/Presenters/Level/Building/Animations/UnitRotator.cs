@@ -10,13 +10,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common
 {
     public class UnitRotator : Disposable
     {
-        public FloatPoint3D Direction { get => _value; set { _value = value; UpdateValues(); } }
+        public FloatPoint3D Direction { get => _value; set { UpdateValues(value); } }
 
         private readonly IRotator _rotator;
         private IGameTime _time;
         private float _frequency;
         private float _speed;
-        private FloatPoint3D _value;
+        private FloatPoint3D _value = new FloatPoint3D(0, 0, 1);
         private float _remainTimeToProcess;
 
         public UnitRotator(IRotator rotator, IGameTime time, float frequency, float speed)
@@ -42,11 +42,18 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common
             _time.OnTimeChanged -= HandleTimeChanged;
         }
 
-        private void UpdateValues()
+        private void UpdateValues(FloatPoint3D value)
         {
+            if (!value.IsZero())
+                _value = value;
+
             if (_frequency == 0 || _speed == 0)
             {
                 Skip();
+            }
+            else
+            {
+                HandleTimeChanged(_time.Time, _time.Time);
             }
         }
 
