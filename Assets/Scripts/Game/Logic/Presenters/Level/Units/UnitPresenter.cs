@@ -51,6 +51,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         {
             _view.Position.Value = _model.Position;
             PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
+            if (_model.IsMoving())
+                _view.Animator.SetSpeed(_model.GetCurrentSpeed() / _model.GetMaxSpeed());
+            else
+                _view.Animator.SetSpeed(1);
         }
 
         private void HandleOnTargetChanged()

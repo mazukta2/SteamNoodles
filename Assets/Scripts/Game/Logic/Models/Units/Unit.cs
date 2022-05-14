@@ -24,6 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private UnitsSettingsDefinition _unitsSettings;
         private IGameTime _time;
         private float _speedOffset;
+        private float _currentSpeed;
 
         public Unit(FloatPoint3D position, FloatPoint3D target, CustomerDefinition definition, 
             UnitsSettingsDefinition unitsSettings, SessionRandom random, IGameTime time)
@@ -45,7 +46,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         private void Time_OnTimeChanged(float oldTime, float newTime)
         {
+            UpdateSpeed(newTime - oldTime);
             MoveToTarget(newTime - oldTime);
+        }
+
+        private void UpdateSpeed(float delta)
+        {
+            var speedUp = Position.GetDistanceTo(Target) > _unitsSettings.SpeedUpDistance;
+
+            if (speedUp)
+            {
+                _currentSpeed += delta * _unitsSettings.SpeedUp;
+                _currentSpeed = Math.Min(_currentSpeed, GetMaxSpeed());
+            }
+            else
+            {
+                _currentSpeed -= delta * _unitsSettings.SpeedUp;
+                _currentSpeed = Math.Max(_currentSpeed, GetMinSpeed());
+            }
         }
 
         private bool MoveToTarget(float delta)
@@ -54,7 +72,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 return true;
 
             var direction = Target - Position;
-            var movement = delta * GetSpeed();
+            var movement = delta * GetCurrentSpeed();
             var distance = Position.GetDistanceTo(Target);
             if (distance < movement)
                 movement = distance;
@@ -99,7 +117,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             OnTargetChanged();
 
             var distance = Position.GetDistanceTo(Target);
-            if (GetSpeed() * 0.01f > distance)
+            if (GetCurrentSpeed() * 0.01f > distance)
                 TeleportToTarget();
         }
 
@@ -108,9 +126,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             return !Position.IsClose(Target);
         }
 
-        public float GetSpeed()
+        public float GetMaxSpeed()
         {
             return _unitsSettings.Speed + _speedOffset;
         }
+
+        public float GetCurrentSpeed()
+        {
+            return _currentSpeed;
+        }
+
+        private float GetMinSpeed()
+        {
+            return _unitsSettings.MinSpeed;
+        }
+
     }
 }

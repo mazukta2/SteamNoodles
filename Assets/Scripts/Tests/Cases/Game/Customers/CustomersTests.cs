@@ -107,7 +107,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void IsMultipleUnitsPositionsIsRight()
         {
             var uc = new UnitControllerMock();
-            uc.SettingsDef.UnitSize = 1;
+            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
             var cr = new CrowdMock();
             var queue = new CustomerQueue(uc, uc, cr);
 
@@ -159,7 +159,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void IsLevelCrowdGetUnitsCorrectly()
         {
             var uc = new UnitControllerMock();
-            uc.SettingsDef.Speed = 1;
+            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
             var time = uc.Time;
             var level = LevelDefinitionSetups.GetDefault();
             level.UnitsRect = new FloatRect(-10, -4, 20, 8);
@@ -201,7 +201,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         class UnitControllerMock : Disposable, IUnits, ICustomers
         {
             public CustomerDefinition Def { get; } = new CustomerDefinition();
-            public UnitsSettingsDefinition SettingsDef { get; } = new UnitsSettingsDefinition();
+            public UnitsSettingsDefinition SettingsDef { get; set; } = new UnitsSettingsDefinition();
             public SessionRandom Random { get; } = new SessionRandom();
             public List<Unit> Units = new List<Unit>();
             public int QueueSize { get; set; }

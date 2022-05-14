@@ -21,6 +21,10 @@ namespace Game.Assets.Scripts.Tests.Views.Common
                 OnFinished();
         }
 
+        public void SetSpeed(float value)
+        {
+        }
+
         public void SwitchTo(string animation)
         {
             var oldAnimation = Animation;

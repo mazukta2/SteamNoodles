@@ -1,8 +1,11 @@
 {
     "Speed": 0.4,
+    "SpeedUp": 1,
+    "SpeedUpDistance": 1,
+    "MinSpeed": 0.3,
     "SpeedOffset": 0.1,
     "UnitSize": 0.3,
-    "RotationSpeed": 0.1,
+    "RotationSpeed": 0.05,
     "Hairs": [
         "Units/Heads/Head1/Head1",
         "Units/Heads/Head1/Head1_1"

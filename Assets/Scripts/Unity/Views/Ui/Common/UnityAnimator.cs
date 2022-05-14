@@ -53,5 +53,10 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
                 yield return null;
             }
         }
+
+        public void SetSpeed(float value)
+        {
+            _animator.speed = value;
+        }
     }
 }

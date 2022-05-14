@@ -35,15 +35,7 @@ namespace Game.Assets.Scripts.Tests.Setups
                 LevelUpOffset =2,
             });
             _assets.AddPrefab("DebugConstruction", new BasicConstructionModelPrefab());
-            _definitions.Add(nameof(UnitsSettingsDefinition), new UnitsSettingsDefinition()
-            {
-                Speed = 1,
-                UnitSize = 1,
-                Hairs = new string[]
-                {
-                    "hair1"
-                }
-            });
+            _definitions.Add(nameof(UnitsSettingsDefinition), UnitDefinitionSetup.GetDefaultUnitsDefinitions());
 
             var construciton = ConstructionSetups.GetDefault();
             _definitions.Add("Construction1", construciton);

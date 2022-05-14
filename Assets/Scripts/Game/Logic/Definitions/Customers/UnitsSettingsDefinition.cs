@@ -9,6 +9,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
         public float UnitSize { get; set; }
         public string[] Hairs { get; set; }
         public float RotationSpeed { get; set; }
+        public float SpeedUp { get; set; }
+        public float SpeedUpDistance { get; set; }
+        public float MinSpeed { get; set; }
 
         public void Validate()
         {
@@ -23,6 +26,15 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 
             if (RotationSpeed == 0)
                 throw new Exception($"{nameof(RotationSpeed)} is empty");
+
+            if (SpeedUp == 0)
+                throw new Exception($"{nameof(SpeedUp)} is empty");
+
+            if (SpeedUpDistance == 0)
+                throw new Exception($"{nameof(SpeedUpDistance)} is empty");
+
+            if (MinSpeed == 0)
+                throw new Exception($"{nameof(MinSpeed)} is empty");
         }
     }
 }

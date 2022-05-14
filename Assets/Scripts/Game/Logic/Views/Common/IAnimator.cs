@@ -9,5 +9,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         event Action OnFinished;
         void SwitchTo(string animation);
         void Play(string animation, bool startAgain = false);
+        void SetSpeed(float value);
     }
 }
