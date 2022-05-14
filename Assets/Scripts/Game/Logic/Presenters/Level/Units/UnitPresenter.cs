@@ -17,6 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         private Unit _model;
         private UnitsSettingsDefinition _settings;
         private UnitRotator _rotator;
+        private bool _isStartingAnimation = false;
 
         public UnitPresenter(Unit model, IUnitView view, UnitsSettingsDefinition unitsSettingsDefinition, IGameTime time) : base(view)
         {
@@ -36,12 +37,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _model.OnLookAt += HandleOnLookAt;
 
             DressUnit();
-            PlayAnimation(model.IsMoving() ? Animations.Run : Animations.Idle);
+            _view.Animator.OnFinished += Animator_OnFinished;
+            _isStartingAnimation = true;
+            PlayAnimation(Animations.Start);
+            UpdateAnimations();
         }
 
         protected override void DisposeInner()
         {
             _rotator.Dispose();
+            _view.Animator.OnFinished -= Animator_OnFinished;
             _model.OnPositionChanged -= HandleOnPositionChanged;
             _model.OnDispose -= HandleOnDispose;
             _model.OnTargetChanged -= HandleOnTargetChanged;
@@ -52,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         private void HandleOnPositionChanged()
         {
             _view.Position.Value = _model.Position;
-            PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
+            UpdateAnimations();
             if (_model.IsMoving())
                 _view.Animator.SetSpeed(_model.GetCurrentSpeed() / _model.GetMaxSpeed());
             else
@@ -63,7 +68,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         {
             if (_model.Target != _model.Position)
                 _rotator.Direction = (_model.Target - _model.Position).ToQuaternion();
-            PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
+            UpdateAnimations();
         }
 
         private void HandleOnDispose()
@@ -73,7 +78,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void HandleOnReachedPosition()
         {
-            PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
+            UpdateAnimations();
         }
 
         private void HandleOnLookAt(Common.Math.GameVector3 target, bool skip)
@@ -81,6 +86,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _rotator.Direction = (target - _model.Position).ToQuaternion();
             if (skip)
                 _rotator.Skip();
+        }
+
+        private void UpdateAnimations()
+        {
+            if (_isStartingAnimation)
+                return;
+
+            PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
+        }
+
+        private void Animator_OnFinished()
+        {
+            _isStartingAnimation = false;
+            UpdateAnimations();
         }
 
         private void PlayAnimation(Animations animations)
@@ -100,7 +119,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         public enum Animations
         {
             Idle,
-            Run
+            Run,
+            Start
         }
     }
 }
