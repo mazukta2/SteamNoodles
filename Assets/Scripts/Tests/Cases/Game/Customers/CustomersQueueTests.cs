@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
@@ -6,24 +7,25 @@ using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Level.Units;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 {
-    public class CustomersTests
+    public class CustomersQueueTests
     {
-        #region Queue
 
         [Test]
         public void IsPointsCalculationsCorrect()
@@ -153,7 +155,55 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             queue.Dispose();
             uc.Dispose();
         }
-        #endregion
+
+        [Test]
+        public void IsQueueVisualRight()
+        {
+            var uc = new UnitControllerMock();
+            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
+            uc.SettingsDef.Speed = 1;
+            uc.SettingsDef.SpeedUp = 1;
+            uc.SettingsDef.SpeedUpDistance = 1;
+            uc.SettingsDef.MinSpeed = 0.5f;
+            uc.SettingsDef.RotationSpeed = 0.5f;
+            uc.FirstPositionOffset = new FloatPoint3D(0, 0, 1);
+
+            IGameTime.Default = uc.Time;
+            var cr = new CrowdMock();
+            var queue = new CustomerQueue(uc, uc, cr);
+
+            var collection = new ViewsCollection();
+            new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
+ 
+            uc.QueueSize = 2;
+            queue.ServeCustomer();
+
+            Assert.AreEqual(new FloatPoint3D(1, 0, 0), uc.Units[0].Position);
+            Assert.AreEqual(new FloatPoint3D(2, 0, 0), uc.Units[1].Position);
+
+            var views = collection.FindViews<UnitView>().ToList();
+            var originalRotation = views[0].Rotator.Rotation;
+            Assert.AreEqual(new FloatPoint3D(-1, 0, 0), views[0].Rotator.Rotation.ToVector().GetRound());
+            Assert.AreEqual(new FloatPoint3D(-1, 0, 0), views[1].Rotator.Rotation.ToVector().GetRound());
+
+            var timePassed = 0.1f;
+            uc.Time.MoveTime(timePassed);
+
+            var firstUnitTraget = uc.GetQueueFirstPosition() + uc.FirstPositionOffset;
+            Assert.AreEqual(firstUnitTraget, uc.Units[0].Target);
+            Assert.AreEqual(0.6f, uc.Units[0].GetCurrentSpeed());
+            var targetRotation = (firstUnitTraget - new FloatPoint3D(1, 0, 0)).ToQuaternion();
+            
+            Assert.AreEqual(new FloatPoint3D(1, 0, 0).MoveTowards(firstUnitTraget, 0.6f * timePassed), uc.Units[0].Position);
+            Assert.AreEqual(new FloatPoint3D(1.95f, 0, 0), uc.Units[1].Position);
+            AssertHelpers.CompareVectors(GameQuaternion.RotateTowards(originalRotation, targetRotation, 0.5f * timePassed).ToVector(), 
+                views[0].Rotator.Rotation.ToVector(), 0.01f);
+            Assert.AreEqual(new FloatPoint3D(-1, 0, 0), views[1].Rotator.Rotation.ToVector().GetRound());
+
+            collection.Dispose();
+            queue.Dispose();
+            uc.Dispose();
+        }
 
         [Test]
         public void IsLevelCrowdGetUnitsCorrectly()
@@ -204,8 +254,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             public UnitsSettingsDefinition SettingsDef { get; set; } = new UnitsSettingsDefinition();
             public SessionRandom Random { get; } = new SessionRandom();
             public List<Unit> Units = new List<Unit>();
+
+            public event Action<Unit> OnUnitSpawn = delegate { };
+
+            public FloatPoint3D FirstPositionOffset { get; set; } = FloatPoint3D.Zero;
+
             public int QueueSize { get; set; }
             public GameTime Time { get; set; } = new GameTime();
+
+            IReadOnlyCollection<Unit> IUnits.Units => Units.AsReadOnly();
 
             public FloatPoint3D GetQueueFirstPosition()
             {
@@ -214,7 +271,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             public FloatPoint3D GetQueueFirstPositionOffset()
             {
-                return FloatPoint3D.Zero;
+                return FirstPositionOffset;
             }
 
             public float GetUnitSize()
@@ -226,6 +283,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             {
                 var unit = new Unit(pos, pos, Def, SettingsDef, Random, Time);
                 Units.Add(unit);
+                OnUnitSpawn(unit);
                 return unit;
             }
 

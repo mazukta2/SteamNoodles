@@ -8,10 +8,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
     public class UnitsPresenter : BasePresenter<IUnitsManagerView>
     {
         private IUnitsManagerView _unitsManagerView;
-        private LevelUnits _model;
+        private IUnits _model;
         private UnitsSettingsDefinition _settingsDefinition;
 
-        public UnitsPresenter(LevelUnits levelUnits, IUnitsManagerView unitsManagerView, UnitsSettingsDefinition settingsDefinition) : base(unitsManagerView)
+        public UnitsPresenter(IUnits levelUnits, IUnitsManagerView unitsManagerView, UnitsSettingsDefinition settingsDefinition) : base(unitsManagerView)
         {
             _unitsManagerView = unitsManagerView;
             _model = levelUnits;

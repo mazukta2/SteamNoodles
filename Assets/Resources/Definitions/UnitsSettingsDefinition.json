@@ -5,7 +5,7 @@
     "MinSpeed": 0.3,
     "SpeedOffset": 0.1,
     "UnitSize": 0.3,
-    "RotationSpeed": 0.05,
+    "RotationSpeed": 1,
     "Hairs": [
         "Units/Heads/Head1/Head1",
         "Units/Heads/Head1/Head1_1"

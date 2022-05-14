@@ -1,6 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Helpers;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
@@ -29,16 +31,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             return FieldRotation.Top;
         }
 
-        public static FloatPoint3D ToDirection(FieldRotation rotation)
+        public static GameQuaternion ToDirection(FieldRotation rotation)
         {
             if (rotation == FieldRotation.Top)
-                return new FloatPoint3D(0, 0, 1);
+                return new FloatPoint3D(0, 0, 1).ToQuaternion();
             if (rotation == FieldRotation.Right)
-                return new FloatPoint3D(1, 0, 0);
+                return new FloatPoint3D(1, 0, 0).ToQuaternion();
             if (rotation == FieldRotation.Bottom)
-                return new FloatPoint3D(0, 0, -1);
+                return new FloatPoint3D(0, 0, -1).ToQuaternion();
 
-            return new FloatPoint3D(-1, 0, 0);
+            return new FloatPoint3D(-1, 0, 0).ToQuaternion();
         }
     }
 

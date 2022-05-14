@@ -45,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             {
                 var pos = GetPositionFor(_queue.Count + 1);
                 var unit = _unitsController.SpawnUnit(pos);
-                unit.LookAt(_customers.GetQueueFirstPosition(), true);
+                unit.LookAt(_customers.GetQueueFirstPosition() + new FloatPoint3D(-1, 0, 0), true);
                 unit.OnReachedPosition += Unit_OnReachedPosition;
                 _queue.Add(unit);
             }

@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
             new PlacementFieldView(collection, new ConstructionViewPrefab(), new CellViewPrefab());
 
-            new UnitsManagerView(collection, new ContainerViewMock(collection), new UnitViewPrefab());
+            new UnitsManagerView(collection);
 
             new PieceSpawnerView(collection);
 

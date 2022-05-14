@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
@@ -25,7 +26,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _rotator = new UnitRotator(view.Rotator, time, 0.1f, unitsSettingsDefinition.RotationSpeed);
 
             _view.Position.Value = model.Position;
-            _rotator.Direction = model.Target - model.Position;
+            if (model.Target != model.Position)
+                _rotator.Direction = (model.Target - model.Position).ToQuaternion();
             _rotator.Skip();
             _model.OnPositionChanged += HandleOnPositionChanged;
             _model.OnDispose += HandleOnDispose;
@@ -59,7 +61,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void HandleOnTargetChanged()
         {
-            _rotator.Direction = _model.Target - _model.Position;
+            if (_model.Target != _model.Position)
+                _rotator.Direction = (_model.Target - _model.Position).ToQuaternion();
             PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
@@ -73,9 +76,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
-        private void HandleOnLookAt(Common.Math.FloatPoint3D obj, bool skip)
+        private void HandleOnLookAt(Common.Math.FloatPoint3D target, bool skip)
         {
-            _rotator.Direction = obj - _model.Position;
+            _rotator.Direction = (target - _model.Position).ToQuaternion();
             if (skip)
                 _rotator.Skip();
         }

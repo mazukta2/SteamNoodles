@@ -8,27 +8,21 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
     public class UnityRotator : IRotator
     {
         private Transform _transform;
-        private FloatPoint3D _direction;
+        private GameQuaternion _direction;
 
         public UnityRotator(Transform transform)
         {
             _transform = transform;
         }
 
-        public FloatPoint3D GetDirection()
-        {
-            return _direction;
-        }
+        public GameQuaternion Rotation { get => _direction; set => SetDirection(value); }
 
-        public void LookAtDirection(FloatPoint3D direction)
+        public void SetDirection(GameQuaternion direction)
         {
             if (_transform == null)
                 throw new System.Exception("wtf");
 
-            if (direction.IsZero())
-                return;
-
-            _transform.forward = direction.ToVector().normalized;
+            _transform.rotation = new Quaternion(direction.X, direction.Y, direction.Z, direction.W);
             _direction = direction;
         }
     }

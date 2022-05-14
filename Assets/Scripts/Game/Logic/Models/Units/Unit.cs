@@ -36,6 +36,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _time = time;
             _speedOffset = random.GetRandom(-1, 1) * _unitsSettings.SpeedOffset;
             VisualSeed = random.GetRandom(0, 10000);
+            _currentSpeed = GetMinSpeed();
+
             _time.OnTimeChanged += Time_OnTimeChanged;
         }
 
@@ -96,7 +98,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         {
             if (IsMoving())
                 throw new Exception("Can't look while moving");
-            
+
+            if ((target - Position).IsZero())
+                throw new Exception("Wrong target");
+
             OnLookAt(target, skip);
         }
 
