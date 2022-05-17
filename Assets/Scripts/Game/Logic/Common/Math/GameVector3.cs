@@ -36,7 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
 
         public bool IsClose(GameVector3 target)
         {
-            return System.Math.Abs(target.X - X) < 0.1f && System.Math.Abs(target.Y - Y) < 0.1f && System.Math.Abs(target.Z - Z) < 0.1f;
+            return GetDistanceTo(target) < 0.001f;
         }
 
         public static GameVector3 Lerp(GameVector3 point1, GameVector3 point2, float value)

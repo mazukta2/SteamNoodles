@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
         private readonly LevelDefinition _levelDefinition;
         private readonly UnitsSettingsDefinition _unitsSettings;
         private readonly Resources _resources;
+        private int _queueSize = 0;
 
         public LevelCustomers(PlacementField placementField, LevelDefinition levelDefinition, UnitsSettingsDefinition unitsSettings, Levels.Resources resources)
         {
@@ -22,6 +23,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            _resources.Points.OnLevelUp += Points_OnLevelUp;
+            _resources.Points.OnLevelDown += Points_OnLevelDown;
+        }
+
+        protected override void DisposeInner()
+        {
+            _resources.Points.OnLevelUp -= Points_OnLevelUp;
+            _resources.Points.OnLevelDown -= Points_OnLevelDown;
         }
 
         public float SpawnAnimationDelay => _unitsSettings.SpawnAnimationDelay;
@@ -40,7 +49,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 
         public int GetQueueSize()
         {
-            return _resources.Points.CurrentLevel;
+            return _queueSize;
         }
+
+        public void ClearQueue()
+        {
+            _queueSize = 0;
+        }
+
+        private void Points_OnLevelDown()
+        {
+            if (_queueSize > 0)
+                _queueSize--;
+        }
+
+        private void Points_OnLevelUp()
+        {
+            _queueSize++;
+        }
+
     }
 }

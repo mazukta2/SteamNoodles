@@ -83,13 +83,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             Position = Position + normalizeDirection * movement;
             if (Position.Y != 0)
                 throw new Exception();
-            OnPositionChanged();
 
             if (Position.IsClose(Target))
             {
                 Position = Target;
+                OnPositionChanged();
                 OnReachedPosition();
             }
+            else
+                OnPositionChanged();
 
             return false;
         }
@@ -105,12 +107,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             OnLookAt(target, skip);
         }
 
+        public void SetPosition(GameVector3 target)
+        {
+            SetTarget(target);
+            TeleportToTarget();
+        }
+
         public void TeleportToTarget()
         {
             if (Position.IsClose(Target))
                 return;
 
             Position = Target;
+            OnPositionChanged();
             OnReachedPosition();
         }
 

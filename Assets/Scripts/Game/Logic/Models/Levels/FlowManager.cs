@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
     public class FlowManager : Disposable
     {
         public event Action OnTurn = delegate { };
+        public event Action<bool> OnWaveEnded = delegate { };
 
         private LevelDefinition _levelDefinition;
         private PlacementField _constructionsManager;
@@ -48,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             OnTurn();
         }
 
-        public void NextWave()
+        public void WinWave()
         {
             if (!CanNextWave())
                 throw new Exception("Cant start next wave");
@@ -59,6 +60,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             }
 
             GiveCards(PlayerHand.ConstructionSource.NewWave);
+
+            OnWaveEnded(true);
         }
 
         public void FailWave()
@@ -72,6 +75,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             }
 
             GiveCards(PlayerHand.ConstructionSource.NewWave);
+
+            OnWaveEnded(false);
         }
 
         public void GiveCards(PlayerHand.ConstructionSource source)

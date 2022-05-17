@@ -44,7 +44,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private void NextWaveClick()
         {
-            _turnManager.NextWave();
+            _turnManager.WinWave();
             UpdateWaveProgress();
         }
 

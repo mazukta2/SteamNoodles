@@ -38,6 +38,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
                 _list[i].OnReachedPosition += Unit_OnReachedPosition;
                 _list[i].SetTarget(_queue.GetPositionFor(i));
             }
+            if (_list.Length == 0)
+                FireOnFinished();
         }
 
         private void Unit_OnReachedPosition()

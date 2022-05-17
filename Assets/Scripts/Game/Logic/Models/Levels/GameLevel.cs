@@ -44,10 +44,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Units = new LevelUnits(time, definitions.Get<UnitsSettingsDefinition>(), settings, _random);
             TurnManager = new FlowManager(Definition, random, Constructions, Hand);
             TurnManager.OnTurn += TurnManager_OnTurn;
+            TurnManager.OnWaveEnded += TurnManager_OnWaveEnded;
 
             _customers = new LevelCustomers(Constructions, settings, definitions.Get<UnitsSettingsDefinition>(), Resources);
             _crowd = new LevelCrowd(Units, time, settings, random);
-            Queue = new CustomerQueue(_customers, Units, _crowd, time);
+            Queue = new CustomerQueue(_customers, Units, _crowd, time, random);
 
             Resources.Points.OnMaxLevelUp += OnLevelUp;
         }
@@ -56,6 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         {
             Resources.Points.OnMaxLevelUp -= OnLevelUp;
             TurnManager.OnTurn -= TurnManager_OnTurn;
+            TurnManager.OnWaveEnded -= TurnManager_OnWaveEnded;
 
             TurnManager.Dispose();
             Hand.Dispose();
@@ -76,5 +78,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         {
             Queue.ServeCustomer();
         }
+
+        private void TurnManager_OnWaveEnded(bool victory)
+        {
+            if (victory)
+                Queue.ServeAll();
+            else
+            {
+                _customers.ClearQueue();
+                Queue.FreeAll();
+            }
+        }
+
     }
 }

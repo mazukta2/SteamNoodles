@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
+using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using System;
 using System.Collections.Generic;
@@ -17,16 +18,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private IUnits _unitsController;
         private ICrowd _crowd;
         private readonly IGameTime _time;
+        private readonly SessionRandom _random;
         private List<Unit> _queue = new List<Unit>();
         private List<BaseQueueStep> _orders = new List<BaseQueueStep>();
         private BaseQueueStep _currentStep;
 
-        public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd, IGameTime time)
+        public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd, IGameTime time, SessionRandom random)
         {
             _customers = customers ?? throw new ArgumentNullException(nameof(customers));
             _unitsController = unitsController ?? throw new ArgumentNullException(nameof(unitsController));
             _crowd = crowd ?? throw new ArgumentNullException(nameof(crowd));
             _time = time ?? throw new ArgumentNullException(nameof(time));
+            _random = random;
         }
 
         protected override void DisposeInner()
@@ -44,34 +47,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             if (targetSize < 0)
                 throw new ArgumentException(nameof(targetSize));
 
-            var currentSize = _queue.Count;
-            if (currentSize > 0)
-            {
-                _orders.Add(new ServeFirstCustomer(this, _crowd, RemoveFromQueue));
-                currentSize--;
-            }
-
-            // remove units
-            if (targetSize < currentSize)
-            {
-                var count = currentSize - targetSize;
-                for (int i = _queue.Count - 1; i >= _queue.Count - 1 - count; i--)
-                    _orders.Add(new RemoveUnitFromQueue(_queue[i], _crowd, RemoveFromQueue));
-            }
-
-            // add new units
-            if (targetSize > currentSize)
-            {
-                var count = targetSize - currentSize;
-                for (int i = 0; i < count; i++)
-                {
-                    _orders.Add(new AddDelay(_time, _customers.SpawnAnimationDelay));
-                    _orders.Add(new AddUnitToQueue(this, _customers, _unitsController, AddToQueue));
-                }
-            }
-
+            _orders.Add(new ServeFirstCustomer(this, _crowd, RemoveFromQueue));
+            _orders.Add(new RemoveUnitsFromQueue(this, _customers, _crowd, RemoveFromQueue));
+            _orders.Add(new AddUnitsToQueue(this, _customers, _unitsController, AddToQueue, _time, _customers.SpawnAnimationDelay));
             _orders.Add(new MoveUnitsToPositionsInQueue(this, _customers));
 
+            ProcessSteps();
+        }
+
+        public void ServeAll()
+        {
+            _orders.Add(new ServeAllFromQueue(this, _crowd, RemoveFromQueue, _time, _customers.SpawnAnimationDelay));
+            _orders.Add(new AddUnitsToQueue(this, _customers, _unitsController, AddToQueue, _time, _customers.SpawnAnimationDelay));
+            ProcessSteps();
+        }
+
+        public void FreeAll()
+        {
+            _orders.Add(new FreeAllFromQueue(this, _crowd, _random, RemoveFromQueue));
             ProcessSteps();
         }
 
@@ -93,6 +86,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         {
             _queue.Add(unit);
         }
+
 
         private void ProcessSteps()
         {
