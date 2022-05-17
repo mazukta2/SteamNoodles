@@ -111,7 +111,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var uc = new UnitControllerMock();
             uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
             var cr = new CrowdMock();
-            var queue = new CustomerQueue(uc, uc, cr);
+            var queue = new CustomerQueue(uc, uc, cr, uc.Time);
 
             Assert.AreEqual(0, uc.Units.Count);
             Assert.AreEqual(0, cr.Units.Count);
@@ -126,17 +126,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             uc.QueueSize = 1;
             queue.ServeCustomer();
+            uc.Time.MoveTime(1);
 
             Assert.AreEqual(2, uc.Units.Count);
-            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Position);
             Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
             Assert.AreEqual(1, cr.Units.Count);
 
             uc.QueueSize = 2;
             queue.ServeCustomer();
+            uc.Time.MoveTime(1);
 
             Assert.AreEqual(4, uc.Units.Count);
-            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Position);
             Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
             Assert.AreEqual(new GameVector3(2, 0, 0), uc.Units.Last().Position);
             Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.Last().Target);
@@ -144,9 +146,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             uc.QueueSize = 2;
             queue.ServeCustomer();
+            uc.Time.MoveTime(1);
 
             Assert.AreEqual(5, uc.Units.Count);
-            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Position);
             Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
             Assert.AreEqual(new GameVector3(2, 0, 0), uc.Units.Last().Position);
             Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.Last().Target);
@@ -170,7 +173,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             IGameTime.Default = uc.Time;
             var cr = new CrowdMock();
-            var queue = new CustomerQueue(uc, uc, cr);
+            var queue = new CustomerQueue(uc, uc, cr, uc.Time);
 
             var collection = new ViewsCollection();
             new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
@@ -263,6 +266,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             public GameTime Time { get; set; } = new GameTime();
 
             IReadOnlyCollection<Unit> IUnits.Units => Units.AsReadOnly();
+
+            public float SpawnAnimationDelay => 0;
 
             public GameVector3 GetQueueFirstPosition()
             {

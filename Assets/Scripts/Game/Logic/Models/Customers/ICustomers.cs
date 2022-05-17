@@ -9,6 +9,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
     {
         GameVector3 GetQueueFirstPosition();
         GameVector3 GetQueueFirstPositionOffset();
+        float SpawnAnimationDelay { get; }
         int GetQueueSize();
     }
 }

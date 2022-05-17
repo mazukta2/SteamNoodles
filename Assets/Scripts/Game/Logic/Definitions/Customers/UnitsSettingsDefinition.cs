@@ -12,6 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
         public float SpeedUp { get; set; }
         public float SpeedUpDistance { get; set; }
         public float MinSpeed { get; set; }
+        public float SpawnAnimationDelay { get; set; }
 
         public void Validate()
         {
@@ -35,6 +36,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 
             if (MinSpeed == 0)
                 throw new Exception($"{nameof(MinSpeed)} is empty");
+
+            if (SpawnAnimationDelay == 0)
+                throw new Exception($"{nameof(SpawnAnimationDelay)} is empty");
         }
     }
 }

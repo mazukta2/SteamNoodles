@@ -1,6 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
+using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,78 +11,110 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 {
     public class CustomerQueue : Disposable
     {
+        public IReadOnlyCollection<Unit> Units => _queue.AsReadOnly();
+
         private readonly ICustomers _customers;
         private IUnits _unitsController;
         private ICrowd _crowd;
-
+        private readonly IGameTime _time;
         private List<Unit> _queue = new List<Unit>();
+        private List<BaseQueueStep> _orders = new List<BaseQueueStep>();
+        private BaseQueueStep _currentStep;
 
-        public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd)
+        public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd, IGameTime time)
         {
             _customers = customers ?? throw new ArgumentNullException(nameof(customers));
             _unitsController = unitsController ?? throw new ArgumentNullException(nameof(unitsController));
             _crowd = crowd ?? throw new ArgumentNullException(nameof(crowd));
+            _time = time ?? throw new ArgumentNullException(nameof(time));
         }
 
         protected override void DisposeInner()
         {
+            if (_currentStep != null)
+                _currentStep.Dispose();
+
+            foreach (var item in _orders)
+                item.Dispose();
         }
 
         public void ServeCustomer()
         {
-            var size = _customers.GetQueueSize();
-            if (size < 0)
-                throw new ArgumentException(nameof(size));
+            var targetSize = _customers.GetQueueSize();
+            if (targetSize < 0)
+                throw new ArgumentException(nameof(targetSize));
 
-            var first = _queue.FirstOrDefault();
-            if (first != null)
+            var currentSize = _queue.Count;
+            if (currentSize > 0)
             {
-                first.OnReachedPosition -= Unit_OnReachedPosition;
-                _queue.Remove(first);
-                _crowd.SendToCrowd(first, LevelCrowd.CrowdDirection.Left);
-            }
-
-            // add new units
-            while (size > _queue.Count)
-            {
-                var pos = GetPositionFor(_queue.Count + 1);
-                var unit = _unitsController.SpawnUnit(pos);
-                unit.LookAt(_customers.GetQueueFirstPosition() + new GameVector3(-1, 0, 0), true);
-                unit.OnReachedPosition += Unit_OnReachedPosition;
-                _queue.Add(unit);
+                _orders.Add(new ServeFirstCustomer(this, _crowd, RemoveFromQueue));
+                currentSize--;
             }
 
             // remove units
-            while (size < _queue.Count)
+            if (targetSize < currentSize)
             {
-                var last = _queue.Last();
-                last.OnReachedPosition -= Unit_OnReachedPosition;
-                _queue.Remove(last);
-                _crowd.SendToCrowd(last, LevelCrowd.CrowdDirection.Right);
+                var count = currentSize - targetSize;
+                for (int i = _queue.Count - 1; i >= _queue.Count - 1 - count; i--)
+                    _orders.Add(new RemoveUnitFromQueue(_queue[i], _crowd, RemoveFromQueue));
             }
 
-            for (int i = 0; i < _queue.Count; i++)
-                _queue[i].SetTarget(GetPositionFor(i));
-        }
-
-        private void Unit_OnReachedPosition()
-        {
-            if (_queue.Count > 0)
+            // add new units
+            if (targetSize > currentSize)
             {
-                if (!_queue[0].IsMoving())
+                var count = targetSize - currentSize;
+                for (int i = 0; i < count; i++)
                 {
-                    _queue[0].LookAt(_customers.GetQueueFirstPosition() + _customers.GetQueueFirstPositionOffset() + new GameVector3(0, 0, 1));
+                    _orders.Add(new AddDelay(_time, _customers.SpawnAnimationDelay));
+                    _orders.Add(new AddUnitToQueue(this, _customers, _unitsController, AddToQueue));
                 }
             }
+
+            _orders.Add(new MoveUnitsToPositionsInQueue(this, _customers));
+
+            ProcessSteps();
         }
 
-        private GameVector3 GetPositionFor(int index)
+        public GameVector3 GetPositionFor(int index)
         {
             var offset = GameVector3.Zero;
             if (index == 0)
                 offset = _customers.GetQueueFirstPositionOffset();
 
             return _customers.GetQueueFirstPosition() + offset + new GameVector3(_unitsController.GetUnitSize(), 0, 0) * index;
+        }
+
+        private void RemoveFromQueue(Unit unit)
+        {
+            _queue.Remove(unit);
+        }
+
+        private void AddToQueue(Unit unit)
+        {
+            _queue.Add(unit);
+        }
+
+        private void ProcessSteps()
+        {
+            if (_currentStep != null)
+                return;
+
+            if (_orders.Count == 0)
+                return;
+
+            _currentStep = _orders.First();
+            _orders.RemoveAt(0);
+
+            _currentStep.OnFinished += FinishCurrentStep;
+            _currentStep.Play();
+        }
+
+        private void FinishCurrentStep()
+        {
+            _currentStep.OnFinished -= FinishCurrentStep;
+            _currentStep.Dispose();
+            _currentStep = null;
+            ProcessSteps();
         }
     }
 }

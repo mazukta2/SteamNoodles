@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private LevelCustomers _customers;
         private LevelCrowd _crowd;
-        private CustomerQueue _queue;
+        public CustomerQueue Queue { get; }
 
         public Resources Resources { get; }
         public LevelDefinition Definition { get; private set; }
@@ -45,9 +45,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             TurnManager = new FlowManager(Definition, random, Constructions, Hand);
             TurnManager.OnTurn += TurnManager_OnTurn;
 
-            _customers = new LevelCustomers(Constructions, settings, Resources);
+            _customers = new LevelCustomers(Constructions, settings, definitions.Get<UnitsSettingsDefinition>(), Resources);
             _crowd = new LevelCrowd(Units, time, settings, random);
-            _queue = new CustomerQueue(_customers, Units, _crowd);
+            Queue = new CustomerQueue(_customers, Units, _crowd, time);
 
             Resources.Points.OnMaxLevelUp += OnLevelUp;
         }
@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Units.Dispose();
             Resources.Dispose();
             _crowd.Dispose();
-            _queue.Dispose();
+            Queue.Dispose();
             _customers.Dispose();
         }
 
@@ -74,7 +74,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private void TurnManager_OnTurn()
         {
-            _queue.ServeCustomer();
+            Queue.ServeCustomer();
         }
     }
 }
