@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using System;
@@ -23,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private List<BaseQueueStep> _orders = new List<BaseQueueStep>();
         private BaseQueueStep _currentStep;
 
-        public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd, IGameTime time, SessionRandom random)
+        public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd, IGameTime time,  SessionRandom random)
         {
             _customers = customers ?? throw new ArgumentNullException(nameof(customers));
             _unitsController = unitsController ?? throw new ArgumentNullException(nameof(unitsController));
@@ -47,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             if (targetSize < 0)
                 throw new ArgumentException(nameof(targetSize));
 
-            _orders.Add(new ServeFirstCustomer(this, _crowd, RemoveFromQueue));
+            _orders.Add(new ServeFirstCustomer(this, _crowd, RemoveFromQueue, ServeUnit));
             _orders.Add(new RemoveUnitsFromQueue(this, _customers, _crowd, RemoveFromQueue));
             _orders.Add(new AddUnitsToQueue(this, _customers, _unitsController, AddToQueue, _time, _customers.SpawnAnimationDelay));
             _orders.Add(new MoveUnitsToPositionsInQueue(this, _customers));
@@ -57,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         public void ServeAll()
         {
-            _orders.Add(new ServeAllFromQueue(this, _crowd, RemoveFromQueue, _time, _customers.SpawnAnimationDelay));
+            _orders.Add(new ServeAllFromQueue(this, _crowd, _random, RemoveFromQueue, ServeUnit, _time, _customers.SpawnAnimationDelay));
             _orders.Add(new AddUnitsToQueue(this, _customers, _unitsController, AddToQueue, _time, _customers.SpawnAnimationDelay));
             ProcessSteps();
         }
@@ -87,6 +88,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             _queue.Add(unit);
         }
 
+        private void ServeUnit(Unit unit)
+        {
+           _customers.Serve(unit);
+        }
 
         private void ProcessSteps()
         {

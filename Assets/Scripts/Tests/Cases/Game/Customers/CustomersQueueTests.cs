@@ -434,6 +434,31 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             uc.Dispose();
         }
 
+        [Test]
+        public void IsServeCoinsWorking()
+        {
+            var uc = new UnitControllerMock();
+            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
+            IGameTime.Default = uc.Time;
+            var cr = new CrowdMock();
+            var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
+
+            var collection = new ViewsCollection();
+            new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
+
+            Assert.AreEqual(0, uc.Coins);
+
+            uc.QueueSize = 2;
+            queue.ServeCustomer();
+            uc.Time.MoveTime(1);
+
+            Assert.AreEqual(1, uc.Coins);
+
+            collection.Dispose();
+            queue.Dispose();
+            uc.Dispose();
+        }
+
         class UnitControllerMock : Disposable, IUnits, ICustomers
         {
             public CustomerDefinition Def { get; } = new CustomerDefinition();
@@ -444,6 +469,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             public event Action<Unit> OnUnitSpawn = delegate { };
 
             public GameVector3 FirstPositionOffset { get; set; } = GameVector3.Zero;
+
+            public int Coins { get; set; }
 
             public int QueueSize { get; set; }
             public GameTime Time { get; set; } = new GameTime();
@@ -492,6 +519,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             public int GetQueueSize()
             {
                 return QueueSize;
+            }
+
+            public void Serve(Unit unit)
+            {
+                Coins++;
             }
         }
 

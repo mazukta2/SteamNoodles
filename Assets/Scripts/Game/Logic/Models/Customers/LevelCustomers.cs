@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 using System.Linq;
 
@@ -68,5 +69,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             _queueSize++;
         }
 
+        public void Serve(Unit unit)
+        {
+            _resources.Coins.Change(_unitsSettings.BaseCoins);
+        }
     }
 }

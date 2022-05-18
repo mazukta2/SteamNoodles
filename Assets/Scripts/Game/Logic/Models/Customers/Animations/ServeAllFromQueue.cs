@@ -14,15 +14,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
         private readonly CustomerQueue _queue;
         private readonly float _delay;
         private readonly ICrowd _crowd;
+        private readonly SessionRandom _random;
         private readonly Action<Unit> _removeFromQueue;
+        private readonly Action<Unit> _serve;
         private readonly TimeUpdater _updater;
 
-        public ServeAllFromQueue(CustomerQueue queue, ICrowd crowd, Action<Unit> removeFromQueue, IGameTime time, float delay)
+        public ServeAllFromQueue(CustomerQueue queue, ICrowd crowd, SessionRandom random, Action<Unit> removeFromQueue, Action<Unit> serve, IGameTime time, float delay)
         {
             _queue = queue;
             _delay = delay;
             _crowd = crowd;
+            _random = random;
             _removeFromQueue = removeFromQueue;
+            _serve = serve;
             _updater = new TimeUpdater(time, delay);
         }
 
@@ -49,13 +53,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
 
             var first = _queue.Units.First();
             _removeFromQueue(first);
-            _crowd.SendToCrowd(first, LevelCrowd.CrowdDirection.Left);
-
-            var list = _queue.Units.ToArray();
-            for (int i = 0; i < list.Count(); i++)
-            {
-                list[i].SetPosition(_queue.GetPositionFor(i));
-            }
+            _serve(first);
+            _crowd.SendToCrowd(first, _random.GetRandom() ? LevelCrowd.CrowdDirection.Right : LevelCrowd.CrowdDirection.Left);
 
             if (_queue.Units.Count == 0)
             {

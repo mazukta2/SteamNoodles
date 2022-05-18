@@ -6,7 +6,8 @@
     "SpeedOffset": 0.1,
     "UnitSize": 0.3,
     "RotationSpeed": 2,
-    "SpawnAnimationDelay": 0.3,
+    "BaseCoins": 1,
+    "SpawnAnimationDelay": 0.2,
     "Hairs": [
         "Units/Heads/Head1/Head1",
         "Units/Heads/Head1/Head1_1"
