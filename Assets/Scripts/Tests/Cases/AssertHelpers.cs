@@ -1,8 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Cases
 {

@@ -85,13 +85,13 @@ namespace Game.Tests.Cases.Customers
             var view = new CustumerCoinsMock(collection);
             new CustumerCoinsPresenter(coins, view);
 
-            Assert.AreEqual(2, view.Text.Value);
+            Assert.AreEqual("0", view.Text.Value);
             coins.Change(2);
-            Assert.AreEqual(2, view.Text.Value);
+            Assert.AreEqual("2", view.Text.Value);
             coins.Change(2);
-            Assert.AreEqual(4, view.Text.Value);
+            Assert.AreEqual("4", view.Text.Value);
             coins.Change(-10);
-            Assert.AreEqual(0, view.Text.Value);
+            Assert.AreEqual("0", view.Text.Value);
 
             collection.Dispose();
         }

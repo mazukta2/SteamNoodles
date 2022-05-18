@@ -414,18 +414,18 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             queue.ServeAll();
             // 1
             Assert.AreEqual(3, queue.Units.Count());
-            Assert.AreEqual(new GameVector3(0, 0, 1), queue.Units.ToArray()[0].Position);
-            Assert.AreEqual(new GameVector3(1, 0, 0), queue.Units.ToArray()[1].Position);
-            Assert.AreEqual(new GameVector3(2, 0, 0), queue.Units.ToArray()[2].Position);
+            Assert.AreEqual(new GameVector3(1, 0, 0), queue.Units.ToArray()[0].Position);
+            Assert.AreEqual(new GameVector3(2, 0, 0), queue.Units.ToArray()[1].Position);
+            Assert.AreEqual(new GameVector3(3, 0, 0), queue.Units.ToArray()[2].Position);
             uc.Time.MoveTime(1f);
             // 2
             Assert.AreEqual(2, queue.Units.Count());
-            Assert.AreEqual(new GameVector3(0, 0, 1), queue.Units.ToArray()[0].Position);
-            Assert.AreEqual(new GameVector3(1, 0, 0), queue.Units.ToArray()[1].Position);
+            Assert.AreEqual(new GameVector3(2, 0, 0), queue.Units.ToArray()[0].Position);
+            Assert.AreEqual(new GameVector3(3, 0, 0), queue.Units.ToArray()[1].Position);
             uc.Time.MoveTime(1f);
             // 3
             Assert.AreEqual(1, queue.Units.Count());
-            Assert.AreEqual(new GameVector3(0, 0, 1), queue.Units.ToArray()[0].Position);
+            Assert.AreEqual(new GameVector3(3, 0, 0), queue.Units.ToArray()[0].Position);
             uc.Time.MoveTime(1f);
             // 4
             Assert.AreEqual(0, queue.Units.Count());
@@ -449,7 +449,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual(0, uc.Coins);
 
             uc.QueueSize = 2;
-            queue.ServeCustomer();
+            queue.ServeCustomer(); // add new one
+            queue.ServeCustomer(); // serve
             uc.Time.MoveTime(1);
 
             Assert.AreEqual(1, uc.Coins);

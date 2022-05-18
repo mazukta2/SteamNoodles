@@ -41,7 +41,8 @@ namespace Game.Assets.Scripts.Tests.Setups
                 {
                     { construciton, 1}
                 },
-                Starter = new MainLevelStarter()
+                Starter = new MainLevelStarter(),
+                Waves = 10,
             };
             return level;
         }

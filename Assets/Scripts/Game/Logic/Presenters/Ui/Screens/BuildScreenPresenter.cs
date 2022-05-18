@@ -48,20 +48,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             UpdateBonuses(bonuses);
         }
 
-        public class BuildScreenCollection : ScreenCollection
-        {
-            public void Open(ConstructionCard constructionCard)
-            {
-                Manager.Open<IBuildScreenView>(Init);
-
-                object Init(IBuildScreenView screenView, ScreenManagerPresenter managerPresenter)
-                {
-                    return new BuildScreenPresenter(screenView, constructionCard, 
-                        IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IHandView.Default.Presenter);
-                }
-            }
-        }
-
         private void UpdateBonuses(IReadOnlyDictionary<Construction, int> newBonuses)
         {
             foreach (var item in _bonuses.ToList())

@@ -16,11 +16,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
     {
         public event Action OnTurn = delegate { };
         public event Action<bool> OnWaveEnded = delegate { };
+        public event Action OnDayFinished = delegate { };
 
         private LevelDefinition _levelDefinition;
         private PlacementField _constructionsManager;
         private PlayerHand _hand;
         private Deck<ConstructionDefinition> _rewardDeck;
+        private int _wave;
 
         public FlowManager(LevelDefinition levelDefinition, SessionRandom random, PlacementField constructionsManager, PlayerHand hand)
         {
@@ -54,6 +56,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             if (!CanNextWave())
                 throw new Exception("Cant start next wave");
 
+            _wave++;
+            if (_levelDefinition.Waves <= _wave)
+            {
+                OnDayFinished();
+                return;
+            }    
+
             while (_constructionsManager.Constructions.Count > 1)
             {
                 _constructionsManager.Constructions.Last().Destroy();
@@ -68,6 +77,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         {
             if (!CanFailWave())
                 throw new Exception("Cant fail wave");
+
+            _wave++;
+            if (_levelDefinition.Waves <= _wave)
+            {
+                OnDayFinished();
+                return;
+            }
 
             while (_constructionsManager.Constructions.Count > 1)
             {

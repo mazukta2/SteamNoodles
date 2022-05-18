@@ -12,7 +12,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 {
-    public class ScreenManagerPresenter : BasePresenter<IScreenManagerView>
+    public class ScreenManagerPresenter : BasePresenter<IScreenManagerView>, IScreenOpener
     {
         public Action<IScreenView> OnScreenOpened = delegate { };
 
@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         }
 
-        public void Open<TScreen>(Func<TScreen, ScreenManagerPresenter, object> init) where TScreen : class, IScreenView
+        void IScreenOpener.Open<TScreen>(Func<TScreen, ScreenManagerPresenter, object> init)
         {
             var name = typeof(TScreen).Name;
             name = name.Replace("View", "");
@@ -45,9 +45,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
             OnScreenOpened(view);
         }
 
-        public TPreScreen GetCollection<TPreScreen>() where TPreScreen : ScreenCollection, new()
+        public TScreenCollection GetCollection<TScreenCollection>() where TScreenCollection : ScreenCollection, new()
         {
-            var preScreen = new TPreScreen();
+            var preScreen = new TScreenCollection();
             preScreen.SetManager(this);
             return preScreen;
         }

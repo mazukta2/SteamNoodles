@@ -36,6 +36,7 @@
 		"Height": 2.5
 	},
 	"ConstructionsForNextWave": 8,
+	"Waves" : 3,
 	"Starter": {
 		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters.MainLevelStarter"
 	}

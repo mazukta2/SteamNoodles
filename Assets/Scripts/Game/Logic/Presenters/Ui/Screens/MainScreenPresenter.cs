@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
@@ -34,12 +35,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _constructionsManager.OnConstructionAdded += Placement_OnConstructionAdded;
             _view.NextWaveButton.SetAction(NextWaveClick);
             _view.FailWaveButton.SetAction(FailWaveClick);
+            _turnManager.OnDayFinished += HandleOnDayFinished;
             UpdateWaveProgress();
         }
 
         protected override void DisposeInner()
         {
             _constructionsManager.OnConstructionAdded -= Placement_OnConstructionAdded;
+            _turnManager.OnDayFinished -= HandleOnDayFinished;
         }
 
         private void NextWaveClick()
@@ -52,6 +55,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         {
             _turnManager.FailWave();
             UpdateWaveProgress();
+        }
+
+        private void HandleOnDayFinished()
+        {
+            _screenManager.GetCollection<CommonScreens>().Open<IDayEndedScreenView>();
         }
 
         private void Placement_OnConstructionAdded(Construction obj)

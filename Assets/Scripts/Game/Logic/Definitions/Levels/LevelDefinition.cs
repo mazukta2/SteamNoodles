@@ -33,6 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
         [JsonConverter(typeof(ObjectConventer<LevelStarter, LevelStarter>))]
         public LevelStarter Starter { get; set; }
+        public int Waves { get; set; }
 
         public void Validate()
         {
@@ -71,6 +72,10 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
             if (PlacementField.Size.X % 2 == 0 || PlacementField.Size.Y % 2 == 0)
                 throw new Exception("Even sized fields are not supported. Sorry :(");
+
+            if (Waves == 0)
+                throw new Exception($"{nameof(Waves)} is empty");
+
         }
     }
 }

@@ -4,8 +4,6 @@ using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
 {
@@ -20,6 +18,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
                 if (screenView is IMainScreenView mainScreen)
                     return new MainScreenPresenter(mainScreen, managerPresenter,
                         ICurrentLevel.Default.Constructions, ICurrentLevel.Default.TurnManager, IHandView.Default.Presenter);
+
+                if (screenView is IDayEndedScreenView dayEndedScreen)
+                    return new DayEndedScreenPresenter(dayEndedScreen, managerPresenter);
 
                 throw new Exception("Unknown screen " + typeof(TScreen));
             }

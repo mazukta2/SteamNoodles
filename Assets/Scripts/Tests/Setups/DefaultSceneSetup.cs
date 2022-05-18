@@ -1,15 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Constructions;
-using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Screens;
 using Game.Tests.Controllers;
-using Game.Tests.Mocks.Settings.Levels;
-using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Tests.Setups
 {
@@ -28,6 +23,7 @@ namespace Game.Assets.Scripts.Tests.Setups
         {
             _assets.AddPrefab("Screens/MainScreen", new MainScreenPrefab());
             _assets.AddPrefab("Screens/BuildScreen", new BuildScreenPrefab());
+            _assets.AddPrefab("Screens/DayEndedScreen", new DayEndedScreenPrefab());
             _definitions.Add(nameof(ConstructionsSettingsDefinition), new ConstructionsSettingsDefinition()
             {
                 CellSize = 0.5f,
