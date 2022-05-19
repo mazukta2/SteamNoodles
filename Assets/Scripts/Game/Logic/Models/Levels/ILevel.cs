@@ -4,8 +4,10 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
-    public interface ICurrentLevel
+    public interface ILevel : IDisposable
     {
-        public static GameLevel Default { get; set; }
+        public static ILevel Default { get; set; }
+        
+        bool IsDisposed { get; }
     }
 }

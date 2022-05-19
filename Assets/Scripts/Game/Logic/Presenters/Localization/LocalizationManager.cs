@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.External;
+using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
         public event Action OnChangeLanguage = delegate { };
         private Dictionary<string, string> _currentLanguage = new Dictionary<string, string>();
         private string _currentLanguageName;
-        private IDefinitions _definitions;
+        private IGameDefinitions _definitions;
 
-        public LocalizationManager(IDefinitions definitions, string defaultLanguage)
+        public LocalizationManager(IGameDefinitions definitions, string defaultLanguage)
         {
             _currentLanguageName = defaultLanguage ?? throw new ArgumentNullException(nameof(defaultLanguage));
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));

@@ -92,6 +92,9 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         public GameVector3 GetMouseWorldPosition()
         {
             float distance;
+            if (Camera.main == null)
+                return GameVector3.Zero;
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (_plane.Raycast(ray, out distance))
             {

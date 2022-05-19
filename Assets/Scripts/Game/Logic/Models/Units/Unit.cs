@@ -27,7 +27,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private float _currentSpeed;
 
         public Unit(GameVector3 position, GameVector3 target, CustomerDefinition definition, 
-            UnitsSettingsDefinition unitsSettings, SessionRandom random, IGameTime time)
+            UnitsSettingsDefinition unitsSettings, IGameRandom random, IGameTime time)
         {
             Position = position;
             Target = target;

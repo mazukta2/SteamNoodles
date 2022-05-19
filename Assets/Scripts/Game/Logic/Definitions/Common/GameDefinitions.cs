@@ -6,9 +6,15 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Common
 {
-    public abstract class BaseDefinitions : IDefinitions
+    public class GameDefinitions : IGameDefinitions
     {
         private Dictionary<string, object> _cached = new Dictionary<string, object>();
+        private IDefinitions _definitions;
+
+        public GameDefinitions(IDefinitions definitions)
+        {
+            _definitions = definitions;
+        }
 
         public T Get<T>(string id)
         {
@@ -81,7 +87,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Common
             return result.AsReadOnly();
         }
 
-        protected abstract string LoadResourceTextfile(string path);
-        protected abstract string[] GetDefintionPaths(string folder);
+        protected string LoadResourceTextfile(string path) => _definitions.LoadResourceTextfile(path);
+        protected string[] GetDefintionPaths(string folder) => _definitions.GetDefintionPaths(folder);
     }
 }

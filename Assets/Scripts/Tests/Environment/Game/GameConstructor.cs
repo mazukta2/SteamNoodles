@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.External;
+using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Tests.Setups;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
@@ -21,12 +22,12 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             _setup.Create();
         }
 
-        public GameBuildMock Build()
+        public TestsGameBuild Build()
         {
-            var build = new GameBuildMock(_assets, _definitions, _levelsManager);
+            var build = new TestsGameBuild(_assets, _definitions, _levelsManager);
             if (!_disableAutoload)
             {
-                build.LoadLevel(IDefinitions.Default.Get<LevelDefinitionMock>("DebugLevel"));
+                build.LoadLevel(IGameDefinitions.Default.Get<LevelDefinitionMock>("DebugLevel"));
             }
 
             return build;

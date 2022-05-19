@@ -3,10 +3,11 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
+using Game.Tests.Cases;
 using Game.Tests.Controllers;
 using NUnit.Framework;
 
-namespace Game.Tests.Cases.Customers
+namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
 {
     public class ResourcesTests
     {
@@ -72,7 +73,7 @@ namespace Game.Tests.Cases.Customers
             Assert.AreEqual(8, buildingPoints.PointsForNextLevel);
             // 8 - 3 = 5;
             Assert.AreEqual(0.2f, buildingPoints.GetChangedValue(1).Progress);
-            Assert.AreEqual(2/3f, buildingPoints.GetChangedValue(-1).Progress);
+            Assert.AreEqual(2 / 3f, buildingPoints.GetChangedValue(-1).Progress);
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
+using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
@@ -21,7 +22,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Units
 
         protected override void PreAwake()
         {
-            UnitDresser = new UnitDresser(_rigs, IAssets.Default);
+            UnitDresser = new UnitDresser(_rigs, IGameAssets.Default);
         }
 
     }

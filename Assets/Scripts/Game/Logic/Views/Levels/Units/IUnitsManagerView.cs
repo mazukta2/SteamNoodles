@@ -1,8 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.External;
+using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
@@ -14,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            new UnitsPresenter(ICurrentLevel.Default.Units, this, IDefinitions.Default.Get<UnitsSettingsDefinition>());
+            new UnitsPresenter(IBattleLevel.Default.Units, this, IGameDefinitions.Default.Get<UnitsSettingsDefinition>());
         }
 
     }

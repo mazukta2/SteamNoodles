@@ -13,6 +13,5 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
         event Action OnLevelClick;
         event Action<GameVector3> OnLevelPointerMoved;
         GameVector3 PointerLevelPosition { get; }
-        static IControls Default { get; set; }
     }
 }

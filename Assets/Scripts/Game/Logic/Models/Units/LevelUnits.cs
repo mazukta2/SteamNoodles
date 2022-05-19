@@ -23,9 +23,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private IGameTime _time;
         private Deck<CustomerDefinition> _pool;
         private readonly UnitsSettingsDefinition _unitsSettings;
-        private readonly SessionRandom _random;
+        private readonly IGameRandom _random;
 
-        public LevelUnits(IGameTime time, UnitsSettingsDefinition unitsSettings, LevelDefinition levelDefinition, SessionRandom random)
+        public LevelUnits(IGameTime time, UnitsSettingsDefinition unitsSettings, LevelDefinition levelDefinition, IGameRandom random)
         {
             _time = time ?? throw new ArgumentNullException(nameof(time));
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));

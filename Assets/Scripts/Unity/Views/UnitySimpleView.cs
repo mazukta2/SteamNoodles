@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using GameUnity.Assets.Scripts.Unity.Engine;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void Awake()
         {
-            Collection = ILevelsManager.Default.Collection;
+            Collection = LevelsManager.Collection;
             PreAwake();
             Collection.Add(this);
         }

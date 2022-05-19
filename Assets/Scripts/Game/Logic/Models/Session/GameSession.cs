@@ -7,10 +7,8 @@ using Game.Assets.Scripts.Game.Logic.Models.Time;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Session
 {
-    public class GameSession : Disposable
+    public class GameSession : Disposable, IGameSession
     {
-        public SessionRandom GameRandom { get; private set; } = new SessionRandom();
-
         public GameSession()
         {
         }
@@ -18,11 +16,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
         protected override void DisposeInner()
         {
         }
-
-        public LevelLoading LoadLevel(LevelDefinition definition)
-        {
-            return new LevelLoading(this, ILevelsManager.Default, definition);
-        }
-
     }
 }

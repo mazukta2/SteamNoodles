@@ -11,30 +11,19 @@ namespace Game.Assets.Scripts.Tests.Environment
     public class LevelsManagerMock : ILevelsManager
     {
         private List<LevelDefinitionMock> _availableLevels = new List<LevelDefinitionMock>();
-        private ManagerLoadingLevel _loading;
-
-        public LevelController Controller { get; private set; }
-
-        public IViewsCollection Collection => Controller.Collection;
+        private LoadData _loading;
+        private IViewsCollection _viewsCollection;
 
         public LevelsManagerMock()
         {
         }
 
-        public void Dispose()
-        {
-            Controller.Dispose();
-        }
-
-        public void Load(GameLevel model, LevelDefinition prototype, Action<IViewsCollection> onFinished)
+        public void Load(LevelDefinition prototype, Action<IViewsCollection> onFinished)
         {
             if (_loading != null)
                 throw new Exception("Already loading");
 
-            if (Controller != null)
-                throw new Exception("You must unload level firstly");
-
-            _loading = new ManagerLoadingLevel(model, prototype, onFinished);
+            _loading = new LoadData(prototype, onFinished);
         }
 
         public void Unload()
@@ -42,12 +31,8 @@ namespace Game.Assets.Scripts.Tests.Environment
             if (_loading != null)
                 throw new Exception("Currently loading");
 
-            if (Controller == null)
-                throw new Exception("You must load level firstly");
-
-            Controller.Dispose();
-            Controller = null;
-            ICurrentLevel.Default = null;
+            _viewsCollection.Dispose();
+            _viewsCollection = null;
         }
 
         public void Add(LevelDefinitionMock levelDefinition)
@@ -60,27 +45,22 @@ namespace Game.Assets.Scripts.Tests.Environment
             if (_loading == null)
                 throw new Exception("Nothing is loading");
 
-            ICurrentLevel.Default = _loading.Model;
-            Controller = new LevelController(_loading.Model.Definition);
-            ((LevelDefinitionMock)_loading.Prototype).LevelPrefab.Fill(Controller.Collection);
+            _viewsCollection = new ViewsCollection();
+            ((LevelDefinitionMock)_loading.Prototype).LevelPrefab.Fill(_viewsCollection);
 
-            Controller.Initialize();
-            _loading.OnFinished(Controller.Collection);
+            var lvl = _loading;
             _loading = null;
-
-            Controller.Start();
+            lvl.OnFinished(_viewsCollection);
         }
 
-        private class ManagerLoadingLevel
+        private class LoadData
         {
-            public ManagerLoadingLevel(GameLevel model, LevelDefinition prototype, Action<IViewsCollection> onFinished)
+            public LoadData(LevelDefinition prototype, Action<IViewsCollection> onFinished)
             {
                 Prototype = prototype;
                 OnFinished = onFinished;
-                Model = model;
             }
 
-            public GameLevel Model { get; private set; }
             public LevelDefinition Prototype { get; private set; }
             public Action<IViewsCollection> OnFinished { get; private set; }
         }

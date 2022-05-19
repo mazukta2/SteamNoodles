@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
@@ -63,7 +64,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
         {
             var view = _view.Container.Spawn<IGhostView>(_view.GhostPrototype);
             _ghost = new GhostPresenter(_settings, _screenManager, _constructionsManager, buildScreen, 
-                _controls, IGameKeysManager.Default, IAssets.Default, view, _time);
+                _controls, IGameKeysManager.Default, IGameAssets.Default, view, _time);
             _ghost.OnGhostPostionChanged += UpdateGhostPosition;
 
             OnGhostChanged();

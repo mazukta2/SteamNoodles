@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -17,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
             {
                 if (screenView is IMainScreenView mainScreen)
                     return new MainScreenPresenter(mainScreen, managerPresenter,
-                        ICurrentLevel.Default.Constructions, ICurrentLevel.Default.TurnManager, IHandView.Default.Presenter);
+                        IBattleLevel.Default.Constructions, IBattleLevel.Default.TurnManager, IHandView.Default.Presenter);
 
                 if (screenView is IDayEndedScreenView dayEndedScreen)
                     return new DayEndedScreenPresenter(dayEndedScreen, managerPresenter);

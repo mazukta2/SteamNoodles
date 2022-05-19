@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
@@ -42,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _localBuildingPoints.OnLevelUp += HandleLevelChanged;
             _localBuildingPoints.OnLevelDown += HandleLevelChanged;
 
-            var def = IDefinitions.Default.Get<ConstructionsSettingsDefinition>();
+            var def = IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>();
             _progressBar = new ProgressBarSliders(_view.PointsProgress, _time, def.PointsSliderFrequency, def.PointsSliderSpeed);
 
             _ghostManager.OnGhostChanged += HandleGhostUpdate;
@@ -78,7 +79,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
             var animation = new BuildingPointsAnimation(curve, pointsAdded,
                 IPointPieceSpawnerView.Default.Presenter,
-                IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), _time);
+                IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), _time);
             animation.OnPieceReachDestination += OnPieceReachDestination;
             animation.OnDispose += Animation_OnDispose;
             _animations.Add(animation);

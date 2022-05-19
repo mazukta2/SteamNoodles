@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         private Deck<ConstructionDefinition> _rewardDeck;
         private int _wave;
 
-        public FlowManager(LevelDefinition levelDefinition, SessionRandom random, PlacementField constructionsManager, PlayerHand hand)
+        public FlowManager(LevelDefinition levelDefinition, IGameRandom random, PlacementField constructionsManager, PlayerHand hand)
         {
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));

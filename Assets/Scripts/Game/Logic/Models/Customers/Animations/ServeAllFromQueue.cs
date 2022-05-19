@@ -14,12 +14,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
         private readonly CustomerQueue _queue;
         private readonly float _delay;
         private readonly ICrowd _crowd;
-        private readonly SessionRandom _random;
+        private readonly IGameRandom _random;
         private readonly Action<Unit> _removeFromQueue;
         private readonly Action<Unit> _serve;
         private readonly TimeUpdater _updater;
 
-        public ServeAllFromQueue(CustomerQueue queue, ICrowd crowd, SessionRandom random, Action<Unit> removeFromQueue, Action<Unit> serve, IGameTime time, float delay)
+        public ServeAllFromQueue(CustomerQueue queue, ICrowd crowd, IGameRandom random, Action<Unit> removeFromQueue, Action<Unit> serve, IGameTime time, float delay)
         {
             _queue = queue;
             _delay = delay;

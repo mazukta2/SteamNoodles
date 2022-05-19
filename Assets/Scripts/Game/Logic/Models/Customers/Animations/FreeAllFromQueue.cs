@@ -11,10 +11,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
     {
         private readonly CustomerQueue _queue;
         private readonly ICrowd _crowd;
-        private readonly SessionRandom _random;
+        private readonly IGameRandom _random;
         private readonly Action<Unit> _removeFromQueue;
 
-        public FreeAllFromQueue(CustomerQueue queue, ICrowd crowd, SessionRandom random, Action<Unit> removeFromQueue)
+        public FreeAllFromQueue(CustomerQueue queue, ICrowd crowd, IGameRandom random, Action<Unit> removeFromQueue)
         {
             _queue = queue;
             _crowd = crowd;

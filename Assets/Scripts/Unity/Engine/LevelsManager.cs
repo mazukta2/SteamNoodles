@@ -11,22 +11,21 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 {
     public class LevelsManager : ILevelsManager
     {
-        private static LevelController _currentLevel;
-        private static GameLevel _model;
-
-        public IViewsCollection Collection => _currentLevel.Collection;
+        public static IViewsCollection Collection { get; private set; }
 
         public LevelsManager()
         {
         }
 
+        public void Load(LevelDefinition prototype, Action<IViewsCollection> onFinished)
+        {
+            Load(prototype.SceneName, onFinished);
+        }
+
         public void Load(string scene, Action<IViewsCollection> onFinished)
         {
-            if (_currentLevel != null)
+            if (Collection != null)
                 throw new Exception("Loading before unloading");
-
-            _currentLevel = new LevelController(_model.Definition);
-            ICurrentLevel.Default = _model;
 
             var loading = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
             if (loading.isDone)
@@ -42,27 +41,16 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
             void Finish()
             {
-                _currentLevel.Initialize();
-                onFinished(_currentLevel.Collection);
-                _currentLevel.Start();
+                Collection = new ViewsCollection();
+                onFinished(Collection);
             }
         }
 
         public void Unload()
         {
             SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-            _currentLevel.Dispose();
-            _currentLevel = null;
-            _model = null;
-            ICurrentLevel.Default = null;
+            Collection.Dispose();
+            Collection = null;
         }
-
-
-        public void Load(GameLevel model, LevelDefinition prototype, Action<IViewsCollection> onFinished)
-        {
-            _model = model;
-            Load(prototype.SceneName, onFinished);
-        }
-
     }
 }

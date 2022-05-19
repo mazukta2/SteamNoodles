@@ -1,9 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.External;
+using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
+using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using GameUnity.Assets.Scripts.Unity.Engine.Definitions;
 using System;
 using UnityEngine;
@@ -13,7 +15,6 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     public class GameCoreInitialize : MonoBehaviour
     {
         private Core _core;
-        private GameSession _session;
         private UnityControls _controls = new UnityControls();
         private GameTime _time = new GameTime();
 
@@ -21,23 +22,15 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         {
             DontDestroyOnLoad(gameObject);
 
-            IAssets.Default = new AssetsLoader();
-            IDefinitions.Default = new GameDefinitions();
-            ILocalizationManager.Default = new LocalizationManager(IDefinitions.Default, "English");
-            IControls.Default = _controls;
-            ILevelsManager.Default = new LevelsManager();
-            IGameTime.Default = _time;
-
-            _core = new Core();
-            _session = _core.Game.CreateSession();
-            _session.LoadLevel(IDefinitions.Default.Get<MainDefinition>().StartLevel);
+            var definitions = new GameDefinitions(new UnityDefinitions());
+            var localization = new LocalizationManager(definitions, "English");
+            _core = new Core(new LevelsManager(), new GameAssets(new AssetsLoader()), definitions, new GameControls(_controls), localization, _time);
         }
 
         protected void OnApplicationQuit()
         {
             ILocalizationManager.Default = null;
 
-            _session.Dispose();
             _core.Dispose();
         }
 

@@ -1,9 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
+using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Setups;
-using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
 using Game.Tests.Cases;
-using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Level
@@ -23,9 +24,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         public void SessionIsStarting()
         {
             var build = new GameConstructor().Build();
-            var session = build.GameModel.CreateSession();
-            session.Dispose();
+
+            Assert.IsNotNull(IGameSession.Default);
             build.Dispose();
+
+            Assert.IsNull(IGameSession.Default);
         }
 
         [Test]
@@ -33,21 +36,21 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         {
             var levelDefinition = LevelDefinitionSetups.GetEmpty("lvl");
             var build = new GameConstructor().DisableAutoLoad().AddLevel(levelDefinition).Build();
-            var session = build.GameModel.CreateSession();
-            var levelLoading = session.LoadLevel(levelDefinition);
-            GameLevel loadedLevel = null;
+            build.Core.Levels.Load(levelDefinition);
+            var levelLoading = build.Core.Levels;
+            ILevel loadedLevel = null;
 
             levelLoading.OnLoaded += HandleOnLoaded;
             build.Levels.FinishLoading();
             levelLoading.OnLoaded -= HandleOnLoaded;
-            Assert.IsTrue(levelLoading.IsDisposed);
+
+            Assert.IsTrue(levelLoading.State == LevelLoading.LevelsState.IsLoaded);
             Assert.IsNotNull(loadedLevel);
 
             loadedLevel.Dispose();
-            session.Dispose();
             build.Dispose();
 
-            void HandleOnLoaded(GameLevel level)
+            void HandleOnLoaded(ILevel level, IViewsCollection collection)
             {
                 loadedLevel = level;
             }
@@ -57,7 +60,28 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         public void LevelShortcutIsWorking()
         {
             var build = new GameConstructor().Build();
-            Assert.IsNotNull(build.Levels.Controller.Collection);
+            Assert.IsNotNull(build.LevelCollection);
+            build.Dispose();
+        }
+
+        [Test]
+        public void IsLevelReloadingWorked()
+        {
+            var build = new GameConstructor().Build();
+            Assert.AreEqual(LevelLoading.LevelsState.IsLoaded, build.Core.Levels.State);
+
+            var level = IBattleLevel.Default;
+
+            Assert.AreEqual(level, IBattleLevel.Default);
+            build.Core.Levels.Load(level.Definition);
+            build.Levels.FinishLoading();
+
+            Assert.IsFalse(build.Core.IsDisposed);
+            Assert.IsFalse(build.Core.Levels.IsDisposed);
+            Assert.AreEqual(LevelLoading.LevelsState.IsLoaded, build.Core.Levels.State);
+            Assert.AreNotEqual(level, IBattleLevel.Default);
+            Assert.IsTrue(level.IsDisposed);
+
             build.Dispose();
         }
 

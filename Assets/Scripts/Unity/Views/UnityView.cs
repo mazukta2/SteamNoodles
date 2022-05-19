@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
 
         protected void Awake()
         {
-            Collection = ILevelsManager.Default.Collection;
+            Collection = LevelsManager.Collection;
             PreAwake();
             Collection.Add(this);
         }

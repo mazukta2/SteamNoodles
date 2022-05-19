@@ -1,11 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Definitions;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Tests.Controllers
 {
-    public class DefinitionsMock : IDefinitions
+    public class DefinitionsMock : IGameDefinitions
     {
         private Dictionary<string, object> _list = new Dictionary<string, object>();
         public T Get<T>()

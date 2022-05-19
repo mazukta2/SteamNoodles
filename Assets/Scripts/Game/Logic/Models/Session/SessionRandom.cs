@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Session
 {
-    public class SessionRandom
+    public class SessionRandom : IGameRandom
     {
         Random _random = new Random();
 

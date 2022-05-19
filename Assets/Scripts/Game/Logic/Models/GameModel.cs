@@ -8,15 +8,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models
     {
         public GameModel()
         {
+            IGameSession.Default = new GameSession();
         }
 
         protected override void DisposeInner()
         {
-        }
-
-        public GameSession CreateSession()
-        {
-            return new GameSession();
+            IGameSession.Default.Dispose();
+            IGameSession.Default = null;
         }
     }
 

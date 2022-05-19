@@ -1,10 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
@@ -12,7 +14,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
-    public class GameLevel : Disposable
+    public class GameLevel : Disposable, IBattleLevel
     {
         public FlowManager TurnManager { get; }
         public PlayerHand Hand { get; private set; }
@@ -26,10 +28,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public Resources Resources { get; }
         public LevelDefinition Definition { get; private set; }
         public IGameTime Time { get; }
+        private IGameRandom _random;
 
-        private SessionRandom _random;
-
-        public GameLevel(LevelDefinition settings, SessionRandom random, IGameTime time, IDefinitions definitions)
+        public GameLevel(LevelDefinition settings, IGameRandom random, IGameTime time, IGameDefinitions definitions)
         {
             Definition = settings ?? throw new ArgumentNullException(nameof(settings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
@@ -89,6 +90,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
                 Queue.FreeAll();
             }
         }
-
     }
 }

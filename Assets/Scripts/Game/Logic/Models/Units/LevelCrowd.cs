@@ -20,11 +20,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private List<Unit> _crowd = new List<Unit>();
         private LevelDefinition _levelDefinition;
         private readonly IUnits _unitsController;
-        private SessionRandom _random;
+        private IGameRandom _random;
         private IGameTime _time;
 
         public LevelCrowd(IUnits unitsController, IGameTime time, LevelDefinition levelDefinition,
-            SessionRandom random)
+            IGameRandom random)
         {
             _levelDefinition = levelDefinition;
             _unitsController = unitsController ?? throw new ArgumentNullException(nameof(unitsController));
@@ -68,7 +68,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             }
         }
 
-        private GameVector3 GetRandomPoint(FloatRect rect, SessionRandom random)
+        private GameVector3 GetRandomPoint(FloatRect rect, IGameRandom random)
         {
             return new GameVector3(random.GetRandom(rect.xMin, rect.xMax), 0, random.GetRandom(rect.yMin, rect.yMax));
         }

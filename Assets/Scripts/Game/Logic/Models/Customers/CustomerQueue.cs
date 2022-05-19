@@ -19,12 +19,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private IUnits _unitsController;
         private ICrowd _crowd;
         private readonly IGameTime _time;
-        private readonly SessionRandom _random;
+        private readonly IGameRandom _random;
         private List<Unit> _queue = new List<Unit>();
         private List<BaseQueueStep> _orders = new List<BaseQueueStep>();
         private BaseQueueStep _currentStep;
 
-        public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd, IGameTime time,  SessionRandom random)
+        public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd, IGameTime time, IGameRandom random)
         {
             _customers = customers ?? throw new ArgumentNullException(nameof(customers));
             _unitsController = unitsController ?? throw new ArgumentNullException(nameof(unitsController));
