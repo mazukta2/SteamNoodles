@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
@@ -22,51 +23,37 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         public ControlsMock Controls { get; private set; }
 
         public GameModel GameModel => Core?.Game;
-        public IViewsCollection LevelCollection => _viewCollection;
+        public IViewsCollection LevelCollection => Core.Levels.Views;
 
         public GameKeysManager Keys => (GameKeysManager)IGameKeysManager.Default;
         public GameTime Time { get; private set; }
 
         private AssetsMock _assets;
-        private IViewsCollection _viewCollection;
 
-        public TestsGameBuild(AssetsMock assets, DefinitionsMock definitions, LevelsManagerMock levelManager)
+        public TestsGameBuild(AssetsMock assets, DefinitionsMock definitions, LevelsManagerMock levelManager, bool disableAutoload)
         {
             Controls = new ControlsMock();
             Levels = levelManager;
             _assets = assets;
 
             Time = new GameTime();
-            Core = new Core(Levels, new GameAssets(assets), definitions, new GameControls(Controls), new LocalizationManagerMock(), Time);
+            Core = new Core(Levels, new GameAssets(assets), definitions, new GameControls(Controls), new LocalizationManagerMock(), Time, !disableAutoload);
+            if (!disableAutoload)
+                Levels.FinishLoading();
         }
 
         public void Dispose()
         {
             _assets.ClearPrefabs();
-
-            if (_viewCollection != null)
-                _viewCollection.Dispose();
             
             Core.Dispose();
             Core = null;
         }
 
-        public void LoadLevel(LevelDefinitionMock loadLevel)
+        public void LoadLevel(LevelDefinition loadLevel)
         {
-            Core.Levels.Load(loadLevel);
-            IViewsCollection newLevelViews = null;
-
-            Core.Levels.OnLoaded += HandleOnLoaded;
+            Core.Game.SetLevel(loadLevel);
             Levels.FinishLoading();
-            Core.Levels.OnLoaded -= HandleOnLoaded;
-
-            _viewCollection = newLevelViews;
-
-            void HandleOnLoaded(ILevel level, IViewsCollection viewsCollection)
-            {
-                newLevelViews = viewsCollection;
-            }
         }
-
     }
 }

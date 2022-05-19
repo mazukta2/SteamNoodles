@@ -10,18 +10,42 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
     public class LevelLoading : Disposable
     {
-        public LevelsState State { get; set; }
-        public event Action<ILevel, IViewsCollection> OnLoaded = delegate { };
+        public LevelsState State { get; private set; }
+        public IViewsCollection Views { get; private set; }
+
+        public event Action OnLoaded = delegate { };
 
         private LevelDefinition _prototype;
         private ILevelsManager _levelManager;
+        private readonly GameModel _model;
 
-        public LevelLoading(ILevelsManager levelsManager)
+        public LevelLoading(ILevelsManager levelsManager, GameModel model)
         {
             _levelManager = levelsManager ?? throw new ArgumentNullException(nameof(levelsManager));
+            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _model.OnLevelCreated += HandleOnLevelCreated;
+            _model.OnLevelDestroyed += HandleOnLevelDestroyed;
+            _levelManager.OnLoadFinished += HandleOnFinished;
         }
 
-        public void Load(LevelDefinition levelDefinition)
+        protected override void DisposeInner()
+        {
+            _model.OnLevelCreated -= HandleOnLevelCreated;
+            _model.OnLevelDestroyed -= HandleOnLevelDestroyed;
+            _levelManager.OnLoadFinished -= HandleOnFinished;
+        }
+
+        private void HandleOnLevelCreated(ILevel level)
+        {
+            Load(level.Definition);
+        }
+
+        private void HandleOnLevelDestroyed()
+        {
+            Unload();
+        }
+
+        private void Load(LevelDefinition levelDefinition)
         {
             if (State == LevelsState.IsLoaded)
                 Unload();
@@ -30,32 +54,28 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             State = LevelsState.IsLoading;
 
+            Views = new ViewsCollection();
             _prototype = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
-            _levelManager.Load(levelDefinition, HandleOnFinished);
+            _levelManager.Load(levelDefinition, Views);
         }
 
-        public void Unload()
+        private void Unload()
         {
             if (State != LevelsState.IsLoaded)
                 throw new Exception("Wrong state");
 
             State = LevelsState.None;
+            Views.Dispose();
             _levelManager.Unload();
-            ILevel.Default.Dispose();
-            ILevel.Default = null;
-            IBattleLevel.Default = null;
         }
 
-        private void HandleOnFinished(IViewsCollection lvl)
+        private void HandleOnFinished()
         {
-            ILevel.Default = _prototype.Starter.CreateModel(_prototype);
-            if (ILevel.Default is IBattleLevel bl) IBattleLevel.Default = bl;
-
-            new ViewsInitializer(lvl).Init();
+            new ViewsInitializer(Views).Init();
             _prototype.Starter.Start();
 
             State = LevelsState.IsLoaded;
-            OnLoaded(ILevel.Default, lvl);
+            OnLoaded();
         }
 
         public enum LevelsState

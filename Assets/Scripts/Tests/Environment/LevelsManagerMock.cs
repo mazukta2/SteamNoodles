@@ -10,29 +10,32 @@ namespace Game.Assets.Scripts.Tests.Environment
 {
     public class LevelsManagerMock : ILevelsManager
     {
+        public event Action OnLoadFinished = delegate { };
+
         private List<LevelDefinitionMock> _availableLevels = new List<LevelDefinitionMock>();
-        private LoadData _loading;
-        private IViewsCollection _viewsCollection;
+        private LevelDefinition _definition;
+        private IViewsCollection _collection;
 
         public LevelsManagerMock()
         {
         }
 
-        public void Load(LevelDefinition prototype, Action<IViewsCollection> onFinished)
+        public void Load(LevelDefinition prototype, IViewsCollection collection)
         {
-            if (_loading != null)
+            if (_definition != null)
                 throw new Exception("Already loading");
 
-            _loading = new LoadData(prototype, onFinished);
+            _definition = prototype;
+            _collection = collection;
         }
 
         public void Unload()
         {
-            if (_loading != null)
+            if (_definition == null)
                 throw new Exception("Currently loading");
 
-            _viewsCollection.Dispose();
-            _viewsCollection = null;
+            _definition = null;
+            _collection = null;
         }
 
         public void Add(LevelDefinitionMock levelDefinition)
@@ -42,27 +45,12 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public void FinishLoading()
         {
-            if (_loading == null)
+            if (_definition == null)
                 throw new Exception("Nothing is loading");
 
-            _viewsCollection = new ViewsCollection();
-            ((LevelDefinitionMock)_loading.Prototype).LevelPrefab.Fill(_viewsCollection);
+            ((LevelDefinitionMock)_definition).LevelPrefab.Fill(_collection);
 
-            var lvl = _loading;
-            _loading = null;
-            lvl.OnFinished(_viewsCollection);
-        }
-
-        private class LoadData
-        {
-            public LoadData(LevelDefinition prototype, Action<IViewsCollection> onFinished)
-            {
-                Prototype = prototype;
-                OnFinished = onFinished;
-            }
-
-            public LevelDefinition Prototype { get; private set; }
-            public Action<IViewsCollection> OnFinished { get; private set; }
+            OnLoadFinished();
         }
     }
 }

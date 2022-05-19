@@ -14,6 +14,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 {
     public class GameCoreInitialize : MonoBehaviour
     {
+        public static bool IsGameExit { get; private set; }
         private Core _core;
         private UnityControls _controls = new UnityControls();
         private GameTime _time = new GameTime();
@@ -29,8 +30,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         protected void OnApplicationQuit()
         {
-            ILocalizationManager.Default = null;
-
+            IsGameExit = true;
             _core.Dispose();
         }
 

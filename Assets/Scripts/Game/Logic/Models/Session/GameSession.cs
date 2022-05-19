@@ -9,6 +9,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
 {
     public class GameSession : Disposable, IGameSession
     {
+
         public GameSession()
         {
         }

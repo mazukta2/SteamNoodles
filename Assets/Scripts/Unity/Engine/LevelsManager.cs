@@ -11,46 +11,47 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 {
     public class LevelsManager : ILevelsManager
     {
+        public event Action OnLoadFinished = delegate { };
         public static IViewsCollection Collection { get; private set; }
 
         public LevelsManager()
         {
         }
 
-        public void Load(LevelDefinition prototype, Action<IViewsCollection> onFinished)
+        public void Load(LevelDefinition prototype, IViewsCollection views)
         {
-            Load(prototype.SceneName, onFinished);
+            Load(prototype.SceneName, views);
         }
 
-        public void Load(string scene, Action<IViewsCollection> onFinished)
+        public void Load(string scene, IViewsCollection views)
         {
             if (Collection != null)
                 throw new Exception("Loading before unloading");
 
+            Collection = views;
             var loading = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
             if (loading.isDone)
-                Finish();
+                OnLoadFinished();
             else
                 loading.completed += Complited;
 
             void Complited(AsyncOperation operation)
             {
                 loading.completed -= Complited;
-                Finish();
-            }
-
-            void Finish()
-            {
-                Collection = new ViewsCollection();
-                onFinished(Collection);
+                OnLoadFinished();
             }
         }
 
         public void Unload()
         {
+            if (GameCoreInitialize.IsGameExit)
+                return;
+
             SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+
             Collection.Dispose();
             Collection = null;
         }
+
     }
 }

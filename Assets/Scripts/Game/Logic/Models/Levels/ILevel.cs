@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,5 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public static ILevel Default { get; set; }
         
         bool IsDisposed { get; }
+
+        LevelDefinition Definition { get; }
     }
 }

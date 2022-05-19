@@ -36,24 +36,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         {
             var levelDefinition = LevelDefinitionSetups.GetEmpty("lvl");
             var build = new GameConstructor().DisableAutoLoad().AddLevel(levelDefinition).Build();
-            build.Core.Levels.Load(levelDefinition);
-            var levelLoading = build.Core.Levels;
-            ILevel loadedLevel = null;
-
-            levelLoading.OnLoaded += HandleOnLoaded;
+            build.LoadLevel(levelDefinition);
             build.Levels.FinishLoading();
-            levelLoading.OnLoaded -= HandleOnLoaded;
 
-            Assert.IsTrue(levelLoading.State == LevelLoading.LevelsState.IsLoaded);
-            Assert.IsNotNull(loadedLevel);
+            Assert.IsTrue(build.Core.Levels.State == LevelLoading.LevelsState.IsLoaded);
+            Assert.IsNotNull(build.Core.Game.CurrentLevel);
 
-            loadedLevel.Dispose();
             build.Dispose();
-
-            void HandleOnLoaded(ILevel level, IViewsCollection collection)
-            {
-                loadedLevel = level;
-            }
         }
 
         [Test]
@@ -73,7 +62,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
             var level = IBattleLevel.Default;
 
             Assert.AreEqual(level, IBattleLevel.Default);
-            build.Core.Levels.Load(level.Definition);
+            build.LoadLevel(level.Definition);
             build.Levels.FinishLoading();
 
             Assert.IsFalse(build.Core.IsDisposed);

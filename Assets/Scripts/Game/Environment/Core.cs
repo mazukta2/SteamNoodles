@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Environment
         public LevelLoading Levels { get; }
 
         public Core(ILevelsManager levelsManager, IGameAssets assets, IGameDefinitions definitions, IGameControls controls,
-            ILocalizationManager localizationManager, IGameTime time)
+            ILocalizationManager localizationManager, IGameTime time, bool autoStart = true)
         {
             Game = new GameModel();
 
@@ -32,10 +32,11 @@ namespace Game.Assets.Scripts.Game.Environment
             IGameTime.Default = time;
             IGameRandom.Default = new SessionRandom();
 
-            Levels = new LevelLoading(levelsManager);
+            Levels = new LevelLoading(levelsManager, Game);
             ILocalizationManager.Default = localizationManager;
 
-            //_session.LoadLevel(IDefinitions.Default.Get<MainDefinition>().StartLevel);
+            if (autoStart)
+                Game.StartNewGame();
         }
 
         protected override void DisposeInner()
@@ -47,10 +48,8 @@ namespace Game.Assets.Scripts.Game.Environment
             IGameControls.Default = null;
             ILocalizationManager.Default = null;
 
-            if (Levels.State == LevelLoading.LevelsState.IsLoaded)
-                Levels.Unload();
-            Levels.Dispose();
             Game.Dispose();
+            Levels.Dispose();
         }
     }
 }

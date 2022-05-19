@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Definitions;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens;
@@ -43,6 +44,8 @@ namespace Game.Assets.Scripts.Tests.Setups
 
             var level = LevelDefinitionSetups.GetDefault(customer, construciton);
             _definitions.Add(level.Name, level);
+
+            _definitions.Add(nameof(MainDefinition), new MainDefinition() { StartLevel = level }) ;
         }
 
     }

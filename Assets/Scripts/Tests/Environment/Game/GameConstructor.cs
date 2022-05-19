@@ -24,12 +24,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
 
         public TestsGameBuild Build()
         {
-            var build = new TestsGameBuild(_assets, _definitions, _levelsManager);
-            if (!_disableAutoload)
-            {
-                build.LoadLevel(IGameDefinitions.Default.Get<LevelDefinitionMock>("DebugLevel"));
-            }
-
+            var build = new TestsGameBuild(_assets, _definitions, _levelsManager, _disableAutoload);
             return build;
         }
 

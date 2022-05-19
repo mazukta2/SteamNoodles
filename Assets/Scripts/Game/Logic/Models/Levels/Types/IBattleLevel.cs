@@ -15,6 +15,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Types
         LevelUnits Units { get; }
         CustomerQueue Queue { get; }
         Resources Resources { get; }
-        LevelDefinition Definition { get; }
     }
 }
