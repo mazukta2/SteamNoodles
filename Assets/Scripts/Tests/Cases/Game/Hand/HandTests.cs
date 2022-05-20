@@ -96,15 +96,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var construction1 = game.LevelCollection.FindViews<HandConstructionView>().First();
             Assert.IsNotNull(construction1);
 
-            Assert.IsNull(game.LevelCollection.FindView<HandConstructionTooltipView>());
+            Assert.IsNull(construction1.TooltipContainer.FindView<HandConstructionTooltipView>());
 
             construction1.SetHighlight(true);
 
-            Assert.IsNotNull(game.LevelCollection.FindView<HandConstructionTooltipView>());
+            Assert.IsNotNull(construction1.TooltipContainer.FindView<HandConstructionTooltipView>());
 
             construction1.SetHighlight(false);
 
-            Assert.IsNull(game.LevelCollection.FindView<HandConstructionTooltipView>());
+            Assert.IsNull(construction1.TooltipContainer.FindView<HandConstructionTooltipView>());
 
             game.Dispose();
         }

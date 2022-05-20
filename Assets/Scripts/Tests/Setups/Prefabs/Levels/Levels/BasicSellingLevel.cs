@@ -8,6 +8,7 @@ using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Level.Units;
 using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
 
 namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 {
@@ -31,6 +32,8 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
             new PointCounterWidgetView(collection);
 
             new HandView(collection);
+
+            new BuildingTooltipMock(collection);
         }
 
         private class GhostViewPrefab : ViewCollectionPrefabMock

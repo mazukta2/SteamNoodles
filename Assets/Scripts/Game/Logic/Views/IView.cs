@@ -11,7 +11,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views
         event Action OnDispose;
         bool IsDisposed { get; }
         void Dispose();
-        //ILevelView Level { get; }
         bool IsHighlihgted { get; }
         event Action OnHighlihgtedEnter;
         event Action OnHighlihgtedExit;

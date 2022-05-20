@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Elements;
@@ -22,15 +23,18 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private IBuildScreenView _view;
         private ConstructionsSettingsDefinition _constrcutionsSettings;
+        private readonly BuildingTooltipPresenter _tooltip;
         private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
         public BuildScreenPresenter(IBuildScreenView view,
-            ConstructionCard constructionCard, ConstructionsSettingsDefinition constrcutionsSettings, HandPresenter handPresenter) : base(view)
+            ConstructionCard constructionCard, ConstructionsSettingsDefinition constrcutionsSettings, 
+            HandPresenter handPresenter, BuildingTooltipPresenter tooltip) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constrcutionsSettings = constrcutionsSettings ?? throw new ArgumentNullException(nameof(constrcutionsSettings));
-
+            _tooltip = tooltip;
             handPresenter.Mode = HandPresenter.Modes.Build;
+            _tooltip.Show(constructionCard);
             _positionCalculator = new FieldPositionsCalculator(_constrcutionsSettings.CellSize);
 
             CurrentCard = constructionCard;
@@ -38,6 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         protected override void DisposeInner()
         {
+            _tooltip.Hide();
         }
 
         public void UpdatePoints(GameVector3 position, int points, IReadOnlyDictionary<Construction, int> bonuses)
@@ -75,6 +80,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
                 text.Position = _positionCalculator.GetMapPositionByGridPosition(item.Key.CellPosition, item.Key.Definition.GetRect(item.Key.Rotation));
             }
+
+            _tooltip.SetHighlight(_bonuses.Keys.ToArray());
         }
 
     }

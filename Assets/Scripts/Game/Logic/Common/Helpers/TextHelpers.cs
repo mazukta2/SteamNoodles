@@ -18,6 +18,9 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Helpers
             if (style == TextStyles.Highlight)
                 return $"<style=\"Highlight\">{text}</style>";
 
+            if (style == TextStyles.HeavyHighlight)
+                return $"<style=\"HeavyHighlight\">{text}</style>";
+
             return text;
         }
 
@@ -25,6 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Helpers
         {
             None,
             Highlight,
+            HeavyHighlight,
         }
     }
 }

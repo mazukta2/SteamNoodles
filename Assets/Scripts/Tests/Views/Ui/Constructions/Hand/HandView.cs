@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
 
         private void SpawnTooltip(IViewsCollection collection)
         {
-            new HandConstructionTooltipView(collection, new TextMock(), new TextMock());
+            new HandConstructionTooltipView(collection);
         }
     }
 }

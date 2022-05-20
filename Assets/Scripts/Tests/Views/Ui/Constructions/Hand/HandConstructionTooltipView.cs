@@ -10,15 +10,12 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
 {
     public class HandConstructionTooltipView : ViewWithPresenter<HandConstructionTooltipPresenter>, IHandConstructionTooltipView
     {
-        public IText Name { get; }
-        public IText Points { get; }
-        public IText Adjacencies { get; }
+        public IText Name { get; } = new TextMock();
+        public IText Points { get; } = new TextMock();
+        public IText Adjacencies { get; } = new TextMock();
 
-        public HandConstructionTooltipView(IViewsCollection level, IText name, IText points) : base(level)
+        public HandConstructionTooltipView(IViewsCollection level) : base(level)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            Points = points ?? throw new ArgumentNullException(nameof(points));
-            Adjacencies = new TextMock();
         }
     }
 }

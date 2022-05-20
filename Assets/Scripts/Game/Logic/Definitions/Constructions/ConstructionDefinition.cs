@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 {
     public class ConstructionDefinition
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public string LevelViewPath { get; set; }
         public int[,] Placement { get; set; }
         public Requirements Requirements { get; set;  }

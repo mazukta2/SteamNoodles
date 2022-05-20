@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
 {
@@ -17,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
             object Init(IBuildScreenView screenView, ScreenManagerPresenter managerPresenter)
             {
                 return new BuildScreenPresenter(screenView, constructionCard,
-                    IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IHandView.Default.Presenter);
+                    IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IHandView.Default.Presenter, IBuildingToolitpView.Default.Presenter);
             }
         }
     }
