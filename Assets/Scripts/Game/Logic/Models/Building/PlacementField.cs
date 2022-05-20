@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
     public class PlacementField : Disposable
     {
         public event Action<Construction> OnConstructionAdded = delegate { };
+        public event Action<Construction> OnConstructionRemoved = delegate { };
         public event Action<Construction> OnConstructionBuilded = delegate { };
         public event Action<Construction, int> OnPointChangedDuringConstruction = delegate { };
 
@@ -82,7 +83,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             {
                 construction.OnDispose -= Construction_OnDispose;
                 _constructions.Remove(construction);
+                OnConstructionRemoved(construction);
             }
+        }
+
+        public IReadOnlyCollection<IntPoint> GetAllOccupiedSpace()
+        {
+            var list = new List<IntPoint>();
+
+            foreach (var construction in Constructions)
+                list.AddRange(construction.GetOccupiedScace());
+
+            return list.AsReadOnly();
         }
 
         public bool IsFreeCell(ConstructionDefinition constructionDefinition, IntPoint position, FieldRotation rotation)

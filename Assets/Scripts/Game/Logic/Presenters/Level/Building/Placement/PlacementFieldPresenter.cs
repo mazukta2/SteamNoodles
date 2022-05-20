@@ -47,6 +47,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             _ghostManager.OnGhostPostionChanged += UpdateGhostCells;
 
             _model.OnConstructionAdded += HandleOnConstructionAdded;
+            _model.OnConstructionRemoved += HandleOnConstructionRemoved;
 
             UpdateGhostCells();
         }
@@ -56,6 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             _ghostManager.OnGhostChanged -= UpdateGhostCells;
             _ghostManager.OnGhostPostionChanged -= UpdateGhostCells;
             _model.OnConstructionAdded -= HandleOnConstructionAdded;
+            _model.OnConstructionRemoved -= HandleOnConstructionRemoved;
         }
 
         private PlacementCellPresenter CreateCell(IntPoint position)
@@ -68,10 +70,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         {
             var ghost = _ghostManager.GetGhost();
             var ocuppiedCells = ghost != null ? ghost.Definition.GetOccupiedSpace(ghost.GetGridPosition(), ghost.Rotation) : null;
+            var occupiedByBuildings = _model.GetAllOccupiedSpace();
 
             foreach (var cell in _cells)
             {
                 var state = CellPlacementStatus.Normal;
+
+                if (occupiedByBuildings.Any(x => x == cell.Position))
+                    state = CellPlacementStatus.IsUnderConstruction;
+
                 if (ghost != null)
                 {
                     if (_model.IsFreeCell(ghost.Definition, cell.Position, ghost.Rotation))
@@ -94,6 +101,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         {
             var view = _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype);
             new ConstructionPresenter(_settings, construction, IGameAssets.Default, view, _ghostManager, IGameControls.Default);
+        }
+
+        private void HandleOnConstructionRemoved(Construction obj)
+        {
+            UpdateGhostCells();
         }
     }
 }

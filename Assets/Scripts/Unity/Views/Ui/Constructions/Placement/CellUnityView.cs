@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] GameObject _target;
         [SerializeField] GameObject _highlight;
         [SerializeField] GameObject _blocked;
+        [SerializeField] GameObject _disabled;
 
         [SerializeField] UnityAnimator _animator;
         [SerializeField] UnityPosition _position;
@@ -35,6 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
             _target.SetActive(status == CellPlacementStatus.IsReadyToPlace);
             _highlight.SetActive(status == CellPlacementStatus.IsAvailableGhostPlace);
             _blocked.SetActive(status == CellPlacementStatus.IsNotAvailableGhostPlace);
+            _disabled.SetActive(status == CellPlacementStatus.IsUnderConstruction);
         }
 
     }

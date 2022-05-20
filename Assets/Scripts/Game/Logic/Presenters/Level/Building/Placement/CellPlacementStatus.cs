@@ -9,6 +9,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         Normal,
         IsReadyToPlace,
         IsAvailableGhostPlace,
-        IsNotAvailableGhostPlace
+        IsNotAvailableGhostPlace,
+        IsUnderConstruction
     }
 }
