@@ -22,7 +22,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         public Core Core { get; private set; }
         public ControlsMock Controls { get; private set; }
 
-        public GameModel GameModel => Core?.Game;
+        public IGame GameModel => IGame.Default;
         public IViewsCollection LevelCollection => Core.Levels.Views;
 
         public GameKeysManager Keys => (GameKeysManager)IGameKeysManager.Default;
@@ -52,7 +52,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
 
         public void LoadLevel(LevelDefinition loadLevel)
         {
-            Core.Game.SetLevel(loadLevel);
+            ((GameModel)IGame.Default).SetLevel(loadLevel);
             Levels.FinishLoading();
         }
     }

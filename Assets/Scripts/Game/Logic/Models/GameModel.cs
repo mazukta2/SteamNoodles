@@ -9,7 +9,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models
 {
-    public class GameModel : Disposable
+    public class GameModel : Disposable, IGame
     {
         public event Action OnLevelDestroyed = delegate { };
         public event Action<ILevel> OnLevelCreated = delegate { };
@@ -59,6 +59,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models
         public void SetLevel(LevelDefinition level)
         {
             StartLevel(level);
+        }
+
+        public void Exit()
+        {
+            Dispose();
         }
     }
 

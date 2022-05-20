@@ -17,14 +17,12 @@ namespace Game.Assets.Scripts.Game.Environment
 {
     public class Core : Disposable
     {
-        public GameModel Game { get; }
         public LevelLoading Levels { get; }
 
         public Core(ILevelsManager levelsManager, IGameAssets assets, IGameDefinitions definitions, IGameControls controls,
             ILocalizationManager localizationManager, IGameTime time, bool autoStart = true)
         {
-            Game = new GameModel();
-
+            IGame.Default = new GameModel();
             IGameKeysManager.Default = new GameKeysManager();
             IGameAssets.Default = assets;
             IGameDefinitions.Default = definitions;
@@ -32,12 +30,15 @@ namespace Game.Assets.Scripts.Game.Environment
             IGameTime.Default = time;
             IGameRandom.Default = new SessionRandom();
 
-            Levels = new LevelLoading(levelsManager, Game);
+            Levels = new LevelLoading(levelsManager, IGame.Default);
             ILocalizationManager.Default = localizationManager;
 
             if (autoStart)
-                Game.StartNewGame();
+                IGame.Default.StartNewGame();
+
+            IGame.Default.OnDispose += ModelOnDispose;
         }
+
 
         protected override void DisposeInner()
         {
@@ -48,8 +49,16 @@ namespace Game.Assets.Scripts.Game.Environment
             IGameControls.Default = null;
             ILocalizationManager.Default = null;
 
-            Game.Dispose();
+            IGame.Default.OnDispose -= ModelOnDispose;
+            IGame.Default.Exit();
+            IGame.Default = null;
+
             Levels.Dispose();
+        }
+
+        private void ModelOnDispose()
+        {
+            Dispose();
         }
     }
 }

@@ -17,9 +17,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private LevelDefinition _prototype;
         private ILevelsManager _levelManager;
-        private readonly GameModel _model;
+        private readonly IGame _model;
 
-        public LevelLoading(ILevelsManager levelsManager, GameModel model)
+        public LevelLoading(ILevelsManager levelsManager, IGame model)
         {
             _levelManager = levelsManager ?? throw new ArgumentNullException(nameof(levelsManager));
             _model = model ?? throw new ArgumentNullException(nameof(model));

@@ -26,12 +26,23 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             var definitions = new GameDefinitions(new UnityDefinitions());
             var localization = new LocalizationManager(definitions, "English");
             _core = new Core(new LevelsManager(), new GameAssets(new AssetsLoader()), definitions, new GameControls(_controls), localization, _time);
+            _core.OnDispose += _core_OnDispose;
         }
 
         protected void OnApplicationQuit()
         {
+            _core.OnDispose -= _core_OnDispose;
             IsGameExit = true;
             _core.Dispose();
+        }
+
+        private void _core_OnDispose()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         protected void OnDestroy()

@@ -25,6 +25,8 @@ namespace Game.Assets.Scripts.Tests.Setups
             _assets.AddPrefab("Screens/MainScreen", new MainScreenPrefab());
             _assets.AddPrefab("Screens/BuildScreen", new BuildScreenPrefab());
             _assets.AddPrefab("Screens/DayEndedScreen", new DayEndedScreenPrefab());
+            _assets.AddPrefab("Screens/GameMenuScreen", new GameMenuScreenPrefab());
+
             _definitions.Add(nameof(ConstructionsSettingsDefinition), new ConstructionsSettingsDefinition()
             {
                 CellSize = 0.5f,

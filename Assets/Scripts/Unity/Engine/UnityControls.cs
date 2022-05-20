@@ -52,13 +52,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             _wheel = wheel;
 
             if (Input.GetKeyDown(KeyCode.Escape))
-            {
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#else
-                Application.Quit();
-#endif
-            }    
+                IGameKeysManager.Default.GetKey(GameKeys.Exit).Tap();
         }
 
         bool SameSign(float num1, float num2)

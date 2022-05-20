@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+﻿using Game.Assets.Scripts.Game.Logic.Models;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -40,7 +41,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
             build.Levels.FinishLoading();
 
             Assert.IsTrue(build.Core.Levels.State == LevelLoading.LevelsState.IsLoaded);
-            Assert.IsNotNull(build.Core.Game.CurrentLevel);
+            Assert.IsNotNull(((GameModel)IGame.Default).CurrentLevel);
 
             build.Dispose();
         }

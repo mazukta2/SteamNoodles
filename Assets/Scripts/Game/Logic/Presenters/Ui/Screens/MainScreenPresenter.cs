@@ -1,14 +1,11 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Building;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
-using Game.Assets.Scripts.Game.Logic.Views.Ui;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
@@ -18,24 +15,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private ScreenManagerPresenter _screenManager;
         private PlacementField _constructionsManager;
         private FlowManager _turnManager;
-
+        private readonly HandPresenter _handPresenter;
         private static string _lastAnimation;
+        private KeyCommand _exitKey;
 
         public MainScreenPresenter(IMainScreenView view, ScreenManagerPresenter screenManager,
             PlacementField constructionsManager,
-            FlowManager turnManager, HandPresenter handPresenter) : base(view)
+            FlowManager turnManager, HandPresenter handPresenter, IGameKeysManager gameKeysManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _turnManager = turnManager ?? throw new ArgumentNullException(nameof(turnManager));
-
-            handPresenter.Mode = HandPresenter.Modes.Choose;
+            _handPresenter = handPresenter;
+            _handPresenter.Mode = HandPresenter.Modes.Choose;
 
             _constructionsManager.OnConstructionAdded += Placement_OnConstructionAdded;
             _view.NextWaveButton.SetAction(NextWaveClick);
             _view.FailWaveButton.SetAction(FailWaveClick);
             _turnManager.OnDayFinished += HandleOnDayFinished;
+            _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
+            _exitKey.OnTap += OnExitTap;
             UpdateWaveProgress();
         }
 
@@ -43,6 +43,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         {
             _constructionsManager.OnConstructionAdded -= Placement_OnConstructionAdded;
             _turnManager.OnDayFinished -= HandleOnDayFinished;
+            _exitKey.OnTap -= OnExitTap;
+            _handPresenter.Mode = HandPresenter.Modes.Disabled;
         }
 
         private void NextWaveClick()
@@ -93,6 +95,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
                 return WaveButtonAnimations.NextWave;
             else
                 return WaveButtonAnimations.None;
+        }
+
+        private void OnExitTap()
+        {
+            _screenManager.GetCollection<CommonScreens>().Open<IGameMenuScreenView>();
         }
 
         public enum WaveButtonAnimations

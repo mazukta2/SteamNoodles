@@ -25,5 +25,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Controls
     {
         RotateLeft,
         RotateRight,
+        Exit,
     }
 }
