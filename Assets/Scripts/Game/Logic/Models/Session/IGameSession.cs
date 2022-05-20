@@ -9,5 +9,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
     public interface IGameSession: IDisposable
     {
         static IGameSession Default { get; set; }
+
+        void StartLastAvailableLevel();
     }
 }

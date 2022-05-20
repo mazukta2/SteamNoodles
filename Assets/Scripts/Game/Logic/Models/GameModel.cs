@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
 
         public GameModel()
         {
-            IGameSession.Default = new GameSession();
+            IGameSession.Default = new GameSession(this);
         }
 
         protected override void DisposeInner()
