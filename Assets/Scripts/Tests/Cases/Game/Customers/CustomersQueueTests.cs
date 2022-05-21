@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsPointsCalculationsCorrect()
         {
-            var points = new BuildingPoints(2, 2);
+            var points = new BuildingPointsCalculator(2, 2);
             TestLevel(0, 0);
             TestLevel(1, 0);
             TestLevel(2, 0);
@@ -65,7 +65,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            var points = new BuildingPoints(2, 2);
+            var points = new BuildingPointsCalculator(2, 2);
             points.Value = 9;
             Assert.AreEqual(2, points.CurrentLevel);
             Assert.AreEqual(15, points.PointsForNextLevel);

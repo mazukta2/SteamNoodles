@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Time = time ?? throw new ArgumentNullException(nameof(time));
 
             Hand = new PlayerHand(settings, settings.StartingHand);
-            Resources = new Resources(definitions.Get<ConstructionsSettingsDefinition>());
+            Resources = new Resources(definitions.Get<ConstructionsSettingsDefinition>(), time);
 
             var unitSettings = definitions.Get<UnitsSettingsDefinition>();
 

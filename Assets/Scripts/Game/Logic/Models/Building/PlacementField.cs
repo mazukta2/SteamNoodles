@@ -72,7 +72,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Building
             card.Remove(1);
             OnConstructionAdded(construction);
 
-            _resources.Points.Value += points;
+            _resources.Points.Change(points, construction.GetWorldPosition());
 
             OnConstructionBuilded(construction);
             OnPointChangedDuringConstruction(construction, points);

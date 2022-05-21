@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Customers.BuildingPointsAnimations;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
@@ -23,11 +24,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var level = new ViewsCollection();
 
             var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, new GameVector3(1, 0, 0), new GameVector3(1, 0, 0));
-            var animation = new BuildingPointsAnimation(curve, 10, CreatePieceSpawner(level), definitions, time);
-            animation.Play();
+            var animationModel = new AddPointsAnimation(10, definitions, time, GameVector3.Zero);
+            var animation = new AddPointsAnimationPresenter(curve, CreatePieceSpawner(level), animationModel);
+            animationModel.Play();
             Assert.IsTrue(animation.IsDisposed);
             Assert.AreEqual(0, level.FindViews<PieceView>().Count);
 
+            animationModel.Dispose();
             level.Dispose();
         }
 
@@ -42,8 +45,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             time.MoveTime(10);
             var level = new ViewsCollection();
             var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, new GameVector3(1, 0, 0), new GameVector3(1, 0, 0));
-            var animation = new BuildingPointsAnimation(curve, 10, CreatePieceSpawner(level), definitions, time);
-            animation.Play();
+
+            var animationModel = new AddPointsAnimation(10, definitions, time, GameVector3.Zero);
+            var animation = new AddPointsAnimationPresenter(curve, CreatePieceSpawner(level), animationModel);
+            animationModel.Play();
+
             Assert.IsFalse(animation.IsDisposed);
             Assert.AreEqual(1, level.FindViews<PieceView>().Count);
             time.MoveTime(1);
@@ -54,6 +60,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             Assert.IsTrue(animation.IsDisposed);
             Assert.AreEqual(0, level.FindViews<PieceView>().Count);
 
+            animationModel.Dispose();
             level.Dispose();
         }
 
@@ -84,14 +91,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             time.MoveTime(10);
             var level = new ViewsCollection();
             var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, GameVector3.One, GameVector3.Zero);
-            var animation = new BuildingPointsAnimation(curve, 1, CreatePieceSpawner(level), definitions, time);
-            animation.Play();
+            var animationModel = new AddPointsAnimation(1, definitions, time, GameVector3.Zero);
+            var animation = new AddPointsAnimationPresenter(curve, CreatePieceSpawner(level), animationModel);
+            animationModel.Play();
+
             time.MoveTime(1);
             var piece = level.FindView<PieceView>();
             Assert.AreEqual(new GameVector3(0.5f, 0.5f, 0.5f), piece.Position.Value);
             time.MoveTime(1);
             Assert.AreEqual(new GameVector3(1f, 1f, 1f), piece.Position.Value);
 
+            animationModel.Dispose();
             level.Dispose();
         }
 
@@ -106,12 +116,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             time.MoveTime(10);
             var level = new ViewsCollection();
             var curve = new BezierCurve(new GameVector3(1, 1, 1), new GameVector3(-1, 1, -1), new GameVector3(1, 3, 1), new GameVector3(-1, 3, -1));
-            var animation = new BuildingPointsAnimation(curve, 1, CreatePieceSpawner(level), definitions, time);
-            animation.Play();
+
+            var animationModel = new AddPointsAnimation(1, definitions, time, new GameVector3(1, 1, 1));
+            var animation = new AddPointsAnimationPresenter(curve, CreatePieceSpawner(level), animationModel);
+            animationModel.Play();
+
             time.MoveTime(1);
             var piece = level.FindView<PieceView>();
             Assert.AreEqual(new GameVector3(0, 2.5f, 0), piece.Position.Value);
 
+            animationModel.Dispose();
             level.Dispose();
         }
 

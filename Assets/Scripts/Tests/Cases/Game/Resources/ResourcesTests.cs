@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Customers;
+﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Customers;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
@@ -14,7 +16,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         [Test]
         public void IsBuildingPointChangeLevel()
         {
-            var buildingPoints = new BuildingPoints(2, 2);
+            var constructionSettings = new ConstructionsSettingsDefinition();
+            var time = new GameTime();
+            var buildingPoints = new BuildingPointsManager(constructionSettings, time, 2, 2);
             var levelUps = 0;
             var levelDowns = 0;
             buildingPoints.OnLevelUp += BuildingPoints_OnLevelUp;
@@ -26,7 +30,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             Assert.AreEqual(0, levelUps);
             Assert.AreEqual(0, levelDowns);
 
-            buildingPoints.Value += 2;
+            buildingPoints.Change(2);
 
             Assert.AreEqual(0, buildingPoints.CurrentLevel);
             Assert.AreEqual(0, buildingPoints.PointsForCurrentLevel);
@@ -34,7 +38,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             Assert.AreEqual(0, levelUps);
             Assert.AreEqual(0, levelDowns);
 
-            buildingPoints.Value += 1;
+            buildingPoints.Change(1);
 
             Assert.AreEqual(1, buildingPoints.CurrentLevel);
             Assert.AreEqual(3, buildingPoints.PointsForCurrentLevel);
@@ -42,7 +46,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             Assert.AreEqual(1, levelUps);
             Assert.AreEqual(0, levelDowns);
 
-            buildingPoints.Value -= 1;
+            buildingPoints.Change(-1);
 
             Assert.AreEqual(0, buildingPoints.CurrentLevel);
             Assert.AreEqual(0, buildingPoints.PointsForCurrentLevel);
@@ -52,6 +56,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
 
             buildingPoints.OnLevelUp -= BuildingPoints_OnLevelUp;
             buildingPoints.OnLevelDown -= BuildingPoints_OnLevelDown;
+
+            buildingPoints.Dispose();
 
             void BuildingPoints_OnLevelUp()
             {
@@ -67,13 +73,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         [Test]
         public void IsBuildingPointAdditionalPointsWorks()
         {
-            var buildingPoints = new BuildingPoints(2, 2);
+            var buildingPoints = new BuildingPointsCalculator(2, 2);
             buildingPoints.Value += 3;
 
             Assert.AreEqual(8, buildingPoints.PointsForNextLevel);
             // 8 - 3 = 5;
-            Assert.AreEqual(0.2f, buildingPoints.GetChangedValue(1).Progress);
-            Assert.AreEqual(2 / 3f, buildingPoints.GetChangedValue(-1).Progress);
+            buildingPoints.Value += 1;
+            Assert.AreEqual(0.2f, buildingPoints.Progress);
+            buildingPoints.Value += -2;
+            Assert.AreEqual(2 / 3f, buildingPoints.Progress);
         }
 
 
