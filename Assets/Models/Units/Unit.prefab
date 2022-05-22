@@ -89,11 +89,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4997861878193465968}
     m_Modifications:
+    - target: {fileID: 1029773247768790, guid: 6ee64d62ad2c0ef448b31d30424dff8f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083633760749488, guid: 6ee64d62ad2c0ef448b31d30424dff8f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1374896145755520, guid: 6ee64d62ad2c0ef448b31d30424dff8f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1934856543948434, guid: 6ee64d62ad2c0ef448b31d30424dff8f, type: 3}
       propertyPath: m_Name
       value: SmokeExplosion
       objectReference: {fileID: 0}
     - target: {fileID: 1934856543948434, guid: 6ee64d62ad2c0ef448b31d30424dff8f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1970107527099786, guid: 6ee64d62ad2c0ef448b31d30424dff8f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1971378153983664, guid: 6ee64d62ad2c0ef448b31d30424dff8f, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
