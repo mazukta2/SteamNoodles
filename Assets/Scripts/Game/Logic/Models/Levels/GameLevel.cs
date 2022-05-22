@@ -51,12 +51,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             _crowd = new LevelCrowd(Units, time, settings, random);
             Queue = new CustomerQueue(_customers, Units, _crowd, time, random);
 
-            Resources.Points.OnMaxLevelUp += OnLevelUp;
+            Resources.Points.OnMaxTargetLevelUp += OnLevelUp;
         }
 
         protected override void DisposeInner()
         {
-            Resources.Points.OnMaxLevelUp -= OnLevelUp;
+            Resources.Points.OnMaxTargetLevelUp -= OnLevelUp;
             TurnManager.OnTurn -= TurnManager_OnTurn;
             TurnManager.OnWaveEnded -= TurnManager_OnWaveEnded;
 

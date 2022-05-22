@@ -15,13 +15,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class GhostPresenter : BasePresenter<IGhostView>
     {
-        public Action OnGhostPostionChanged = delegate { };
+        public event Action OnGhostPostionChanged = delegate { };
         public ConstructionDefinition Definition { get; private set; }
-
-        private FieldPositionsCalculator _positionCalculator;
-
         public FieldRotation Rotation { get; private set; }
-        
+
         private readonly IGhostView _view;
         private readonly IGameTime _time;
         private readonly ConstructionsSettingsDefinition _constructionsSettings;
@@ -35,6 +32,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private KeyCommand _rotateLeft;
         private KeyCommand _rotateRight;
         private IConstructionModelView _modelView;
+        private FieldPositionsCalculator _positionCalculator;
 
         public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
             ScreenManagerPresenter screenManager,

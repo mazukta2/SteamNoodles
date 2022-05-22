@@ -13,12 +13,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
     {
         public event Action OnPointsChanged = delegate { };
         public event Action OnLevelUp = delegate { };
-        public event Action OnMaxLevelUp = delegate { };
+        public event Action OnMaxTargetLevelUp = delegate { };
         public event Action OnLevelDown = delegate { };
         public event Action<AddPointsAnimation> OnAnimationStarted = delegate { };
         public int Value { get => _calculator.Value; }
         public int CurrentLevel => _calculator.CurrentLevel;
-        public int MaxCurrentLevel { get; private set; }
+        public int MaxTargettLevel { get; private set; }
         public int PointsForNextLevel => _calculator.PointsForNextLevel;
         public int PointsForCurrentLevel => _calculator.PointsForCurrentLevel;
         public float Progress => _calculator.Progress;
@@ -27,12 +27,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
         private readonly IGameTime _time;
         private List<AddPointsAnimation> _animations = new List<AddPointsAnimation>();
         private BuildingPointsCalculator _calculator;
+        private BuildingPointsCalculator _target;
 
         public BuildingPointsManager(ConstructionsSettingsDefinition constructionSettingsDefinition, IGameTime time, float power, float offset)
         {
             _constructionSettingsDefinition = constructionSettingsDefinition;
             _time = time;
             _calculator = new BuildingPointsCalculator(power, offset);
+            _target = _calculator.Copy();
         }
 
         protected override void DisposeInner()
@@ -55,6 +57,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 
         public void Change(int value, GameVector3 postion)
         {
+            _target.Value += value;
+
             if (value > 0)
             {
                 var animation = new AddPointsAnimation(value, _constructionSettingsDefinition, _time, postion);
@@ -68,6 +72,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
                     animation.OnPieceReachDestination -= Animation_OnPieceReachDestination;
                     animation.OnDispose -= Animation_OnDispose;
                     _animations.Remove(animation);
+                }
+
+                if (_target.CurrentLevel > MaxTargettLevel)
+                {
+                    MaxTargettLevel = _target.CurrentLevel;
+                    OnMaxTargetLevelUp();
                 }
             }
             else if (value < 0)
@@ -85,11 +95,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             if (currentLevel > _calculator.CurrentLevel)
                 OnLevelDown();
 
-            if (CurrentLevel > MaxCurrentLevel)
-            {
-                MaxCurrentLevel = CurrentLevel;
-                OnMaxLevelUp();
-            }
             OnPointsChanged();
         }
 

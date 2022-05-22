@@ -7,8 +7,13 @@ using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Level;
@@ -28,6 +33,50 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
     {
 
         [Test]
+        public void IsProgressRight()
+        {
+            var time = new GameTime();
+            var settings = new ConstructionsSettingsDefinition();
+            var points = new BuildingPointsManager(settings, time, 2.2f, 8);
+            var ghost = new GhostMock();
+
+            var levelCollection = new ViewsCollection();
+            var view = new PointCounterWidgetView(levelCollection);
+            IPointCounterWidgetView.Default = view;
+            var spawner = new PieceSpawnerView(levelCollection);
+            new PointPieceSpawnerPresenter(spawner);
+            new PointCounterWidgetPresenter(points, ghost, time, view, spawner, settings);
+
+            points.Change(1);
+            Assert.AreEqual(1/9f, view.PointsProgress.MainValue);
+            points.Change(8);
+            Assert.AreEqual(0, view.PointsProgress.MainValue);
+            points.Change(1);
+
+            Assert.AreEqual(20, points.PointsForNextLevel);
+            Assert.AreEqual(10, points.Value);
+            Assert.AreEqual(9, points.PointsForCurrentLevel);
+            Assert.AreEqual(1 / 11f, points.Progress);
+
+            Assert.AreEqual(1/11f, view.PointsProgress.MainValue);
+            points.Change(10);
+            Assert.AreEqual(20, points.Value);
+            Assert.AreEqual(20, points.PointsForCurrentLevel);
+            Assert.AreEqual(0, points.Progress);
+            Assert.AreEqual(0, view.PointsProgress.MainValue);
+
+            levelCollection.Dispose();
+            points.Dispose();
+        }
+
+        public class GhostMock : IGhostPresenter
+        {
+            public event Action OnGhostChanged = delegate { };
+            public event Action OnGhostPostionChanged = delegate { };
+            public int GetPointChanges() => 0;
+        }
+
+        [Test]
         public void IsPointsCalculationsCorrect()
         {
             var points = new BuildingPointsCalculator(2, 2);
@@ -41,6 +90,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             TestLevel(7, 1);
             TestLevel(8, 2);
             TestLevel(9, 2);
+            TestLevel(20, 3);
 
             void TestLevel(int currentPoints, int level)
             {

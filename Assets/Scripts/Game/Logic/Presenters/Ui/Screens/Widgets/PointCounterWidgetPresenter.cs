@@ -24,29 +24,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     {
         private readonly IPointCounterWidgetView _view;
         private readonly IPointPieceSpawnerView _pointPieceSpawner;
-        private Resources _resources;
-        private GhostManagerPresenter _ghostManager;
-        private PlacementField _placementField;
+        private BuildingPointsManager _points;
+        private IGhostPresenter _ghostManager;
         private readonly IGameTime _time;
         private ProgressBarSliders _progressBar;
         private int _pointChanges;
 
-        public PointCounterWidgetPresenter(Resources resources, GhostManagerPresenter ghostManager,
-            PlacementField placementField, IGameTime time, IPointCounterWidgetView view, IPointPieceSpawnerView pointPieceSpawner) : base(view)
+        public PointCounterWidgetPresenter(BuildingPointsManager points, IGhostPresenter ghostManager,
+            IGameTime time, IPointCounterWidgetView view, IPointPieceSpawnerView pointPieceSpawner,
+            ConstructionsSettingsDefinition constructionsSettings) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _pointPieceSpawner = pointPieceSpawner;
-            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            _points = points ?? throw new ArgumentNullException(nameof(points));
             _ghostManager = ghostManager ?? throw new ArgumentNullException(nameof(ghostManager));
-            _placementField = placementField ?? throw new ArgumentNullException(nameof(placementField));
             _time = time ?? throw new ArgumentNullException(nameof(time));
-            _resources.Points.OnLevelUp += HandleLevelChanged;
-            _resources.Points.OnLevelDown += HandleLevelChanged;
-            _resources.Points.OnPointsChanged += HandleOnPointsChanged;
-            _resources.Points.OnAnimationStarted += Points_OnAnimationStarted;
+            _points.OnLevelUp += HandleLevelChanged;
+            _points.OnLevelDown += HandleLevelChanged;
+            _points.OnPointsChanged += HandleOnPointsChanged;
+            _points.OnAnimationStarted += Points_OnAnimationStarted;
 
-            var def = IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>();
-            _progressBar = new ProgressBarSliders(_view.PointsProgress, _time, def.PointsSliderFrequency, def.PointsSliderSpeed);
+            _progressBar = new ProgressBarSliders(_view.PointsProgress, _time, constructionsSettings.PointsSliderFrequency, constructionsSettings.PointsSliderSpeed);
 
             _ghostManager.OnGhostChanged += HandleGhostUpdate;
             _ghostManager.OnGhostPostionChanged += HandleGhostUpdate;
@@ -65,10 +63,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
             _ghostManager.OnGhostChanged -= HandleGhostUpdate;
             _ghostManager.OnGhostPostionChanged -= HandleGhostUpdate;
-            _resources.Points.OnLevelUp -= HandleLevelChanged;
-            _resources.Points.OnLevelDown -= HandleLevelChanged;
+            _points.OnLevelUp -= HandleLevelChanged;
+            _points.OnLevelDown -= HandleLevelChanged;
             _view.Animator.OnFinished -= HandleAnimationFinished;
-            _resources.Points.OnAnimationStarted -= Points_OnAnimationStarted;
+            _points.OnAnimationStarted -= Points_OnAnimationStarted;
         }
 
         private void Points_OnAnimationStarted(AddPointsAnimation obj)
@@ -89,11 +87,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         private void HandleGhostUpdate()
         {
-            var ghost = _ghostManager.GetGhost();
-            if (ghost != null)
-                SetPotentialPoints(ghost.GetPointChanges());
-            else
-                SetPotentialPoints(0);
+            SetPotentialPoints(_ghostManager.GetPointChanges());
         }
 
         public void SetPotentialPoints(int pointChanges)
@@ -110,25 +104,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         private void UpdateValues()
         {
-            _view.Points.Value = $"{_resources.Points.Value}/{_resources.Points.PointsForNextLevel}";
-            _progressBar.Value = _resources.Points.Progress;
+            _view.Points.Value = $"{_points.Value}/{_points.PointsForNextLevel}";
+            _progressBar.Value = _points.Progress;
 
             if (_pointChanges != 0)
             {
-                var newPoints = _resources.Points.GetChangedValue(_pointChanges);
-                if (newPoints.Value < _resources.Points.Value)
+                var newPoints = _points.GetChangedValue(_pointChanges);
+                if (newPoints.Value < _points.Value)
                 {
                     _progressBar.Value = newPoints.Progress;
-                    if (newPoints.CurrentLevel == _resources.Points.CurrentLevel)
-                        _progressBar.Remove = _resources.Points.Progress;
+                    if (newPoints.CurrentLevel == _points.CurrentLevel)
+                        _progressBar.Remove = _points.Progress;
                     else
                         _progressBar.Remove = 1;
                     _progressBar.Add = 0;
                 }
                 else
                 {
-                    _progressBar.Value = _resources.Points.Progress;
-                    if (newPoints.CurrentLevel == _resources.Points.CurrentLevel)
+                    _progressBar.Value = _points.Progress;
+                    if (newPoints.CurrentLevel == _points.CurrentLevel)
                         _progressBar.Add = newPoints.Progress;
                     else
                         _progressBar.Add = 1;

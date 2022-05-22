@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
@@ -14,7 +15,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 {
-    public class GhostManagerPresenter : BasePresenter<IGhostManagerView>
+    public class GhostManagerPresenter : BasePresenter<IGhostManagerView>, IGhostPresenter
     {
         public event Action OnGhostChanged = delegate { };
         public event Action OnGhostPostionChanged = delegate { };
@@ -50,6 +51,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
         public GhostPresenter GetGhost()
         {
             return _ghost;
+        }
+
+        public int GetPointChanges()
+        {
+            var ghost = GetGhost();
+            if (ghost != null)
+                return ghost.GetPointChanges();
+            else
+                return 0;
         }
 
         private void OnScreenOpen(IScreenView screen)
