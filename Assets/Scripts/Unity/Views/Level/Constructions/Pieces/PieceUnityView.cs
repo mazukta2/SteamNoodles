@@ -8,7 +8,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
     public class PieceUnityView : UnitySimpleView, IPieceView
     {
-        [SerializeField] UnityPosition _position;
+        [SerializeField] PositionUnity _position;
         public IPosition Position => _position;
     }
 

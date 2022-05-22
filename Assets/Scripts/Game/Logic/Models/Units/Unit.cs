@@ -15,6 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         public event Action OnReachedPosition = delegate { };
         public event Action OnTargetChanged = delegate { };
         public event Action<GameVector3, bool> OnLookAt = delegate { };
+        public event Action OnSmoke = delegate { };
         public GameVector3 Target { get; private set; }
         public GameVector3 Position { get; private set; }
         public CustomerDefinition Definition { get; private set; }
@@ -66,6 +67,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
                 _currentSpeed -= delta * _unitsSettings.SpeedUp;
                 _currentSpeed = Math.Max(_currentSpeed, GetMinSpeed());
             }
+        }
+
+        public void Smoke()
+        {
+            OnSmoke();
         }
 
         private bool MoveToTarget(float delta)

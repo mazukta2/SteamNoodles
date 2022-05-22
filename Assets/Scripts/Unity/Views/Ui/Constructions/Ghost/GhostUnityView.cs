@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     public class GhostUnityView : UnityView<GhostPresenter>, IGhostView
     {
         [SerializeField] ContainerUnityView _container;
-        [SerializeField] UnityPosition _position;
+        [SerializeField] PositionUnity _position;
 
         public IPosition LocalPosition => _position;
         public IViewContainer Container => _container;

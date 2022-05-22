@@ -8,9 +8,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
     public class ConstructionModelUnityView : UnitySimpleView, IConstructionModelView
     {
-        [SerializeField] UnityAnimator _animator;
+        [SerializeField] AnimatorUnity _animator;
         public IAnimator Animator => _animator;
-        [SerializeField] UnityAnimator _borderAnimator;
+        [SerializeField] AnimatorUnity _borderAnimator;
         public IAnimator BorderAnimator => _borderAnimator;
 
         [SerializeField] UnityShrinker _shrinker;

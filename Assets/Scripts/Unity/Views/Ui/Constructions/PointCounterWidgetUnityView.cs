@@ -11,11 +11,11 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
     public class PointCounterWidgetUnityView : UnityView<PointCounterWidgetPresenter>, IPointCounterWidgetView
     {
-        [SerializeField] UnityPosition _pointsAttractionPoint;
-        [SerializeField] UnityPosition _pointsAttractionControlPoint;
+        [SerializeField] PositionUnity _pointsAttractionPoint;
+        [SerializeField] PositionUnity _pointsAttractionControlPoint;
         [SerializeField] UnityText _points;
         [SerializeField] UnityPointProgressBar _progress;
-        [SerializeField] UnityAnimator _animator;
+        [SerializeField] AnimatorUnity _animator;
 
         public IPosition PointsAttractionPoint => _pointsAttractionPoint;
         public IPosition PointsAttractionControlPoint => _pointsAttractionControlPoint;

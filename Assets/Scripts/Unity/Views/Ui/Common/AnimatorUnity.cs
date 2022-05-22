@@ -6,7 +6,7 @@ using UnityEngine;
 namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 {
     [Serializable]
-    public class UnityAnimator : MonoBehaviour, IAnimator
+    public class AnimatorUnity : MonoBehaviour, IAnimator
     {
         public event Action OnFinished = delegate { };
         [SerializeField] private Animator _animator;

@@ -11,7 +11,7 @@ using UnityEngine;
 namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
 {
     [Serializable]
-    public class UnityPosition : IPosition
+    public class PositionUnity : IPosition
     {
         [SerializeField] private Transform _transform;
 

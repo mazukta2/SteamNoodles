@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] private ContainerUnityView _cards;
         [SerializeField] private PrototypeUnityView _cardPrototype;
         [SerializeField] private ButtonUnityView _cancel;
-        [SerializeField] private UnityAnimator _animator;
+        [SerializeField] private AnimatorUnity _animator;
 
         public IButton CancelButton => _cancel;
         public IAnimator Animator => _animator;

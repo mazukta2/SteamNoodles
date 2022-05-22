@@ -14,7 +14,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Units
 {
     public class UnitModelUnityView : UnityView<UnitModelPresenter>, IUnitModelView
     {
-        [SerializeField] UnityAnimator _animator;
+        [SerializeField] AnimatorUnity _animator;
         [SerializeField] UnitRigs _rigs;
 
         public IAnimator Animator => _animator;

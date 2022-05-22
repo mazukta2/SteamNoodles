@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     public class ConstructionUnityView : UnityView<ConstructionPresenter>, IConstructionView
     {
         [SerializeField] ContainerUnityView _container;
-        [SerializeField] UnityPosition _position;
+        [SerializeField] PositionUnity _position;
 
         public IPosition Position => _position;
         public IRotator Rotator { get; private set; }

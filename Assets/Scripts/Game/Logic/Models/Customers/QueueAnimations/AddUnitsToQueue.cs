@@ -70,6 +70,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
             var pos = _queue.GetPositionFor(_queue.Units.Count + 1);
             var unit = _unitsController.SpawnUnit(pos);
             unit.LookAt(_customers.GetQueueFirstPosition() + new GameVector3(-1, 0, 0), true);
+            unit.Smoke();
             _addToQueue(unit);
         }
     }

@@ -35,6 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _model.OnTargetChanged += HandleOnTargetChanged;
             _model.OnReachedPosition += HandleOnReachedPosition;
             _model.OnLookAt += HandleOnLookAt;
+            _model.OnSmoke += HandleOnSmoke;
 
             DressUnit();
             _view.Animator.OnFinished += Animator_OnFinished;
@@ -52,6 +53,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _model.OnTargetChanged -= HandleOnTargetChanged;
             _model.OnReachedPosition -= HandleOnReachedPosition;
             _model.OnLookAt -= HandleOnLookAt;
+            _model.OnSmoke -= HandleOnSmoke;
+        }
+
+        private void HandleOnSmoke()
+        {
+            _view.SmokeContainer.Spawn(_view.SmokePrefab);
         }
 
         private void HandleOnPositionChanged()

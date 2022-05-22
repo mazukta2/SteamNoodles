@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views.Ui.Screens
         [SerializeField] ButtonUnityView _nextWave;
         [SerializeField] ButtonUnityView _failWave;
         [SerializeField] UnityProgressBar _nextWaveProgress;
-        [SerializeField] UnityAnimator _waveButtonAnimator;
+        [SerializeField] AnimatorUnity _waveButtonAnimator;
 
         public IButton NextWaveButton => _nextWave;
         public IProgressBar NextWaveProgress => _nextWaveProgress;

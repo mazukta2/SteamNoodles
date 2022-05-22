@@ -15,7 +15,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Screens.Widgets
 {
     public class BuildingTooltipView : UnityView<BuildingTooltipPresenter>, IBuildingToolitpView
     {
-        [SerializeField] UnityAnimator _animator;
+        [SerializeField] AnimatorUnity _animator;
         [SerializeField] HandConstructionTooltipUnityView _tooltip;
 
         public IHandConstructionTooltipView Tooltip => _tooltip;

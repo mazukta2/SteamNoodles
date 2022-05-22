@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] ContainerUnityView _toolitpContainer;
         [SerializeField] PrototypeUnityView _toolitpPrototype;
         [SerializeField] UnityText _amount;
-        [SerializeField] UnityAnimator _animator;
+        [SerializeField] AnimatorUnity _animator;
 
         public IButton Button => _button;
         public IImage Image => _image;

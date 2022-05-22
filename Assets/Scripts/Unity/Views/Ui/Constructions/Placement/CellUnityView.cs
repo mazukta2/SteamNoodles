@@ -17,8 +17,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         [SerializeField] GameObject _blocked;
         [SerializeField] GameObject _disabled;
 
-        [SerializeField] UnityAnimator _animator;
-        [SerializeField] UnityPosition _position;
+        [SerializeField] AnimatorUnity _animator;
+        [SerializeField] PositionUnity _position;
 
         private CellPlacementStatus _status;
 
