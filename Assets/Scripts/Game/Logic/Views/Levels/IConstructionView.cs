@@ -12,6 +12,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     {
         IPosition Position { get;}
         IRotator Rotator { get; }
-        IViewContainer Container { get;}
+        IViewContainer Container { get; }
+        IViewContainer EffectsContainer { get; }
+        IViewPrefab ExplosionPrototype { get; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Session;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
+using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
 {
-    public class FreeAllFromQueue : BaseQueueStep
+    public class FreeAllFromQueue : BaseSequenceStep
     {
         private readonly CustomerQueue _queue;
         private readonly ICrowd _crowd;

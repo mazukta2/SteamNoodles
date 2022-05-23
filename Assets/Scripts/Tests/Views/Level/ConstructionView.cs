@@ -7,8 +7,11 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views;
 using Game.Assets.Scripts.Tests.Views.Common;
+using Game.Assets.Scripts.Tests.Views.Common.Creation;
+using System;
 
 namespace Game.Assets.Scripts.Tests.Views.Level
 {
@@ -18,11 +21,19 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         public IRotator Rotator { get; }
         public IViewContainer Container { get; set; }
 
+        public IViewContainer EffectsContainer { get; set; }
+        public IViewPrefab ExplosionPrototype { get; set; }
+
         public ConstructionView(IViewsCollection level, IViewContainer container, IRotator rotator) : base(level)
         {
             Container = container;
             Rotator = rotator;
+            EffectsContainer = new ContainerViewMock(level);
+            ExplosionPrototype = new DefaultViewCollectionPrefabMock(CreateExplosion);
         }
 
+        private void CreateExplosion(IViewsCollection obj)
+        {
+        }
     }
 }

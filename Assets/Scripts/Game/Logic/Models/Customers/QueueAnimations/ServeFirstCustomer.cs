@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Units;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
 {
-    public class ServeFirstCustomer : BaseQueueStep
+    public class ServeFirstCustomer : BaseSequenceStep
     {
         private CustomerQueue _queue;
         private readonly ICrowd _crowd;

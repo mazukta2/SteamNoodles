@@ -9,6 +9,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
 {
     public class Construction : Disposable
     {
+        public Action OnExplode = delegate { };
         public IntPoint CellPosition { get; private set; }
         public FieldRotation Rotation { get; private set; }
 
@@ -35,8 +36,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
             return Definition.GetOccupiedSpace(CellPosition, Rotation);
         }
 
-        public void Destroy()
+        public void Explode()
         {
+            OnExplode();
             Dispose();
         }
 

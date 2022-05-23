@@ -1,6 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Unity.Views;
+using GameUnity.Assets.Scripts.Unity.Engine.Helpers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,7 +44,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             throw new Exception("Unknown prefab: " + prefab);
         }
 
-        public void Spawn(IViewPrefab prefab)
+
+        public void Spawn(IViewPrefab prefab, GameVector3 position)
         {
             if (prefab is GamePrefab screenPrefab)
             {
@@ -55,12 +58,18 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
             {
                 var go = GameObject.Instantiate(prototype.gameObject, _pointer);
                 go.GetComponent<PrototypeUnityView>().SetOriginal(false);
+                go.transform.position = position.ToVector();
                 go.SetActive(true);
                 _spawnedGo.Add(go);
                 return;
             }
 
             throw new Exception("Unknown prefab: " + prefab);
+        }
+
+        public void Spawn(IViewPrefab prefab)
+        {
+            Spawn(prefab, transform.position.ToVector());
         }
 
         public void Clear()

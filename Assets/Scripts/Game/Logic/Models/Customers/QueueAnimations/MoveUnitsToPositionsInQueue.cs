@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
 {
-    public class MoveUnitsToPositionsInQueue : BaseQueueStep
+    public class MoveUnitsToPositionsInQueue : BaseSequenceStep
     {
         private CustomerQueue _queue;
         private readonly ICustomers _customers;

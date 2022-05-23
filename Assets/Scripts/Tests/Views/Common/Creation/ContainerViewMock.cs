@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
@@ -38,6 +39,11 @@ namespace Game.Assets.Scripts.Tests.Views.Common.Creation
                 return FindViews<T>().Last();
             }
             throw new Exception("Uknown prefab type: " + prefab);
+        }
+
+        public void Spawn(IViewPrefab prefab, GameVector3 position)
+        {
+            Spawn(prefab);
         }
 
         public void Spawn(IViewPrefab prefab)

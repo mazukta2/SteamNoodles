@@ -1,10 +1,13 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Calculations;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
+using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Models.Time;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +21,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public event Action<bool> OnWaveEnded = delegate { };
         public event Action OnDayFinished = delegate { };
 
+        private readonly ConstructionsSettingsDefinition _constructionsDefinitions;
         private LevelDefinition _levelDefinition;
         private PlacementField _constructionsManager;
         private PlayerHand _hand;
         private Deck<ConstructionDefinition> _rewardDeck;
         private int _wave;
+        private SequenceManager _sequence = new SequenceManager();
 
-        public FlowManager(LevelDefinition levelDefinition, IGameRandom random, PlacementField constructionsManager, PlayerHand hand)
+        public FlowManager(ConstructionsSettingsDefinition constructions, LevelDefinition levelDefinition, IGameRandom random, PlacementField constructionsManager, PlayerHand hand)
         {
+            _constructionsDefinitions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
             _hand = hand ?? throw new ArgumentNullException(nameof(hand));
@@ -38,6 +44,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         protected override void DisposeInner()
         {
+            _sequence.Dispose();
             _constructionsManager.OnConstructionBuilded -= Placement_OnConstructionBuilded;
         }
 
@@ -53,6 +60,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public void WinWave()
         {
+            if (_sequence.IsActive())
+                return;
+
             if (!CanNextWave())
                 throw new Exception("Cant start next wave");
 
@@ -61,20 +71,30 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             {
                 OnDayFinished();
                 return;
-            }    
-
-            while (_constructionsManager.Constructions.Count > 1)
-            {
-                _constructionsManager.Constructions.Last().Destroy();
             }
 
-            GiveCards(PlayerHand.ConstructionSource.NewWave);
+            var constructions = _constructionsManager.Constructions.ToArray();
+            for (int i = constructions.Length - 1; i >= 1; i--)
+            {
+                _sequence.Add(new DestroyConstructionStep(constructions[i], IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
+            }
 
-            OnWaveEnded(true);
+            _sequence.Add(new ActionStep(EndWave));
+            _sequence.ProcessSteps();
+
+            void EndWave()
+            {
+                GiveCards(PlayerHand.ConstructionSource.NewWave);
+
+                OnWaveEnded(true);
+            }
         }
 
         public void FailWave()
         {
+            if (_sequence.IsActive())
+                return;
+
             if (!CanFailWave())
                 throw new Exception("Cant fail wave");
 
@@ -85,14 +105,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
                 return;
             }
 
-            while (_constructionsManager.Constructions.Count > 1)
+            var constructions = _constructionsManager.Constructions.ToArray();
+            for (int i = constructions.Length - 1; i >= 1; i--)
             {
-                _constructionsManager.Constructions.Last().Destroy();
+                _sequence.Add(new DestroyConstructionStep(constructions[i], IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
             }
 
-            GiveCards(PlayerHand.ConstructionSource.NewWave);
+            _sequence.Add(new ActionStep(EndWave));
+            _sequence.ProcessSteps();
 
-            OnWaveEnded(false);
+            void EndWave()
+            {
+                GiveCards(PlayerHand.ConstructionSource.NewWave);
+
+                OnWaveEnded(false);
+            }
         }
 
         public void GiveCards(PlayerHand.ConstructionSource source)

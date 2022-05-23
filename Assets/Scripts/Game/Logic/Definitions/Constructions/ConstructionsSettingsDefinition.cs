@@ -12,6 +12,7 @@
         public float PieceMovingTime { get; set; }
         public float PointsSliderFrequency { get; set; }
         public float PointsSliderSpeed { get; set; }
+        public float ConstructionDestroyTime { get; set; }
 
         public void Validate()
         {

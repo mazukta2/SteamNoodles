@@ -16,6 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private IControls _controls;
         private IConstructionModelView _modelView;
         private bool _dropFinished;
+        private bool _isExploading;
 
         public ConstructionPresenter(ConstructionsSettingsDefinition constrcutionsSettings, 
             Construction construction, IAssets assets, IConstructionView view,
@@ -36,17 +37,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _controls.ShakeCamera();
 
             _modelView.Animator.OnFinished += DropFinished;
-            _construction.OnDispose += _constructionView.Dispose;
+            _construction.OnDispose += HandleModelDispose;
+            _construction.OnExplode += HandleExplosion;
             _ghostManager.OnGhostChanged += UpdateGhost;
             _ghostManager.OnGhostPostionChanged += UpdateGhost;
         }
 
         protected override void DisposeInner()
         {
+            _construction.OnDispose -= HandleModelDispose;
+            _construction.OnExplode -= HandleExplosion;
             _modelView.Animator.OnFinished -= DropFinished;
             _ghostManager.OnGhostChanged -= UpdateGhost;
             _ghostManager.OnGhostPostionChanged -= UpdateGhost;
-            _construction.OnDispose -= _constructionView.Dispose;
+            _modelView.Animator.OnFinished -= ExplosionFinished;
         }
 
         public void UpdateGhost()
@@ -77,6 +81,31 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _modelView.Animator.SwitchTo(IConstructionModelView.Animations.Idle.ToString());
             _dropFinished = true;
             UpdateGhost();
+        }
+
+        private void ExplosionFinished()
+        {
+            _modelView.Animator.OnFinished -= ExplosionFinished;
+            _modelView.Animator.SwitchTo(IConstructionModelView.Animations.Idle.ToString());
+            _isExploading = false;
+            if (_construction.IsDisposed)
+                _constructionView.Dispose();
+        }
+
+        private void HandleExplosion()
+        {
+            _modelView.Animator.OnFinished += ExplosionFinished;
+            _isExploading = true;
+            _modelView.Animator.Play(IConstructionModelView.Animations.Explode.ToString());
+            _constructionView.EffectsContainer.Spawn(_constructionView.ExplosionPrototype, _construction.GetWorldPosition());
+        }
+
+        private void HandleModelDispose()
+        {
+            if (_isExploading)
+                return;
+
+            _constructionView.Dispose();
         }
 
     }

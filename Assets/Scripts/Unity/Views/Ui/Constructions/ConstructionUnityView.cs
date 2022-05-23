@@ -12,10 +12,14 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
     {
         [SerializeField] ContainerUnityView _container;
         [SerializeField] PositionUnity _position;
+        [SerializeField] ContainerUnityView _effectsContainer;
+        [SerializeField] PrototypeUnityView _explosionPrototype;
 
         public IPosition Position => _position;
         public IRotator Rotator { get; private set; }
         public IViewContainer Container => _container;
+        public IViewContainer EffectsContainer => _effectsContainer;
+        public IViewPrefab ExplosionPrototype => _explosionPrototype;
 
         protected override void PreAwake()
         {

@@ -43,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             Constructions = new PlacementField(definitions.Get<ConstructionsSettingsDefinition>(), Definition.PlacementField, Resources);
             Units = new LevelUnits(time, definitions.Get<UnitsSettingsDefinition>(), settings, _random);
-            TurnManager = new FlowManager(Definition, random, Constructions, Hand);
+            TurnManager = new FlowManager(definitions.Get<ConstructionsSettingsDefinition>(), Definition, random, Constructions, Hand);
             TurnManager.OnTurn += TurnManager_OnTurn;
             TurnManager.OnWaveEnded += TurnManager_OnWaveEnded;
 

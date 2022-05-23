@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
 {
-    public class AddDelay : BaseQueueStep
+    public class AddDelay : BaseSequenceStep
     {
         private IGameTime _time;
         private float _delay;

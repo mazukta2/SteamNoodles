@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
@@ -21,8 +22,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private readonly IGameTime _time;
         private readonly IGameRandom _random;
         private List<Unit> _queue = new List<Unit>();
-        private List<BaseQueueStep> _orders = new List<BaseQueueStep>();
-        private BaseQueueStep _currentStep;
+        private SequenceManager _sequenceManager = new SequenceManager();
 
         public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd, IGameTime time, IGameRandom random)
         {
@@ -35,11 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
 
         protected override void DisposeInner()
         {
-            if (_currentStep != null)
-                _currentStep.Dispose();
-
-            foreach (var item in _orders)
-                item.Dispose();
+            _sequenceManager.Dispose();
         }
 
         public void ServeCustomer()
@@ -48,25 +44,25 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
             if (targetSize < 0)
                 throw new ArgumentException(nameof(targetSize));
 
-            _orders.Add(new ServeFirstCustomer(this, _crowd, RemoveFromQueue, ServeUnit));
-            _orders.Add(new RemoveUnitsFromQueue(this, _customers, _crowd, RemoveFromQueue));
-            _orders.Add(new AddUnitsToQueue(this, _customers, _unitsController, AddToQueue, _time, _customers.SpawnAnimationDelay));
-            _orders.Add(new MoveUnitsToPositionsInQueue(this, _customers));
+            _sequenceManager.Add(new ServeFirstCustomer(this, _crowd, RemoveFromQueue, ServeUnit));
+            _sequenceManager.Add(new RemoveUnitsFromQueue(this, _customers, _crowd, RemoveFromQueue));
+            _sequenceManager.Add(new AddUnitsToQueue(this, _customers, _unitsController, AddToQueue, _time, _customers.SpawnAnimationDelay));
+            _sequenceManager.Add(new MoveUnitsToPositionsInQueue(this, _customers));
 
-            ProcessSteps();
+            _sequenceManager.ProcessSteps();
         }
 
         public void ServeAll()
         {
-            _orders.Add(new ServeAllFromQueue(this, _crowd, _random, RemoveFromQueue, ServeUnit, _time, _customers.SpawnAnimationDelay));
-            _orders.Add(new AddUnitsToQueue(this, _customers, _unitsController, AddToQueue, _time, _customers.SpawnAnimationDelay));
-            ProcessSteps();
+            _sequenceManager.Add(new ServeAllFromQueue(this, _crowd, _random, RemoveFromQueue, ServeUnit, _time, _customers.SpawnAnimationDelay));
+            _sequenceManager.Add(new AddUnitsToQueue(this, _customers, _unitsController, AddToQueue, _time, _customers.SpawnAnimationDelay));
+            _sequenceManager.ProcessSteps();
         }
 
         public void FreeAll()
         {
-            _orders.Add(new FreeAllFromQueue(this, _crowd, _random, RemoveFromQueue));
-            ProcessSteps();
+            _sequenceManager.Add(new FreeAllFromQueue(this, _crowd, _random, RemoveFromQueue));
+            _sequenceManager.ProcessSteps();
         }
 
         public GameVector3 GetPositionFor(int index)
@@ -93,27 +89,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
            _customers.Serve(unit);
         }
 
-        private void ProcessSteps()
-        {
-            if (_currentStep != null)
-                return;
-
-            if (_orders.Count == 0)
-                return;
-
-            _currentStep = _orders.First();
-            _orders.RemoveAt(0);
-
-            _currentStep.OnFinished += FinishCurrentStep;
-            _currentStep.Play();
-        }
-
-        private void FinishCurrentStep()
-        {
-            _currentStep.OnFinished -= FinishCurrentStep;
-            _currentStep.Dispose();
-            _currentStep = null;
-            ProcessSteps();
-        }
     }
 }
