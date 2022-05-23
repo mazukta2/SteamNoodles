@@ -24,14 +24,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            _resources.Points.OnLevelUp += Points_OnLevelUp;
-            _resources.Points.OnLevelDown += Points_OnLevelDown;
+            _resources.Points.OnTargetLevelChanged += Points_OnTargetLevelChanged;
         }
 
         protected override void DisposeInner()
         {
-            _resources.Points.OnLevelUp -= Points_OnLevelUp;
-            _resources.Points.OnLevelDown -= Points_OnLevelDown;
+            _resources.Points.OnTargetLevelChanged -= Points_OnTargetLevelChanged;
         }
 
         public float SpawnAnimationDelay => _unitsSettings.SpawnAnimationDelay;
@@ -58,15 +56,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
             _queueSize = 0;
         }
 
-        private void Points_OnLevelDown()
+        private void Points_OnTargetLevelChanged(int changes)
         {
-            if (_queueSize > 0)
-                _queueSize--;
-        }
-
-        private void Points_OnLevelUp()
-        {
-            _queueSize++;
+            _queueSize += changes;
+            if (_queueSize < 0)
+                _queueSize = 0;
         }
 
         public void Serve(Unit unit)

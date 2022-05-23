@@ -12,41 +12,43 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
     public class BuildingPointsManager : Disposable
     {
         public event Action OnPointsChanged = delegate { };
-        public event Action OnLevelUp = delegate { };
+        public event Action OnCurrentLevelUp = delegate { };
+        public event Action OnCurrentLevelDown = delegate { };
+        public event Action<int> OnTargetLevelChanged = delegate { };
         public event Action OnMaxTargetLevelUp = delegate { };
-        public event Action OnLevelDown = delegate { };
         public event Action<AddPointsAnimation> OnAnimationStarted = delegate { };
-        public int Value { get => _calculator.Value; }
-        public int CurrentLevel => _calculator.CurrentLevel;
-        public int MaxTargettLevel { get; private set; }
-        public int PointsForNextLevel => _calculator.PointsForNextLevel;
-        public int PointsForCurrentLevel => _calculator.PointsForCurrentLevel;
-        public float Progress => _calculator.Progress;
+        public int Value { get => _current.Value; }
+        public int CurrentLevel => _current.CurrentLevel;
+        public int TargetLevel => _target.CurrentLevel;
+        public int MaxTargetLevel { get; private set; }
+        public int PointsForNextLevel => _current.PointsForNextLevel;
+        public int PointsForCurrentLevel => _current.PointsForCurrentLevel;
+        public float Progress => _current.Progress;
 
         private readonly ConstructionsSettingsDefinition _constructionSettingsDefinition;
         private readonly IGameTime _time;
         private List<AddPointsAnimation> _animations = new List<AddPointsAnimation>();
-        private BuildingPointsCalculator _calculator;
+        private BuildingPointsCalculator _current;
         private BuildingPointsCalculator _target;
 
         public BuildingPointsManager(ConstructionsSettingsDefinition constructionSettingsDefinition, IGameTime time, float power, float offset)
         {
             _constructionSettingsDefinition = constructionSettingsDefinition;
             _time = time;
-            _calculator = new BuildingPointsCalculator(power, offset);
-            _target = _calculator.Copy();
+            _current = new BuildingPointsCalculator(power, offset);
+            _target = _current.Copy();
         }
 
         protected override void DisposeInner()
         {
-            foreach (var anim in _animations)
+            foreach (var anim in _animations.ToArray())
                 anim.Dispose();
         }
 
         public BuildingPointsCalculator GetChangedValue(int additionalPoints)
         {
-            var newBuildingPoints = _calculator.Copy();
-            newBuildingPoints.Value = _calculator.Value + additionalPoints;
+            var newBuildingPoints = _current.Copy();
+            newBuildingPoints.Value = _current.Value + additionalPoints;
             return newBuildingPoints;
         }
 
@@ -57,7 +59,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 
         public void Change(int value, GameVector3 postion)
         {
+            var targetLevel = _target.CurrentLevel;
             _target.Value += value;
+
+            if (_target.CurrentLevel != targetLevel)
+                OnTargetLevelChanged(_target.CurrentLevel - targetLevel);
 
             if (value > 0)
             {
@@ -74,9 +80,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
                     _animations.Remove(animation);
                 }
 
-                if (_target.CurrentLevel > MaxTargettLevel)
+                if (_target.CurrentLevel > MaxTargetLevel)
                 {
-                    MaxTargettLevel = _target.CurrentLevel;
+                    MaxTargetLevel = _target.CurrentLevel;
                     OnMaxTargetLevelUp();
                 }
             }
@@ -86,14 +92,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 
         private void ChangePoints(int changes)
         {
-            var currentLevel = _calculator.CurrentLevel;
-            _calculator.Value += changes;
+            var currentLevel = _current.CurrentLevel;
+            _current.Value += changes;
 
-            if (currentLevel < _calculator.CurrentLevel)
-                OnLevelUp();
+            if (currentLevel < _current.CurrentLevel)
+                OnCurrentLevelUp();
 
-            if (currentLevel > _calculator.CurrentLevel)
-                OnLevelDown();
+            if (currentLevel > _current.CurrentLevel)
+                OnCurrentLevelDown();
 
             OnPointsChanged();
         }

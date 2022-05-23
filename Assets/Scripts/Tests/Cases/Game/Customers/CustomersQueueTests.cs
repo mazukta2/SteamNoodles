@@ -4,6 +4,8 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
+using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
@@ -508,6 +510,25 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             collection.Dispose();
             queue.Dispose();
             uc.Dispose();
+        }
+
+        [Test]
+        public void IsFirstUnitAppearsAfterFirstBuilding()
+        {
+            var game = new GameConstructor()
+                .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.PieceMovingTime = 1)
+                .UpdateDefinition<ConstructionDefinition>(x => x.Points = 3)
+                .UpdateDefinition<LevelDefinitionMock>(x => x.CrowdUnitsAmount = 0)
+                .Build();
+
+            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            game.Controls.Click();
+
+            Assert.AreEqual(1, IBattleLevel.Default.Resources.Points.TargetLevel);
+            Assert.AreEqual(0, IBattleLevel.Default.Resources.Points.CurrentLevel);
+            Assert.AreEqual(1, game.LevelCollection.FindViews<UnitView>().Count);
+
+            game.Dispose();
         }
 
         class UnitControllerMock : Disposable, IUnits, ICustomers

@@ -39,8 +39,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _points = points ?? throw new ArgumentNullException(nameof(points));
             _ghostManager = ghostManager ?? throw new ArgumentNullException(nameof(ghostManager));
             _time = time ?? throw new ArgumentNullException(nameof(time));
-            _points.OnLevelUp += HandleLevelChanged;
-            _points.OnLevelDown += HandleLevelChanged;
+            _points.OnCurrentLevelUp += HandleLevelChanged;
+            _points.OnCurrentLevelDown += HandleLevelChanged;
             _points.OnPointsChanged += HandleOnPointsChanged;
             _points.OnAnimationStarted += Points_OnAnimationStarted;
 
@@ -63,8 +63,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
             _ghostManager.OnGhostChanged -= HandleGhostUpdate;
             _ghostManager.OnGhostPostionChanged -= HandleGhostUpdate;
-            _points.OnLevelUp -= HandleLevelChanged;
-            _points.OnLevelDown -= HandleLevelChanged;
+            _points.OnCurrentLevelUp -= HandleLevelChanged;
+            _points.OnCurrentLevelDown -= HandleLevelChanged;
             _view.Animator.OnFinished -= HandleAnimationFinished;
             _points.OnAnimationStarted -= Points_OnAnimationStarted;
         }

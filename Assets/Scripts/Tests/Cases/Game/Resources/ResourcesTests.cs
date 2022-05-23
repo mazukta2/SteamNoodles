@@ -21,8 +21,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             var buildingPoints = new BuildingPointsManager(constructionSettings, time, 2, 2);
             var levelUps = 0;
             var levelDowns = 0;
-            buildingPoints.OnLevelUp += BuildingPoints_OnLevelUp;
-            buildingPoints.OnLevelDown += BuildingPoints_OnLevelDown;
+            buildingPoints.OnCurrentLevelUp += BuildingPoints_OnLevelUp;
+            buildingPoints.OnCurrentLevelDown += BuildingPoints_OnLevelDown;
 
             Assert.AreEqual(0, buildingPoints.CurrentLevel);
             Assert.AreEqual(0, buildingPoints.PointsForCurrentLevel);
@@ -54,8 +54,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             Assert.AreEqual(1, levelUps);
             Assert.AreEqual(1, levelDowns);
 
-            buildingPoints.OnLevelUp -= BuildingPoints_OnLevelUp;
-            buildingPoints.OnLevelDown -= BuildingPoints_OnLevelDown;
+            buildingPoints.OnCurrentLevelUp -= BuildingPoints_OnLevelUp;
+            buildingPoints.OnCurrentLevelDown -= BuildingPoints_OnLevelDown;
 
             buildingPoints.Dispose();
 

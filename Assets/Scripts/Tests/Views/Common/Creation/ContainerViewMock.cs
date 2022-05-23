@@ -42,7 +42,12 @@ namespace Game.Assets.Scripts.Tests.Views.Common.Creation
 
         public void Spawn(IViewPrefab prefab)
         {
-            throw new NotImplementedException();
+            if (prefab is ViewCollectionPrefabMock viewPrefabMock)
+            {
+                viewPrefabMock.Fill(_collection);
+                return;
+            }
+            throw new Exception("Uknown prefab type: " + prefab);
         }
 
         public T FindView<T>(bool recursively = true) where T : IView
