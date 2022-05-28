@@ -3,7 +3,10 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 using System.Linq;
@@ -12,15 +15,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 {
     public class LevelCustomers : Disposable, ICustomers
     {
-        private readonly PlacementField _placementField;
+        private readonly IRepository<Construction> _constructions;
+        private readonly FieldService _fieldPositionService;
         private readonly LevelDefinition _levelDefinition;
         private readonly UnitsSettingsDefinition _unitsSettings;
         private readonly Resources _resources;
         private int _queueSize = 0;
 
-        public LevelCustomers(PlacementField placementField, LevelDefinition levelDefinition, UnitsSettingsDefinition unitsSettings, Levels.Resources resources)
+        public LevelCustomers(IRepository<Construction> constructions, FieldService fieldPositionService, LevelDefinition levelDefinition, UnitsSettingsDefinition unitsSettings, Levels.Resources resources)
         {
-            _placementField = placementField ?? throw new ArgumentNullException(nameof(placementField));
+            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+            _fieldPositionService = fieldPositionService ?? throw new ArgumentNullException(nameof(fieldPositionService));
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
@@ -36,8 +41,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 
         public GameVector3 GetQueueFirstPosition()
         {
-            var construction = _placementField.Constructions.First();
-            var queueStartingPosition = construction.GetWorldPosition().X;
+            var construction = _constructions.Get().First();
+            var queueStartingPosition = _fieldPositionService.GetWorldPosition(construction).X;
             return new GameVector3(queueStartingPosition, 0, _levelDefinition.QueuePosition.Z);
         }
 

@@ -38,6 +38,9 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         {
             _levelsManager.Add(levelDefinition);
             _definitions.Add(levelDefinition.Name, levelDefinition);
+            // TODO: hack for old tests
+            foreach (var c in levelDefinition.StartingHand)
+                _definitions.Add(c.DefId.Path, c);
             return this;
         }
 

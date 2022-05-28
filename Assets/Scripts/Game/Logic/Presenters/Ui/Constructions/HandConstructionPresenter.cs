@@ -1,6 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
@@ -9,67 +12,71 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandConstructionPresenter : BasePresenter<IHandConstructionView>
     {
-        private ConstructionCard _model;
+        private PresenterModel<ConstructionCard> _link;
         private IHandConstructionView _view;
         private ScreenManagerPresenter _screenManager;
-        private PlacementField _field;
+        private readonly IPresenterRepository<Construction> _constructions;
         private HandConstructionsAnimations _animations;
+        private CardAmount _currentAmount;
 
-        public HandConstructionPresenter(ScreenManagerPresenter screenManager, 
-            IHandConstructionView view, ConstructionCard model, PlacementField field, PlayerHand.ConstructionSource source) : base(view)
+        public HandConstructionPresenter(EntityLink<ConstructionCard> model, ScreenManagerPresenter screenManager, IPresenterRepository<Construction> constructions,
+            IHandConstructionView view) : base(view)
         {
-            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _link = model.CreateModel() ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
-            _field = field ?? throw new ArgumentNullException(nameof(field));
+            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _animations = new HandConstructionsAnimations(view);
 
             view.Button.SetAction(HandleClick);
 
-            _model.OnAdded += _model_OnAdded;
-            _model.OnRemoved += _model_OnRemoved;
-            _model.OnDispose += Model_OnDispose;
+            _link.OnChanged += HandleOnChanged;
+            _link.OnRemoved += Model_OnDispose;
             _view.OnHighlihgtedEnter += _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit += _view_OnHighlihgtedExit;
-            UpdateView();
-
-            _animations.Add(_model.Amount);
-
             _animations.OnAnimationsCompleted += _animations_OnAnimationsCompleted;
+
+            _view.Image.SetPath(_link.Get().HandImagePath);
+            UpdateAmount();
         }
 
         protected override void DisposeInner()
         {
             base.DisposeInner();
+            _link.Dispose();
             _animations.Dispose();
             _view.TooltipContainer.Clear();
-            _model.OnAdded -= _model_OnAdded;
-            _model.OnRemoved -= _model_OnRemoved;
-            _model.OnDispose -= Model_OnDispose;
+            _link.OnChanged -= HandleOnChanged;
             _view.OnHighlihgtedEnter -= _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit -= _view_OnHighlihgtedExit;
-        }
-
-        private void _model_OnAdded(int obj, PlayerHand.ConstructionSource source)
-        {
-            _animations.Add(obj);
-            UpdateView();
-        }
-
-        private void _model_OnRemoved(int obj)
-        {
-            _animations.Remove(obj);
-            UpdateView();
+            _link.OnRemoved -= Model_OnDispose;
         }
 
         private void HandleClick()
         {
-            _screenManager.GetCollection<BuildScreenCollection>().Open(_model);
+            _screenManager.GetCollection<BuildScreenCollection>().Open(_link.Get());
         }
 
-        private void UpdateView()
+        private void UpdateAmount()
         {
-            _view.Image.SetPath(_model.Definition.HandImagePath);
+            var amount = _link.Get().Amount.Value;
+            if (_currentAmount == null)
+                _animations.Add(amount);
+            else
+            {
+                if (_currentAmount.Value < amount)
+                    _animations.Add(amount - _currentAmount.Value);
+                else if (_currentAmount.Value > amount)
+                    _animations.Remove(_currentAmount.Value - amount);
+            }
+
+            _currentAmount = _link.Get().Amount;
+
+        }
+
+        private void HandleOnChanged()
+        {
+            UpdateAmount();
         }
 
         private void Model_OnDispose()
@@ -80,7 +87,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void _animations_OnAnimationsCompleted()
         {
-            if (_model.IsDisposed)
+            if (_link.IsRemoved())
                 _view.Dispose();
         }
 
@@ -88,7 +95,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             _view.TooltipContainer.Clear();
             var tooltip = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
-            new HandConstructionTooltipPresenter(tooltip, _model, _field);
+            new HandConstructionTooltipPresenter(tooltip, _constructions, _link.Get());
         }
 
         private void _view_OnHighlihgtedExit()

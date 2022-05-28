@@ -6,6 +6,9 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using System;
@@ -15,7 +18,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
-    public class FlowManager : Disposable
+    public class FlowManager : Disposable, ITurnService
     {
         public event Action OnTurn = delegate { };
         public event Action<bool> OnWaveEnded = delegate { };
@@ -23,19 +26,23 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private readonly ConstructionsSettingsDefinition _constructionsDefinitions;
         private LevelDefinition _levelDefinition;
-        private PlacementField _constructionsManager;
-        private PlayerHand _hand;
+        private readonly IGameRandom _random;
+        private IRepository<Construction> _constructions;
+        private HandService _hand;
+        private readonly SchemesService _schemesService;
         private Deck<ConstructionDefinition> _rewardDeck;
         private int _wave;
         private SequenceManager _sequence = new SequenceManager();
 
-        public FlowManager(ConstructionsSettingsDefinition constructions, LevelDefinition levelDefinition, IGameRandom random, PlacementField constructionsManager, PlayerHand hand)
+        public FlowManager(ConstructionsSettingsDefinition constructionsDefinitions, LevelDefinition levelDefinition, IGameRandom random,
+            IRepository<Construction> constructions, HandService hand, SchemesService schemesService)
         {
-            _constructionsDefinitions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+            _constructionsDefinitions = constructionsDefinitions ?? throw new ArgumentNullException(nameof(constructionsDefinitions));
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
-            _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
+            _random = random;
+            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _hand = hand ?? throw new ArgumentNullException(nameof(hand));
-            _constructionsManager.OnConstructionBuilded += Placement_OnConstructionBuilded;
+            _schemesService = schemesService;
 
             _rewardDeck = new Deck<ConstructionDefinition>(random);
             foreach (var item in levelDefinition.ConstructionsReward)
@@ -45,12 +52,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         protected override void DisposeInner()
         {
             _sequence.Dispose();
-            _constructionsManager.OnConstructionBuilded -= Placement_OnConstructionBuilded;
-        }
-
-        private void Placement_OnConstructionBuilded(Constructions.Construction obj)
-        {
-            Turn();
         }
 
         public void Turn()
@@ -73,10 +74,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
                 return;
             }
 
-            var constructions = _constructionsManager.Constructions.ToArray();
+            var constructions = _constructions.Get().ToArray();
             for (int i = constructions.Length - 1; i >= 1; i--)
             {
-                _sequence.Add(new DestroyConstructionStep(constructions[i], IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
+
+                _sequence.Add(new DestroyConstructionStep(new (_constructions, constructions[i]), IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
             }
 
             _sequence.Add(new ActionStep(EndWave));
@@ -84,9 +86,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             void EndWave()
             {
-                GiveCards(PlayerHand.ConstructionSource.NewWave);
-
+                GiveCards();
                 OnWaveEnded(true);
+            }
+        }
+
+        public void Start()
+        {
+            foreach (var item in _levelDefinition.StartingHand)
+            {
+                _hand.Add(_schemesService.Find(item));
             }
         }
 
@@ -105,10 +114,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
                 return;
             }
 
-            var constructions = _constructionsManager.Constructions.ToArray();
+            var constructions = _constructions.Get().ToArray();
             for (int i = constructions.Length - 1; i >= 1; i--)
             {
-                _sequence.Add(new DestroyConstructionStep(constructions[i], IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
+                _sequence.Add(new DestroyConstructionStep(new(_constructions, constructions[i]), IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
             }
 
             _sequence.Add(new ActionStep(EndWave));
@@ -116,27 +125,26 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             void EndWave()
             {
-                GiveCards(PlayerHand.ConstructionSource.NewWave);
-
+                GiveCards();
                 OnWaveEnded(false);
             }
         }
 
-        public void GiveCards(PlayerHand.ConstructionSource source)
+        public void GiveCards()
         {
             if (_rewardDeck.IsEmpty())
                 return;
 
             for (int i = 0; i < 3; i++)
             {
-                var constrcution = _rewardDeck.Take();
-                _hand.Add(constrcution, source);
+                var constrcution = _schemesService.TakeRandom(_random);
+                _hand.Add(constrcution);
             }
         }
 
         public bool CanProcessNextWave()
         {
-            if (_constructionsManager.Constructions.Count < 1)
+            if (_constructions.Get().Count < 1)
                 return false;
 
             return true;
@@ -147,7 +155,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             if (!CanProcessNextWave())
                 return false;
 
-            if (_constructionsManager.Constructions.Count < _levelDefinition.ConstructionsForNextWave)
+            if (_constructions.Get().Count < _levelDefinition.ConstructionsForNextWave)
                 return false;
 
             return true;
@@ -158,10 +166,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             if (CanNextWave())
                 return false;
 
-            if (_constructionsManager.Constructions.Count < 1)
+            if (_constructions.Get().Count < 1)
                 return false;
 
-            if (_hand.Cards.Count > 0)
+            if (_hand.GetCards().Count > 0)
                 return false;
 
             return true;
@@ -169,7 +177,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public float GetWaveProgress()
         {
-            return Math.Min(1, _constructionsManager.Constructions.Count / (float)_levelDefinition.ConstructionsForNextWave);
+            return Math.Min(1, _constructions.Get().Count / (float)_levelDefinition.ConstructionsForNextWave);
         }
 
     }

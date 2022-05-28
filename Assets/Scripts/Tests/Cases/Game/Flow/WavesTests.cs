@@ -22,6 +22,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
+                .AddDefinition("d", constructionDefinition)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
                 .Build();
@@ -91,6 +92,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
+                .AddDefinition("d", constructionDefinition)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
                 .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 2)
@@ -126,6 +128,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
+                .AddDefinition("d", constructionDefinition)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
                 .Build();

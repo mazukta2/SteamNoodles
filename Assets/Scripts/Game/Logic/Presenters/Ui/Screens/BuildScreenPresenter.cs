@@ -3,7 +3,10 @@ using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
@@ -19,7 +22,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
     public class BuildScreenPresenter : BasePresenter<IBuildScreenView>
     {
-        private FieldPositionsCalculator _positionCalculator;
         private KeyCommand _exitKey;
 
         public ConstructionCard CurrentCard { get; }
@@ -28,20 +30,21 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private ConstructionsSettingsDefinition _constrcutionsSettings;
         private readonly BuildingTooltipPresenter _tooltip;
         private readonly ScreenManagerPresenter _screenManager;
+        private readonly IFieldPresenterService _fieldService;
         private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
         public BuildScreenPresenter(IBuildScreenView view,
             ConstructionCard constructionCard, ConstructionsSettingsDefinition constrcutionsSettings, 
             HandPresenter handPresenter, BuildingTooltipPresenter tooltip,
-            IGameKeysManager gameKeysManager, ScreenManagerPresenter screenManager) : base(view)
+            IGameKeysManager gameKeysManager, ScreenManagerPresenter screenManager, IFieldPresenterService fieldService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constrcutionsSettings = constrcutionsSettings ?? throw new ArgumentNullException(nameof(constrcutionsSettings));
             _tooltip = tooltip;
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
+            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
             handPresenter.Mode = HandPresenter.Modes.Build;
             _tooltip.Show(constructionCard);
-            _positionCalculator = new FieldPositionsCalculator(_constrcutionsSettings.CellSize);
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
             _exitKey.OnTap += OnExitTap;
 
@@ -54,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _tooltip.Hide();
         }
 
-        public void UpdatePoints(GameVector3 position, int points, IReadOnlyDictionary<Construction, int> bonuses)
+        public void UpdatePoints(GameVector3 position, int points, IReadOnlyDictionary<Construction, BuildingPoints> bonuses)
         {
             _view.Points.Value = $"{points.GetSignedNumber()}";
             _view.Points.Position = position;
@@ -62,7 +65,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             UpdateBonuses(bonuses);
         }
 
-        private void UpdateBonuses(IReadOnlyDictionary<Construction, int> newBonuses)
+        private void UpdateBonuses(IReadOnlyDictionary<Construction, BuildingPoints> newBonuses)
         {
             foreach (var item in _bonuses.ToList())
             {
@@ -86,8 +89,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             {
                 var text =_bonuses[item.Key].Text;
                 text.Value = $"{item.Value}";
-
-                text.Position = _positionCalculator.GetMapPositionByGridPosition(item.Key.CellPosition, item.Key.Definition.GetRect(item.Key.Rotation));
+                text.Position = _fieldService.GetWorldPosition(item.Key);
             }
 
             _tooltip.SetHighlight(_bonuses.Keys.ToArray());

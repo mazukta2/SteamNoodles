@@ -25,18 +25,25 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
         public int PointsForCurrentLevel => _current.PointsForCurrentLevel;
         public float Progress => _current.Progress;
 
-        private readonly ConstructionsSettingsDefinition _constructionSettingsDefinition;
         private readonly IGameTime _time;
+        private readonly float _pieceSpawningTime;
+        private readonly float _pieceMovingTime;
         private List<AddPointsAnimation> _animations = new List<AddPointsAnimation>();
         private BuildingPointsCalculator _current;
         private BuildingPointsCalculator _target;
 
-        public BuildingPointsManager(ConstructionsSettingsDefinition constructionSettingsDefinition, IGameTime time, float power, float offset)
+        public BuildingPointsManager(float pieceSpawningTime, float pieceMovingTime, IGameTime time, float power, float offset)
         {
-            _constructionSettingsDefinition = constructionSettingsDefinition;
+            _pieceSpawningTime = pieceSpawningTime;
+            _pieceMovingTime = pieceMovingTime;
             _time = time;
             _current = new BuildingPointsCalculator(power, offset);
             _target = _current.Copy();
+        }
+
+        public BuildingPointsManager(ConstructionsSettingsDefinition constructionSettingsDefinition, IGameTime time, float power, float offset)
+            : this(constructionSettingsDefinition.PieceSpawningTime, constructionSettingsDefinition.PieceMovingTime, time, power, offset)
+        {
         }
 
         protected override void DisposeInner()
@@ -67,7 +74,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 
             if (value > 0)
             {
-                var animation = new AddPointsAnimation(value, _constructionSettingsDefinition, _time, postion);
+                var animation = new AddPointsAnimation(value, _pieceSpawningTime, _pieceMovingTime, _time, postion);
                 animation.OnDispose += Animation_OnDispose;
                 animation.OnPieceReachDestination += Animation_OnPieceReachDestination;
                 _animations.Add(animation);

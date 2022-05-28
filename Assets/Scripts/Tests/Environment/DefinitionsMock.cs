@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,6 +22,9 @@ namespace Game.Tests.Controllers
 
         public void Add(string id, object item)
         {
+            if (item is IDefinition d)
+                d.DefId = new DefId(id);
+
             _list.Add(id, item);
         }
 

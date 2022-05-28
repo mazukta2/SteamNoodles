@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
         private string _tag;
         private ILocalizationManager _localization;
         private object[] _args;
+
+        public LocalizatedString(LocalizationTag tag, params object[] args) : this(tag.Value, args)
+        {
+
+        }
 
         public LocalizatedString(string tag, params object[] args)
         {

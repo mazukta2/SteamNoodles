@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
 {
     public class ViewContainerTests
     {
-        [Test]
+        [Test, Order(TestCore.EssentialOrder)]
         public void IsCollectionDisposeViews()
         {
             var container = new ViewsCollection();
@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
             Assert.IsTrue(view.IsDisposed);
         }
 
-        [Test]
+        [Test, Order(TestCore.EssentialOrder)]
         public void IsContainerDisposeViews()
         {
             var collection = new ViewsCollection();
@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         }
 
 
-        [Test]
+        [Test, Order(TestCore.EssentialOrder)]
         public void IsViewDisposeRemovesItFromCollection()
         {
             var collection = new ViewsCollection();
@@ -45,7 +45,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
             collection.Dispose();
         }
 
-        [Test]
+        [Test, Order(TestCore.EssentialOrder)]
         public void IsViewDisposeRemovesItFromContrainer()
         {
             var collection = new ViewsCollection();

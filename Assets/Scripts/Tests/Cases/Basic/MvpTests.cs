@@ -9,14 +9,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
 {
     public class MvpTests
     {
-        [Test]
+        [Test, Order(TestCore.EssentialOrder)]
         public void IsBuildedAndDisposed()
         {
             var build = new GameConstructor().Build();
             build.Dispose();
         }
 
-        [Test]
+        [Test, Order(TestCore.EssentialOrder)]
         public void ViewIsCreatingPresenter()
         {
             var build = new GameConstructor().Build();

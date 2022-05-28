@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
@@ -23,19 +24,22 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
         private IGhostManagerView _view;
         private readonly IGameTime _time;
         private ScreenManagerPresenter _screenManager;
-        private PlacementField _constructionsManager;
+        private readonly IBuildingPresenterService _buildingService;
+        private readonly IFieldPresenterService _fieldService;
         private ConstructionsSettingsDefinition _settings;
         private IControls _controls;
         private GhostPresenter _ghost;
 
         public GhostManagerPresenter(ScreenManagerPresenter screenManager, ConstructionsSettingsDefinition settings, IControls controls,
-            PlacementField constructionsManager,
+            IBuildingPresenterService buildingService,
+            IFieldPresenterService fieldService,
             IGhostManagerView view, IGameTime time) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _time = time;
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
-            _constructionsManager = constructionsManager ?? throw new ArgumentNullException(nameof(constructionsManager));
+            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
+            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _controls = controls ?? throw new ArgumentNullException(nameof(controls));
 
@@ -73,7 +77,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
         private void CreateGhost(BuildScreenPresenter buildScreen)
         {
             var view = _view.Container.Spawn<IGhostView>(_view.GhostPrototype);
-            _ghost = new GhostPresenter(_settings, _screenManager, _constructionsManager, buildScreen, 
+            _ghost = new GhostPresenter(_settings, _screenManager, _fieldService, _buildingService, buildScreen, 
                 _controls, IGameKeysManager.Default, IGameAssets.Default, view, _time);
             _ghost.OnGhostPostionChanged += UpdateGhostPosition;
 

@@ -15,15 +15,23 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.BuildingPointsAnimatio
         public GameVector3 Postion { get; }
 
         private int _pointsToSpawn;
-        private readonly ConstructionsSettingsDefinition _constructionsSettingsDefinition;
+        private readonly float _pieceSpawningTime;
         private readonly IGameTime _time;
         private float _remainTimeToProcess;
         private Dictionary<PieceModel, float> _pieces = new Dictionary<PieceModel, float>();
+        private float _pieceMovingTime;
 
-        public AddPointsAnimation(int points, ConstructionsSettingsDefinition constructionsSettingsDefinition, IGameTime time, Common.Math.GameVector3 postion)
+        public AddPointsAnimation(int points, ConstructionsSettingsDefinition constructionsSettings, IGameTime time, Common.Math.GameVector3 postion) 
+            : this(points, constructionsSettings.PieceSpawningTime, constructionsSettings.PieceMovingTime, time, postion)
+        {
+
+        }
+
+        public AddPointsAnimation(int points, float pieceSpawningTime, float pieceMovingTime, IGameTime time, Common.Math.GameVector3 postion)
         {
             _pointsToSpawn = points;
-            _constructionsSettingsDefinition = constructionsSettingsDefinition ?? throw new ArgumentNullException(nameof(constructionsSettingsDefinition));
+            _pieceSpawningTime = pieceSpawningTime;
+            _pieceMovingTime = pieceMovingTime;
             _time = time ?? throw new ArgumentNullException(nameof(time));
             Postion = postion;
             _time.OnTimeChanged += _time_OnTimeChanged;
@@ -42,7 +50,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.BuildingPointsAnimatio
             if (IsDisposed)
                 throw new Exception("Cant play animation");
 
-            if (_pointsToSpawn <= 0 || _constructionsSettingsDefinition.PieceMovingTime == 0)
+            if (_pointsToSpawn <= 0 || _pieceMovingTime == 0)
             {
                 for (int i = 0; i < _pointsToSpawn; i++)
                     OnPieceReachDestination();
@@ -55,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.BuildingPointsAnimatio
         private void _time_OnTimeChanged(float oldTime, float newTime)
         {
             var timeToProcess = _remainTimeToProcess + newTime - oldTime;
-            var timeForEveryPiece = _constructionsSettingsDefinition.PieceSpawningTime / _pointsToSpawn;
+            var timeForEveryPiece = _pieceSpawningTime / _pointsToSpawn;
 
             while (_pointsToSpawn > 0 && timeToProcess >= timeForEveryPiece)
             {
@@ -68,7 +76,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.BuildingPointsAnimatio
             {
                 var timePassedFromSpawn = newTime - item.Value;
                 SetPosition(item.Key, timePassedFromSpawn);
-                if (timePassedFromSpawn >= _constructionsSettingsDefinition.PieceMovingTime)
+                if (timePassedFromSpawn >= _pieceMovingTime)
                 {
                     item.Key.Dispose();
                     OnPieceReachDestination();
@@ -98,7 +106,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.BuildingPointsAnimatio
 
         private void SetPosition(PieceModel key, float timePassedFromSpawn)
         {
-            key.ChangeProcess(Math.Min(1, timePassedFromSpawn / _constructionsSettingsDefinition.PieceMovingTime));
+            key.ChangeProcess(Math.Min(1, timePassedFromSpawn / _pieceMovingTime));
         }
 
         public class PieceModel : Disposable

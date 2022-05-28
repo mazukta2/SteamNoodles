@@ -5,6 +5,8 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Math
     [Serializable]
     public struct IntPoint
     {
+        public static IntPoint One { get; } = new IntPoint(1, 1);
+        
         public int X;
         public int Y;
 

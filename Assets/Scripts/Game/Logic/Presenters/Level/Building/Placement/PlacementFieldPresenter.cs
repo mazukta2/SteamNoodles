@@ -5,7 +5,11 @@ using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -17,27 +21,34 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 {
     public class PlacementFieldPresenter : BasePresenter<IPlacementFieldView>
     {
-        private PlacementField _model;
         private IPlacementFieldView _view;
         private GhostManagerPresenter _ghostManager;
+        private readonly IPresenterRepository<Construction> _constructions;
+        private readonly IFieldPresenterService _field;
+        private readonly IBuildingPresenterService _buildingService;
         private IAssets _assets;
         private ConstructionsSettingsDefinition _settings;
         private List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(GhostManagerPresenter ghostManagerPresenter,
-            PlacementField model,
+            IPresenterRepository<Construction> constructions,
+            IFieldPresenterService field,
+            IBuildingPresenterService buildingService,
             IPlacementFieldView view,
             ConstructionsSettingsDefinition settings, IAssets assets) : base(view)
         {
-            _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghostManager = ghostManagerPresenter ?? throw new ArgumentNullException(nameof(ghostManagerPresenter));
+            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+            _field = field ?? throw new ArgumentNullException(nameof(field));
+            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
-            for (int x = _model.Rect.xMin; x <= _model.Rect.xMax; x++)
+            var boundaries = field.GetBoundaries();
+            for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
             {
-                for (int y = _model.Rect.yMin; y <= _model.Rect.yMax; y++)
+                for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
                 {
                     _cells.Add(CreateCell(new IntPoint(x, y)));
                 }
@@ -46,8 +57,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             _ghostManager.OnGhostChanged += UpdateGhostCells;
             _ghostManager.OnGhostPostionChanged += UpdateGhostCells;
 
-            _model.OnConstructionAdded += HandleOnConstructionAdded;
-            _model.OnConstructionRemoved += HandleOnConstructionRemoved;
+            _constructions.OnAdded += HandleOnConstructionAdded;
+            _constructions.OnRemoved += HandleOnConstructionRemoved;
 
             UpdateGhostCells();
         }
@@ -56,35 +67,35 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         {
             _ghostManager.OnGhostChanged -= UpdateGhostCells;
             _ghostManager.OnGhostPostionChanged -= UpdateGhostCells;
-            _model.OnConstructionAdded -= HandleOnConstructionAdded;
-            _model.OnConstructionRemoved -= HandleOnConstructionRemoved;
+            _constructions.OnAdded -= HandleOnConstructionAdded;
+            _constructions.OnRemoved -= HandleOnConstructionRemoved;
         }
 
         private PlacementCellPresenter CreateCell(IntPoint position)
         {
             var view = _view.CellsContainer.Spawn<ICellView>(_view.Cell);
-            return new PlacementCellPresenter(view, this, IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), position);
+            return new PlacementCellPresenter(view, this, IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), position, _field);
         }
 
         public void UpdateGhostCells()
         {
             var ghost = _ghostManager.GetGhost();
-            var ocuppiedCells = ghost != null ? ghost.Definition.GetOccupiedSpace(ghost.GetGridPosition(), ghost.Rotation) : null;
-            var occupiedByBuildings = _model.GetAllOccupiedSpace();
+            var ocuppiedCells = ghost != null ? ghost.Scheme.GetOccupiedSpace(ghost.GetGridPosition(), ghost.Rotation) : null;
+            var occupiedByBuildings = _buildingService.GetAllOccupiedSpace();
 
             foreach (var cell in _cells)
             {
                 var state = CellPlacementStatus.Normal;
 
-                if (occupiedByBuildings.Any(x => x == cell.Position))
+                if (occupiedByBuildings.Any(x => x.Value == cell.Position))
                     state = CellPlacementStatus.IsUnderConstruction;
 
                 if (ghost != null)
                 {
-                    if (_model.IsFreeCell(ghost.Definition, cell.Position, ghost.Rotation))
+                    if (_buildingService.IsFreeCell(ghost.Scheme, new FieldPosition(cell.Position), ghost.Rotation))
                         state = CellPlacementStatus.IsReadyToPlace;
 
-                    if (ocuppiedCells.Any(x => x == cell.Position))
+                    if (ocuppiedCells.Any(x => x.Value == cell.Position))
                     {
                         if (state == CellPlacementStatus.IsReadyToPlace)
                             state = CellPlacementStatus.IsAvailableGhostPlace;
@@ -97,13 +108,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             }
         }
 
-        private void HandleOnConstructionAdded(Construction construction)
+        private void HandleOnConstructionAdded(EntityLink<Construction> arg1, Construction arg2)
         {
             var view = _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype);
-            new ConstructionPresenter(_settings, construction, IGameAssets.Default, view, _ghostManager, IGameControls.Default);
+            new ConstructionPresenter(_settings, arg1, _field, IGameAssets.Default, view, _ghostManager, IGameControls.Default);
         }
 
-        private void HandleOnConstructionRemoved(Construction obj)
+        private void HandleOnConstructionRemoved(EntityLink<Construction> arg1, Construction arg2)
         {
             UpdateGhostCells();
         }

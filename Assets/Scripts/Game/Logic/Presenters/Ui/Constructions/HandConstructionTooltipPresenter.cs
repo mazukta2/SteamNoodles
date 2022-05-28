@@ -2,7 +2,9 @@
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
 using System.Collections.Generic;
@@ -14,19 +16,19 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     {
         private ConstructionCard _model;
         private IHandConstructionTooltipView _view;
-        private PlacementField _field;
+        private readonly IPresenterRepository<Construction> _constructions;
         private LocalizatedText _name;
         private LocalizatedText _adjecensy;
-        private IEnumerable<ConstructionDefinition> _highlights;
+        private IEnumerable<ConstructionScheme> _highlights;
 
-        public HandConstructionTooltipPresenter(IHandConstructionTooltipView view, PlacementField field) : base(view)
+        public HandConstructionTooltipPresenter(IHandConstructionTooltipView view, IPresenterRepository<Construction> constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _field = field ?? throw new ArgumentNullException(nameof(field));
+            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             UpdateView();
         }
 
-        public HandConstructionTooltipPresenter(IHandConstructionTooltipView view, ConstructionCard model, PlacementField field) : this(view, field)
+        public HandConstructionTooltipPresenter(IHandConstructionTooltipView view, IPresenterRepository<Construction> constructions, ConstructionCard model) : this(view, constructions)
         {
             _model = model ?? throw new ArgumentNullException(nameof(model));
             UpdateView();
@@ -38,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             UpdateView();
         }
 
-        public void SetHighlight(IEnumerable<ConstructionDefinition> highlights)
+        public void SetHighlight(IEnumerable<ConstructionScheme> highlights)
         {
             if (highlights != null && _highlights != null && highlights.Equals(_highlights))
                 return;
@@ -55,25 +57,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _name?.Dispose();
             _adjecensy?.Dispose();
 
-            _name = new LocalizatedText(_view.Name, new LocalizatedString(_model.Definition.Name));
-            _view.Points.Value = $"+{_model.Definition.Points}";
+            _name = new LocalizatedText(_view.Name, new LocalizatedString(_model.Name));
+            _view.Points.Value = $"+{_model.Points}";
 
             var bonuses = new List<ILocalizatedString>();
-            foreach (var bonus in _model.Definition.AdjacencyPoints)
+            foreach (var (construction, points) in _model.AdjacencyPoints.GetAll())
             {
                 var style = TextHelpers.TextStyles.None;
 
-                if (_highlights != null && _highlights.Any(x => x == bonus.Key))
+                if (_highlights != null && _highlights.Any(x => x.Compare(construction)))
                 {
                     style = TextHelpers.TextStyles.HeavyHighlight;
-                } 
-                else if (_field.Constructions.Any(x => x.Definition == bonus.Key))
+                }
+                else if (_constructions.GetAll().Any(x => x.Scheme.Compare(construction)))
                 {
                     style = TextHelpers.TextStyles.Highlight;
                 }
 
                 bonuses.Add(new LocalizatedFormatString("{0} ({1})".Style(style),
-                    new LocalizatedString(bonus.Key.Name), bonus.Value.GetSignedNumber()));
+                    new LocalizatedString(construction.Name), points.Value.GetSignedNumber()));
             }
 
             _adjecensy = new LocalizatedText(_view.Adjacencies, new LocalizatedJoinString(", ", bonuses.ToArray()));

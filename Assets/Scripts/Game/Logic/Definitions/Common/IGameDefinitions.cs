@@ -11,6 +11,5 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions
         T Get<T>(string id);
         T Get<T>();
         IReadOnlyCollection<T> GetList<T>();
-
     }
 }

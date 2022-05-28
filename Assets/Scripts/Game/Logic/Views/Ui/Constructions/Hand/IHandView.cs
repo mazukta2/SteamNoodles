@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 
@@ -19,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
             Default = this;
-            new HandPresenter(IBattleLevel.Default.Hand, IScreenManagerView.Default.Presenter, this, IBattleLevel.Default.Constructions);
+            new HandPresenter(IGameLevelPresenterRepository.Default.Cards, IGameLevelPresenterRepository.Default.Constructions, IScreenManagerView.Default.Presenter, this);
         }
     }
 }

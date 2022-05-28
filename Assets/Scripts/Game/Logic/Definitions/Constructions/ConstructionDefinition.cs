@@ -1,6 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,8 +10,9 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 {
-    public class ConstructionDefinition
+    public class ConstructionDefinition : IDefinition
     {
+        public DefId DefId { get; set; }
         public string Name { get; set; } = "";
         public string LevelViewPath { get; set; }
         public int[,] Placement { get; set; }
@@ -55,11 +58,11 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 
         private int[,] Rotate(int[,] placement, FieldRotation rotation)
         {
-            if (rotation == FieldRotation.Top)
+            if (rotation.Value == FieldRotation.Rotation.Top)
                 return placement;
 
             var result = new int[placement.GetLength(0), placement.GetLength(1)];
-            if (rotation == FieldRotation.Right || rotation == FieldRotation.Left)
+            if (rotation.Value == FieldRotation.Rotation.Right || rotation.Value == FieldRotation.Rotation.Left)
                 result = new int[placement.GetLength(1), placement.GetLength(0)];
 
             for (int x = 0; x < result.GetLength(0); x++)
@@ -69,11 +72,11 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
                     var maxX = result.GetLength(0) - 1;
                     var maxY = result.GetLength(1) - 1;
 
-                    if (rotation == FieldRotation.Left)
+                    if (rotation.Value == FieldRotation.Rotation.Left)
                         result[x, y] = placement[y, maxX - x];
-                    if (rotation == FieldRotation.Right)
+                    if (rotation.Value == FieldRotation.Rotation.Right)
                         result[x, y] = placement[maxY - y, x];
-                    if (rotation == FieldRotation.Bottom)
+                    if (rotation.Value == FieldRotation.Rotation.Bottom)
                         result[x, y] = placement[maxX - x, maxY - y];
                 }
             }
@@ -106,6 +109,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
                 throw new Exception($"{nameof(Name)} is empty");
 
         }
+
+
     }
 
     [Serializable]

@@ -21,8 +21,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test]
         public void IsFirstCardSpawned()
         {
-            var construction = new ConstructionDefinition();
+            var construction = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
+                .AddDefinition(construction.DefId.Path, construction)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction })
                 .Build();
 
@@ -39,6 +40,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             construction.Points = 2;
 
             var game = new GameConstructor()
+                .AddDefinition(construction.DefId.Path, construction)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction, construction })
                 .Build();
 
