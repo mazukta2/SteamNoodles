@@ -78,7 +78,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             for (int i = constructions.Length - 1; i >= 1; i--)
             {
 
-                _sequence.Add(new DestroyConstructionStep(new (_constructions, constructions[i]), IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
+                _sequence.Add(new DestroyConstructionStep(_constructions, constructions[i], IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
             }
 
             _sequence.Add(new ActionStep(EndWave));
@@ -117,7 +117,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             var constructions = _constructions.Get().ToArray();
             for (int i = constructions.Length - 1; i >= 1; i--)
             {
-                _sequence.Add(new DestroyConstructionStep(new(_constructions, constructions[i]), IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
+                _sequence.Add(new DestroyConstructionStep(_constructions, constructions[i], IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
             }
 
             _sequence.Add(new ActionStep(EndWave));

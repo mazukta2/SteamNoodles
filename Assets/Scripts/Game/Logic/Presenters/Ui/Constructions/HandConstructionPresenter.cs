@@ -31,7 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             view.Button.SetAction(HandleClick);
 
             _link.OnChanged += HandleOnChanged;
-            _link.OnRemoved += Model_OnDispose;
+            _link.OnDispose += Model_OnDispose;
             _view.OnHighlihgtedEnter += _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit += _view_OnHighlihgtedExit;
             _animations.OnAnimationsCompleted += _animations_OnAnimationsCompleted;
@@ -49,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _link.OnChanged -= HandleOnChanged;
             _view.OnHighlihgtedEnter -= _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit -= _view_OnHighlihgtedExit;
-            _link.OnRemoved -= Model_OnDispose;
+            _link.OnDispose -= Model_OnDispose;
         }
 
         private void HandleClick()
@@ -87,7 +87,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void _animations_OnAnimationsCompleted()
         {
-            if (_link.IsRemoved())
+            if (_link.IsDisposed)
                 _view.Dispose();
         }
 

@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 {
     public class ConstructionPresenter : BasePresenter<IConstructionView>
     {
-        private PresenterModel<Construction> _construction;
+        private PresenterModel<Construction> _link;
         private IConstructionView _constructionView;
         private ConstructionsSettingsDefinition _constrcutionsSettings;
         private readonly IFieldPresenterService _fieldPositionService;
@@ -28,33 +28,33 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             EntityLink<Construction> construction, IFieldPresenterService fieldPositionService, IAssets assets, IConstructionView view,
             GhostManagerPresenter ghostManagerPresenter, IControls controls) : base(view)
         {
-            _construction = construction.CreateModel();
+            _link = construction.CreateModel();
             _constructionView = view;
             _constrcutionsSettings = constrcutionsSettings;
             _fieldPositionService = fieldPositionService;
             _ghostManager = ghostManagerPresenter ?? throw new ArgumentNullException(nameof(ghostManagerPresenter));
             _controls = controls;
 
-            _constructionView.Position.Value = fieldPositionService.GetWorldPosition(_construction.Get());
-            _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_construction.Get().Rotation);
+            _constructionView.Position.Value = fieldPositionService.GetWorldPosition(_link.Get());
+            _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_link.Get().Rotation);
 
             _constructionView.Container.Clear();
-            _modelView = _constructionView.Container.Spawn<IConstructionModelView>(assets.GetPrefab(_construction.Get().Scheme.Definition.LevelViewPath));
+            _modelView = _constructionView.Container.Spawn<IConstructionModelView>(assets.GetPrefab(_link.Get().Scheme.Definition.LevelViewPath));
             _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
             _controls.ShakeCamera();
 
             _modelView.Animator.OnFinished += DropFinished;
-            _construction.OnRemoved += HandleModelDispose;
-            _construction.OnEvent += HandleOnEvent;
+            _link.OnDispose += HandleModelDispose;
+            _link.OnEvent += HandleOnEvent;
             _ghostManager.OnGhostChanged += UpdateGhost;
             _ghostManager.OnGhostPostionChanged += UpdateGhost;
         }
 
         protected override void DisposeInner()
         {
-            _construction.Dispose();
-            _construction.OnRemoved -= HandleModelDispose;
-            _construction.OnEvent -= HandleOnEvent;
+            _link.Dispose();
+            _link.OnDispose -= HandleModelDispose;
+            _link.OnEvent -= HandleOnEvent;
             _modelView.Animator.OnFinished -= DropFinished;
             _ghostManager.OnGhostChanged -= UpdateGhost;
             _ghostManager.OnGhostPostionChanged -= UpdateGhost;
@@ -69,7 +69,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             var ghost = _ghostManager.GetGhost();
             if (ghost != null)
             {
-                var distance = ghost.GetTargetPosition().GetDistanceTo(_fieldPositionService.GetWorldPosition(_construction.Get()));
+                var distance = ghost.GetTargetPosition().GetDistanceTo(_fieldPositionService.GetWorldPosition(_link.Get()));
                 if (distance > _constrcutionsSettings.GhostShrinkDistance)
                     _modelView.Shrink.Value = 1;
                 else if (distance > _constrcutionsSettings.GhostHalfShrinkDistance)
@@ -96,7 +96,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _modelView.Animator.OnFinished -= ExplosionFinished;
             _modelView.Animator.SwitchTo(IConstructionModelView.Animations.Idle.ToString());
             _isExploading = false;
-            if (_construction.IsDisposed)
+            if (_link.IsDisposed)
                 _constructionView.Dispose();
         }
 
@@ -105,7 +105,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _modelView.Animator.OnFinished += ExplosionFinished;
             _isExploading = true;
             _modelView.Animator.Play(IConstructionModelView.Animations.Explode.ToString());
-            _constructionView.EffectsContainer.Spawn(_constructionView.ExplosionPrototype, _fieldPositionService.GetWorldPosition(_construction.Get()));
+            _constructionView.EffectsContainer.Spawn(_constructionView.ExplosionPrototype, _fieldPositionService.GetWorldPosition(_link.Get()));
         }
 
         private void HandleOnEvent(IModelEvent evt)

@@ -1,20 +1,24 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
 using Game.Assets.Scripts.Game.Logic.Common.Calculations;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
 {
     public class DestroyConstructionStep : BaseSequenceStep
     {
-        private readonly ConstructionDestroyedOnWaveEndEvent _constructionEvent;
+        private readonly IRepository<Construction> _constructions;
+        private readonly Construction _construction;
         private readonly IGameTime _time;
         private readonly float _delay;
         private readonly TimeUpdater _updater;
 
-        public DestroyConstructionStep(ConstructionDestroyedOnWaveEndEvent constructionEvent, IGameTime time, float delay)
+        public DestroyConstructionStep(IRepository<Construction> constructions, Construction construction, IGameTime time, float delay)
         {
-            _constructionEvent = constructionEvent;
+            _constructions = constructions;
+            _construction = construction;
             _time = time;
             _delay = delay;
             _updater = new TimeUpdater(time, delay);
@@ -28,7 +32,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
 
         public override void Play()
         {
-            _constructionEvent.Fire();
+            new ConstructionDestroyedOnWaveEndEvent(_constructions, _construction).Fire();
+            _constructions.Remove(_construction);
 
             if (_delay == 0)
             {

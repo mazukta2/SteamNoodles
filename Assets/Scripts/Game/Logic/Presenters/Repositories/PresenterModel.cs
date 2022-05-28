@@ -7,7 +7,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories
 {
     public class PresenterModel<T> : Disposable where T : class
     {
-        public event Action OnRemoved = delegate { };
         public event Action OnChanged = delegate { };
         public event Action<IModelEvent> OnEvent = delegate { };
 
@@ -44,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories
                 return;
 
             _value = null;
-            OnRemoved();
+            Dispose();
         }
 
         private void HandleOnChanged(EntityLink<T> entity, T obj)
@@ -59,11 +58,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories
                 return;
 
             OnEvent(evt);
-        }
-
-        public bool IsRemoved()
-        {
-            return _value == null;
         }
     }
 }
