@@ -32,6 +32,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories
         private readonly IPresenterRepository<T> _repository;
         private readonly Uid _id;
 
+        public T Value => _value;
+
         public T Get()
         {
             return _value;

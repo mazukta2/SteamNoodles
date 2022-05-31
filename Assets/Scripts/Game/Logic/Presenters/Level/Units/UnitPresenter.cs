@@ -1,8 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
-using Game.Assets.Scripts.Game.Logic.Models.Units;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using System;
@@ -11,31 +13,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 {
     public class UnitPresenter : BasePresenter<IUnitView>
     {
-        public Unit Unit => _model;
+        //public Unit Unit => _model;
 
         private IUnitView _view;
-        private Unit _model;
+        private PresenterModel<Unit> _model;
         private UnitsSettingsDefinition _settings;
         private UnitRotator _rotator;
         private bool _isStartingAnimation = false;
 
-        public UnitPresenter(Unit model, IUnitView view, UnitsSettingsDefinition unitsSettingsDefinition, IGameTime time) : base(view)
+        public UnitPresenter(EntityLink<Unit> link, IUnitView view, UnitsSettingsDefinition unitsSettingsDefinition, IGameTime time) : base(view)
         {
             _view = view;
-            _model = model;
+            _model = link.CreateModel();
             _settings = unitsSettingsDefinition ?? throw new ArgumentNullException(nameof(unitsSettingsDefinition));
             _rotator = new UnitRotator(view.Rotator, time, 0.1f, unitsSettingsDefinition.RotationSpeed);
 
-            _view.Position.Value = model.Position;
-            if (model.Target != model.Position)
-                _rotator.Direction = (model.Target - model.Position).ToQuaternion();
+            _view.Position.Value = _model.Value.Position;
+            if (_model.Value.Target != _model.Value.Position)
+                _rotator.Direction = (_model.Value.Target - _model.Value.Position).ToQuaternion();
             _rotator.Skip();
-            _model.OnPositionChanged += HandleOnPositionChanged;
+            _model.OnEvent += HandleEvent;
             _model.OnDispose += HandleOnDispose;
-            _model.OnTargetChanged += HandleOnTargetChanged;
-            _model.OnReachedPosition += HandleOnReachedPosition;
-            _model.OnLookAt += HandleOnLookAt;
-            _model.OnSmoke += HandleOnSmoke;
 
             DressUnit();
             _view.Animator.OnFinished += Animator_OnFinished;
@@ -46,14 +44,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         protected override void DisposeInner()
         {
+            _model.Dispose();
             _rotator.Dispose();
             _view.Animator.OnFinished -= Animator_OnFinished;
-            _model.OnPositionChanged -= HandleOnPositionChanged;
+            _model.OnEvent -= HandleEvent;
             _model.OnDispose -= HandleOnDispose;
-            _model.OnTargetChanged -= HandleOnTargetChanged;
-            _model.OnReachedPosition -= HandleOnReachedPosition;
-            _model.OnLookAt -= HandleOnLookAt;
-            _model.OnSmoke -= HandleOnSmoke;
+        }
+
+        private void HandleEvent(IModelEvent evnt)
+        {
+            if (evnt is UnitSmokeEvent) HandleOnSmoke();
+            if (evnt is UnitPositionChangedEvent) HandleOnPositionChanged();
+            if (evnt is UnitReachedTargetPositionEvent) HandleOnReachedPosition();
+            if (evnt is UnitLookAtEvent lookEvnt) HandleOnLookAt(lookEvnt.target, lookEvnt.skip);
+            if (evnt is UnitTargetChangedEvent) HandleOnTargetChanged();
         }
 
         private void HandleOnSmoke()
@@ -63,18 +67,18 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void HandleOnPositionChanged()
         {
-            _view.Position.Value = _model.Position;
+            _view.Position.Value = _model.Value.Position;
             UpdateAnimations();
-            if (_model.IsMoving())
-                _view.Animator.SetSpeed(_model.GetCurrentSpeed() / _model.GetMaxSpeed());
+            if (_model.Value.IsMoving())
+                _view.Animator.SetSpeed(_model.Value.CurrentSpeed / _model.Value.GetMaxSpeed());
             else
                 _view.Animator.SetSpeed(1);
         }
 
         private void HandleOnTargetChanged()
         {
-            if (_model.Target != _model.Position)
-                _rotator.Direction = (_model.Target - _model.Position).ToQuaternion();
+            if (_model.Value.Target != _model.Value.Position)
+                _rotator.Direction = (_model.Value.Target - _model.Value.Position).ToQuaternion();
             UpdateAnimations();
         }
 
@@ -90,7 +94,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void HandleOnLookAt(Common.Math.GameVector3 target, bool skip)
         {
-            _rotator.Direction = (target - _model.Position).ToQuaternion();
+            _rotator.Direction = (target - _model.Value.Position).ToQuaternion();
             if (skip)
                 _rotator.Skip();
         }
@@ -100,7 +104,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             if (_isStartingAnimation)
                 return;
 
-            PlayAnimation(_model.IsMoving() ? Animations.Run : Animations.Idle);
+            PlayAnimation(_model.Value.IsMoving() ? Animations.Run : Animations.Idle);
         }
 
         private void Animator_OnFinished()
@@ -116,7 +120,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void DressUnit()
         {
-            var random = new Random(_model.VisualSeed);
+            var random = new Random(_model.Value.VisualSeed);
             var hair = _settings.Hairs.GetRandom(random);
 
             _view.UnitDresser.Clear();

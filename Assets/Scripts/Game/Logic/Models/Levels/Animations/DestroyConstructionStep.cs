@@ -11,7 +11,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
     {
         private readonly IRepository<Construction> _constructions;
         private readonly Construction _construction;
-        private readonly IGameTime _time;
         private readonly float _delay;
         private readonly TimeUpdater _updater;
 
@@ -19,7 +18,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
         {
             _constructions = constructions;
             _construction = construction;
-            _time = time;
             _delay = delay;
             _updater = new TimeUpdater(time, delay);
         }
@@ -32,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
 
         public override void Play()
         {
-            new ConstructionDestroyedOnWaveEndEvent(_constructions, _construction).Fire();
+            _constructions.FireEvent(_construction, new ConstructionDestroyedOnWaveEndEvent());
             _constructions.Remove(_construction);
 
             if (_delay == 0)

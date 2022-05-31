@@ -3,8 +3,6 @@ using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Building;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
@@ -12,9 +10,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {

@@ -1,6 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;

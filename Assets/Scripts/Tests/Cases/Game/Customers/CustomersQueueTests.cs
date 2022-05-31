@@ -4,16 +4,16 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
-using Game.Assets.Scripts.Game.Logic.Models.Units;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
-using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions;
 using Game.Assets.Scripts.Tests.Environment.Game;
@@ -160,56 +160,60 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsMultipleUnitsPositionsIsRight()
         {
-            var uc = new UnitControllerMock();
-            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
-            var cr = new CrowdMock();
-            var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
+            var unitsRepository = new Repository<Unit>();
+            var time = new GameTime();
+            var level = LevelDefinitionSetups.GetDefault();
+            var random = new SessionRandom();
+            var uc = new UnitsService(unitsRepository, UnitDefinitionSetup.GetDefaultUnitsDefinitions(), level, random);
 
-            Assert.AreEqual(0, uc.Units.Count);
-            Assert.AreEqual(0, cr.Units.Count);
+            var crowd = new UnitsCrowdService(unitsRepository, uc, time, level, random);
+            var queue = new UnitsCustomerQueueService(unitsRepository, uc, crowd, time, random);
 
-            uc.QueueSize = 1;
+            Assert.AreEqual(0, unitsRepository.Count);
+            Assert.AreEqual(0, crowd.GetUnits().Count);
+
+            queue.SetQueueSize(1);
             queue.ServeCustomer();
 
-            Assert.AreEqual(0, cr.Units.Count);
-            Assert.AreEqual(1, queue.Units.Count);
-            Assert.AreEqual(1, uc.Units.Count);
-            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.First().Position);
-            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
+            Assert.AreEqual(0, crowd.GetUnits().Count);
+            Assert.AreEqual(1, queue.GetQueueUnits().Count);
+            Assert.AreEqual(1, unitsRepository.Count);
+            Assert.AreEqual(new GameVector3(1, 0, 0), unitsRepository.Get().First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), unitsRepository.Get().First().Target);
 
-            uc.QueueSize = 1;
+            queue.SetQueueSize(1);
             queue.ServeCustomer();
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
-            Assert.AreEqual(1, cr.Units.Count);
-            Assert.AreEqual(1, queue.Units.Count);
-            Assert.AreEqual(2, uc.Units.Count);
-            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Position);
-            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
+            Assert.AreEqual(1, crowd.GetUnits().Count);
+            Assert.AreEqual(1, queue.GetQueueUnits().Count);
+            Assert.AreEqual(2, unitsRepository.Count);
+            Assert.AreEqual(new GameVector3(0, 0, 0), unitsRepository.Get().First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), unitsRepository.Get().First().Target);
 
-            uc.QueueSize = 2;
+            queue.SetQueueSize(2);
             queue.ServeCustomer();
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
-            Assert.AreEqual(2, cr.Units.Count);
-            Assert.AreEqual(2, queue.Units.Count);
-            Assert.AreEqual(4, uc.Units.Count);
-            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Position);
-            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
-            Assert.AreEqual(new GameVector3(2, 0, 0), uc.Units.Last().Position);
-            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.Last().Target);
+            Assert.AreEqual(2, crowd.GetUnits().Count);
+            Assert.AreEqual(2, queue.GetQueueUnits().Count);
+            Assert.AreEqual(4, unitsRepository.Count);
+            Assert.AreEqual(new GameVector3(0, 0, 0), unitsRepository.Get().First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), unitsRepository.Get().First().Target);
+            Assert.AreEqual(new GameVector3(2, 0, 0), unitsRepository.Get().Last().Position);
+            Assert.AreEqual(new GameVector3(1, 0, 0), unitsRepository.Get().Last().Target);
 
-            uc.QueueSize = 2;
+            queue.SetQueueSize(2);
             queue.ServeCustomer();
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
-            Assert.AreEqual(3, cr.Units.Count);
-            Assert.AreEqual(2, queue.Units.Count);
-            Assert.AreEqual(5, uc.Units.Count);
-            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Position);
-            Assert.AreEqual(new GameVector3(0, 0, 0), uc.Units.First().Target);
-            Assert.AreEqual(new GameVector3(2, 0, 0), uc.Units.Last().Position);
-            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units.Last().Target);
+            Assert.AreEqual(3, crowd.GetUnits().Count);
+            Assert.AreEqual(2, queue.GetQueueUnits().Count);
+            Assert.AreEqual(5, unitsRepository.Count);
+            Assert.AreEqual(new GameVector3(0, 0, 0), unitsRepository.Get().First().Position);
+            Assert.AreEqual(new GameVector3(0, 0, 0), unitsRepository.Get().First().Target);
+            Assert.AreEqual(new GameVector3(2, 0, 0), unitsRepository.Get().Last().Position);
+            Assert.AreEqual(new GameVector3(1, 0, 0), unitsRepository.Get().Last().Target);
 
             queue.Dispose();
             uc.Dispose();
@@ -218,27 +222,31 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsQueueVisualRight()
         {
-            var uc = new UnitControllerMock();
-            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
-            uc.SettingsDef.Speed = 1;
-            uc.SettingsDef.SpeedUp = 1;
-            uc.SettingsDef.SpeedUpDistance = 1;
-            uc.SettingsDef.MinSpeed = 0.5f;
-            uc.SettingsDef.RotationSpeed = 0.5f;
-            uc.FirstPositionOffset = new GameVector3(0, 0, 1);
+            var unitsRepository = new Repository<Unit>();
+            var time = new GameTime();
+            var level = LevelDefinitionSetups.GetDefault();
+            var random = new SessionRandom();
+            var unitSettings = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
+            unitSettings.Speed = 1;
+            unitSettings.SpeedUp = 1;
+            unitSettings.SpeedUpDistance = 1;
+            unitSettings.MinSpeed = 0.5f;
+            unitSettings.RotationSpeed = 0.5f;
+            
+            var uc = new UnitsService(unitsRepository, unitSettings, level, random);
 
-            IGameTime.Default = uc.Time;
-            var cr = new CrowdMock();
-            var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
+            IGameTime.Default = time;
+            var crowd = new UnitsCrowdService(unitsRepository, uc, time, level, random);
+            var queue = new UnitsCustomerQueueService(unitsRepository, uc, crowd, time, random, new GameVector3(0, 0, 1));
 
             var collection = new ViewsCollection();
-            new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
- 
-            uc.QueueSize = 2;
+            new UnitsPresenter(unitsRepository, new UnitsManagerView(collection), unitSettings);
+
+            queue.SetQueueSize(2);
             queue.ServeCustomer();
 
-            Assert.AreEqual(new GameVector3(1, 0, 0), uc.Units[0].Position);
-            Assert.AreEqual(new GameVector3(2, 0, 0), uc.Units[1].Position);
+            Assert.AreEqual(new GameVector3(1, 0, 0), queue.GetUnits().ToArray()[0].Position);
+            Assert.AreEqual(new GameVector3(2, 0, 0), queue.GetUnits().ToArray()[1].Position);
 
             var views = collection.FindViews<UnitView>().ToList();
             var originalRotation = views[0].Rotator.Rotation;
@@ -246,15 +254,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual(new GameVector3(-1, 0, 0), views[1].Rotator.Rotation.ToVector().GetRound());
 
             var timePassed = 0.1f;
-            uc.Time.MoveTime(timePassed);
-
-            var firstUnitTraget = uc.GetQueueFirstPosition() + uc.FirstPositionOffset;
-            Assert.AreEqual(firstUnitTraget, uc.Units[0].Target);
-            Assert.AreEqual(0.6f, uc.Units[0].GetCurrentSpeed());
+            time.MoveTime(timePassed);
+            
+            var firstUnitTraget = queue.GetQueueFirstPosition() + queue.GetQueueFirstPositionOffset();
+            Assert.AreEqual(firstUnitTraget, queue.GetUnits().ToArray()[0].Target);
+            Assert.AreEqual(0.6f, queue.GetUnits().ToArray()[0].CurrentSpeed);
             var targetRotation = (firstUnitTraget - new GameVector3(1, 0, 0)).ToQuaternion();
             
-            Assert.AreEqual(new GameVector3(1, 0, 0).MoveTowards(firstUnitTraget, 0.6f * timePassed), uc.Units[0].Position);
-            Assert.AreEqual(new GameVector3(1.95f, 0, 0), uc.Units[1].Position);
+            Assert.AreEqual(new GameVector3(1, 0, 0).MoveTowards(firstUnitTraget, 0.6f * timePassed), queue.GetUnits().ToArray()[0].Position);
+            Assert.AreEqual(new GameVector3(1.95f, 0, 0), queue.GetUnits().ToArray()[1].Position);
             AssertHelpers.CompareVectors(GameQuaternion.RotateTowards(originalRotation, targetRotation, 0.5f * timePassed).ToVector(), 
                 views[0].Rotator.Rotation.ToVector(), 0.01f);
             Assert.AreEqual(new GameVector3(-1, 0, 0), views[1].Rotator.Rotation.ToVector().GetRound());
@@ -267,41 +275,44 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsLevelCrowdGetUnitsCorrectly()
         {
-            var uc = new UnitControllerMock();
-            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
-            var time = uc.Time;
+            var unitsRepository = new Repository<Unit>();
+            var time = new GameTime();
             var level = LevelDefinitionSetups.GetDefault();
             level.UnitsRect = new FloatRect(-10, -4, 20, 8);
             level.CrowdUnitsAmount = 0;
-            var crowd = new LevelCrowd(uc, time, level, uc.Random);
+            var random = new SessionRandom();
+            var uc = new UnitsService(unitsRepository, UnitDefinitionSetup.GetDefaultUnitsDefinitions(), level, random);
+
+            var crowdRepository = new Repository<Unit>();
+            var crowd = new UnitsCrowdService(crowdRepository, uc, time, level, random);
 
             var unit = uc.SpawnUnit(new GameVector3(0, 0, 0));
-            crowd.SendToCrowd(unit, LevelCrowd.CrowdDirection.Left);
+            crowd.SendToCrowd(unit, UnitsCrowdService.CrowdDirection.Left);
             Assert.AreEqual(new GameVector3(0, 0, 0), unit.Position);
             Assert.AreEqual(-10, unit.Target.X);
             Assert.AreEqual(0, unit.Target.Y);
             Assert.GreaterOrEqual(unit.Target.Z, - 4);
             Assert.LessOrEqual(unit.Target.Z, 4);
-            Assert.IsFalse(unit.IsDisposed);
+            Assert.IsNotNull(unitsRepository.Get(unit.Id));
             time.MoveTime(1);
-            Assert.IsFalse(unit.IsDisposed);
+            Assert.IsNotNull(unitsRepository.Get(unit.Id));
             time.MoveTime(100);
             Assert.AreEqual(unit.Target, unit.Position);
-            Assert.IsTrue(unit.IsDisposed);
+            Assert.IsNull(unitsRepository.Get(unit.Id));
 
             var unit2 = uc.SpawnUnit(new GameVector3(0, 0, 0));
-            crowd.SendToCrowd(unit2, LevelCrowd.CrowdDirection.Right);
+            crowd.SendToCrowd(unit2, UnitsCrowdService.CrowdDirection.Right);
             Assert.AreEqual(new GameVector3(0, 0, 0), unit2.Position);
             Assert.AreEqual(10, unit2.Target.X);
             Assert.AreEqual(0, unit2.Target.Y);
             Assert.GreaterOrEqual(unit2.Target.Z, -4);
             Assert.LessOrEqual(unit2.Target.Z, 4);
-            Assert.IsFalse(unit2.IsDisposed);
+            Assert.IsNotNull(unitsRepository.Get(unit2.Id));
             time.MoveTime(1);
-            Assert.IsFalse(unit2.IsDisposed);
+            Assert.IsNotNull(unitsRepository.Get(unit2.Id));
             time.MoveTime(100);
             Assert.AreEqual(unit2.Target, unit2.Position);
-            Assert.IsTrue(unit2.IsDisposed);
+            Assert.IsNull(unitsRepository.Get(unit2.Id));
 
             crowd.Dispose();
             uc.Dispose();
@@ -310,36 +321,42 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsQueueFreeAllWorking()
         {
-            var uc = new UnitControllerMock();
-            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
-            IGameTime.Default = uc.Time;
-            var cr = new CrowdMock();
-            var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
+            var unitsRepository = new Repository<Unit>();
+            var time = new GameTime();
+            var level = LevelDefinitionSetups.GetDefault();
+            var random = new SessionRandom();
+            var unitSettings = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
+            IGameTime.Default = time;
+
+            var uc = new UnitsService(unitsRepository, unitSettings, level, random);
+
+            var crowd = new UnitsCrowdService(unitsRepository, uc, time, level, random);
+            var queue = new UnitsCustomerQueueService(unitsRepository, uc, crowd, time, random, new GameVector3(0, 0, 1));
 
             var collection = new ViewsCollection();
-            new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
+            new UnitsPresenter(unitsRepository, new UnitsManagerView(collection), unitSettings);
 
-            uc.QueueSize = 2;
+            queue.SetQueueSize(2);
             queue.ServeCustomer();
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
             Assert.AreEqual(2, collection.FindViews<UnitView>().Count());
-            Assert.AreEqual(2, queue.Units.Count());
-            Assert.AreEqual(0, cr.Units.Count);
+            Assert.AreEqual(2, queue.GetUnits().Count());
+            Assert.AreEqual(0, crowd.GetUnits().Count);
 
             queue.FreeAll();
 
             Assert.AreEqual(2, collection.FindViews<UnitView>().Count());
-            Assert.AreEqual(0, queue.Units.Count());
-            Assert.AreEqual(2, cr.Units.Count);
+            Assert.AreEqual(0, queue.GetUnits().Count());
+            Assert.AreEqual(2, crowd.GetUnits().Count);
 
-            uc.QueueSize = 2;
+            queue.SetQueueSize(2);
             queue.ServeCustomer();
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
             Assert.AreEqual(4, collection.FindViews<UnitView>().Count());
-            Assert.AreEqual(2, queue.Units.Count());
-            Assert.AreEqual(2, cr.Units.Count);
+            Assert.AreEqual(2, queue.GetUnits().Count());
+            Assert.AreEqual(2, crowd.GetUnits().Count);
 
             collection.Dispose();
             queue.Dispose();
@@ -349,43 +366,49 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsServeAllWorking()
         {
-            var uc = new UnitControllerMock();
-            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
-            IGameTime.Default = uc.Time;
-            var cr = new CrowdMock();
-            var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
+            var unitsRepository = new Repository<Unit>();
+            var time = new GameTime();
+            var level = LevelDefinitionSetups.GetDefault();
+            var random = new SessionRandom();
+            var unitSettings = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
+            IGameTime.Default = time;
+
+            var uc = new UnitsService(unitsRepository, unitSettings, level, random);
+            var crowd = new UnitsCrowdService(unitsRepository, uc, time, level, random);
+            var queue = new UnitsCustomerQueueService(unitsRepository, uc, crowd, time, random, new GameVector3(0, 0, 1));
+
 
             var collection = new ViewsCollection();
-            new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
+            new UnitsPresenter(unitsRepository, new UnitsManagerView(collection), unitSettings);
 
-            uc.QueueSize = 2;
+            queue.SetQueueSize(2);
             queue.ServeCustomer();
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
-            var unitList = queue.Units.ToArray();
+            var unitList = queue.GetUnits().ToArray();
             Assert.AreEqual(2, collection.FindViews<UnitView>().Count());
             Assert.AreEqual(2, unitList.Count());
-            Assert.AreEqual(0, cr.Units.Count);
+            Assert.AreEqual(0, crowd.GetUnits().Count);
 
             queue.ServeAll();
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
             Assert.AreEqual(4, collection.FindViews<UnitView>().Count());
-            Assert.AreEqual(2, queue.Units.Count());
-            Assert.AreEqual(2, cr.Units.Count);
+            Assert.AreEqual(2, queue.GetUnits().Count());
+            Assert.AreEqual(2, crowd.GetUnits().Count);
 
-            Assert.AreEqual(uc.Units[0], unitList[0]);
-            Assert.AreEqual(uc.Units[1], unitList[1]);
-            Assert.AreEqual(uc.Units[2], queue.Units.ToArray()[0]);
-            Assert.AreEqual(uc.Units[3], queue.Units.ToArray()[1]);
+            Assert.AreEqual(unitsRepository.Get().ElementAt(0), unitList[0]);
+            Assert.AreEqual(unitsRepository.Get().ElementAt(1), unitList[1]);
+            Assert.AreEqual(unitsRepository.Get().ElementAt(2), queue.GetUnits().ElementAt(0));
+            Assert.AreEqual(unitsRepository.Get().ElementAt(3), queue.GetUnits().ElementAt(1));
 
-            uc.QueueSize = 2;
+            queue.SetQueueSize(2);
             queue.ServeCustomer();
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
             Assert.AreEqual(5, collection.FindViews<UnitView>().Count());
-            Assert.AreEqual(2, queue.Units.Count());
-            Assert.AreEqual(3, cr.Units.Count);
+            Assert.AreEqual(2, queue.GetUnits().Count());
+            Assert.AreEqual(3, crowd.GetUnits().Count);
 
             collection.Dispose();
             queue.Dispose();
@@ -395,43 +418,47 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsServeAllTimerWorking()
         {
-            var uc = new UnitControllerMock();
-            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
-            IGameTime.Default = uc.Time;
-            var cr = new CrowdMock();
-            var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
+            var unitsRepository = new Repository<Unit>();
+            var time = new GameTime();
+            var level = LevelDefinitionSetups.GetDefault();
+            var random = new SessionRandom();
+            var unitSettings = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
+            IGameTime.Default = time;
+
+            var uc = new UnitsService(unitsRepository, unitSettings, level, random);
+            var crowd = new UnitsCrowdService(unitsRepository, uc, time, level, random);
+            var queue = new UnitsCustomerQueueService(unitsRepository, uc, crowd, time, random, new GameVector3(0, 0, 1), 1);
 
             var collection = new ViewsCollection();
-            new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
+            new UnitsPresenter(unitsRepository, new UnitsManagerView(collection), unitSettings);
 
-            uc.QueueSize = 2;
+            queue.SetQueueSize(2);
             queue.ServeCustomer();
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
-            Assert.AreEqual(2, queue.Units.Count());
+            Assert.AreEqual(2, queue.GetUnits().Count());
 
-            uc.SpawnAnimationDelay = 1;
             queue.ServeAll();
             // first unit is server instantly
-            Assert.AreEqual(1, queue.Units.Count());
-            uc.Time.MoveTime(0.5f);
-            Assert.AreEqual(1, queue.Units.Count());
-            uc.Time.MoveTime(0.5f);
+            Assert.AreEqual(1, queue.GetUnits().Count());
+            time.MoveTime(0.5f);
+            Assert.AreEqual(1, queue.GetUnits().Count());
+            time.MoveTime(0.5f);
 
             // second unit - after first iteration
-            Assert.AreEqual(0, queue.Units.Count());
-            uc.Time.MoveTime(0.5f);
-            Assert.AreEqual(0, queue.Units.Count());
-            uc.Time.MoveTime(0.5f);
+            Assert.AreEqual(0, queue.GetUnits().Count());
+            time.MoveTime(0.5f);
+            Assert.AreEqual(0, queue.GetUnits().Count());
+            time.MoveTime(0.5f);
 
             // swawn first unit
-            Assert.AreEqual(1, queue.Units.Count());
-            uc.Time.MoveTime(0.5f);
-            Assert.AreEqual(1, queue.Units.Count());
-            uc.Time.MoveTime(0.5f);
+            Assert.AreEqual(1, queue.GetUnits().Count());
+            time.MoveTime(0.5f);
+            Assert.AreEqual(1, queue.GetUnits().Count());
+            time.MoveTime(0.5f);
 
             // swawn second unit
-            Assert.AreEqual(2, queue.Units.Count());
+            Assert.AreEqual(2, queue.GetUnits().Count());
 
             collection.Dispose();
             queue.Dispose();
@@ -441,46 +468,49 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsServeAllPositionsWorking()
         {
-            var uc = new UnitControllerMock();
-            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
-            IGameTime.Default = uc.Time;
-            var cr = new CrowdMock();
-            var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
-            uc.FirstPositionOffset = new GameVector3(0, 0, 1);
-            uc.SettingsDef.Speed = 1;
-            uc.SettingsDef.SpeedUp = 1;
-            uc.SettingsDef.SpeedUpDistance = 1;
-            uc.SettingsDef.MinSpeed = 1f;
-            uc.SettingsDef.RotationSpeed = 1f;
+            var unitsRepository = new Repository<Unit>();
+            var time = new GameTime();
+            var level = LevelDefinitionSetups.GetDefault();
+            var random = new SessionRandom();
+            var unitSettings = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
+            unitSettings.Speed = 1;
+            unitSettings.SpeedUp = 1;
+            unitSettings.SpeedUpDistance = 1;
+            unitSettings.MinSpeed = 1f;
+            unitSettings.RotationSpeed = 1f;
+            IGameTime.Default = time;
+
+            var uc = new UnitsService(unitsRepository, unitSettings, level, random);
+            var crowd = new UnitsCrowdService(unitsRepository, uc, time, level, random);
+            var queue = new UnitsCustomerQueueService(unitsRepository, uc, crowd, time, random, new GameVector3(0, 0, 1), 1);
 
             var collection = new ViewsCollection();
-            new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
+            new UnitsPresenter(unitsRepository, new UnitsManagerView(collection), unitSettings);
 
-            uc.QueueSize = 4;
+            queue.SetQueueSize(4);
             queue.ServeCustomer();
-            uc.Time.MoveTime(2);
+            time.MoveTime(2);
 
-            Assert.AreEqual(4, queue.Units.Count());
+            Assert.AreEqual(4, queue.GetUnits().Count());
 
-            uc.SpawnAnimationDelay = 1;
             queue.ServeAll();
             // 1
-            Assert.AreEqual(3, queue.Units.Count());
-            Assert.AreEqual(new GameVector3(1, 0, 0), queue.Units.ToArray()[0].Position);
-            Assert.AreEqual(new GameVector3(2, 0, 0), queue.Units.ToArray()[1].Position);
-            Assert.AreEqual(new GameVector3(3, 0, 0), queue.Units.ToArray()[2].Position);
-            uc.Time.MoveTime(1f);
+            Assert.AreEqual(3, queue.GetUnits().Count());
+            Assert.AreEqual(new GameVector3(1, 0, 0), queue.GetUnits().ElementAt(0).Position);
+            Assert.AreEqual(new GameVector3(2, 0, 0), queue.GetUnits().ElementAt(1).Position);
+            Assert.AreEqual(new GameVector3(3, 0, 0), queue.GetUnits().ElementAt(2).Position);
+            time.MoveTime(1f);
             // 2
-            Assert.AreEqual(2, queue.Units.Count());
-            Assert.AreEqual(new GameVector3(2, 0, 0), queue.Units.ToArray()[0].Position);
-            Assert.AreEqual(new GameVector3(3, 0, 0), queue.Units.ToArray()[1].Position);
-            uc.Time.MoveTime(1f);
+            Assert.AreEqual(2, queue.GetUnits().Count());
+            Assert.AreEqual(new GameVector3(2, 0, 0), queue.GetUnits().ElementAt(0).Position);
+            Assert.AreEqual(new GameVector3(3, 0, 0), queue.GetUnits().ElementAt(1).Position);
+            time.MoveTime(1f);
             // 3
-            Assert.AreEqual(1, queue.Units.Count());
-            Assert.AreEqual(new GameVector3(3, 0, 0), queue.Units.ToArray()[0].Position);
-            uc.Time.MoveTime(1f);
+            Assert.AreEqual(1, queue.GetUnits().Count());
+            Assert.AreEqual(new GameVector3(3, 0, 0), queue.GetUnits().ElementAt(0).Position);
+            time.MoveTime(1f);
             // 4
-            Assert.AreEqual(0, queue.Units.Count());
+            Assert.AreEqual(0, queue.GetUnits().Count());
             collection.Dispose();
             queue.Dispose();
             uc.Dispose();
@@ -489,23 +519,29 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsServeCoinsWorking()
         {
-            var uc = new UnitControllerMock();
-            uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
-            IGameTime.Default = uc.Time;
-            var cr = new CrowdMock();
-            var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
+            var unitsRepository = new Repository<Unit>();
+            var time = new GameTime();
+            var level = LevelDefinitionSetups.GetDefault();
+            var random = new SessionRandom();
+            var unitSettings = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
+            IGameTime.Default = time;
+
+            var uc = new UnitsService(unitsRepository, unitSettings, level, random);
+            var crowd = new UnitsCrowdService(unitsRepository, uc, time, level, random);
+            var queue = new UnitsCustomerQueueService(unitsRepository, uc, crowd, time, random, new GameVector3(0, 0, 1), 0);
+            var coins = new CoinsService();
 
             var collection = new ViewsCollection();
-            new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
+            new UnitsPresenter(unitsRepository, new UnitsManagerView(collection), unitSettings);
 
-            Assert.AreEqual(0, uc.Coins);
+            Assert.AreEqual(0, coins.Value);
 
-            uc.QueueSize = 2;
+            queue.SetQueueSize(2);
             queue.ServeCustomer(); // add new one
             queue.ServeCustomer(); // serve
-            uc.Time.MoveTime(1);
+            time.MoveTime(1);
 
-            Assert.AreEqual(1, uc.Coins);
+            Assert.AreEqual(1, coins.Value);
 
             collection.Dispose();
             queue.Dispose();
@@ -529,83 +565,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual(1, game.LevelCollection.FindViews<UnitView>().Count);
 
             game.Dispose();
-        }
-
-        class UnitControllerMock : Disposable, IUnits, ICustomers
-        {
-            public CustomerDefinition Def { get; } = new CustomerDefinition();
-            public UnitsSettingsDefinition SettingsDef { get; set; } = new UnitsSettingsDefinition();
-            public SessionRandom Random { get; } = new SessionRandom();
-            public List<Unit> Units = new List<Unit>();
-
-            public event Action<Unit> OnUnitSpawn = delegate { };
-
-            public GameVector3 FirstPositionOffset { get; set; } = GameVector3.Zero;
-
-            public int Coins { get; set; }
-
-            public int QueueSize { get; set; }
-            public GameTime Time { get; set; } = new GameTime();
-
-            IReadOnlyCollection<Unit> IUnits.Units => Units.AsReadOnly();
-
-            public float SpawnAnimationDelay { get; set; }
-
-            public GameVector3 GetQueueFirstPosition()
-            {
-                return new GameVector3(0, 0, 0);
-            }
-
-            public GameVector3 GetQueueFirstPositionOffset()
-            {
-                return FirstPositionOffset;
-            }
-
-            public float GetUnitSize()
-            {
-                return 1;
-            }
-
-            public Unit SpawnUnit(GameVector3 pos)
-            {
-                var unit = new Unit(pos, pos, Def, SettingsDef, Random, Time);
-                Units.Add(unit);
-                OnUnitSpawn(unit);
-                return unit;
-            }
-
-            public void DestroyUnit(Unit unit)
-            {
-                Units.Remove(unit);
-                unit.Dispose();
-            }
-
-            protected override void DisposeInner()
-            {
-                foreach (var uni in Units)
-                {
-                    uni.Dispose();
-                }
-            }
-
-            public int GetQueueSize()
-            {
-                return QueueSize;
-            }
-
-            public void Serve(Unit unit)
-            {
-                Coins++;
-            }
-        }
-
-        class CrowdMock : ICrowd
-        {
-            public List<Unit> Units = new List<Unit>();
-            public void SendToCrowd(Unit unit, LevelCrowd.CrowdDirection direction)
-            {
-                Units.Add(unit);
-            }
         }
 
         [TearDown]

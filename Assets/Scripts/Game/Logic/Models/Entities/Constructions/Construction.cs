@@ -28,30 +28,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
         {
             return Scheme.Definition.GetRect(Rotation);
         }
-
-        //public Action OnExplode = delegate { };
-        //public IntPoint CellPosition { get; private set; }
-        //public FieldRotation Rotation { get; private set; }
-
-        //public ConstructionSchemeEntity Definition { get; private set; }
-
-        //private FieldPositionsCalculator _fieldPositions;
-
-        //public Construction(ConstructionsSettingsDefinition settingsDefinition, ConstructionSchemeEntity definition, IntPoint position, FieldRotation rotation)
-        //{
-        //    Definition = definition ?? throw new ArgumentNullException(nameof(definition));
-        //    CellPosition = position;
-        //    Rotation = rotation;
-
-        //    _fieldPositions = new FieldPositionsCalculator(settingsDefinition.CellSize);
-        //}
-
-
-        //public void Explode()
-        //{
-        //    OnExplode();
-        //    Dispose();
-        //}
-
     }
 }

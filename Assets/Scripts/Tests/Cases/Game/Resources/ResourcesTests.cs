@@ -1,12 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
 using Game.Tests.Cases;
-using Game.Tests.Controllers;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
@@ -88,7 +87,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         [Test]
         public void IsCoinsViewWorking()
         {
-            var coins = new Coins();
+            var coins = new CoinsService();
             var collection = new ViewsCollection();
 
             var view = new CustumerCoinsMock(collection);

@@ -1,10 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Units;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Types
 {
@@ -16,9 +13,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Types
         BuildingService Building { get; }
         SchemesService Schemes { get; }
         HandService Hand { get;}
-        LevelUnits Units { get; }
+        UnitsService Units { get; }
         FieldService Field { get; }
-        CustomerQueue Queue { get; }
+        UnitsCustomerQueueService Queue { get; }
         Resources Resources { get; }
     }
 }

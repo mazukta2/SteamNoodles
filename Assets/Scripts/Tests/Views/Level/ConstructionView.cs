@@ -1,17 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Building;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
-using Game.Assets.Scripts.Tests.Views;
 using Game.Assets.Scripts.Tests.Views.Common;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
-using System;
 
 namespace Game.Assets.Scripts.Tests.Views.Level
 {

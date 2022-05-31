@@ -1,15 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Customers;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Elements;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 {

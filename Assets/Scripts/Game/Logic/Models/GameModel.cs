@@ -42,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             if (ILevel.Default is IBattleLevel bl) IBattleLevel.Default = bl;
 
             OnLevelCreated(CurrentLevel);
-        }
+        } 
 
         private void DestroyLevel()
         {

@@ -1,4 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Customers;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using System;
 using System.Collections.Generic;
@@ -8,10 +8,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 {
     public class CustumerCoinsPresenter : BasePresenter<ICustumerCoinsView>
     {
-        private Coins _model;
+        private CoinsService _model;
         private ICustumerCoinsView _view;
 
-        public CustumerCoinsPresenter(Coins coins, ICustumerCoinsView view) : base(view)
+        public CustumerCoinsPresenter(CoinsService coins, ICustumerCoinsView view) : base(view)
         {
             _model = coins;
             _view = view;

@@ -15,6 +15,14 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public event Action<EntityLink<T>, T> OnRemoved = delegate { };
         public event Action<EntityLink<T>, T> OnChanged = delegate { };
         public event Action<EntityLink<T>, T, IModelEvent> OnEvent = delegate { };
+        public event Action<T> OnModelAdded = delegate { };
+        public event Action<T> OnModelRemoved = delegate { };
+        public event Action<T> OnModelChanged = delegate { };
+        public event Action<T, IModelEvent> OnModelEvent = delegate { };
+
+        public int Count => _repository.Count;
+
+        int IRepository<T>.Count => throw new NotImplementedException();
 
         private Dictionary<Uid, T> _repository = new ();
 
@@ -24,6 +32,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 throw new Exception("Entity already exist");
 
             _repository.Add(entity.Id, (T)entity.Copy());
+            OnModelAdded(entity);
             OnAdded(new EntityLink<T>(this, entity.Id), entity);
         }
 
@@ -33,6 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 throw new Exception("Entity not exist");
 
             _repository.Remove(entity.Id);
+            OnModelRemoved(entity);
             OnRemoved(new EntityLink<T>(this, entity.Id), entity);
         }
 
@@ -42,10 +52,16 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 throw new Exception("Entity not exist");
 
             _repository[entity.Id] = (T)entity.Copy();
+            OnModelChanged(entity);
             OnChanged(new EntityLink<T>(this, entity.Id), entity);
         }
 
-        public IReadOnlyCollection<EntityLink<T>> Get()
+        public IReadOnlyCollection<T> Get()
+        {
+            return GetAll();
+        }
+
+        IReadOnlyCollection<EntityLink<T>> IPresenterRepository<T>.Get()
         {
             return _repository.Select(x => new EntityLink<T>(this, x.Key)).AsReadOnly();
         }
@@ -65,11 +81,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         }
 
 
-        IReadOnlyCollection<T> IRepository<T>.Get()
-        {
-            return GetAll();
-        }
-
         public IReadOnlyCollection<T> GetAll()
         {
             return _repository.Select(x => (T)x.Value.Copy()).AsReadOnly();
@@ -80,7 +91,13 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             if (!_repository.ContainsKey(entity.Id))
                 throw new Exception("Entity not exist");
 
+            OnModelEvent(entity, modelEvent);
             OnEvent(new EntityLink<T>(this, entity.Id), entity, modelEvent);
+        }
+
+        public bool Has(T entity)
+        {
+            return _repository.ContainsKey(entity.Id);
         }
     }
 }
