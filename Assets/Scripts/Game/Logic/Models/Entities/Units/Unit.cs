@@ -1,11 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
-using Game.Assets.Scripts.Game.Logic.Models.Entities;
-using Game.Assets.Scripts.Game.Logic.Models.Session;
-using Game.Assets.Scripts.Game.Logic.Models.Time;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units

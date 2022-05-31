@@ -1,7 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
-using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
@@ -15,9 +16,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         [Test]
         public void IsBuildingPointChangeLevel()
         {
-            var constructionSettings = new ConstructionsSettingsDefinition();
             var time = new GameTime();
-            var buildingPoints = new BuildingPointsManager(constructionSettings, time, 2, 2);
+            var buildingPoints = new BuildingPointsService(0, 0, time, 2, 2);
             var levelUps = 0;
             var levelDowns = 0;
             buildingPoints.OnCurrentLevelUp += BuildingPoints_OnLevelUp;

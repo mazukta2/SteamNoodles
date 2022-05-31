@@ -1,5 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using System;
 

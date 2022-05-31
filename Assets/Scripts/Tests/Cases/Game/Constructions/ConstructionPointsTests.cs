@@ -1,12 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Tests.Environment.Game;
@@ -33,13 +33,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var constructionsSchemeRepository = new Repository<ConstructionScheme>();
             var deck = new SingletonRepository<DeckEntity<ConstructionScheme>>();
 
-            var buildingPoints = new BuildingPointsManager(0, 0, new GameTime(), 2, 2);
+            var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var schemesService = new SchemesService(constructionsSchemeRepository, deck);
-            var pointsService = new BuildingPointsService(buildingPoints);
             var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var turnService = new TurnServiceMock();
-            var buildngService = new BuildingService(constructionsRepository, pointsService, handService, fieldService, turnService);
+            var buildngService = new BuildingService(constructionsRepository, pointsService, handService, fieldService);
 
             var definition = ConstructionSetups.GetDefault();
             var scheme = schemesService.Add(definition);
@@ -47,13 +45,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             Assert.AreEqual(1, scheme.Points.Value);
             Assert.AreEqual(0, scheme.AdjacencyPoints.Count);
-            Assert.AreEqual(0, buildingPoints.Value);
+            Assert.AreEqual(0, pointsService.Value);
 
             buildngService.Build(card, new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Top));
 
-            Assert.AreEqual(1, buildingPoints.Value);
+            Assert.AreEqual(1, pointsService.Value);
 
-            buildingPoints.Dispose();
+            pointsService.Dispose();
         }
 
         [Test, Order(TestCore.ModelOrder)]
@@ -64,13 +62,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var constructionsSchemeRepository = new Repository<ConstructionScheme>();
             var deck = new SingletonRepository<DeckEntity<ConstructionScheme>>();
 
-            var buildingPoints = new BuildingPointsManager(0, 0, new GameTime(), 2, 2);
+            var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var schemesService = new SchemesService(constructionsSchemeRepository, deck);
-            var pointsService = new BuildingPointsService(buildingPoints);
             var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var turnService = new TurnServiceMock();
-            var buildngService = new BuildingService(constructionsRepository, pointsService, handService, fieldService, turnService);
+            var buildngService = new BuildingService(constructionsRepository, pointsService, handService, fieldService);
 
             var definition = ConstructionSetups.GetDefault();
             definition.Points = 1;
@@ -82,7 +78,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             Assert.AreEqual(1, scheme.Points.Value);
             Assert.AreEqual(1, scheme.AdjacencyPoints.Count);
-            Assert.AreEqual(0, buildingPoints.Value);
+            Assert.AreEqual(0, pointsService.Value);
 
             buildngService.Build(card, new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Top));
             
@@ -90,9 +86,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             buildngService.Build(card, new FieldPosition(1, 0), new FieldRotation(FieldRotation.Rotation.Top));
 
-            Assert.AreEqual(4, buildingPoints.Value);
+            Assert.AreEqual(4, pointsService.Value);
 
-            buildingPoints.Dispose();
+            pointsService.Dispose();
         }
 
         [Test]
@@ -223,13 +219,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
 
             game.Dispose();
-        }
-
-        class TurnServiceMock : ITurnService
-        {
-            public void Turn()
-            {
-            }
         }
 
         [TearDown]

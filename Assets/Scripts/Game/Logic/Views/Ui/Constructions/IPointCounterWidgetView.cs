@@ -1,9 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
+using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
-using Game.Assets.Scripts.Game.Logic.Models.Time;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -25,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
             Default = this; 
-            new PointCounterWidgetPresenter(IBattleLevel.Default.Resources.Points, 
+            new PointCounterWidgetPresenter(IStageLevel.Default.Points, 
                 IGhostManagerView.Default.Presenter, IGameTime.Default, this, IPointPieceSpawnerView.Default,
                 IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>());
         }

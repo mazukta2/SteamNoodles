@@ -1,4 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Session;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using System;
 using System.Collections.Generic;
 using System.Text;

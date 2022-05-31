@@ -1,15 +1,13 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Common.Helpers;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
-using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
-using Game.Assets.Scripts.Game.Logic.Models.Session;
-using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
@@ -26,7 +24,6 @@ using Game.Tests.Cases;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
@@ -39,7 +36,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         {
             var time = new GameTime();
             var settings = new ConstructionsSettingsDefinition();
-            var points = new BuildingPointsManager(settings, time, 2.2f, 8);
+            var points = new BuildingPointsService(0, 0, time, 2.2f, 8);
             var ghost = new GhostMock();
 
             var levelCollection = new ViewsCollection();
@@ -560,8 +557,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(1, IBattleLevel.Default.Resources.Points.TargetLevel);
-            Assert.AreEqual(0, IBattleLevel.Default.Resources.Points.CurrentLevel);
+            Assert.AreEqual(1, IStageLevel.Default.Points.TargetLevel);
+            Assert.AreEqual(0, IStageLevel.Default.Points.CurrentLevel);
             Assert.AreEqual(1, game.LevelCollection.FindViews<UnitView>().Count);
 
             game.Dispose();

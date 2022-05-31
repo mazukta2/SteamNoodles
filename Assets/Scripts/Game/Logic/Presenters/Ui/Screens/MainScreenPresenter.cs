@@ -1,5 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
@@ -14,14 +14,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private IMainScreenView _view;
         private ScreenManagerPresenter _screenManager;
         private readonly IPresenterRepository<Construction> _constructions;
-        private FlowManager _turnManager;
+        private StageFlowService _turnManager;
         private readonly HandPresenter _handPresenter;
         private static string _lastAnimation;
         private KeyCommand _exitKey;
 
         public MainScreenPresenter(IMainScreenView view, ScreenManagerPresenter screenManager,
             IPresenterRepository<Construction> constructions,
-            FlowManager turnManager, HandPresenter handPresenter, IGameKeysManager gameKeysManager) : base(view)
+            StageFlowService turnManager, HandPresenter handPresenter, IGameKeysManager gameKeysManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
@@ -33,7 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _constructions.OnAdded += HandleOnAdded;
             _view.NextWaveButton.SetAction(NextWaveClick);
             _view.FailWaveButton.SetAction(FailWaveClick);
-            _turnManager.OnDayFinished += HandleOnDayFinished;
+            //_turnManager.OnDayFinished += HandleOnDayFinished;
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
             _exitKey.OnTap += OnExitTap;
             UpdateWaveProgress();
@@ -42,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         protected override void DisposeInner()
         {
             _constructions.OnAdded -= HandleOnAdded;
-            _turnManager.OnDayFinished -= HandleOnDayFinished;
+            //_turnManager.OnDayFinished -= HandleOnDayFinished;
             _exitKey.OnTap -= OnExitTap;
             _handPresenter.Mode = HandPresenter.Modes.Disabled;
         }

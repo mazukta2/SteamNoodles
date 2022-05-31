@@ -1,7 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
-using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
@@ -22,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
             {
                 if (screenView is IMainScreenView mainScreen)
                     return new MainScreenPresenter(mainScreen, managerPresenter,
-                        IGameLevelPresenterRepository.Default.Constructions, IBattleLevel.Default.Flow, IHandView.Default.Presenter, IGameKeysManager.Default);
+                        IGameLevelPresenterRepository.Default.Constructions, IStageLevel.Default.Flow, IHandView.Default.Presenter, IGameKeysManager.Default);
 
                 if (screenView is IDayEndedScreenView dayEndedScreen)
                     return new DayEndedScreenPresenter(dayEndedScreen, IGameSession.Default, managerPresenter);

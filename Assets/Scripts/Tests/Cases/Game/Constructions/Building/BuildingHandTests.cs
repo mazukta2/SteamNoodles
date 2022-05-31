@@ -1,5 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
@@ -24,20 +24,20 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
 
-            var s1 = IBattleLevel.Default.Schemes.Add(constructionDef1);
-            IBattleLevel.Default.Hand.Add(s1);
+            var s1 = IStageLevel.Default.Schemes.Add(constructionDef1);
+            IStageLevel.Default.Hand.Add(s1);
             Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count);
-            var s2 = IBattleLevel.Default.Schemes.Add(constructionDef2);
-            IBattleLevel.Default.Hand.Add(s2);
+            var s2 = IStageLevel.Default.Schemes.Add(constructionDef2);
+            IStageLevel.Default.Hand.Add(s2);
             Assert.AreEqual(2, game.LevelCollection.FindViews<HandConstructionView>().Count);
-            IBattleLevel.Default.Hand.Add(s1);
+            IStageLevel.Default.Hand.Add(s1);
             Assert.AreEqual(2, game.LevelCollection.FindViews<HandConstructionView>().Count);
 
-            IBattleLevel.Default.Hand.Remove(IBattleLevel.Default.Hand.GetCards().First());
+            IStageLevel.Default.Hand.Remove(IStageLevel.Default.Hand.GetCards().First());
             Assert.AreEqual(2, game.LevelCollection.FindViews<HandConstructionView>().Count);
-            IBattleLevel.Default.Hand.Remove(IBattleLevel.Default.Hand.GetCards().First());
+            IStageLevel.Default.Hand.Remove(IStageLevel.Default.Hand.GetCards().First());
             Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count);
-            IBattleLevel.Default.Hand.Remove(IBattleLevel.Default.Hand.GetCards().First());
+            IStageLevel.Default.Hand.Remove(IStageLevel.Default.Hand.GetCards().First());
             Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
 
             game.Dispose();
@@ -51,22 +51,22 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { })
                 .Build();
 
-            var s1 = IBattleLevel.Default.Schemes.Add(constructionDef1);
-            IBattleLevel.Default.Hand.Add(s1);
-            Assert.AreEqual(1, IBattleLevel.Default.Hand.GetCards().First().Amount.Value);
+            var s1 = IStageLevel.Default.Schemes.Add(constructionDef1);
+            IStageLevel.Default.Hand.Add(s1);
+            Assert.AreEqual(1, IStageLevel.Default.Hand.GetCards().First().Amount.Value);
             Assert.AreEqual("1", game.LevelCollection.FindViews<HandConstructionView>().First().Amount.Value);
 
-            IBattleLevel.Default.Hand.Add(s1);
-            Assert.AreEqual(2, IBattleLevel.Default.Hand.GetCards().First().Amount.Value);
+            IStageLevel.Default.Hand.Add(s1);
+            Assert.AreEqual(2, IStageLevel.Default.Hand.GetCards().First().Amount.Value);
             Assert.AreEqual("2", game.LevelCollection.FindViews<HandConstructionView>().First().Amount.Value);
 
-            IBattleLevel.Default.Hand.Remove(IBattleLevel.Default.Hand.GetCards().First());
-            Assert.AreEqual(1, IBattleLevel.Default.Hand.GetCards().First().Amount.Value);
+            IStageLevel.Default.Hand.Remove(IStageLevel.Default.Hand.GetCards().First());
+            Assert.AreEqual(1, IStageLevel.Default.Hand.GetCards().First().Amount.Value);
             Assert.AreEqual("1", game.LevelCollection.FindViews<HandConstructionView>().First().Amount.Value);
 
-            IBattleLevel.Default.Hand.Remove(IBattleLevel.Default.Hand.GetCards().First());
+            IStageLevel.Default.Hand.Remove(IStageLevel.Default.Hand.GetCards().First());
 
-            Assert.AreEqual(0, IBattleLevel.Default.Hand.GetCards().Count);
+            Assert.AreEqual(0, IStageLevel.Default.Hand.GetCards().Count);
             Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
 
             game.Dispose();

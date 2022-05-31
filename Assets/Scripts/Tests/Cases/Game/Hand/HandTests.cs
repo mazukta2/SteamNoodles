@@ -1,10 +1,7 @@
-﻿using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
@@ -44,9 +41,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
                 .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction, construction })
                 .Build();
 
-            Assert.AreEqual(0, IBattleLevel.Default.Resources.Points.CurrentLevel);
-            Assert.AreEqual(0, IBattleLevel.Default.Resources.Points.Value);
-            Assert.AreEqual(3, IBattleLevel.Default.Resources.Points.PointsForNextLevel);
+            Assert.AreEqual(0, IStageLevel.Default.Points.CurrentLevel);
+            Assert.AreEqual(0, IStageLevel.Default.Points.Value);
+            Assert.AreEqual(3, IStageLevel.Default.Points.PointsForNextLevel);
 
             Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
             Assert.AreEqual("2", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
@@ -54,9 +51,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(0, IBattleLevel.Default.Resources.Points.CurrentLevel);
-            Assert.AreEqual(2, IBattleLevel.Default.Resources.Points.Value);
-            Assert.AreEqual(3, IBattleLevel.Default.Resources.Points.PointsForNextLevel);
+            Assert.AreEqual(0, IStageLevel.Default.Points.CurrentLevel);
+            Assert.AreEqual(2, IStageLevel.Default.Points.Value);
+            Assert.AreEqual(3, IStageLevel.Default.Points.PointsForNextLevel);
 
             Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
             Assert.AreEqual("1", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
@@ -65,9 +62,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             game.Controls.MovePointer(new GameVector3(-2, 0, 0));
             game.Controls.Click();
 
-            Assert.AreEqual(1, IBattleLevel.Default.Resources.Points.CurrentLevel);
-            Assert.AreEqual(4, IBattleLevel.Default.Resources.Points.Value);
-            Assert.AreEqual(8, IBattleLevel.Default.Resources.Points.PointsForNextLevel);
+            Assert.AreEqual(1, IStageLevel.Default.Points.CurrentLevel);
+            Assert.AreEqual(4, IStageLevel.Default.Points.Value);
+            Assert.AreEqual(8, IStageLevel.Default.Points.PointsForNextLevel);
 
             Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
             Assert.AreEqual("3", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);

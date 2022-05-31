@@ -1,4 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Levels;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using System;
 using System.Collections.Generic;
 using System.Text;

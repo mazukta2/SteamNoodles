@@ -1,13 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Definitions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using System;
 using System.Collections.Generic;
@@ -21,16 +19,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
         private readonly BuildingPointsService _pointsService;
         private readonly HandService _handService;
         private readonly FieldService _fieldService;
-        private readonly ITurnService _turnService;
 
         public BuildingService(IRepository<Construction> constructions, 
-            BuildingPointsService pointsService, HandService handService, FieldService fieldService, ITurnService turnService)
+            BuildingPointsService pointsService, HandService handService, FieldService fieldService)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _pointsService = pointsService ?? throw new ArgumentNullException(nameof(pointsService));
             _handService = handService ?? throw new ArgumentNullException(nameof(handService));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
-            _turnService = turnService ?? throw new ArgumentNullException(nameof(turnService));
         }
 
         public Construction Build(ConstructionCard card, FieldPosition position, FieldRotation rotation)
@@ -46,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 
             _pointsService.ChangePoints(points, _fieldService.GetWorldPosition(construction));
 
-            _turnService.Turn();
+            _constructions.FireEvent(construction, new ConstructionBuildedByPlayerEvent());
 
             return construction;
         }

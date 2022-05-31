@@ -1,8 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Customers;
-using Game.Assets.Scripts.Game.Logic.Models.Customers.BuildingPointsAnimations;
-using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
@@ -16,13 +16,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     {
         private readonly IPointCounterWidgetView _view;
         private readonly IPointPieceSpawnerView _pointPieceSpawner;
-        private BuildingPointsManager _points;
+        private BuildingPointsService _points;
         private IGhostPresenter _ghostManager;
         private readonly IGameTime _time;
         private ProgressBarSliders _progressBar;
         private int _pointChanges;
 
-        public PointCounterWidgetPresenter(BuildingPointsManager points, IGhostPresenter ghostManager,
+        public PointCounterWidgetPresenter(BuildingPointsService points, IGhostPresenter ghostManager,
             IGameTime time, IPointCounterWidgetView view, IPointPieceSpawnerView pointPieceSpawner,
             ConstructionsSettingsDefinition constructionsSettings) : base(view)
         {

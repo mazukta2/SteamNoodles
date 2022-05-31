@@ -2,7 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
                 return new BuildScreenPresenter(screenView, constructionCard,
                     IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), 
                     IHandView.Default.Presenter, IBuildingToolitpView.Default.Presenter,
-                    IGameKeysManager.Default, managerPresenter, IBattleLevel.Default.Field);
+                    IGameKeysManager.Default, managerPresenter, IStageLevel.Default.Field);
             }
         }
     }

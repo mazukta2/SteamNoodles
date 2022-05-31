@@ -2,9 +2,8 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
-using Game.Assets.Scripts.Game.Logic.Models.Session;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models
@@ -39,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             CurrentLevel = level.Starter.CreateModel(level);
 
             ILevel.Default = CurrentLevel;
-            if (ILevel.Default is IBattleLevel bl) IBattleLevel.Default = bl;
+            if (ILevel.Default is IStageLevel bl) IStageLevel.Default = bl;
 
             OnLevelCreated(CurrentLevel);
         } 
@@ -51,7 +50,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
                 CurrentLevel.Dispose();
                 CurrentLevel = null;
                 ILevel.Default = null;
-                IBattleLevel.Default = null;
+                IStageLevel.Default = null;
                 OnLevelDestroyed();
             }
         }

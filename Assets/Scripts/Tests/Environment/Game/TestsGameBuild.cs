@@ -1,18 +1,13 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
-using Game.Assets.Scripts.Game.Logic.Definitions.Common;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Session;
-using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Tests.Controllers;
-using Game.Tests.Mocks.Settings.Levels;
 using System;
-using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Tests.Environment.Game
 {
