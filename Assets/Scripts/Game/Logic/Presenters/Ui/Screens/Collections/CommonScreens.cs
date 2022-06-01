@@ -3,6 +3,8 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views;
@@ -20,16 +22,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
 
             object Init(TScreen screenView, ScreenManagerPresenter managerPresenter)
             {
-                if (screenView is IMainScreenView mainScreen)
-                    return new MainScreenPresenter(mainScreen, managerPresenter,
-                        IStageLevelPresenterRepository.Default.Constructions, IStageLevelService.Default.Flow, HandPresenter.Default, IGameKeysManager.Default);
-
                 if (screenView is IDayEndedScreenView dayEndedScreen)
                     return new DayEndedScreenPresenter(dayEndedScreen, IGameSession.Default, managerPresenter);
-
-                if (screenView is IGameMenuScreenView gameMenuScreen)
-                    return new GameMenuScreenPresenter(gameMenuScreen, IGameSession.Default, IGame.Default, IGameKeysManager.Default, managerPresenter);
-                
 
                 throw new Exception("Unknown screen " + typeof(TScreen));
             }

@@ -10,10 +10,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets
         IHandConstructionTooltipView Tooltip { get; }
         IAnimator Animator { get; }
 
-        static IBuildingToolitpView Default { get; set; }
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            Default = this;
             new BuildingTooltipPresenter(this, IStageLevelPresenterRepository.Default.Constructions);
         }
     }

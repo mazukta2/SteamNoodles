@@ -3,9 +3,11 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -58,7 +60,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleClick()
         {
-            ScreenManagerPresenter.Default.GetCollection<BuildScreenCollection>().Open(_model.GetLink());
+            ScreenManagerPresenter.Default.Open<IBuildScreenView>(x => 
+                new BuildScreenPresenter(x, _model.GetLink()));
         }
 
         private void UpdateAmount()

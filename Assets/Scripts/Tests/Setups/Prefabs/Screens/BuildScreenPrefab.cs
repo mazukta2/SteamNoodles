@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Screens
     {
         public override void Fill(IViewsCollection collection)
         {
-            new BuildScreenView(collection, new UiWorldText());
+            new BuildScreenView(collection);
         }
     }
 }

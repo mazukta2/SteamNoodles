@@ -1,5 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters;
+using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
+using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Assets;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Environment.Game;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
@@ -11,44 +18,41 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
 {
     public class ScreenTests
     {
-        [Test]
-        public void MainScreenIsOpened()
+        [Test, Order(TestCore.EssentialOrder)]
+        public void IsViewCreating()
         {
-            var build = new GameConstructor().Build();
+            var assets = new AssetsMock();
+            assets.AddPrefab("Screens/TestScreenInterface", new DefaultViewCollectionPrefabMock(x => new TestScreenView(x)));
 
-            var screenManager = build.LevelCollection.FindView<ScreenManagerView>();
-            Assert.IsNotNull(screenManager);
+            var viewCollection = new ViewsCollection();
+            var view = new ScreenManagerView(viewCollection);
+            var presenter = new ScreenManagerPresenter(view, new GameAssets(assets));
 
-            var mainScreen = build.LevelCollection.FindView<MainScreenView>();
-            Assert.IsNotNull(mainScreen);
+            Assert.AreEqual(0, view.Screen.Count);
 
-            build.Dispose();
+            presenter.Open<ITestScreenInterfaceView>(v => new TestScreenPresenter(v, 1));
+
+            Assert.AreEqual(1, view.Screen.Count);
+            Assert.IsTrue(view.Screen.FindView<ITestScreenInterfaceView>().Presenter is TestScreenPresenter);
+
+            viewCollection.Dispose();
         }
 
-        [Test]
-        public void EscFromBuildingScreen()
+        private interface ITestScreenInterfaceView : IScreenView
         {
-            var build = new GameConstructor().Build();
 
-            Assert.IsNull(build.LevelCollection.FindView<BuildScreenView>());
-            var view = build.LevelCollection.FindViews<HandConstructionView>().First();
-            view.Button.Click();
-            Assert.IsNotNull(build.LevelCollection.FindView<BuildScreenView>());
+        }
 
-            var manager = (GameKeysManager)IGameKeysManager.Default;
-            manager.TapKey(GameKeys.Exit);
+        private class TestScreenView : ScreenView<TestScreenPresenter>, ITestScreenInterfaceView
+        {
+            public TestScreenView(IViewsCollection level) : base(level) { }
+        }
 
-            Assert.IsNotNull(build.LevelCollection.FindView<MainScreenView>());
+        private class TestScreenPresenter : BasePresenter<ITestScreenInterfaceView>
+        {
+            public TestScreenPresenter(ITestScreenInterfaceView view, int param) : base(view) { Param = param; }
 
-            manager.TapKey(GameKeys.Exit);
-
-            Assert.IsNotNull(build.LevelCollection.FindView<GameMenuScreenView>());
-
-            manager.TapKey(GameKeys.Exit);
-
-            Assert.IsNotNull(build.LevelCollection.FindView<MainScreenView>());
-
-            build.Dispose();
+            public int Param { get; }
         }
 
         [TearDown]

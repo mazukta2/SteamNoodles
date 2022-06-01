@@ -32,6 +32,23 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         }
 
+        public TScreenView Open<TScreenView>(Action<TScreenView> setPresenter) where TScreenView : class, IScreenView
+        {
+            var name = typeof(TScreenView).Name;
+            name = name.Replace("View", "");
+            name = name.Remove(0, 1);
+            var screenPrefab = _screenAssets.GetPrefab($"Screens/{name}");
+            if (screenPrefab == null)
+                throw new Exception($"Cant find {name} view");
+
+            _view.Screen.Clear();
+            var view = _view.Screen.Spawn<TScreenView>(screenPrefab);
+            setPresenter(view);
+            OnScreenOpened(view);
+
+            return view;
+        }
+
         void IScreenOpener.Open<TScreen>(Func<TScreen, ScreenManagerPresenter, object> init)
         {
             var name = typeof(TScreen).Name;

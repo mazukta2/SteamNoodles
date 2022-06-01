@@ -1,33 +1,21 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Tests.Environment;
-using Game.Assets.Scripts.Tests.Environment.Game;
-using Game.Assets.Scripts.Tests.Setups;
-using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Tests.Cases;
-using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 {
@@ -165,10 +153,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var cardsRepository = new Repository<ConstructionCard>();
             var hand = new HandService(cardsRepository, schemesRepository);
+            var mode = new BuildingModeService();
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository);
+            new HandPresenter(handView, cardsRepository, mode);
 
             Assert.AreEqual(0, handView.Collection.FindViews<IHandConstructionView>().Count);
             var card1 = hand.Add(scheme1);

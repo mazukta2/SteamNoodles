@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
+using Game.Assets.Scripts.Tests.Views.Common;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using Game.Assets.Scripts.Tests.Views.Ui;
 
@@ -14,14 +15,13 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
 {
     public class BuildScreenView : ScreenView<BuildScreenPresenter>, IBuildScreenView
     {
-        public IWorldText Points { get; }
+        public IWorldText Points { get; } = new UiWorldText();
 
         public IViewContainer AdjacencyContainer { get; }
         public IViewPrefab AdjacencyPrefab { get; }
 
-        public BuildScreenView(IViewsCollection level, IWorldText points) : base(level)
+        public BuildScreenView(IViewsCollection level) : base(level)
         {
-            Points = points;
             AdjacencyContainer = new ContainerViewMock(level);
             AdjacencyPrefab = new AdjecencyPrefab();
 
