@@ -16,6 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
 
         private ViewsCollection _viewsCollection = new ViewsCollection();
         private List<GameObject> _spawnedGo = new List<GameObject>();
+        public int Count => _viewsCollection.Count;
 
         public TView Spawn<TView>(IViewPrefab prefab) where TView : class, IView
         {

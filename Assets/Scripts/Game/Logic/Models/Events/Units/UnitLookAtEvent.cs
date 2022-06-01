@@ -3,5 +3,15 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Events.Constructions
 {
-    public record UnitLookAtEvent(GameVector3 target, bool skip) : IModelEvent;
+    public record UnitLookAtEvent : IModelEvent
+    {
+        public UnitLookAtEvent(GameVector3 target, bool skip)
+        {
+            Target = target;
+            Skip = skip;
+        }
+
+        public GameVector3 Target { get; }
+        public bool Skip { get; }
+    }
 }

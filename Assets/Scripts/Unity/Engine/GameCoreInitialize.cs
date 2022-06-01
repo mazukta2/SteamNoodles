@@ -1,9 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
-using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.External;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
-using Game.Assets.Scripts.Game.Logic.Models.Session;
-using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using GameUnity.Assets.Scripts.Unity.Engine.Definitions;

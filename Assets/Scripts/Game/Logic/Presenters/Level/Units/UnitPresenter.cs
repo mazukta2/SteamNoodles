@@ -56,7 +56,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             if (evnt is UnitSmokeEvent) HandleOnSmoke();
             if (evnt is UnitPositionChangedEvent) HandleOnPositionChanged();
             if (evnt is UnitReachedTargetPositionEvent) HandleOnReachedPosition();
-            if (evnt is UnitLookAtEvent lookEvnt) HandleOnLookAt(lookEvnt.target, lookEvnt.skip);
+            if (evnt is UnitLookAtEvent lookEvnt) HandleOnLookAt(lookEvnt.Target, lookEvnt.Skip);
             if (evnt is UnitTargetChangedEvent) HandleOnTargetChanged();
         }
 
