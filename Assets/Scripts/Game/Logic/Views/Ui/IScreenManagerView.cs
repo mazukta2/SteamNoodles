@@ -7,12 +7,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui
     public interface IScreenManagerView : IViewWithGenericPresenter<ScreenManagerPresenter>, IViewWithDefaultPresenter
     {
         IViewContainer Screen { get; }
-        static IScreenManagerView Default { get; set; }
 
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            Default = this;
-            new ScreenManagerPresenter(this, IGameAssets.Default);
+            ScreenManagerPresenter.Default = new ScreenManagerPresenter(this);
         }
     }
 }

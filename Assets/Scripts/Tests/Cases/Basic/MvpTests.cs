@@ -10,38 +10,25 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
     public class MvpTests
     {
         [Test, Order(TestCore.EssentialOrder)]
-        public void IsBuildedAndDisposed()
+        public void IsViewPresenterConnecting()
         {
-            var build = new GameConstructor().Build();
-            build.Dispose();
-        }
+            var viewCollection = new ViewsCollection();
+            var view = new TestView(viewCollection);
+            var presenter = new TestPresenter(view);
 
-        [Test, Order(TestCore.EssentialOrder)]
-        public void ViewIsCreatingPresenter()
-        {
-            var build = new GameConstructor().Build();
-            var view = new TestView(build.LevelCollection);
-
-            Assert.IsTrue(view.IsInited);
             Assert.IsNotNull(view.Presenter);
-            var presenter = view.Presenter;
-
             view.Dispose();
 
             Assert.IsTrue(view.IsDisposed);
             Assert.IsTrue(presenter.IsDisposed);
 
-            build.Dispose();
+            viewCollection.Dispose();
         }
 
         private class TestView : ViewWithPresenter<TestPresenter>
         {
-            public bool IsInited { get; private set; }
-
             public TestView(IViewsCollection level) : base(level)
             {
-                new TestPresenter(this);
-                IsInited = true;
             }
 
             protected override void DisposeInner()

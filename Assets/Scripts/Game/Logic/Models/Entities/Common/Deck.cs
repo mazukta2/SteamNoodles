@@ -1,27 +1,26 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
+namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Common
 {
-    public class Deck<T>
+    public record Deck<T> : Entity
     {
         private readonly Dictionary<T, int> _pool = new Dictionary<T, int>();
         private readonly Dictionary<T, int> _taken = new Dictionary<T, int>();
-        private readonly IGameRandom _random;
 
-        public Deck(IGameRandom random)
+        public Deck()
         {
-            _random = random;
         }
 
         public void Add(T element, int value = 1)
         {
             if (_pool.ContainsKey(element))
                 _pool[element] += value;
-            else 
+            else
                 _pool.Add(element, value);
         }
 
@@ -46,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
             return _pool.Keys.ToList().AsReadOnly();
         }
 
-        public T Take()
+        public T Take(IGameRandom random)
         {
             if (IsEmpty())
                 throw new Exception("Cant take from empty deck");
@@ -61,7 +60,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
                 totalCount = existing.Values.Sum();
             }
 
-            var index = _random.GetRandom(0, totalCount);
+            var index = random.GetRandom(0, totalCount);
 
             var list = existing.ToList();
             var minIndex = 0;

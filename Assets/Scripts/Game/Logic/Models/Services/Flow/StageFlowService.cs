@@ -1,5 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
-using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
@@ -7,9 +6,12 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow.Animations;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System;
 using System.Linq;
 
@@ -25,44 +27,60 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
         private readonly LevelDefinition _levelDefinition;
         private readonly IGameRandom _random;
         private readonly IRepository<Construction> _constructions;
+        private readonly StageLevel _level;
         private readonly HandService _hand;
+        private readonly BuildingPointsService _points;
+        private readonly int _giveCardsAmount;
         private readonly SchemesService _schemesService;
         private readonly SequenceManager _sequence = new SequenceManager();
-
-
-        private Deck<ConstructionDefinition> _rewardDeck;
         private int _wave;
 
-        public StageFlowService(ConstructionsSettingsDefinition constructionsDefinitions, LevelDefinition levelDefinition, IGameRandom random,
-            IRepository<Construction> constructions, HandService hand, SchemesService schemesService)
+        public StageFlowService(StageLevel level, HandService handService, SchemesService schemesService,
+            BuildingPointsService buildingPointsService, int giveCardsAmount = 3)
         {
-            _constructionsDefinitions = constructionsDefinitions ?? throw new ArgumentNullException(nameof(constructionsDefinitions));
-            _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
-            _random = random;
-            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
-            _hand = hand ?? throw new ArgumentNullException(nameof(hand));
-            _schemesService = schemesService;
-
-            _rewardDeck = new Deck<ConstructionDefinition>(random);
-            foreach (var item in levelDefinition.ConstructionsReward)
-                _rewardDeck.Add(item.Key, item.Value);
+            _level = level ?? throw new ArgumentNullException(nameof(level));
+            _hand = handService ?? throw new ArgumentNullException(nameof(handService));
+            _points = buildingPointsService ?? throw new ArgumentNullException(nameof(buildingPointsService));
+            _giveCardsAmount = giveCardsAmount;
+            _schemesService = schemesService ?? throw new ArgumentNullException(nameof(schemesService));
+            //_rewardDeck = new DeckService<ConstructionDefinition>(random);
+            //foreach (var item in levelDefinition.ConstructionsReward)
+            //    _rewardDeck.Add(item.Key, item.Value);
 
             //Flow.OnTurn += TurnManager_OnTurn;
             //Flow.OnWaveEnded += TurnManager_OnWaveEnded;
             //Resources.Points.OnMaxTargetLevelUp += OnLevelUp;
+
+            _points.OnMaxTargetLevelUp += HandleOnLevelUp;
         }
+
+        //private StageFlowService(ConstructionsSettingsDefinition constructionsDefinitions, LevelDefinition levelDefinition, IGameRandom random,
+        //    IRepository<Construction> constructions, HandService hand, SchemesService schemesService)
+        //{
+        //    _constructionsDefinitions = constructionsDefinitions ?? throw new ArgumentNullException(nameof(constructionsDefinitions));
+        //    _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
+        //    _random = random;
+        //    _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+        //    _hand = hand ?? throw new ArgumentNullException(nameof(hand));
+        //    _schemesService = schemesService;
+
+        //    _rewardDeck = new DeckService<ConstructionDefinition>(random);
+        //    foreach (var item in levelDefinition.ConstructionsReward)
+        //        _rewardDeck.Add(item.Key, item.Value);
+
+        //    //Flow.OnTurn += TurnManager_OnTurn;
+        //    //Flow.OnWaveEnded += TurnManager_OnWaveEnded;
+        //    //Resources.Points.OnMaxTargetLevelUp += OnLevelUp;
+        //}
 
         protected override void DisposeInner()
         {
+            _points.OnMaxTargetLevelUp -= HandleOnLevelUp;
+
             //Resources.Points.OnMaxTargetLevelUp -= OnLevelUp;
             //Flow.OnTurn -= TurnManager_OnTurn;
             //Flow.OnWaveEnded -= TurnManager_OnWaveEnded;
             _sequence.Dispose();
-        }
-
-        private void OnLevelUp()
-        {
-            //Flow.GiveCards();
         }
 
         private void TurnManager_OnTurn()
@@ -80,6 +98,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
             //    Queue.FreeAll();
             //}
         }
+
+        private void HandleOnLevelUp()
+        {
+            GiveCards();
+        }
+
         public void Turn()
         {
             //OnTurn();
@@ -119,10 +143,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
 
         public void Start()
         {
-            foreach (var item in _levelDefinition.StartingHand)
-            {
-                _hand.Add(_schemesService.Find(item));
-            }
+            foreach (var scheme in _level.StartingSchemes)
+                _hand.Add(scheme);
         }
 
         public void FailWave()
@@ -156,14 +178,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
             }
         }
 
-        public void GiveCards()
+        private void GiveCards()
         {
-            if (_rewardDeck.IsEmpty())
-                return;
-
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < _giveCardsAmount; i++)
             {
-                var constrcution = _schemesService.TakeRandom(_random);
+                var constrcution = _schemesService.TakeRandom();
                 _hand.Add(constrcution);
             }
         }

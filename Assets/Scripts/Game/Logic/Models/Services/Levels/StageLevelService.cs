@@ -4,6 +4,8 @@ using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
@@ -16,12 +18,12 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 {
-    public class StageLevel : Disposable, IStageLevel
+    public class StageLevelService : Disposable, IStageLevelService
     {
         public StageFlowService Flow { get; }
         public HandService Hand { get; }
         public UnitsService Units { get; }
-        private UnitsCrowdService Crowd { get; }
+        public UnitsCrowdService Crowd { get; }
         public UnitsCustomerQueueService Queue { get; }
         public UnitsMovementsService UnitsMovement { get; }
         public BuildingPointsService Points { get; }
@@ -34,17 +36,18 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
         public IGameTime Time { get; }
         public IGameRandom Random { get; }
 
-        private GameLevelRepository _repositories;
+        private StageLevelRepository _repositories;
 
-        public StageLevel(LevelDefinition settings, IGameRandom random, IGameTime time, IGameDefinitions definitions)
+        public StageLevelService(LevelDefinition settings, IGameRandom random, IGameTime time, IGameDefinitions definitions)
         {
             Definition = settings ?? throw new ArgumentNullException(nameof(settings));
             Random = random ?? throw new ArgumentNullException(nameof(random));
             Time = time ?? throw new ArgumentNullException(nameof(time));
+            var level = new StageLevel(settings);
 
             // TODO: move repositories outside
-            _repositories = new GameLevelRepository();
-            IGameLevelPresenterRepository.Default = _repositories;
+            _repositories = new StageLevelRepository();
+            IStageLevelPresenterRepository.Default = _repositories;
 
             var unitSettings = definitions.Get<UnitsSettingsDefinition>();
             var constructionSettings = definitions.Get<ConstructionsSettingsDefinition>();
@@ -52,24 +55,23 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             Coins = new CoinsService();
             Points = new BuildingPointsService(constructionSettings, time);
             Field = new FieldService(constructionSettings.CellSize, settings.PlacementField.Size);
-            Schemes = new SchemesService(_repositories.Schemes, _repositories.ConstructionsDeck);
+            Schemes = new SchemesService(definitions, settings.ConstructionsReward,
+                _repositories.Schemes, new (_repositories.ConstructionsDeck, Random));
             Hand = new HandService(_repositories.Cards, _repositories.Schemes);
             Units = new UnitsService(_repositories.Units, unitSettings, settings, Random);
-            Flow = new StageFlowService(constructionSettings, Definition, random, _repositories.Constructions, Hand, Schemes);
+
+            Flow = new StageFlowService(level, Hand, Schemes, Points);
             Building = new BuildingService(_repositories.Constructions, Points, Hand, Field);
             Crowd = new UnitsCrowdService(_repositories.Units, Units, time, settings, random);
             Queue = new UnitsCustomerQueueService(_repositories.Units, Units, Crowd, time, random);
             UnitsMovement = new UnitsMovementsService(_repositories.Units, unitSettings, Time);
-
-            Schemes.UpdateSchemes(definitions);
-            Schemes.MakeADeck(settings.ConstructionsReward);
 
             Flow.Start();
         }
 
         protected override void DisposeInner()
         {
-            IGameLevelPresenterRepository.Default = null;
+            IStageLevelPresenterRepository.Default = null;
             _repositories.Dispose();
 
             UnitsMovement.Dispose();

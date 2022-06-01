@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_link.Get().Rotation);
 
             _constructionView.Container.Clear();
-            _modelView = _constructionView.Container.Spawn<IConstructionModelView>(assets.GetPrefab(_link.Get().Scheme.Definition.LevelViewPath));
+            _modelView = _constructionView.Container.Spawn<IConstructionModelView>(assets.GetPrefab(_link.Get().Scheme.LevelViewPath));
             _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
             _controls.ShakeCamera();
 

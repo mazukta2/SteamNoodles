@@ -12,12 +12,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         IButton CancelButton { get; }
         IAnimator Animator { get; }
 
-        static IHandView Default { get; set; }
-
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            Default = this;
-            new HandPresenter(IGameLevelPresenterRepository.Default.Cards, IGameLevelPresenterRepository.Default.Constructions, IScreenManagerView.Default.Presenter, this);
+            HandPresenter.Default = new HandPresenter(this);
         }
     }
 }

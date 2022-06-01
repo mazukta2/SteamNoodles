@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
@@ -24,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
     {
         private KeyCommand _exitKey;
 
-        public ConstructionCard CurrentCard { get; }
+        public ConstructionCard CurrentCard => _entity.Get();
 
         private IBuildScreenView _view;
         private ConstructionsSettingsDefinition _constrcutionsSettings;
@@ -32,9 +33,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private readonly ScreenManagerPresenter _screenManager;
         private readonly IFieldPresenterService _fieldService;
         private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
+        private readonly EntityLink<ConstructionCard> _entity;
 
         public BuildScreenPresenter(IBuildScreenView view,
-            ConstructionCard constructionCard, ConstructionsSettingsDefinition constrcutionsSettings, 
+            EntityLink<ConstructionCard> constructionCard, ConstructionsSettingsDefinition constrcutionsSettings, 
             HandPresenter handPresenter, BuildingTooltipPresenter tooltip,
             IGameKeysManager gameKeysManager, ScreenManagerPresenter screenManager, IFieldPresenterService fieldService) : base(view)
         {
@@ -48,7 +50,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
             _exitKey.OnTap += OnExitTap;
 
-            CurrentCard = constructionCard;
+            _entity = constructionCard;
         }
 
         protected override void DisposeInner()

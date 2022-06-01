@@ -14,6 +14,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
     {
         private IReadOnlyDictionary<ConstructionScheme, BuildingPoints> _adjacencyPoints;
 
+        public AdjacencyBonuses()
+        {
+            _adjacencyPoints = new Dictionary<ConstructionScheme, BuildingPoints>();
+        }
+
         public AdjacencyBonuses(IReadOnlyDictionary<ConstructionScheme, BuildingPoints> bonuses)
         {
             _adjacencyPoints = bonuses;

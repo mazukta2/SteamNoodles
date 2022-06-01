@@ -2,7 +2,9 @@
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
+using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
 
@@ -10,54 +12,58 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandConstructionPresenter : BasePresenter<IHandConstructionView>
     {
-        private PresenterModel<ConstructionCard> _link;
+        private PresenterModel<ConstructionCard> _model;
         private IHandConstructionView _view;
-        private ScreenManagerPresenter _screenManager;
-        private readonly IPresenterRepository<Construction> _constructions;
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
+        private Action<IHandConstructionTooltipView> _fillTooltip;
 
-        public HandConstructionPresenter(EntityLink<ConstructionCard> model, ScreenManagerPresenter screenManager, IPresenterRepository<Construction> constructions,
+        public HandConstructionPresenter(EntityLink<ConstructionCard> model,
+            IHandConstructionView view, Action<IHandConstructionTooltipView> fillTooltip) : this(model, view)
+        {
+            _fillTooltip = fillTooltip ?? throw new ArgumentNullException(nameof(fillTooltip));
+        }
+
+        public HandConstructionPresenter(EntityLink<ConstructionCard> model,
             IHandConstructionView view) : base(view)
         {
-            _link = model.CreateModel() ?? throw new ArgumentNullException(nameof(model));
+            _model = model.CreateModel() ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
-            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _animations = new HandConstructionsAnimations(view);
+            _fillTooltip = FillTooltipPresenter;
 
             view.Button.SetAction(HandleClick);
 
-            _link.OnChanged += HandleOnChanged;
-            _link.OnDispose += Model_OnDispose;
+            _model.OnChanged += HandleOnChanged;
+            _model.OnDispose += Model_OnDispose;
             _view.OnHighlihgtedEnter += _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit += _view_OnHighlihgtedExit;
             _animations.OnAnimationsCompleted += _animations_OnAnimationsCompleted;
 
-            _view.Image.SetPath(_link.Get().HandImagePath);
+            _view.Image.SetPath(_model.Get().HandImagePath);
             UpdateAmount();
         }
 
         protected override void DisposeInner()
         {
             base.DisposeInner();
-            _link.Dispose();
+            _model.Dispose();
             _animations.Dispose();
             _view.TooltipContainer.Clear();
-            _link.OnChanged -= HandleOnChanged;
+            _model.OnChanged -= HandleOnChanged;
             _view.OnHighlihgtedEnter -= _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit -= _view_OnHighlihgtedExit;
-            _link.OnDispose -= Model_OnDispose;
+            _model.OnDispose -= Model_OnDispose;
         }
 
         private void HandleClick()
         {
-            _screenManager.GetCollection<BuildScreenCollection>().Open(_link.Get());
+            ScreenManagerPresenter.Default.GetCollection<BuildScreenCollection>().Open(_model.GetLink());
         }
 
         private void UpdateAmount()
         {
-            var amount = _link.Get().Amount.Value;
+            var amount = _model.Get().Amount.Value;
             if (_currentAmount == null)
                 _animations.Add(amount);
             else
@@ -68,7 +74,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                     _animations.Remove(_currentAmount.Value - amount);
             }
 
-            _currentAmount = _link.Get().Amount;
+            _currentAmount = _model.Get().Amount;
 
         }
 
@@ -85,15 +91,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void _animations_OnAnimationsCompleted()
         {
-            if (_link.IsDisposed)
+            if (_model.IsDisposed)
                 _view.Dispose();
         }
 
         private void _view_OnHighlihgtedEnter()
         {
             _view.TooltipContainer.Clear();
-            var tooltip = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
-            new HandConstructionTooltipPresenter(tooltip, _constructions, _link.Get());
+            var view = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
+            _fillTooltip(view);
         }
 
         private void _view_OnHighlihgtedExit()
@@ -101,5 +107,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _view.TooltipContainer.Clear();
         }
 
+        private void FillTooltipPresenter(IHandConstructionTooltipView view)
+        {
+            new HandConstructionTooltipPresenter(view).SetModel(_model.GetLink());
+        }
     }
 }

@@ -11,6 +11,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
         public IReadOnlyCollection<T> FindViews<T>(bool recursively = true) where T : IView;
         public void Remove(IView view);
         public void Add(IView view);
-
+        public int Count { get; }
     }
 }

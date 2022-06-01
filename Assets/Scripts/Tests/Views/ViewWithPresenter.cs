@@ -18,5 +18,11 @@ namespace Game.Assets.Scripts.Tests.Views
         protected ViewWithPresenter(IViewsCollection level) : base(level)
         {
         }
+
+        public void DefaultInit()
+        {
+            if (this is IViewWithDefaultPresenter defaultInit)
+                defaultInit.InitDefaultPresenter();
+        }
     }
 }

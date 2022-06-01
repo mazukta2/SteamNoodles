@@ -557,8 +557,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(1, IStageLevel.Default.Points.TargetLevel);
-            Assert.AreEqual(0, IStageLevel.Default.Points.CurrentLevel);
+            Assert.AreEqual(1, IStageLevelService.Default.Points.TargetLevel);
+            Assert.AreEqual(0, IStageLevelService.Default.Points.CurrentLevel);
             Assert.AreEqual(1, game.LevelCollection.FindViews<UnitView>().Count);
 
             game.Dispose();

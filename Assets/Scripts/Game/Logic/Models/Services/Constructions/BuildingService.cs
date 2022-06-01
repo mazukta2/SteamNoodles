@@ -94,7 +94,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 
         public bool CanPlace(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
-            return scheme
+            return scheme.Placement
                 .GetOccupiedSpace(position, rotation)
                 .All(otherPosition => IsFreeCell(scheme, otherPosition, rotation));
         }
@@ -112,7 +112,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             if (scheme.IsDownEdge())
             {
                 var min = boundaries.Value.Y;
-                var max = boundaries.Value.Y + scheme.GetHeight(rotation);
+                var max = boundaries.Value.Y + scheme.Placement.GetHeight(rotation);
                 return min <= position.Value.Y && position.Value.Y < max;
             }
 
@@ -133,7 +133,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
         {
             var list = new List<FieldPosition>();
 
-            foreach (var cell in scheme.GetOccupiedSpace(position, rotation))
+            foreach (var cell in scheme.Placement.GetOccupiedSpace(position, rotation))
             {
                 AddCell(cell + new FieldPosition(1, 0));
                 AddCell(cell + new FieldPosition(-1, 0));

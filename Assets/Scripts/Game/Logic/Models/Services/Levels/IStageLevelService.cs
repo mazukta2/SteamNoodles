@@ -8,9 +8,9 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 {
-    public interface IStageLevel : ILevel
+    public interface IStageLevelService : IGameLevel
     {
-        new static IStageLevel Default { get; set; }
+        new static IStageLevelService Default { get; set; }
 
         StageFlowService Flow { get; }
         BuildingService Building { get; }

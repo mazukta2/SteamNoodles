@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 {
-    public interface ILevel : IDisposable
+    public interface IGameLevel : IDisposable
     {
-        public static ILevel Default { get; set; }
+        public static IGameLevel Default { get; set; }
 
         bool IsDisposed { get; }
 

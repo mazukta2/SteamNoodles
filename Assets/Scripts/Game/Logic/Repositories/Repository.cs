@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         private Dictionary<Uid, T> _repository = new ();
 
-        public void Add(T entity)
+        public EntityLink<T> Add(T entity)
         {
             if (_repository.ContainsKey(entity.Id))
                 throw new Exception("Entity already exist");
@@ -34,6 +34,8 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             _repository.Add(entity.Id, (T)entity.Copy());
             OnModelAdded(entity);
             OnAdded(new EntityLink<T>(this, entity.Id), entity);
+
+            return new EntityLink<T>(this, entity.Id);
         }
 
         public void Remove(T entity)
@@ -54,6 +56,11 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             _repository[entity.Id] = (T)entity.Copy();
             OnModelChanged(entity);
             OnChanged(new EntityLink<T>(this, entity.Id), entity);
+        }
+
+        public EntityLink<T> GetLink(T entity)
+        {
+            return new EntityLink<T>(this, entity.Id);
         }
 
         public IReadOnlyCollection<T> Get()

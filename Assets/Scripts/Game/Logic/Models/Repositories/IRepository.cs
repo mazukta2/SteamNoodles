@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Repositories
         event Action<T> OnModelChanged;
         event Action<T, IModelEvent> OnModelEvent;
 
-        void Add(T entity);
+        EntityLink<T> Add(T entity);
         void Remove(T entity);
         void Save(T entity);
         IReadOnlyCollection<T> Get();

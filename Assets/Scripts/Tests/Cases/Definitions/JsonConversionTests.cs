@@ -1,74 +1,55 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
+using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Tests.Cases;
+using Game.Tests.Controllers;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Tests.Cases.Definitions
 {
-    public class ConversionTests
+    public class JsonConversionTests
     {
-        [Test]
+        [Test, Order(TestCore.EssentialOrder)]
         public void CommonConversion()
         {
             var item = JsonConvert.DeserializeObject<CommonCase>(@"{ ""Test"" : ""passed""}");
             Assert.AreEqual("passed", item.Test);
         }
 
-        [Test]
+        [Test, Order(TestCore.EssentialOrder)]
         public void SettingsConversion()
         {
             var commmonField = new CommonCase();
-            var build = new GameConstructor()
-                .AddDefinition("testDef", commmonField)
-                .Build();
+            IGameDefinitions.Default = new DefinitionsMock()
+                .Add("test", commmonField);
 
             var str = @"{ 
-                ""Test"" : ""testDef""
+                ""Test"" : ""test""
             }";
 
             var item = JsonConvert.DeserializeObject<DefinitionsCase>(str);
             Assert.AreEqual(commmonField, item.Test);
-
-            build.Dispose();
         }
 
-        [Test]
+        [Test, Order(TestCore.EssentialOrder)]
         public void DictionarySettingsConversion()
         {
             var commmonField = new CommonCase();
-            var build = new GameConstructor()
-                .AddDefinition("testDef", commmonField)
-                .Build();
+            IGameDefinitions.Default = new DefinitionsMock()
+                .Add("test", commmonField);
 
             var str = @"{ 
                 ""Test"" : {
-                    ""testDef"" : 4
+                    ""test"" : 4
                 }
             }";
             var item = JsonConvert.DeserializeObject<DefinitionDictionaryCase>(str);
             Assert.AreEqual(1, item.Test.Count);
             Assert.IsTrue(item.Test.ContainsKey(commmonField));
             Assert.AreEqual(4, item.Test[commmonField]);
-
-            build.Dispose();
         }
-
-        //[Test]
-        //public void AssetsConversion()
-        //{
-        //    var game = new GameController();
-        //    var testLevel = new ItsUnitySpriteWrapper();
-        //    game.Assets.Add("testsprie", testLevel);
-        //    var str = @"{ 
-        //        ""Test"" : ""testsprie""
-        //    }";
-        //    var item = JsonConvert.DeserializeObject<AssetsCase>(str);
-        //    Assert.AreEqual(testLevel, item.Test);
-        //    game.Dispose();
-        //}
-
 
         [TearDown]
         public void TestDisposables()
@@ -92,11 +73,5 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
             [JsonConverter(typeof(DefinitionsDictionaryConventer<CommonCase, int>))]
             public IReadOnlyDictionary<CommonCase, int> Test { get; set; }
         }
-
-        //public class AssetsCase
-        //{
-        //    [JsonConverter(typeof(AssetConventer))]
-        //    public ISprite Test { get; set; }
-        //}
     }
 }

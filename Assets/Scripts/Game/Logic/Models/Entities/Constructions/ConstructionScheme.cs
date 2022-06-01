@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using System;
@@ -12,82 +13,101 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
 {
     public record ConstructionScheme : Entity
     {
-        public ConstructionDefinition Definition { get; }
-
         public LocalizationTag Name { get; }
         public BuildingPoints Points { get;}
         public string HandImagePath { get; }
+        public string LevelViewPath { get; }
+        public ContructionPlacement Placement { get; }
+        public Requirements Requirements { get; }
         public AdjacencyBonuses AdjacencyPoints { get; private set; }
 
-        public ConstructionScheme(Uid id, ConstructionDefinition definition, LocalizationTag name, BuildingPoints points,
-            AdjacencyBonuses adjacencyPoints, string image) : base(id)
+        private DefId _defintionId; // this information only for saves. don't expose this field
+
+        public ConstructionScheme(Uid id, ConstructionDefinition definition) : base(id)
         {
-            Definition = definition;
+            Name = new LocalizationTag(definition.Name);
+            Points = new BuildingPoints(definition.Points);
+            HandImagePath = definition.HandImagePath;
+            LevelViewPath = definition.LevelViewPath;
+            Placement = new ContructionPlacement(definition.Placement);
+            Requirements = definition.Requirements;
+
+            _defintionId = definition.DefId;
+        }
+
+        private ConstructionScheme(ConstructionDefinition definition)
+        {
+            Name = new LocalizationTag(definition.Name);
+            Points = new BuildingPoints(definition.Points);
+            HandImagePath = definition.HandImagePath;
+            LevelViewPath = definition.LevelViewPath;
+            Placement = new ContructionPlacement(definition.Placement);
+            Requirements = definition.Requirements;
+
+            _defintionId = definition.DefId;
+        }
+
+        public ConstructionScheme()
+        {
+            Name = LocalizationTag.None;
+            Points = new BuildingPoints(0);
+            HandImagePath = "";
+            LevelViewPath = "";
+            Placement = ContructionPlacement.One;
+            Requirements = new Requirements();
+            _defintionId = DefId.None;
+        }
+
+        public ConstructionScheme(Uid id, DefId defId, ContructionPlacement placement, LocalizationTag name, BuildingPoints points,
+            AdjacencyBonuses adjacencyPoints, string image, string view, Requirements requirements) : base(id)
+        {
             Name = name;
             Points = points;
             AdjacencyPoints = adjacencyPoints;
             HandImagePath = image;
+            LevelViewPath = view;
+            Placement = placement;
+            Requirements = requirements;
+
+            _defintionId = defId;
         }
 
         public static IReadOnlyCollection<ConstructionScheme> FillWithDefinitions(IEnumerable<ConstructionDefinition> definitions, IRepository<ConstructionScheme> repository)
         {
-            var result = new List<ConstructionScheme>();
+            var result = new Dictionary<ConstructionDefinition, ConstructionScheme>();
             foreach (var definition in definitions)
             {
                 var entity = new ConstructionScheme(definition);
-                result.Add(entity);
+                result.Add(definition, entity);
             }
 
-            foreach (var entity in result)
+            foreach (var (definition, entity) in result)
             {
-                var definition = entity.Definition;
                 entity.AdjacencyPoints = new AdjacencyBonuses(definition.AdjacencyPoints.ToDictionary(x => Get(x.Key), y => new BuildingPoints(y.Value)).AsReadOnly());
             }
 
-            foreach (var entity in result)
+            foreach (var (definition, entity) in result)
             {
                 repository.Add(entity);
             }
 
-            return result;
+            return result.Values.AsReadOnly();
 
             ConstructionScheme Get(ConstructionDefinition definition)
             {
-                var value = repository.Get().FirstOrDefault(x => x.Definition == definition);
-                if (value != null)
-                    return value;
-
-                value = result.FirstOrDefault(x => x.Definition == definition);
-                if (value != null)
-                    return value;
-
-                throw new Exception("Can't find entity with that definition");
+                return result[definition];
             }
         }
 
-        private ConstructionScheme(ConstructionDefinition definition) 
+        // TODO: maybe we should do this externaly
+        public bool IsConnectedToDefinition(ConstructionDefinition definition)
         {
-            Definition = definition;
-            Name = new LocalizationTag(definition.Name);
-            Points = new BuildingPoints(definition.Points);
-            HandImagePath = definition.HandImagePath;
-
-        }
-
-        public IReadOnlyCollection<FieldPosition> GetOccupiedSpace(FieldPosition position, FieldRotation rotation)
-        {
-            return Definition.GetOccupiedSpace(position.Value, rotation).Select(x => new FieldPosition(x)).AsReadOnly();
+            return _defintionId == definition.DefId;
         }
 
         public bool IsDownEdge()
         {
-            return Definition.Requirements.DownEdge;
+            return Requirements.DownEdge;
         }
-
-        public int GetHeight(FieldRotation rotation)
-        {
-            return Definition.GetRect(rotation).Height;
-        }
-
     }
 }

@@ -21,12 +21,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
 
         public IReadOnlyCollection<FieldPosition> GetOccupiedScace()
         {
-            return Scheme.GetOccupiedSpace(Position, Rotation);
+            return Scheme.Placement.GetOccupiedSpace(Position, Rotation);
         }
 
         public IntRect GetSize()
         {
-            return Scheme.Definition.GetRect(Rotation);
+            return Scheme.Placement.GetRect(Rotation);
         }
     }
 }

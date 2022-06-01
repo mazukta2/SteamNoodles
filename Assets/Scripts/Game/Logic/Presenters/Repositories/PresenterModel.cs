@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories
             return _value;
         }
 
+        public EntityLink<T> GetLink()
+        {
+            return new EntityLink<T>(_repository, _id);
+        }
+
         private void HandleOnRemoved(EntityLink<T> entity, T obj)
         {
             if (entity.Id != _id)
@@ -61,5 +67,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories
 
             OnEvent(evt);
         }
+
     }
 }

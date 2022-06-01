@@ -58,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
 
             _view.Container.Clear();
-            _modelView = _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Scheme.Definition.LevelViewPath));
+            _modelView = _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Scheme.LevelViewPath));
             _modelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
 
             _rotateLeft.OnTap += HandleRotateLeftTap;
@@ -91,7 +91,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public IntRect GetSize()
         {
-            return _buildScreen.CurrentCard.Scheme.Definition.GetRect(Rotation);
+            return _buildScreen.CurrentCard.Scheme.Placement.GetRect(Rotation);
         }
 
         public GameVector3 GetTargetPosition()

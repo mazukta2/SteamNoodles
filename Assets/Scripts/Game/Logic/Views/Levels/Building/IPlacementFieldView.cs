@@ -18,9 +18,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
             new PlacementFieldPresenter(IGhostManagerView.Default.Presenter,
-                IGameLevelPresenterRepository.Default.Constructions,
-                IStageLevel.Default.Field,
-                IStageLevel.Default.Building,
+                IStageLevelPresenterRepository.Default.Constructions,
+                IStageLevelService.Default.Field,
+                IStageLevelService.Default.Building,
                 this,
                 IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IGameAssets.Default);
         }

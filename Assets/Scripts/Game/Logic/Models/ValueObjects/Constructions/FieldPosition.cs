@@ -5,6 +5,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 {
     public record FieldPosition
     {
+        public int X => Value.X;
+        public int Y => Value.Y;
+
         public IntPoint Value { get; }
 
         public FieldPosition(IntPoint value) => (Value) = (value);
@@ -15,5 +18,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
         }
 
         public static FieldPosition operator +(FieldPosition current, FieldPosition other) => new FieldPosition(current.Value + other.Value);
+        public static FieldPosition operator -(FieldPosition current, FieldPosition other) => new FieldPosition(current.Value - other.Value);
     }
 }

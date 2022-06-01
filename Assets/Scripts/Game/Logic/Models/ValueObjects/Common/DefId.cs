@@ -5,6 +5,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common
 {
     public record DefId
     {
+        public static readonly DefId None = new DefId("NO_ID");
+
         public string Path { get; }
 
         public DefId(string id)

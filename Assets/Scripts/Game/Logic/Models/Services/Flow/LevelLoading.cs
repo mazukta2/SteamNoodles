@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
             _levelManager.OnLoadFinished -= HandleOnFinished;
         }
 
-        private void HandleOnLevelCreated(ILevel level)
+        private void HandleOnLevelCreated(IGameLevel level)
         {
             Load(level.Definition);
         }

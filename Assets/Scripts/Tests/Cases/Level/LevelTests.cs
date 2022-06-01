@@ -60,16 +60,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
             var build = new GameConstructor().Build();
             Assert.AreEqual(LevelLoading.LevelsState.IsLoaded, build.Core.Levels.State);
 
-            var level = IStageLevel.Default;
+            var level = IStageLevelService.Default;
 
-            Assert.AreEqual(level, IStageLevel.Default);
+            Assert.AreEqual(level, IStageLevelService.Default);
             build.LoadLevel(level.Definition);
             build.Levels.FinishLoading();
 
             Assert.IsFalse(build.Core.IsDisposed);
             Assert.IsFalse(build.Core.Levels.IsDisposed);
             Assert.AreEqual(LevelLoading.LevelsState.IsLoaded, build.Core.Levels.State);
-            Assert.AreNotEqual(level, IStageLevel.Default);
+            Assert.AreNotEqual(level, IStageLevelService.Default);
             Assert.IsTrue(level.IsDisposed);
 
             build.Dispose();

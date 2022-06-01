@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            new UnitsPresenter(IGameLevelPresenterRepository.Default.Units, this, IGameDefinitions.Default.Get<UnitsSettingsDefinition>());
+            new UnitsPresenter(IStageLevelPresenterRepository.Default.Units, this, IGameDefinitions.Default.Get<UnitsSettingsDefinition>());
         }
 
     }

@@ -2,14 +2,16 @@
 using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 {
-    public class LevelDefinition
+    public class LevelDefinition : IDefinition
     {
+        public DefId DefId { get; set; }
         public string SceneName { get; set; }
 
         [JsonConverter(typeof(DefinitionsConventer<ConstructionDefinition>))]

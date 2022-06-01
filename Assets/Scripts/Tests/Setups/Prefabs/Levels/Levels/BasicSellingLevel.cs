@@ -16,8 +16,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
     {
         public override void Fill(IViewsCollection collection)
         {
-            var screenSpawnPoint = new ContainerViewMock(collection);
-            new ScreenManagerView(collection, screenSpawnPoint);
+            new ScreenManagerView(collection);
 
             var ghostContainer = new ContainerViewMock(collection);
             var ghostPrototype = new GhostViewPrefab();

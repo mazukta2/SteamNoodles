@@ -77,7 +77,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         public void UpdateGhostCells()
         {
             var ghost = _ghostManager.GetGhost();
-            var ocuppiedCells = ghost != null ? ghost.Scheme.GetOccupiedSpace(ghost.GetGridPosition(), ghost.Rotation) : null;
+            var ocuppiedCells = ghost != null ? ghost.Scheme.Placement.GetOccupiedSpace(ghost.GetGridPosition(), ghost.Rotation) : null;
             var occupiedByBuildings = _buildingService.GetAllOccupiedSpace();
 
             foreach (var cell in _cells)

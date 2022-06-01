@@ -10,6 +10,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
         public event Action OnDispose = delegate { };
 
         public IReadOnlyCollection<IView> Views => _views.AsReadOnly();
+
+        public int Count => _views.Count;
+
         private List<IView> _views = new List<IView>();
 
         public void Dispose()

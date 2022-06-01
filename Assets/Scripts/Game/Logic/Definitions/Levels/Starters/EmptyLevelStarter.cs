@@ -6,9 +6,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters
 {
     public class EmptyLevelStarter : LevelStarter
     {
-        public override ILevel CreateModel(LevelDefinition definition)
+        public override IGameLevel CreateModel(LevelDefinition definition)
         {
-            return new StageLevel(definition, IGameRandom.Default, IGameTime.Default, IGameDefinitions.Default);
+            return new StageLevelService(definition, IGameRandom.Default, IGameTime.Default, IGameDefinitions.Default);
         }
 
         public override void Start()

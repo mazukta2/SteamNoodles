@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
             Default = this;
-            new BuildingTooltipPresenter(this, IGameLevelPresenterRepository.Default.Constructions);
+            new BuildingTooltipPresenter(this, IStageLevelPresenterRepository.Default.Constructions);
         }
     }
 }

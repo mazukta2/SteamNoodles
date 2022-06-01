@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _tooltip.SetHighlight(constructions.Select(x => x.Scheme));
         }
 
-        public void Show(ConstructionCard constructionCard)
+        public void Show(EntityLink<ConstructionCard> constructionCard)
         {
             _tooltip.SetModel(constructionCard);
             _view.Animator.Play(Animations.Show.ToString());

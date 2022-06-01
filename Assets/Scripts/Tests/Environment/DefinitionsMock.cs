@@ -2,6 +2,8 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
+using Game.Assets.Scripts.Tests.Cases.Definitions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,17 +22,25 @@ namespace Game.Tests.Controllers
             return (T)_list[id];
         }
 
-        public void Add(string id, object item)
+        public DefinitionsMock Add(string id, object item)
         {
             if (item is IDefinition d)
                 d.DefId = new DefId(id);
 
             _list.Add(id, item);
+            return this;
+        }
+
+        public DefinitionsMock Add(object item)
+        {
+            Add("not_impotant_" + _list.Count, item);
+            return this;
         }
 
         public IReadOnlyCollection<T> GetList<T>()
         {
             return _list.Values.OfType<T>().AsReadOnly();
         }
+
     }
 }

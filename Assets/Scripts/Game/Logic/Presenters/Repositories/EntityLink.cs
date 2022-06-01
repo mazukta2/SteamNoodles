@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using System;
 using System.Collections.Generic;
 
@@ -18,6 +19,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories
         public PresenterModel<T> CreateModel()
         {
             return new PresenterModel<T>(Repository, Id);
+        }
+
+        public T Get()
+        {
+            return Repository.Get(Id);
         }
     }
 }

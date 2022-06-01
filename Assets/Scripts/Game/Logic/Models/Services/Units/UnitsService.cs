@@ -1,5 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Calculations;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
@@ -7,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using System;
 
@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
     {
         private readonly UnitsSettingsDefinition _unitsSettings;
         private readonly IGameRandom _random;
-        private Deck<CustomerDefinition> _pool; // TODO: to repository
+        private DeckService<CustomerDefinition> _pool; // TODO: to repository
         private readonly IRepository<Unit> _units;
 
         public UnitsService(IRepository<Unit> units, UnitsSettingsDefinition unitsSettings, LevelDefinition levelDefinition, IGameRandom random)
@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
 
-            _pool = new Deck<CustomerDefinition>(random);
+            _pool = new DeckService<CustomerDefinition>(random);
             foreach (var item in levelDefinition.BaseCrowdUnits)
                 _pool.Add(item.Key, item.Value);
         }

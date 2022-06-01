@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
 using System.Collections.Generic;
@@ -11,29 +12,36 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandConstructionTooltipPresenter : BasePresenter<IHandConstructionTooltipView>
     {
-        private ConstructionCard _model;
         private IHandConstructionTooltipView _view;
         private readonly IPresenterRepository<Construction> _constructions;
         private LocalizatedText _name;
         private LocalizatedText _adjecensy;
         private IEnumerable<ConstructionScheme> _highlights;
+        private PresenterModel<ConstructionCard> _model;
 
-        public HandConstructionTooltipPresenter(IHandConstructionTooltipView view, IPresenterRepository<Construction> constructions) : base(view)
+        public HandConstructionTooltipPresenter(IHandConstructionTooltipView view) :
+                this(view, IStageLevelPresenterRepository.Default.Constructions)
+        {
+        }
+
+        public HandConstructionTooltipPresenter(IHandConstructionTooltipView view,
+            IPresenterRepository<Construction> constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             UpdateView();
         }
 
-        public HandConstructionTooltipPresenter(IHandConstructionTooltipView view, IPresenterRepository<Construction> constructions, ConstructionCard model) : this(view, constructions)
+        protected override void DisposeInner()
         {
-            _model = model ?? throw new ArgumentNullException(nameof(model));
-            UpdateView();
+            _model.Dispose();
+            _name?.Dispose();
+            _adjecensy?.Dispose();
         }
 
-        public void SetModel(ConstructionCard model)
+        public void SetModel(EntityLink<ConstructionCard> link)
         {
-            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _model = link.CreateModel() ?? throw new ArgumentNullException(nameof(link));
             UpdateView();
         }
 
@@ -53,12 +61,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
             _name?.Dispose();
             _adjecensy?.Dispose();
+            var model = _model.Get();
 
-            _name = new LocalizatedText(_view.Name, new LocalizatedString(_model.Name));
-            _view.Points.Value = $"+{_model.Points}";
+            _name = new LocalizatedText(_view.Name, new LocalizatedString(model.Name));
+            _view.Points.Value = $"+{model.Points}";
 
             var bonuses = new List<ILocalizatedString>();
-            foreach (var (construction, points) in _model.AdjacencyPoints.GetAll())
+            foreach (var (construction, points) in model.AdjacencyPoints.GetAll())
             {
                 var style = TextHelpers.TextStyles.None;
 
@@ -76,12 +85,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             }
 
             _adjecensy = new LocalizatedText(_view.Adjacencies, new LocalizatedJoinString(", ", bonuses.ToArray()));
-        }
-
-        protected override void DisposeInner()
-        {
-            _name?.Dispose();
-            _adjecensy?.Dispose();
         }
     }
 }

@@ -26,15 +26,8 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
 
         private void SpawnCardPrototype(IViewsCollection collection)
         {
-            var handTooltipContainer = new ContainerViewMock(collection);
-            var handTooltipPrefab = new DefaultViewCollectionPrefabMock(SpawnTooltip);
-
-            new HandConstructionView(collection, new ButtonMock(), new ImageMock(), handTooltipContainer, handTooltipPrefab);
+            new HandConstructionView(collection);
         }
 
-        private void SpawnTooltip(IViewsCollection collection)
-        {
-            new HandConstructionTooltipView(collection);
-        }
     }
 }

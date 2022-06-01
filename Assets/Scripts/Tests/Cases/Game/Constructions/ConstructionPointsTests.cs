@@ -1,10 +1,11 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Calculations;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
@@ -31,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var constructionsRepository = new Repository<Construction>();
             var constructionsCardsRepository = new Repository<ConstructionCard>();
             var constructionsSchemeRepository = new Repository<ConstructionScheme>();
-            var deck = new SingletonRepository<DeckEntity<ConstructionScheme>>();
+            var deck = new DeckService<ConstructionScheme>();
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var schemesService = new SchemesService(constructionsSchemeRepository, deck);
@@ -60,7 +61,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var constructionsRepository = new Repository<Construction>();
             var constructionsCardsRepository = new Repository<ConstructionCard>();
             var constructionsSchemeRepository = new Repository<ConstructionScheme>();
-            var deck = new SingletonRepository<DeckEntity<ConstructionScheme>>();
+            var deck = new DeckService<ConstructionScheme>();
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var schemesService = new SchemesService(constructionsSchemeRepository, deck);

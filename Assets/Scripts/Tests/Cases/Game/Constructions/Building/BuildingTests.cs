@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
@@ -144,11 +145,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             void TestRect(IntRect expected, int[,] rect)
             {
-                var constrcution = new ConstructionDefinition()
-                {
-                    Placement = rect,
-                };
-                Assert.AreEqual(expected, constrcution.GetRect(new(FieldRotation.Rotation.Top)));
+                var placement = new ContructionPlacement(rect);
+                Assert.AreEqual(expected, placement.GetRect(new(FieldRotation.Rotation.Top)));
             }
         }
 

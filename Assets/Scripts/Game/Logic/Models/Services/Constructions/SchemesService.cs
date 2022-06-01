@@ -1,6 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Calculations;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using System;
@@ -12,26 +13,39 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
     public class SchemesService
     {
         private readonly IRepository<ConstructionScheme> _schemes;
-        private readonly ISingletonRepository<DeckEntity<ConstructionScheme>> _deck;
+        private readonly DeckService<ConstructionScheme> _deck;
 
-        public SchemesService(IRepository<ConstructionScheme> schemes, ISingletonRepository<DeckEntity<ConstructionScheme>> deck)
+        public SchemesService(IRepository<ConstructionScheme> schemes, DeckService<ConstructionScheme> deck)
         {
             _schemes = schemes ?? throw new ArgumentNullException(nameof(schemes));
             _deck = deck ?? throw new ArgumentNullException(nameof(deck));
         }
 
-        public void MakeADeck(IReadOnlyDictionary<ConstructionDefinition, int> deck)
+        public SchemesService(IGameDefinitions definitions, 
+            IReadOnlyDictionary<ConstructionDefinition, int> availableConstructions,
+            IRepository<ConstructionScheme> schemes, DeckService<ConstructionScheme> deck)
         {
-            if (!_deck.Has()) _deck.Add(new DeckEntity<ConstructionScheme>());
-            foreach (var item in deck)
-                _deck.Get().Add(Find(item.Key), item.Value);
-        }
+            _schemes = schemes ?? throw new ArgumentNullException(nameof(schemes));
+            _deck = deck ?? throw new ArgumentNullException(nameof(deck));
 
-        public void UpdateSchemes(IGameDefinitions definitions)
-        {
             var constructionsDefinitions = definitions.GetList<ConstructionDefinition>();
             ConstructionScheme.FillWithDefinitions(constructionsDefinitions, _schemes);
+
+            foreach (var item in availableConstructions)
+                _deck.Add(Find(item.Key), item.Value);
         }
+
+        //public void FillADeck(IReadOnlyDictionary<ConstructionDefinition, int> deck)
+        //{
+        //    foreach (var item in deck)
+        //        _deck.Add(Find(item.Key), item.Value);
+        //}
+
+        //public void UpdateSchemes(IGameDefinitions definitions)
+        //{
+        //    var constructionsDefinitions = definitions.GetList<ConstructionDefinition>();
+        //    ConstructionScheme.FillWithDefinitions(constructionsDefinitions, _schemes);
+        //}
 
         public ConstructionScheme Add(ConstructionDefinition definition)
         {
@@ -41,12 +55,12 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 
         public ConstructionScheme Find(ConstructionDefinition item)
         {
-            return _schemes.Get().First(x => x.Definition == item);
+            return _schemes.Get().First(x => x.IsConnectedToDefinition(item));
         }
 
-        public ConstructionScheme TakeRandom(IGameRandom random)
+        public ConstructionScheme TakeRandom()
         {
-            return _deck.Get().Take(random);
+            return _deck.Take();
         }
     }
 }

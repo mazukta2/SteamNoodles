@@ -11,8 +11,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models
     public class GameModel : Disposable, IGame
     {
         public event Action OnLevelDestroyed = delegate { };
-        public event Action<ILevel> OnLevelCreated = delegate { };
-        public ILevel CurrentLevel { get; private set; }
+        public event Action<IGameLevel> OnLevelCreated = delegate { };
+        public IGameLevel CurrentLevel { get; private set; }
 
         public GameModel()
         {
@@ -37,8 +37,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             DestroyLevel();
             CurrentLevel = level.Starter.CreateModel(level);
 
-            ILevel.Default = CurrentLevel;
-            if (ILevel.Default is IStageLevel bl) IStageLevel.Default = bl;
+            IGameLevel.Default = CurrentLevel;
+            if (IGameLevel.Default is IStageLevelService bl) IStageLevelService.Default = bl;
 
             OnLevelCreated(CurrentLevel);
         } 
@@ -49,8 +49,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             {
                 CurrentLevel.Dispose();
                 CurrentLevel = null;
-                ILevel.Default = null;
-                IStageLevel.Default = null;
+                IGameLevel.Default = null;
+                IStageLevelService.Default = null;
                 OnLevelDestroyed();
             }
         }

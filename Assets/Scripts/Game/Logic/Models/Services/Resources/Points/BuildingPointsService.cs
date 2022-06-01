@@ -33,6 +33,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
         private BuildingPointsCalculator _current;
         private BuildingPointsCalculator _target;
 
+        public BuildingPointsService() : this(0, 0, new GameTime(), 2, 2)
+        {
+            
+        }
+
         public BuildingPointsService(float pieceSpawningTime, float pieceMovingTime, IGameTime time, float power, float offset)
         {
             _pieceSpawningTime = pieceSpawningTime;
@@ -127,6 +132,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
         public void ChangePoints(BuildingPoints points, GameVector3 fromPosition)
         {
             Change(points.Value, fromPosition);
+        }
+
+        public BuildingLevel GetCurrentLevel()
+        {
+            return new BuildingLevel(_current.CurrentLevel);
         }
 
         public void ChangePoints(BuildingPoints points)

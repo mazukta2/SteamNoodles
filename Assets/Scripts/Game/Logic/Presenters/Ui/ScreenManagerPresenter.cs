@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views;
+using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using System;
 
@@ -8,12 +9,19 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 {
     public class ScreenManagerPresenter : BasePresenter<IScreenManagerView>, IScreenOpener
     {
+        public static ScreenManagerPresenter Default { get; set; }
+
         public Action<IScreenView> OnScreenOpened = delegate { };
 
-        private readonly IScreenManagerView _view;
-        private readonly IAssets _screenAssets;
 
-        public ScreenManagerPresenter(IScreenManagerView view, IAssets screenAssets) : base(view)
+        private readonly IScreenManagerView _view;
+        private readonly IGameAssets _screenAssets;
+
+        public ScreenManagerPresenter(IScreenManagerView view) : this(view, IGameAssets.Default)
+        {
+        }
+
+        public ScreenManagerPresenter(IScreenManagerView view, IGameAssets screenAssets) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenAssets = screenAssets ?? throw new ArgumentNullException(nameof(screenAssets));
