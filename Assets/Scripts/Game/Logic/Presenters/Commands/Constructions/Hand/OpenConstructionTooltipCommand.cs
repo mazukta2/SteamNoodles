@@ -8,23 +8,23 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand
 {
     public class OpenConstructionTooltipCommand : IPresenterCommand
     {
-        private EntityLink<ConstructionCard> _entityLink;
-        private IViewContainer _tooltipContainer;
-        private IViewPrefab _tooltipPrefab;
+        public ConstructionCard Card { get; }
+        public IViewContainer Container { get; }
+        public IViewPrefab Prefab { get; }
 
-        public OpenConstructionTooltipCommand(EntityLink<ConstructionCard> entityLink,
+        public OpenConstructionTooltipCommand(ConstructionCard card,
             IViewContainer tooltipContainer, IViewPrefab tooltipPrefab)
         {
-            _entityLink = entityLink;
-            _tooltipContainer = tooltipContainer;
-            _tooltipPrefab = tooltipPrefab;
+            Card = card;
+            Container = tooltipContainer;
+            Prefab = tooltipPrefab;
         }
 
         public void Execute()
         {
-            _tooltipContainer.Clear();
-            var view = _tooltipContainer.Spawn<IHandConstructionTooltipView>(_tooltipPrefab);
-            new HandConstructionTooltipPresenter(view).SetModel(_entityLink);
+            Container.Clear();
+            var view = Container.Spawn<IHandConstructionTooltipView>(Prefab);
+            new HandConstructionTooltipPresenter(view).SetModel(Card);
         }
     }
 }

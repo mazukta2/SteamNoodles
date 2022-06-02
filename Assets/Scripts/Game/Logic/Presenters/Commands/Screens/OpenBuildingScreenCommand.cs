@@ -8,16 +8,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens
 {
     public class OpenBuildingScreenCommand : IPresenterCommand
     {
-        private EntityLink<ConstructionCard> _entityLink;
-
-        public OpenBuildingScreenCommand(EntityLink<ConstructionCard> entityLink)
+        public OpenBuildingScreenCommand(ConstructionCard card)
         {
-            _entityLink = entityLink;
+            Card = card;
         }
+
+        public ConstructionCard Card { get; set; }
 
         public void Execute()
         {
-            ScreenManagerPresenter.Default.Open<IBuildScreenView>(view => new BuildScreenPresenter(view, _entityLink));
+            ScreenManagerPresenter.Default.Open<IBuildScreenView>(view => new BuildScreenPresenter(view, Card));
         }
     }
 }

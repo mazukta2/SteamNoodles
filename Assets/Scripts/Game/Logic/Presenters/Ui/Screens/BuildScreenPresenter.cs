@@ -31,15 +31,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
     {
         private KeyCommand _exitKey;
 
-        public ConstructionCard CurrentCard => _entity.Get();
-
         private IBuildScreenView _view;
-        private readonly EntityLink<ConstructionCard> _entity;
+        private readonly ConstructionCard _entity;
         private readonly BuildingModeService _buildingModeService;
 
         //private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
-        public BuildScreenPresenter(IBuildScreenView view, EntityLink<ConstructionCard> constructionCard) : this(
+        public BuildScreenPresenter(IBuildScreenView view, ConstructionCard constructionCard) : this(
                 view, constructionCard,
                 IPresenterServices.Default?.Get<BuildingModeService>(), 
                 IGameKeysManager.Default)
@@ -47,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         }
 
         public BuildScreenPresenter(IBuildScreenView view,
-            EntityLink<ConstructionCard> constructionCard,
+            ConstructionCard constructionCard,
             BuildingModeService buildingModeService,
             IGameKeysManager gameKeysManager) : base(view)
         {

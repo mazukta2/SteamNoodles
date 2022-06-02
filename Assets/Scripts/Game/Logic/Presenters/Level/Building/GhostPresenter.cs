@@ -25,7 +25,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         //public FieldRotation Rotation { get; private set; }
 
         private readonly IGhostView _view;
-        private readonly EntityLink<ConstructionCard> _card;
         private readonly BuildingModeService _buildingModeService;
         private readonly FieldService _fieldService;
         private readonly IControls _controls;
@@ -41,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         //private KeyCommand _rotateRight;
         //private IConstructionModelView _modelView;
 
-        public GhostPresenter(IGhostView view, EntityLink<ConstructionCard> card) : this(view, card,
+        public GhostPresenter(IGhostView view) : this(view,
             IPresenterServices.Default.Get<BuildingModeService>(),
             IPresenterServices.Default.Get<FieldService>(),
             IGameControls.Default,
@@ -50,13 +49,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         }
 
-        public GhostPresenter(IGhostView view, EntityLink<ConstructionCard> card,
+        public GhostPresenter(IGhostView view,
             BuildingModeService buildingModeService,
             FieldService fieldService,
             IGameControls controls, IPresenterCommands commands) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _card = card ?? throw new ArgumentNullException(nameof(card));
             _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
             _controls = controls ?? throw new ArgumentNullException(nameof(controls));
@@ -77,7 +75,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             //_rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
             //_rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
 
-            _commands.Execute(new AddGhostModelCommand(card.Get().Scheme, _view.Container));
+            _commands.Execute(new AddGhostModelCommand(_buildingModeService.Card.Scheme, _view.Container));
 
             //_rotateLeft.OnTap += HandleRotateLeftTap;
             //_rotateRight.OnTap += HandleRotateRightTap;
@@ -113,7 +111,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         //    _view.Container.Clear();
         //    _modelView = _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Scheme.LevelViewPath));
-        //    _modelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
+      
 
         //    _rotateLeft.OnTap += HandleRotateLeftTap;
         //    _rotateRight.OnTap += HandleRotateRightTap;
@@ -213,18 +211,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandlePointerPositionUpdated()
         {
-            var size = _card.Get().Scheme.Placement.GetRect(_buildingModeService.GetRotation());
+            var size = _buildingModeService.Card.Scheme.Placement.GetRect(_buildingModeService.GetRotation());
             var fieldPosition = _fieldService.GetWorldConstructionToField(_pointerPosition, size);
             _buildingModeService.SetGhostPosition(fieldPosition, _buildingModeService.GetRotation());
-
-            //_modelView.BorderAnimator.Play(CanPlace() ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
 
             //UpdatePoints();
             //OnGhostPostionChanged();
         }
         private void HandleOnPositionChanged()
         {
-            var size = _card.Get().Scheme.Placement.GetRect(_buildingModeService.GetRotation());
+            var size = _buildingModeService.Card.Scheme.Placement.GetRect(_buildingModeService.GetRotation());
             var worldPosition = _fieldService.GetWorldPosition(_buildingModeService.GetPosition(), size);
             _view.LocalPosition.Value = worldPosition;
             _view.Rotator.Rotation = FieldRotation.ToDirection(_buildingModeService.GetRotation());

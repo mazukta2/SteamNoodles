@@ -22,6 +22,7 @@ using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Tests.Cases;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
@@ -31,15 +32,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostCreatedInBuildingMode()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
-
             var buildingMode = new BuildingModeService();
             var commands = new PresenterCommandsMock();
 
             var scheme = new ConstructionScheme();
-            schemesRepository.Add(scheme);
-            var link = cardsRepository.Add(new ConstructionCard(scheme));
 
             var viewCollection = new ViewsCollection();
             var view = new GhostManagerView(viewCollection);
@@ -47,7 +43,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             Assert.IsTrue(commands.IsEmpty());
 
-            buildingMode.Show(link);
+            buildingMode.Show(new ConstructionCard(scheme));
 
             Assert.IsTrue(commands.Last<AddGhostCommand>());
 
@@ -62,16 +58,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsAvailableCellsIsHighlightedInGhostMode()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
             var constructionsRepository = new Repository<Construction>();
 
             var buildinMode = new BuildingModeService();
             var commands = new PresenterCommandsMock();
 
             var scheme = new ConstructionScheme();
-            schemesRepository.Add(scheme);
-            var link = cardsRepository.Add(new ConstructionCard(scheme));
 
             var fieldService = new FieldService(10, new IntPoint(3, 3));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
@@ -82,7 +74,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
 
-            buildinMode.Show(link);
+            buildinMode.Show(new ConstructionCard(scheme));
 
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.IsReadyToPlace || x.State.Value == CellPlacementStatus.IsAvailableGhostPlace));
 
@@ -96,8 +88,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsCellsBeneathGhostIsHighlighted()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
             var constructionsRepository = new Repository<Construction>();
 
             var buildinMode = new BuildingModeService();
@@ -108,6 +98,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                     { 0, 1, 0 },
                     { 0, 1, 0 },
                 });
+
             var scheme = new ConstructionScheme(new Uid(),
                 DefId.None,
                 placement,
@@ -116,16 +107,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 new AdjacencyBonuses(),
                 "", "", new Requirements());
 
-            schemesRepository.Add(scheme);
-            var link = cardsRepository.Add(new ConstructionCard(scheme));
-
             var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
             new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
 
-            buildinMode.Show(link);
+            buildinMode.Show(new ConstructionCard(scheme));
 
             var cells = view.CellsContainer.FindViews<CellView>();
             var highlighedCells = cells.Where(x => x.State.Value == CellPlacementStatus.IsAvailableGhostPlace).OrderBy(x => x.LocalPosition.Value.X);
@@ -148,9 +136,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostChangesPositions()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
-
             var mockControls = new ControlsMock();
             var controls = new GameControls(mockControls);
 
@@ -170,16 +155,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 new AdjacencyBonuses(),
                 "", "", new Requirements());
 
-            schemesRepository.Add(scheme);
-            var link = cardsRepository.Add(new ConstructionCard(scheme));
-
             var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
             var viewCollection = new ViewsCollection();
 
-            buildinMode.Show(link);
+            buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new GhostView(viewCollection);
-            new GhostPresenter(view, link, buildinMode, fieldService, controls, commands);
+            new GhostPresenter(view, buildinMode, fieldService, controls, commands);
 
             Assert.AreEqual(new FieldPosition(0, 0), buildinMode.GetPosition());
 
@@ -194,9 +176,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostReactsToChangingPosition()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
-
             var mockControls = new ControlsMock();
             var controls = new GameControls(mockControls);
 
@@ -216,16 +195,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 new AdjacencyBonuses(),
                 "", "", new Requirements());
 
-            schemesRepository.Add(scheme);
-            var link = cardsRepository.Add(new ConstructionCard(scheme));
-
             var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
             var viewCollection = new ViewsCollection();
 
-            buildinMode.Show(link);
+            buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new GhostView(viewCollection);
-            new GhostPresenter(view, link, buildinMode, fieldService, controls, commands);
+            new GhostPresenter(view, buildinMode, fieldService, controls, commands);
 
             Assert.AreEqual(new GameVector3(0.25f, 0f, 0), view.LocalPosition.Value);
 
@@ -240,19 +216,55 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostViewChangeVisualIfItAvailable()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
-
-            var mockControls = new ControlsMock();
-            var controls = new GameControls(mockControls);
+            var constructionsRepository = new Repository<Construction>();
 
             var buildinMode = new BuildingModeService();
-            var commands = new PresenterCommandsMock();
+
+            var scheme = new ConstructionScheme(new Uid(),
+                DefId.None,
+                ContructionPlacement.One,
+                LocalizationTag.None,
+                new BuildingPoints(0),
+                new AdjacencyBonuses(),
+                "", "", new Requirements() { DownEdge = true });
+
+            var card = new ConstructionCard(scheme);
+
+            var fieldService = new FieldService(1, new IntPoint(5, 5));
+            var viewCollection = new ViewsCollection();
+
+            buildinMode.Show(card);
+
+            var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
+
+            var view = new ConstructionModelView(viewCollection);
+            new GhostModelPresenter(view, buildinMode, constructionsService);
+
+            // disallowed because DownEdge enabled.
+            Assert.IsFalse(constructionsService.CanPlace(card, new FieldPosition(0, 0), new FieldRotation()));
+
+            Assert.AreEqual("Dragging", ((AnimatorMock)view.Animator).Animation);
+            Assert.AreEqual("Disallowed", ((AnimatorMock)view.BorderAnimator).Animation);
+
+            buildinMode.SetGhostPosition(new FieldPosition(0, -2), new FieldRotation());
+            Assert.IsTrue(constructionsService.CanPlace(card, new FieldPosition(0, -2), new FieldRotation()));
+
+            Assert.AreEqual("Dragging", ((AnimatorMock)view.Animator).Animation);
+            Assert.AreEqual("Idle", ((AnimatorMock)view.BorderAnimator).Animation);
+
+            viewCollection.Dispose();
+        }
+
+        [Test, Order(TestCore.PresenterOrder)]
+        public void IsCellsIsColoredRightWithGhost()
+        {
+            var constructionsRepository = new Repository<Construction>();
+
+            var buildinMode = new BuildingModeService();
 
             var placement = new ContructionPlacement(new int[,] {
-                    { 0, 0, 0 },
-                    { 0, 1, 0 },
-                    { 0, 1, 0 },
+                    { 1, 1 },
+                    { 1, 1 }
                 });
             var scheme = new ConstructionScheme(new Uid(),
                 DefId.None,
@@ -262,76 +274,39 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 new AdjacencyBonuses(),
                 "", "", new Requirements() { DownEdge = true });
 
-            schemesRepository.Add(scheme);
-            var link = cardsRepository.Add(new ConstructionCard(scheme));
-
-            var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
+            var fieldService = new FieldService(1, new IntPoint(5, 5));
+            var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             var viewCollection = new ViewsCollection();
 
-            buildinMode.Show(link);
+            buildinMode.Show(new ConstructionCard(scheme));
 
-            var view = new ConstructionModelView(viewCollection);
-            var presenter = new GhostModelPresenter(view);
+            var view = new PlacementFieldView(viewCollection);
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
 
-            Assert.AreEqual("Dragging", ((AnimatorMock)view.Animator).Animation);
-            Assert.AreEqual("Disallowed", ((AnimatorMock)view.BorderAnimator).Animation);
+            buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
 
-            var newPos = new GameVector3(0.25f, 0, -4f * cellSize);
-            game.Controls.MovePointer(newPos); // move down
+            var cells = view.CellsContainer.FindViews<CellView>();
+            var actual = ToArray(5, cells);
+            var expected = new int[5, 5]
+            {
+                { 1,1,0,0,0 },
+                { 1,1,0,0,0 },
+                { 1,2,3,0,0 },
+                { 1,2,3,0,0 },
+                { 1,1,0,0,0 }
+            };
 
-            Assert.AreEqual("Dragging", ((AnimatorMock)view.Animator).Animation);
-            Assert.AreEqual("Idle", ((AnimatorMock)view.BorderAnimator).Animation);
+            Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
 
             viewCollection.Dispose();
-            controls.Dispose();
+
         }
-
-        //[Test]
-        //public void IsCellsBeneathGhostIsHighlightedRed()
-        //{
-        //    var size = 5;
-        //    var game = new GameConstructor()
-        //        .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1)
-        //        .UpdateDefinition<LevelDefinitionMock>((d) =>
-        //        {
-        //            d.PlacementField.Size = new IntPoint(size, size);
-        //            d.StartingHand.First().Placement = new int[,]
-        //            {
-        //                { 1, 1 },
-        //                { 1, 1 }
-        //            };
-        //            d.StartingHand.First().Requirements = new Requirements() { DownEdge = true };
-        //        })
-        //        .Build();
-
-        //    game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-
-        //    var worldPos = new GameVector3(0f, 0, -0.75f);
-        //    game.Controls.MovePointer(worldPos);
-
-        //    var cells = game.LevelCollection.FindViews<CellView>();
-        //    var actual = ToArray(size, cells);
-        //    var expected = new int[5, 5]
-        //    {
-        //        { 1,1,0,0,0 },
-        //        { 1,1,0,0,0 },
-        //        { 1,2,3,0,0 },
-        //        { 1,2,3,0,0 },
-        //        { 1,1,0,0,0 }
-        //    };
-
-        //    Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
-        //    game.Dispose();
-        //}
 
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostSpawnsRightModel()
         {
             var mockControls = new ControlsMock();
             var controls = new GameControls(mockControls);
-
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
 
             var fieldService = new FieldService(1, new IntPoint(3, 3));
             var buildinMode = new BuildingModeService();
@@ -345,13 +320,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 new AdjacencyBonuses(),
                 "", "view", new Requirements());
 
-            schemesRepository.Add(scheme);
-            var link = cardsRepository.Add(new ConstructionCard(scheme));
-
             var viewCollection = new ViewsCollection();
+            buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new GhostView(viewCollection);
-            new GhostPresenter(view, link, buildinMode, fieldService, controls, commands);
+            new GhostPresenter(view, buildinMode, fieldService, controls, commands);
 
             Assert.IsTrue(commands.Last<AddGhostModelCommand>());
             Assert.AreEqual(scheme.Id, commands.Commands.OfType<AddGhostModelCommand>().Last().Scheme.Id);
@@ -387,6 +360,35 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             //Assert.IsNull(game.LevelCollection.FindView<GhostView>());
 
             //game.Dispose();
+        }
+
+        int[,] ToArray(int size, IReadOnlyCollection<CellView> cells)
+        {
+            var actual = new int[size, size];
+            var chkd = 0;
+            for (int x = -size / 2; x <= size / 2; x++)
+                for (int y = -size / 2; y <= size / 2; y++)
+                {
+                    actual[x + size / 2, y + size / 2] = (int)cells.First(c => c.LocalPosition.Value == new GameVector3(x, 0, y)).State.Value;
+                    chkd++;
+                }
+
+            Assert.AreEqual(chkd, cells.Count());
+            return actual;
+        }
+
+        string PrintPosition(int[,] matrix)
+        {
+            var result = "";
+            for (int x = 0; x < matrix.GetLength(0); x++)
+            {
+                for (int y = 0; y < matrix.GetLength(1); y++)
+                {
+                    result += matrix[x, y].ToString();
+                }
+                result += "\r\n";
+            }
+            return result;
         }
 
         [TearDown]

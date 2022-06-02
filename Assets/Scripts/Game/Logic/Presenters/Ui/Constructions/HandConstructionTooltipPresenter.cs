@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private LocalizatedText _name;
         private LocalizatedText _adjecensy;
         private IEnumerable<ConstructionScheme> _highlights;
-        private PresenterModel<ConstructionCard> _model;
+        private ConstructionCard _model;
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view) :
                 this(view, IStageLevelPresenterRepository.Default.Constructions)
@@ -34,14 +34,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         protected override void DisposeInner()
         {
-            _model.Dispose();
             _name?.Dispose();
             _adjecensy?.Dispose();
         }
 
-        public void SetModel(EntityLink<ConstructionCard> link)
+        public void SetModel(ConstructionCard card)
         {
-            _model = link.CreateModel() ?? throw new ArgumentNullException(nameof(link));
+            _model = card ?? throw new ArgumentNullException(nameof(card));
             UpdateView();
         }
 
@@ -61,7 +60,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
             _name?.Dispose();
             _adjecensy?.Dispose();
-            var model = _model.Get();
+            var model = _model;
 
             _name = new LocalizatedText(_view.Name, new LocalizatedString(model.Name));
             _view.Points.Value = $"+{model.Points}";

@@ -148,7 +148,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             var occupiedByBuildings = _constructionsService.GetAllOccupiedSpace();
             if (_buildingModeService.IsEnabled)
             {
-                var scheme = _buildingModeService.Card.Get().Scheme;
+                var scheme = _buildingModeService.Card.Scheme;
                 ocuppiedCells = scheme.Placement
                     .GetOccupiedSpace(_buildingModeService.GetPosition(), _buildingModeService.GetRotation());
             }
@@ -162,7 +162,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
                 if (_buildingModeService.IsEnabled)
                 {
-                    var scheme = _buildingModeService.Card.Get().Scheme;
+                    var scheme = _buildingModeService.Card.Scheme;
                     if (_constructionsService.IsFreeCell(scheme, new FieldPosition(cell.Position), _buildingModeService.GetRotation()))
                         state = CellPlacementStatus.IsReadyToPlace;
 

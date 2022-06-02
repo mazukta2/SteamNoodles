@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleClick()
         {
-            _commands.Execute(new OpenBuildingScreenCommand(_model.GetLink()));
+            _commands.Execute(new OpenBuildingScreenCommand(_model.Get()));
         }
 
         private void UpdateAmount()
@@ -96,7 +96,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void _view_OnHighlihgtedEnter()
         {
-            _commands.Execute(new OpenConstructionTooltipCommand(_model.GetLink(), _view.TooltipContainer, _view.TooltipPrefab));
+            _commands.Execute(new OpenConstructionTooltipCommand(_model.Get(), _view.TooltipContainer, _view.TooltipPrefab));
         }
 
         private void _view_OnHighlihgtedExit()

@@ -15,11 +15,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Common
         public event Action OnPositionChanged = delegate { };
         public event Action OnHighligtingChanged = delegate { };
 
-        public EntityLink<ConstructionCard> Card { get; private set; }
+        public ConstructionCard Card { get; private set; }
         public bool IsEnabled => Card != null;
         public IReadOnlyCollection<Construction> ConstructionsHighlights { get; private set; } = new List<Construction>();
 
-        public void Show(EntityLink<ConstructionCard> constructionCard)
+        public void Show(ConstructionCard constructionCard)
         {
             Card = constructionCard;
             _fieldPosition = new FieldPosition(0, 0);

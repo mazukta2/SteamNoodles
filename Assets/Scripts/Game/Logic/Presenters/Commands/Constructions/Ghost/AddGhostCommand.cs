@@ -8,16 +8,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand
 {
     public class AddGhostCommand : IPresenterCommand
     {
-        private EntityLink<ConstructionCard> _entityLink;
-        private IViewContainer _tooltipContainer;
-        private IViewPrefab _tooltipPrefab;
+        public ConstructionCard Card { get; }
+        public IViewContainer Container { get; }
+        public IViewPrefab Prefab { get; }
 
-        public AddGhostCommand(EntityLink<ConstructionCard> entityLink,
-            IViewContainer tooltipContainer, IViewPrefab tooltipPrefab)
+        public AddGhostCommand(ConstructionCard card,
+            IViewContainer container, IViewPrefab prefab)
         {
-            _entityLink = entityLink;
-            _tooltipContainer = tooltipContainer;
-            _tooltipPrefab = tooltipPrefab;
+            Card = card;
+            Container = container;
+            Prefab = prefab;
         }
 
         public void Execute()

@@ -53,7 +53,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
                 Hide();
         }
 
-        private void Show(EntityLink<ConstructionCard> constructionCard)
+        private void Show(ConstructionCard constructionCard)
         {
             _tooltip.SetModel(constructionCard);
             _view.Animator.Play(Animations.Show.ToString());

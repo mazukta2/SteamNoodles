@@ -295,14 +295,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void IsHandAnimationsPlayedInBuildingMode()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
-
-            var scheme = new ConstructionScheme();
-            schemesRepository.Add(scheme);
-
-            var card = new ConstructionCard(scheme);
-            var link = cardsRepository.Add(card);
 
             var mode = new BuildingModeService();
             var viewCollection = new ViewsCollection();
@@ -311,7 +304,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             new HandPresenter(handView, cardsRepository, mode, commands);
 
             Assert.AreEqual("Choose", handView.Animator.Animation);
-            mode.Show(link);
+            mode.Show(new ConstructionCard(new ConstructionScheme()));
             Assert.AreEqual("Build", handView.Animator.Animation);
             mode.Hide();
             Assert.AreEqual("Choose", handView.Animator.Animation);
