@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions
         {
             Default = this; 
             new PointCounterWidgetPresenter(IStageLevelService.Default.Points, 
-                IGhostManagerView.Default.Presenter, IGameTime.Default, this, IPointPieceSpawnerView.Default,
+                IGameTime.Default, this, IPointPieceSpawnerView.Default,
                 IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>());
         }
     }

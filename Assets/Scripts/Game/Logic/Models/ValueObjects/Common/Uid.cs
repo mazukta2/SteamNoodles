@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
     {
         public long Value { get; }
 
-        private static long _lastId;
+        private static long _lastId = 1;
 
         public Uid()
         {

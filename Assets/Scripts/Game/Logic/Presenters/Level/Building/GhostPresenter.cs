@@ -2,161 +2,233 @@
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
+using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class GhostPresenter : BasePresenter<IGhostView>
     {
-        public event Action OnGhostPostionChanged = delegate { };
-        public ConstructionScheme Scheme { get; private set; }
-        public FieldRotation Rotation { get; private set; }
+        //public event Action OnGhostPostionChanged = delegate { };
+        //public ConstructionScheme Scheme { get; private set; }
+        //public FieldRotation Rotation { get; private set; }
 
         private readonly IGhostView _view;
-        private readonly IGameTime _time;
-        private readonly ConstructionsSettingsDefinition _constructionsSettings;
+        private readonly EntityLink<ConstructionCard> _card;
+        private readonly BuildingModeService _buildingModeService;
+        private readonly FieldService _fieldService;
         private readonly IControls _controls;
-        private readonly IGameKeysManager _gameKeysManager;
-        private readonly BuildScreenPresenter _buildScreen;
-        private readonly IBuildingPresenterService _buildingService;
-        private readonly ScreenManagerPresenter _screenManager;
-        private readonly IFieldPresenterService _fieldService;
-        private readonly IAssets _assets;
-        private GameVector3 _pointerPosition;
-        private KeyCommand _rotateLeft;
-        private KeyCommand _rotateRight;
-        private IConstructionModelView _modelView;
+        private readonly IPresenterCommands _commands;
 
-        public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
-            ScreenManagerPresenter screenManager,
-            IFieldPresenterService fieldService,
-            IBuildingPresenterService buildingService,
-            BuildScreenPresenter buildScreen, IControls controls, IGameKeysManager gameKeysManager, IAssets assets, IGhostView view, IGameTime time) : base(view)
+        private GameVector3 _pointerPosition;
+
+        //private readonly IGameTime _time;
+        //private readonly IGameKeysManager _gameKeysManager;
+        //private readonly ScreenManagerPresenter _screenManager;
+        //private GameVector3 _pointerPosition;
+        //private KeyCommand _rotateLeft;
+        //private KeyCommand _rotateRight;
+        //private IConstructionModelView _modelView;
+
+        public GhostPresenter(IGhostView view, EntityLink<ConstructionCard> card) : this(view, card,
+            IPresenterServices.Default.Get<BuildingModeService>(),
+            IPresenterServices.Default.Get<FieldService>(),
+            IGameControls.Default,
+            IPresenterCommands.Default)
+        {
+
+        }
+
+        public GhostPresenter(IGhostView view, EntityLink<ConstructionCard> card,
+            BuildingModeService buildingModeService,
+            FieldService fieldService,
+            IGameControls controls, IPresenterCommands commands) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _time = time;
-            _constructionsSettings = constructionsSettings ?? throw new ArgumentNullException(nameof(constructionsSettings));
-            _controls = controls ?? throw new ArgumentNullException(nameof(controls));
-            _gameKeysManager = gameKeysManager ?? throw new ArgumentNullException(nameof(gameKeysManager));
-            _buildScreen = buildScreen ?? throw new ArgumentNullException(nameof(buildScreen));
-            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
-            _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
+            _card = card ?? throw new ArgumentNullException(nameof(card));
+            _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
-            _assets = assets ?? throw new ArgumentNullException(nameof(assets));
-            Scheme = _buildScreen.CurrentCard.Scheme ?? throw new ArgumentNullException(nameof(_buildScreen.CurrentCard.Scheme));
-            Rotation = new FieldRotation(FieldRotation.Rotation.Top);
+            _controls = controls ?? throw new ArgumentNullException(nameof(controls));
+            _commands = commands ?? throw new ArgumentNullException(nameof(commands));
 
-            _rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
-            _rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
+            if (!_buildingModeService.IsEnabled) throw new Exception("Ghost can exist only in building mode");
 
-            _view.Container.Clear();
-            _modelView = _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Scheme.LevelViewPath));
-            _modelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
 
-            _rotateLeft.OnTap += HandleRotateLeftTap;
-            _rotateRight.OnTap += HandleRotateRightTap;
+            //_time = time;
+            //_constructionsSettings = constructionsSettings ?? throw new ArgumentNullException(nameof(constructionsSettings));
+            //_gameKeysManager = gameKeysManager ?? throw new ArgumentNullException(nameof(gameKeysManager));
+            //_buildScreen = buildScreen ?? throw new ArgumentNullException(nameof(buildScreen));
+            ////_buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
+            //_screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
+            //Scheme = _buildScreen.CurrentCard.Scheme ?? throw new ArgumentNullException(nameof(_buildScreen.CurrentCard.Scheme));
+            //Rotation = new FieldRotation(FieldRotation.Rotation.Top);
 
+            //_rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
+            //_rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
+
+            _commands.Execute(new AddGhostModelCommand(card.Get().Scheme, _view.Container));
+
+            //_rotateLeft.OnTap += HandleRotateLeftTap;
+            //_rotateRight.OnTap += HandleRotateRightTap;
+            _buildingModeService.OnChanged += HandleModeOnChanged;
+            _buildingModeService.OnPositionChanged += HandleOnPositionChanged;
             _controls.OnLevelClick += HandleOnLevelClick;
             _controls.OnLevelPointerMoved += HandleOnPointerMoved;
 
+
             HandleOnPointerMoved(_controls.PointerLevelPosition);
         }
+
+        //public GhostPresenter(ConstructionsSettingsDefinition constructionsSettings, 
+        //    ScreenManagerPresenter screenManager,
+        //    FieldService fieldService,
+        //    BuildScreenPresenter buildScreen, IControls controls, IGameKeysManager gameKeysManager, IAssets assets, IGhostView view, IGameTime time) : base(view)
+        //{
+        //    _view = view ?? throw new ArgumentNullException(nameof(view));
+        //    _time = time;
+        //    _constructionsSettings = constructionsSettings ?? throw new ArgumentNullException(nameof(constructionsSettings));
+        //    _controls = controls ?? throw new ArgumentNullException(nameof(controls));
+        //    _gameKeysManager = gameKeysManager ?? throw new ArgumentNullException(nameof(gameKeysManager));
+        //    _buildScreen = buildScreen ?? throw new ArgumentNullException(nameof(buildScreen));
+        //    //_buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
+        //    _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
+        //    _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
+        //    _assets = assets ?? throw new ArgumentNullException(nameof(assets));
+        //    Scheme = _buildScreen.CurrentCard.Scheme ?? throw new ArgumentNullException(nameof(_buildScreen.CurrentCard.Scheme));
+        //    Rotation = new FieldRotation(FieldRotation.Rotation.Top);
+
+        //    _rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
+        //    _rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
+
+        //    _view.Container.Clear();
+        //    _modelView = _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(_buildScreen.CurrentCard.Scheme.LevelViewPath));
+        //    _modelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
+
+        //    _rotateLeft.OnTap += HandleRotateLeftTap;
+        //    _rotateRight.OnTap += HandleRotateRightTap;
+
+        //    _controls.OnLevelClick += HandleOnLevelClick;
+        //    _controls.OnLevelPointerMoved += HandleOnPointerMoved;
+
+        //    HandleOnPointerMoved(_controls.PointerLevelPosition);
+        //}
 
         protected override void DisposeInner()
         {
             _controls.OnLevelClick -= HandleOnLevelClick;
             _controls.OnLevelPointerMoved -= HandleOnPointerMoved;
+            _buildingModeService.OnChanged -= HandleModeOnChanged;
+            _buildingModeService.OnPositionChanged -= HandleOnPositionChanged;
 
-            _rotateLeft.OnTap -= HandleRotateLeftTap;
-            _rotateRight.OnTap -= HandleRotateRightTap;
+            //_rotateLeft.OnTap -= HandleRotateLeftTap;
+            //_rotateRight.OnTap -= HandleRotateRightTap;
         }
 
-        public FieldPosition GetGridPosition()
+        private void HandleModeOnChanged(bool value)
         {
-            return _fieldService.GetWorldConstructionToField(_pointerPosition, GetSize());
+            if (!value) _view.Dispose();
         }
 
-        public GameVector3 GetWorldPosition()
-        {
-            return _fieldService.GetAlignWithAGrid(_pointerPosition, GetSize());
-        }
-
-        public IntRect GetSize()
-        {
-            return _buildScreen.CurrentCard.Scheme.Placement.GetRect(Rotation);
-        }
-
-        public GameVector3 GetTargetPosition()
-        {
-            return _pointerPosition;
-        }
-
-        public int GetPointChanges()
-        {
-            return _buildingService.GetPoints(_buildScreen.CurrentCard, GetGridPosition(), Rotation).Value;
-        }
+        //public int GetPointChanges()
+        //{
+        //    return _buildingService.GetPoints(_buildScreen.CurrentCard, GetGridPosition(), Rotation).Value;
+        //}
 
         private void HandleOnLevelClick()
         {
-            if (_buildingService.CanPlace(_buildScreen.CurrentCard, GetGridPosition(), Rotation))
-            {
-                _buildingService.Build(_buildScreen.CurrentCard, GetGridPosition(), Rotation);
-            }
-            _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
+            //if (_buildingService.CanPlace(_buildScreen.CurrentCard, GetGridPosition(), Rotation))
+            //{
+            //    _buildingService.Build(_buildScreen.CurrentCard, GetGridPosition(), Rotation);
+            //}
+            //_screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
 
         private void HandleOnPointerMoved(GameVector3 worldPosition)
         {
             _pointerPosition = worldPosition;
-            UpdatePosition();
+            HandlePointerPositionUpdated();
         }
 
-        private bool CanPlace()
+        //private bool CanPlace()
+        //{
+        //    //if (_buildingService.CanPlace(_buildScreen.CurrentCard, GetGridPosition(), Rotation))
+        //    //{
+        //    //    return true;
+        //    //}
+        //    return false;
+        //}
+
+        //private void UpdatePoints()
+        //{
+        //    //var points = 0;
+        //    //points += _buildingService.GetPoints(_buildScreen.CurrentCard, GetGridPosition(), Rotation).Value;
+
+        //    //_buildScreen.UpdatePoints(GetWorldPosition(), points,
+        //    //    _buildingService.GetAdjacencyPoints(_buildScreen.CurrentCard, GetGridPosition(), Rotation));
+        //}
+
+
+        //private void HandleRotateLeftTap()
+        //{
+        //    //Rotation = FieldRotation.RotateLeft(Rotation);
+        //    //UpdatePosition();
+        //}
+
+        //private void HandleRotateRightTap()
+        //{
+        //    //Rotation = FieldRotation.RotateRight(Rotation);
+        //    //UpdatePosition();
+        //}
+
+        //private FieldPosition GetGridPosition()
+        //{
+        //    return _fieldService.GetWorldConstructionToField(_pointerPosition, GetSize());
+        //}
+
+        //private GameVector3 GetWorldPosition()
+        //{
+        //    return _fieldService.GetAlignWithAGrid(_pointerPosition, GetSize());
+        //}
+
+        //private IntRect GetSize()
+        //{
+        //    return _card.Get().Scheme.Placement.GetRect(_buildingModeService.GetRotation());
+        //}
+
+        //public GameVector3 GetTargetPosition()
+        //{
+        //    return _pointerPosition;
+        //}
+
+        private void HandlePointerPositionUpdated()
         {
-            if (_buildingService.CanPlace(_buildScreen.CurrentCard, GetGridPosition(), Rotation))
-            {
-                return true;
-            }
-            return false;
-        }
+            var size = _card.Get().Scheme.Placement.GetRect(_buildingModeService.GetRotation());
+            var fieldPosition = _fieldService.GetWorldConstructionToField(_pointerPosition, size);
+            _buildingModeService.SetGhostPosition(fieldPosition, _buildingModeService.GetRotation());
 
-        private void UpdatePoints()
+            //_modelView.BorderAnimator.Play(CanPlace() ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
+
+            //UpdatePoints();
+            //OnGhostPostionChanged();
+        }
+        private void HandleOnPositionChanged()
         {
-            var points = 0;
-            points += _buildingService.GetPoints(_buildScreen.CurrentCard, GetGridPosition(), Rotation).Value;
-
-            _buildScreen.UpdatePoints(GetWorldPosition(), points,
-                _buildingService.GetAdjacencyPoints(_buildScreen.CurrentCard, GetGridPosition(), Rotation));
+            var size = _card.Get().Scheme.Placement.GetRect(_buildingModeService.GetRotation());
+            var worldPosition = _fieldService.GetWorldPosition(_buildingModeService.GetPosition(), size);
+            _view.LocalPosition.Value = worldPosition;
+            _view.Rotator.Rotation = FieldRotation.ToDirection(_buildingModeService.GetRotation());
         }
 
-
-        private void HandleRotateLeftTap()
-        {
-            Rotation = FieldRotation.RotateLeft(Rotation);
-            UpdatePosition();
-        }
-
-        private void HandleRotateRightTap()
-        {
-            Rotation = FieldRotation.RotateRight(Rotation);
-            UpdatePosition();
-        }
-
-        private void UpdatePosition()
-        {
-            _modelView.BorderAnimator.Play(CanPlace() ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
-            _view.Rotator.Rotation = FieldRotation.ToDirection(Rotation);
-            _view.LocalPosition.Value = GetWorldPosition();
-            UpdatePoints();
-            OnGhostPostionChanged();
-        }
     }
 }

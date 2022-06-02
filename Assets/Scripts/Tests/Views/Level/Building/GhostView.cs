@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views.Common;
+using Game.Assets.Scripts.Tests.Views.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Views.Level.Building
 {
@@ -12,14 +13,13 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
     {
         public IPosition LocalPosition { get; private set; } = new PositionMock();
         public IViewContainer Container { get; private set; }
-        public IRotator Rotator { get; }
+        public IRotator Rotator { get; } = new Rotator();
         public IPointPieceSpawnerView PieceSpawner { get; }
 
-        public GhostView(IViewsCollection level, IViewContainer container, IRotator rotator) : base(level)
+        public GhostView(IViewsCollection level) : base(level)
         {
-            Container = container;
-            Rotator = rotator;
             PieceSpawner = new PieceSpawnerView(level);
+            Container = new ContainerViewMock(level);
         }
     }
 }

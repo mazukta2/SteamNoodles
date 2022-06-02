@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private PresenterModel<Construction> _link;
         private IConstructionView _constructionView;
         private ConstructionsSettingsDefinition _constrcutionsSettings;
-        private readonly IFieldPresenterService _fieldPositionService;
+        private readonly FieldService _fieldPositionService;
         private GhostManagerPresenter _ghostManager;
         private IControls _controls;
         private IConstructionModelView _modelView;
@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private bool _isExploading;
 
         public ConstructionPresenter(ConstructionsSettingsDefinition constrcutionsSettings,
-            EntityLink<Construction> construction, IFieldPresenterService fieldPositionService, IAssets assets, IConstructionView view,
+            EntityLink<Construction> construction, FieldService fieldPositionService, IAssets assets, IConstructionView view,
             GhostManagerPresenter ghostManagerPresenter, IControls controls) : base(view)
         {
             _link = construction.CreateModel();
@@ -46,8 +46,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _modelView.Animator.OnFinished += DropFinished;
             _link.OnDispose += HandleModelDispose;
             _link.OnEvent += HandleOnEvent;
-            _ghostManager.OnGhostChanged += UpdateGhost;
-            _ghostManager.OnGhostPostionChanged += UpdateGhost;
+            //_ghostManager.OnGhostChanged += UpdateGhost;
+            //_ghostManager.OnGhostPostionChanged += UpdateGhost;
         }
 
         protected override void DisposeInner()
@@ -56,8 +56,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _link.OnDispose -= HandleModelDispose;
             _link.OnEvent -= HandleOnEvent;
             _modelView.Animator.OnFinished -= DropFinished;
-            _ghostManager.OnGhostChanged -= UpdateGhost;
-            _ghostManager.OnGhostPostionChanged -= UpdateGhost;
+            //_ghostManager.OnGhostChanged -= UpdateGhost;
+            //_ghostManager.OnGhostPostionChanged -= UpdateGhost;
             _modelView.Animator.OnFinished -= ExplosionFinished;
         }
 
@@ -66,21 +66,21 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             if (!_dropFinished)
                 return;
 
-            var ghost = _ghostManager.GetGhost();
-            if (ghost != null)
-            {
-                var distance = ghost.GetTargetPosition().GetDistanceTo(_fieldPositionService.GetWorldPosition(_link.Get()));
-                if (distance > _constrcutionsSettings.GhostShrinkDistance)
-                    _modelView.Shrink.Value = 1;
-                else if (distance > _constrcutionsSettings.GhostHalfShrinkDistance)
-                    _modelView.Shrink.Value = distance / _constrcutionsSettings.GhostShrinkDistance;
-                else
-                    _modelView.Shrink.Value = 0.2f;
-            }
-            else
-            {
-                _modelView.Shrink.Value = 1;
-            }
+            //var ghost = _ghostManager.GetGhost();
+            //if (ghost != null)
+            //{
+            //    var distance = ghost.GetTargetPosition().GetDistanceTo(_fieldPositionService.GetWorldPosition(_link.Get()));
+            //    if (distance > _constrcutionsSettings.GhostShrinkDistance)
+            //        _modelView.Shrink.Value = 1;
+            //    else if (distance > _constrcutionsSettings.GhostHalfShrinkDistance)
+            //        _modelView.Shrink.Value = distance / _constrcutionsSettings.GhostShrinkDistance;
+            //    else
+            //        _modelView.Shrink.Value = 0.2f;
+            //}
+            //else
+            //{
+            //    _modelView.Shrink.Value = 1;
+            //}
         }
 
         private void DropFinished()

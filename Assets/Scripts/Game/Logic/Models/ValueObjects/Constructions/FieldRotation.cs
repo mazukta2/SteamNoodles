@@ -8,6 +8,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 {
     public record FieldRotation
     {
+        public FieldRotation()
+        {
+            Value = Rotation.Top;
+        }
+
         public FieldRotation(Rotation value)
         {
             Value = value;

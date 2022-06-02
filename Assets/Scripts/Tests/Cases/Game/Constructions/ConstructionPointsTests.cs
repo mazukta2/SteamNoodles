@@ -38,7 +38,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var schemesService = new SchemesService(constructionsSchemeRepository, deck);
             var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var buildngService = new BuildingService(constructionsRepository, pointsService, handService, fieldService);
+            var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
+            var buildngService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
 
             var definition = ConstructionSetups.GetDefault();
             var scheme = schemesService.Add(definition);
@@ -67,7 +68,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var schemesService = new SchemesService(constructionsSchemeRepository, deck);
             var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var buildngService = new BuildingService(constructionsRepository, pointsService, handService, fieldService);
+            var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
+            var buildngService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
 
             var definition = ConstructionSetups.GetDefault();
             definition.Points = 1;
@@ -83,7 +85,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             buildngService.Build(card, new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Top));
             
-            Assert.AreEqual(3, buildngService.GetPoints(card, new FieldPosition(1, 0), new FieldRotation(FieldRotation.Rotation.Top)).Value);
+            Assert.AreEqual(3, constructionsService.GetPoints(card, new FieldPosition(1, 0), new FieldRotation(FieldRotation.Rotation.Top)).Value);
 
             buildngService.Build(card, new FieldPosition(1, 0), new FieldRotation(FieldRotation.Rotation.Top));
 

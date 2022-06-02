@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -20,6 +21,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         public IAnimator BorderAnimator { get; } = new AnimatorMock();
 
         public IFloat Shrink { get; } = new FloatMock();
+        public IPresenter Presenter { get; set; }
 
         public ConstructionModelView(IViewsCollection level) : base(level)
         {

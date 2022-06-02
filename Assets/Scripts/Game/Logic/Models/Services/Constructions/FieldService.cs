@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
 {
-    public class FieldService : IFieldPresenterService
+    public class FieldService
     {
         private float _cellSize;
         private IntPoint _mapSize;

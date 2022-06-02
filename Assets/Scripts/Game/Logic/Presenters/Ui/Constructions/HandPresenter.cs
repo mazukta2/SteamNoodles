@@ -1,4 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
@@ -17,22 +20,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         //public Modes Mode { get => _mode; set => SetMode(value); }
         private readonly IPresenterRepository<ConstructionCard> _repository;
         private readonly BuildingModeService _buildingService;
+        private readonly IPresenterCommands _commands;
         private readonly IHandView _view;
         private Modes _mode;
 
         public HandPresenter(IHandView view) 
             : this(view, 
                   IStageLevelPresenterRepository.Default?.Cards, 
-                  IPresenterServices.Default?.Get<BuildingModeService>())
+                  IPresenterServices.Default?.Get<BuildingModeService>(),
+                  IPresenterCommands.Default)
         {
         }
 
         public HandPresenter(IHandView view, 
-            IPresenterRepository<ConstructionCard> repository, BuildingModeService buildingService) : base(view)
+            IPresenterRepository<ConstructionCard> repository, 
+            BuildingModeService buildingService,
+            IPresenterCommands commands) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
+            _commands = commands ?? throw new ArgumentNullException(nameof(commands));
 
             var cards = _repository.Get();
             foreach (var item in cards)
@@ -41,6 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
+            SetMode(Modes.Choose);
             _buildingService.OnChanged += HandleVisualModesChanged;
         }
 
@@ -52,13 +61,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleCardAdded(EntityLink<ConstructionCard> entity, ConstructionCard obj)
         {
-            var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
-            new HandConstructionPresenter(entity, view);
+            _commands.Execute(new AddHandConstructionCommand(entity, _view.Cards, _view.CardPrototype));
         }
 
         private void CancelClick()
         {
-            ScreenManagerPresenter.Default.GetCollection<CommonScreens>().Open<IMainScreenView>();
+            _commands.Execute(new OpenMainScreenCommand());
         }
 
         private void HandleVisualModesChanged(bool state)

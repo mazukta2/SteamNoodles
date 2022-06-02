@@ -1,15 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
-using Game.Assets.Scripts.Game.Logic.Views.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level
 {
-    public interface IConstructionModelView : IView
+    public interface IConstructionModelView : IViewWithPresenter
     {
         IAnimator Animator { get; }
         IAnimator BorderAnimator { get; }

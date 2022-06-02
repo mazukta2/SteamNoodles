@@ -1,13 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
-using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -16,23 +14,22 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     {
         private PresenterModel<ConstructionCard> _model;
         private IHandConstructionView _view;
+        private readonly IPresenterCommands _commands;
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
-        private Action<IHandConstructionTooltipView> _fillTooltip;
 
         public HandConstructionPresenter(EntityLink<ConstructionCard> model,
-            IHandConstructionView view, Action<IHandConstructionTooltipView> fillTooltip) : this(model, view)
+            IHandConstructionView view) : this(model, view, IPresenterCommands.Default)
         {
-            _fillTooltip = fillTooltip ?? throw new ArgumentNullException(nameof(fillTooltip));
         }
 
         public HandConstructionPresenter(EntityLink<ConstructionCard> model,
-            IHandConstructionView view) : base(view)
+            IHandConstructionView view, IPresenterCommands commands) : base(view)
         {
             _model = model.CreateModel() ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
+            _commands = commands ?? throw new ArgumentNullException(nameof(commands));
             _animations = new HandConstructionsAnimations(view);
-            _fillTooltip = FillTooltipPresenter;
 
             view.Button.SetAction(HandleClick);
 
@@ -60,8 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleClick()
         {
-            ScreenManagerPresenter.Default.Open<IBuildScreenView>(x => 
-                new BuildScreenPresenter(x, _model.GetLink()));
+            _commands.Execute(new OpenBuildingScreenCommand(_model.GetLink()));
         }
 
         private void UpdateAmount()
@@ -100,19 +96,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void _view_OnHighlihgtedEnter()
         {
-            _view.TooltipContainer.Clear();
-            var view = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
-            _fillTooltip(view);
+            _commands.Execute(new OpenConstructionTooltipCommand(_model.GetLink(), _view.TooltipContainer, _view.TooltipPrefab));
         }
 
         private void _view_OnHighlihgtedExit()
         {
-            _view.TooltipContainer.Clear();
+            _commands.Execute(new CloseConstructionTooltipCommand(_view.TooltipContainer));
         }
 
-        private void FillTooltipPresenter(IHandConstructionTooltipView view)
-        {
-            new HandConstructionTooltipPresenter(view).SetModel(_model.GetLink());
-        }
     }
 }

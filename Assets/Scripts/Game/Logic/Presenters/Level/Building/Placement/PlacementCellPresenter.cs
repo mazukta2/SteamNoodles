@@ -14,19 +14,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         public IntPoint Position => _position;
 
         private ICellView _cellView;
-        private PlacementFieldPresenter _field;
         private IntPoint _position;
-        private readonly IFieldPresenterService _fieldService;
-        private ConstructionsSettingsDefinition _constructionsSettingsDefinition;
+        private readonly FieldService _fieldService;
 
-        public PlacementCellPresenter(ICellView view, PlacementFieldPresenter field, 
-            ConstructionsSettingsDefinition constructionsSettingsDefinition, IntPoint position, IFieldPresenterService fieldService) : base(view)
+        public PlacementCellPresenter(ICellView view, IntPoint position, FieldService fieldService) : base(view)
         {
             _cellView = view ?? throw new ArgumentNullException(nameof(view));
-            _field = field ?? throw new ArgumentNullException(nameof(field));
             _position = position;
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
-            _constructionsSettingsDefinition = constructionsSettingsDefinition;
 
             view.LocalPosition.Value = GetPosition();
         }

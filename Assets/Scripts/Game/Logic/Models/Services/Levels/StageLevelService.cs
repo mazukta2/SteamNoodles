@@ -21,6 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
     public class StageLevelService : Disposable, IStageLevelService
     {
         public StageFlowService Flow { get; }
+        public ConstructionsService Constructions { get; }
         public HandService Hand { get; }
         public UnitsService Units { get; }
         public UnitsCrowdService Crowd { get; }
@@ -61,7 +62,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             Units = new UnitsService(_repositories.Units, unitSettings, settings, Random);
 
             Flow = new StageFlowService(level, Hand, Schemes, Points);
-            Building = new BuildingService(_repositories.Constructions, Points, Hand, Field);
+            Constructions = new ConstructionsService(_repositories.Constructions, Field);
+            Building = new BuildingService(_repositories.Constructions, Constructions, Points, Hand, Field);
             Crowd = new UnitsCrowdService(_repositories.Units, Units, time, settings, random);
             Queue = new UnitsCustomerQueueService(_repositories.Units, Units, Crowd, time, random);
             UnitsMovement = new UnitsMovementsService(_repositories.Units, unitSettings, Time);

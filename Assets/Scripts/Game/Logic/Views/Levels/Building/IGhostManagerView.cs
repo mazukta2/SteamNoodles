@@ -14,15 +14,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Level
     {
         IViewContainer Container { get;  }
         IViewPrefab GhostPrototype { get; }
-        static IGhostManagerView Default { get; set; }
 
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            Default = this;
-            new GhostManagerPresenter(ScreenManagerPresenter.Default,
-                IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), 
-                IGameControls.Default,
-                IStageLevelService.Default.Building, IStageLevelService.Default.Field, this, IGameTime.Default);
+            new GhostManagerPresenter(this);
         }
     }
 }
