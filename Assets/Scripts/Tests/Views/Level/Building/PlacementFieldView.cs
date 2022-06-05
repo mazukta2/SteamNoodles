@@ -35,8 +35,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
         {
             public override void Fill(IViewsCollection collection)
             {
-                var c = new ContainerViewMock(collection);
-                new ConstructionView(collection, c, new Rotator());
+                new ConstructionView(collection);
             }
         }
 

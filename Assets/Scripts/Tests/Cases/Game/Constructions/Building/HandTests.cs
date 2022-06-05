@@ -8,27 +8,17 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
-using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Presenters.Commands;
-using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
-using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using Game.Tests.Cases;
 using NUnit.Framework;
-using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 {
@@ -146,7 +136,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             Assert.AreEqual(0, cardsRepository.Count);
 
-            pointsService.ChangePoints(new BuildingPoints(3));
+            pointsService.Change(new BuildingPoints(3));
             Assert.AreEqual(new BuildingLevel(1), pointsService.GetCurrentLevel());
 
             Assert.AreEqual(1, cardsRepository.Count);

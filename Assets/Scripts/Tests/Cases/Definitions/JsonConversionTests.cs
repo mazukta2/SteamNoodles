@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using Game.Assets.Scripts.Game.Logic.Definitions;
-using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Tests.Cases;
 using Game.Tests.Controllers;
 using Newtonsoft.Json;

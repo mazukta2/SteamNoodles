@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 
             // TODO: move repositories outside
             _repositories = new StageLevelRepository();
-            IStageLevelPresenterRepository.Default = _repositories;
+            IStageLevelPresenterRepositories.Default = _repositories;
 
             var unitSettings = definitions.Get<UnitsSettingsDefinition>();
             var constructionSettings = definitions.Get<ConstructionsSettingsDefinition>();
@@ -73,7 +73,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 
         protected override void DisposeInner()
         {
-            IStageLevelPresenterRepository.Default = null;
+            IStageLevelPresenterRepositories.Default = null;
             _repositories.Dispose();
 
             UnitsMovement.Dispose();

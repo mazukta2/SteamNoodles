@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets
 
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            new BuildingTooltipPresenter(this, IStageLevelPresenterRepository.Default.Constructions);
+            new BuildingTooltipPresenter(this, IStageLevelPresenterRepositories.Default.Constructions);
         }
     }
 }

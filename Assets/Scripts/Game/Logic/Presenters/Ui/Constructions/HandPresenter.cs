@@ -15,9 +15,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandPresenter : BasePresenter<IHandView>
     {
-        public static HandPresenter Default { get; set; }
-
-        //public Modes Mode { get => _mode; set => SetMode(value); }
         private readonly IPresenterRepository<ConstructionCard> _repository;
         private readonly BuildingModeService _buildingService;
         private readonly IPresenterCommands _commands;
@@ -26,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public HandPresenter(IHandView view) 
             : this(view, 
-                  IStageLevelPresenterRepository.Default?.Cards, 
+                  IStageLevelPresenterRepositories.Default?.Cards, 
                   IPresenterServices.Default?.Get<BuildingModeService>(),
                   IPresenterCommands.Default)
         {

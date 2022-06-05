@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public class StageLevelRepository : Disposable, IStageLevelPresenterRepository
+    public class StageLevelRepository : Disposable, IStageLevelPresenterRepositories
     {
         public Repository<ConstructionScheme> Schemes { get; private set; } = new();
         public Repository<ConstructionCard> Cards { get; private set; } = new();
@@ -21,9 +21,9 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public Repository<Unit> Units { get; private set; } = new();
         public SingletonRepository<Deck<ConstructionScheme>> ConstructionsDeck { get; private set; } = new();
 
-        IPresenterRepository<ConstructionCard> IStageLevelPresenterRepository.Cards => Cards;
-        IPresenterRepository<Construction> IStageLevelPresenterRepository.Constructions => Constructions;
-        IPresenterRepository<Unit> IStageLevelPresenterRepository.Units => Units;
+        IPresenterRepository<ConstructionCard> IStageLevelPresenterRepositories.Cards => Cards;
+        IPresenterRepository<Construction> IStageLevelPresenterRepositories.Constructions => Constructions;
+        IPresenterRepository<Unit> IStageLevelPresenterRepositories.Units => Units;
 
         public StageLevelRepository()
         {

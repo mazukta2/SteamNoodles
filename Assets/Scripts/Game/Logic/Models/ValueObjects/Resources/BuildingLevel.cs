@@ -7,6 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources
 {
     public record BuildingLevel
     {
+        public int Value { get => _value; }
         private int _value;
 
         public BuildingLevel(int value)
@@ -15,5 +16,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources
 
             _value = value;
         }
+
     }
 }

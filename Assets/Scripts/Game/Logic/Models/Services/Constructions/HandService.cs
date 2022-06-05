@@ -56,5 +56,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             return _repository.Get();
         }
 
+        public bool Has(ConstructionCard card)
+        {
+            return _repository.Has(card);
+        }
     }
 }

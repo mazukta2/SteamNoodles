@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level;
@@ -45,7 +46,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             buildingMode.Show(new ConstructionCard(scheme));
 
-            Assert.IsTrue(commands.Last<AddGhostCommand>());
+            Assert.IsTrue(commands.Last<BuildConstructionCommand>());
 
             buildingMode.Hide();
 
@@ -69,7 +70,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService, constructionsRepository, commands);
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
@@ -111,7 +112,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService, constructionsRepository, commands);
 
             buildinMode.Show(new ConstructionCard(scheme));
 
@@ -168,6 +169,18 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             mockControls.MovePointer(new GameVector3(0.75f, 0, 0)); // move left
 
             Assert.AreEqual(new FieldPosition(1, 0), buildinMode.GetPosition());
+
+            // -0.5 to 0.5
+            mockControls.MovePointer(new GameVector3(0, 0, 0f));
+            Assert.AreEqual(new FieldPosition(1,  0), buildinMode.GetPosition());
+
+            // -0.5 to -1.5
+            mockControls.MovePointer(new GameVector3(-0.9f, 0, -1f));
+            Assert.AreEqual(new FieldPosition(-1,  -1), buildinMode.GetPosition());
+
+            // -1.5 to -2.5
+            mockControls.MovePointer(new GameVector3(-1.9f, 0, -2f));
+            Assert.AreEqual(new FieldPosition(-2, -2), buildinMode.GetPosition());
 
             viewCollection.Dispose();
             controls.Dispose();
@@ -261,6 +274,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var buildinMode = new BuildingModeService();
+            var commands = new PresenterCommandsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 1, 1 },
@@ -281,7 +295,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService, constructionsRepository, commands);
 
             buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
 
@@ -332,34 +346,84 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
         }
 
-        [Test, Order(TestCore.PresenterOrder)]
-        public void IsBuildingClickWorking()
-        {
-
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-
-            //Assert.IsNotNull(game.LevelCollection.FindView<GhostView>());
-
-            //game.Controls.Click();
-
-            //Assert.IsNull(game.LevelCollection.FindView<GhostView>());
-
-        }
-
         [Test]
-        public void IsBuildingPlacingIsExitGhostMode()
+        public void IsRotationWorking()
         {
-            //var game = new GameConstructor().Build();
+            var constructionsRepository = new Repository<Construction>();
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            var buildinMode = new BuildingModeService();
+            var commands = new PresenterCommandsMock();
 
-            //Assert.IsNotNull(game.LevelCollection.FindView<GhostView>());
+            var placement = new ContructionPlacement(new int[,] {
+                    { 1, 1 },
+                    { 1, 0 }
+                });
+            var scheme = new ConstructionScheme(new Uid(),
+                DefId.None,
+                placement,
+                LocalizationTag.None,
+                new BuildingPoints(0),
+                new AdjacencyBonuses(),
+                "", "", new Requirements());
 
-            //game.Controls.Click();
+            var fieldService = new FieldService(1, new IntPoint(5, 5));
+            var constructionService = new ConstructionsService(constructionsRepository, fieldService);
+            var viewCollection = new ViewsCollection();
 
-            //Assert.IsNull(game.LevelCollection.FindView<GhostView>());
+            buildinMode.Show(new ConstructionCard(scheme));
 
-            //game.Dispose();
+            var view = new PlacementFieldView(viewCollection);
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService, constructionsRepository, commands);
+
+            buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation());
+
+            var cells = view.CellsContainer.FindViews<CellView>();
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,2,2,1 },
+                { 1,1,2,1,1 },
+                { 1,1,1,1,1 }
+            });
+
+            buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Right));
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,2,2,1 },
+                { 1,1,1,2,1 },
+                { 1,1,1,1,1 }
+            });
+
+            buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Bottom));
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,1,2,1 },
+                { 1,1,2,2,1 },
+                { 1,1,1,1,1 }
+            });
+
+            buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Left));
+            CheckPosition(new int[5, 5]
+            {
+                { 1,1,1,1,1 },
+                { 1,1,1,1,1 },
+                { 1,1,2,1,1 },
+                { 1,1,2,2,1 },
+                { 1,1,1,1,1 }
+            });
+
+            viewCollection.Dispose();
+
+            void CheckPosition(int[,] expected)
+            {
+                var actual = ToArray(5, cells);
+                Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
+            }
         }
 
         int[,] ToArray(int size, IReadOnlyCollection<CellView> cells)

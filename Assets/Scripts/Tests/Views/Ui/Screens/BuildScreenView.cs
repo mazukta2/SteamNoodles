@@ -15,24 +15,11 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
 {
     public class BuildScreenView : ScreenView<BuildScreenPresenter>, IBuildScreenView
     {
-        public IWorldText Points { get; } = new UiWorldText();
-
-        public IViewContainer AdjacencyContainer { get; }
-        public IViewPrefab AdjacencyPrefab { get; }
 
         public BuildScreenView(IViewsCollection level) : base(level)
         {
-            AdjacencyContainer = new ContainerViewMock(level);
-            AdjacencyPrefab = new AdjecencyPrefab();
 
         }
 
-        public class AdjecencyPrefab : ViewCollectionPrefabMock
-        {
-            public override void Fill(IViewsCollection collection)
-            {
-                new AdjecencyTextView(collection);
-            }
-        }
     }
 }

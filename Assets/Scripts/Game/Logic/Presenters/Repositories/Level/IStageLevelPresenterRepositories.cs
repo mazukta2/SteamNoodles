@@ -3,9 +3,9 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level
 {
-    public interface IStageLevelPresenterRepository
+    public interface IStageLevelPresenterRepositories
     {
-        static IStageLevelPresenterRepository Default { get; set; }
+        static IStageLevelPresenterRepositories Default { get; set; }
 
         IPresenterRepository<ConstructionCard> Cards { get; }
         IPresenterRepository<Construction> Constructions { get; }

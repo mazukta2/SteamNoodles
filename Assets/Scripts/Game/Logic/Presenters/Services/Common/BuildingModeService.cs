@@ -19,6 +19,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Common
         public bool IsEnabled => Card != null;
         public IReadOnlyCollection<Construction> ConstructionsHighlights { get; private set; } = new List<Construction>();
 
+        public BuildingModeService()
+        {
+        }
+
         public void Show(ConstructionCard constructionCard)
         {
             Card = constructionCard;
@@ -55,5 +59,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Common
         {
             return _fieldRotation;
         }
+
     }
 }

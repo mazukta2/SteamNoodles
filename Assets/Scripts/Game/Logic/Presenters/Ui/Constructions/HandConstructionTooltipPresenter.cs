@@ -20,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private ConstructionCard _model;
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view) :
-                this(view, IStageLevelPresenterRepository.Default.Constructions)
+                this(view, IStageLevelPresenterRepositories.Default.Constructions)
         {
         }
 

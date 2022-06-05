@@ -1,8 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
@@ -23,33 +22,33 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             buildingPoints.OnCurrentLevelUp += BuildingPoints_OnLevelUp;
             buildingPoints.OnCurrentLevelDown += BuildingPoints_OnLevelDown;
 
-            Assert.AreEqual(0, buildingPoints.CurrentLevel);
-            Assert.AreEqual(0, buildingPoints.PointsForCurrentLevel);
-            Assert.AreEqual(3, buildingPoints.PointsForNextLevel);
+            Assert.AreEqual(0, buildingPoints.GetCurrentLevel());
+            Assert.AreEqual(0, buildingPoints.GetPointsForCurrentLevel());
+            Assert.AreEqual(3, buildingPoints.GetPointsForNextLevel());
             Assert.AreEqual(0, levelUps);
             Assert.AreEqual(0, levelDowns);
 
-            buildingPoints.Change(2);
+            buildingPoints.Change(new BuildingPoints(2));
 
-            Assert.AreEqual(0, buildingPoints.CurrentLevel);
-            Assert.AreEqual(0, buildingPoints.PointsForCurrentLevel);
-            Assert.AreEqual(3, buildingPoints.PointsForNextLevel);
+            Assert.AreEqual(0, buildingPoints.GetCurrentLevel());
+            Assert.AreEqual(0, buildingPoints.GetPointsForCurrentLevel());
+            Assert.AreEqual(3, buildingPoints.GetPointsForNextLevel());
             Assert.AreEqual(0, levelUps);
             Assert.AreEqual(0, levelDowns);
 
-            buildingPoints.Change(1);
+            buildingPoints.Change(new BuildingPoints(1));
 
-            Assert.AreEqual(1, buildingPoints.CurrentLevel);
-            Assert.AreEqual(3, buildingPoints.PointsForCurrentLevel);
-            Assert.AreEqual(8, buildingPoints.PointsForNextLevel);
+            Assert.AreEqual(1, buildingPoints.GetCurrentLevel());
+            Assert.AreEqual(3, buildingPoints.GetPointsForCurrentLevel());
+            Assert.AreEqual(8, buildingPoints.GetPointsForNextLevel());
             Assert.AreEqual(1, levelUps);
             Assert.AreEqual(0, levelDowns);
 
-            buildingPoints.Change(-1);
+            buildingPoints.Change(new BuildingPoints(-1));
 
-            Assert.AreEqual(0, buildingPoints.CurrentLevel);
-            Assert.AreEqual(0, buildingPoints.PointsForCurrentLevel);
-            Assert.AreEqual(3, buildingPoints.PointsForNextLevel);
+            Assert.AreEqual(0, buildingPoints.GetCurrentLevel());
+            Assert.AreEqual(0, buildingPoints.GetPointsForCurrentLevel());
+            Assert.AreEqual(3, buildingPoints.GetPointsForNextLevel());
             Assert.AreEqual(1, levelUps);
             Assert.AreEqual(1, levelDowns);
 

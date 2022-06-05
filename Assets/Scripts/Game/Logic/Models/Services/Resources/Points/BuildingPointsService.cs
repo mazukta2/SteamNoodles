@@ -18,13 +18,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
         public event Action<int> OnTargetLevelChanged = delegate { };
         public event Action OnMaxTargetLevelUp = delegate { };
         public event Action<AddPointsAnimation> OnAnimationStarted = delegate { };
-        public int Value { get => _current.Value; }
-        public int CurrentLevel => _current.CurrentLevel;
-        public int TargetLevel => _target.CurrentLevel;
-        public int MaxTargetLevel { get; private set; }
-        public int PointsForNextLevel => _current.PointsForNextLevel;
-        public int PointsForCurrentLevel => _current.PointsForCurrentLevel;
-        public float Progress => _current.Progress;
 
         private readonly IGameTime _time;
         private readonly float _pieceSpawningTime;
@@ -32,6 +25,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
         private List<AddPointsAnimation> _animations = new List<AddPointsAnimation>();
         private BuildingPointsCalculator _current;
         private BuildingPointsCalculator _target;
+        private int _maxTargetLevel;
+
 
         public BuildingPointsService() : this(0, 0, new GameTime(), 2, 2)
         {
@@ -65,22 +60,57 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
             return newBuildingPoints;
         }
 
-        public void Change(int value)
+
+        public int GetValue()
+        {
+            return _current.Value;
+        }
+
+        public BuildingLevel GetCurrentLevel()
+        {
+            return new BuildingLevel(_current.CurrentLevel);
+        }
+
+        public int GetTargetLevel()
+        {
+            return _target.CurrentLevel;
+        }
+
+        public int GetMaxTargetLevel()
+        {
+            return _maxTargetLevel;
+        }
+
+        public int GetPointsForNextLevel()
+        {
+            return _current.PointsForNextLevel;
+        }
+
+        public int GetPointsForCurrentLevel()
+        {
+            return _current.PointsForCurrentLevel;
+        }
+
+        public float GetProgress()
+        {
+            return _current.Progress;
+        }
+        public void Change(BuildingPoints value)
         {
             Change(value, GameVector3.Zero);
         }
 
-        public void Change(int value, GameVector3 postion)
+        public void Change(BuildingPoints value, GameVector3 postion)
         {
             var targetLevel = _target.CurrentLevel;
-            _target.Value += value;
+            _target.Value += value.Value;
 
             if (_target.CurrentLevel != targetLevel)
                 OnTargetLevelChanged(_target.CurrentLevel - targetLevel);
 
-            if (value > 0)
+            if (value.Value > 0)
             {
-                var animation = new AddPointsAnimation(value, _pieceSpawningTime, _pieceMovingTime, _time, postion);
+                var animation = new AddPointsAnimation(value.Value, _pieceSpawningTime, _pieceMovingTime, _time, postion);
                 animation.OnDispose += Animation_OnDispose;
                 animation.OnPieceReachDestination += Animation_OnPieceReachDestination;
                 _animations.Add(animation);
@@ -93,17 +123,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
                     _animations.Remove(animation);
                 }
 
-                if (_target.CurrentLevel > MaxTargetLevel)
+                if (_target.CurrentLevel > GetMaxTargetLevel())
                 {
-                    MaxTargetLevel = _target.CurrentLevel;
+                    SetMaxTargetLevel(_target.CurrentLevel);
                     OnMaxTargetLevelUp();
                 }
             }
-            else if (value < 0)
-                ChangePoints(value);
+            else if (value.Value < 0)
+                ChangePointsInner(value.Value);
         }
 
-        private void ChangePoints(int changes)
+        private void ChangePointsInner(int changes)
         {
             var currentLevel = _current.CurrentLevel;
             _current.Value += changes;
@@ -119,7 +149,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
 
         private void Animation_OnPieceReachDestination()
         {
-            ChangePoints(1);
+            ChangePointsInner(1);
+        }
+
+        private void SetMaxTargetLevel(int value)
+        {
+            _maxTargetLevel = value;
         }
 
         //public BuildingPointsService(Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsService buildingPoints)
@@ -129,19 +164,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
         //    _buildingPoints = buildingPoints;
         //}
 
-        public void ChangePoints(BuildingPoints points, GameVector3 fromPosition)
-        {
-            Change(points.Value, fromPosition);
-        }
-
-        public BuildingLevel GetCurrentLevel()
-        {
-            return new BuildingLevel(_current.CurrentLevel);
-        }
-
-        public void ChangePoints(BuildingPoints points)
-        {
-            Change(points.Value);
-        }
     }
 }

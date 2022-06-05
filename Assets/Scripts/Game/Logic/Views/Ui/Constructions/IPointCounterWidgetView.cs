@@ -18,14 +18,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions
         IPosition PointsAttractionControlPoint { get; }
         IAnimator Animator { get; }
 
-        static IPointCounterWidgetView Default { get; set; }
-
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            Default = this; 
-            new PointCounterWidgetPresenter(IStageLevelService.Default.Points, 
-                IGameTime.Default, this, IPointPieceSpawnerView.Default,
-                IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>());
+            new PointCounterWidgetPresenter(this);
         }
     }
 }

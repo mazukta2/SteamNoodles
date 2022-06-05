@@ -167,14 +167,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         //    return false;
         //}
 
-        //private void UpdatePoints()
-        //{
-        //    //var points = 0;
-        //    //points += _buildingService.GetPoints(_buildScreen.CurrentCard, GetGridPosition(), Rotation).Value;
-
-        //    //_buildScreen.UpdatePoints(GetWorldPosition(), points,
-        //    //    _buildingService.GetAdjacencyPoints(_buildScreen.CurrentCard, GetGridPosition(), Rotation));
-        //}
 
 
         //private void HandleRotateLeftTap()
@@ -215,7 +207,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             var fieldPosition = _fieldService.GetWorldConstructionToField(_pointerPosition, size);
             _buildingModeService.SetGhostPosition(fieldPosition, _buildingModeService.GetRotation());
 
-            //UpdatePoints();
             //OnGhostPostionChanged();
         }
         private void HandleOnPositionChanged()

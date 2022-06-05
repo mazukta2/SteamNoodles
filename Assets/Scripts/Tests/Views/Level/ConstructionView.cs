@@ -18,10 +18,10 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         public IViewContainer EffectsContainer { get; set; }
         public IViewPrefab ExplosionPrototype { get; set; }
 
-        public ConstructionView(IViewsCollection level, IViewContainer container, IRotator rotator) : base(level)
+        public ConstructionView(IViewsCollection level) : base(level)
         {
-            Container = container;
-            Rotator = rotator;
+            Container = new ContainerViewMock(level);
+            Rotator = new Rotator();
             EffectsContainer = new ContainerViewMock(level);
             ExplosionPrototype = new DefaultViewCollectionPrefabMock(CreateExplosion);
         }

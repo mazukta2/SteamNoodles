@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            HandPresenter.Default = new HandPresenter(this);
+            new HandPresenter(this);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Views;
 using Game.Tests.Cases;
 using NUnit.Framework;
