@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
@@ -123,12 +124,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var fieldService = new FieldService(10, new IntPoint(3, 3));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionScheme(new Uid(),
+                DefId.None,
+                ContructionPlacement.One,
+                LocalizationTag.None,
+                new BuildingPoints(5),
+                new AdjacencyBonuses(),
+                "", "", new Requirements());
+
             var viewCollection = new ViewsCollection();
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, buildinMode, constructionService);
+            new GhostPointPresenter(view, buildinMode, constructionService, fieldService);
 
             buildinMode.Show(card);
             
@@ -141,97 +149,111 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             viewCollection.Dispose();
         }
 
-        [Test]
+        [Test, Order(TestCore.PresenterOrder)]
         public void IsPointsChangedByAdjacency()
         {
-            throw new System.Exception();
-            //var construction1 = ConstructionSetups.GetDefault();
-            //{
-            //    construction1.Points = 5;
-            //    construction1.Placement = new int[,] {
-            //        { 0, 0, 0 },
-            //        { 0, 1, 0 },
-            //        { 0, 1, 0 },
-            //    };
-            //    construction1.LevelViewPath = "DebugConstruction";
-            //};
-            //construction1.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { construction1, 2 } };
+            var constructionsRepository = new Repository<Construction>();
+            var buildinMode = new BuildingModeService();
+            var fieldService = new FieldService(1, new IntPoint(5, 5));
+            var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
-            //var game = new GameConstructor()
-            //    .AddDefinition("construction1", construction1)
-            //    .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.
-            //        StartingHand = new List<ConstructionDefinition>() { construction1, construction1 })
-            //    .Build();
+            var placement = new ContructionPlacement(new int[,] {
+                    { 0, 0, 0 },
+                    { 0, 1, 0 },
+                    { 0, 1, 0 },
+                });
+            var scheme = new ConstructionScheme(new Uid(),
+                DefId.None,
+                placement,
+                LocalizationTag.None,
+                new BuildingPoints(5),
+                new AdjacencyBonuses(),
+                "", "", new Requirements());
+            scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionScheme, BuildingPoints>() { { scheme, new BuildingPoints(2) } }));
 
-            //Assert.AreEqual("0/3", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //Assert.AreEqual("+5", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            //game.Controls.Click();
-            //Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
-            //Assert.AreEqual("5/8", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
+            var viewCollection = new ViewsCollection();
+            var card = new ConstructionCard(scheme);
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            //game.Controls.MovePointer(new GameVector3(-2, 0, 0));
-            //Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            var view = new GhostPointsView(viewCollection);
+            new GhostPointPresenter(view, buildinMode, constructionService, fieldService);
 
-            //game.Dispose();
+            buildinMode.Show(card);
+
+            Assert.AreEqual("+5", view.Points.Value);
+
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
+
+            buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation());
+            Assert.AreEqual("0", view.Points.Value);
+
+            buildinMode.SetGhostPosition(new FieldPosition(-2, 0), new FieldRotation());
+
+            Assert.AreEqual("+7", view.Points.Value);
+
+            viewCollection.Dispose();
         }
 
-        [Test]
-        public void IsNotGetPointsForBuildingInWrongPlace()
+        [Test, Order(TestCore.PresenterOrder)]
+        public void IsAdjecencyPointsBoundariesCorrect()
         {
-            throw new System.Exception();
-            //var constructionDefinition = ConstructionSetups.GetDefault();
-            //{
-            //    constructionDefinition.Points = 5;
-            //    constructionDefinition.Placement = new int[,] {
-            //        { 0, 1, 0 },
-            //        { 0, 1, 0 },
-            //        { 0, 1, 0 },
-            //    };
-            //    constructionDefinition.LevelViewPath = "DebugConstruction";
-            //};
+            var constructionsRepository = new Repository<Construction>();
+            var buildinMode = new BuildingModeService();
+            var fieldService = new FieldService(1, new IntPoint(15, 15));
+            var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
-            //constructionDefinition.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { constructionDefinition, 2 } };
-            //var game = new GameConstructor()
-            //    .AddDefinition("construction1", constructionDefinition)
-            //    .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.
-            //        StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition })
-            //    .Build();
+            var placement = new ContructionPlacement(new int[,] {
+                    { 0, 1, 0 },
+                    { 0, 1, 0 },
+                    { 0, 1, 0 },
+                });
+            var scheme = new ConstructionScheme(new Uid(),
+                DefId.None,
+                placement,
+                LocalizationTag.None,
+                new BuildingPoints(5),
+                new AdjacencyBonuses(),
+                "", "", new Requirements());
+            scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionScheme, BuildingPoints>() { { scheme, new BuildingPoints(2) } }));
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.Click();
+            var viewCollection = new ViewsCollection();
+            var card = new ConstructionCard(scheme);
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            var view = new GhostPointsView(viewCollection);
+            new GhostPointPresenter(view, buildinMode, constructionService, fieldService);
 
-            //game.Controls.MovePointer(new GameVector3(1, 0, 0));
-            //Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            //game.Controls.MovePointer(new GameVector3(2, 0, 0));
-            //Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            //game.Controls.MovePointer(new GameVector3(3, 0, 0));
-            //Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            buildinMode.Show(card);
+
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
+
+            buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation());
+            Assert.AreEqual("0", view.Points.Value);
+
+            buildinMode.SetGhostPosition(new FieldPosition(1, 0), new FieldRotation());
+            Assert.AreEqual("0", view.Points.Value);
+
+            buildinMode.SetGhostPosition(new FieldPosition(2, 0), new FieldRotation());
+            Assert.AreEqual("0", view.Points.Value);
+
+            buildinMode.SetGhostPosition(new FieldPosition(3, 0), new FieldRotation());
+            Assert.AreEqual("+7", view.Points.Value);
+
+            buildinMode.SetGhostPosition(new FieldPosition(-1, 0), new FieldRotation());
+            Assert.AreEqual("0", view.Points.Value);
+
+            buildinMode.SetGhostPosition(new FieldPosition(-2, 0), new FieldRotation());
+            Assert.AreEqual("0", view.Points.Value);
+
+            buildinMode.SetGhostPosition(new FieldPosition(-3, 0), new FieldRotation());
+            Assert.AreEqual("+7", view.Points.Value);
 
 
-            //game.Controls.MovePointer(new GameVector3(-1, 0, 0));
-            //Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            //game.Controls.MovePointer(new GameVector3(-2, 0, 0));
-            //Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-            //game.Controls.MovePointer(new GameVector3(-3, 0, 0));
-            //Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
+            Assert.AreEqual("+7", view.Points.Value);
 
-            //game.Controls.MovePointer(new GameVector3(0, 0, -1));
-            //Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            buildinMode.SetGhostPosition(new FieldPosition(0, 1), new FieldRotation());
+            Assert.AreEqual("+7", view.Points.Value);
 
-            //game.Controls.MovePointer(new GameVector3(0, 0, 1));
-            //Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
-
-            //game.Dispose();
+            viewCollection.Dispose();
         }
 
         [TearDown]

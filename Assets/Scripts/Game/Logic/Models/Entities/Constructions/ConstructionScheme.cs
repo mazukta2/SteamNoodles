@@ -83,7 +83,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
 
             foreach (var (definition, entity) in result)
             {
-                entity.AdjacencyPoints = new AdjacencyBonuses(definition.AdjacencyPoints.ToDictionary(x => Get(x.Key), y => new BuildingPoints(y.Value)).AsReadOnly());
+                var ad = new AdjacencyBonuses(definition.AdjacencyPoints
+                    .ToDictionary(x => Get(x.Key), y => new BuildingPoints(y.Value)).AsReadOnly());
+                entity.SetAdjecity(ad);
             }
 
             foreach (var (definition, entity) in result)
@@ -97,6 +99,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             {
                 return result[definition];
             }
+        }
+
+        public void SetAdjecity(AdjacencyBonuses bonuses)
+        {
+            AdjacencyPoints = bonuses;
         }
 
         // TODO: maybe we should do this externaly
