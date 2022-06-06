@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
 
         public override void Play()
         {
-            while (_queue.GetUnits().Count > _queue.GetQueueSize())
+            while (_queue.GetUnits().Count > _queue.GetQueueSize().Value)
             {
                 var unit = _queue.GetUnits().Last();
                 _removeFromQueue(unit);

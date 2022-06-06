@@ -14,20 +14,23 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 {
     public class UnitsService : Disposable
     {
-        private readonly UnitsSettingsDefinition _unitsSettings;
         private readonly IGameRandom _random;
-        private DeckService<CustomerDefinition> _pool; // TODO: to repository
+        private readonly UnitsTypesService _unitsTypesService;
+        private readonly float _unitSize;
         private readonly IRepository<Unit> _units;
 
-        public UnitsService(IRepository<Unit> units, UnitsSettingsDefinition unitsSettings, LevelDefinition levelDefinition, IGameRandom random)
+        public UnitsService(IRepository<Unit> units, UnitsSettingsDefinition unitsSettings,
+            LevelDefinition levelDefinition, IGameRandom random, UnitsTypesService unitsTypesService) 
+            : this(units, random, unitsTypesService, unitsSettings.UnitSize)
+        {
+        }
+
+        public UnitsService(IRepository<Unit> units, IGameRandom random, UnitsTypesService unitsTypesService, float unitSize = 1)
         {
             _units = units ?? throw new ArgumentNullException(nameof(units));
-            _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
-
-            _pool = new DeckService<CustomerDefinition>(random);
-            foreach (var item in levelDefinition.BaseCrowdUnits)
-                _pool.Add(item.Key, item.Value);
+            _unitsTypesService = unitsTypesService ?? throw new ArgumentNullException(nameof(unitsTypesService));
+            _unitSize = unitSize;
         }
 
         protected override void DisposeInner()
@@ -36,17 +39,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 
         public Unit SpawnUnit(GameVector3 pos)
         {
-            return SpawnUnit(pos, pos, _pool.Take());
+            return SpawnUnit(pos, pos, _unitsTypesService.TakeRandom());
         }
 
         public Unit SpawnUnit(GameVector3 pos, GameVector3 target)
         {
-            return SpawnUnit(pos, target, _pool.Take());
+            return SpawnUnit(pos, target, _unitsTypesService.TakeRandom());
         }
 
-        public Unit SpawnUnit(GameVector3 position, GameVector3 target, CustomerDefinition definition)
+        public Unit SpawnUnit(GameVector3 position, GameVector3 target, UnitType type)
         {
-            var unit = new Unit(position, target, definition, _unitsSettings, _random);
+            var unit = new Unit(position, target, type, _random);
             _units.Add(unit);
             return unit;
         }
@@ -74,7 +77,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 
         public float GetUnitSize()
         {
-            return _unitsSettings.UnitSize;
+            return _unitSize;
         }
 
     }

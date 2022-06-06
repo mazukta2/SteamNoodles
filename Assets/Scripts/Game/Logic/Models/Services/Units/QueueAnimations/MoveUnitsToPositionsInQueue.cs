@@ -36,7 +36,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
             {
                 list[i].SetTarget(_queue.GetPositionFor(i));
                 _units.Save(list[i]);
-                _units.FireEvent(list[i], new UnitTargetChangedEvent());
             }
             if (list.Length == 0)
                 FireOnFinished();
@@ -54,7 +53,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
             var first = list[0];
             if (!first.IsMoving())
             {
-                _unitsService.LookAt(first, _queue.GetQueueFirstPosition() + _queue.GetQueueFirstPositionOffset() + new GameVector3(0, 0, 1));
+                _unitsService.LookAt(first, _queue.GetQueuePosition() + _queue.GetQueueFirstPositionOffset() + new GameVector3(0, 0, 1));
             }
 
             if (list.All(x => !x.IsMoving()))

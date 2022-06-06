@@ -95,28 +95,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsPointsPresenting()
-        {
-            var time = new GameTime();
-            var pointsService = new BuildingPointsService(0, 0, time, 2, 2);
-
-            var viewCollection = new ViewsCollection();
-            var view = new PointCounterWidgetView(viewCollection);
-            new PointCounterWidgetPresenter(view, 
-                new ProgressBarSliders(view.PointsProgress, time, 0, 0),
-                pointsService);
-
-            Assert.AreEqual("0/3", view.Points.Value);
-
-            pointsService.Change(new BuildingPoints(5));
-
-            Assert.AreEqual("5/8", view.Points.Value);
-
-            viewCollection.Dispose();
-            pointsService.Dispose();
-        }
-
-        [Test, Order(TestCore.PresenterOrder)]
         public void IsNotGetPointsForBuildingOutsideField()
         {
             var constructionsRepository = new Repository<Construction>();

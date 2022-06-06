@@ -9,7 +9,7 @@ using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Tests.Cases;
 using NUnit.Framework;
 
-namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
+namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
 {
     public class BuildingAnimationTests
     {
@@ -74,7 +74,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test]
         public void IsBezierCurvePositionsWorking()
         {
-            var curve = new BezierCurve(new GameVector3(1,1,1), new GameVector3(-1, 1, -1), new GameVector3(1, 3, 1), new GameVector3(-1, 3, -1));
+            var curve = new BezierCurve(new GameVector3(1, 1, 1), new GameVector3(-1, 1, -1), new GameVector3(1, 3, 1), new GameVector3(-1, 3, -1));
             Assert.AreEqual(new GameVector3(0, 2.5f, 0), curve.GetPosition(0.5f));
         }
 

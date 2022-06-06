@@ -22,8 +22,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         public int Count => _repository.Count;
 
-        int IRepository<T>.Count => throw new NotImplementedException();
-
         private Dictionary<Uid, T> _repository = new ();
 
         public EntityLink<T> Add(T entity)
@@ -53,9 +51,15 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             if (!_repository.ContainsKey(entity.Id))
                 throw new Exception("Entity not exist");
 
+            var events = entity.GetEvents().ToArray();
+            entity.Clear();
+
             _repository[entity.Id] = (T)entity.Copy();
             OnModelChanged(entity);
             OnChanged(new EntityLink<T>(this, entity.Id), entity);
+
+            foreach (var evt in events)
+                FireEvent(entity, evt);
         }
 
         public EntityLink<T> GetLink(T entity)

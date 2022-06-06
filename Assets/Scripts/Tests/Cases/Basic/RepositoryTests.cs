@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Tests.Cases;
 using NUnit.Framework;
@@ -67,6 +68,32 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
             Assert.AreEqual(6, entity4.Value2.Value);
         }
 
+        [Test, Order(TestCore.EssentialOrder)]
+        public void IsEventsWorking()
+        {
+            var entity = new TestEntity(1, new TestValueObject(2));
+            var repository = new Repository<TestEntity>();
+            repository.Add(entity);
+            var isEvent = false;
+            repository.OnModelEvent += Repository_OnModelEvent;
+            entity.SendEvent();
+
+            Assert.IsFalse(isEvent);
+            Assert.AreEqual(1, entity.GetEvents().Count);
+
+            repository.Save(entity);
+            repository.OnModelEvent -= Repository_OnModelEvent;
+
+            Assert.IsTrue(isEvent);
+            Assert.AreEqual(0, repository.Get(entity.Id).GetEvents().Count);
+
+            void Repository_OnModelEvent(TestEntity arg1, IModelEvent arg2)
+            {
+                isEvent = true;
+            }
+        }
+
+
         public sealed record TestEntity : Entity
         {
             public TestEntity(Uid id, int value1, TestValueObject value2) : base(id)
@@ -83,6 +110,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
 
             public int Value1 { get; set; }
             public TestValueObject Value2 { get; set; }
+
+            public void SendEvent()
+            {
+                FireEvent(new TestEvent());
+            }
         }
 
         public record TestValueObject
@@ -93,7 +125,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
             }
 
             public int Value { get; }
-            
+        }
+
+        public record TestEvent : IModelEvent
+        {
 
         }
 

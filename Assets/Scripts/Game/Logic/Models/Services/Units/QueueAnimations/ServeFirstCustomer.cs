@@ -12,14 +12,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
     {
         private UnitsCustomerQueueService _queue;
         private readonly UnitsCrowdService _crowd;
-        private readonly Action<Unit> _removeFromQueue;
         private readonly Action<Unit> _serve;
 
-        public ServeFirstCustomer(UnitsCustomerQueueService queue, UnitsCrowdService crowd, Action<Unit> removeFromQueue, Action<Unit> serve)
+        public ServeFirstCustomer(UnitsCustomerQueueService queue, UnitsCrowdService crowd, Action<Unit> serve)
         {
             _queue = queue;
             _crowd = crowd;
-            _removeFromQueue = removeFromQueue;
             _serve = serve;
         }
 
@@ -28,7 +26,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
             var first = _queue.GetUnits().FirstOrDefault();
             if (first != null)
             {
-                _removeFromQueue(first);
                 _serve(first);
                 _crowd.SendToCrowd(first, UnitsCrowdService.CrowdDirection.Left);
             }

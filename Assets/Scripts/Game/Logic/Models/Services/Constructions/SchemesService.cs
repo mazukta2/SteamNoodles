@@ -35,32 +35,21 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
                 _deck.Add(Find(item.Key), item.Value);
         }
 
-        //public void FillADeck(IReadOnlyDictionary<ConstructionDefinition, int> deck)
-        //{
-        //    foreach (var item in deck)
-        //        _deck.Add(Find(item.Key), item.Value);
-        //}
-
-        //public void UpdateSchemes(IGameDefinitions definitions)
-        //{
-        //    var constructionsDefinitions = definitions.GetList<ConstructionDefinition>();
-        //    ConstructionScheme.FillWithDefinitions(constructionsDefinitions, _schemes);
-        //}
-
         public ConstructionScheme Add(ConstructionDefinition definition)
         {
             var schemes = ConstructionScheme.FillWithDefinitions(new []{ definition }, _schemes);
             return schemes.First();
         }
 
-        public ConstructionScheme Find(ConstructionDefinition item)
-        {
-            return _schemes.Get().First(x => x.IsConnectedToDefinition(item));
-        }
-
         public ConstructionScheme TakeRandom()
         {
             return _deck.Take();
         }
+
+        private ConstructionScheme Find(ConstructionDefinition item)
+        {
+            return _schemes.Get().First(x => x.IsConnectedToDefinition(item));
+        }
+
     }
 }

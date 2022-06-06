@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
 {
-    public class StageFlowService : Disposable
+    public class StageWaveService : Disposable
     {
         //public event Action OnTurn = delegate { };
         //public event Action<bool> OnWaveEnded = delegate { };
@@ -28,6 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
         private readonly IGameRandom _random;
         private readonly IRepository<Construction> _constructions;
         private readonly StageLevel _level;
+        private readonly BuildingService _buildingService;
         private readonly HandService _hand;
         private readonly BuildingPointsService _points;
         private readonly int _giveCardsAmount;
@@ -35,56 +36,35 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
         private readonly SequenceManager _sequence = new SequenceManager();
         private int _wave;
 
-        public StageFlowService(StageLevel level, HandService handService, SchemesService schemesService,
+        public StageWaveService(StageLevel level, 
+            BuildingService buildingService,
+            HandService handService, 
+            SchemesService schemesService,
             BuildingPointsService buildingPointsService, int giveCardsAmount = 3)
         {
             _level = level ?? throw new ArgumentNullException(nameof(level));
+            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
             _hand = handService ?? throw new ArgumentNullException(nameof(handService));
             _points = buildingPointsService ?? throw new ArgumentNullException(nameof(buildingPointsService));
             _giveCardsAmount = giveCardsAmount;
             _schemesService = schemesService ?? throw new ArgumentNullException(nameof(schemesService));
-            //_rewardDeck = new DeckService<ConstructionDefinition>(random);
-            //foreach (var item in levelDefinition.ConstructionsReward)
-            //    _rewardDeck.Add(item.Key, item.Value);
-
-            //Flow.OnTurn += TurnManager_OnTurn;
-            //Flow.OnWaveEnded += TurnManager_OnWaveEnded;
-            //Resources.Points.OnMaxTargetLevelUp += OnLevelUp;
 
             _points.OnMaxTargetLevelUp += HandleOnLevelUp;
+            _buildingService.OnBuild += HandleOnBuild;
         }
-
-        //private StageFlowService(ConstructionsSettingsDefinition constructionsDefinitions, LevelDefinition levelDefinition, IGameRandom random,
-        //    IRepository<Construction> constructions, HandService hand, SchemesService schemesService)
-        //{
-        //    _constructionsDefinitions = constructionsDefinitions ?? throw new ArgumentNullException(nameof(constructionsDefinitions));
-        //    _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
-        //    _random = random;
-        //    _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
-        //    _hand = hand ?? throw new ArgumentNullException(nameof(hand));
-        //    _schemesService = schemesService;
-
-        //    _rewardDeck = new DeckService<ConstructionDefinition>(random);
-        //    foreach (var item in levelDefinition.ConstructionsReward)
-        //        _rewardDeck.Add(item.Key, item.Value);
-
-        //    //Flow.OnTurn += TurnManager_OnTurn;
-        //    //Flow.OnWaveEnded += TurnManager_OnWaveEnded;
-        //    //Resources.Points.OnMaxTargetLevelUp += OnLevelUp;
-        //}
 
         protected override void DisposeInner()
         {
             _points.OnMaxTargetLevelUp -= HandleOnLevelUp;
-
-            //Resources.Points.OnMaxTargetLevelUp -= OnLevelUp;
-            //Flow.OnTurn -= TurnManager_OnTurn;
-            //Flow.OnWaveEnded -= TurnManager_OnWaveEnded;
+            _buildingService.OnBuild -= HandleOnBuild;
             _sequence.Dispose();
         }
 
-        private void TurnManager_OnTurn()
+        private void Turn()
         {
+            //var construction = _constructions.Get().First();
+            //var queueStartingPosition = _fieldPositionService.GetWorldPosition(construction).X;
+            //return new GameVector3(queueStartingPosition, 0, _levelDefinition.QueuePosition.Z);
             //Queue.ServeCustomer();
         }
 
@@ -97,16 +77,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
             //    Queue.ClearQueue();
             //    Queue.FreeAll();
             //}
-        }
-
-        private void HandleOnLevelUp()
-        {
-            GiveCards();
-        }
-
-        public void Turn()
-        {
-            //OnTurn();
         }
 
         public void WinWave()
@@ -223,6 +193,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
         public float GetWaveProgress()
         {
             return Math.Min(1, _constructions.Get().Count / (float)_levelDefinition.ConstructionsForNextWave);
+        }
+
+        private void HandleOnLevelUp()
+        {
+            GiveCards();
+        }
+
+        private void HandleOnBuild(Construction obj)
+        {
+            Turn();
         }
 
     }

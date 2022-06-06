@@ -1,42 +1,74 @@
-﻿using Game.Tests.Cases;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
+using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Tests.Cases;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 {
     public class CrowdTests
     {
-        [Test]
+        [Test, Order(TestCore.ModelOrder)]
         public void IsCrowdUnitsSpawned()
         {
-            throw new System.Exception();
-            //var game = new GameConstructor()
-            //    .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 15)
-            //    .Build();
+            var units = new Repository<Unit>();
+            var unitTypes = new Repository<UnitType>();
+            var deck = new DeckService<UnitType>();
+            var type = new UnitType();
+            unitTypes.Add(type);
+            deck.Add(type);
 
-            //Assert.AreEqual(1, game.LevelCollection.FindViews<UnitsManagerView>().Count);
-            //Assert.AreEqual(15, game.LevelCollection.FindViews<UnitView>().Count);
+            var time = new GameTime();
+            var random = new SessionRandom();
 
-            //game.Dispose();
+            var unitTypesService = new UnitsTypesService(unitTypes, deck);
+
+            var unitsService = new UnitsService(units, random, unitTypesService);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, GetRect(), 15);
+
+            Assert.AreEqual(15, units.Count);
+
+            unitsService.Dispose();
+            crowd.Dispose();
         }
 
-        [Test]
-        public void CrowdIsMoving()
+        [Test, Order(TestCore.ModelOrder)]
+        public void IsCrowdDestroying()
         {
-            throw new System.Exception();
-            //var game = new GameConstructor()
-            //    .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 1)
-            //    .UpdateDefinition<LevelDefinitionMock>((d) => d.UnitsRect = new Scripts.Game.Logic.Common.Math.FloatRect(-10, -10, 10, 10))
-            //    .Build();
+            var units = new Repository<Unit>();
+            var unitTypes = new Repository<UnitType>();
+            var deck = new DeckService<UnitType>();
+            var type = new UnitType();
+            unitTypes.Add(type);
+            deck.Add(type);
 
-            //var unit = game.LevelCollection.FindView<UnitView>();
-            //var startingPosition = unit.Position.Value.X;
-            //Assert.IsFalse(unit.IsDisposed);
-            //game.Time.MoveTime(100);
-            //Assert.AreNotEqual(startingPosition, unit.Position.Value.X);
-            //Assert.IsTrue(unit.IsDisposed);
+            var time = new GameTime();
+            var random = new SessionRandom();
 
-            //game.Dispose();
+            var unitTypesService = new UnitsTypesService(unitTypes, deck);
+
+            var movement = new UnitsMovementsService(units, time);
+            var unitsService = new UnitsService(units, random, unitTypesService);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -10, 10, 10), 1);
+
+            Assert.AreEqual(1, units.Count);
+            var id = units.GetAll().First().Id;
+            time.MoveTime(100);
+            Assert.AreEqual(1, units.Count);
+            var id2 = units.GetAll().First().Id;
+            Assert.AreNotEqual(id, id2);
+
+            unitsService.Dispose();
+            crowd.Dispose();
+            movement.Dispose();
         }
+
+        private FloatRect GetRect() => new FloatRect(0, 0, 10, 10);
 
         [TearDown]
         public void TestDisposables()

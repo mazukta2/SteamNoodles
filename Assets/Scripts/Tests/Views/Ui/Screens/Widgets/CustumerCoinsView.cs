@@ -9,11 +9,11 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets
 {
-    public class CustumerCoinsMock : ViewWithPresenter<CustumerCoinsPresenter>, ICustumerCoinsView
+    public class CustumerCoinsView : ViewWithPresenter<CustumerCoinsPresenter>, ICustumerCoinsView
     {
         public IText Text { get; set; } = new TextMock();
 
-        public CustumerCoinsMock(IViewsCollection collection) : base(collection)
+        public CustumerCoinsView(IViewsCollection collection) : base(collection)
         {
 
         }

@@ -19,7 +19,9 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public Repository<ConstructionCard> Cards { get; private set; } = new();
         public Repository<Construction> Constructions { get; private set; } = new();
         public Repository<Unit> Units { get; private set; } = new();
+        public Repository<UnitType> UnitTypes { get; private set; } = new();
         public SingletonRepository<Deck<ConstructionScheme>> ConstructionsDeck { get; private set; } = new();
+        public SingletonRepository<Deck<UnitType>> UnitsDeck { get; private set; } = new();
 
         IPresenterRepository<ConstructionCard> IStageLevelPresenterRepositories.Cards => Cards;
         IPresenterRepository<Construction> IStageLevelPresenterRepositories.Constructions => Constructions;
@@ -36,6 +38,8 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             Constructions.Clear();
             ConstructionsDeck.Clear();
             Units.Clear();
+            UnitTypes.Clear();
+            UnitsDeck.Clear();
         }
     }
 }

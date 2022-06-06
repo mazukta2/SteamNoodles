@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using System;
 
@@ -29,7 +30,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             _speed = unitsSettings.Speed;
             VisualSeed = random.GetRandom(0, 10000);
             CurrentSpeed = GetMinSpeed();
+        }
 
+        public Unit(GameVector3 position, GameVector3 target, UnitType type, IGameRandom random)
+        {
+            Position = position;
+            Target = target;
+            _speedOffset = random.GetRandom(-1, 1) * type.SpeedOffset;
+            _minSpeed = type.MinSpeed.Value;
+            _speed = type.Speed.Value;
+            VisualSeed = random.GetRandom(0, 10000);
+            CurrentSpeed = GetMinSpeed();
         }
 
         public Unit(GameVector3 position, GameVector3 target, float minSpeed, float speed, float speedOffset, int visualSeed)
@@ -52,10 +63,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             CurrentSpeed = targetSpeed;
         }
 
-        public void SetPosition(GameVector3 target)
+        public void SetPosition(GameVector3 newPosition)
         {
-            SetTarget(target);
-            TeleportToTarget();
+            Position = newPosition;
+            FireEvent(new UnitPositionChangedEvent());
+            if (IsOnPosition)
+            {
+                Position = Target;
+                FireEvent(new UnitReachedTargetPositionEvent());
+            }
         }
 
         public void SetTarget(GameVector3 target)
@@ -63,7 +79,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             if (target.Y != 0)
                 throw new Exception();
             Target = target;
-            //OnTargetChanged();
+            FireEvent(new UnitTargetChangedEvent());
 
             var distance = Position.GetDistanceTo(Target);
             if (CurrentSpeed * 0.01f > distance)
@@ -81,6 +97,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
                 return;
 
             Position = Target;
+            FireEvent(new UnitReachedTargetPositionEvent());
         }
 
         public bool IsMoving()

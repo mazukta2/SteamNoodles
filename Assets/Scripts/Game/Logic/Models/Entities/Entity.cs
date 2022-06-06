@@ -1,4 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities
     public abstract record Entity : IEntity
     {
         public Uid Id { get; }
+
+        private RecordList<IModelEvent> _events = new RecordList<IModelEvent>();
 
         public Entity(Uid id)
         {
@@ -36,6 +40,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities
             return this with { };
         }
 
+        protected void FireEvent(IModelEvent evt) 
+        {
+            _events.Add(evt);
+        }
 
+        public IReadOnlyCollection<IModelEvent> GetEvents()
+        {
+            return _events.AsReadOnly();
+        }
+
+        public void Clear()
+        {
+            _events.Clear();
+        }
     }
 }

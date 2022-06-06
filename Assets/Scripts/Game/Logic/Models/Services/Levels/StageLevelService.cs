@@ -20,9 +20,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 {
     public class StageLevelService : Disposable, IStageLevelService
     {
-        public StageFlowService Flow { get; }
+        public StageTurnService Flow { get; }
+        public RewardsService Rewards { get; }
         public ConstructionsService Constructions { get; }
         public HandService Hand { get; }
+        public UnitsTypesService UnitsTypes { get; }
         public UnitsService Units { get; }
         public UnitsCrowdService Crowd { get; }
         public UnitsCustomerQueueService Queue { get; }
@@ -59,16 +61,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             Schemes = new SchemesService(definitions, settings.ConstructionsReward,
                 _repositories.Schemes, new (_repositories.ConstructionsDeck, Random));
             Hand = new HandService(_repositories.Cards, _repositories.Schemes);
-            Units = new UnitsService(_repositories.Units, unitSettings, settings, Random);
+            UnitsTypes = new UnitsTypesService(settings, unitSettings, _repositories.UnitTypes,
+                new(_repositories.UnitsDeck, Random));
+            Units = new UnitsService(_repositories.Units,  Random, UnitsTypes);
 
-            Flow = new StageFlowService(level, Hand, Schemes, Points);
+            Flow = new StageTurnService(_repositories.Constructions, Field, Building, Queue);
+            Rewards = new RewardsService(level, Hand, Schemes, Points);
             Constructions = new ConstructionsService(_repositories.Constructions, Field);
             Building = new BuildingService(_repositories.Constructions, Constructions, Points, Hand, Field);
             Crowd = new UnitsCrowdService(_repositories.Units, Units, time, settings, random);
-            Queue = new UnitsCustomerQueueService(_repositories.Units, Units, Crowd, time, random);
+            Queue = new UnitsCustomerQueueService(_repositories.Units, Units, Crowd, Points, time, random);
             UnitsMovement = new UnitsMovementsService(_repositories.Units, unitSettings, Time);
 
-            Flow.Start();
+            Rewards.Start();
         }
 
         protected override void DisposeInner()

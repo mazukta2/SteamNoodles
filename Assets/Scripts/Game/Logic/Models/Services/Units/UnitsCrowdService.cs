@@ -14,24 +14,33 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 {
     public class UnitsCrowdService : Disposable
     {
-        private readonly LevelDefinition _levelDefinition;
         private readonly IRepository<Unit> _units;
         private readonly UnitsService _unitsService;
         private readonly IGameRandom _random;
         private readonly IGameTime _time;
+        private readonly int _crowdAmount;
+        private readonly FloatRect _unitRect;
 
         public UnitsCrowdService(IRepository<Unit> units, UnitsService unitsService, IGameTime time, LevelDefinition levelDefinition,
-            IGameRandom random)
+            IGameRandom random) : this(units, unitsService, time, random,
+                levelDefinition.UnitsRect,
+                levelDefinition.CrowdUnitsAmount)
         {
-            _levelDefinition = levelDefinition;
+        }
+
+        public UnitsCrowdService(IRepository<Unit> units, UnitsService unitsService, IGameTime time,
+            IGameRandom random, FloatRect rect, int crowdAmount = 0)
+        {
             _units = units;
             _unitsService = unitsService ?? throw new ArgumentNullException(nameof(unitsService));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             _time = time ?? throw new ArgumentNullException(nameof(time));
+            _crowdAmount = crowdAmount;
+            _unitRect = rect;
 
-            for (int i = 0; i < levelDefinition.CrowdUnitsAmount; i++)
+            for (int i = 0; i < crowdAmount; i++)
             {
-                var position = GetRandomPoint(UnitsField, _random);
+                var position = GetRandomPoint(GetUnitsField(), _random);
                 var target = GetRandomPointDirection(_random.GetRandom() ? CrowdDirection.Left : CrowdDirection.Right);
                 var unit = _unitsService.SpawnUnit(position, target);
                 unit.SetBehaviourState(Unit.BehaviourState.InCrowd);
@@ -45,7 +54,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
             _time.OnTimeChanged -= Time_OnTimeChanged;
         }
 
-        private FloatRect UnitsField => _levelDefinition.UnitsRect;
+        private FloatRect GetUnitsField()
+        {
+            return _unitRect;
+        }
 
         private void Time_OnTimeChanged(float oldTime, float newTime)
         {
@@ -57,7 +69,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
                 }
             }
 
-            if (GetUnits().Count < _levelDefinition.CrowdUnitsAmount)
+            if (GetUnits().Count < _crowdAmount)
             {
                 var direction = _random.GetRandom() ? CrowdDirection.Left : CrowdDirection.Right;
                 var target = GetRandomPointDirection(direction);
@@ -80,16 +92,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
             unit.SetBehaviourState(Unit.BehaviourState.InCrowd);
             unit.SetTarget(GetRandomPointDirection(direction));
             _units.Save(unit);
-            _units.FireEvent(unit, new UnitTargetChangedEvent());
         }
 
         public GameVector3 GetRandomPointDirection(CrowdDirection direction)
         {
-            var position = GetRandomPoint(UnitsField, _random);
+            var position = GetRandomPoint(GetUnitsField(), _random);
             if (direction == CrowdDirection.Right)
-                return new GameVector3(UnitsField.X + UnitsField.Width, 0, position.Z);
+                return new GameVector3(GetUnitsField().X + GetUnitsField().Width, 0, position.Z);
             else
-                return new GameVector3(UnitsField.X, 0, position.Z);
+                return new GameVector3(GetUnitsField().X, 0, position.Z);
         }
 
         public IReadOnlyCollection<Unit> GetUnits()

@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
     {
         new static IStageLevelService Default { get; set; }
 
-        StageFlowService Flow { get; }
+        StageTurnService Flow { get; }
         BuildingService Building { get; }
         SchemesService Schemes { get; }
         HandService Hand { get; }

@@ -107,7 +107,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var stageLevel = new StageLevel(new[] { scheme });
 
-            var flow = new StageFlowService(stageLevel, hand, schemes, points);
+            var flow = new RewardsService(stageLevel, hand, schemes, points);
             flow.Start();
 
             Assert.AreEqual(1, cardsRepository.Count);
@@ -131,7 +131,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var hand = new HandService(cardsRepository, schemesRepository);
             var schemes = new SchemesService(schemesRepository, deck);
 
-            var flow = new StageFlowService(stageLevel, hand, schemes, pointsService, 1);
+            var flow = new RewardsService(stageLevel, hand, schemes, pointsService, 1);
             Assert.AreEqual(new BuildingLevel(0), pointsService.GetCurrentLevel());
 
             Assert.AreEqual(0, cardsRepository.Count);

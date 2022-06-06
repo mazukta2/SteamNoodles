@@ -53,7 +53,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
 
         private bool IsFinished()
         {
-            return _queue.GetUnits().Count >= _queue.GetQueueSize();
+            return _queue.GetUnits().Count >= _queue.GetQueueSize().Value;
         }
 
         private void Spawn()
@@ -66,7 +66,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
 
             var pos = _queue.GetPositionFor(_queue.GetUnits().Count + 1);
             var unit = _unitsController.SpawnUnit(pos);
-            _unitsController.LookAt(unit, _queue.GetQueueFirstPosition() + new GameVector3(-1, 0, 0), true);
+            _unitsController.LookAt(unit, _queue.GetQueuePosition() + new GameVector3(-1, 0, 0), true);
             _unitsController.Smoke(unit);
             _addToQueue(unit);
         }

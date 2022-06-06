@@ -10,6 +10,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
     public class BuildingService 
     {
+        public event Action<Construction> OnBuild = delegate { };
+
         private readonly IRepository<Construction> _constructions;
         private readonly ConstructionsService _constructionsService;
         private readonly BuildingPointsService _pointsService;
@@ -42,6 +44,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 
             _pointsService.Change(points, _fieldService.GetWorldPosition(construction));
 
+            OnBuild(construction);
             _constructions.FireEvent(construction, new ConstructionBuildedByPlayerEvent());
 
             return construction;
