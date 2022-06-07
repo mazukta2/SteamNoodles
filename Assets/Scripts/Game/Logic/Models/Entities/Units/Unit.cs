@@ -97,6 +97,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             FireEvent(new UnitLookAtEvent(target, skip));
         }
 
+        public int GetCoins()
+        {
+            return UnitType.BaseCoins;
+        }
+
         public bool IsMoving()
         {
             return !IsOnPosition;

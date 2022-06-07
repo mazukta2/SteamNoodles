@@ -71,9 +71,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
             return new BuildingLevel(_current.CurrentLevel);
         }
 
-        public int GetTargetLevel()
+        public BuildingLevel GetTargetLevel()
         {
-            return _target.CurrentLevel;
+            return new BuildingLevel(_target.CurrentLevel);
         }
 
         public int GetMaxTargetLevel()
@@ -156,13 +156,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
         {
             _maxTargetLevel = value;
         }
-
-        //public BuildingPointsService(Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsService buildingPoints)
-        //{
-        //    var points = new BuildingPointsManager(constructionsSettingsDefinition, time,
-        //            constructionsSettingsDefinition.LevelUpPower, constructionsSettingsDefinition.LevelUpOffset);
-        //    _buildingPoints = buildingPoints;
-        //}
-
     }
 }

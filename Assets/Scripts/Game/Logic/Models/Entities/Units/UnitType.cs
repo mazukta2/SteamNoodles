@@ -15,14 +15,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
         public float SpeedUpDistance { get; private set; }
         public float SpeedOffset { get; private set; }
         public float RotationSpeed { get; private set; }
-        public string[] Hairs { get; internal set; }
+        public string[] Hairs { get; private set; }
+        public int BaseCoins { get; private set; }
 
-        public UnitType()
+        public UnitType(float speedOffset = 0,
+            float rotationSpeed = 1, float speedUp = 1, float speedUpDistance = 0, int coins = 0) :
+            this(new UnitSpeed(1), new UnitSpeed(1), speedOffset, rotationSpeed, speedUp, speedUpDistance, coins)
         {
-            MinSpeed = new UnitSpeed(1);
-            Speed = new UnitSpeed(1);
-            SpeedUp = 1;
-            SpeedUpDistance = 0;
         }
 
         public UnitType(CustomerDefinition definition, UnitsSettingsDefinition unitsSettingsDefinition)
@@ -34,10 +33,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             Hairs = unitsSettingsDefinition.Hairs;
             SpeedUp = unitsSettingsDefinition.SpeedUp;
             SpeedUpDistance = unitsSettingsDefinition.SpeedUpDistance;
+            BaseCoins = unitsSettingsDefinition.BaseCoins;
         }
 
         public UnitType(UnitSpeed minSpeed, UnitSpeed speed, float speedOffset = 0, 
-            float rotationSpeed = 1, float speedUp = 1, float speedUpDistance = 0)
+            float rotationSpeed = 1, float speedUp = 1, float speedUpDistance = 0, int coins = 0)
         {
             SpeedOffset = speedOffset;
             MinSpeed = minSpeed;
@@ -45,6 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             RotationSpeed = rotationSpeed;
             SpeedUp = speedUp;
             SpeedUpDistance = speedUpDistance;
+            BaseCoins = coins;
         }
     }
 }

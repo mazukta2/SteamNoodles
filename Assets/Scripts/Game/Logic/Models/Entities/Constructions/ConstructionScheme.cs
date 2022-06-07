@@ -72,6 +72,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             _defintionId = defId;
         }
 
+        public static ConstructionScheme DefaultWithPoints(BuildingPoints points)
+        {
+            return new ConstructionScheme(new Uid(),
+                DefId.None,
+                ContructionPlacement.One,
+                LocalizationTag.None,
+                points,
+                new AdjacencyBonuses(),
+                "", "", new Requirements());
+        }
+
         public static IReadOnlyCollection<ConstructionScheme> FillWithDefinitions(IEnumerable<ConstructionDefinition> definitions, IRepository<ConstructionScheme> repository)
         {
             var result = new Dictionary<ConstructionDefinition, ConstructionScheme>();

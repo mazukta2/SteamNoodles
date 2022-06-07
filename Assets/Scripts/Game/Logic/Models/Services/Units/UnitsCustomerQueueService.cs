@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations;
@@ -21,6 +22,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
         private readonly UnitsService _unitsService;
         private readonly UnitsCrowdService _crowd;
         private readonly BuildingPointsService _points;
+        private readonly CoinsService _coins;
         private readonly IGameTime _time;
         private readonly IGameRandom _random;
         private readonly GameVector3 _firstPositionOffset;
@@ -33,13 +35,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
         public UnitsCustomerQueueService(IRepository<Unit> units, 
             UnitsService unitsService,
             UnitsCrowdService crowd,
+            CoinsService coins,
             BuildingPointsService points, 
             IGameTime time, IGameRandom random)
-            : this(units, unitsService, crowd, points, time, random, new GameVector3(0, 0, 0))
+            : this(units, unitsService, crowd, coins, points, time, random, new GameVector3(0, 0, 0))
         {
         }
 
         public UnitsCustomerQueueService(IRepository<Unit> units, UnitsService unitsService, UnitsCrowdService crowd,
+            CoinsService coins,
             BuildingPointsService points,
             IGameTime time, IGameRandom random, GameVector3 firstPositionOffset, float queuePositionZ = 0, float animationDelay = 0)
         {
@@ -47,6 +51,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
             _unitsService = unitsService ?? throw new ArgumentNullException(nameof(unitsService));
             _crowd = crowd ?? throw new ArgumentNullException(nameof(crowd));
             _points = points ?? throw new ArgumentNullException(nameof(points));
+            _coins = coins ?? throw new ArgumentNullException(nameof(coins));
             _time = time ?? throw new ArgumentNullException(nameof(time));
             _random = random;
             _firstPositionOffset = firstPositionOffset;
@@ -131,7 +136,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
         public void Serve(Unit unit)
         {
             RemoveFromQueue(unit);
-            //_resources.Coins.Change(_unitsSettings.BaseCoins);
+            _coins.Change(unit.GetCoins());
         }
 
         public IReadOnlyCollection<Unit> GetQueueUnits()
