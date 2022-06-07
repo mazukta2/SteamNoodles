@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
@@ -10,13 +11,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
     {
         private IUnitsManagerView _unitsManagerView;
         private IPresenterRepository<Unit> _repository;
-        private UnitsSettingsDefinition _settingsDefinition;
+        private readonly IGameTime _time;
 
-        public UnitsPresenter(IPresenterRepository<Unit> units, IUnitsManagerView unitsManagerView, UnitsSettingsDefinition settingsDefinition) : base(unitsManagerView)
+        public UnitsPresenter(IUnitsManagerView unitsManagerView) : this(unitsManagerView, 
+            IStageLevelPresenterRepositories.Default.Units,
+            IGameTime.Default)
         {
-            _unitsManagerView = unitsManagerView;
-            _repository = units;
-            _settingsDefinition = settingsDefinition;
+
+        }
+
+        public UnitsPresenter(IUnitsManagerView unitsManagerView, IPresenterRepository<Unit> units, IGameTime time) : base(unitsManagerView)
+        {
+            _unitsManagerView = unitsManagerView ?? throw new System.ArgumentNullException(nameof(unitsManagerView));
+            _repository = units ?? throw new System.ArgumentNullException(nameof(units));
+            _time = time ?? throw new System.ArgumentNullException(nameof(time));
 
             foreach (var item in _repository.Get())
                 SpawnUnit(item);
@@ -37,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         private void SpawnUnit(EntityLink<Unit> link)
         {
             var view = _unitsManagerView.Container.Spawn<IUnitView>(_unitsManagerView.UnitPrototype);
-            new UnitPresenter(link, view, _settingsDefinition, IGameTime.Default);
+            new UnitPresenter(view, link, _time);
         }
     }
 }

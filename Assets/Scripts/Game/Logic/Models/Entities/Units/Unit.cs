@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
@@ -15,46 +16,31 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
 
         public int VisualSeed { get; private set; }
         public BehaviourState State { get; private set; }
+        public UnitType UnitType { get; private set; }
 
         private float _speedOffset;
-        private float _minSpeed;
-        private float _speed;
-
-        public Unit(GameVector3 position, GameVector3 target, CustomerDefinition definition,
-            UnitsSettingsDefinition unitsSettings, IGameRandom random)
-        {
-            Position = position;
-            Target = target;
-            _speedOffset = random.GetRandom(-1, 1) * unitsSettings.SpeedOffset;
-            _minSpeed = unitsSettings.MinSpeed;
-            _speed = unitsSettings.Speed;
-            VisualSeed = random.GetRandom(0, 10000);
-            CurrentSpeed = GetMinSpeed();
-        }
 
         public Unit(GameVector3 position, GameVector3 target, UnitType type, IGameRandom random)
         {
+            UnitType = type ?? throw new ArgumentNullException(nameof(type));
             Position = position;
             Target = target;
             _speedOffset = random.GetRandom(-1, 1) * type.SpeedOffset;
-            _minSpeed = type.MinSpeed.Value;
-            _speed = type.Speed.Value;
             VisualSeed = random.GetRandom(0, 10000);
             CurrentSpeed = GetMinSpeed();
         }
 
-        public Unit(GameVector3 position, GameVector3 target, float minSpeed, float speed, float speedOffset, int visualSeed)
-        {
-            Position = position;
-            Target = target;
-            _speedOffset = speedOffset;
-            _minSpeed = minSpeed;
-            _speed = speed;
-            VisualSeed = visualSeed;
-            CurrentSpeed = GetMinSpeed();
-
-        }
         public bool IsOnPosition => Position.IsClose(Target);
+
+        public string GetHair() 
+        {
+            if (UnitType.Hairs == null || UnitType.Hairs.Length == 0)
+                return null;
+
+            var random = new Random(VisualSeed);
+            return UnitType.Hairs.GetRandom(random);
+        }
+
         public void SetTargetSpeed(float targetSpeed)
         {
             targetSpeed = Math.Min(targetSpeed, GetMaxSpeed());
@@ -100,6 +86,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             FireEvent(new UnitReachedTargetPositionEvent());
         }
 
+        public void LookAt(GameVector3 target, bool skip = false)
+        {
+            if (IsMoving())
+                throw new Exception("Can't look while moving");
+
+            if ((target - Position).IsZero())
+                throw new Exception("Wrong target");
+
+            FireEvent(new UnitLookAtEvent(target, skip));
+        }
+
         public bool IsMoving()
         {
             return !IsOnPosition;
@@ -107,12 +104,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
 
         public float GetMaxSpeed()
         {
-            return _speed + _speedOffset;
+            return UnitType.Speed.Value + _speedOffset;
         }
 
         private float GetMinSpeed()
         {
-            return _minSpeed;
+            return UnitType.MinSpeed.Value;
         }
 
         public enum BehaviourState
@@ -121,5 +118,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             InCrowd,
             InQueue
         }
+
     }
 }

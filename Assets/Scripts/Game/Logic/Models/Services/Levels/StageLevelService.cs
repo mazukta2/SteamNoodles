@@ -71,7 +71,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             Building = new BuildingService(_repositories.Constructions, Constructions, Points, Hand, Field);
             Crowd = new UnitsCrowdService(_repositories.Units, Units, time, settings, random);
             Queue = new UnitsCustomerQueueService(_repositories.Units, Units, Crowd, Points, time, random);
-            UnitsMovement = new UnitsMovementsService(_repositories.Units, unitSettings, Time);
+            UnitsMovement = new UnitsMovementsService(_repositories.Units, Time);
 
             Rewards.Start();
         }

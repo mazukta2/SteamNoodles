@@ -23,8 +23,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common
 
         public UnitRotator(IRotator rotator, IGameTime time, float frequency, float speed)
         {
-            _rotator = rotator;
-            _time = time;
+            _rotator = rotator ?? throw new ArgumentNullException(nameof(rotator));
+            _time = time ?? throw new ArgumentNullException(nameof(time));
             _frequency = frequency;
             _speed = speed;
 

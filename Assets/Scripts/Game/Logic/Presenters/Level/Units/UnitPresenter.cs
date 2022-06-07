@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Helpers;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
@@ -17,20 +18,21 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private IUnitView _view;
         private PresenterModel<Unit> _model;
-        private UnitsSettingsDefinition _settings;
         private UnitRotator _rotator;
         private bool _isStartingAnimation = false;
 
-        public UnitPresenter(EntityLink<Unit> link, IUnitView view, UnitsSettingsDefinition unitsSettingsDefinition, IGameTime time) : base(view)
+        public UnitPresenter(IUnitView view, EntityLink<Unit> link, IGameTime time) : base(view)
         {
             _view = view;
             _model = link.CreateModel();
-            _settings = unitsSettingsDefinition ?? throw new ArgumentNullException(nameof(unitsSettingsDefinition));
-            _rotator = new UnitRotator(view.Rotator, time, 0.1f, unitsSettingsDefinition.RotationSpeed);
+            _rotator = new UnitRotator(view.Rotator, time, 0.1f, _model.Get().UnitType.RotationSpeed);
 
             _view.Position.Value = _model.Value.Position;
             if (_model.Value.Target != _model.Value.Position)
                 _rotator.Direction = (_model.Value.Target - _model.Value.Position).ToQuaternion();
+            else
+                _rotator.Direction = new GameVector3(-1, 0, 0).ToQuaternion();
+
             _rotator.Skip();
             _model.OnEvent += HandleEvent;
             _model.OnDispose += HandleOnDispose;
@@ -120,11 +122,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void DressUnit()
         {
-            var random = new Random(_model.Value.VisualSeed);
-            var hair = _settings.Hairs.GetRandom(random);
-
             _view.UnitDresser.Clear();
-            _view.UnitDresser.SetHair(hair);
+
+            var hair = _model.Get().GetHair();
+            if (!string.IsNullOrEmpty(hair))
+                _view.UnitDresser.SetHair(hair);
         }
 
         public enum Animations

@@ -21,11 +21,11 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
 
         public IViewPrefab SmokePrefab { get; set; }
 
-        public UnitView(IViewsCollection level, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
+        public UnitView(IViewsCollection level) : base(level)
         {
-            Rotator = rotator;
-            Animator = animator;
-            UnitDresser = unitDresser;
+            Rotator = new Rotator();
+            Animator = new AnimatorMock();
+            UnitDresser = new UnitDresser();
             SmokeContainer = new ContainerViewMock(level);
             SmokePrefab = new DefaultViewCollectionPrefabMock(SpawnSmoke);
         }

@@ -61,13 +61,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 
         public void LookAt(Unit unit, GameVector3 target, bool skip = false)
         {
-            if (unit.IsMoving())
-                throw new Exception("Can't look while moving");
-
-            if ((target - unit.Position).IsZero())
-                throw new Exception("Wrong target");
-
-            _units.FireEvent(unit, new UnitLookAtEvent(target, skip));
+            unit.LookAt(target, skip);
+            _units.Save(unit);
         }
 
         public void DestroyUnit(Unit unit)

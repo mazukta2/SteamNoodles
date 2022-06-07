@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
         {
             public override void Fill(IViewsCollection collection)
             {
-                new UnitView(collection, new Rotator(), new AnimatorMock(), new UnitDresser());
+                new UnitView(collection);
             }
         }
     }

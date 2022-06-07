@@ -12,20 +12,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
     {
         private IRepository<Unit> _units;
         private IGameTime _time;
-        private readonly float _speedUp;
-        private readonly float _speedUpDistance;
 
-        public UnitsMovementsService(IRepository<Unit> units, UnitsSettingsDefinition unitsSettings, IGameTime time)
-            : this(units, time, unitsSettings.SpeedUp, unitsSettings.SpeedUpDistance)
-        {
-        }
-
-        public UnitsMovementsService(IRepository<Unit> units, IGameTime time, float speedUp = 1, float speedUpDistance = 0)
+        public UnitsMovementsService(IRepository<Unit> units, IGameTime time)
         {
             _units = units;
             _time = time;
-            _speedUp = speedUp;
-            _speedUpDistance = speedUpDistance;
             _time.OnTimeChanged += Time_OnTimeChanged;
         }
 
@@ -44,14 +35,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
         {
             foreach (var unit in _units.Get())
             {
-                var speedUp = unit.Position.GetDistanceTo(unit.Target) > _speedUpDistance;
+                var speedUp = unit.Position.GetDistanceTo(unit.Target) > unit.UnitType.SpeedUpDistance;
                 var currentSpeed = unit.CurrentSpeed;
                 if (speedUp)
-                    currentSpeed += delta * _speedUp;
+                    currentSpeed += delta * unit.UnitType.SpeedUp;
                 else
-                    currentSpeed -= delta * _speedUp;
+                    currentSpeed -= delta * unit.UnitType.SpeedUp;
 
                 unit.SetTargetSpeed(currentSpeed);
+                _units.Save(unit);
             }
         }
 
