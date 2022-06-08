@@ -34,12 +34,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             //_turnManager = turnManager ?? throw new ArgumentNullException(nameof(turnManager));
 
             //_constructions.OnAdded += HandleOnAdded;
-            _view.NextWaveButton.SetAction(NextWaveClick);
-            _view.FailWaveButton.SetAction(FailWaveClick);
-            //_turnManager.OnDayFinished += HandleOnDayFinished;
+            //_view.NextWaveButton.SetAction(NextWaveClick);
+            //_view.FailWaveButton.SetAction(FailWaveClick);
+            ////_turnManager.OnDayFinished += HandleOnDayFinished;
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
             _exitKey.OnTap += OnExitTap;
-            UpdateWaveProgress();
+            //UpdateWaveProgress();
         }
 
         protected override void DisposeInner()

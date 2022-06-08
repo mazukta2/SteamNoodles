@@ -1,201 +1,247 @@
-﻿using Game.Tests.Cases;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
+using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens;
+using Game.Tests.Cases;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 {
     public class WavesTests
     {
-        [Test]
-        public void IsEndWaveButtonRemovesBuildings()
+        [Test, Order(TestCore.ModelOrder)]
+        public void EndWaveWorksWhenHandIsEmpty()
         {
-            throw new System.Exception();
-            //var constructionDefinition = ConstructionSetups.GetDefault();
-            //var game = new GameConstructor()
-            //    .AddDefinition("d", constructionDefinition)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.
-            //        StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
-            //    .Build();
+            var time = new GameTime();
+            var constructionsRepository = new Repository<Construction>();
+            var constructionsCardsRepository = new Repository<ConstructionCard>();
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionDeck = new DeckService<ConstructionScheme>();
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.Click();
-            //Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
-            //var firstBuilding = game.LevelCollection.FindView<ConstructionView>();
+            var scheme = new ConstructionScheme();
+            constructionsSchemeRepository.Add(scheme);
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.MovePointer(new GameVector3(-1, 0, 0));
-            //game.Controls.Click();
-            //Assert.AreEqual(2, game.LevelCollection.FindViews<ConstructionView>().Count);
+            var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck);
+            var stageLevel = new StageLevel(new[] { scheme });
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.MovePointer(new GameVector3(-2, 0, 0));
-            //game.Controls.Click();
-            //Assert.AreEqual(3, game.LevelCollection.FindViews<ConstructionView>().Count);
+            var points = new BuildingPointsService(0, 0, time, 2, 2);
+            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var rewardService = new RewardsService(stageLevel, handService, schemes, points);
 
-            //game.LevelCollection.FindView<MainScreenView>().NextWaveButton.Click();
+            var waves = new StageWaveService(constructionsRepository, handService, rewardService, time);
 
-            //Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
-            //Assert.AreEqual(firstBuilding, game.LevelCollection.FindView<ConstructionView>());
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
 
-            //game.Dispose();
-        }
+            Assert.IsTrue(waves.CanFailWave());
+            Assert.IsFalse(waves.CanWinWave());
 
-        [Test]
-        public void IsFailWaveButtonRemovesBuildings()
-        {
-            throw new System.Exception();
-            //var constructionDefinition = ConstructionSetups.GetDefault();
-            //var game = new GameConstructor()
-            //    .AddDefinition("d", constructionDefinition)
-            //    .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.LevelUpOffset = 10)
-            //    .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.LevelUpPower = 10)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 5)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.
-            //        StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
-            //    .Build();
+            handService.Add(scheme);
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.Click();
-            //Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
-            //var firstBuilding = game.LevelCollection.FindView<ConstructionView>();
+            Assert.IsFalse(waves.CanFailWave());
+            Assert.IsFalse(waves.CanWinWave());
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.MovePointer(new GameVector3(-1, 0, 0));
-            //game.Controls.Click();
-            //Assert.AreEqual(2, game.LevelCollection.FindViews<ConstructionView>().Count);
-
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.MovePointer(new GameVector3(-2, 0, 0));
-            //game.Controls.Click();
-            //Assert.AreEqual(3, game.LevelCollection.FindViews<ConstructionView>().Count);
-
-            //Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
-            //Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
-            //game.LevelCollection.FindView<MainScreenView>().FailWaveButton.Click();
-
-            //Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
-            //Assert.AreEqual(firstBuilding, game.LevelCollection.FindView<ConstructionView>());
-
-            //game.Dispose();
-        }
-
-        [Test]
-        public void IsEndWaveButtonProgress()
-        {
-            throw new System.Exception();
-            //var constructionDefinition = ConstructionSetups.GetDefault();
-            //var game = new GameConstructor()
-            //    .AddDefinition("d", constructionDefinition)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.
-            //        StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 2)
-            //    .Build();
-
-            //Assert.AreEqual(0, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
-            //Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.Click();
-
-            //Assert.AreEqual(0.5f, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
-            //Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
-
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.MovePointer(new GameVector3(-1, 0, 0));
-            //game.Controls.Click();
-
-            //Assert.AreEqual(1f, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
-            //Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
-
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.MovePointer(new GameVector3(-2, 0, 0));
-            //game.Controls.Click();
-
-            //Assert.AreEqual(1f, game.LevelCollection.FindView<MainScreenView>().NextWaveProgress.Value);
-            //Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
-
-            //game.Dispose();
-        }
-
-        [Test]
-        public void IsEndWaveButtonGiveYouNewBuildings()
-        {
-            throw new System.Exception();
-            //var constructionDefinition = ConstructionSetups.GetDefault();
-            //var game = new GameConstructor()
-            //    .AddDefinition("d", constructionDefinition)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.
-            //        StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
-            //    .Build();
-
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.Click();
-
-            //Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
-            //game.LevelCollection.FindView<MainScreenView>().NextWaveButton.Click();
-
-            //Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
-            //Assert.AreEqual("3", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
-
-            //game.Dispose();
-        }
-
-        [Test]
-        public void IsFailWaveButtonGiveYouNewBuildings()
-        {
-            throw new System.Exception();
-            //var constructionDefinition = ConstructionSetups.GetDefault();
-            //var game = new GameConstructor()
-            //    .AddDefinition("d", constructionDefinition)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 5)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.
-            //        StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
-            //    .Build();
-
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.Click();
-
-            //Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
-            //game.LevelCollection.FindView<MainScreenView>().FailWaveButton.Click();
-
-            //Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count());
-            //Assert.AreEqual("3", game.LevelCollection.FindView<HandConstructionView>().Amount.Value);
-
-            //game.Dispose();
+            rewardService.Dispose();
+            points.Dispose();
+            waves.Dispose();
         }
 
 
-        [Test]
-        public void IsFailButtonActivating()
+        [Test, Order(TestCore.ModelOrder)]
+        public void EndWaveButtonRemovesBuildings()
         {
-            throw new System.Exception();
-            //var constructionDefinition = ConstructionSetups.GetDefault();
-            //var game = new GameConstructor()
-            //    .AddDefinition("d", constructionDefinition)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 3)
-            //    .UpdateDefinition<LevelDefinitionMock>(x => x.
-            //        StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition })
-            //    .Build();
+            var time = new GameTime();
+            var constructionsRepository = new Repository<Construction>();
+            var constructionsCardsRepository = new Repository<ConstructionCard>();
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionDeck = new DeckService<ConstructionScheme>();
 
-            //Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
-            //Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
-            //Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.None.ToString(), game.LevelCollection.FindView<MainScreenView>().WaveButtonAnimator.Animation);
+            var scheme = new ConstructionScheme();
+            constructionsSchemeRepository.Add(scheme);
+
+            var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck,
+                new Dictionary<ConstructionScheme, int>() { { scheme, 1 } });
+            var stageLevel = new StageLevel(new[] { scheme });
+
+            var points = new BuildingPointsService(0, 0, time, 2, 2);
+            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var rewardService = new RewardsService(stageLevel, handService, schemes, points);
+
+            var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 4);
+
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(1, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(2, 0), new FieldRotation()));
+
+            Assert.AreEqual(3, constructionsRepository.Count);
+
+            waves.FailWave();
+
+            Assert.AreEqual(1, constructionsRepository.Count);
+
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(1, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(2, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(2, 0), new FieldRotation()));
+
+            Assert.AreEqual(4, constructionsRepository.Count);
+
+            waves.WinWave();
+
+            Assert.AreEqual(1, constructionsRepository.Count);
+
+            rewardService.Dispose();
+            points.Dispose();
+            waves.Dispose();
+        }
+
+        [Test, Order(TestCore.ModelOrder)]
+        public void WaveProgressWorks()
+        {
+            var time = new GameTime();
+            var constructionsRepository = new Repository<Construction>();
+            var constructionsCardsRepository = new Repository<ConstructionCard>();
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionDeck = new DeckService<ConstructionScheme>();
+
+            var scheme = new ConstructionScheme();
+            constructionsSchemeRepository.Add(scheme);
+
+            var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck,
+                new Dictionary<ConstructionScheme, int>() { { scheme, 1 } });
+            var stageLevel = new StageLevel(new[] { scheme });
+
+            var points = new BuildingPointsService(0, 0, time, 2, 2);
+            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var rewardService = new RewardsService(stageLevel, handService, schemes, points);
+
+            var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 2);
+
+            Assert.AreEqual(0, waves.GetWaveProgress());
+            Assert.IsFalse(waves.CanWinWave());
+
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
+
+            Assert.AreEqual(0.5f, waves.GetWaveProgress());
+            Assert.IsFalse(waves.CanWinWave());
+
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(1, 0), new FieldRotation()));
+
+            Assert.AreEqual(1f, waves.GetWaveProgress());
+            Assert.IsTrue(waves.CanWinWave());
+
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(3, 0), new FieldRotation()));
+
+            Assert.AreEqual(1f, waves.GetWaveProgress());
+            Assert.IsTrue(waves.CanWinWave());
+
+            rewardService.Dispose();
+            points.Dispose();
+            waves.Dispose();
+        }
+
+        [Test, Order(TestCore.ModelOrder)]
+        public void EndWaveGiveYouNewBuildings()
+        {
+            var time = new GameTime();
+            var constructionsRepository = new Repository<Construction>();
+            var constructionsCardsRepository = new Repository<ConstructionCard>();
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionDeck = new DeckService<ConstructionScheme>();
+
+            var scheme = new ConstructionScheme();
+            constructionsSchemeRepository.Add(scheme);
+
+            var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck,
+                new Dictionary<ConstructionScheme, int>() { { scheme, 1 } });
+            var stageLevel = new StageLevel(new[] { scheme });
+
+            var points = new BuildingPointsService(0, 0, time, 2, 2);
+            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var rewardService = new RewardsService(stageLevel, handService, schemes, points);
+
+            var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 2);
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
+
+            Assert.AreEqual(0, constructionsCardsRepository.Count);
+
+            waves.FailWave();
+
+            Assert.AreEqual(1, constructionsCardsRepository.Count);
+            Assert.AreEqual(new CardAmount(3), constructionsCardsRepository.Get().First().Amount);
+
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(1, 0), new FieldRotation()));
+            waves.WinWave();
             
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.Click();
+            Assert.AreEqual(1, constructionsCardsRepository.Count);
+            Assert.AreEqual(new CardAmount(6), constructionsCardsRepository.Get().First().Amount);
 
-            //Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
-            //Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
-            //Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.NextWave.ToString(), game.LevelCollection.FindView<MainScreenView>().WaveButtonAnimator.Animation);
+            rewardService.Dispose();
+            points.Dispose();
+            waves.Dispose();
+        }
 
-            //game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            //game.Controls.MovePointer(new GameVector3(-1, 0, 0));
-            //game.Controls.Click();
+        [Test, Order(TestCore.PresenterOrder)]
+        public void ButtonsAreActivated()
+        {
+            var time = new GameTime();
+            var constructionsRepository = new Repository<Construction>();
+            var constructionsCardsRepository = new Repository<ConstructionCard>();
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionDeck = new DeckService<ConstructionScheme>();
 
-            //Assert.AreEqual(0, game.LevelCollection.FindViews<HandConstructionView>().Count);
-            //Assert.IsFalse(game.LevelCollection.FindView<MainScreenView>().NextWaveButton.IsActive);
-            //Assert.IsTrue(game.LevelCollection.FindView<MainScreenView>().FailWaveButton.IsActive);
-            //Assert.AreEqual(MainScreenPresenter.WaveButtonAnimations.FailWave.ToString(), game.LevelCollection.FindView<MainScreenView>().WaveButtonAnimator.Animation);
+            var scheme = new ConstructionScheme();
+            constructionsSchemeRepository.Add(scheme);
 
-            //game.Dispose();
+            var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck,
+                new Dictionary<ConstructionScheme, int>() { { scheme, 1 } });
+            var stageLevel = new StageLevel(new[] { scheme });
+
+            var points = new BuildingPointsService(0, 0, time, 2, 2);
+            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var rewardService = new RewardsService(stageLevel, handService, schemes, points);
+
+            var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 3);
+
+            var levelCollection = new ViewsCollection();
+
+            var view = new EndWaveButtonView(levelCollection);
+            new EndWaveButtonWidgetPresenter(view, constructionsRepository, waves);
+
+            constructionsCardsRepository.Add(new ConstructionCard(scheme));
+
+            Assert.IsFalse(view.NextWaveButton.IsActive);
+            Assert.IsFalse(view.FailWaveButton.IsActive);
+            Assert.AreEqual(EndWaveButtonWidgetPresenter.WaveButtonAnimations.None.ToString(),
+                view.WaveButtonAnimator.Animation);
+
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
+
+            Assert.IsFalse(view.NextWaveButton.IsActive);
+            Assert.IsFalse(view.FailWaveButton.IsActive);
+            Assert.AreEqual(EndWaveButtonWidgetPresenter.WaveButtonAnimations.NextWave.ToString(),
+                view.WaveButtonAnimator.Animation);
+
+            constructionsCardsRepository.Clear();
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(1, 0), new FieldRotation()));
+
+            Assert.IsFalse(view.NextWaveButton.IsActive);
+            Assert.IsTrue(view.FailWaveButton.IsActive);
+            Assert.AreEqual(EndWaveButtonWidgetPresenter.WaveButtonAnimations.FailWave.ToString(),
+                view.WaveButtonAnimator.Animation);
+
+            levelCollection.Dispose();
+            rewardService.Dispose();
+            points.Dispose();
+            waves.Dispose();
         }
 
         [TearDown]

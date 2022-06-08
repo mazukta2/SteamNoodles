@@ -6,12 +6,9 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow.Animations;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System;
 using System.Linq;
 
@@ -19,86 +16,70 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
 {
     public class StageWaveService : Disposable
     {
-        //public event Action OnTurn = delegate { };
-        //public event Action<bool> OnWaveEnded = delegate { };
-        //public event Action OnDayFinished = delegate { };
+        public event Action OnDayFinished = delegate { };
 
-        private readonly ConstructionsSettingsDefinition _constructionsDefinitions;
-        private readonly LevelDefinition _levelDefinition;
-        private readonly IGameRandom _random;
         private readonly IRepository<Construction> _constructions;
-        private readonly StageLevel _level;
-        private readonly BuildingService _buildingService;
         private readonly HandService _hand;
-        private readonly BuildingPointsService _points;
-        private readonly int _giveCardsAmount;
-        private readonly SchemesService _schemesService;
+        private readonly RewardsService _rewardsService;
+        private readonly IGameTime _time;
+        private readonly int _totalWaves;
+        private readonly int _constructionsToEndWave;
+        private readonly float _destoyTime;
         private readonly SequenceManager _sequence = new SequenceManager();
         private int _wave;
 
-        public StageWaveService(StageLevel level, 
-            BuildingService buildingService,
+        public StageWaveService(IRepository<Construction> constructions, 
             HandService handService, 
-            SchemesService schemesService,
-            BuildingPointsService buildingPointsService, int giveCardsAmount = 3)
+            RewardsService rewardsService,
+            IGameTime time,
+            int waves = 3,
+            int constructionsToEndWave = 6,
+            float destoyTime = 0)
         {
-            _level = level ?? throw new ArgumentNullException(nameof(level));
-            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
+            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _hand = handService ?? throw new ArgumentNullException(nameof(handService));
-            _points = buildingPointsService ?? throw new ArgumentNullException(nameof(buildingPointsService));
-            _giveCardsAmount = giveCardsAmount;
-            _schemesService = schemesService ?? throw new ArgumentNullException(nameof(schemesService));
-
-            _points.OnMaxTargetLevelUp += HandleOnLevelUp;
-            _buildingService.OnBuild += HandleOnBuild;
+            _rewardsService = rewardsService ?? throw new ArgumentNullException(nameof(rewardsService));
+            _time = time;
+            _totalWaves = waves;
+            _constructionsToEndWave = constructionsToEndWave;
+            _destoyTime = destoyTime;
         }
 
         protected override void DisposeInner()
         {
-            _points.OnMaxTargetLevelUp -= HandleOnLevelUp;
-            _buildingService.OnBuild -= HandleOnBuild;
             _sequence.Dispose();
         }
 
-        private void Turn()
-        {
-            //var construction = _constructions.Get().First();
-            //var queueStartingPosition = _fieldPositionService.GetWorldPosition(construction).X;
-            //return new GameVector3(queueStartingPosition, 0, _levelDefinition.QueuePosition.Z);
-            //Queue.ServeCustomer();
-        }
-
-        private void TurnManager_OnWaveEnded(bool victory)
-        {
-            //if (victory)
-            //    Queue.ServeAll();
-            //else
-            //{
-            //    Queue.ClearQueue();
-            //    Queue.FreeAll();
-            //}
-        }
+        //private void TurnManager_OnWaveEnded(bool victory)
+        //{
+        //    //if (victory)
+        //    //    Queue.ServeAll();
+        //    //else
+        //    //{
+        //    //    Queue.ClearQueue();
+        //    //    Queue.FreeAll();
+        //    //}
+        //}
 
         public void WinWave()
         {
             if (_sequence.IsActive())
                 return;
 
-            if (!CanNextWave())
+            if (!CanWinWave())
                 throw new Exception("Cant start next wave");
 
             _wave++;
-            if (_levelDefinition.Waves <= _wave)
+            if (_totalWaves <= _wave)
             {
-                //OnDayFinished();
+                OnDayFinished();
                 return;
             }
 
             var constructions = _constructions.Get().ToArray();
             for (int i = constructions.Length - 1; i >= 1; i--)
             {
-
-                _sequence.Add(new DestroyConstructionStep(_constructions, constructions[i], IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
+                _sequence.Add(new DestroyConstructionStep(_constructions, constructions[i], _time, _destoyTime));
             }
 
             _sequence.Add(new ActionStep(EndWave));
@@ -106,15 +87,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
 
             void EndWave()
             {
-                GiveCards();
+                _rewardsService.GiveCards();
                 //OnWaveEnded(true);
             }
-        }
-
-        public void Start()
-        {
-            foreach (var scheme in _level.StartingSchemes)
-                _hand.Add(scheme);
         }
 
         public void FailWave()
@@ -126,16 +101,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
                 throw new Exception("Cant fail wave");
 
             _wave++;
-            if (_levelDefinition.Waves <= _wave)
+            if (_totalWaves <= _wave)
             {
-                //OnDayFinished();
+                OnDayFinished();
                 return;
             }
 
             var constructions = _constructions.Get().ToArray();
             for (int i = constructions.Length - 1; i >= 1; i--)
             {
-                _sequence.Add(new DestroyConstructionStep(_constructions, constructions[i], IGameTime.Default, _constructionsDefinitions.ConstructionDestroyTime));
+                _sequence.Add(new DestroyConstructionStep(_constructions, constructions[i], _time, _destoyTime));
             }
 
             _sequence.Add(new ActionStep(EndWave));
@@ -143,21 +118,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
 
             void EndWave()
             {
-                GiveCards();
+                _rewardsService.GiveCards();
                 //OnWaveEnded(false);
             }
         }
 
-        private void GiveCards()
-        {
-            for (int i = 0; i < _giveCardsAmount; i++)
-            {
-                var constrcution = _schemesService.TakeRandom();
-                _hand.Add(constrcution);
-            }
-        }
-
-        public bool CanProcessNextWave()
+        public bool IsActive()
         {
             if (_constructions.Get().Count < 1)
                 return false;
@@ -165,12 +131,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
             return true;
         }
 
-        public bool CanNextWave()
+
+        public bool CanWinWave()
         {
-            if (!CanProcessNextWave())
+            if (_constructions.Get().Count < 1)
                 return false;
 
-            if (_constructions.Get().Count < _levelDefinition.ConstructionsForNextWave)
+            if (_constructions.Get().Count < _constructionsToEndWave)
                 return false;
 
             return true;
@@ -178,7 +145,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
 
         public bool CanFailWave()
         {
-            if (CanNextWave())
+            if (CanWinWave())
                 return false;
 
             if (_constructions.Get().Count < 1)
@@ -192,17 +159,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
 
         public float GetWaveProgress()
         {
-            return Math.Min(1, _constructions.Get().Count / (float)_levelDefinition.ConstructionsForNextWave);
-        }
-
-        private void HandleOnLevelUp()
-        {
-            GiveCards();
-        }
-
-        private void HandleOnBuild(Construction obj)
-        {
-            Turn();
+            return Math.Min(1, _constructions.Get().Count / (float)_constructionsToEndWave);
         }
 
     }

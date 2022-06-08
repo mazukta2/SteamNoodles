@@ -10,7 +10,7 @@ using Game.Assets.Scripts.Tests.Views.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
 {
-    public class GhostPointsView : ScreenView<GhostPointPresenter>, IGhostPointsView
+    public class GhostPointsView : ViewWithPresenter<GhostPointPresenter>, IGhostPointsView
     {
         public IWorldText Points { get; } = new UiWorldText();
 

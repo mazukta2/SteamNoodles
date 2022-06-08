@@ -20,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
 
         public TimeUpdater(IGameTime time, float frequency = 0.2f)
         {
-            _time = time;
+            _time = time ?? throw new ArgumentNullException(nameof(time));
             _frequency = frequency;
         }
 
