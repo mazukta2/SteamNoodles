@@ -1,17 +1,13 @@
-﻿using Game.Assets.Scripts.Game.Environment;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters;
-using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
@@ -22,16 +18,8 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
-using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
-using Game.Assets.Scripts.Game.Logic.Views.Controls;
-using Game.Assets.Scripts.Tests.Environment;
-using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
 using Game.Tests.Cases;
-using Game.Tests.Controllers;
-using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -43,6 +31,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         public void StageLevelServiceIsLoadedByScepifics()
         {
             var manager = new ServiceManager();
+            manager.Add(new Repository<ConstructionScheme>());
+            manager.Add(new Repository<UnitType>());
             IModelServices.Default = manager;
             IGameRandom.Default = new SessionRandom();
             IGameTime.Default = new GameTime();
@@ -109,6 +99,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         public void StageLevelServiceStartAllNeededServices()
         {
             var manager = new ServiceManager();
+            manager.Add(new Repository<ConstructionScheme>());
+            manager.Add(new Repository<UnitType>());
+
             IModelServices.Default = manager;
             var level = new StageLevel();
             var service = new StageLevelService(level, manager, new SessionRandom(), new GameTime());
@@ -129,6 +122,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsTrue(manager.Has<SchemesService>());
             Assert.IsTrue(manager.Has<CoinsService>());
 
+
+            Assert.IsTrue(manager.Has<Repository<ConstructionCard>>());
+            Assert.IsTrue(manager.Has<Repository<Construction>>());
+            Assert.IsTrue(manager.Has<Repository<Unit>>());
+            Assert.IsTrue(manager.Has<SingletonRepository<Deck<ConstructionScheme>>>());
+            Assert.IsTrue(manager.Has<SingletonRepository<Deck<UnitType>>>());
+
             manager.Remove(service);
 
             Assert.IsFalse(manager.Has<StageTurnService>());
@@ -145,6 +145,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsFalse(manager.Has<BuildingService>());
             Assert.IsFalse(manager.Has<SchemesService>());
             Assert.IsFalse(manager.Has<CoinsService>());
+
+            Assert.IsFalse(manager.Has<Repository<ConstructionCard>>());
+            Assert.IsFalse(manager.Has<Repository<Construction>>());
+            Assert.IsFalse(manager.Has<Repository<Unit>>());
+            Assert.IsFalse(manager.Has<SingletonRepository<Deck<ConstructionScheme>>>());
+            Assert.IsFalse(manager.Has<SingletonRepository<Deck<UnitType>>>());
 
             manager.Dispose();
         }

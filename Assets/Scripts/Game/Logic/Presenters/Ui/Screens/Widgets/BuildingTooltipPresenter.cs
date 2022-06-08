@@ -15,9 +15,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private BuildingModeService _buildingModeService;
         private HandConstructionTooltipPresenter _tooltip;
 
-        public BuildingTooltipPresenter(IBuildingToolitpView view,
-            IPresenterRepository<Construction> constructions) : this(view, 
-                  constructions,
+        public BuildingTooltipPresenter(IBuildingToolitpView view) : this(view,
+                  IPresenterServices.Default?.Get<IPresenterRepository<Construction>>(),
                   IPresenterServices.Default?.Get<BuildingModeService>())
         {
 

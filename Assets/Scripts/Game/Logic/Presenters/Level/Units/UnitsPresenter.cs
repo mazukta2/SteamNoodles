@@ -1,8 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
@@ -13,8 +12,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         private IPresenterRepository<Unit> _repository;
         private readonly IGameTime _time;
 
-        public UnitsPresenter(IUnitsManagerView unitsManagerView) : this(unitsManagerView, 
-            IStageLevelPresenterRepositories.Default.Units,
+        public UnitsPresenter(IUnitsManagerView unitsManagerView) : this(unitsManagerView,
+            IPresenterServices.Default?.Get<IPresenterRepository<Unit>>(),
             IGameTime.Default)
         {
 

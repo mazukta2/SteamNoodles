@@ -1,8 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.Definitions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
 {

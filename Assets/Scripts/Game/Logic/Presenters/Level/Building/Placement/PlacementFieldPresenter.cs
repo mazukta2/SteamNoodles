@@ -1,7 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
@@ -9,7 +7,6 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -33,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             IPresenterServices.Default?.Get<BuildingModeService>(),
             IPresenterServices.Default?.Get<FieldService>(),
             IPresenterServices.Default?.Get<ConstructionsService>(),
-            IStageLevelPresenterRepositories.Default.Constructions,
+            IPresenterServices.Default?.Get<IPresenterRepository<Construction>>(),
             ICommands.Default)
         {
         }

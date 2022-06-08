@@ -18,6 +18,9 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
 
         public T Add<T>(T service) where T : IService
         {
+            if (_list.OfType<T>().Any())
+                throw new Exception($"Only one instance of {typeof(T).Name} allowed");
+
             _list.Add(service);
 
             if (service is IBaseCommandHandler commandHandler)

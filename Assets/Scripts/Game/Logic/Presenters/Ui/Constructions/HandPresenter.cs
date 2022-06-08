@@ -3,7 +3,6 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -21,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public HandPresenter(IHandView view) 
             : this(view, 
-                  IStageLevelPresenterRepositories.Default?.Cards, 
+                  IPresenterServices.Default?.Get<IPresenterRepository<ConstructionCard>>(),
                   IPresenterServices.Default?.Get<BuildingModeService>(),
                   ICommands.Default)
         {
