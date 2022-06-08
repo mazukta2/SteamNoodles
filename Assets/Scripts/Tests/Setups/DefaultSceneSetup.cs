@@ -45,7 +45,7 @@ namespace Game.Assets.Scripts.Tests.Setups
             _definitions.Add("Customer1", customer);
 
             var level = LevelDefinitionSetups.GetDefault(customer, construciton);
-            _definitions.Add(level.Name, level);
+            _definitions.Add(level.DefId.Path, level);
 
             _definitions.Add(nameof(MainDefinition), new MainDefinition() { StartLevel = level }) ;
         }

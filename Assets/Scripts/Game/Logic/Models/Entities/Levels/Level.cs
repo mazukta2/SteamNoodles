@@ -14,16 +14,42 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Levels
 {
     public record Level : Entity
     {
+        public string Name { get; private set; }
+
+        private Action<Level> _startServices;
+        private Action<Level> _startLevel;
+
         public Level()
         {
             Name = "not_impotant";
+            _startServices = (l) => { };
+            _startLevel = (l) => { };
         }
 
         public Level(LevelDefinition levelDefinition)
         {
             Name = levelDefinition.DefId.Path;
+
+            if (levelDefinition.Starter == null)
+            {
+                _startServices = (l) => { };
+                _startLevel = (l) => { };
+            }
+            else
+            {
+                _startServices = levelDefinition.Starter.StartServices;
+                _startLevel = levelDefinition.Starter.StartLevel;
+            }
         }
 
-        public string Name { get; private set; }
+        public void StartServices()
+        {
+            _startServices(this);
+        }
+
+        public void StartLevel()
+        {
+            _startLevel(this);
+        }
     }
 }

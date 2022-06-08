@@ -33,8 +33,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 
         public int ConstructionsForNextWave { get; set; }
 
-        [JsonConverter(typeof(ObjectConventer<LevelStarter, LevelStarter>))]
-        public LevelStarter Starter { get; set; }
+        [JsonConverter(typeof(ObjectConventer<LevelSpecifics, LevelSpecifics>))]
+        public LevelSpecifics Starter { get; set; }
         public int Waves { get; set; }
 
         public void Validate()

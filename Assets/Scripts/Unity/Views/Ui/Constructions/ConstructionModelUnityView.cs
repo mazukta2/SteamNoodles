@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
-    public class ConstructionModelUnityView : UnitySimpleView, IConstructionModelView
+    public class ConstructionModelUnityView : UnityPresenterView, IConstructionModelView
     {
         [SerializeField] AnimatorUnity _animator;
         public IAnimator Animator => _animator;

@@ -38,6 +38,6 @@
 	"ConstructionsForNextWave": 8,
 	"Waves" : 3,
 	"Starter": {
-		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters.MainLevelStarter"
+		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters.StageLevelSpecifics"
 	}
 }

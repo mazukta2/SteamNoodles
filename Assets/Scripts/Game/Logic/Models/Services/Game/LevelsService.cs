@@ -53,18 +53,26 @@ namespace Game.Assets.Scripts.Game.Logic.Models
 
             foreach (var levelDefinition in levelDefinitions)
             {
-                var link = _levels.Add(new Level(levelDefinition));
+                var link = _levels.Add(CreateEntity(levelDefinition));
                 if (levelDefinition == firstLevel)
                     _firstLevel = link.Get();
             }
 
             if (_firstLevel == null)
-                _firstLevel = _levels.Add(new Level(firstLevel)).Get();
+                _firstLevel = _levels.Add(CreateEntity(firstLevel)).Get();
         }
 
         protected override void DisposeInner()
         {
             _levelsManager.OnLoadFinished -= HandleOnFinished;
+        }
+
+        private Level CreateEntity(LevelDefinition definition)
+        {
+            if (definition.Starter == null)
+                return new Level(definition);
+
+            return definition.Starter.CreateEntity(definition);
         }
 
         public void StartFirstLevel()
@@ -103,15 +111,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             _currentLevel = level;
 
             _views = new ViewsCollection();
-            //_prototype = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
             _levelsManager.OnLoadFinished += HandleOnFinished;
             _levelsManager.Load(level.Name, _views);
-
-            //.Starter.CreateModel(level);
-
-            //if (IGameLevel.Default is IStageLevelService bl) IStageLevelService.Default = bl;
-
-            //OnLevelCreated(CurrentLevel);
         }
 
         private void Unload()
@@ -132,11 +133,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models
         {
             _levelsManager.OnLoadFinished -= HandleOnFinished;
 
+            _currentLevel.StartServices();
             new ViewsInitializer(_views).Init();
-            //_prototype.Starter.Start();
+            _currentLevel.StartLevel();
 
             _state = LevelsState.IsLoaded;
-            //OnLoaded();
         }
 
         public enum LevelsState

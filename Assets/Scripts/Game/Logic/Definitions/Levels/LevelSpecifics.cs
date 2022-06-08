@@ -6,9 +6,10 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 {
-    public abstract class LevelStarter
+    public abstract class LevelSpecifics : ILevelSpecifics
     {
-        //public abstract Level CreateModel(LevelDefinition definition);
-        public abstract void Start();
+        public abstract Level CreateEntity(LevelDefinition definition);
+        public abstract void StartServices(Level level);
+        public abstract void StartLevel(Level level);
     }
 }

@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Tests.Setups
                 {
                     { construciton, 1}
                 },
-                Starter = new MainLevelStarter(),
+                Starter = new StageLevelSpecifics(),
                 Waves = 10,
             };
             return level;
@@ -70,7 +70,7 @@ namespace Game.Assets.Scripts.Tests.Setups
                 {
                     { construciton, 1}
                 },
-                Starter = new EmptyLevelStarter()
+                Starter = new EmptyLevelSpecifics()
             };
             return level;
         }

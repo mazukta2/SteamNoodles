@@ -13,8 +13,8 @@ namespace Game.Assets.Scripts.Tests.Environment
     {
         public event Action OnLoadFinished = delegate { };
 
-        private Dictionary<Level, Action<IViewsCollection>> _availableLevels = new Dictionary<Level, Action<IViewsCollection>>();
-        private Level _currentLevel;
+        private Dictionary<string, Action<IViewsCollection>> _availableLevels = new Dictionary<string, Action<IViewsCollection>>();
+        private string _currentLevel;
         private IViewsCollection _collection;
 
         public LevelsManagerMock()
@@ -26,10 +26,10 @@ namespace Game.Assets.Scripts.Tests.Environment
             if (_currentLevel != null)
                 throw new Exception("Already loading");
 
-            if (!_availableLevels.Any(x => x.Key.Name == name))
+            if (!_availableLevels.ContainsKey(name))
                 throw new Exception("No such level in dictionary");
 
-            _currentLevel = _availableLevels.First(x => x.Key.Name == name).Key;
+            _currentLevel = name;
             _collection = collection;
         }
 
@@ -42,15 +42,21 @@ namespace Game.Assets.Scripts.Tests.Environment
             _collection = null;
         }
 
+        public LevelDefinitionMock Add(LevelDefinitionMock level)
+        {
+            _availableLevels.Add(level.DefId.Path, level.LevelPrefab.Fill);
+            return level;
+        }
+
         public Level Add(Level level, Action<IViewsCollection> action)
         {
-            _availableLevels.Add(level, action);
+            _availableLevels.Add(level.Name, action);
             return level;
         }
 
         public Level Add(Level level)
         {
-            _availableLevels.Add(level, (v) => { });
+            _availableLevels.Add(level.Name, (v) => { });
             return level;
         }
 
@@ -63,5 +69,6 @@ namespace Game.Assets.Scripts.Tests.Environment
 
             OnLoadFinished();
         }
+
     }
 }

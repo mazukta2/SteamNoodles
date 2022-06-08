@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
@@ -9,7 +10,7 @@ using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Engine
 {
-    public class GameCoreInitialize : MonoBehaviour
+    public class GameCoreInitialize : MonoBehaviour, IEngine
     {
         public static bool IsGameExit { get; private set; }
         private Core _core;
@@ -22,8 +23,17 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
             var definitions = new GameDefinitions(new UnityDefinitions());
             var localization = new LocalizationManager(definitions, "English");
-            _core = new Core(new LevelsManager(), new GameAssets(new AssetsLoader()), definitions, new GameControls(_controls), localization, _time);
+            _core = new Core(this, new LevelsManager(), new GameAssets(new AssetsLoader()), definitions, new GameControls(_controls), localization, _time);
             _core.OnDispose += _core_OnDispose;
+        }
+
+        public void Exit()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         protected void OnApplicationQuit()
@@ -35,11 +45,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         private void _core_OnDispose()
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
+            Exit();
         }
 
         protected void OnDestroy()

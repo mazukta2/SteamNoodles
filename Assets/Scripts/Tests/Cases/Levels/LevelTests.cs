@@ -2,8 +2,10 @@
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
@@ -17,6 +19,7 @@ using Game.Tests.Cases;
 using Game.Tests.Controllers;
 using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Tests.Cases.Levels
 {
@@ -97,7 +100,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         }
 
         [Test, Order(TestCore.EssentialOrder)]
-        public void IsLevelReloadingWorked()
+        public void LevelReloadingWorked()
         {
             var levelManager = new LevelsManagerMock();
             var levels = new Repository<Level>();
@@ -121,6 +124,33 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             levelService.Dispose();
         }
 
+        [Test, Order(TestCore.EssentialOrder)]
+        public void StartingCodeWorking()
+        {
+            var level = new LevelDefinitionMock("leveldef", new EmptyLevel());
+            var starter = new LevelStarter();
+            level.Starter = starter;
+
+            var definitions = new List<LevelDefinition>() { level };
+
+            var levelManager = new LevelsManagerMock();
+            levelManager.Add(level);
+            var levels = new Repository<Level>();
+
+            var levelService = new LevelsService(levelManager, levels, definitions, level);
+            levelService.StartFirstLevel();
+            levelManager.FinishLoading();
+
+            Assert.AreEqual("leveldef", levelService.GetCurrentLevel().Name);
+            Assert.IsTrue(levelService.GetCurrentLevel() is SpecialLevel);
+            Assert.IsTrue(starter.StartedServices is SpecialLevel);
+            Assert.AreEqual("leveldef", starter.StartedServices.Name);
+            Assert.IsTrue(starter.StartedLevel is SpecialLevel);
+            Assert.AreEqual("leveldef", starter.StartedLevel.Name);
+
+            levelService.Dispose();
+        }
+
         private Core CreateDefaultCore()
         {
             var definitions = new DefinitionsMock();
@@ -138,6 +168,34 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
                 new GameControls(new ControlsMock()),
                 new LocalizationManagerMock(),
                 new GameTime(), false);
+        }
+
+        public class LevelStarter : LevelSpecifics
+        {
+            public Level StartedLevel;
+            public Level StartedServices;
+
+            public override Level CreateEntity(LevelDefinition definition)
+            {
+                return new SpecialLevel(definition);
+            }
+
+            public override void StartServices(Level level)
+            {
+                StartedServices = level;
+            }
+
+            public override void StartLevel(Level level)
+            {
+                StartedLevel = level;
+            }
+
+        }
+        public record SpecialLevel : Level
+        {
+            public SpecialLevel(LevelDefinition def) : base(def)
+            {
+            }
         }
 
         [TearDown]
