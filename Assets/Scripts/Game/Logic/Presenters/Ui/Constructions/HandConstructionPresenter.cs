@@ -1,6 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
@@ -14,17 +14,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     {
         private PresenterModel<ConstructionCard> _model;
         private IHandConstructionView _view;
-        private readonly IPresenterCommands _commands;
+        private readonly ICommands _commands;
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
 
         public HandConstructionPresenter(EntityLink<ConstructionCard> model,
-            IHandConstructionView view) : this(model, view, IPresenterCommands.Default)
+            IHandConstructionView view) : this(model, view, ICommands.Default)
         {
         }
 
         public HandConstructionPresenter(EntityLink<ConstructionCard> model,
-            IHandConstructionView view, IPresenterCommands commands) : base(view)
+            IHandConstructionView view, ICommands commands) : base(view)
         {
             _model = model.CreateModel() ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));

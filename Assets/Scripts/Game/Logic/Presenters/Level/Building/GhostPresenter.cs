@@ -1,16 +1,16 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly BuildingModeService _buildingModeService;
         private readonly FieldService _fieldService;
         private readonly IControls _controls;
-        private readonly IPresenterCommands _commands;
+        private readonly ICommands _commands;
 
         private GameVector3 _pointerPosition;
 
@@ -44,7 +44,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             IPresenterServices.Default.Get<BuildingModeService>(),
             IPresenterServices.Default.Get<FieldService>(),
             IGameControls.Default,
-            IPresenterCommands.Default)
+            ICommands.Default)
         {
 
         }
@@ -52,7 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public GhostPresenter(IGhostView view,
             BuildingModeService buildingModeService,
             FieldService fieldService,
-            IGameControls controls, IPresenterCommands commands) : base(view)
+            IGameControls controls, ICommands commands) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));

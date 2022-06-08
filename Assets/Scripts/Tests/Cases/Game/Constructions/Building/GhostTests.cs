@@ -6,12 +6,11 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
@@ -34,7 +33,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void IsGhostCreatedInBuildingMode()
         {
             var buildingMode = new BuildingModeService();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var scheme = new ConstructionScheme();
 
@@ -62,7 +61,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var buildinMode = new BuildingModeService();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var scheme = new ConstructionScheme();
 
@@ -92,7 +91,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var buildinMode = new BuildingModeService();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 0, 0, 0 },
@@ -141,7 +140,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var controls = new GameControls(mockControls);
 
             var buildinMode = new BuildingModeService();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 0, 0, 0 },
@@ -193,7 +192,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var controls = new GameControls(mockControls);
 
             var buildinMode = new BuildingModeService();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 0, 0, 0 },
@@ -274,7 +273,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var buildinMode = new BuildingModeService();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 1, 1 },
@@ -324,7 +323,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(1, new IntPoint(3, 3));
             var buildinMode = new BuildingModeService();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var scheme = new ConstructionScheme(new Uid(),
                 DefId.None,
@@ -353,7 +352,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var buildinMode = new BuildingModeService();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 1, 1 },

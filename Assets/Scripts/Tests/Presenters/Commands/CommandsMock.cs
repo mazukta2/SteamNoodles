@@ -1,25 +1,17 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Presenters.Commands
 {
-    public class PresenterCommandsMock : IPresenterCommands
+    public class CommandsMock : ICommands
     {
-        public List<IPresenterCommand> Commands { get; } = new List<IPresenterCommand>();
+        public List<ICommand> Commands { get; } = new List<ICommand>();
 
-        public void Execute(IPresenterCommand command)
+        public void Execute<T>(T command) where T : ICommand
         {
             Commands.Add(command);
-        }
-
-        public void ExecuteAll()
-        {
-            foreach (var command in Commands)
-                command.Execute();
-
-            Commands.Clear();
         }
 
         public bool Only<T>()

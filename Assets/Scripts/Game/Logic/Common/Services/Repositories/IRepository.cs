@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Repositories
 {
-    public interface IRepository<T> where T : class, IEntity
+    public interface IRepository<T> : IBaseRepository where T : class, IEntity
     {
         event Action<T> OnModelAdded;
         event Action<T> OnModelRemoved;

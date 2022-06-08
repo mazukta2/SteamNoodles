@@ -1,11 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 {
-    public class ViewsCollection : IViewsCollection
+    public class ViewsCollection : IViewsCollection, IService
     {
         public event Action OnDispose = delegate { };
 

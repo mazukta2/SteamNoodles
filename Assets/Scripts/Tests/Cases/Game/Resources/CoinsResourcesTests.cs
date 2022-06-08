@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             var collection = new ViewsCollection();
 
             var view = new CustumerCoinsView(collection);
-            new CustumerCoinsPresenter(coins, view);
+            new CustumerCoinsPresenter(view, coins);
 
             Assert.AreEqual("0", view.Text.Value);
             coins.Change(2);

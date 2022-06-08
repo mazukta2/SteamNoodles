@@ -1,11 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;

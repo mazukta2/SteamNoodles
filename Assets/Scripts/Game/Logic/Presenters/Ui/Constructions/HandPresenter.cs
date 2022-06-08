@@ -1,14 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -17,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     {
         private readonly IPresenterRepository<ConstructionCard> _repository;
         private readonly BuildingModeService _buildingService;
-        private readonly IPresenterCommands _commands;
+        private readonly ICommands _commands;
         private readonly IHandView _view;
         private Modes _mode;
 
@@ -25,14 +23,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             : this(view, 
                   IStageLevelPresenterRepositories.Default?.Cards, 
                   IPresenterServices.Default?.Get<BuildingModeService>(),
-                  IPresenterCommands.Default)
+                  ICommands.Default)
         {
         }
 
         public HandPresenter(IHandView view, 
             IPresenterRepository<ConstructionCard> repository, 
             BuildingModeService buildingService,
-            IPresenterCommands commands) : base(view)
+            ICommands commands) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -43,6 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             foreach (var item in cards)
                 HandleCardAdded(item, null);
             _repository.OnAdded += HandleCardAdded;
+            _repository.OnRemoved += HandleCardRemoved;
 
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
@@ -54,11 +53,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             _buildingService.OnChanged -= HandleVisualModesChanged;
             _repository.OnAdded -= HandleCardAdded;
+            _repository.OnRemoved += HandleCardRemoved;
         }
 
         private void HandleCardAdded(EntityLink<ConstructionCard> entity, ConstructionCard obj)
         {
             _commands.Execute(new AddHandConstructionCommand(entity, _view.Cards, _view.CardPrototype));
+        }
+
+        private void HandleCardRemoved(EntityLink<ConstructionCard> entity, ConstructionCard obj)
+        {
+            _commands.Execute(new RemoveHandConstructionCommand(_view.Cards));
         }
 
         private void CancelClick()

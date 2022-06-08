@@ -12,7 +12,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Presenters.Commands;
@@ -142,7 +142,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
             new PlacementFieldPresenter(view, buildinMode, fieldService, 
-                constructionService, constructionsRepository, new PresenterCommandsMock());
+                constructionService, constructionsRepository, new CommandsMock());
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
@@ -199,7 +199,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
 
-            var command = new PresenterCommandsMock();
+            var command = new CommandsMock();
             new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService, 
                 constructionsRepository, command);
 
@@ -314,7 +314,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             constructionsRepository.Add(construction);
 
             var viewCollection = new ViewsCollection();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var constructionView = new ConstructionView(viewCollection);
             new ConstructionPresenter(constructionView, construction, fieldService, commands);
@@ -356,7 +356,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             constructionsRepository.Add(construction);
 
             var viewCollection = new ViewsCollection();
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
 
             var constructionView = new ConstructionView(viewCollection);
             new ConstructionPresenter(constructionView, construction, fieldService, commands);

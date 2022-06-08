@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations;
@@ -10,7 +11,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
 {
-    public class BuildingPointsService : Disposable
+    public class BuildingPointsService : Disposable, IService
     {
         public event Action OnPointsChanged = delegate { };
         public event Action OnCurrentLevelUp = delegate { };

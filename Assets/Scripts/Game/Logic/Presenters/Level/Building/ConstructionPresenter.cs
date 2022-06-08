@@ -1,7 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
         //private ConstructionsSettingsDefinition _constrcutionsSettings;
         private readonly FieldService _fieldPositionService;
-        private readonly IPresenterCommands _commands;
+        private readonly ICommands _commands;
 
         //private GhostManagerPresenter _ghostManager;
         //private IControls _controls;
@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             : this(view,
                   construction, 
                   IPresenterServices.Default?.Get<FieldService>(),
-                  IPresenterCommands.Default)
+                  ICommands.Default)
         {
 
         }
@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         public ConstructionPresenter(IConstructionView view, 
             Construction construction, 
             FieldService fieldPositionService,
-            IPresenterCommands commands) : base(view)
+            ICommands commands) : base(view)
         {
             _constructionView = view ?? throw new ArgumentNullException(nameof(view));
             _construction = construction ?? throw new ArgumentNullException(nameof(construction));

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Services
+namespace Game.Assets.Scripts.Game.Logic.Common.Services.Commands
 {
-    public class Services
+    public interface ICommand
     {
     }
 }

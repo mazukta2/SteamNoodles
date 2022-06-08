@@ -1,12 +1,13 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System;
 using System.Collections.Generic;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Common
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Building
 {
-    public class BuildingModeService
+    public class BuildingModeService : IService
     {
         private FieldPosition _fieldPosition;
         private FieldRotation _fieldRotation;

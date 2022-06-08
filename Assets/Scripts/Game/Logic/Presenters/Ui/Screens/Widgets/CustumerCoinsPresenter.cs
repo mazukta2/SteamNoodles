@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private CoinsService _model;
         private ICustumerCoinsView _view;
 
-        public CustumerCoinsPresenter(CoinsService coins, ICustumerCoinsView view) : base(view)
+        public CustumerCoinsPresenter(ICustumerCoinsView view) : this(view,
+            IPresenterServices.Default.Get<CoinsService>())
+        {
+
+        }
+
+
+        public CustumerCoinsPresenter(ICustumerCoinsView view, CoinsService coins) : base(view)
         {
             _model = coins;
             _view = view;

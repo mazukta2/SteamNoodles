@@ -1,10 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Ghost
 {
-    public class AddGhostModelCommand : IPresenterCommand
+    public class AddGhostModelCommand : ICommand
     {
         public ConstructionScheme Scheme { get; }
         public IViewContainer Container { get; }

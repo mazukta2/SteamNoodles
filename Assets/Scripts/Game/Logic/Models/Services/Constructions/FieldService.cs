@@ -1,11 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
 {
-    public class FieldService
+    public class FieldService : IService
     {
         private float _cellSize;
         private IntPoint _mapSize;

@@ -1,8 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand
 {
-    public class RemoveGhostCommand : IPresenterCommand
+    public class RemoveGhostCommand : ICommand
     {
         private IViewContainer _container;
 

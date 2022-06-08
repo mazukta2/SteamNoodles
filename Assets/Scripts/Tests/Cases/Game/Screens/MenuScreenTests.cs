@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;
@@ -8,6 +9,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Environment;
+using Game.Assets.Scripts.Tests.Presenters.Commands;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
@@ -22,6 +24,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
         public void EscFromMainScreen()
         {
             var assets = new AssetsMock();
+            var commands = new CommandsMock();
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
 
@@ -42,20 +45,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             var keyManager = new GameKeysManager();
             IGameKeysManager.Default = keyManager;
 
-            ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x));
+            ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x, keyManager, commands));
 
-            Assert.IsNotNull(view.Screen.FindView<MainScreenView>());
-            Assert.IsNull(view.Screen.FindView<GameMenuScreenView>());
-
-            keyManager.TapKey(GameKeys.Exit);
-
-            Assert.IsNull(view.Screen.FindView<MainScreenView>());
-            Assert.IsNotNull(view.Screen.FindView<GameMenuScreenView>());
+            Assert.IsFalse(commands.Last<OpenGameMenuScreenCommand>());
 
             keyManager.TapKey(GameKeys.Exit);
 
-            Assert.IsNotNull(view.Screen.FindView<MainScreenView>());
-            Assert.IsNull(view.Screen.FindView<GameMenuScreenView>());
+            Assert.IsTrue(commands.Last<OpenGameMenuScreenCommand>());
 
             viewCollection.Dispose();
         }

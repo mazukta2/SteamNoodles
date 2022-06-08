@@ -10,22 +10,22 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Presenters.Commands;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Tests.Cases;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 {
     public class HandTests
     {
         [Test, Order(TestCore.ModelOrder)]
-        public void IsSameCardsCollapse()
+        public void SameCardsCollapse()
         {
             var schemesRepository = new Repository<ConstructionScheme>();
             var scheme1 = new ConstructionScheme();
@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test, Order(TestCore.ModelOrder)]
-        public void IsSameCardsRemoved()
+        public void SameCardsRemoved()
         {
             var schemesRepository = new Repository<ConstructionScheme>();
             var scheme1 = new ConstructionScheme();
@@ -90,7 +90,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test, Order(TestCore.ModelOrder)]
-        public void IsCardsSpawnedOnStart()
+        public void CardsSpawnedOnStart()
         {
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
@@ -117,7 +117,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test, Order(TestCore.ModelOrder)]
-        public void IsYouGetNewCardsAfterLevelUp()
+        public void YouGetNewCardsAfterLevelUp()
         {
             var cardsRepository = new Repository<ConstructionCard>();
             var schemesRepository = new Repository<ConstructionScheme>();
@@ -146,7 +146,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsCardsSpawnedAndRemovedInPresenter()
+        public void CardsSpawnedAndRemovedInPresenter()
         {
             var schemesRepository = new Repository<ConstructionScheme>();
             var scheme1 = new ConstructionScheme();
@@ -160,24 +160,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
             new HandPresenter(handView, cardsRepository, mode, commands);
 
-            Assert.AreEqual(0, handView.Collection.FindViews<IHandConstructionView>().Count);
+            Assert.AreEqual(0, commands.Commands.OfType<AddHandConstructionCommand>().Count());
             var card1 = hand.Add(scheme1);
-            Assert.AreEqual(1, handView.Collection.FindViews<IHandConstructionView>().Count);
+            Assert.AreEqual(1, commands.Commands.OfType<AddHandConstructionCommand>().Count());
             var card2 = hand.Add(scheme2);
-            Assert.AreEqual(2, handView.Collection.FindViews<IHandConstructionView>().Count);
+            Assert.AreEqual(2, commands.Commands.OfType<AddHandConstructionCommand>().Count());
             hand.Remove(card1);
-            Assert.AreEqual(1, handView.Collection.FindViews<IHandConstructionView>().Count);
+            Assert.AreEqual(1, commands.Commands.OfType<RemoveHandConstructionCommand>().Count());
             hand.Remove(card2);
-            Assert.AreEqual(0, handView.Collection.FindViews<IHandConstructionView>().Count);
+            Assert.AreEqual(2, commands.Commands.OfType<RemoveHandConstructionCommand>().Count());
 
             viewCollection.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsAmountShownCorrectly()
+        public void AmountShownCorrectly()
         {
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
@@ -187,11 +187,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var card = new ConstructionCard(scheme);
             var link = cardsRepository.Add(card);
+            var commands = new CommandsMock();
 
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view);
+            new HandConstructionPresenter(link, view, commands);
 
             Assert.AreEqual("1", view.Amount.Value);
             card.Add(new CardAmount(1));
@@ -205,7 +206,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsConstructionIconSetted()
+        public void ConstructionIconSetted()
         {
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
@@ -220,11 +221,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             schemesRepository.Add(scheme);
 
             var link = cardsRepository.Add(new ConstructionCard(scheme));
+            var commands = new CommandsMock();
 
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view);
+            new HandConstructionPresenter(link, view, commands);
 
             Assert.AreEqual("image", view.Image.Path);
 
@@ -232,7 +234,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsTooltipViewSpawning()
+        public void TooltipViewSpawning()
         {
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
@@ -246,7 +248,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
             new HandConstructionPresenter(link, view, commands);
 
             Assert.IsTrue(commands.IsEmpty());
@@ -259,7 +261,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsClickingOpensBuildingScreen()
+        public void ClickingOpensBuildingScreen()
         {
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
@@ -272,7 +274,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var viewCollection = new ViewsCollection();
             var view = new HandConstructionView(viewCollection);
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
             new HandConstructionPresenter(link, view, commands);
 
             view.Button.Click();
@@ -283,14 +285,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsHandAnimationsPlayedInBuildingMode()
+        public void HandAnimationsPlayedInBuildingMode()
         {
             var cardsRepository = new Repository<ConstructionCard>();
 
             var mode = new BuildingModeService();
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
             new HandPresenter(handView, cardsRepository, mode, commands);
 
             Assert.AreEqual("Choose", handView.Animator.Animation);
@@ -303,7 +305,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsCancelWorks()
+        public void CancelWorks()
         {
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
@@ -314,7 +316,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var mode = new BuildingModeService();
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            var commands = new PresenterCommandsMock();
+            var commands = new CommandsMock();
             new HandPresenter(handView, cardsRepository, mode, commands);
 
             handView.CancelButton.Click();

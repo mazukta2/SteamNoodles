@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
@@ -10,7 +11,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
-    public class ConstructionsService 
+    public class ConstructionsService : IService
     {
         private readonly IRepository<Construction> _constructions;
         private readonly FieldService _fieldService;

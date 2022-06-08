@@ -5,7 +5,6 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
@@ -18,7 +17,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 {
-    public class StageLevelService : Disposable, IStageLevelService
+    public class StageLevelService : Disposable
     {
         public StageTurnService Flow { get; }
         public RewardsService Rewards { get; }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources
 {
-    public class CoinsService
+    public class CoinsService : IService
     {
         public event Action OnChanged = delegate { };
 

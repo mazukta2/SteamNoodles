@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets
 
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            new CustumerCoinsPresenter(IStageLevelService.Default.Coins, this);
+            new CustumerCoinsPresenter(this);
         }
     }
 }

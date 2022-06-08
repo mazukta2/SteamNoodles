@@ -1,17 +1,17 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private readonly IPresenterRepository<Construction> _constructions;
         private readonly FieldService _fieldService;
         private readonly ConstructionsService _constructionsService;
-        private readonly IPresenterCommands _commands;
+        private readonly ICommands _commands;
         private List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             IPresenterServices.Default?.Get<FieldService>(),
             IPresenterServices.Default?.Get<ConstructionsService>(),
             IStageLevelPresenterRepositories.Default.Constructions,
-            IPresenterCommands.Default)
+            ICommands.Default)
         {
         }
 
@@ -43,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             FieldService fieldService,
             ConstructionsService constructionsService,
             IPresenterRepository<Construction> constructions,
-            IPresenterCommands commands) : base(view)
+            ICommands commands) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));

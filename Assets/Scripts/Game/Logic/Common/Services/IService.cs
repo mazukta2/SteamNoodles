@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Commands
+namespace Game.Assets.Scripts.Game.Logic.Common.Services
 {
-    public interface IPresenterCommand
+    public interface IService
     {
-        void Execute();
     }
 }
