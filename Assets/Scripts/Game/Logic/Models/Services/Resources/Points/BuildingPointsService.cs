@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using System;
@@ -43,8 +44,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
             _target = _current.Copy();
         }
 
-        public BuildingPointsService(ConstructionsSettingsDefinition def, IGameTime time)
-            : this(def.PieceSpawningTime, def.PieceMovingTime, time, def.LevelUpPower, def.LevelUpOffset)
+        public BuildingPointsService(StageLevel level, IGameTime time)
+            : this(level.PieceSpawningTime, level.PieceMovingTime, time, level.LevelUpPower, level.LevelUpOffset)
         {
         }
 

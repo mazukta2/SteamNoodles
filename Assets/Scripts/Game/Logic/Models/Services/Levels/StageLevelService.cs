@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
@@ -17,62 +18,42 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 {
-    public class StageLevelService : Disposable
+    public class StageLevelService : Disposable, IService
     {
-        public StageTurnService Flow { get; }
-        public RewardsService Rewards { get; }
-        public ConstructionsService Constructions { get; }
-        public HandService Hand { get; }
-        public UnitsTypesService UnitsTypes { get; }
-        public UnitsService Units { get; }
-        public UnitsCrowdService Crowd { get; }
-        public UnitsCustomerQueueService Queue { get; }
-        public UnitsMovementsService UnitsMovement { get; }
-        public BuildingPointsService Points { get; }
-        public FieldService Field { get; }
-        public BuildingService Building { get; }
-        public SchemesService Schemes { get; }
-        public CoinsService Coins { get; }
-
-        public LevelDefinition Definition { get; }
-        public IGameTime Time { get; }
-        public IGameRandom Random { get; }
-
+        private readonly IModelServices _services;
         private StageLevelRepository _repositories;
 
-        public StageLevelService(LevelDefinition settings, IGameRandom random, IGameTime time, IGameDefinitions definitions)
+        public StageLevelService(StageLevel level)
+            : this(level, IModelServices.Default, IGameRandom.Default, IGameTime.Default)
         {
-            Definition = settings ?? throw new ArgumentNullException(nameof(settings));
-            Random = random ?? throw new ArgumentNullException(nameof(random));
-            Time = time ?? throw new ArgumentNullException(nameof(time));
-            var level = new StageLevel(settings);
+
+        }
+
+        public StageLevelService(StageLevel level, IModelServices services, IGameRandom random, IGameTime time)
+        {
+            _services = services ?? throw new ArgumentNullException(nameof(services));
 
             // TODO: move repositories outside
             _repositories = new StageLevelRepository();
             IStageLevelPresenterRepositories.Default = _repositories;
 
-            var unitSettings = definitions.Get<UnitsSettingsDefinition>();
-            var constructionSettings = definitions.Get<ConstructionsSettingsDefinition>();
+            var coins = services.Add(new CoinsService());
+            var points = services.Add(new BuildingPointsService(level, time));
+            var field = services.Add(new FieldService(level.CellSize, level.PlacementFieldSize));
+            var schemes = services.Add(new SchemesService(_repositories.Schemes, new(_repositories.ConstructionsDeck, random), level.ConstructionsReward));
+            var hand = services.Add(new HandService(_repositories.Cards, _repositories.Schemes));
+            var unitsTypes = services.Add(new UnitsTypesService(_repositories.UnitTypes, new(_repositories.UnitsDeck, random), level));
+            var units = services.Add(new UnitsService(_repositories.Units, random, unitsTypes));
 
-            Coins = new CoinsService();
-            Points = new BuildingPointsService(constructionSettings, time);
-            Field = new FieldService(constructionSettings.CellSize, settings.PlacementField.Size);
-            Schemes = new SchemesService(definitions, settings.ConstructionsReward,
-                _repositories.Schemes, new (_repositories.ConstructionsDeck, Random));
-            Hand = new HandService(_repositories.Cards, _repositories.Schemes);
-            UnitsTypes = new UnitsTypesService(settings, unitSettings, _repositories.UnitTypes,
-                new(_repositories.UnitsDeck, Random));
-            Units = new UnitsService(_repositories.Units,  Random, UnitsTypes);
+            var constructions = services.Add(new ConstructionsService(_repositories.Constructions, field));
+            var building = services.Add(new BuildingService(_repositories.Constructions, constructions, points, hand, field));
+            var crowd = services.Add(new UnitsCrowdService(_repositories.Units, units, time, level, random));
+            var queue = services.Add(new UnitsCustomerQueueService(_repositories.Units, units, crowd, coins, points, time, random));
+            var flow = services.Add(new StageTurnService(_repositories.Constructions, field, building, queue));
+            var rewards = services.Add(new RewardsService(level, hand, schemes, points));
+            var unitsMovement = services.Add(new UnitsMovementsService(_repositories.Units, time));
 
-            Flow = new StageTurnService(_repositories.Constructions, Field, Building, Queue);
-            Rewards = new RewardsService(level, Hand, Schemes, Points);
-            Constructions = new ConstructionsService(_repositories.Constructions, Field);
-            Building = new BuildingService(_repositories.Constructions, Constructions, Points, Hand, Field);
-            Crowd = new UnitsCrowdService(_repositories.Units, Units, time, settings, random);
-            Queue = new UnitsCustomerQueueService(_repositories.Units, Units, Crowd, Coins, Points, time, random);
-            UnitsMovement = new UnitsMovementsService(_repositories.Units, Time);
-
-            Rewards.Start();
+            rewards.Start();
         }
 
         protected override void DisposeInner()
@@ -80,11 +61,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             IStageLevelPresenterRepositories.Default = null;
             _repositories.Dispose();
 
-            UnitsMovement.Dispose();
-            Flow.Dispose();
-            Units.Dispose();
-            Crowd.Dispose();
-            Queue.Dispose();
+            _services.Remove<CoinsService>();
+            _services.Remove<BuildingPointsService>();
+            _services.Remove<FieldService>();
+            _services.Remove<SchemesService>();
+            _services.Remove<HandService>();
+            _services.Remove<UnitsTypesService>();
+            _services.Remove<UnitsService>();
+            _services.Remove<ConstructionsService>();
+            _services.Remove<BuildingService>();
+            _services.Remove<UnitsCrowdService>();
+            _services.Remove<UnitsCustomerQueueService>();
+            _services.Remove<StageTurnService>();
+            _services.Remove<RewardsService>();
+            _services.Remove<UnitsMovementsService>();
         }
 
     }

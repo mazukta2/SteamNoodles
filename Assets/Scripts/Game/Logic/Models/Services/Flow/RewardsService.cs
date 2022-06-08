@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
@@ -20,7 +21,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
 {
-    public class RewardsService : Disposable
+    public class RewardsService : Disposable, IService
     {
         private readonly StageLevel _level;
         private readonly HandService _hand;

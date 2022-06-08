@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Units;
 using System;
 
@@ -17,6 +18,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
         public float RotationSpeed { get; private set; }
         public string[] Hairs { get; private set; }
         public int BaseCoins { get; private set; }
+
+        private DefId _defintionId;
 
         public UnitType(float speedOffset = 0,
             float rotationSpeed = 1, float speedUp = 1, float speedUpDistance = 0, int coins = 0) :
@@ -34,6 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             SpeedUp = unitsSettingsDefinition.SpeedUp;
             SpeedUpDistance = unitsSettingsDefinition.SpeedUpDistance;
             BaseCoins = unitsSettingsDefinition.BaseCoins;
+            _defintionId = definition.DefId;
         }
 
         public UnitType(UnitSpeed minSpeed, UnitSpeed speed, float speedOffset = 0, 
@@ -46,6 +50,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
             SpeedUp = speedUp;
             SpeedUpDistance = speedUpDistance;
             BaseCoins = coins;
+            _defintionId = DefId.None;
+        }
+
+        public bool IsConnectedToDefinition(CustomerDefinition definition)
+        {
+            return _defintionId == definition.DefId;
         }
     }
 }

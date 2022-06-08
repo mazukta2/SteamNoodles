@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,12 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
 
             if (service is IDisposable disposable)
                 disposable.Dispose();
+        }
+
+        public void Remove<T>() where T : IService
+        {
+            foreach (var service in _list.OfType<T>().ToArray())
+                Remove(service);
         }
 
         public T Get<T>() where T : IService

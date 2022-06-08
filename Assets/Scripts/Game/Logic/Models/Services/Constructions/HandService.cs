@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
-    public class HandService
+    public class HandService : IService
     {
         private readonly IRepository<ConstructionCard> _repository;
         private readonly IRepository<ConstructionScheme> _schemes;

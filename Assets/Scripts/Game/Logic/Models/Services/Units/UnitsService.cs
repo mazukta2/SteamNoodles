@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
@@ -12,7 +13,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 {
-    public class UnitsService : Disposable
+    public class UnitsService : Disposable, IService
     {
         private readonly IGameRandom _random;
         private readonly UnitsTypesService _unitsTypesService;

@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Common;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
@@ -10,7 +11,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 {
-    public class SchemesService
+    public class SchemesService : IService
     {
         private readonly IRepository<ConstructionScheme> _schemes;
         private readonly DeckService<ConstructionScheme> _deck;
@@ -29,20 +30,6 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
 
             foreach (var item in availableConstructions)
                 _deck.Add(item.Key, item.Value);
-        }
-
-        public SchemesService(IGameDefinitions definitions, 
-            IReadOnlyDictionary<ConstructionDefinition, int> availableConstructions,
-            IRepository<ConstructionScheme> schemes, DeckService<ConstructionScheme> deck)
-        {
-            _schemes = schemes ?? throw new ArgumentNullException(nameof(schemes));
-            _deck = deck ?? throw new ArgumentNullException(nameof(deck));
-
-            var constructionsDefinitions = definitions.GetList<ConstructionDefinition>();
-            ConstructionScheme.FillWithDefinitions(constructionsDefinitions, _schemes);
-
-            foreach (var item in availableConstructions)
-                _deck.Add(Find(item.Key), item.Value);
         }
 
         public ConstructionScheme Add(ConstructionDefinition definition)

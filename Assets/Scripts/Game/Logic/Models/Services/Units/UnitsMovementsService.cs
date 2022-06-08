@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
@@ -8,7 +9,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 {
-    public class UnitsMovementsService : Disposable
+    public class UnitsMovementsService : Disposable, IService
     {
         private IRepository<Unit> _units;
         private IGameTime _time;

@@ -43,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
         }
 
 
-        public LevelsService(ILevelsManager levelsManager, 
+        public LevelsService(ServiceManager services, ILevelsManager levelsManager, 
             IRepository<Level> levels,
             IReadOnlyCollection<LevelDefinition> levelDefinitions,
             LevelDefinition firstLevel)
@@ -53,13 +53,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models
 
             foreach (var levelDefinition in levelDefinitions)
             {
-                var link = _levels.Add(CreateEntity(levelDefinition));
+                var link = _levels.Add(CreateEntity(levelDefinition, services));
                 if (levelDefinition == firstLevel)
                     _firstLevel = link.Get();
             }
 
             if (_firstLevel == null)
-                _firstLevel = _levels.Add(CreateEntity(firstLevel)).Get();
+                _firstLevel = _levels.Add(CreateEntity(firstLevel, services)).Get();
         }
 
         protected override void DisposeInner()
@@ -67,12 +67,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             _levelsManager.OnLoadFinished -= HandleOnFinished;
         }
 
-        private Level CreateEntity(LevelDefinition definition)
+        private Level CreateEntity(LevelDefinition definition, ServiceManager services)
         {
             if (definition.Starter == null)
                 return new Level(definition);
 
-            return definition.Starter.CreateEntity(definition);
+            return definition.Starter.CreateEntity(definition, services);
         }
 
         public void StartFirstLevel()

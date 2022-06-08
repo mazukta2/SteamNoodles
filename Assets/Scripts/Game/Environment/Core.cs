@@ -6,6 +6,8 @@ using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Services;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
@@ -40,7 +42,8 @@ namespace Game.Assets.Scripts.Game.Environment
             var levelsRepository = Services.Add(new Repository<Level>());
 
             Services.Add(new GameService(engine));
-            Services.Add(new LevelsService(levelsManager, levelsRepository, 
+            Services.Add(new DefinitionsService(Services, definitions));
+            Services.Add(new LevelsService(Services, levelsManager, levelsRepository, 
                 definitions.GetList<LevelDefinition>(), 
                 definitions.Get<MainDefinition>().StartLevel));
 

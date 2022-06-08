@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
         public Requirements Requirements { get; }
         public AdjacencyBonuses AdjacencyPoints { get; private set; }
 
-        private DefId _defintionId; // this information only for saves. don't expose this field
+        private DefId _defintionId; // don't expose this field
 
         public ConstructionScheme(Uid id, ConstructionDefinition definition) : base(id)
         {
@@ -35,7 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             _defintionId = definition.DefId;
         }
 
-        private ConstructionScheme(ConstructionDefinition definition)
+        public ConstructionScheme(ConstructionDefinition definition)
         {
             Name = new LocalizationTag(definition.Name);
             Points = new BuildingPoints(definition.Points);

@@ -1,7 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
@@ -12,7 +14,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 {
-    public class UnitsCrowdService : Disposable
+    public class UnitsCrowdService : Disposable, IService
     {
         private readonly IRepository<Unit> _units;
         private readonly UnitsService _unitsService;
@@ -21,10 +23,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
         private readonly int _crowdAmount;
         private readonly FloatRect _unitRect;
 
-        public UnitsCrowdService(IRepository<Unit> units, UnitsService unitsService, IGameTime time, LevelDefinition levelDefinition,
+        public UnitsCrowdService(IRepository<Unit> units, UnitsService unitsService, IGameTime time, StageLevel stageLevel,
             IGameRandom random) : this(units, unitsService, time, random,
-                levelDefinition.UnitsRect,
-                levelDefinition.CrowdUnitsAmount)
+                stageLevel.UnitsRect,
+                stageLevel.CrowdUnitsAmount)
         {
         }
 

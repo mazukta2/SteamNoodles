@@ -1,10 +1,13 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Services;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
@@ -43,6 +46,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsNotNull(core.Services);
             Assert.IsTrue(services.Has<GameService>());
             Assert.IsTrue(services.Has<LevelsService>());
+            Assert.IsTrue(services.Has<DefinitionsService>()); 
 
             core.Dispose();
 
@@ -58,6 +62,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsNull(core.Services);
             Assert.IsFalse(services.Has<GameService>());
             Assert.IsFalse(services.Has<LevelsService>());
+            Assert.IsFalse(services.Has<DefinitionsService>());
         }
 
         [Test, Order(TestCore.EssentialOrder)]
@@ -131,13 +136,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             var starter = new LevelStarter();
             level.Starter = starter;
 
+            var services = new ServiceManager();
+
             var definitions = new List<LevelDefinition>() { level };
 
             var levelManager = new LevelsManagerMock();
             levelManager.Add(level);
             var levels = new Repository<Level>();
 
-            var levelService = new LevelsService(levelManager, levels, definitions, level);
+            var levelService = new LevelsService(services, levelManager, levels, definitions, level);
             levelService.StartFirstLevel();
             levelManager.FinishLoading();
 
@@ -149,6 +156,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.AreEqual("leveldef", starter.StartedLevel.Name);
 
             levelService.Dispose();
+            services.Dispose();
         }
 
         private Core CreateDefaultCore()
@@ -175,7 +183,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             public Level StartedLevel;
             public Level StartedServices;
 
-            public override Level CreateEntity(LevelDefinition definition)
+            public override Level CreateEntity(LevelDefinition definition, ServiceManager services)
             {
                 return new SpecialLevel(definition);
             }

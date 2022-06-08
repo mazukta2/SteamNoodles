@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
@@ -16,7 +17,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 {
-    public class UnitsCustomerQueueService : Disposable
+    public class UnitsCustomerQueueService : Disposable, IService
     {
         private readonly IRepository<Unit> _units;
         private readonly UnitsService _unitsService;
