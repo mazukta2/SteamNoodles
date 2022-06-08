@@ -5,7 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System;
 using System.Collections.Generic;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Building
+namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
     public class BuildingModeService : IService
     {
