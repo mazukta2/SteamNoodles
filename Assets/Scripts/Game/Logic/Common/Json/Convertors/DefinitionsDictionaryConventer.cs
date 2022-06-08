@@ -1,5 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Definitions;
+using Game.Assets.Scripts.Game.Logic.Models.Services;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -18,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
             var result = new Dictionary<TKey, TValue>();
             foreach (var item in dictionary)
             {
-                result.Add(IGameDefinitions.Default.Get<TKey>(item.Key), item.Value);
+                result.Add(IModelServices.Default.Get<DefinitionsService>().Get<TKey>(item.Key), item.Value);
             }
             return (IReadOnlyDictionary<TKey, TValue>)new ReadOnlyDictionary<TKey, TValue>(result);
         }

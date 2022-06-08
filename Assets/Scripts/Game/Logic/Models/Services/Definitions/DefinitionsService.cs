@@ -18,15 +18,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Definitions
         private readonly IModelServices _services;
         private readonly IGameDefinitions _definitions;
 
-        public DefinitionsService(IModelServices services, IGameDefinitions definitions)
+        public DefinitionsService(IModelServices services, IGameDefinitions definitions, bool loadDefinitions = true)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
 
             //var unitSettings = definitions.Get<UnitsSettingsDefinition>();
             //var constructionSettings = definitions.Get<ConstructionsSettingsDefinition>();
-
-            LoadDefinitions();
+            
+            if(loadDefinitions)
+                LoadDefinitions();
         }
 
         public T Get<T>()
@@ -34,7 +35,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Definitions
             return _definitions.Get<T>();
         }
 
-        private void LoadDefinitions()
+        public T Get<T>(string id)
+        {
+            return _definitions.Get<T>(id);
+        }
+
+        public IReadOnlyCollection<T> GetList<T>()
+        {
+            return _definitions.GetList<T>();
+        }
+
+        public void LoadDefinitions()
         {
             LoadUnits();
             LoadConstructions();

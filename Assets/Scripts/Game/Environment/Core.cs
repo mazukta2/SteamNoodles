@@ -29,7 +29,6 @@ namespace Game.Assets.Scripts.Game.Environment
         {
             IGameKeysManager.Default = new GameKeysManager();
             IGameAssets.Default = assets;
-            IGameDefinitions.Default = definitions;
             IGameControls.Default = controls;
             IGameTime.Default = time;
             IGameRandom.Default = new SessionRandom();
@@ -55,7 +54,6 @@ namespace Game.Assets.Scripts.Game.Environment
         {
             IGameKeysManager.Default = null;
             IGameAssets.Default = null;
-            IGameDefinitions.Default = null;
             IGameControls.Default.Dispose();
             IGameControls.Default = null;
             ILocalizationManager.Default = null;

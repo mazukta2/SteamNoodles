@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
@@ -13,21 +14,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class PointCounterWidgetPresenter : BasePresenter<IPointCounterWidgetView>
     {
         private readonly IPointCounterWidgetView _view;
-        //private readonly IPointPieceSpawnerView _pointPieceSpawner;
         private BuildingPointsService _points;
-        //private IGhostPresenter _ghostManager;
-        //private readonly IGameTime _time;
         private ProgressBarSliders _progressBar;
         private int _pointChanges;
 
         public PointCounterWidgetPresenter(IPointCounterWidgetView view)
-            : this(view, 
-                  IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>())
+            : this(view,
+                  IPresenterServices.Default.Get<DefinitionsService>().Get<ConstructionsSettingsDefinition>())
         {
 
-            //new PointCounterWidgetPresenter(IStageLevelService.Default.Points,
-            //    IGameTime.Default, this, IPointPieceSpawnerView.Default,
-            //    );
         }
 
         public PointCounterWidgetPresenter(IPointCounterWidgetView view, 
@@ -39,9 +34,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
                   IPresenterServices.Default.Get<BuildingPointsService>())
         {
 
-            //new PointCounterWidgetPresenter(IStageLevelService.Default.Points,
-            //    IGameTime.Default, this, IPointPieceSpawnerView.Default,
-            //    IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>());
         }
 
         public PointCounterWidgetPresenter(IPointCounterWidgetView view,

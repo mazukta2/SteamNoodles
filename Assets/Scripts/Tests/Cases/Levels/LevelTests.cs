@@ -36,7 +36,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
 
             Assert.IsNotNull(IGameKeysManager.Default);
             Assert.IsNotNull(IGameAssets.Default);
-            Assert.IsNotNull(IGameDefinitions.Default);
             Assert.IsNotNull(IGameControls.Default);
             Assert.IsNotNull(IGameTime.Default);
             Assert.IsNotNull(IGameRandom.Default);
@@ -52,7 +51,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
 
             Assert.IsNull(IGameKeysManager.Default);
             Assert.IsNull(IGameAssets.Default);
-            Assert.IsNull(IGameDefinitions.Default);
             Assert.IsNull(IGameControls.Default);
             Assert.IsNull(IGameTime.Default);
             Assert.IsNull(IGameRandom.Default);
