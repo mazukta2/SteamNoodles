@@ -1,7 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;
@@ -22,7 +23,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
         [Test, Order(TestCore.PresenterOrder)]
         public void EscFromBuildingScreen()
         {
-            var buildingModeService = new BuildingModeService();
+            var events = new EventManager();
+            var buildingModeService = new BuildingModeService(events);
             var viewCollection = new ViewsCollection();
             var (card, screenManager) = Setup(viewCollection);
 
@@ -42,11 +44,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             viewCollection.Dispose();
         }
 
-        private (EntityLink<ConstructionCard>, ScreenManagerView) Setup(ViewsCollection viewCollection) 
+        private (EntityLink<ConstructionCard>, ScreenManagerView) Setup(ViewsCollection viewCollection)
         {
+            var events = new EventManager();
             var assets = new AssetsMock();
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
+            var cardsRepository = new Repository<ConstructionCard>(events);
 
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);

@@ -1,6 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
@@ -23,6 +25,7 @@ namespace Game.Assets.Scripts.Game.Environment
     public class Core : Disposable
     {
         public ServiceManager Services { get; private set; }
+        public EventManager Events { get; private set; }
 
         public Core(IEngine engine, ILevelsManager levelsManager, IGameAssets assets, IGameDefinitions definitions, IGameControls controls,
             ILocalizationManager localizationManager, IGameTime time, bool autoStart = true)
@@ -37,11 +40,13 @@ namespace Game.Assets.Scripts.Game.Environment
             Services = new ServiceManager();
             IPresenterServices.Default = Services;
             IModelServices.Default = Services;
+            Events = new EventManager();
+            IEvents.Default = Events;
 
-            var levelsRepository = Services.Add(new Repository<Level>());
+            var levelsRepository = Services.Add(new Repository<Level>(Events));
 
             Services.Add(new GameService(engine));
-            Services.Add(new DefinitionsService(Services, definitions));
+            Services.Add(new DefinitionsService(Services, Events, definitions));
             Services.Add(new LevelsService(Services, levelsManager, levelsRepository, 
                 definitions.GetList<LevelDefinition>(), 
                 definitions.Get<MainDefinition>().StartLevel));
@@ -61,6 +66,7 @@ namespace Game.Assets.Scripts.Game.Environment
             IGameRandom.Default = null;
             IPresenterServices.Default = null;
             IModelServices.Default = null;
+            IEvents.Default = null;
 
             Services.Dispose();
             Services = null;

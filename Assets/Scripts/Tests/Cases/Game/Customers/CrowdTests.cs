@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
@@ -16,8 +17,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void IsCrowdUnitsSpawned()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var events = new EventManager();
+            var units = new Repository<Unit>(events);
+            var unitTypes = new Repository<UnitType>(events);
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
             unitTypes.Add(type);
@@ -40,8 +42,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void IsCrowdDestroying()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var events = new EventManager();
+            var units = new Repository<Unit>(events);
+            var unitTypes = new Repository<UnitType>(events);
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
             unitTypes.Add(type);

@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
@@ -10,7 +11,6 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -27,13 +27,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.ModelOrder)]
         public void SameCardsCollapse()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
+            var events = new EventManager();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
             var scheme1 = new ConstructionScheme();
             var scheme2 = new ConstructionScheme();
             schemesRepository.Add(scheme1);
             schemesRepository.Add(scheme2);
 
-            var cardsRepository = new Repository<ConstructionCard>();
+            var cardsRepository = new Repository<ConstructionCard>(events);
             var hand = new HandService(cardsRepository, schemesRepository);
 
             Assert.AreEqual(0, cardsRepository.Count);
@@ -57,13 +58,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.ModelOrder)]
         public void SameCardsRemoved()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
+            var events = new EventManager();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
             var scheme1 = new ConstructionScheme();
             var scheme2 = new ConstructionScheme();
             schemesRepository.Add(scheme1);
             schemesRepository.Add(scheme2);
 
-            var cardsRepository = new Repository<ConstructionCard>();
+            var cardsRepository = new Repository<ConstructionCard>(events);
             var hand = new HandService(cardsRepository, schemesRepository);
 
             Assert.AreEqual(0, cardsRepository.Count);
@@ -92,8 +94,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.ModelOrder)]
         public void CardsSpawnedOnStart()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
+            var events = new EventManager();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
+            var cardsRepository = new Repository<ConstructionCard>(events);
 
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);
@@ -119,8 +122,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.ModelOrder)]
         public void YouGetNewCardsAfterLevelUp()
         {
-            var cardsRepository = new Repository<ConstructionCard>();
-            var schemesRepository = new Repository<ConstructionScheme>();
+            var events = new EventManager();
+            var cardsRepository = new Repository<ConstructionCard>(events);
+            var schemesRepository = new Repository<ConstructionScheme>(events);
 
             var time = new GameTime();
             var stageLevel = new StageLevel();
@@ -148,15 +152,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void CardsSpawnedAndRemovedInPresenter()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
+            var events = new EventManager();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
             var scheme1 = new ConstructionScheme();
             var scheme2 = new ConstructionScheme();
             schemesRepository.Add(scheme1);
             schemesRepository.Add(scheme2);
 
-            var cardsRepository = new Repository<ConstructionCard>();
+            var cardsRepository = new Repository<ConstructionCard>(events);
             var hand = new HandService(cardsRepository, schemesRepository);
-            var mode = new BuildingModeService();
+            var mode = new BuildingModeService(events);
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
@@ -179,8 +184,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void AmountShownCorrectly()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
+            var events = new EventManager();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
+            var cardsRepository = new Repository<ConstructionCard>(events);
 
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);
@@ -208,8 +214,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void ConstructionIconSetted()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
+            var events = new EventManager();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
+            var cardsRepository = new Repository<ConstructionCard>(events);
             
             var scheme = new ConstructionScheme(new Uid(),
                 DefId.None, 
@@ -236,8 +243,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void TooltipViewSpawning()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
+            var events = new EventManager();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
+            var cardsRepository = new Repository<ConstructionCard>(events);
 
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);
@@ -263,8 +271,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void ClickingOpensBuildingScreen()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
+            var events = new EventManager();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
+            var cardsRepository = new Repository<ConstructionCard>(events);
 
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);
@@ -287,9 +296,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void HandAnimationsPlayedInBuildingMode()
         {
-            var cardsRepository = new Repository<ConstructionCard>();
+            var events = new EventManager();
+            var cardsRepository = new Repository<ConstructionCard>(events);
 
-            var mode = new BuildingModeService();
+            var mode = new BuildingModeService(events);
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
             var commands = new CommandsMock();
@@ -307,13 +317,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void CancelWorks()
         {
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
+            var events = new EventManager();
+            var schemesRepository = new Repository<ConstructionScheme>(events);
+            var cardsRepository = new Repository<ConstructionCard>(events);
 
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);
 
-            var mode = new BuildingModeService();
+            var mode = new BuildingModeService(events);
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
             var commands = new CommandsMock();

@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
@@ -22,10 +23,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void EndWaveWorksWhenHandIsEmpty()
         {
+            var events = new EventManager();
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();
@@ -59,10 +61,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void EndWaveButtonRemovesBuildings()
         {
+            var events = new EventManager();
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();
@@ -106,10 +109,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void WaveProgressWorks()
         {
+            var events = new EventManager();
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();
@@ -151,10 +155,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void EndWaveGiveYouNewBuildings()
         {
+            var events = new EventManager();
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();
@@ -192,10 +197,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.PresenterOrder)]
         public void ButtonsAreActivated()
         {
+            var events = new EventManager();
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();

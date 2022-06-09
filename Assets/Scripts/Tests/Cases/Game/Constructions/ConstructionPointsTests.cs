@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
@@ -9,7 +10,6 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -26,9 +26,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void IsPointsForBuildingModelWorking()
         {
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
             var deck = new DeckService<ConstructionScheme>();
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
@@ -56,9 +57,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void IsAdjacencyPointsForBuildingModelWorking()
         {
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
             var deck = new DeckService<ConstructionScheme>();
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
@@ -94,8 +96,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.PresenterOrder)]
         public void IsNotGetPointsForBuildingOutsideField()
         {
-            var constructionsRepository = new Repository<Construction>();
-            var buildinMode = new BuildingModeService();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
+            var buildinMode = new BuildingModeService(events);
             var fieldService = new FieldService(10, new IntPoint(3, 3));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
@@ -127,8 +130,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.PresenterOrder)]
         public void IsPointsChangedByAdjacency()
         {
-            var constructionsRepository = new Repository<Construction>();
-            var buildinMode = new BuildingModeService();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
+            var buildinMode = new BuildingModeService(events);
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
@@ -171,8 +175,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.PresenterOrder)]
         public void IsAdjecencyPointsBoundariesCorrect()
         {
-            var constructionsRepository = new Repository<Construction>();
-            var buildinMode = new BuildingModeService();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
+            var buildinMode = new BuildingModeService(events);
             var fieldService = new FieldService(1, new IntPoint(15, 15));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 

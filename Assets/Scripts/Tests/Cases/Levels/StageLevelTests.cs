@@ -1,5 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
@@ -13,6 +15,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
@@ -30,12 +33,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         [Test, Order(TestCore.ModelOrder)]
         public void StageLevelServiceIsLoadedByScepifics()
         {
+            var events = new EventManager();
             var manager = new ServiceManager();
-            manager.Add(new Repository<ConstructionScheme>());
-            manager.Add(new Repository<UnitType>());
+            manager.Add(new Repository<ConstructionScheme>(events));
+            manager.Add(new Repository<UnitType>(events));
             IModelServices.Default = manager;
             IGameRandom.Default = new SessionRandom();
             IGameTime.Default = new GameTime();
+            IEvents.Default = events;
 
             var level = new StageLevel();
             var starter = new StageLevelSpecifics();
@@ -49,10 +54,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         [Test, Order(TestCore.ModelOrder)]
         public void StageLevelFilledByDefinitionsCorrectly()
         {
+            var events = new EventManager();
             var construction = new ConstructionDefinition();
             construction.Name = "construction";
             
-            var schemes = new Repository<ConstructionScheme>();
+            var schemes = new Repository<ConstructionScheme>(events);
             var scheme = schemes.Add(new ConstructionScheme(construction)).Get();
 
             var customer = new CustomerDefinition();
@@ -60,7 +66,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             unitsDefinition.Speed = 1;
             unitsDefinition.MinSpeed = 1;
 
-            var units = new Repository<UnitType>();
+            var units = new Repository<UnitType>(events);
             var unit = units.Add(new UnitType(customer, unitsDefinition)).Get();
 
             var constructionsDefinitions = new ConstructionsSettingsDefinition();
@@ -98,13 +104,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         [Test, Order(TestCore.ModelOrder)]
         public void StageLevelServiceStartAllNeededServices()
         {
+            var events = new EventManager();
             var manager = new ServiceManager();
-            manager.Add(new Repository<ConstructionScheme>());
-            manager.Add(new Repository<UnitType>());
+            manager.Add(new Repository<ConstructionScheme>(events));
+            manager.Add(new Repository<UnitType>(events));
 
             IModelServices.Default = manager;
             var level = new StageLevel();
-            var service = new StageLevelService(level, manager, new SessionRandom(), new GameTime());
+            var service = new StageLevelService(level, manager, events, new SessionRandom(), new GameTime());
             manager.Add(service);
 
             Assert.IsTrue(manager.Has<StageTurnService>());
@@ -121,7 +128,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsTrue(manager.Has<BuildingService>());
             Assert.IsTrue(manager.Has<SchemesService>());
             Assert.IsTrue(manager.Has<CoinsService>());
+            Assert.IsTrue(manager.Has<BuildingModeService>());
 
+            Assert.IsTrue(manager.Has<FieldRequestsService>()); 
 
             Assert.IsTrue(manager.Has<Repository<ConstructionCard>>());
             Assert.IsTrue(manager.Has<Repository<Construction>>());
@@ -145,6 +154,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsFalse(manager.Has<BuildingService>());
             Assert.IsFalse(manager.Has<SchemesService>());
             Assert.IsFalse(manager.Has<CoinsService>());
+            Assert.IsFalse(manager.Has<BuildingModeService>());
+
+            Assert.IsFalse(manager.Has<FieldRequestsService>());
 
             Assert.IsFalse(manager.Has<Repository<ConstructionCard>>());
             Assert.IsFalse(manager.Has<Repository<Construction>>());

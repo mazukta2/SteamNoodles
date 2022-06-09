@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
@@ -31,8 +32,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void PointsConvertsToQueueSize()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var events = new EventManager();
+            var units = new Repository<Unit>(events);
+            var unitTypes = new Repository<UnitType>(events);
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
             unitTypes.Add(type);
@@ -67,8 +69,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void QueueSpawnsUnits()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var events = new EventManager();
+            var units = new Repository<Unit>(events);
+            var unitTypes = new Repository<UnitType>(events);
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
             unitTypes.Add(type);
@@ -101,12 +104,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void QueuePositioningIsAlightWithFirstBuilding()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var events = new EventManager();
+            var units = new Repository<Unit>(events);
+            var unitTypes = new Repository<UnitType>(events);
             var deck = new DeckService<UnitType>();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
 
             var type = new UnitType();
             unitTypes.Add(type);
@@ -153,11 +157,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void MoveUnitsToPositionsInQueueWorks()
         {
+            var events = new EventManager();
             var time = new GameTime();
             var random = new SessionRandom();
 
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var units = new Repository<Unit>(events);
+            var unitTypes = new Repository<UnitType>(events);
             var deck = new DeckService<UnitType>();
 
             var type = new UnitType();
@@ -208,11 +213,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void ServeFirstCustomerWorks()
         {
+            var events = new EventManager();
             var time = new GameTime();
             var random = new SessionRandom();
 
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var units = new Repository<Unit>(events);
+            var unitTypes = new Repository<UnitType>(events);
             var deck = new DeckService<UnitType>();
 
             var type = new UnitType();
@@ -264,11 +270,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void ServingReleaseUnitToTheCrowd()
         {
+            var events = new EventManager();
             var time = new GameTime();
             var random = new SessionRandom();
 
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var units = new Repository<Unit>(events);
+            var unitTypes = new Repository<UnitType>(events);
             var deck = new DeckService<UnitType>();
 
             var type = new UnitType();
@@ -312,8 +319,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void LevelCrowdGetUnitsCorrectly()
         {
-            var unitTypes = new Repository<UnitType>();
-            var units = new Repository<Unit>();
+            var events = new EventManager();
+            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>(events);
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -378,8 +386,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void QueueFreeAllWorking()
         {
-            var unitTypes = new Repository<UnitType>();
-            var units = new Repository<Unit>();
+            var events = new EventManager();
+            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>(events);
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -427,8 +436,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void ServeAllWorking()
         {
-            var unitTypes = new Repository<UnitType>();
-            var units = new Repository<Unit>();
+            var events = new EventManager();
+            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>(events);
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -482,8 +492,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void ServeAllTimerWorking()
         {
-            var unitTypes = new Repository<UnitType>();
-            var units = new Repository<Unit>();
+            var events = new EventManager();
+            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>(events);
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -540,8 +551,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void ServeAllPositionsWorking()
         {
-            var unitTypes = new Repository<UnitType>();
-            var units = new Repository<Unit>();
+            var events = new EventManager();
+            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>(events);
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -595,8 +607,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void ServeCoinsWorking()
         {
-            var unitTypes = new Repository<UnitType>();
-            var units = new Repository<Unit>();
+            var events = new EventManager();
+            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>(events);
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -635,12 +648,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void FirstUnitAppearsAfterFirstBuilding()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var events = new EventManager();
+            var units = new Repository<Unit>(events);
+            var unitTypes = new Repository<UnitType>(events);
             var deck = new DeckService<UnitType>();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
 
             var type = new UnitType();
             unitTypes.Add(type);

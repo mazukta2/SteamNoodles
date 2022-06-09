@@ -1,8 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
@@ -10,7 +12,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Building;
+using Game.Assets.Scripts.Game.Logic.Presenters.Requests.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
@@ -32,7 +34,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostCreatedInBuildingMode()
         {
-            var buildingMode = new BuildingModeService();
+            var events = new EventManager();
+            var buildingMode = new BuildingModeService(events);
             var commands = new CommandsMock();
 
             var scheme = new ConstructionScheme();
@@ -58,18 +61,21 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsAvailableCellsIsHighlightedInGhostMode()
         {
-            var constructionsRepository = new Repository<Construction>();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
 
-            var buildinMode = new BuildingModeService();
+            var buildinMode = new BuildingModeService(events);
             var commands = new CommandsMock();
 
             var scheme = new ConstructionScheme();
 
             var fieldService = new FieldService(10, new IntPoint(3, 3));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
+            var requests = new RequestsMock()
+                .Add(new FieldRequestsService(fieldService, constructionService, buildinMode));
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService, constructionsRepository, commands);
+            new PlacementFieldPresenter(view, requests.Get<GetField>(), commands, events);
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
@@ -88,10 +94,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsCellsBeneathGhostIsHighlighted()
         {
-            var constructionsRepository = new Repository<Construction>();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
 
-            var buildinMode = new BuildingModeService();
+            var buildinMode = new BuildingModeService(events);
             var commands = new CommandsMock();
+            var requests = new RequestsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 0, 0, 0 },
@@ -109,9 +117,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
+            requests.Add(new FieldRequestsService(fieldService, constructionService, buildinMode));
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService, constructionsRepository, commands);
+            new PlacementFieldPresenter(view, 
+                requests.Get<GetField>(), commands, events);
 
             buildinMode.Show(new ConstructionCard(scheme));
 
@@ -139,7 +149,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var mockControls = new ControlsMock();
             var controls = new GameControls(mockControls);
 
-            var buildinMode = new BuildingModeService();
+            var events = new EventManager();
+            var buildinMode = new BuildingModeService(events);
             var commands = new CommandsMock();
 
             var placement = new ContructionPlacement(new int[,] {
@@ -191,7 +202,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var mockControls = new ControlsMock();
             var controls = new GameControls(mockControls);
 
-            var buildinMode = new BuildingModeService();
+            var events = new EventManager();
+            var buildinMode = new BuildingModeService(events);
             var commands = new CommandsMock();
 
             var placement = new ContructionPlacement(new int[,] {
@@ -228,9 +240,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostViewChangeVisualIfItAvailable()
         {
-            var constructionsRepository = new Repository<Construction>();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
 
-            var buildinMode = new BuildingModeService();
+            var buildinMode = new BuildingModeService(events);
 
             var scheme = new ConstructionScheme(new Uid(),
                 DefId.None,
@@ -270,10 +283,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsCellsIsColoredRightWithGhost()
         {
-            var constructionsRepository = new Repository<Construction>();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
 
-            var buildinMode = new BuildingModeService();
+            var buildinMode = new BuildingModeService(events);
             var commands = new CommandsMock();
+            var requests = new RequestsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 1, 1 },
@@ -289,12 +304,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
+            requests
+                .Add(new FieldRequestsService(fieldService, constructionService, buildinMode));
             var viewCollection = new ViewsCollection();
 
             buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService, constructionsRepository, commands);
+            new PlacementFieldPresenter(view,
+                requests.Get<GetField>(), commands, events);
 
             buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
 
@@ -322,7 +340,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var controls = new GameControls(mockControls);
 
             var fieldService = new FieldService(1, new IntPoint(3, 3));
-            var buildinMode = new BuildingModeService();
+            var events = new EventManager();
+            var buildinMode = new BuildingModeService(events);
             var commands = new CommandsMock();
 
             var scheme = new ConstructionScheme(new Uid(),
@@ -349,10 +368,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test]
         public void IsRotationWorking()
         {
-            var constructionsRepository = new Repository<Construction>();
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
 
-            var buildinMode = new BuildingModeService();
+            var buildinMode = new BuildingModeService(events);
             var commands = new CommandsMock();
+            var requests = new RequestsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 1, 1 },
@@ -368,12 +389,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
+            requests.Add(new FieldRequestsService(fieldService, constructionService, buildinMode));
             var viewCollection = new ViewsCollection();
 
             buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService, constructionsRepository, commands);
+            new PlacementFieldPresenter(view, requests.Get<GetField>(), commands, events);
 
             buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation());
 

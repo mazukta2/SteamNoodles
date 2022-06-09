@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
@@ -16,11 +17,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Definitions
     public class DefinitionsService : IService
     {
         private readonly IModelServices _services;
+        private readonly IEvents _events;
         private readonly IGameDefinitions _definitions;
 
-        public DefinitionsService(IModelServices services, IGameDefinitions definitions, bool loadDefinitions = true)
+        public DefinitionsService(IModelServices services, IEvents events, IGameDefinitions definitions, bool loadDefinitions = true)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
+            _events = events ?? throw new ArgumentNullException(nameof(events));
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
 
             //var unitSettings = definitions.Get<UnitsSettingsDefinition>();
@@ -55,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Definitions
         private void LoadUnits()
         {
             var unitSettings = _definitions.Get<UnitsSettingsDefinition>();
-            var repository = new Repository<UnitType>();
+            var repository = new Repository<UnitType>(_events);
             foreach (var item in _definitions.GetList<CustomerDefinition>())
                 repository.Add(new UnitType(item, unitSettings));
             _services.Add(repository);
@@ -63,7 +66,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Definitions
 
         private void LoadConstructions()
         {
-            var repository = new Repository<ConstructionScheme>();
+            var repository = new Repository<ConstructionScheme>(_events);
             var constructionsDefinitions = _definitions.GetList<ConstructionDefinition>();
             ConstructionScheme.FillWithDefinitions(constructionsDefinitions, repository);
             _services.Add(repository);

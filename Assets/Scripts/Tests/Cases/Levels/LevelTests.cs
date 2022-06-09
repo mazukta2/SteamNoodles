@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
@@ -79,8 +80,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         [Test, Order(TestCore.EssentialOrder)]
         public void LevelIsLoading()
         {
+            var events = new EventManager();
             var levelManager = new LevelsManagerMock();
-            var levels = new Repository<Level>();
+            var levels = new Repository<Level>(events);
             var firstLevel = levelManager.Add(new Level());
             var levelService = new LevelsService(levelManager, levels, firstLevel);
 
@@ -105,8 +107,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         [Test, Order(TestCore.EssentialOrder)]
         public void LevelReloadingWorked()
         {
+            var events = new EventManager();
             var levelManager = new LevelsManagerMock();
-            var levels = new Repository<Level>();
+            var levels = new Repository<Level>(events);
             var firstLevel = levelManager.Add(new Level());
             var levelService = new LevelsService(levelManager, levels, firstLevel);
             levelService.StartFirstLevel();
@@ -130,6 +133,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         [Test, Order(TestCore.EssentialOrder)]
         public void StartingCodeWorking()
         {
+            var events = new EventManager();
             var level = new LevelDefinitionMock("leveldef", new EmptyLevel());
             var starter = new LevelStarter();
             level.Starter = starter;
@@ -140,7 +144,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
 
             var levelManager = new LevelsManagerMock();
             levelManager.Add(level);
-            var levels = new Repository<Level>();
+            var levels = new Repository<Level>(events);
 
             var levelService = new LevelsService(services, levelManager, levels, definitions, level);
             levelService.StartFirstLevel();
