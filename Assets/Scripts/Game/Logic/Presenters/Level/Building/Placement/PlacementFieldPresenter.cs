@@ -1,13 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
-using Game.Assets.Scripts.Game.Logic.Presenters.Requests;
 using Game.Assets.Scripts.Game.Logic.Presenters.Requests.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
@@ -19,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
     public class PlacementFieldPresenter : BasePresenter<IPlacementFieldView>
     {
         private IPlacementFieldView _view;
-        private readonly RequestLink<GetField> _fieldRequest;
+        private readonly FieldModel _field;
         private readonly ICommands _commands;
         private readonly IEvents _events;
         private List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
@@ -29,23 +27,23 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private Subscriber<EntityRemovedFromRepositoryEvent<Construction>> _removed;
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
-            IRequests.Default.Get<GetField>(),
+            IPresenterServices.Default.Get<FieldRequestsService>().Get(),
             ICommands.Default,
             IEvents.Default)
         {
         }
 
-        public PlacementFieldPresenter(IPlacementFieldView view, 
-            RequestLink<GetField> fieldRequest,
+        public PlacementFieldPresenter(IPlacementFieldView view,
+            FieldModel field,
             ICommands commands,
             IEvents events) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _fieldRequest = fieldRequest ?? throw new ArgumentNullException(nameof(fieldRequest));
+            _field = field ?? throw new ArgumentNullException(nameof(field));
             _commands = commands ?? throw new ArgumentNullException(nameof(commands));
             _events = events ?? throw new ArgumentNullException(nameof(events));
 
-            var boundaries = _fieldRequest.Get(new GetField()).Respond.Boudaries;
+            var boundaries = _field.Boudaries;
             for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
             {
                 for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
@@ -64,6 +62,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         protected override void DisposeInner()
         {
+            _field.Dispose();
             _added.Dispose();
             _removed.Dispose();
             _onGhostChanged.Dispose();
@@ -73,7 +72,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private PlacementCellPresenter CreateCell(IntPoint position)
         {
             var view = _view.CellsContainer.Spawn<ICellView>(_view.Cell);
-            return new PlacementCellPresenter(view, position, _fieldRequest);
+            return new PlacementCellPresenter(view, position, _field);
         }
 
         private void HandleOnPositionChanged(GhostPositionChangedEvent obj)
@@ -88,10 +87,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void UpdateGhostCells()
         {
-            var field = _fieldRequest.Get(new GetField()).Respond;
             foreach (var cell in _cells)
             {
-                cell.SetState(field.Status[cell.Position]);
+                cell.SetState(_field.Status[cell.Position]);
             }
         }
 

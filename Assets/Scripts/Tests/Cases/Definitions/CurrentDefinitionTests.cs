@@ -1,12 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using NUnit.Framework;
@@ -87,7 +85,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
             var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
             var project = currentDirectory.Parent.Parent.Parent;
 
-            var services = new ServiceManager();
+            var services = new ServiceManager(new CommandManager());
             IModelServices.Default = services;
 
             var definitionService = new DefinitionsService(services, events,

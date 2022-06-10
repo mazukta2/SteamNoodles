@@ -21,13 +21,5 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Build
             Prefab = prefab;
         }
 
-        public void Execute()
-        {
-            //    //new ConstructionPresenter(_settings, arg1, _field, IGameAssets.Default, view, _ghostManager, IGameControls.Default);
-            //var view = _view.Container.Spawn<IGhostView>(_view.GhostPrototype);
-            //var ghost = new GhostPresenter(_settings, _screenManager, _fieldService, _buildingService, buildScreen,
-            //    _controls, IGameKeysManager.Default, IGameAssets.Default, view, _time);
-            //_ghost.OnGhostPostionChanged += UpdateGhostPosition;
-        }
     }
 }

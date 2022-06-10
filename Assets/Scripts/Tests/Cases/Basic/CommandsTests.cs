@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Tests.Cases.Basic
 {
-    public class CommandsAndEventsTests
+    public class CommandsTests
     {
         [Test, Order(TestCore.EssentialOrder)]
         public void IsCommandsHandles()

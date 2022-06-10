@@ -10,7 +10,6 @@ using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
@@ -18,7 +17,6 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Controls;
-using System;
 
 namespace Game.Assets.Scripts.Game.Environment
 {
@@ -37,7 +35,9 @@ namespace Game.Assets.Scripts.Game.Environment
             IGameRandom.Default = new SessionRandom();
             ILocalizationManager.Default = localizationManager;
 
-            Services = new ServiceManager();
+            var cmd = new CommandManager();
+            ICommands.Default = cmd;
+            Services = new ServiceManager(cmd);
             IPresenterServices.Default = Services;
             IModelServices.Default = Services;
             Events = new EventManager();
@@ -67,6 +67,7 @@ namespace Game.Assets.Scripts.Game.Environment
             IPresenterServices.Default = null;
             IModelServices.Default = null;
             IEvents.Default = null;
+            ICommands.Default = null;
 
             Services.Dispose();
             Services = null;

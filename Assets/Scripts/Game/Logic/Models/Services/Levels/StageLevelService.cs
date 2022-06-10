@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
@@ -25,12 +26,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
         private readonly IModelServices _services;
 
         public StageLevelService(StageLevel level)
-            : this(level, IModelServices.Default, IEvents.Default, IGameRandom.Default, IGameTime.Default)
+            : this(level, IModelServices.Default, IEvents.Default, ICommands.Default, IGameRandom.Default, IGameTime.Default)
         {
 
         }
 
-        public StageLevelService(StageLevel level, IModelServices services, IEvents events, IGameRandom random, IGameTime time)
+        public StageLevelService(StageLevel level, IModelServices services, IEvents events, ICommands commands, IGameRandom random, IGameTime time)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
 
@@ -61,7 +62,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var buildingMode = services.Add(new BuildingModeService(events));
 
             services.Add(new FieldRequestsService(field, constructions, buildingMode));
-
+            services.Add(new ConstructionsRequestProviderService(constructionsRep, field, commands));
+            
             rewards.Start();
         }
 
@@ -84,6 +86,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             _services.Remove<BuildingModeService>();
 
             _services.Remove<FieldRequestsService>();
+            _services.Remove<ConstructionsRequestProviderService>();
 
             _services.Remove<Repository<ConstructionCard>>();
             _services.Remove<Repository<Construction>>();

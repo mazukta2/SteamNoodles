@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
@@ -9,13 +8,10 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Requests.Constructions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
 {
-    public class FieldRequestsService : IService,
-        IRequestHandler<GetField>
+    public class FieldRequestsService : IService
     {
         private readonly FieldService _fieldService;
         private readonly ConstructionsService _constructionsService;
@@ -29,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
             _modeService = modeService ?? throw new ArgumentNullException(nameof(modeService));
         }
 
-        public void Handle(GetField request)
+        public FieldModel Get()
         {
             var occupiedCells = _constructionsService.GetAllOccupiedSpace();
             IReadOnlyCollection<FieldPosition> ocuppiedCellsByGhost = null;
@@ -72,7 +68,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
                 }
             }
 
-            request.Respond.SetCells(list, positions, boundaries);
+            return new FieldModel(list, positions, boundaries);
         }
     }
 }

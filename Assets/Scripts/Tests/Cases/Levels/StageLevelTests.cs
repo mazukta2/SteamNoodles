@@ -34,13 +34,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         public void StageLevelServiceIsLoadedByScepifics()
         {
             var events = new EventManager();
-            var manager = new ServiceManager();
+            var c = new CommandManager();
+            var manager = new ServiceManager(c);
             manager.Add(new Repository<ConstructionScheme>(events));
             manager.Add(new Repository<UnitType>(events));
             IModelServices.Default = manager;
             IGameRandom.Default = new SessionRandom();
             IGameTime.Default = new GameTime();
             IEvents.Default = events;
+            ICommands.Default = c;
 
             var level = new StageLevel();
             var starter = new StageLevelSpecifics();
@@ -105,13 +107,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         public void StageLevelServiceStartAllNeededServices()
         {
             var events = new EventManager();
-            var manager = new ServiceManager();
+            var c = new CommandManager();
+            var manager = new ServiceManager(c);
             manager.Add(new Repository<ConstructionScheme>(events));
             manager.Add(new Repository<UnitType>(events));
 
             IModelServices.Default = manager;
             var level = new StageLevel();
-            var service = new StageLevelService(level, manager, events, new SessionRandom(), new GameTime());
+            var service = new StageLevelService(level, manager, events, c, new SessionRandom(), new GameTime());
             manager.Add(service);
 
             Assert.IsTrue(manager.Has<StageTurnService>());

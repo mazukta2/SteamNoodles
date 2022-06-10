@@ -30,6 +30,13 @@ namespace Game.Assets.Scripts.Tests.Presenters.Commands
             return Commands.Last() is T;
         }
 
+        public bool Has<T>()
+        {
+            if (Commands.Count == 0)
+                return false;
+
+            return Commands.OfType<T>().Any();
+        }
 
         public bool IsEmpty()
         {

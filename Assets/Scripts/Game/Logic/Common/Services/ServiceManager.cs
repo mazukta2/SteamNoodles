@@ -1,7 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
@@ -14,9 +13,13 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
     public class ServiceManager : Disposable, IPresenterServices, IModelServices
     {
         private List<IService> _list = new List<IService>();
-        private CommandManager _commandsManager = new CommandManager();
-        private RequestManager _requestManager = new RequestManager();
+        private CommandManager _commandsManager;
         private RepositoryManager _repository = new RepositoryManager();
+
+        public ServiceManager(CommandManager commands)
+        {
+            _commandsManager = commands;
+        }
 
         public T Add<T>(T service) where T : IService
         {
@@ -27,9 +30,6 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
 
             if (service is IBaseCommandHandler commandHandler)
                 _commandsManager.Add(commandHandler);
-
-            if (service is IBaseRequestHandler requestHandler)
-                _requestManager.Add(requestHandler);
 
             if (service is IBaseRepository repository)
                 _repository.Add(repository);
@@ -46,9 +46,6 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
 
             if (service is IBaseCommandHandler commandHandler)
                 _commandsManager.Remove(commandHandler);
-
-            if (service is IBaseRequestHandler requestHandler)
-                _requestManager.Remove(requestHandler);
 
             if (service is IBaseRepository repository)
                 _repository.Remove(repository);

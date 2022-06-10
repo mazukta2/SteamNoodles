@@ -8,6 +8,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 {
     public record FieldRotation
     {
+        public static FieldRotation Default { get; } = new FieldRotation();
+
         public FieldRotation()
         {
             Value = Rotation.Top;
@@ -60,6 +62,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
             Left,
             Right,
             Bottom
+        }
+
+        internal static GameQuaternion ToDirection(object rotation)
+        {
+            throw new NotImplementedException();
         }
     }
 }
