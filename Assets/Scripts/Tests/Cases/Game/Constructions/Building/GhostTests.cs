@@ -12,7 +12,6 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
-using Game.Assets.Scripts.Game.Logic.Presenters.Requests.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
@@ -71,10 +70,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(10, new IntPoint(3, 3));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-            var fieldRequest = new FieldRequestsService(fieldService, constructionService, buildinMode);
+            var fieldRequest = new FieldRequestsService(fieldService, constructionService, buildinMode, events);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, fieldRequest.Get(), commands, events);
+            new PlacementFieldPresenter(view, fieldRequest.Get());
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
@@ -88,6 +87,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
 
             viewCollection.Dispose();
+            fieldRequest.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -115,10 +115,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode);
+            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode, events);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, fieldReqService.Get(), commands, events);
+            new PlacementFieldPresenter(view, fieldReqService.Get());
 
             buildinMode.Show(new ConstructionCard(scheme));
 
@@ -138,6 +138,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(new GameVector3(1f, 0, 0), highlighedCells.Last().LocalPosition.Value);
 
             viewCollection.Dispose();
+            fieldReqService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -301,14 +302,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
           
-            var service = new FieldRequestsService(fieldService, constructionService, buildinMode);
+            var service = new FieldRequestsService(fieldService, constructionService, buildinMode, events);
             var model = service.Get();
 
             buildinMode.Show(new ConstructionCard(scheme));
 
             buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
 
-            var actual = ToArray(5, model.Status);
+            var actual = ToArray(5, service.GetCells().ToDictionary(p => p.Key, c => c.Value.Status));
             var expected = new int[5, 5]
             {
                 { 1,1,0,0,0 },
@@ -321,6 +322,45 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
 
             model.Dispose();
+            service.Dispose();
+        }
+
+        [Test, Order(TestCore.ModelOrder)]
+        public void RequestUpdateWorks()
+        {
+            var events = new EventManager();
+            var constructionsRepository = new Repository<Construction>(events);
+
+            var buildinMode = new BuildingModeService(events);
+            var scheme = new ConstructionScheme();
+
+            var fieldService = new FieldService(1, new IntPoint(5, 5));
+            var constructionService = new ConstructionsService(constructionsRepository, fieldService);
+            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode, events);
+            var model = fieldReqService.Get();
+            var updates = 0;
+
+            model.OnUpdate += HandleUpdate;
+
+            Assert.AreEqual(0, updates);
+
+            buildinMode.Show(new ConstructionCard(scheme));
+
+            Assert.AreEqual(1, updates);
+
+            buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
+            
+            Assert.AreEqual(2, updates);
+
+            model.OnUpdate -= HandleUpdate;
+
+            fieldReqService.Dispose();
+            model.Dispose();
+
+            void HandleUpdate()
+            {
+                updates++;
+            }
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -330,7 +370,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>(events);
 
             var buildinMode = new BuildingModeService(events);
-            var commands = new CommandsMock();
 
             var placement = new ContructionPlacement(new int[,] {
                     { 1, 1 },
@@ -346,13 +385,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode);
+            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode, events);
             var viewCollection = new ViewsCollection();
 
             buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, fieldReqService.Get(), commands, events);
+            new PlacementFieldPresenter(view, fieldReqService.Get());
 
             buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
 
@@ -370,6 +409,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
 
             viewCollection.Dispose();
+            fieldReqService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -427,13 +467,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode);
+            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode, events);
             var viewCollection = new ViewsCollection();
 
             buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, fieldReqService.Get(), commands, events);
+            new PlacementFieldPresenter(view, fieldReqService.Get());
 
             buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation());
 
@@ -478,6 +518,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             });
 
             viewCollection.Dispose();
+            fieldReqService.Dispose();
 
             void CheckPosition(int[,] expected)
             {

@@ -1,7 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Requests.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,11 @@ namespace Game.Assets.Scripts.Tests.Models.Constructions
 {
     public class ConstructionModelMock : Disposable, IConstructionModel
     {
+        public ConstructionModelMock()
+            : this (FieldRotation.Default, GameVector3.Zero)
+        {
+        }
+
         public ConstructionModelMock(FieldRotation rotation, GameVector3 worldPosition)
         {
             Rotation = rotation;

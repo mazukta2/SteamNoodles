@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
@@ -11,17 +10,12 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
-using Game.Assets.Scripts.Game.Logic.Presenters.Requests.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.CommandHandlers.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Models.Constructions;
-using Game.Assets.Scripts.Tests.Presenters.Commands;
-using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
-using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Tests.Cases;
@@ -147,7 +141,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var fieldService = new FieldService(10, new IntPoint(3, 3));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             
-            var service = new FieldRequestsService(fieldService, constructionService, buildinMode);
+            var service = new FieldRequestsService(fieldService, constructionService, buildinMode, events);
             var model = service.Get();
 
             Assert.AreEqual(-1, model.Boudaries.Value.xMin);
@@ -161,6 +155,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(new GameVector3(10, 0, -10), model.GetCellWorldPosition(new IntPoint(1, -1)));
 
             model.Dispose();
+            service.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -178,8 +173,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                     status.Add(new IntPoint(x, y), CellPlacementStatus.Normal);
                 }
 
-            var model = new FieldModel(status, positions, new FieldBoundaries(new(3, 3)));
-            new PlacementFieldPresenter(view, model, new CommandsMock(), new EventManager());
+            var model = new FieldModelMock(status, positions, new FieldBoundaries(new(3, 3)));
+            new PlacementFieldPresenter(view, model);
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
@@ -229,50 +224,18 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void ConstructionBuildCommandHandled()
-        {
-            var commands = new CommandManager();
-            ICommands.Default = commands;
-            commands.Add(new ConstructionCommandHadlerService());
-
-            var construction = new Construction(new ConstructionScheme(), new FieldPosition(1, 1), new FieldRotation());
-            //var model = new ConstructionModel(commands, construction, GameVector3.Zero);
-
-            //request.Add(new GetConstructionHandler(model));
-            IEvents.Default = new EventManager();
-
-            var viewCollection = new ViewsCollection();
-            var container = new ContainerViewMock(viewCollection);
-            var prefab = new DefaultViewCollectionPrefabMock((v) => new ConstructionView(v));
-            commands.Execute(new BuildConstructionCommand(construction, container, prefab));
-
-            Assert.AreEqual(1, container.FindViews<ConstructionView>().Count);
-            Assert.IsNotNull(container.FindView<ConstructionView>().Presenter);
-
-            viewCollection.Dispose();
-        }
-
-        [Test, Order(TestCore.PresenterOrder)]
         public void IsConstructionPresenterSpawning()
         {
-            var events = new EventManager();
-            var constructionsRepository = new Repository<Construction>(events);
-            var buildinMode = new BuildingModeService(events);
-            var fieldService = new FieldService(10, new IntPoint(3, 3));
-            var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
 
-            var command = new CommandsMock();
-            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode);
+            var fieldModel = new FieldModelMock();
 
-            new PlacementFieldPresenter(view, fieldReqService.Get(), command, events);
+            new PlacementFieldPresenter(view, fieldModel);
 
-            Assert.IsTrue(command.IsEmpty());
-            constructionsRepository.Add(new Construction(new ConstructionScheme(), new FieldPosition(1, 1), new FieldRotation()));
+            fieldModel.FireOnConstructionBuilded(new Uid());
 
-            Assert.IsTrue(command.Last<BuildConstructionCommand>());
+            Assert.IsTrue(view.ConstrcutionContainer.Has<IConstructionView>());
 
             viewCollection.Dispose();
         }

@@ -12,5 +12,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
         public void Remove(IView view);
         public void Add(IView view);
         public int Count { get; }
+
+        public bool Has<T>() where T : IView
+        {
+            return FindViews<T>().Count > 0;
+        }
     }
 }

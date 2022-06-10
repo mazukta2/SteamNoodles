@@ -3,7 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions
 {
     public interface IConstructionModel : IDisposable
     {

@@ -4,13 +4,12 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Requests;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Requests.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions;
 using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Requests.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions
 {
     public class ConstructionModel : Disposable, IConstructionModel
     {
@@ -22,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Requests.Constructions
 
         private ICommands _commands;
 
-        public ConstructionModel(Construction construction, 
+        public ConstructionModel(Construction construction,
             GameVector3 worldPosition, ConstructionsRequestProviderService service)
         {
             //_commands = commands;

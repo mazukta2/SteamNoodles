@@ -1,6 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
-using Game.Assets.Scripts.Game.Logic.Presenters.Requests.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
 
@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private IntPoint _position;
 
         public PlacementCellPresenter(ICellView view, IntPoint position,
-            FieldModel field) : base(view)
+            IFieldModel field) : base(view)
         {
             _cellView = view ?? throw new ArgumentNullException(nameof(view));
             _position = position;

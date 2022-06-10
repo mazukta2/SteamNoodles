@@ -61,7 +61,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var unitsMovement = services.Add(new UnitsMovementsService(unitsRep, time));
             var buildingMode = services.Add(new BuildingModeService(events));
 
-            services.Add(new FieldRequestsService(field, constructions, buildingMode));
+            services.Add(new FieldRequestsService(field, constructions, buildingMode, events));
             services.Add(new ConstructionsRequestProviderService(constructionsRep, field, commands));
             
             rewards.Start();
