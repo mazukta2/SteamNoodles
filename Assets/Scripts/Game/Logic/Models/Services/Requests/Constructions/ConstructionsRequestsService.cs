@@ -1,13 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
@@ -25,33 +20,30 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
 
         private readonly FieldService _fieldService;
         private readonly IGameAssets _assets;
-        private readonly IEvents _events;
         private readonly IGameControls _controls;
         private readonly IRepository<Construction> _constructions;
         private readonly BuildingModeService _buildingModeService;
-        private Subscriber<GhostStateChangedEvent> _onGhostChanged;
-        private Subscriber<GhostPositionChangedEvent> _onGhostPositionChanged;
 
         public ConstructionsRequestsService(IRepository<Construction> constructions, 
             BuildingModeService buildingModeService,
-            FieldService fieldService, IGameAssets assets, IEvents events, IGameControls controls)
+            FieldService fieldService, IGameAssets assets, IGameControls controls)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
-            _events = events;
+
             _controls = controls;
-            _onGhostChanged = _events.Get<GhostStateChangedEvent>(HandleModeOnChanged);
-            _onGhostPositionChanged = _events.Get<GhostPositionChangedEvent>(HandleOnPositionChanged);
+            _buildingModeService.OnChanged += HandleOnChanged;
+            _buildingModeService.OnPositionChanged += HandleOnPositionChanged;
             _constructions.OnModelRemoved += Constructions_OnModelRemoved;
         }
 
         protected override void DisposeInner()
         {
             _constructions.OnModelRemoved -= Constructions_OnModelRemoved;
-            _onGhostChanged.Dispose();
-            _onGhostPositionChanged.Dispose();
+            _buildingModeService.OnChanged -= HandleOnChanged;
+            _buildingModeService.OnPositionChanged -= HandleOnPositionChanged;
         }
 
         public ConstructionModel Get(Uid id)
@@ -87,19 +79,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
                 return 1;
             }
         }
-        private void HandleChanges()
+
+        private void HandleOnPositionChanged()
         {
             OnUpdate();
         }
 
-        private void HandleOnPositionChanged(GhostPositionChangedEvent obj)
+        private void HandleOnChanged(bool obj)
         {
-            HandleChanges();
-        }
-
-        private void HandleModeOnChanged(GhostStateChangedEvent obj)
-        {
-            HandleChanges();
+            OnUpdate();
         }
 
         private void Constructions_OnModelRemoved(Construction obj)

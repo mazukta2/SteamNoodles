@@ -1,8 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -14,21 +11,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     {
         private PresenterModel<ConstructionCard> _model;
         private IHandConstructionView _view;
-        private readonly ICommands _commands;
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
 
         public HandConstructionPresenter(EntityLink<ConstructionCard> model,
-            IHandConstructionView view) : this(model, view, ICommands.Default)
-        {
-        }
-
-        public HandConstructionPresenter(EntityLink<ConstructionCard> model,
-            IHandConstructionView view, ICommands commands) : base(view)
+            IHandConstructionView view) : base(view)
         {
             _model = model.CreateModel() ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _commands = commands ?? throw new ArgumentNullException(nameof(commands));
             _animations = new HandConstructionsAnimations(view);
 
             view.Button.SetAction(HandleClick);
@@ -57,7 +47,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleClick()
         {
-            _commands.Execute(new OpenBuildingScreenCommand(_model.Get()));
+            //ScreenManagerPresenter.Default.Open<IBuildScreenView>(view => new BuildScreenPresenter(view, Card));
+            //_commands.Execute(new OpenBuildingScreenCommand(_model.Get()));
         }
 
         private void UpdateAmount()
@@ -96,12 +87,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void _view_OnHighlihgtedEnter()
         {
-            _commands.Execute(new OpenConstructionTooltipCommand(_model.Get(), _view.TooltipContainer, _view.TooltipPrefab));
+            //Container.Clear();
+            //var view = Container.Spawn<IHandConstructionTooltipView>(Prefab);
+            //new HandConstructionTooltipPresenter(view).SetModel(Card);
+            //_commands.Execute(new OpenConstructionTooltipCommand(_model.Get(), _view.TooltipContainer, _view.TooltipPrefab));
         }
 
         private void _view_OnHighlihgtedExit()
         {
-            _commands.Execute(new CloseConstructionTooltipCommand(_view.TooltipContainer));
+            //_tooltipContainer.Clear();
+            //_commands.Execute(new CloseConstructionTooltipCommand(_view.TooltipContainer));
         }
 
     }

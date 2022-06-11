@@ -1,12 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Models.Entities;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
@@ -19,11 +17,9 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         private Uid _uid;
         private T _value;
-        private IEvents _events;
 
-        public SingletonRepository(IEvents events)
+        public SingletonRepository()
         {
-            _events = events ?? throw new ArgumentNullException(nameof(events));
         }
 
         public void Add(T entity)

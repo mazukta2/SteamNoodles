@@ -1,15 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Models.Entities;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Tests.Cases;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Tests.Cases.Basic
 {
@@ -47,9 +42,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         [Test, Order(TestCore.EssentialOrder)]
         public void IsSavingWorking()
         {
-            var events = new EventManager();
             var entity1 = new TestEntity(1, new TestValueObject(2));
-            var repository = new Repository<TestEntity>(events);
+            var repository = new Repository<TestEntity>();
             repository.Add(entity1);
             var entity2 = repository.GetAll().First();
             entity2.Value1 = 5;
@@ -73,9 +67,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         [Test, Order(TestCore.EssentialOrder)]
         public void IsEventsWorking()
         {
-            var events = new EventManager();
             var entity = new TestEntity(1, new TestValueObject(2));
-            var repository = new Repository<TestEntity>(events);
+            var repository = new Repository<TestEntity>();
             repository.Add(entity);
             var isEvent = false;
             repository.OnModelEvent += Repository_OnModelEvent;

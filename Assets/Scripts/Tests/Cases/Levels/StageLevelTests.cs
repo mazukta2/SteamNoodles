@@ -1,8 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
@@ -36,16 +33,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         [Test, Order(TestCore.ModelOrder)]
         public void StageLevelServiceIsLoadedByScepifics()
         {
-            var events = new EventManager();
-            var c = new CommandManager();
-            var manager = new ServiceManager(c);
-            manager.Add(new Repository<ConstructionScheme>(events));
-            manager.Add(new Repository<UnitType>(events));
+            var manager = new ServiceManager();
+            manager.Add(new Repository<ConstructionScheme>());
+            manager.Add(new Repository<UnitType>());
             IModelServices.Default = manager;
             IGameRandom.Default = new SessionRandom();
             IGameTime.Default = new GameTime();
-            IEvents.Default = events;
-            ICommands.Default = c;
 
             var level = new StageLevel();
             var starter = new StageLevelSpecifics();
@@ -59,12 +52,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         [Test, Order(TestCore.ModelOrder)]
         public void StageLevelFilledByDefinitionsCorrectly()
         {
-            var events = new EventManager();
             var construction = new ConstructionDefinition();
             construction.Name = "construction";
             var settings = new ConstructionsSettingsDefinition();
             
-            var schemes = new Repository<ConstructionScheme>(events);
+            var schemes = new Repository<ConstructionScheme>();
             var scheme = schemes.Add(new ConstructionScheme(construction, settings)).Get();
 
             var customer = new CustomerDefinition();
@@ -72,7 +64,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             unitsDefinition.Speed = 1;
             unitsDefinition.MinSpeed = 1;
 
-            var units = new Repository<UnitType>(events);
+            var units = new Repository<UnitType>();
             var unit = units.Add(new UnitType(customer, unitsDefinition)).Get();
 
             var constructionsDefinitions = new ConstructionsSettingsDefinition();
@@ -110,16 +102,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         [Test, Order(TestCore.ModelOrder)]
         public void StageLevelServiceStartAllNeededServices()
         {
-            var events = new EventManager();
-            var c = new CommandManager();
-            var manager = new ServiceManager(c);
-            manager.Add(new Repository<ConstructionScheme>(events));
-            manager.Add(new Repository<UnitType>(events));
+            var manager = new ServiceManager();
+            manager.Add(new Repository<ConstructionScheme>());
+            manager.Add(new Repository<UnitType>());
 
             IModelServices.Default = manager;
             IGameAssets.Default = new GameAssets(new AssetsMock());
             var level = new StageLevel();
-            var service = new StageLevelService(level, manager, events, c, new SessionRandom(), new GameTime());
+            var service = new StageLevelService(level, manager, new SessionRandom(), new GameTime());
             manager.Add(service);
 
             Assert.IsTrue(manager.Has<StageTurnService>());

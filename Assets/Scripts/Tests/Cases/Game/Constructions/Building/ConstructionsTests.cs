@@ -1,5 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
@@ -138,13 +137,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsPlacementBoundariesRequestRight()
         {
-            var events = new EventManager();
-            var constructionsRepository = new Repository<Construction>(events);
-            var buildinMode = new BuildingModeService(events);
+            var constructionsRepository = new Repository<Construction>();
+            var buildinMode = new BuildingModeService();
             var fieldService = new FieldService(10, new IntPoint(3, 3));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             
-            var service = new FieldRequestsService(fieldService, constructionService, buildinMode, events);
+            var service = new FieldRequestsService(fieldService, constructionService, buildinMode);
             var model = service.Get();
 
             Assert.AreEqual(-1, model.Boudaries.Value.xMin);
@@ -159,6 +157,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             model.Dispose();
             service.Dispose();
+            constructionService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -194,10 +193,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void IsBuildingWorks()
         {
-            var events = new EventManager();
-            var constructionsRepository = new Repository<Construction>(events);
-            var constructionsCardsRepository = new Repository<ConstructionCard>(events);
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>(events);
+            var constructionsRepository = new Repository<Construction>();
+            var constructionsCardsRepository = new Repository<ConstructionCard>();
+            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
@@ -223,6 +221,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(0, constructionsCardsRepository.Count);
             
             pointsService.Dispose();
+            constructionsService.Dispose();
         }
 
 
@@ -318,12 +317,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void ShinkIsCorrect()
         {
-            var events = new EventManager();
             var controls = new GameControls(new ControlsMock());
             var gameAssets = new GameAssets(new AssetsMock());
-            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsRepository = new Repository<Construction>();
 
-            var buildingMode = new BuildingModeService(events);
+            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance : 4);
 
@@ -331,7 +329,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             constructionsRepository.Add(construction);
 
             var requests = new ConstructionsRequestsService(constructionsRepository, buildingMode, 
-                fieldService, gameAssets, events, controls);
+                fieldService, gameAssets, controls);
             var model = requests.Get(construction.Id);
             var update = 0;
             model.OnUpdate += HandleUpdate;
@@ -381,12 +379,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void ExplosionWorks()
         {
-            var events = new EventManager();
             var controls = new GameControls(new ControlsMock());
             var gameAssets = new GameAssets(new AssetsMock());
-            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsRepository = new Repository<Construction>();
 
-            var buildingMode = new BuildingModeService(events);
+            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance: 4);
 
@@ -394,7 +391,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             constructionsRepository.Add(construction);
 
             var requests = new ConstructionsRequestsService(constructionsRepository, buildingMode,
-                fieldService, gameAssets, events, controls);
+                fieldService, gameAssets, controls);
             var model = requests.Get(construction.Id);
             var explosion = 0;
             model.OnExplostion += HandleExplosion;
@@ -417,12 +414,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void IsConstructionRequestCorrect()
         {
-            var events = new EventManager();
             var controls = new GameControls(new ControlsMock());
             var gameAssets = new GameAssets(new AssetsMock());
-            var constructionsRepository = new Repository<Construction>(events);
+            var constructionsRepository = new Repository<Construction>();
 
-            var buildingMode = new BuildingModeService(events);
+            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var placement = new ContructionPlacement(new int[,]
                     {
@@ -441,7 +437,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             constructionsRepository.Add(construction);
 
             var requests = new ConstructionsRequestsService(constructionsRepository, buildingMode, 
-                fieldService, gameAssets, events, controls);
+                fieldService, gameAssets, controls);
             var model = requests.Get(construction.Id);
             Assert.AreEqual(new GameVector3(1.5f, 0, 1f), model.WorldPosition);
             model.Dispose();

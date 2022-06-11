@@ -1,7 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
@@ -22,32 +21,26 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
         private readonly FieldService _fieldService;
         private readonly ConstructionsService _constructionsService;
         private readonly BuildingModeService _modeService;
-        private readonly IEvents _events;
-        private Subscriber<GhostStateChangedEvent> _onGhostChanged;
-        private Subscriber<GhostPositionChangedEvent> _onGhostPositionChanged;
-        private Subscriber<EntityAddedToRepositoryEvent<Construction>> _added;
-        private Subscriber<EntityRemovedFromRepositoryEvent<Construction>> _removed;
 
         public FieldRequestsService(FieldService fieldService,
-            ConstructionsService constructionsService, BuildingModeService modeService, IEvents events)
+            ConstructionsService constructionsService, BuildingModeService modeService)
         {
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
             _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
             _modeService = modeService ?? throw new ArgumentNullException(nameof(modeService));
-            _events = events;
 
-            _onGhostChanged = _events.Get<GhostStateChangedEvent>(HandleModeOnChanged);
-            _onGhostPositionChanged = _events.Get<GhostPositionChangedEvent>(HandleOnPositionChanged);
-            _added = _events.Get<EntityAddedToRepositoryEvent<Construction>>(HandleConstructionsOnAdded);
-            _removed = _events.Get<EntityRemovedFromRepositoryEvent<Construction>>(HandleConstructionsOnRemoved);
+            _modeService.OnChanged += _modeService_OnChanged;
+            _modeService.OnPositionChanged += _modeService_OnPositionChanged;
+            _constructionsService.OnAdded += _constructionsService_OnAdded;
+            _constructionsService.OnRemoved += _constructionsService_OnRemoved;
         }
 
         protected override void DisposeInner()
         {
-            _added.Dispose();
-            _removed.Dispose();
-            _onGhostChanged.Dispose();
-            _onGhostPositionChanged.Dispose();
+            _modeService.OnChanged -= _modeService_OnChanged;
+            _modeService.OnPositionChanged -= _modeService_OnPositionChanged;
+            _constructionsService.OnAdded -= _constructionsService_OnAdded;
+            _constructionsService.OnRemoved -= _constructionsService_OnRemoved;
         }
 
         public FieldModel Get()
@@ -107,29 +100,23 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
             return list;
         }
 
-        private void HandleChanges()
+        private void _modeService_OnChanged(bool obj)
         {
             OnUpdate();
         }
 
-        private void HandleConstructionsOnRemoved(EntityRemovedFromRepositoryEvent<Construction> obj)
+        private void _modeService_OnPositionChanged()
         {
-            HandleChanges();
+            OnUpdate();
+        }
+        private void _constructionsService_OnRemoved(Construction obj)
+        {
+            OnUpdate();
         }
 
-        private void HandleConstructionsOnAdded(EntityAddedToRepositoryEvent<Construction> obj)
+        private void _constructionsService_OnAdded(Construction obj)
         {
-            HandleChanges();
-        }
-
-        private void HandleOnPositionChanged(GhostPositionChangedEvent obj)
-        {
-            HandleChanges();
-        }
-
-        private void HandleModeOnChanged(GhostStateChangedEvent obj)
-        {
-            HandleChanges();
+            OnUpdate();
         }
 
     }

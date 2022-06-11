@@ -1,10 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System;
 using System.Collections.Generic;
 
@@ -15,7 +12,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
         private FieldPosition _fieldPosition;
         private FieldRotation _fieldRotation;
         private GameVector3 _targetPosition;
-        private readonly IEvents _events;
 
         public event Action<bool> OnChanged = delegate { };
         public event Action OnPositionChanged = delegate { };
@@ -25,9 +21,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
         public bool IsEnabled => Card != null;
         public IReadOnlyCollection<Construction> ConstructionsHighlights { get; private set; } = new List<Construction>();
 
-        public BuildingModeService(IEvents events)
+        public BuildingModeService()
         {
-            _events = events;
         }
 
         public void Show(ConstructionCard constructionCard)
@@ -35,14 +30,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             Card = constructionCard;
             _fieldPosition = new FieldPosition(0, 0);
             _fieldRotation = new FieldRotation(FieldRotation.Rotation.Top);
-            _events.Execute(new GhostStateChangedEvent());
             OnChanged(IsEnabled);
         }
 
         public void Hide()
         {
             Card = null;
-            _events.Execute(new GhostStateChangedEvent());
             OnChanged(IsEnabled);
         }
 
@@ -61,7 +54,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             //_buildingModeService.SetGhostPosition(fieldPosition, _buildingModeService.GetRotation());
 
             //SetPosition(fieldPosition, fieldRotation);
-            _events.Execute(new GhostPositionChangedEvent());
             OnPositionChanged();
         }
 
@@ -89,7 +81,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
         {
             _fieldPosition = fieldPosition;
             _fieldRotation = fieldRotation;
-            _events.Execute(new GhostPositionChangedEvent());
             OnPositionChanged();
         }
 

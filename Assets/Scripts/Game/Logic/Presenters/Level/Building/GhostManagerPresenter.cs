@@ -1,13 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Hand;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
 
@@ -17,20 +9,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
     {
         private IGhostManagerView _view;
         private readonly BuildingModeService _buildingModeService;
-        private readonly ICommands _commands;
 
         public GhostManagerPresenter(IGhostManagerView view) 
             : this(view,
-                  IPresenterServices.Default?.Get<BuildingModeService>(),
-                  ICommands.Default)
+                  IPresenterServices.Default?.Get<BuildingModeService>())
         {
         }
 
-        public GhostManagerPresenter(IGhostManagerView view, BuildingModeService buildingModeService, ICommands commands) : base(view)
+        public GhostManagerPresenter(IGhostManagerView view, BuildingModeService buildingModeService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
-            _commands = commands ?? throw new ArgumentNullException(nameof(commands));
             _buildingModeService.OnChanged += HandleBuildingModeChanged;
         }
 
@@ -50,12 +39,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
 
         private void CreateGhost()
         {
-            _commands.Execute(new AddGhostCommand(_buildingModeService.Card, _view.Container, _view.GhostPrototype));
+            //var view = _view.Container.Spawn<IGhostView>(_view.GhostPrototype);
+            //var ghost = new GhostPresenter(_settings, _screenManager, _fieldService, _buildingService, buildScreen,
+            //    _controls, IGameKeysManager.Default, IGameAssets.Default, view, _time);
+            //_ghost.OnGhostPostionChanged += UpdateGhostPosition;
+            //_commands.Execute(new AddGhostCommand(_buildingModeService.Card, _view.Container, _view.GhostPrototype));
         }
 
         private void RemoveGhost()
         {
-            _commands.Execute(new RemoveGhostCommand(_view.Container));
+            //_container.Clear();
         }
 
     }

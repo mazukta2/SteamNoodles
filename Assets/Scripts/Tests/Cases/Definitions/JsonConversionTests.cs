@@ -1,5 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
@@ -64,11 +63,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
 
         private void CreateDefinitions(DefinitionsMock mock)
         {
-            var services = new ServiceManager(new CommandManager());
+            var services = new ServiceManager();
             IModelServices.Default = services;
-            var events = new EventManager();
 
-            var definitionService = new DefinitionsService(services, events, mock, false);
+            var definitionService = new DefinitionsService(services, mock, false);
             services.Add(definitionService);
 
         }

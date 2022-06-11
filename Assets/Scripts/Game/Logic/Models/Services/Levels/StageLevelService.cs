@@ -1,8 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
@@ -29,23 +26,23 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
         private readonly IModelServices _services;
 
         public StageLevelService(StageLevel level)
-            : this(level, IModelServices.Default, IEvents.Default, ICommands.Default, IGameRandom.Default, IGameTime.Default)
+            : this(level, IModelServices.Default,IGameRandom.Default, IGameTime.Default)
         {
 
         }
 
-        public StageLevelService(StageLevel level, IModelServices services, IEvents events, ICommands commands, IGameRandom random, IGameTime time)
+        public StageLevelService(StageLevel level, IModelServices services, IGameRandom random, IGameTime time)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
 
             var schemesRep = services.Get<IRepository<ConstructionScheme>>();
             var unitTypesRep = services.Get<IRepository<UnitType>>();
 
-            var cardsRep = services.Add(new Repository<ConstructionCard>(events));
-            var constructionsRep = services.Add(new Repository<Construction>(events));
-            var unitsRep = services.Add(new Repository<Unit>(events));
-            var constructionsDeckRep = services.Add(new SingletonRepository<Deck<ConstructionScheme>>(events));
-            var unitsDeckRep = services.Add(new SingletonRepository<Deck<UnitType>>(events));
+            var cardsRep = services.Add(new Repository<ConstructionCard>());
+            var constructionsRep = services.Add(new Repository<Construction>());
+            var unitsRep = services.Add(new Repository<Unit>());
+            var constructionsDeckRep = services.Add(new SingletonRepository<Deck<ConstructionScheme>>());
+            var unitsDeckRep = services.Add(new SingletonRepository<Deck<UnitType>>());
 
             var coins = services.Add(new CoinsService());
             var points = services.Add(new BuildingPointsService(level, time));
@@ -62,11 +59,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var flow = services.Add(new StageTurnService(constructionsRep, field, building, queue));
             var rewards = services.Add(new RewardsService(level, hand, schemes, points));
             var unitsMovement = services.Add(new UnitsMovementsService(unitsRep, time));
-            var buildingMode = services.Add(new BuildingModeService(events));
+            var buildingMode = services.Add(new BuildingModeService());
 
-            services.Add(new FieldRequestsService(field, constructions, buildingMode, events));
+            services.Add(new FieldRequestsService(field, constructions, buildingMode));
             services.Add(new ConstructionsRequestsService(constructionsRep, buildingMode, field,
-                IGameAssets.Default, events, IGameControls.Default));
+                IGameAssets.Default, IGameControls.Default));
             
             rewards.Start();
         }

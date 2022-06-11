@@ -11,8 +11,11 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
-    public class ConstructionsService : IService
+    public class ConstructionsService : Disposable, IService
     {
+        public event Action<Construction> OnAdded = delegate { };
+        public event Action<Construction> OnRemoved = delegate { };
+
         private readonly IRepository<Construction> _constructions;
         private readonly FieldService _fieldService;
 
@@ -20,6 +23,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
+
+            _constructions.OnModelAdded += OnAdded;
+            _constructions.OnModelRemoved += OnRemoved;
+        }
+
+        protected override void DisposeInner()
+        {
+            _constructions.OnModelAdded -= OnAdded;
+            _constructions.OnModelRemoved -= OnRemoved;
         }
 
         public BuildingPoints GetPoints(ConstructionCard card, FieldPosition position, FieldRotation rotation)
@@ -147,6 +159,5 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             }
             return adjecentConstructions.AsReadOnly();
         }
-
     }
 }

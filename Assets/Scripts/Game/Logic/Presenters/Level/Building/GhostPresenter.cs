@@ -1,17 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Constructions.Ghost;
-using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
@@ -28,7 +20,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly BuildingModeService _buildingModeService;
         private readonly FieldService _fieldService;
         private readonly IControls _controls;
-        private readonly ICommands _commands;
 
         private GameVector3 _pointerPosition;
 
@@ -43,8 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public GhostPresenter(IGhostView view) : this(view,
             IPresenterServices.Default.Get<BuildingModeService>(),
             IPresenterServices.Default.Get<FieldService>(),
-            IGameControls.Default,
-            ICommands.Default)
+            IGameControls.Default)
         {
 
         }
@@ -52,13 +42,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public GhostPresenter(IGhostView view,
             BuildingModeService buildingModeService,
             FieldService fieldService,
-            IGameControls controls, ICommands commands) : base(view)
+            IGameControls controls) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
             _controls = controls ?? throw new ArgumentNullException(nameof(controls));
-            _commands = commands ?? throw new ArgumentNullException(nameof(commands));
 
             if (!_buildingModeService.IsEnabled) throw new Exception("Ghost can exist only in building mode");
 
@@ -75,7 +64,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             //_rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
             //_rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
 
-            _commands.Execute(new AddGhostModelCommand(_buildingModeService.Card.Scheme, _view.Container));
+            //_view.Container.Clear();
+            //_modelView = _view.Container.Spawn<IConstructionModelView>(_assets.GetPrefab(card.Get().Scheme.LevelViewPath));
+            //_modelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
+            //_commands.Execute(new AddGhostModelCommand(_buildingModeService.Card.Scheme, _view.Container));
 
             //_rotateLeft.OnTap += HandleRotateLeftTap;
             //_rotateRight.OnTap += HandleRotateRightTap;

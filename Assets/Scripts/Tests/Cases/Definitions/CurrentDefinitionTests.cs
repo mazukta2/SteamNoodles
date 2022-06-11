@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
@@ -81,14 +80,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         #region Helpers
         private void CreateDefinitions()
         {
-            var events = new EventManager();
             var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
             var project = currentDirectory.Parent.Parent.Parent;
 
-            var services = new ServiceManager(new CommandManager());
+            var services = new ServiceManager();
             IModelServices.Default = services;
 
-            var definitionService = new DefinitionsService(services, events,
+            var definitionService = new DefinitionsService(services, 
                 new GameDefinitions(new FileDefinitions(new DirectoryInfo(project.FullName + "/Assets/Resources/Definitions"))), false);
             services.Add(definitionService);
 

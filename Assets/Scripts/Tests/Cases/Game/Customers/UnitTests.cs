@@ -1,11 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Units;
@@ -15,11 +13,6 @@ using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views.Level.Units;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 {
@@ -28,9 +21,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void MovementEventsWorks()
         {
-            var events = new EventManager();
-            var units = new Repository<Unit>(events);
-            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>();
+            var unitTypes = new Repository<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
             unitTypes.Add(type);
@@ -69,9 +61,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void SpeedUpWorks()
         {
-            var events = new EventManager();
-            var units = new Repository<Unit>(events);
-            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>();
+            var unitTypes = new Repository<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType(new UnitSpeed(0.5f), new UnitSpeed(1), 0, 0.5f, 1, 1);
             unitTypes.Add(type);
@@ -105,9 +96,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void SpeedDownWorks()
         {
-            var events = new EventManager();
-            var units = new Repository<Unit>(events);
-            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>();
+            var unitTypes = new Repository<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType(new UnitSpeed(0.5f), new UnitSpeed(1), 0, 0.5f, 1, 1);
             unitTypes.Add(type);
@@ -139,9 +129,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.PresenterOrder)]
         public void RotationWorks()
         {
-            var events = new EventManager();
-            var units = new Repository<Unit>(events);
-            var unitTypes = new Repository<UnitType>(events);
+            var units = new Repository<Unit>();
+            var unitTypes = new Repository<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType(new UnitSpeed(0.5f), new UnitSpeed(1), 0, 0.5f, 1, 1);
             unitTypes.Add(type);

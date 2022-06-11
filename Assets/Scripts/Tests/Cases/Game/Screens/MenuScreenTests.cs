@@ -1,7 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Commands.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
@@ -10,7 +8,6 @@ using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Environment;
-using Game.Assets.Scripts.Tests.Presenters.Commands;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
@@ -24,13 +21,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
         [Test, Order(TestCore.PresenterOrder)]
         public void EscFromMainScreen()
         {
-            var events = new EventManager();
             var assets = new AssetsMock();
-            var commands = new CommandsMock();
-            var schemesRepository = new Repository<ConstructionScheme>(events);
-            var cardsRepository = new Repository<ConstructionCard>(events);
+            var schemesRepository = new Repository<ConstructionScheme>();
+            var cardsRepository = new Repository<ConstructionCard>();
 
-            var buildingModeService = new BuildingModeService(events);
+            var buildingModeService = new BuildingModeService();
 
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);
@@ -47,13 +42,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             var keyManager = new GameKeysManager();
             IGameKeysManager.Default = keyManager;
 
-            ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x, keyManager, commands));
+            ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x, keyManager));
 
-            Assert.IsFalse(commands.Last<OpenGameMenuScreenCommand>());
+            //Assert.IsFalse(commands.Last<OpenGameMenuScreenCommand>());
 
             keyManager.TapKey(GameKeys.Exit);
 
-            Assert.IsTrue(commands.Last<OpenGameMenuScreenCommand>());
+            //Assert.IsTrue(commands.Last<OpenGameMenuScreenCommand>());
 
             viewCollection.Dispose();
         }

@@ -1,7 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
 using Game.Assets.Scripts.Game.Logic.Models.Entities;
-using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
@@ -25,15 +23,9 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public int Count => _repository.Count;
 
         private Dictionary<Uid, T> _repository = new ();
-        private readonly IEvents _events;
 
-        //public Repository() : this (IEvents.Default)
-        //{
-        //}
-
-        public Repository(IEvents events)
+        public Repository()
         {
-            _events = events ?? throw new ArgumentNullException(nameof(events));
         }
 
         public EntityLink<T> Add(T entity)
@@ -44,7 +36,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             _repository.Add(entity.Id, (T)entity.Copy());
             OnModelAdded(entity);
             OnAdded(new EntityLink<T>(this, entity.Id), entity);
-            _events.Execute(new EntityAddedToRepositoryEvent<T>(entity));
 
             return new EntityLink<T>(this, entity.Id);
         }
@@ -58,7 +49,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             OnModelRemoved(entity);
             OnRemoved(new EntityLink<T>(this, entity.Id), entity);
 
-            _events.Execute(new EntityRemovedFromRepositoryEvent<T>());
         }
 
         public void Save(T entity)
