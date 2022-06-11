@@ -12,7 +12,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private readonly IConstructionView _constructionView;
         private IConstructionModel _construction;
         private bool _dropFinished;
-        private bool _isExploading;
         private IConstructionModelView _modelView;
 
         public ConstructionPresenter(IConstructionView view, Uid constructionId) 
@@ -72,14 +71,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         {
             _modelView.Animator.OnFinished -= ExplosionFinished;
             _modelView.Animator.SwitchTo(IConstructionModelView.Animations.Idle.ToString());
-            _isExploading = false;
             _constructionView.Dispose();
         }
 
         private void HandleExplosion()
         {
             _modelView.Animator.OnFinished += ExplosionFinished;
-            _isExploading = true;
             _modelView.Animator.Play(IConstructionModelView.Animations.Explode.ToString());
             _constructionView.EffectsContainer.Spawn(_constructionView.ExplosionPrototype, _construction.WorldPosition);
         }

@@ -14,7 +14,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine.Definitions
     {
         public string[] GetDefintionPaths(string folder)
         {
-            var list = Resources.LoadAll<TextAsset>(folder);
+            var list = Resources.LoadAll<TextAsset>("Definitions/" + folder);
             return list.Select(x => x.name).ToArray();
         }
 

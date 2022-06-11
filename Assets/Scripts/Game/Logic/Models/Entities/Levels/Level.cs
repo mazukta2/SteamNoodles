@@ -14,21 +14,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Levels
 {
     public record Level : Entity
     {
-        public string Name { get; private set; }
+        public string SceneName { get; private set; }
 
         private Action<Level> _startServices;
         private Action<Level> _startLevel;
 
         public Level()
         {
-            Name = "not_impotant";
+            SceneName = "not_impotant";
             _startServices = (l) => { };
             _startLevel = (l) => { };
         }
 
         public Level(LevelDefinition levelDefinition)
         {
-            Name = levelDefinition.DefId.Path;
+            SceneName = levelDefinition.SceneName;
 
             if (levelDefinition.Starter == null)
             {

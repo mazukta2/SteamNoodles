@@ -85,7 +85,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
 
             var level = new StageLevel(levelDefinition, constructionsDefinitions, schemes, units);
 
-            Assert.AreEqual("name", level.Name);
+            Assert.AreEqual("name", level.SceneName);
             Assert.AreEqual(3, level.StartingSchemes.Count);
             Assert.AreEqual(new IntPoint(1, 1), level.PlacementFieldSize);
             Assert.AreEqual(1, level.ConstructionsReward.Count);

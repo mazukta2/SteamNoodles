@@ -53,6 +53,9 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
 
         public T Get<T>() where T : IService
         {
+            if (!Has<T>())
+                throw new Exception($"No service with name {typeof(T)}");
+
             return _list.OfType<T>().Last();
         }
 

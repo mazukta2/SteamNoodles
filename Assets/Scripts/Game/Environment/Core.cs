@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Environment
             var levelsRepository = Services.Add(new Repository<Level>());
 
             Services.Add(new GameService(engine));
-            Services.Add(new DefinitionsService(Services, definitions));
+            Services.Add(new DefinitionsService(Services, definitions, false)).LoadDefinitions();
             Services.Add(new LevelsService(Services, levelsManager, levelsRepository, 
                 definitions.GetList<LevelDefinition>(), 
                 definitions.Get<MainDefinition>().StartLevel));

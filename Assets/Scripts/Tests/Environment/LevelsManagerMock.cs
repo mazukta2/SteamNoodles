@@ -50,13 +50,13 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public Level Add(Level level, Action<IViewsCollection> action)
         {
-            _availableLevels.Add(level.Name, action);
+            _availableLevels.Add(level.SceneName, action);
             return level;
         }
 
         public Level Add(Level level)
         {
-            _availableLevels.Add(level.Name, (v) => { });
+            _availableLevels.Add(level.SceneName, (v) => { });
             return level;
         }
 

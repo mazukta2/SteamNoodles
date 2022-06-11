@@ -112,7 +112,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
 
             _views = new ViewsCollection();
             _levelsManager.OnLoadFinished += HandleOnFinished;
-            _levelsManager.Load(level.Name, _views);
+            _levelsManager.Load(level.SceneName, _views);
         }
 
         private void Unload()

@@ -66,8 +66,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Common
             var folderPath = typeof(T).Name;
             var list = GetDefintionPaths(folderPath);
             var result = new List<T>();
-            foreach (var path in list)
+            foreach (var name in list)
             {
+                var path = folderPath + "/" + name;
                 if (_cached.ContainsKey(path))
                     result.Add((T)_cached[path]);
                 else

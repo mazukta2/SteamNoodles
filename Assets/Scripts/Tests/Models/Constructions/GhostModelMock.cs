@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Models.Constructions
 
         public bool IsActive => throw new NotImplementedException();
 
-        public event Action OnUpdate;
+        public event Action OnUpdate = delegate { };
 
         public GameVector3 GetTargetPosition()
         {
@@ -29,6 +29,11 @@ namespace Game.Assets.Scripts.Tests.Models.Constructions
         public GameVector3 WorldPosition()
         {
             throw new NotImplementedException();
+        }
+
+        public void FireUpdate()
+        {
+            OnUpdate();
         }
     }
 }

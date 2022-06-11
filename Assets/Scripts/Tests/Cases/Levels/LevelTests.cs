@@ -144,12 +144,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             levelService.StartFirstLevel();
             levelManager.FinishLoading();
 
-            Assert.AreEqual("leveldef", levelService.GetCurrentLevel().Name);
+            Assert.AreEqual("leveldef", levelService.GetCurrentLevel().SceneName);
             Assert.IsTrue(levelService.GetCurrentLevel() is SpecialLevel);
             Assert.IsTrue(starter.StartedServices is SpecialLevel);
-            Assert.AreEqual("leveldef", starter.StartedServices.Name);
+            Assert.AreEqual("leveldef", starter.StartedServices.SceneName);
             Assert.IsTrue(starter.StartedLevel is SpecialLevel);
-            Assert.AreEqual("leveldef", starter.StartedLevel.Name);
+            Assert.AreEqual("leveldef", starter.StartedLevel.SceneName);
 
             levelService.Dispose();
             services.Dispose();
