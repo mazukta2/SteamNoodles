@@ -205,6 +205,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             var size = _buildingModeService.Card.Scheme.Placement.GetRect(_buildingModeService.GetRotation());
             var fieldPosition = _fieldService.GetWorldConstructionToField(_pointerPosition, size);
+            _buildingModeService.SetTargetPosition(_pointerPosition);
             _buildingModeService.SetGhostPosition(fieldPosition, _buildingModeService.GetRotation());
 
             //OnGhostPostionChanged();

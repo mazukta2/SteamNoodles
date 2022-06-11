@@ -18,6 +18,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Models.Constructions;
+using Game.Assets.Scripts.Tests.Views.Common;
 using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Tests.Cases;
@@ -315,10 +316,109 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         }
 
         [Test, Order(TestCore.ModelOrder)]
+        public void ShinkIsCorrect()
+        {
+            var events = new EventManager();
+            var controls = new GameControls(new ControlsMock());
+            var gameAssets = new GameAssets(new AssetsMock());
+            var constructionsRepository = new Repository<Construction>(events);
+
+            var buildingMode = new BuildingModeService(events);
+            var fieldService = new FieldService(1, new IntPoint(11, 11));
+            var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance : 4);
+
+            var construction = new Construction(scheme, new FieldPosition(0, 0), new FieldRotation());
+            constructionsRepository.Add(construction);
+
+            var requests = new ConstructionsRequestsService(constructionsRepository, buildingMode, 
+                fieldService, gameAssets, events, controls);
+            var model = requests.Get(construction.Id);
+            var update = 0;
+            model.OnUpdate += HandleUpdate;
+            Assert.AreEqual(1, model.GetShrinkValue());
+
+            buildingMode.Show(new ConstructionCard(scheme));
+
+            Assert.AreEqual(1, update);
+            Assert.AreEqual(0.2f, model.GetShrinkValue());
+
+            buildingMode.SetTargetPosition(new GameVector3(0, 0, 1));
+
+            Assert.AreEqual(2, update);
+            Assert.AreEqual(0.2f, model.GetShrinkValue());
+
+            buildingMode.SetTargetPosition(new GameVector3(0, 0, 2));
+
+            Assert.AreEqual(3, update);
+            Assert.AreEqual(0.5f, model.GetShrinkValue());
+
+            buildingMode.SetTargetPosition(new GameVector3(0, 0, 4));
+
+            Assert.AreEqual(4, update);
+            Assert.AreEqual(1f, model.GetShrinkValue());
+
+            buildingMode.SetTargetPosition(new GameVector3(0, 0, 0));
+            Assert.AreEqual(5, update);
+            Assert.AreEqual(0.2f, model.GetShrinkValue());
+
+            buildingMode.Hide();
+
+            Assert.AreEqual(6, update);
+            Assert.AreEqual(1f, model.GetShrinkValue());
+
+            model.OnUpdate -= HandleUpdate;
+
+            model.Dispose();
+            requests.Dispose();
+            controls.Dispose();
+
+            void HandleUpdate()
+            {
+                update++;
+            }
+        }
+
+        [Test, Order(TestCore.ModelOrder)]
+        public void ExplosionWorks()
+        {
+            var events = new EventManager();
+            var controls = new GameControls(new ControlsMock());
+            var gameAssets = new GameAssets(new AssetsMock());
+            var constructionsRepository = new Repository<Construction>(events);
+
+            var buildingMode = new BuildingModeService(events);
+            var fieldService = new FieldService(1, new IntPoint(11, 11));
+            var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance: 4);
+
+            var construction = new Construction(scheme, new FieldPosition(0, 0), new FieldRotation());
+            constructionsRepository.Add(construction);
+
+            var requests = new ConstructionsRequestsService(constructionsRepository, buildingMode,
+                fieldService, gameAssets, events, controls);
+            var model = requests.Get(construction.Id);
+            var explosion = 0;
+            model.OnExplostion += HandleExplosion;
+
+            constructionsRepository.Remove(construction);
+            Assert.AreEqual(1, explosion);
+
+            model.OnExplostion -= HandleExplosion;
+
+            model.Dispose();
+            requests.Dispose();
+            controls.Dispose();
+
+            void HandleExplosion()
+            {
+                explosion++;
+            }
+        }
+
+        [Test, Order(TestCore.ModelOrder)]
         public void IsConstructionRequestCorrect()
         {
             var events = new EventManager();
-            var commands = new CommandManager();
+            var controls = new GameControls(new ControlsMock());
             var gameAssets = new GameAssets(new AssetsMock());
             var constructionsRepository = new Repository<Construction>(events);
 
@@ -340,10 +440,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var construction = new Construction(scheme, new FieldPosition(1, 1), new FieldRotation());
             constructionsRepository.Add(construction);
 
-            var requests = new ConstructionsRequestsService(constructionsRepository, buildingMode, fieldService, commands, gameAssets);
+            var requests = new ConstructionsRequestsService(constructionsRepository, buildingMode, 
+                fieldService, gameAssets, events, controls);
             var model = requests.Get(construction.Id);
             Assert.AreEqual(new GameVector3(1.5f, 0, 1f), model.WorldPosition);
             model.Dispose();
+            requests.Dispose();
+            controls.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -358,7 +461,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(new GameVector3(1.5f, 0, 1f), constructionView.Position.Value);
 
             viewCollection.Dispose();
-
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -367,15 +469,83 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             var model = new ConstructionModelMock(FieldRotation.Default, GameVector3.Zero);
 
-            Assert.IsFalse(model.IsModelPresenterConnected);
+            var constructionView = new ConstructionView(viewCollection);
+
+            Assert.IsNull(constructionView.Container.FindView<IConstructionModelView>());
+
+            new ConstructionPresenter(constructionView, model);
+
+            Assert.IsNotNull(constructionView.Container.FindView<IConstructionModelView>());
+
+            viewCollection.Dispose();
+        }
+
+        [Test, Order(TestCore.PresenterOrder)]
+        public void ShinkPresenting()
+        {
+            var viewCollection = new ViewsCollection();
+            var model = new ConstructionModelMock(FieldRotation.Default, GameVector3.Zero);
+            model.SetShrink(0.5f);
 
             var constructionView = new ConstructionView(viewCollection);
             new ConstructionPresenter(constructionView, model);
+            var modelView = constructionView.Container.FindView<IConstructionModelView>();
 
-            Assert.IsTrue(model.IsModelPresenterConnected);
+            Assert.IsNotNull(modelView);
+
+            Assert.AreEqual(0.5f, modelView.Shrink.Value);
+
+            model.SetShrink(0.1f);
+
+            Assert.AreEqual(0.1f, modelView.Shrink.Value);
 
             viewCollection.Dispose();
-        } 
+        }
+
+        [Test, Order(TestCore.PresenterOrder)]
+        public void DropAnimations()
+        {
+            var viewCollection = new ViewsCollection();
+            var model = new ConstructionModelMock();
+
+            var constructionView = new ConstructionView(viewCollection);
+
+            new ConstructionPresenter(constructionView, model);
+            var modelView = constructionView.Container.FindView<IConstructionModelView>();
+            var animator = ((AnimatorMock)modelView.Animator);
+
+            Assert.AreEqual("Drop", animator.Animations[0]);
+            Assert.AreEqual("Idle", animator.Animations[1]);
+
+            viewCollection.Dispose();
+        }
+
+        [Test, Order(TestCore.PresenterOrder)]
+        public void ExpolodeAnimations()
+        {
+            var viewCollection = new ViewsCollection();
+            var model = new ConstructionModelMock();
+
+            var constructionView = new ConstructionView(viewCollection);
+
+            new ConstructionPresenter(constructionView, model);
+            var modelView = constructionView.Container.FindView<IConstructionModelView>();
+            var animator = ((AnimatorMock)modelView.Animator);
+
+            Assert.AreEqual("Drop", animator.Animations[0]);
+            Assert.AreEqual("Idle", animator.Animations[1]);
+
+            Assert.IsFalse(constructionView.IsDisposed);
+
+            model.FireExplode();
+
+            Assert.AreEqual("Explode", animator.Animations[2]);
+            Assert.AreEqual("Idle", animator.Animations[3]);
+
+            Assert.IsTrue(constructionView.IsDisposed);
+            
+            viewCollection.Dispose();
+        }
 
         [TearDown]
         public void TestDisposables()

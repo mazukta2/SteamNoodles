@@ -20,10 +20,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
         public ContructionPlacement Placement { get; }
         public Requirements Requirements { get; }
         public AdjacencyBonuses AdjacencyPoints { get; private set; }
+        public float GhostShrinkDistance { get; private set; }
+        public float GhostHalfShrinkDistance { get; private set; }
 
         private DefId _defintionId; // don't expose this field
 
-        public ConstructionScheme(Uid id, ConstructionDefinition definition) : base(id)
+        public ConstructionScheme(Uid id, 
+            ConstructionDefinition definition,
+            ConstructionsSettingsDefinition constructionsSettingsDefinition) : base(id)
         {
             Name = new LocalizationTag(definition.Name);
             Points = new BuildingPoints(definition.Points);
@@ -31,11 +35,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             LevelViewPath = definition.LevelViewPath;
             Placement = new ContructionPlacement(definition.Placement);
             Requirements = definition.Requirements;
+            GhostShrinkDistance = constructionsSettingsDefinition.GhostShrinkDistance;
+            GhostHalfShrinkDistance = constructionsSettingsDefinition.GhostHalfShrinkDistance;
 
             _defintionId = definition.DefId;
         }
 
-        public ConstructionScheme(ConstructionDefinition definition)
+        public ConstructionScheme(ConstructionDefinition definition, 
+            ConstructionsSettingsDefinition constructionsSettingsDefinition)
         {
             Name = new LocalizationTag(definition.Name);
             Points = new BuildingPoints(definition.Points);
@@ -43,33 +50,50 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             LevelViewPath = definition.LevelViewPath;
             Placement = new ContructionPlacement(definition.Placement);
             Requirements = definition.Requirements;
+            GhostShrinkDistance = constructionsSettingsDefinition.GhostShrinkDistance;
+            GhostHalfShrinkDistance = constructionsSettingsDefinition.GhostHalfShrinkDistance;
 
             _defintionId = definition.DefId;
         }
 
-        public ConstructionScheme()
+        public ConstructionScheme(DefId defId = null, ContructionPlacement placement = null,
+            LocalizationTag name = null, BuildingPoints points = null,
+            AdjacencyBonuses adjacencyPoints = null,
+            string image = "", string view = "",
+            Requirements requirements = new Requirements(),
+            float ghostShrinkDistance = 0, float ghostHalfShrinkDistance = 0)
         {
-            Name = LocalizationTag.None;
-            Points = new BuildingPoints(0);
-            HandImagePath = "";
-            LevelViewPath = "";
-            Placement = ContructionPlacement.One;
-            Requirements = new Requirements();
-            _defintionId = DefId.None;
-        }
-
-        public ConstructionScheme(Uid id, DefId defId, ContructionPlacement placement, LocalizationTag name, BuildingPoints points,
-            AdjacencyBonuses adjacencyPoints, string image, string view, Requirements requirements) : base(id)
-        {
-            Name = name;
-            Points = points;
-            AdjacencyPoints = adjacencyPoints;
+            Name = name ?? LocalizationTag.None;
+            Points = points ?? new BuildingPoints(0);
+            AdjacencyPoints = adjacencyPoints ?? new AdjacencyBonuses();
             HandImagePath = image;
             LevelViewPath = view;
-            Placement = placement;
+            Placement = placement ?? ContructionPlacement.One;
             Requirements = requirements;
+            GhostShrinkDistance = ghostShrinkDistance;
+            GhostHalfShrinkDistance = ghostHalfShrinkDistance;
 
-            _defintionId = defId;
+            _defintionId = defId ?? DefId.None;
+        }
+
+        public ConstructionScheme(Uid id, DefId defId = null, ContructionPlacement placement = null,
+            LocalizationTag name = null, BuildingPoints points = null,
+            AdjacencyBonuses adjacencyPoints = null,
+            string image = "", string view = "",
+            Requirements requirements = new Requirements(), 
+            float ghostShrinkDistance = 0, float ghostHalfShrinkDistance = 0) : base(id)
+        {
+            Name = name ?? LocalizationTag.None;
+            Points = points ?? new BuildingPoints(0);
+            AdjacencyPoints = adjacencyPoints ?? new AdjacencyBonuses();
+            HandImagePath = image;
+            LevelViewPath = view;
+            Placement = placement ?? ContructionPlacement.One;
+            Requirements = requirements;
+            GhostShrinkDistance = ghostShrinkDistance;
+            GhostHalfShrinkDistance = ghostHalfShrinkDistance;
+
+            _defintionId = defId ?? DefId.None;
         }
 
         public static ConstructionScheme DefaultWithPoints(BuildingPoints points)
@@ -83,12 +107,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
                 "", "", new Requirements());
         }
 
-        public static IReadOnlyCollection<ConstructionScheme> FillWithDefinitions(IEnumerable<ConstructionDefinition> definitions, IRepository<ConstructionScheme> repository)
+        public static IReadOnlyCollection<ConstructionScheme> FillWithDefinitions(IEnumerable<ConstructionDefinition> definitions,
+            IRepository<ConstructionScheme> repository,
+            ConstructionsSettingsDefinition constructionsSettingsDefinition)
         {
             var result = new Dictionary<ConstructionDefinition, ConstructionScheme>();
             foreach (var definition in definitions)
             {
-                var entity = new ConstructionScheme(definition);
+                var entity = new ConstructionScheme(definition, constructionsSettingsDefinition);
                 result.Add(definition, entity);
             }
 

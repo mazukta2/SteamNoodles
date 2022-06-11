@@ -32,23 +32,21 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_construction.Rotation);
 
             _modelView = _constructionView.Container.Spawn<IConstructionModelView>(_construction.GetModelAsset());
-            _construction.ConnectPresenter(_modelView);
-            _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
-
-            _construction.Shake();
 
             _modelView.Animator.OnFinished += DropFinished;
-            _construction.OnDestroyed += HandleModelDispose;
             _construction.OnExplostion += HandleExplosion;
+            _construction.OnUpdate += HandleOnUpdate;
 
+            _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
+            _construction.Shake();
             UpdateShrink();
         }
 
         protected override void DisposeInner()
         {
             _construction.Dispose();
-            _construction.OnDestroyed -= HandleModelDispose;
             _construction.OnExplostion -= HandleExplosion;
+            _construction.OnUpdate -= HandleOnUpdate;
 
             _modelView.Animator.OnFinished -= DropFinished;
             _modelView.Animator.OnFinished -= ExplosionFinished;
@@ -75,8 +73,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _modelView.Animator.OnFinished -= ExplosionFinished;
             _modelView.Animator.SwitchTo(IConstructionModelView.Animations.Idle.ToString());
             _isExploading = false;
-            if (_construction.IsDisposed)
-                _constructionView.Dispose();
+            _constructionView.Dispose();
         }
 
         private void HandleExplosion()
@@ -87,12 +84,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _constructionView.EffectsContainer.Spawn(_constructionView.ExplosionPrototype, _construction.WorldPosition);
         }
 
-        private void HandleModelDispose()
+        private void HandleOnUpdate()
         {
-            if (_isExploading)
-                return;
-
-            _constructionView.Dispose();
+            UpdateShrink();
         }
 
     }

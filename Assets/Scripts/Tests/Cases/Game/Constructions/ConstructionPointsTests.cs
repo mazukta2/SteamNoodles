@@ -39,8 +39,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var buildngService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
 
-            var definition = ConstructionSetups.GetDefault();
-            var scheme = schemesService.Add(definition);
+            var scheme = ConstructionSetups.GetDefaultScheme();
+            constructionsSchemeRepository.Add(scheme);
             var card = handService.Add(scheme);
 
             Assert.AreEqual(1, scheme.Points.Value);
@@ -70,12 +70,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var buildngService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
 
-            var definition = ConstructionSetups.GetDefault();
-            definition.Points = 1;
-            definition.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { definition, 2 } };
-            definition.Placement = new int[,] { {1} };
+            var scheme = new ConstructionScheme(new Uid(),
+                new DefId("Construction"),
+                new ContructionPlacement(new int[,] { { 1 } }),
+                LocalizationTag.None,
+                new BuildingPoints(1),
+                new AdjacencyBonuses(),
+                "", "", new Requirements());
+            scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionScheme, BuildingPoints>() 
+                { { scheme, new BuildingPoints(2) } }));
 
-            var scheme = schemesService.Add(definition);
+            constructionsSchemeRepository.Add(scheme);
             var card = handService.Add(scheme, new CardAmount(2));
 
             Assert.AreEqual(1, scheme.Points.Value);

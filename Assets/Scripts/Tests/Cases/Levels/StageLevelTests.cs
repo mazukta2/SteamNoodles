@@ -62,9 +62,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             var events = new EventManager();
             var construction = new ConstructionDefinition();
             construction.Name = "construction";
+            var settings = new ConstructionsSettingsDefinition();
             
             var schemes = new Repository<ConstructionScheme>(events);
-            var scheme = schemes.Add(new ConstructionScheme(construction)).Get();
+            var scheme = schemes.Add(new ConstructionScheme(construction, settings)).Get();
 
             var customer = new CustomerDefinition();
             var unitsDefinition = new UnitsSettingsDefinition();

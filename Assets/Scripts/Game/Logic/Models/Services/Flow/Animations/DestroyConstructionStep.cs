@@ -30,7 +30,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow.Animations
 
         public override void Play()
         {
-            _constructions.FireEvent(_construction, new ConstructionDestroyedOnWaveEndEvent());
             _constructions.Remove(_construction);
 
             if (_delay == 0)

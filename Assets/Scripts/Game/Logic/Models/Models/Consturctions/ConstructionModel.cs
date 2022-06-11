@@ -17,38 +17,37 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions
     {
         public event Action OnDestroyed = delegate { };
         public event Action OnExplostion = delegate { };
-        public ConstructionScheme Scheme { get; private set; }
-        public FieldRotation Rotation { get; private set; }
-        public GameVector3 WorldPosition { get; private set; }
+        public event Action OnUpdate = delegate { };
 
-        public int GhostShrinkDistance => throw new NotImplementedException();
+        public ConstructionScheme Scheme => _construction.Scheme;
+        public FieldRotation Rotation => _construction.Rotation;
+        public GameVector3 WorldPosition => _service.GetWorldPosition(_construction);
 
-        public int GhostHalfShrinkDistance => throw new NotImplementedException();
+        public float GhostShrinkDistance => Scheme.GhostShrinkDistance;
+        public float GhostHalfShrinkDistance => Scheme.GhostHalfShrinkDistance;
 
-        private ICommands _commands;
+        private readonly Construction _construction;
+        private readonly ConstructionsRequestsService _service;
         private readonly IAssets _assets;
 
-        public ConstructionModel(Construction construction,
-            GameVector3 worldPosition, ConstructionsRequestsService service, IAssets assets)
+        public ConstructionModel(Construction construction, ConstructionsRequestsService service, IAssets assets)
         {
-            //_commands = commands;
-            Rotation = construction.Rotation;
-            WorldPosition = worldPosition;
+            _construction = construction;
+            _service = service;
             _assets = assets;
-            Scheme = construction.Scheme;
+            _service.OnUpdate += HandleOnUpdate;
+            _service.OnRemoved += HandleOnRemoved;
         }
 
-        public void CreateModel(IViewContainer container)
+        protected override void DisposeInner()
         {
-            //var view = container.Spawn<IConstructionView>(command.Prefab);
-            //new ConstructionPresenter(view, command.Construction);
-
-            _commands.Execute(new AddConstructionModelCommand(Scheme, container));
+            _service.OnUpdate -= HandleOnUpdate;
+            _service.OnRemoved -= HandleOnRemoved;
         }
 
-        public void Build()
+        private void HandleOnUpdate()
         {
-            _commands.Execute(new ShakeCameraCommand());
+            OnUpdate();
         }
 
         public IViewPrefab GetModelAsset()
@@ -56,19 +55,21 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions
             return _assets.GetPrefab(Scheme.LevelViewPath);
         }
 
-        public void ConnectPresenter(IConstructionModelView modelView)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Shake()
         {
-            throw new NotImplementedException();
+            _service.Shake();
         }
 
         public float GetShrinkValue()
         {
-            return 1;
+            return _service.GetShrink(this);
         }
+
+        private void HandleOnRemoved(Construction obj)
+        {
+            if (_construction.Id == obj.Id)
+                OnExplostion();
+        }
+
     }
 }

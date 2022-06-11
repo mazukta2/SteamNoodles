@@ -26,9 +26,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Definitions
             _events = events ?? throw new ArgumentNullException(nameof(events));
             _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
 
-            //var unitSettings = definitions.Get<UnitsSettingsDefinition>();
-            //var constructionSettings = definitions.Get<ConstructionsSettingsDefinition>();
-            
             if(loadDefinitions)
                 LoadDefinitions();
         }
@@ -68,7 +65,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Definitions
         {
             var repository = new Repository<ConstructionScheme>(_events);
             var constructionsDefinitions = _definitions.GetList<ConstructionDefinition>();
-            ConstructionScheme.FillWithDefinitions(constructionsDefinitions, repository);
+            var constructionSettings = _definitions.Get<ConstructionsSettingsDefinition>();
+            ConstructionScheme.FillWithDefinitions(constructionsDefinitions, repository, constructionSettings);
             _services.Add(repository);
         }
     }

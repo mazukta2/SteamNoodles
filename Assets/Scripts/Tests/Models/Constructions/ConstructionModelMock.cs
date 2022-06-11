@@ -3,19 +3,20 @@ using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Level;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Tests.Models.Constructions
 {
     public class ConstructionModelMock : Disposable, IConstructionModel
     {
+        public event Action OnDestroyed = delegate { };
+        public event Action OnExplostion = delegate { };
+        public event Action OnUpdate = delegate { };
+
+        private float _shrink = 1;
+
         public ConstructionModelMock()
             : this (FieldRotation.Default, GameVector3.Zero)
         {
@@ -29,19 +30,9 @@ namespace Game.Assets.Scripts.Tests.Models.Constructions
 
         public FieldRotation Rotation { get; set; }
         public GameVector3 WorldPosition { get; set; }
-        public bool IsModelPresenterConnected { get; set; }
 
-        public int GhostShrinkDistance => throw new NotImplementedException();
-
-        public int GhostHalfShrinkDistance => throw new NotImplementedException();
-
-        public event Action OnDestroyed = delegate { };
-        public event Action OnExplostion = delegate { };
-
-        public void ConnectPresenter(IConstructionModelView modelView)
-        {
-            IsModelPresenterConnected = true;
-        }
+        public float GhostShrinkDistance => 0;
+        public float GhostHalfShrinkDistance => 0;
 
         public IViewPrefab GetModelAsset()
         {
@@ -50,11 +41,22 @@ namespace Game.Assets.Scripts.Tests.Models.Constructions
 
         public float GetShrinkValue()
         {
-            return 1;
+            return _shrink;
         }
 
         public void Shake()
         {
+        }
+
+        public void SetShrink(float value)
+        {
+            _shrink = value;
+            OnUpdate();
+        }
+
+        public void FireExplode()
+        {
+            OnExplostion();
         }
     }
 }

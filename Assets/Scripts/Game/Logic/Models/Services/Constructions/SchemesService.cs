@@ -32,12 +32,6 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
                 _deck.Add(item.Key, item.Value);
         }
 
-        public ConstructionScheme Add(ConstructionDefinition definition)
-        {
-            var schemes = ConstructionScheme.FillWithDefinitions(new []{ definition }, _schemes);
-            return schemes.First();
-        }
-
         public ConstructionScheme TakeRandom()
         {
             return _deck.Take();

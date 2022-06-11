@@ -19,6 +19,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
+using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
@@ -64,7 +65,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var buildingMode = services.Add(new BuildingModeService(events));
 
             services.Add(new FieldRequestsService(field, constructions, buildingMode, events));
-            services.Add(new ConstructionsRequestsService(constructionsRep, buildingMode, field, commands, IGameAssets.Default));
+            services.Add(new ConstructionsRequestsService(constructionsRep, buildingMode, field,
+                IGameAssets.Default, events, IGameControls.Default));
             
             rewards.Start();
         }

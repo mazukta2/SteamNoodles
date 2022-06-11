@@ -9,6 +9,7 @@ namespace Game.Assets.Scripts.Tests.Views.Common
     public class AnimatorMock : IAnimator
     {
         public string Animation { get; private set; }
+        public List<string> Animations { get; private set; } = new List<string>();
 
         public event Action OnFinished = delegate { };
 
@@ -16,6 +17,8 @@ namespace Game.Assets.Scripts.Tests.Views.Common
         {
             var oldAnimation = Animation;
             Animation = animation;
+
+            Animations.Add(animation);
 
             if (startAgain || oldAnimation != animation)
                 OnFinished();
@@ -29,6 +32,7 @@ namespace Game.Assets.Scripts.Tests.Views.Common
         {
             var oldAnimation = Animation;
             Animation = animation;
+            Animations.Add(animation);
             if (oldAnimation != animation)
                 OnFinished();
         }

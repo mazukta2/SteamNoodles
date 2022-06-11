@@ -14,6 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
     {
         private FieldPosition _fieldPosition;
         private FieldRotation _fieldRotation;
+        private GameVector3 _targetPosition;
         private readonly IEvents _events;
 
         public event Action<bool> OnChanged = delegate { };
@@ -51,12 +52,22 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             OnHighligtingChanged();
         }
 
-        public void SetGhostPosition(FieldPosition fieldPosition, FieldRotation fieldRotation)
+        public void SetTargetPosition(GameVector3 pointerPosition)
         {
-            _fieldPosition = fieldPosition;
-            _fieldRotation = fieldRotation;
+            _targetPosition = pointerPosition;
+            //var size = _buildingModeService.Card.Scheme.Placement.GetRect(_buildingModeService.GetRotation());
+            //var fieldPosition = _fieldService.GetWorldConstructionToField(_pointerPosition, size);
+            //_buildingModeService.SetTargetPosition(_pointerPosition);
+            //_buildingModeService.SetGhostPosition(fieldPosition, _buildingModeService.GetRotation());
+
+            //SetPosition(fieldPosition, fieldRotation);
             _events.Execute(new GhostPositionChangedEvent());
             OnPositionChanged();
+        }
+
+        public void SetGhostPosition(FieldPosition fieldPosition, FieldRotation fieldRotation)
+        {
+            SetPosition(fieldPosition, fieldRotation);
         }
 
         public FieldPosition GetPosition()
@@ -66,12 +77,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 
         public GameVector3 GetTargetPosition()
         {
-            throw new NotImplementedException();
+            return _targetPosition;
         }
 
         public FieldRotation GetRotation()
         {
             return _fieldRotation;
+        }
+
+        private void SetPosition(FieldPosition fieldPosition, FieldRotation fieldRotation)
+        {
+            _fieldPosition = fieldPosition;
+            _fieldRotation = fieldRotation;
+            _events.Execute(new GhostPositionChangedEvent());
+            OnPositionChanged();
         }
 
     }
