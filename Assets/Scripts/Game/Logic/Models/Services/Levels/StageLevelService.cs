@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
@@ -17,6 +18,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
@@ -62,7 +64,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var buildingMode = services.Add(new BuildingModeService(events));
 
             services.Add(new FieldRequestsService(field, constructions, buildingMode, events));
-            services.Add(new ConstructionsRequestProviderService(constructionsRep, field, commands));
+            services.Add(new ConstructionsRequestsService(constructionsRep, buildingMode, field, commands, IGameAssets.Default));
             
             rewards.Start();
         }
@@ -86,7 +88,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             _services.Remove<BuildingModeService>();
 
             _services.Remove<FieldRequestsService>();
-            _services.Remove<ConstructionsRequestProviderService>();
+            _services.Remove<ConstructionsRequestsService>();
 
             _services.Remove<Repository<ConstructionCard>>();
             _services.Remove<Repository<Construction>>();

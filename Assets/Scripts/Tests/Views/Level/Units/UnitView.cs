@@ -27,7 +27,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
             Animator = new AnimatorMock();
             UnitDresser = new UnitDresser();
             SmokeContainer = new ContainerViewMock(level);
-            SmokePrefab = new DefaultViewCollectionPrefabMock(SpawnSmoke);
+            SmokePrefab = new DefaultViewPrefab(SpawnSmoke);
         }
 
         private void SpawnSmoke(IViewsCollection obj)

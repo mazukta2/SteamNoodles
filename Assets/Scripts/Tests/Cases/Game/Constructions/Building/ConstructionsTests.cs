@@ -13,8 +13,10 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Models.Constructions;
 using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
@@ -317,8 +319,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         {
             var events = new EventManager();
             var commands = new CommandManager();
+            var gameAssets = new GameAssets(new AssetsMock());
             var constructionsRepository = new Repository<Construction>(events);
 
+            var buildingMode = new BuildingModeService(events);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var placement = new ContructionPlacement(new int[,]
                     {
@@ -336,7 +340,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var construction = new Construction(scheme, new FieldPosition(1, 1), new FieldRotation());
             constructionsRepository.Add(construction);
 
-            var requests = new ConstructionsRequestProviderService(constructionsRepository, fieldService, commands);
+            var requests = new ConstructionsRequestsService(constructionsRepository, buildingMode, fieldService, commands, gameAssets);
             var model = requests.Get(construction.Id);
             Assert.AreEqual(new GameVector3(1.5f, 0, 1f), model.WorldPosition);
             model.Dispose();
@@ -363,12 +367,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             var model = new ConstructionModelMock(FieldRotation.Default, GameVector3.Zero);
 
-            Assert.IsFalse(model.IsModelRequested);
+            Assert.IsFalse(model.IsModelPresenterConnected);
 
             var constructionView = new ConstructionView(viewCollection);
             new ConstructionPresenter(constructionView, model);
 
-            Assert.IsTrue(model.IsModelRequested);
+            Assert.IsTrue(model.IsModelPresenterConnected);
 
             viewCollection.Dispose();
         } 

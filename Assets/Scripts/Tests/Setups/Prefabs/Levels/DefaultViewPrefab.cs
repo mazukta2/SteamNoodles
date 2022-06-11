@@ -3,11 +3,11 @@ using System;
 
 namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels
 {
-    public class DefaultViewCollectionPrefabMock : ViewCollectionPrefabMock
+    public class DefaultViewPrefab : ViewCollectionPrefabMock
     {
         private Action<IViewsCollection> _action;
 
-        public DefaultViewCollectionPrefabMock(Action<IViewsCollection> action)
+        public DefaultViewPrefab(Action<IViewsCollection> action)
         {
             _action = action;
         }

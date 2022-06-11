@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
         public void IsViewCreating()
         {
             var assets = new AssetsMock();
-            assets.AddPrefab("Screens/TestScreenInterface", new DefaultViewCollectionPrefabMock(x => new TestScreenView(x)));
+            assets.AddPrefab("Screens/TestScreenInterface", new DefaultViewPrefab(x => new TestScreenView(x)));
 
             var viewCollection = new ViewsCollection();
             var view = new ScreenManagerView(viewCollection);

@@ -22,7 +22,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         public HandConstructionView(IViewsCollection collection) : base(collection)
         {
             TooltipContainer = new ContainerViewMock(collection);
-            TooltipPrefab = new DefaultViewCollectionPrefabMock(SpawnTooltip);
+            TooltipPrefab = new DefaultViewPrefab(SpawnTooltip);
         }
 
         private void SpawnTooltip(IViewsCollection collection)

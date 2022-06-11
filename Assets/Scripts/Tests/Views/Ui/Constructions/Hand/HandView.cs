@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         public HandView(IViewsCollection level) : base(level)
         {
             Cards = new ContainerViewMock(level);
-            CardPrototype = new DefaultViewCollectionPrefabMock(SpawnCardPrototype);
+            CardPrototype = new DefaultViewPrefab(SpawnCardPrototype);
         }
 
         private void SpawnCardPrototype(IViewsCollection collection)

@@ -56,8 +56,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             var card = new ConstructionCard(scheme);
             var link = cardsRepository.Add(card);
 
-            assets.AddPrefab("Screens/BuildScreen", new DefaultViewCollectionPrefabMock(x => new BuildScreenView(x)));
-            assets.AddPrefab("Screens/MainScreen", new DefaultViewCollectionPrefabMock(x => new MainScreenView(x)));
+            assets.AddPrefab("Screens/BuildScreen", new DefaultViewPrefab(x => new BuildScreenView(x)));
+            assets.AddPrefab("Screens/MainScreen", new DefaultViewPrefab(x => new MainScreenView(x)));
 
             var view = new ScreenManagerView(viewCollection);
             ScreenManagerPresenter.Default = new ScreenManagerPresenter(view, new GameAssets(assets));

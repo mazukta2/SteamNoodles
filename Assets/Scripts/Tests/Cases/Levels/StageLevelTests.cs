@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Commands;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Events;
@@ -22,6 +23,8 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Views.Assets;
+using Game.Assets.Scripts.Tests.Environment;
 using Game.Tests.Cases;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -113,6 +116,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             manager.Add(new Repository<UnitType>(events));
 
             IModelServices.Default = manager;
+            IGameAssets.Default = new GameAssets(new AssetsMock());
             var level = new StageLevel();
             var service = new StageLevelService(level, manager, events, c, new SessionRandom(), new GameTime());
             manager.Add(service);

@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level
             Container = new ContainerViewMock(level);
             Rotator = new Rotator();
             EffectsContainer = new ContainerViewMock(level);
-            ExplosionPrototype = new DefaultViewCollectionPrefabMock(CreateExplosion);
+            ExplosionPrototype = new DefaultViewPrefab(CreateExplosion);
         }
 
         private void CreateExplosion(IViewsCollection obj)
