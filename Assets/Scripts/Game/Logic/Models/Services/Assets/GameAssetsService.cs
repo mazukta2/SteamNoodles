@@ -1,15 +1,13 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 
-namespace Game.Assets.Scripts.Game.Logic.Views.Assets
+namespace Game.Assets.Scripts.Game.Logic.Models.Services.Assets
 {
-    public class GameAssets : IGameAssets
+    public class GameAssetsService : IService
     {
         private IAssets _assets;
-        public GameAssets(IAssets assets) => (_assets) = (assets);
+        public GameAssetsService(IAssets assets) => _assets = assets;
         public IViewPrefab GetPrefab(string path) => _assets.GetPrefab(path);
     }
 }

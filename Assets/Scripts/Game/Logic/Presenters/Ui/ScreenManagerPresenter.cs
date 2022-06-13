@@ -1,7 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Builders;
 using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using System;
 
@@ -15,13 +15,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
 
         private readonly IScreenManagerView _view;
-        private readonly IGameAssets _screenAssets;
+        private readonly GameAssetsService _screenAssets;
 
-        public ScreenManagerPresenter(IScreenManagerView view) : this(view, IGameAssets.Default)
+        public ScreenManagerPresenter(IScreenManagerView view) : this(view, 
+            IPresenterServices.Default.Get<GameAssetsService>())
         {
         }
 
-        public ScreenManagerPresenter(IScreenManagerView view, IGameAssets screenAssets) : base(view)
+        public ScreenManagerPresenter(IScreenManagerView view, GameAssetsService screenAssets) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenAssets = screenAssets ?? throw new ArgumentNullException(nameof(screenAssets));

@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 {

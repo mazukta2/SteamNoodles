@@ -1,11 +1,11 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Environment;
@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             assets.AddPrefab("Screens/MainScreen", new DefaultViewPrefab(x => new MainScreenView(x)));
 
             var view = new ScreenManagerView(viewCollection);
-            ScreenManagerPresenter.Default = new ScreenManagerPresenter(view, new GameAssets(assets));
+            ScreenManagerPresenter.Default = new ScreenManagerPresenter(view, new GameAssetsService(assets));
 
             return (link, view);
         }

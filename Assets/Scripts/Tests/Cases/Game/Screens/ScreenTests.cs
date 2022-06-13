@@ -1,7 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
 
             var viewCollection = new ViewsCollection();
             var view = new ScreenManagerView(viewCollection);
-            var presenter = new ScreenManagerPresenter(view, new GameAssets(assets));
+            var presenter = new ScreenManagerPresenter(view, new GameAssetsService(assets));
 
             Assert.AreEqual(0, view.Screen.Count);
 

@@ -3,7 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Requests;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
@@ -11,7 +11,6 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Level;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Views.Common;
@@ -133,7 +132,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void IsGhostChangesPositions()
         {
             var mockControls = new ControlsMock();
-            var controls = new GameControls(mockControls);
+            var controls = new GameControlsService(mockControls);
 
             var buildinMode = new BuildingModeService();
 
@@ -184,7 +183,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void IsGhostReactsToChangingPosition()
         {
             var mockControls = new ControlsMock();
-            var controls = new GameControls(mockControls);
+            var controls = new GameControlsService(mockControls);
 
             var buildinMode = new BuildingModeService();
 
@@ -360,7 +359,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void IsGhostSpawnsRightModel()
         {
             var mockControls = new ControlsMock();
-            var controls = new GameControls(mockControls);
+            var controls = new GameControlsService(mockControls);
 
             var fieldService = new FieldService(1, new IntPoint(3, 3));
             var buildinMode = new BuildingModeService();

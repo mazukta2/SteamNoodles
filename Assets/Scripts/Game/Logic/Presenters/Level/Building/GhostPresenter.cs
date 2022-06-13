@@ -2,9 +2,9 @@
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
 
@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private readonly IGhostView _view;
         private readonly BuildingModeService _buildingModeService;
         private readonly FieldService _fieldService;
-        private readonly IControls _controls;
+        private readonly GameControlsService _controls;
 
         private GameVector3 _pointerPosition;
 
@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public GhostPresenter(IGhostView view) : this(view,
             IPresenterServices.Default.Get<BuildingModeService>(),
             IPresenterServices.Default.Get<FieldService>(),
-            IGameControls.Default)
+            IPresenterServices.Default.Get<GameControlsService>())
         {
 
         }
@@ -42,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         public GhostPresenter(IGhostView view,
             BuildingModeService buildingModeService,
             FieldService fieldService,
-            IGameControls controls) : base(view)
+            GameControlsService controls) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));

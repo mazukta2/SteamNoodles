@@ -1,17 +1,15 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment;
@@ -268,10 +266,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void ShinkIsCorrect()
         {
-            var controls = new GameControls(new ControlsMock());
+            var controls = new GameControlsService(new ControlsMock());
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssets(assets);
+            var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
             var buildingMode = new BuildingModeService();
@@ -322,10 +320,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsConstructionPlacedInRightPosition()
         {
-            var controls = new GameControls(new ControlsMock());
+            var controls = new GameControlsService(new ControlsMock());
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssets(assets);
+            var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
             var buildingMode = new BuildingModeService();
@@ -355,10 +353,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsConstructionSpawnsVisual()
         {
-            var controls = new GameControls(new ControlsMock());
+            var controls = new GameControlsService(new ControlsMock());
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssets(assets);
+            var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
             var buildingMode = new BuildingModeService();
@@ -389,10 +387,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void DropAnimations()
         {
-            var controls = new GameControls(new ControlsMock());
+            var controls = new GameControlsService(new ControlsMock());
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssets(assets);
+            var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
             var buildingMode = new BuildingModeService();
@@ -426,10 +424,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void ExpolodeAnimations()
         {
-            var controls = new GameControls(new ControlsMock());
+            var controls = new GameControlsService(new ControlsMock());
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssets(assets);
+            var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
             var buildingMode = new BuildingModeService();

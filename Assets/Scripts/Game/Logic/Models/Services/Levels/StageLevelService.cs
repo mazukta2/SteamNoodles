@@ -15,8 +15,6 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
-using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels

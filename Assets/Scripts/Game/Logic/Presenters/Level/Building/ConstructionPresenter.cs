@@ -2,11 +2,11 @@
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
-using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
 
@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private readonly FieldService _fieldPositionService;
         private readonly BuildingModeService _buildingModeService;
         private readonly ConstructionsService _constructionsService;
-        private readonly IAssets _assets;
+        private readonly GameAssetsService _assets;
         private bool _dropFinished;
         private IConstructionModelView _modelView;
 
@@ -28,8 +28,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
                   IPresenterServices.Default?.Get<FieldService>(),
                   IPresenterServices.Default?.Get<BuildingModeService>(),
                   IPresenterServices.Default?.Get<ConstructionsService>(),
-                  IGameAssets.Default,
-                  IGameControls.Default)
+                  IPresenterServices.Default?.Get<GameAssetsService>(),
+                  IPresenterServices.Default?.Get<GameControlsService>())
         {
 
         }
@@ -39,8 +39,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             FieldService fieldPositionService,
             BuildingModeService buildingModeService,
             ConstructionsService constructionsService,
-            IAssets assets,
-            IControls controls) : base(view)
+            GameAssetsService assets,
+            GameControlsService controls) : base(view)
         {
             _constructionView = view ?? throw new ArgumentNullException(nameof(view));
             _construction = construction ?? throw new ArgumentNullException(nameof(construction));

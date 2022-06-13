@@ -1,20 +1,17 @@
-﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Views.Controls;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Game.Assets.Scripts.Game.Logic.Views.Assets
+namespace Game.Assets.Scripts.Game.Logic.Models.Services.Controls
 {
-    public class GameControls : Disposable, IGameControls
+    public class GameControlsService : Disposable, IService
     {
         private IControls _controls;
-        public GameControls(IControls controls)
+        public GameControlsService(IControls controls)
         {
-            (_controls) = (controls);
+            _controls = controls;
             _controls.OnLevelClick += HandleOnLevelClick;
             _controls.OnLevelPointerMoved += HandleOnLevelPointerMoved;
         }

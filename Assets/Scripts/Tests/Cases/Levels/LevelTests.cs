@@ -6,14 +6,14 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
-using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
 using Game.Tests.Cases;
@@ -33,8 +33,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             var services = core.Services;
 
             Assert.IsNotNull(IGameKeysManager.Default);
-            Assert.IsNotNull(IGameAssets.Default);
-            Assert.IsNotNull(IGameControls.Default);
             Assert.IsNotNull(IGameTime.Default);
             Assert.IsNotNull(IGameRandom.Default);
             Assert.IsNotNull(ILocalizationManager.Default);
@@ -43,13 +41,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsNotNull(core.Services);
             Assert.IsTrue(services.Has<GameService>());
             Assert.IsTrue(services.Has<LevelsService>());
-            Assert.IsTrue(services.Has<DefinitionsService>()); 
+            Assert.IsTrue(services.Has<DefinitionsService>());
+            Assert.IsTrue(services.Has<GameControlsService>());
+            Assert.IsTrue(services.Has<GameAssetsService>());
 
             core.Dispose();
 
             Assert.IsNull(IGameKeysManager.Default);
-            Assert.IsNull(IGameAssets.Default);
-            Assert.IsNull(IGameControls.Default);
             Assert.IsNull(IGameTime.Default);
             Assert.IsNull(IGameRandom.Default);
             Assert.IsNull(ILocalizationManager.Default);
@@ -59,6 +57,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsFalse(services.Has<GameService>());
             Assert.IsFalse(services.Has<LevelsService>());
             Assert.IsFalse(services.Has<DefinitionsService>());
+            Assert.IsFalse(services.Has<GameControlsService>());
+            Assert.IsFalse(services.Has<GameAssetsService>());
         }
 
         [Test, Order(TestCore.EssentialOrder)]
@@ -169,9 +169,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
 
             return new Core(new EngineMock(),
                 levelManager,
-                new GameAssets(new AssetsMock()),
+                new AssetsMock(),
                 definitions,
-                new GameControls(new ControlsMock()),
+                new ControlsMock(),
                 new LocalizationManagerMock(),
                 new GameTime(), false);
         }
