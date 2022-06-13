@@ -76,6 +76,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
 
             var levelDefinition = new LevelDefinition();
             levelDefinition.DefId = new DefId("name");
+            levelDefinition.SceneName = "name";
             levelDefinition.PlacementField = new PlacementFieldDefinition() { Size = new IntPoint(1, 1) };
             levelDefinition.StartingHand = new List<ConstructionDefinition>() { construction, construction, construction };
             levelDefinition.ConstructionsReward = new Dictionary<ConstructionDefinition, int>() { { construction, 1 } };

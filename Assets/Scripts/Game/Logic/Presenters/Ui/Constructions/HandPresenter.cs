@@ -1,5 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
@@ -9,57 +11,47 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandPresenter : BasePresenter<IHandView>
     {
-        private readonly IPresenterRepository<ConstructionCard> _repository;
-        private readonly BuildingModeService _buildingService;
+        //private readonly IPresenterRepository<ConstructionCard> _repository;
+        //private readonly BuildingModeService _buildingService;
         private readonly IHandView _view;
+        private readonly IHandModel _model;
         private Modes _mode;
 
         public HandPresenter(IHandView view) 
             : this(view, 
-                  IPresenterServices.Default?.Get<IPresenterRepository<ConstructionCard>>(),
-                  IPresenterServices.Default?.Get<BuildingModeService>())
+                  IPresenterServices.Default?.Get<HandRequestsService>().Get())
         {
         }
 
-        public HandPresenter(IHandView view, 
-            IPresenterRepository<ConstructionCard> repository, 
-            BuildingModeService buildingService) : base(view)
+        public HandPresenter(IHandView view, IHandModel model) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
+            _model = model ?? throw new ArgumentNullException(nameof(model));
 
-            var cards = _repository.Get();
+            var cards = _model.GetCards();
             foreach (var item in cards)
-                HandleCardAdded(item, null);
-            _repository.OnAdded += HandleCardAdded;
-            _repository.OnRemoved += HandleCardRemoved;
+                HandleCardAdded(item);
+
+            _model.OnAdded += HandleCardAdded;
 
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
             SetMode(Modes.Choose);
-            _buildingService.OnChanged += HandleVisualModesChanged;
+            //_buildingService.OnChanged += HandleVisualModesChanged;
         }
 
         protected override void DisposeInner()
         {
-            _buildingService.OnChanged -= HandleVisualModesChanged;
-            _repository.OnAdded -= HandleCardAdded;
-            _repository.OnRemoved += HandleCardRemoved;
+            _model.OnAdded -= HandleCardAdded;
+
+            //_buildingService.OnChanged -= HandleVisualModesChanged;
+            //_repository.OnAdded -= HandleCardAdded;
         }
 
-        private void HandleCardAdded(EntityLink<ConstructionCard> entity, ConstructionCard obj)
+        private void HandleCardAdded(IConstructionHandModel model)
         {
-            //var view = _container.Spawn<IHandConstructionView>(_prefab);
-            //new HandConstructionPresenter(_entityLink, view);
-            //_commands.Execute(new AddHandConstructionCommand(entity, _view.Cards, _view.CardPrototype));
-        }
-
-        private void HandleCardRemoved(EntityLink<ConstructionCard> entity, ConstructionCard obj)
-        {
-            //var view = _container.Spawn<IHandConstructionView>(_prefab);
-            //new HandConstructionPresenter(_entityLink, view);
-            //_commands.Execute(new RemoveHandConstructionCommand(_view.Cards));
+            var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
+            model.ConnectPresenter(view);
         }
 
         private void CancelClick()

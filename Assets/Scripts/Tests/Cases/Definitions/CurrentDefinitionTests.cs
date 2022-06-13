@@ -113,13 +113,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
 
             public string LoadResourceTextfile(string path)
             {
-                return File.ReadAllText(_definitionFolder.FullName + "/"+ path + ".json");
+                return File.ReadAllText(_definitionFolder.FullName +"/"+ path + ".json");
             }
 
             public string[] GetDefintionPaths(string folder)
             {
                 var list = _definitionFolder.GetDirectories().First(x => x.Name == folder).GetFiles();
-                return list.Where(x => x.Extension == ".json").Select(x => folder + "/" + Path.GetFileNameWithoutExtension(x.Name)).ToArray();
+                return list.Where(x => x.Extension == ".json").Select(x => Path.GetFileNameWithoutExtension(x.Name)).ToArray();
             }
         }
 

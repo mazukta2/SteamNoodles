@@ -131,6 +131,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             var level = new LevelDefinitionMock("leveldef", new EmptyLevel());
             var starter = new LevelStarter();
             level.Starter = starter;
+            level.SceneName = "leveldef";
 
             var services = new ServiceManager();
 
@@ -159,6 +160,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         {
             var definitions = new DefinitionsMock();
             var level = new LevelDefinitionMock("leveldef", new EmptyLevel());
+            level.SceneName = "leveldef";
             definitions.Add("leveldef", level);
             definitions.Add("maindef", new MainDefinition() { StartLevel = level });
 

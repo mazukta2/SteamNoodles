@@ -50,6 +50,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Definitions
         {
             var unitSettings = _definitions.Get<UnitsSettingsDefinition>();
             var repository = new Repository<UnitType>();
+            var definitions = _definitions.GetList<CustomerDefinition>();
             foreach (var item in _definitions.GetList<CustomerDefinition>())
                 repository.Add(new UnitType(item, unitSettings));
             _services.Add(repository);
