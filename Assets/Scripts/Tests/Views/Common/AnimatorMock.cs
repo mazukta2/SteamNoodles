@@ -13,6 +13,11 @@ namespace Game.Assets.Scripts.Tests.Views.Common
 
         public event Action OnFinished = delegate { };
 
+        public string GetCurrentAnimation()
+        {
+            return Animation;
+        }
+
         public void Play(string animation, bool startAgain = false)
         {
             var oldAnimation = Animation;

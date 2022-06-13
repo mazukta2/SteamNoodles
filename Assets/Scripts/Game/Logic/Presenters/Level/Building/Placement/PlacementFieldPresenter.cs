@@ -124,6 +124,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleConstructionsOnAdded(Construction construction)
         {
+            //ConstructionShrinkerPresenter
             //_commands.Execute(new BuildConstructionCommand(construction, _view.ConstrcutionContainer, _view.ConstrcutionPrototype));
             UpdateGhostCells();
         }

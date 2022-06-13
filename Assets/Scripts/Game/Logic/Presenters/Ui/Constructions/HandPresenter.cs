@@ -50,7 +50,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleCardAdded(EntityLink<ConstructionCard> entity, ConstructionCard obj)
         {
-            //var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
+            var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
             //_commands.Execute(new AddHandConstructionCommand(entity, _view.Cards, _view.CardPrototype));
         }
 

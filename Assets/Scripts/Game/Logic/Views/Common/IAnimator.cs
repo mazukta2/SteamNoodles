@@ -10,5 +10,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
         void SwitchTo(string animation);
         void Play(string animation, bool startAgain = false);
         void SetSpeed(float value);
+        string GetCurrentAnimation();
     }
 }
