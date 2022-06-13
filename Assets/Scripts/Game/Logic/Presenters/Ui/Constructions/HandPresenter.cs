@@ -1,5 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
@@ -11,52 +10,59 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandPresenter : BasePresenter<IHandView>
     {
-        //private readonly IPresenterRepository<ConstructionCard> _repository;
-        //private readonly BuildingModeService _buildingService;
+        private readonly IPresenterRepository<ConstructionCard> _repository;
+        private readonly BuildingModeService _buildingService;
         private readonly IHandView _view;
-        private readonly IHandModel _model;
-        private Modes _mode;
 
-        public HandPresenter(IHandView view) 
-            : this(view, 
-                  IPresenterServices.Default?.Get<HandRequestsService>().Get())
+        public HandPresenter(IHandView view)
+            : this(view,
+                  IPresenterServices.Default?.Get<IPresenterRepository<ConstructionCard>>(),
+                  IPresenterServices.Default?.Get<BuildingModeService>())
         {
         }
 
-        public HandPresenter(IHandView view, IHandModel model) : base(view)
+        public HandPresenter(IHandView view,
+            IPresenterRepository<ConstructionCard> repository,
+            BuildingModeService buildingService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
 
-            var cards = _model.GetCards();
+            var cards = _repository.Get();
             foreach (var item in cards)
-                HandleCardAdded(item);
-
-            _model.OnAdded += HandleCardAdded;
+                HandleCardAdded(item, null);
+            _repository.OnAdded += HandleCardAdded;
+            _repository.OnRemoved += HandleCardRemoved;
 
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
             SetMode(Modes.Choose);
-            //_buildingService.OnChanged += HandleVisualModesChanged;
+            _buildingService.OnChanged += HandleVisualModesChanged;
         }
 
         protected override void DisposeInner()
         {
-            _model.OnAdded -= HandleCardAdded;
-
-            //_buildingService.OnChanged -= HandleVisualModesChanged;
-            //_repository.OnAdded -= HandleCardAdded;
+            _buildingService.OnChanged -= HandleVisualModesChanged;
+            _repository.OnAdded -= HandleCardAdded;
+            _repository.OnRemoved += HandleCardRemoved;
         }
 
-        private void HandleCardAdded(IConstructionHandModel model)
+        private void HandleCardAdded(EntityLink<ConstructionCard> entity, ConstructionCard obj)
         {
-            var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
-            model.ConnectPresenter(view);
+            //var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
+            //_commands.Execute(new AddHandConstructionCommand(entity, _view.Cards, _view.CardPrototype));
+        }
+
+        private void HandleCardRemoved(EntityLink<ConstructionCard> entity, ConstructionCard obj)
+        {
+            //_commands.Execute(new RemoveHandConstructionCommand(_view.Cards));
         }
 
         private void CancelClick()
         {
             //ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x));
+            //_commands.Execute(new OpenMainScreenCommand());
             //_commands.Execute(new OpenMainScreenCommand());
         }
 
@@ -70,7 +76,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void SetMode(Modes value)
         {
-            _mode = value;
             _view.Animator.Play(value.ToString());
         }
 

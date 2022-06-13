@@ -62,10 +62,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(10, new IntPoint(3, 3));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-            var fieldRequest = new FieldRequestsService(fieldService, constructionService, buildinMode);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, fieldRequest.Get());
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
@@ -79,7 +78,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
 
             viewCollection.Dispose();
-            fieldRequest.Dispose();
             constructionService.Dispose();
         }
 
@@ -106,10 +104,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, fieldReqService.Get());
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
 
             buildinMode.Show(new ConstructionCard(scheme));
 
@@ -129,7 +126,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(new GameVector3(1f, 0, 0), highlighedCells.Last().LocalPosition.Value);
 
             viewCollection.Dispose();
-            fieldReqService.Dispose();
             constructionService.Dispose();
         }
 
@@ -287,15 +283,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-          
-            var service = new FieldRequestsService(fieldService, constructionService, buildinMode);
-            var model = service.Get();
+
+            var viewCollection = new ViewsCollection();
+            var view = new PlacementFieldView(viewCollection);
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
 
             buildinMode.Show(new ConstructionCard(scheme));
 
             buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
 
-            var actual = ToArray(5, service.GetCells().ToDictionary(p => p.Key, c => c.Value.Status));
+            var cells = view.CellsContainer.FindViews<CellView>();
+            var actual = ToArray(5, cells);
             var expected = new int[5, 5]
             {
                 { 1,1,0,0,0 },
@@ -307,47 +305,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
 
-            model.Dispose();
-            service.Dispose();
             constructionService.Dispose();
-        }
-
-        [Test, Order(TestCore.ModelOrder)]
-        public void RequestUpdateWorks()
-        {
-            var constructionsRepository = new Repository<Construction>();
-
-            var buildinMode = new BuildingModeService();
-            var scheme = new ConstructionScheme();
-
-            var fieldService = new FieldService(1, new IntPoint(5, 5));
-            var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode);
-            var model = fieldReqService.Get();
-            var updates = 0;
-
-            model.OnUpdate += HandleUpdate;
-
-            Assert.AreEqual(0, updates);
-
-            buildinMode.Show(new ConstructionCard(scheme));
-
-            Assert.AreEqual(1, updates);
-
-            buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
-            
-            Assert.AreEqual(2, updates);
-
-            model.OnUpdate -= HandleUpdate;
-
-            fieldReqService.Dispose();
-            model.Dispose();
-            constructionService.Dispose();
-
-            void HandleUpdate()
-            {
-                updates++;
-            }
+            viewCollection.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -371,13 +330,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode);
             var viewCollection = new ViewsCollection();
 
             buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, fieldReqService.Get());
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
 
             buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
 
@@ -395,7 +353,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
 
             viewCollection.Dispose();
-            fieldReqService.Dispose();
             constructionService.Dispose();
         }
 
@@ -450,13 +407,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
-            var fieldReqService = new FieldRequestsService(fieldService, constructionService, buildinMode);
             var viewCollection = new ViewsCollection();
 
             buildinMode.Show(new ConstructionCard(scheme));
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, fieldReqService.Get());
+            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
 
             buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation());
 
@@ -501,7 +457,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             });
 
             viewCollection.Dispose();
-            fieldReqService.Dispose();
             constructionService.Dispose();
 
             void CheckPosition(int[,] expected)

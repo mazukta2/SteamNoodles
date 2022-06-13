@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views.Level;
 using System;
@@ -14,12 +15,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         private IntPoint _position;
 
         public PlacementCellPresenter(ICellView view, IntPoint position,
-            IFieldModel field) : base(view)
+            FieldService fieldService) : base(view)
         {
             _cellView = view ?? throw new ArgumentNullException(nameof(view));
             _position = position;
 
-            view.LocalPosition.Value = field.GetCellWorldPosition(position);
+            view.LocalPosition.Value = fieldService.GetWorldPosition(new FieldPosition(position), new IntRect(0, 0, 1, 1));
         }
 
         public void SetState(CellPlacementStatus state)

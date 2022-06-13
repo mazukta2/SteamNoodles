@@ -13,7 +13,6 @@ using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
@@ -129,7 +128,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsTrue(manager.Has<CoinsService>());
             Assert.IsTrue(manager.Has<BuildingModeService>());
 
-            Assert.IsTrue(manager.Has<FieldRequestsService>()); 
 
             Assert.IsTrue(manager.Has<Repository<ConstructionCard>>());
             Assert.IsTrue(manager.Has<Repository<Construction>>());
@@ -155,7 +153,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsFalse(manager.Has<CoinsService>());
             Assert.IsFalse(manager.Has<BuildingModeService>());
 
-            Assert.IsFalse(manager.Has<FieldRequestsService>());
 
             Assert.IsFalse(manager.Has<Repository<ConstructionCard>>());
             Assert.IsFalse(manager.Has<Repository<Construction>>());

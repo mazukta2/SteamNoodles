@@ -60,10 +60,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var rewards = services.Add(new RewardsService(level, hand, schemes, points));
             var unitsMovement = services.Add(new UnitsMovementsService(unitsRep, time));
             var buildingMode = services.Add(new BuildingModeService());
-
-            services.Add(new FieldRequestsService(field, constructions, buildingMode));
-            services.Add(new ConstructionsRequestsService(constructionsRep, buildingMode, field,
-                IGameAssets.Default, IGameControls.Default));
             
             rewards.Start();
         }
@@ -86,7 +82,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             _services.Remove<UnitsMovementsService>();
             _services.Remove<BuildingModeService>();
 
-            _services.Remove<FieldRequestsService>();
             _services.Remove<ConstructionsRequestsService>();
 
             _services.Remove<Repository<ConstructionCard>>();
