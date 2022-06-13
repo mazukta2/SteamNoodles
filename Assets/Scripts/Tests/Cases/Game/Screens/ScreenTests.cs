@@ -28,7 +28,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             presenter.Open<ITestScreenInterfaceView>(v => new TestScreenPresenter(v, 1));
 
             Assert.AreEqual(1, view.Screen.Count);
-            Assert.IsTrue(view.Screen.FindView<ITestScreenInterfaceView>().Presenter is TestScreenPresenter);
 
             viewCollection.Dispose();
         }

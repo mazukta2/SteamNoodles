@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters
         private IView _view;
         public BasePresenter(TView view)
         {
-            view.Presenter = this;
+            view.AddPresenter(this);
 
             _view = view ?? throw new ArgumentNullException(nameof(view));
             if (_view.IsDisposed) throw new ArgumentException(nameof(view) + " is disposed");

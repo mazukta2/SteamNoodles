@@ -4,6 +4,5 @@ namespace Game.Assets.Scripts.Game.Logic.Views
 {
     public interface IViewWithGenericPresenter<T> : IViewWithPresenter where T : IPresenter
     {
-        new T Presenter { get; set; }
     }
 }

@@ -21,11 +21,15 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         public IAnimator BorderAnimator { get; } = new AnimatorMock();
 
         public IFloat Shrink { get; } = new FloatMock();
-        public IPresenter Presenter { get; set; }
+        private List<IPresenter> _presenters = new List<IPresenter>();
 
         public ConstructionModelView(IViewsCollection level) : base(level)
         {
         }
 
+        public void AddPresenter(IPresenter presenter)
+        {
+            _presenters.Add(presenter);
+        }
     }
 }

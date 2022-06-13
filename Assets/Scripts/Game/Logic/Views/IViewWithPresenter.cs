@@ -7,6 +7,6 @@ namespace Game.Assets.Scripts.Game.Logic.Views
 {
     public interface IViewWithPresenter : IView
     {
-        IPresenter Presenter { get; set; }
+        void AddPresenter(IPresenter presenter);
     }
 }

@@ -8,12 +8,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Building
         IViewContainer Container { get; }
         IViewPrefab PiecePrefab { get; }
 
-        static IPointPieceSpawnerView Default { get; set; }
-
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            Default = this;
-            Presenter = new PointPieceSpawnerPresenter(this);
+            new PointPieceSpawnerPresenter(this);
         }
     }
 }

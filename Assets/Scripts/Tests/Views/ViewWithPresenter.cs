@@ -13,8 +13,8 @@ namespace Game.Assets.Scripts.Tests.Views
         IViewWithGenericPresenter<TPresenter>
         where TPresenter : IPresenter
     {
-        public TPresenter Presenter { get; set; }
-        IPresenter IViewWithPresenter.Presenter { get => Presenter; set => Presenter = (TPresenter)value; }
+        private List<IPresenter> _presenters = new List<IPresenter>();
+
         protected ViewWithPresenter(IViewsCollection level) : base(level)
         {
         }
@@ -23,6 +23,11 @@ namespace Game.Assets.Scripts.Tests.Views
         {
             if (this is IViewWithDefaultPresenter defaultInit)
                 defaultInit.InitDefaultPresenter();
+        }
+
+        public void AddPresenter(IPresenter presenter)
+        {
+            _presenters.Add(presenter);
         }
     }
 }
