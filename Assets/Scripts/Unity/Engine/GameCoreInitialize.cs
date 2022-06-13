@@ -3,7 +3,6 @@ using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
-using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using GameUnity.Assets.Scripts.Unity.Engine.Definitions;
 using System;
 using UnityEngine;
@@ -23,7 +22,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
             var definitions = new GameDefinitions(new UnityDefinitions());
             var localization = new LocalizationManager(definitions, "English");
-            _core = new Core(this, new LevelsManager(), new GameAssets(new AssetsLoader()), definitions, new GameControls(_controls), localization, _time);
+            _core = new Core(this, new LevelsManager(), new AssetsLoader(), definitions, _controls, localization, _time);
             _core.OnDispose += _core_OnDispose;
         }
 

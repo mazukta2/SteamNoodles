@@ -24,9 +24,9 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         public event Action OnHighlihgtedExit = delegate { };
 
         public IViewsCollection Collection { get; private set; }
-        public IPresenter Presenter { get; set; }
         public bool IsDisposed { get; private set; }
-        IPresenter IViewWithPresenter.Presenter { get => Presenter; set => Presenter = value; }
+
+        private List<IPresenter> _presenters = new List<IPresenter>();
 
         protected void Awake()
         {
@@ -70,6 +70,11 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         {
             IsHighlihgted = false;
             OnHighlihgtedExit();
+        }
+
+        public void AddPresenter(IPresenter presenter)
+        {
+            _presenters.Add(presenter);
         }
     }
 

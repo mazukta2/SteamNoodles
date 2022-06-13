@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
@@ -36,6 +37,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 
         private void OnRemovedHandled(Construction obj) => OnRemoved(obj);
         private void OnAddedHandled(Construction obj) => OnAdded(obj);
+
+        public GameVector3 GetWorldPosition(Construction construction)
+        {
+            return _fieldService.GetWorldPosition(construction);
+        }
 
         public BuildingPoints GetPoints(ConstructionCard card, FieldPosition position, FieldRotation rotation)
         {

@@ -58,5 +58,10 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
         {
             _animator.speed = value;
         }
+
+        public string GetCurrentAnimation()
+        {
+            return _currentAnimation;
+        }
     }
 }

@@ -9,7 +9,6 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Requests;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
@@ -79,8 +78,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             _services.Remove<RewardsService>();
             _services.Remove<UnitsMovementsService>();
             _services.Remove<BuildingModeService>();
-
-            _services.Remove<ConstructionsRequestsService>();
 
             _services.Remove<Repository<ConstructionCard>>();
             _services.Remove<Repository<Construction>>();

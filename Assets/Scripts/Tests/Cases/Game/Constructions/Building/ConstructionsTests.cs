@@ -282,7 +282,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
+            new ConstructionPresenter(view, construction, buildingMode, constructionsService, gameAssets, controls);
 
             var viewModel = view.Container.FindView<ConstructionModelView>();
 
@@ -341,7 +341,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
+            new ConstructionPresenter(view, construction, buildingMode, constructionsService, gameAssets, controls);
 
             Assert.AreEqual(new GameVector3(1.5f, 0, 1f), view.Position.Value);
 
@@ -374,7 +374,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
+            new ConstructionPresenter(view, construction, buildingMode, constructionsService, gameAssets, controls);
 
             Assert.IsNotNull(view.Container.FindView<IConstructionModelView>());
 
@@ -408,7 +408,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
+            new ConstructionPresenter(view, construction, buildingMode, constructionsService, gameAssets, controls);
 
             var modelView = view.Container.FindView<IConstructionModelView>();
             var animator = ((AnimatorMock)modelView.Animator);
@@ -445,7 +445,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
+            new ConstructionPresenter(view, construction, buildingMode, constructionsService, gameAssets, controls);
 
             var modelView = view.Container.FindView<IConstructionModelView>();
             var animator = ((AnimatorMock)modelView.Animator);

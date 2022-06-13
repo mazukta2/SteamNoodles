@@ -15,17 +15,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
     public class ConstructionPresenter : BasePresenter<IConstructionView>
     {
         private readonly IConstructionView _constructionView;
-        private Construction _construction;
-        private readonly FieldService _fieldPositionService;
+        private readonly Construction _construction;
         private readonly BuildingModeService _buildingModeService;
         private readonly ConstructionsService _constructionsService;
         private readonly GameAssetsService _assets;
+
         private bool _dropFinished;
         private IConstructionModelView _modelView;
 
         public ConstructionPresenter(IConstructionView view, Construction construction)
             : this(view, construction,
-                  IPresenterServices.Default?.Get<FieldService>(),
                   IPresenterServices.Default?.Get<BuildingModeService>(),
                   IPresenterServices.Default?.Get<ConstructionsService>(),
                   IPresenterServices.Default?.Get<GameAssetsService>(),
@@ -36,7 +35,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
 
         public ConstructionPresenter(IConstructionView view,
             Construction construction,
-            FieldService fieldPositionService,
             BuildingModeService buildingModeService,
             ConstructionsService constructionsService,
             GameAssetsService assets,
@@ -44,11 +42,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         {
             _constructionView = view ?? throw new ArgumentNullException(nameof(view));
             _construction = construction ?? throw new ArgumentNullException(nameof(construction));
-            _fieldPositionService = fieldPositionService ?? throw new ArgumentNullException(nameof(fieldPositionService));
             _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
             _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
-            _constructionView.Position.Value = _fieldPositionService.GetWorldPosition(construction);
+            _constructionView.Position.Value = _constructionsService.GetWorldPosition(construction);
             _constructionView.Rotator.Rotation = FieldRotation.ToDirection(construction.Rotation);
 
             _modelView = _constructionView.Container.Spawn<IConstructionModelView>(GetPrefab());
@@ -87,7 +84,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             if (_buildingModeService.IsEnabled)
             {
                 var distance = _buildingModeService.GetTargetPosition()
-                    .GetDistanceTo(_fieldPositionService.GetWorldPosition(_construction));
+                    .GetDistanceTo(_constructionsService.GetWorldPosition(_construction));
                 if (distance > _construction.Scheme.GhostShrinkDistance)
                     _modelView.Shrink.Value = 1;
                 else if (distance > _construction.Scheme.GhostHalfShrinkDistance)
@@ -120,12 +117,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         {
             _modelView.Animator.OnFinished += ExplosionFinished;
             _modelView.Animator.Play(IConstructionModelView.Animations.Explode.ToString());
-            _constructionView.EffectsContainer.Spawn(_constructionView.ExplosionPrototype, _fieldPositionService.GetWorldPosition(_construction));
-        }
-
-        private void HandleOnUpdate()
-        {
-            UpdateShrink();
+            _constructionView.EffectsContainer.Spawn(_constructionView.ExplosionPrototype, 
+                _constructionsService.GetWorldPosition(_construction));
         }
 
         private void HandleRemoved(Construction obj)

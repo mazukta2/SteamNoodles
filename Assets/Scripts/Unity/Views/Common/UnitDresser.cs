@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using GameUnity.Assets.Scripts.Unity.Engine.Helpers;
 using System;
@@ -12,9 +13,9 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Common
     public class UnitDresser : IUnitDresser
     {
         private UnitRigs _rigs;
-        private IAssets _assets;
+        private GameAssetsService _assets;
 
-        public UnitDresser(UnitRigs rigs, IAssets assets)
+        public UnitDresser(UnitRigs rigs, GameAssetsService assets)
         {
             _rigs = rigs;
             _assets = assets;
