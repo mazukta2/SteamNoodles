@@ -24,12 +24,33 @@ namespace Game.Assets.Scripts.Tests.Models.Constructions
 
         public ConstructionModelMock(FieldRotation rotation, GameVector3 worldPosition)
         {
-            Rotation = rotation;
-            WorldPosition = worldPosition;
+            SetRotation(rotation);
+            SetWorldPosition(worldPosition);
         }
 
-        public FieldRotation Rotation { get; set; }
-        public GameVector3 WorldPosition { get; set; }
+        private FieldRotation rotation;
+
+        public FieldRotation GetRotation()
+        {
+            return rotation;
+        }
+
+        public void SetRotation(FieldRotation value)
+        {
+            rotation = value;
+        }
+
+        private GameVector3 worldPosition;
+
+        public GameVector3 GetWorldPosition()
+        {
+            return worldPosition;
+        }
+
+        public void SetWorldPosition(GameVector3 value)
+        {
+            worldPosition = value;
+        }
 
         public float GhostShrinkDistance => 0;
         public float GhostHalfShrinkDistance => 0;

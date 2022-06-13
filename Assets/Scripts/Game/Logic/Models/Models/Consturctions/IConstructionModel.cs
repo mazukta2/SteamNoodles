@@ -11,8 +11,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions
         event Action OnExplostion;
         event Action OnUpdate;
 
-        FieldRotation Rotation { get; }
-        GameVector3 WorldPosition { get; }
+        FieldRotation GetRotation();
+        GameVector3 GetWorldPosition();
 
         public bool IsDisposed { get; }
         float GhostShrinkDistance { get; }

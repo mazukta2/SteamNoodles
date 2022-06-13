@@ -4,21 +4,25 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
 {
     public class HandRequestsService : Disposable, IService
     {
-        private IPresenterRepository<ConstructionCard> _cards;
-        private HandModel _hand;
+        public event Action<IConstructionHandModel> OnAdded = delegate { };
+        public event Action<IConstructionHandModel> OnRemoved = delegate { };
 
-        //BuildingModeService buildingService
+        private IPresenterRepository<ConstructionCard> _cards;
+        private Model _hand;
+        private List<IConstructionHandModel> _list = new List<IConstructionHandModel>();
+
         public HandRequestsService(IPresenterRepository<ConstructionCard> cards)
         {
-            _cards = cards ?? throw new System.ArgumentNullException(nameof(cards));
-
-            _hand = new HandModel();
+            _cards = cards ?? throw new ArgumentNullException(nameof(cards));
+            _hand = new Model(this);
 
             foreach (var card in _cards.Get())
                 Add(card.Get());
@@ -29,12 +33,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
 
         protected override void DisposeInner()
         {
+            foreach (var card in _list)
+                card.Dispose();
+
             _cards.OnAdded -= _cards_OnAdded;
             _cards.OnRemoved -= _cards_OnRemoved;
             _hand.Dispose();
         }
 
-        public HandModel Get()
+        public Model Get()
         {
             return _hand;
         }
@@ -42,12 +49,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
         private void Add(ConstructionCard card)
         {
             var model = new ConstructionHandModel(card.Id);
-            _hand.Add(model);
+            _list.Add(model);
+            OnAdded(model);
         }
 
         private void Remove(ConstructionCard card)
         {
-            _hand.Remove(card.Id);
+            var model = Get(card.Id);
+            model.Dispose();
+            _list.Remove(model);
+            OnRemoved(model);
         }
 
         private void _cards_OnRemoved(EntityLink<ConstructionCard> arg1, ConstructionCard card)
@@ -60,5 +71,33 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
             Add(card);
         }
 
+        private IConstructionHandModel Get(Uid id)
+        {
+            return _list.First(x => x.Id == id);
+        }
+
+        public class Model : Disposable, IHandModel
+        {
+            public event Action<IConstructionHandModel> OnAdded = delegate { };
+            public event Action<IConstructionHandModel> OnRemoved = delegate { };
+
+            private HandRequestsService _service;
+            public Model(HandRequestsService service)
+            {
+                _service = service;
+                _service.OnAdded += OnAddedHandler;
+                _service.OnRemoved += OnRemovedHandler;
+            }
+
+            protected override void DisposeInner()
+            {
+                _service.OnAdded -= OnAddedHandler;
+                _service.OnRemoved -= OnRemovedHandler;
+            }
+
+            private void OnAddedHandler(IConstructionHandModel obj) => OnAdded(obj);
+            private void OnRemovedHandler(IConstructionHandModel obj) => OnRemoved(obj);
+            public IReadOnlyCollection<IConstructionHandModel> GetCards() => _service._list.AsReadOnly();
+        }
     }
 }

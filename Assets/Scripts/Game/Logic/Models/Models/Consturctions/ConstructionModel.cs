@@ -16,8 +16,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Models.Consturctions
         public event Action OnUpdate = delegate { };
 
         public ConstructionScheme Scheme => _construction.Scheme;
-        public FieldRotation Rotation => _construction.Rotation;
-        public GameVector3 WorldPosition => _service.GetWorldPosition(_construction);
+
+        public FieldRotation GetRotation()
+        {
+            return _construction.Rotation;
+        }
+
+        public GameVector3 GetWorldPosition()
+        {
+            return _service.GetWorldPosition(_construction);
+        }
 
         public float GhostShrinkDistance => Scheme.GhostShrinkDistance;
         public float GhostHalfShrinkDistance => Scheme.GhostHalfShrinkDistance;

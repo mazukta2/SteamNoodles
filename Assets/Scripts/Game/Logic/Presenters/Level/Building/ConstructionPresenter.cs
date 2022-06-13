@@ -27,8 +27,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
             _constructionView = view ?? throw new ArgumentNullException(nameof(view));
             _construction = constructionModel ?? throw new ArgumentNullException(nameof(constructionModel));
 
-            _constructionView.Position.Value = _construction.WorldPosition;
-            _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_construction.Rotation);
+            _constructionView.Position.Value = _construction.GetWorldPosition();
+            _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_construction.GetRotation());
 
             _modelView = _constructionView.Container.Spawn<IConstructionModelView>(_construction.GetModelAsset());
 
@@ -78,7 +78,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
         {
             _modelView.Animator.OnFinished += ExplosionFinished;
             _modelView.Animator.Play(IConstructionModelView.Animations.Explode.ToString());
-            _constructionView.EffectsContainer.Spawn(_constructionView.ExplosionPrototype, _construction.WorldPosition);
+            _constructionView.EffectsContainer.Spawn(_constructionView.ExplosionPrototype, _construction.GetWorldPosition());
         }
 
         private void HandleOnUpdate()

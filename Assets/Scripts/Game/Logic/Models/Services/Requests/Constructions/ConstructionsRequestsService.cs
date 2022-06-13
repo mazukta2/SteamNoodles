@@ -66,7 +66,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Requests
         {
             if (_buildingModeService.IsEnabled)
             {
-                var distance = _buildingModeService.GetTargetPosition().GetDistanceTo(model.WorldPosition);
+                var distance = _buildingModeService.GetTargetPosition().GetDistanceTo(model.GetWorldPosition());
                 if (distance > model.GhostShrinkDistance)
                     return 1;
                 else if (distance > model.GhostHalfShrinkDistance)

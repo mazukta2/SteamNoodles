@@ -439,7 +439,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var requests = new ConstructionsRequestsService(constructionsRepository, buildingMode, 
                 fieldService, gameAssets, controls);
             var model = requests.Get(construction.Id);
-            Assert.AreEqual(new GameVector3(1.5f, 0, 1f), model.WorldPosition);
+            Assert.AreEqual(new GameVector3(1.5f, 0, 1f), model.GetWorldPosition());
             model.Dispose();
             requests.Dispose();
             controls.Dispose();
