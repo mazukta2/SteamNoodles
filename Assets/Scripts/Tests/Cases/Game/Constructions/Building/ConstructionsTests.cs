@@ -269,18 +269,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void ShinkIsCorrect()
         {
             var controls = new GameControls(new ControlsMock());
+            var assets = new AssetsMock();
+            assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
+            var gameAssets = new GameAssets(assets);
             var constructionsRepository = new Repository<Construction>();
 
             var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance : 4);
+            var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
+            var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance: 4, view: "model");
 
             var construction = new Construction(scheme, new FieldPosition(0, 0), new FieldRotation());
             constructionsRepository.Add(construction);
 
             var viewCollection = new ViewsCollection();
-            var viewModel = new ConstructionModelView(viewCollection);
-            new ConstructionShrinkerPresenter(viewModel, construction, fieldService, buildingMode);
+            var view = new ConstructionView(viewCollection);
+            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
+
+            var viewModel = view.Container.FindView<ConstructionModelView>();
 
             Assert.AreEqual(1, viewModel.Shrink.Value);
 
@@ -310,6 +316,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             controls.Dispose();
+            constructionsService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -321,6 +328,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var gameAssets = new GameAssets(assets);
             var constructionsRepository = new Repository<Construction>();
 
+            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var placement = new ContructionPlacement(new int[,]
@@ -328,18 +336,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                         { 1 },
                         { 1 },
                     });
-            var scheme = new ConstructionScheme(new Uid(), placement : placement, view: "model");
+            var scheme = new ConstructionScheme(new Uid(), placement: placement, view: "model");
 
             var construction = new Construction(scheme, new FieldPosition(1, 1), new FieldRotation());
             constructionsRepository.Add(construction);
 
             var viewCollection = new ViewsCollection();
+            var view = new ConstructionView(viewCollection);
+            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
 
-            var constructionView = new ConstructionView(viewCollection);
-            new ConstructionPresenter(constructionView, construction, fieldService, 
-                constructionsService, gameAssets, controls);
-
-            Assert.AreEqual(new GameVector3(1.5f, 0, 1f), constructionView.Position.Value);
+            Assert.AreEqual(new GameVector3(1.5f, 0, 1f), view.Position.Value);
 
             viewCollection.Dispose();
             constructionsService.Dispose();
@@ -355,6 +361,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var gameAssets = new GameAssets(assets);
             var constructionsRepository = new Repository<Construction>();
 
+            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var placement = new ContructionPlacement(new int[,]
@@ -368,14 +375,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             constructionsRepository.Add(construction);
 
             var viewCollection = new ViewsCollection();
-            var constructionView = new ConstructionView(viewCollection);
+            var view = new ConstructionView(viewCollection);
+            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
 
-            Assert.IsNull(constructionView.Container.FindView<IConstructionModelView>());
-
-            new ConstructionPresenter(constructionView, construction, fieldService, 
-                constructionsService, gameAssets, controls);
-
-            Assert.IsNotNull(constructionView.Container.FindView<IConstructionModelView>());
+            Assert.IsNotNull(view.Container.FindView<IConstructionModelView>());
 
             viewCollection.Dispose();
             constructionsService.Dispose();
@@ -392,6 +395,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var gameAssets = new GameAssets(assets);
             var constructionsRepository = new Repository<Construction>();
 
+            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var placement = new ContructionPlacement(new int[,]
@@ -405,12 +409,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             constructionsRepository.Add(construction);
 
             var viewCollection = new ViewsCollection();
-            var constructionView = new ConstructionView(viewCollection);
+            var view = new ConstructionView(viewCollection);
+            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
 
-            new ConstructionPresenter(constructionView, construction, fieldService,
-                constructionsService, gameAssets, controls);
-
-            var modelView = constructionView.Container.FindView<IConstructionModelView>();
+            var modelView = view.Container.FindView<IConstructionModelView>();
             var animator = ((AnimatorMock)modelView.Animator);
 
             Assert.AreEqual("Drop", animator.Animations[0]);
@@ -425,11 +427,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void ExpolodeAnimations()
         {
             var controls = new GameControls(new ControlsMock());
-            var constructionsRepository = new Repository<Construction>();
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
             var gameAssets = new GameAssets(assets);
+            var constructionsRepository = new Repository<Construction>();
 
+            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var placement = new ContructionPlacement(new int[,]
@@ -443,25 +446,23 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             constructionsRepository.Add(construction);
 
             var viewCollection = new ViewsCollection();
-            var constructionView = new ConstructionView(viewCollection);
+            var view = new ConstructionView(viewCollection);
+            new ConstructionPresenter(view, construction, fieldService, buildingMode, constructionsService, gameAssets, controls);
 
-            new ConstructionPresenter(constructionView, construction, fieldService, 
-                constructionsService, gameAssets, controls);
-
-            var modelView = constructionView.Container.FindView<IConstructionModelView>();
+            var modelView = view.Container.FindView<IConstructionModelView>();
             var animator = ((AnimatorMock)modelView.Animator);
 
             Assert.AreEqual("Drop", animator.Animations[0]);
             Assert.AreEqual("Idle", animator.Animations[1]);
 
-            Assert.IsFalse(constructionView.IsDisposed);
+            Assert.IsFalse(view.IsDisposed);
 
             constructionsRepository.Remove(construction);
 
             Assert.AreEqual("Explode", animator.Animations[2]);
             Assert.AreEqual("Idle", animator.Animations[3]);
 
-            Assert.IsTrue(constructionView.IsDisposed);
+            Assert.IsTrue(view.IsDisposed);
             viewCollection.Dispose();
             constructionsService.Dispose();
             controls.Dispose();
