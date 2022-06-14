@@ -1,19 +1,14 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
-using Game.Assets.Scripts.Game.Logic.Models.Repositories;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Levels
 {
     public record StageLevel : Level
     {

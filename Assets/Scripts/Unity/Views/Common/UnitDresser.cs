@@ -1,12 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
-using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
-using GameUnity.Assets.Scripts.Unity.Engine.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Units;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Common
 {

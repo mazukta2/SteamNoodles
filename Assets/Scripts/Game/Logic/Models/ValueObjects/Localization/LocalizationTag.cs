@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization
 {
     public record LocalizationTag
     {

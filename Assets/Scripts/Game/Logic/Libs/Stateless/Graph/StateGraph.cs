@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Stateless.Reflection;
+using Game.Assets.Scripts.Game.Logic.Libs.Stateless.Reflection;
 
-namespace Stateless.Graph
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Graph
 {
     /// <summary>
     /// This class is used to generate a symbolic representation of the

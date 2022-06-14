@@ -1,6 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
 
-namespace Game.Assets.Scripts.Game.Logic.Views.Level
+namespace Game.Assets.Scripts.Game.Logic.Views.Levels
 {
     public interface IConstructionModelView : IViewWithPresenter
     {

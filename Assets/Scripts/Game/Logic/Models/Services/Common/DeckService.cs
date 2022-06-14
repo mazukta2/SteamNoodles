@@ -1,9 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Common;
-using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Common
 {

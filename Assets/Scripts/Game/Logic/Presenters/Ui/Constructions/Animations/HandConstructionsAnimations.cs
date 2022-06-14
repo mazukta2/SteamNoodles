@@ -1,10 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions.Animations
 {
     public class HandConstructionsAnimations : Disposable
     {

@@ -1,13 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
 using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
-using Game.Tests.Cases;
-using Game.Tests.Controllers;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Common.Json.Convertors;
+using Game.Assets.Scripts.Tests.Environment;
 
 namespace Game.Assets.Scripts.Tests.Cases.Definitions
 {

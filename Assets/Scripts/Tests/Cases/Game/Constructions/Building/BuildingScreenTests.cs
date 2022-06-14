@@ -2,9 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -13,10 +11,9 @@ using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
-using Game.Tests.Cases;
 using NUnit.Framework;
 
-namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
+namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 {
     public class BuildingScreenTests
     {

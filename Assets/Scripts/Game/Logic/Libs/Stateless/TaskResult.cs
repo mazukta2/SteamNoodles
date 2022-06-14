@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Stateless
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless
 {
     internal static class TaskResult
     {

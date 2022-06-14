@@ -11,7 +11,6 @@ using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
-using Game.Tests.Cases;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Screens

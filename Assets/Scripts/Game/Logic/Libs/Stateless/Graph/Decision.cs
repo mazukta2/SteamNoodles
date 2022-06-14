@@ -1,6 +1,6 @@
-﻿using Stateless.Reflection;
+﻿using Game.Assets.Scripts.Game.Logic.Libs.Stateless.Reflection;
 
-namespace Stateless.Graph
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Graph
 {
     /// <summary>
     /// Used to keep track of the decision point of a dynamic transition

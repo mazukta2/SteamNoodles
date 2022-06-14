@@ -2,7 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 
-namespace Game.Tests.Mocks.Settings.Levels
+namespace Game.Assets.Scripts.Tests.Definitions
 {
     public class LevelDefinitionMock : LevelDefinition
     {

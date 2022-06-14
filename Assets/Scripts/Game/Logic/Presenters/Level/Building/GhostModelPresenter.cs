@@ -1,9 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
-using System;
+using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 {
     public class GhostModelPresenter : BasePresenter<IConstructionModelView>
     {

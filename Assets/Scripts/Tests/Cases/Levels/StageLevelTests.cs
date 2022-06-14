@@ -5,7 +5,6 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
@@ -22,9 +21,9 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Tests.Environment;
-using Game.Tests.Cases;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 
 namespace Game.Assets.Scripts.Tests.Cases.Levels
 {

@@ -1,9 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
+using NUnit.Framework;
 
-namespace Game.Tests.Cases
+namespace Game.Assets.Scripts.Tests.Cases
 {
     public class DisposeTests
     {

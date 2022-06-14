@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Stateless.Reflection
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Reflection
 {
     /// <summary>
     /// An info object which exposes the states, transitions, and actions of this machine.

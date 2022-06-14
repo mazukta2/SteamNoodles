@@ -2,9 +2,9 @@
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Tests.Cases;
 using NUnit.Framework;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Tests.Cases.Basic
 {

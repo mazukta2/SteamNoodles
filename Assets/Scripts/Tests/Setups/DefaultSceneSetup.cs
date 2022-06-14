@@ -2,10 +2,8 @@
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Tests.Environment;
-using Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Constructions;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Screens;
-using Game.Tests.Controllers;
 
 namespace Game.Assets.Scripts.Tests.Setups
 {

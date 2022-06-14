@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stateless
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless
 {
     static class ParameterConversion
     {

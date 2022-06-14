@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Entities
 {

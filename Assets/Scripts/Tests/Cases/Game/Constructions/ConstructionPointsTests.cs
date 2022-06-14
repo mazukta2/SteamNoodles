@@ -1,24 +1,23 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Setups;
-using Game.Assets.Scripts.Tests.Views.Ui.Screens;
-using Game.Tests.Cases;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
 using NUnit.Framework;
-using System.Collections.Generic;
 
-namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
+namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
 {
     public class ConstructionPointsTests
     {

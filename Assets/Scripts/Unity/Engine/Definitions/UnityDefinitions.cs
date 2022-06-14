@@ -1,10 +1,4 @@
-﻿using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Definitions.Common;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
-using System;
-using System.Collections.Generic;
+﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using System.Linq;
 using UnityEngine;
 

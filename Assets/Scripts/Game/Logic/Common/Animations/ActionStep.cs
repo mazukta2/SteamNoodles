@@ -1,7 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
-using System;
+﻿using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
+namespace Game.Assets.Scripts.Game.Logic.Common.Animations
 {
     public class ActionStep : BaseSequenceStep
     {

@@ -1,11 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Tests.Views.Common;
 
-namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
+namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets
 {
     public class EndWaveButtonView : ViewWithPresenter<EndWaveButtonWidgetPresenter>, IEndWaveButtonView
     {

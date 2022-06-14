@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Game.Assets.Scripts.Game.External
+﻿namespace Game.Assets.Scripts.Game.Environment.Engine
 {
     public interface IDefinitions
     {

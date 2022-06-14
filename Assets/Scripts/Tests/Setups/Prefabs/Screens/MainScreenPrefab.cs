@@ -2,7 +2,7 @@
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 
-namespace Game.Assets.Scripts.Tests.Mocks.Prefabs.Screens
+namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Screens
 {
     public class MainScreenPrefab : ViewCollectionPrefabMock
     {

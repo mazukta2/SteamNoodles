@@ -1,11 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
-using System;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 {
     public class PlacementCellPresenter : BasePresenter<ICellView>
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Stateless.Reflection
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Reflection
 {
     /// <summary>
     /// Describes an internal StateRepresentation through the reflection API.

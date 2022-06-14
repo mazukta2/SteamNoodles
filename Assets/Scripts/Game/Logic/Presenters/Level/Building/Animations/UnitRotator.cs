@@ -1,14 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Common.Helpers;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
 {
     public class UnitRotator : Disposable
     {

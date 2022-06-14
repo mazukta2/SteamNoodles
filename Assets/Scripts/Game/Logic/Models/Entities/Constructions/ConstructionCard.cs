@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
 {

@@ -1,5 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Repositories;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories

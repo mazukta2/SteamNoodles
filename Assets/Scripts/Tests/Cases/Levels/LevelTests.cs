@@ -15,11 +15,11 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
-using Game.Tests.Cases;
-using Game.Tests.Controllers;
-using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Game;
+using Game.Assets.Scripts.Tests.Definitions;
+using Game.Assets.Scripts.Tests.Presenters.Localization;
 
 namespace Game.Assets.Scripts.Tests.Cases.Levels
 {

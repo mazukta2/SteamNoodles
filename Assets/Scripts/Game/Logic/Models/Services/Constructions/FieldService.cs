@@ -1,10 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
     public class FieldService : IService
     {

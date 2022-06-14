@@ -7,8 +7,10 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
-using Game.Assets.Scripts.Game.Logic.Views.Level.Units;
 using System;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Units;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 {

@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
+namespace Game.Assets.Scripts.Game.Logic.Common.Json.Convertors
 {
     public class SpecificObjectConventer<T> : ReadOnlyJsonConverter
     {

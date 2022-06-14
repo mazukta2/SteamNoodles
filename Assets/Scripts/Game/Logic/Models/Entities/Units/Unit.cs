@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using System;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Units
 {

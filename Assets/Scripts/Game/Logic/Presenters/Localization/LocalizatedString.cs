@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 {

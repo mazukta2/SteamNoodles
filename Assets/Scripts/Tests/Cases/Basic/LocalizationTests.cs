@@ -1,5 +1,4 @@
-﻿using Game.Tests.Cases;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Basic
 {

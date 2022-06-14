@@ -1,13 +1,11 @@
-﻿using Game.Assets.Scripts.Game.External;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions;
+using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
-using Game.Assets.Scripts.Tests.Cases.Definitions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Game.Tests.Controllers
+namespace Game.Assets.Scripts.Tests.Environment
 {
     public class DefinitionsMock : IGameDefinitions
     {

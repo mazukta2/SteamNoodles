@@ -1,6 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
@@ -15,7 +14,6 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Tests.Cases;
 using NUnit.Framework;
 using System.Linq;
 using static Game.Assets.Scripts.Game.Logic.Models.Entities.Units.Unit;

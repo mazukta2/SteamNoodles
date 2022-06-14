@@ -1,7 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using System;
+﻿using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common
 {
     public record Uid
     {

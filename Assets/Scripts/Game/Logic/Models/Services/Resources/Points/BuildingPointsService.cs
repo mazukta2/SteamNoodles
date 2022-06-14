@@ -9,6 +9,7 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
 {

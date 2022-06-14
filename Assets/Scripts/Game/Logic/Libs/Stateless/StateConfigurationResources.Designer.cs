@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Stateless {
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless {
     
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.

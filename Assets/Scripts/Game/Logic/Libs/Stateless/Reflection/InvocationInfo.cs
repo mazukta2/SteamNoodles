@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stateless.Reflection
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Reflection
 {
     /// <summary>
     /// Describes a method - either an action (activate, deactivate, etc.) or a transition guard

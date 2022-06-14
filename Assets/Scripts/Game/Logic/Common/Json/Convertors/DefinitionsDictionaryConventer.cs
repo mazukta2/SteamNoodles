@@ -1,14 +1,12 @@
-﻿using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Definitions;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Game.Assets.Scripts.Game.Logic.Models.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
-namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
+namespace Game.Assets.Scripts.Game.Logic.Common.Json.Convertors
 {
     public class DefinitionsDictionaryConventer<TKey, TValue> : ReadOnlyJsonConverter
     {

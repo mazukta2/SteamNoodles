@@ -1,10 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Models.Entities;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Repositories
+namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
 {
     public interface IRepository<T> : IBaseRepository where T : class, IEntity
     {

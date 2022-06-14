@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using System;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Definitions
 {

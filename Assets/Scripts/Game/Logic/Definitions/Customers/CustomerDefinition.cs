@@ -1,5 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Newtonsoft.Json;
 using System;

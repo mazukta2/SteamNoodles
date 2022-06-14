@@ -1,9 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Unity.Views;
-using GameUnity.Assets.Scripts.Unity.Engine.Helpers;
 using GameUnity.Assets.Scripts.Unity.Views.Ui.Common;
 using UnityEngine;
 

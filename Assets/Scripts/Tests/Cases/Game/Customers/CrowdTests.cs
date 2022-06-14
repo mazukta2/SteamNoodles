@@ -5,7 +5,6 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Tests.Cases;
 using NUnit.Framework;
 using System.Linq;
 

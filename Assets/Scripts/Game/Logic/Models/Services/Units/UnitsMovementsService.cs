@@ -4,8 +4,8 @@ using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Repositories;
 using System;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 {

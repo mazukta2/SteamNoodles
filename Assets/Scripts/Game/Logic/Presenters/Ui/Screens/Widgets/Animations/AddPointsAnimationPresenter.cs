@@ -1,13 +1,14 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations;
-using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using static Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations.AddPointsAnimation;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets.Animations
 {
     public class AddPointsAnimationPresenter : Disposable
     {
