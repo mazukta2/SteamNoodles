@@ -17,6 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Controls
             _controls = controls;
             _controls.OnLevelClick += HandleOnLevelClick;
             _controls.OnLevelPointerMoved += HandleOnLevelPointerMoved;
+            _controls.OnTap += HandleOnTap;
 
             foreach (GameKeys key in Enum.GetValues(typeof(GameKeys)))
             {
@@ -26,6 +27,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Controls
 
         protected override void DisposeInner()
         {
+            _controls.OnTap -= HandleOnTap;
             _controls.OnLevelClick -= HandleOnLevelClick;
             _controls.OnLevelPointerMoved -= HandleOnLevelPointerMoved;
         }
@@ -52,6 +54,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Controls
         }
 
         public void TapKey(GameKeys key)
+        {
+            GetKey(key).Tap();
+        }
+
+        private void HandleOnTap(GameKeys key)
         {
             GetKey(key).Tap();
         }

@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using System;
 
 namespace Game.Assets.Scripts.Tests.Environment
@@ -10,6 +11,7 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public event Action OnLevelClick = delegate { };
         public event Action<GameVector3> OnLevelPointerMoved = delegate { };
+        public event Action<GameKeys> OnTap;
 
         public void Click()
         {
@@ -24,6 +26,11 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public void ShakeCamera()
         {
+        }
+
+        public void Tap(GameKeys key)
+        {
+            OnTap(key);
         }
     }
 }

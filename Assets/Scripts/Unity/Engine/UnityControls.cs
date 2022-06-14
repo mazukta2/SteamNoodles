@@ -1,13 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
-using Game.Assets.Scripts.Game.Logic.Views;
-using Game.Assets.Scripts.Game.Unity.Views;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using GameUnity.Assets.Scripts.Unity.Views.Level.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,6 +11,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     public class UnityControls : IControls
     {
         public event Action OnLevelClick = delegate { };
+        public event Action<GameKeys> OnTap = delegate { };
         public event Action<GameVector3> OnLevelPointerMoved = delegate { };
 
         private Vector3 _mousePosition;
@@ -23,6 +19,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         private float _wheel = 0;
 
         public GameVector3 PointerLevelPosition { get; private set; }
+
 
         public void Update()
         {
@@ -39,20 +36,20 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             }
 
             if (Input.GetKeyDown(KeyCode.R))
-                IGameKeysManager.Default.GetKey(GameKeys.RotateRight).Tap();
+                OnTap(GameKeys.RotateRight);
 
             var wheel = Input.GetAxis("Mouse ScrollWheel");
             if (_wheel == 0 || !SameSign(wheel, _wheel))
             {
                 if (wheel > 0)
-                    IGameKeysManager.Default.GetKey(GameKeys.RotateRight).Tap();
+                    OnTap(GameKeys.RotateRight);
                 if (wheel < 0)
-                    IGameKeysManager.Default.GetKey(GameKeys.RotateLeft).Tap();
+                    OnTap(GameKeys.RotateLeft);
             }
             _wheel = wheel;
 
             if (Input.GetKeyDown(KeyCode.Escape))
-                IGameKeysManager.Default.GetKey(GameKeys.Exit).Tap();
+                OnTap(GameKeys.Exit);
         }
 
         bool SameSign(float num1, float num2)
