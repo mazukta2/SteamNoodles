@@ -1,10 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Helpers;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
-using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;

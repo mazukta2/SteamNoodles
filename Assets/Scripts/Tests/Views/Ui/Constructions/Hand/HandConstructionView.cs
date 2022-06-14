@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -28,6 +29,10 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         private void SpawnTooltip(IViewsCollection collection)
         {
             new HandConstructionTooltipView(collection);
+        }
+
+        public void Init(ConstructionCard card)
+        {
         }
     }
 }

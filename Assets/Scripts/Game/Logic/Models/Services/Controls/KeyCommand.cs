@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Controls
+namespace Game.Assets.Scripts.Game.Logic.Models.Services.Controls
 {
     public class KeyCommand
     {

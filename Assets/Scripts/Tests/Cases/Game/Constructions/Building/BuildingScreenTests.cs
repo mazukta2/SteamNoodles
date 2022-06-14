@@ -1,8 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;
@@ -24,25 +25,28 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
         {
             var buildingModeService = new BuildingModeService();
             var viewCollection = new ViewsCollection();
-            var (card, screenManager) = Setup(viewCollection);
+            var view = new ScreenManagerView(viewCollection);
 
-            var keyManager = new GameKeysManager();
-            IGameKeysManager.Default = keyManager;
-            //ScreenManagerPresenter.Default.Open<IBuildScreenView>(x => 
-            //    new BuildScreenPresenter(x, card, buildingModeService, IGameKeysManager.Default));
+            var (card, screenManager) = Setup(view);
 
-            Assert.IsNotNull(screenManager.Screen.FindView<BuildScreenView>());
-            Assert.IsNull(screenManager.Screen.FindView<MainScreenView>());
+            var controls = new GameControlsService(new ControlsMock());
 
-            keyManager.TapKey(GameKeys.Exit);
+            screenManager.Open<IBuildScreenView>(x => 
+                new BuildScreenPresenter(x, card, buildingModeService, screenManager, controls));
 
-            Assert.IsNull(screenManager.Screen.FindView<BuildScreenView>());
-            Assert.IsNotNull(screenManager.Screen.FindView<MainScreenView>());
+            Assert.IsNotNull(view.Screen.FindView<BuildScreenView>());
+            Assert.IsNull(view.Screen.FindView<MainScreenView>());
+
+            controls.TapKey(GameKeys.Exit);
+
+            Assert.IsNull(view.Screen.FindView<BuildScreenView>());
+            Assert.IsNotNull(view.Screen.FindView<MainScreenView>());
 
             viewCollection.Dispose();
+            controls.Dispose();
         }
 
-        private (ConstructionCard, ScreenManagerView) Setup(ViewsCollection viewCollection)
+        private (ConstructionCard, ScreenService) Setup(ScreenManagerView view)
         {
             var assets = new AssetsMock();
             var schemesRepository = new Repository<ConstructionScheme>();
@@ -56,10 +60,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             assets.AddPrefab("Screens/BuildScreen", new DefaultViewPrefab(x => new BuildScreenView(x)));
             assets.AddPrefab("Screens/MainScreen", new DefaultViewPrefab(x => new MainScreenView(x)));
 
-            var view = new ScreenManagerView(viewCollection);
-            //ScreenManagerPresenter.Default = new ScreenManagerPresenter(view, new GameAssetsService(assets));
+            var screenService = new ScreenService(new GameAssetsService(assets));
+            screenService.Bind(view);
 
-            return (link, view);
+            return (link, screenService);
         }
 
         [TearDown]

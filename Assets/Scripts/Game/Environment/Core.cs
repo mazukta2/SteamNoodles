@@ -11,7 +11,6 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
-using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
@@ -25,7 +24,6 @@ namespace Game.Assets.Scripts.Game.Environment
         public Core(IEngine engine, ILevelsManager levelsManager, IAssets assets, IGameDefinitions definitions, IControls controls,
             ILocalizationManager localizationManager, IGameTime time, bool autoStart = true)
         {
-            IGameKeysManager.Default = new GameKeysManager();
             IGameTime.Default = time;
             IGameRandom.Default = new SessionRandom();
             ILocalizationManager.Default = localizationManager;
@@ -50,7 +48,6 @@ namespace Game.Assets.Scripts.Game.Environment
 
         protected override void DisposeInner()
         {
-            IGameKeysManager.Default = null;
             ILocalizationManager.Default = null;
             IGameTime.Default = null;
             IGameRandom.Default = null;

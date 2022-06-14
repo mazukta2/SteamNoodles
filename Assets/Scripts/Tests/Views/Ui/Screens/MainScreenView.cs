@@ -10,5 +10,8 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
         public MainScreenView(IViewsCollection level) : base(level)
         {
         }
+        public void Init()
+        {
+        }
     }
 }

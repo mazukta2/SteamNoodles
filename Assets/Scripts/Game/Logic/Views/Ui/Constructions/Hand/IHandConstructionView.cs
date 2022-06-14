@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         IText Amount { get; }
         IAnimator Animator { get;}
 
-        virtual void Init(ConstructionCard card)
+        void Init(ConstructionCard card)
         {
             new HandConstructionPresenter(this, card);
         }

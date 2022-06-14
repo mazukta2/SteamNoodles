@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
@@ -14,23 +15,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private ConstructionCard _model;
         private IHandConstructionView _view;
         private readonly IPresenterRepository<ConstructionCard> _cards;
+        private readonly ScreenService _screenService;
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
         private bool _isModelDisposed;
 
         public HandConstructionPresenter(IHandConstructionView view, ConstructionCard model) 
             : this(view, model, 
-                  IPresenterServices.Default.Get<IPresenterRepository<ConstructionCard>>())
+                  IPresenterServices.Default.Get<IPresenterRepository<ConstructionCard>>(),
+                  IPresenterServices.Default.Get<ScreenService>())
         {
 
         }
 
         public HandConstructionPresenter(IHandConstructionView view, ConstructionCard model,
-             IPresenterRepository<ConstructionCard> cards) : base(view)
+             IPresenterRepository<ConstructionCard> cards,
+             ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _cards = cards ?? throw new ArgumentNullException(nameof(cards));
+            _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
             _animations = new HandConstructionsAnimations(view);
 
             view.Button.SetAction(HandleClick);
@@ -58,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleClick()
         {
-            //ScreenManagerPresenter.Default.Open<IBuildScreenView>(view => view.Init(_model));
+            _screenService.Open<IBuildScreenView>(view => view.Init(_model));
         }
 
         private void UpdateAmount()

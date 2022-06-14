@@ -3,17 +3,25 @@ using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using System;
+using System.Collections.Generic;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Controls
 {
     public class GameControlsService : Disposable, IService
     {
+        private Dictionary<GameKeys, KeyCommand> _keys = new Dictionary<GameKeys, KeyCommand>();
         private IControls _controls;
+
         public GameControlsService(IControls controls)
         {
             _controls = controls;
             _controls.OnLevelClick += HandleOnLevelClick;
             _controls.OnLevelPointerMoved += HandleOnLevelPointerMoved;
+
+            foreach (GameKeys key in Enum.GetValues(typeof(GameKeys)))
+            {
+                _keys.Add(key, new KeyCommand(key));
+            }
         }
 
         protected override void DisposeInner()
@@ -38,5 +46,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Controls
             OnLevelClick();
         }
 
+        public KeyCommand GetKey(GameKeys key)
+        {
+            return _keys[key];
+        }
+
+        public void TapKey(GameKeys key)
+        {
+            GetKey(key).Tap();
+        }
     }
 }

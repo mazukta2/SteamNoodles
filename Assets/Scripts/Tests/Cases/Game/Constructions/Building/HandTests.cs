@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
@@ -8,12 +9,17 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
+using Game.Assets.Scripts.Tests.Environment;
+using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
+using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using Game.Tests.Cases;
 using NUnit.Framework;
 
@@ -146,6 +152,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void CardsSpawnedAndRemovedInPresenter()
         {
+            var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
+
             var schemesRepository = new Repository<ConstructionScheme>();
             var scheme1 = new ConstructionScheme();
             var scheme2 = new ConstructionScheme();
@@ -158,7 +166,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, mode);
+            new HandPresenter(handView, cardsRepository, mode, screenManager);
 
             Assert.AreEqual(0, handView.Collection.FindViews<IHandConstructionView>().Count);
             cardsRepository.Add(new ConstructionCard(scheme1));
@@ -174,6 +182,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void AmountShownCorrectly()
         {
+            var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
 
@@ -186,7 +195,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, link, cardsRepository);
+            new HandConstructionPresenter(view, link, cardsRepository, screenManager);
 
             Assert.AreEqual("1", view.Amount.Value);
             card.Add(new CardAmount(1));
@@ -202,6 +211,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void ConstructionIconSetted()
         {
+            var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
             
@@ -219,7 +229,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, link, cardsRepository);
+            new HandConstructionPresenter(view, link, cardsRepository, screenManager);
 
             Assert.AreEqual("image", view.Image.Path);
 
@@ -229,6 +239,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void TooltipViewSpawning()
         {
+            var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
 
@@ -241,7 +252,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, link, cardsRepository);
+            new HandConstructionPresenter(view, link, cardsRepository, screenManager);
 
             Assert.IsNull(view.TooltipContainer.FindView<IHandConstructionTooltipView>());
             view.SetHighlight(true);
@@ -255,6 +266,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void ClickingOpensBuildingScreen()
         {
+            var assets = new AssetsMock();
+            assets.AddPrefab("Screens/BuildScreen", new DefaultViewPrefab(x => new BuildScreenView(x)));
+            var screenManager = new ScreenService(new GameAssetsService(assets));
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
 
@@ -265,8 +279,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var link = cardsRepository.Add(card);
 
             var viewCollection = new ViewsCollection();
+            screenManager.Bind(new ScreenManagerView(viewCollection));
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, link, cardsRepository);
+            new HandConstructionPresenter(view, link, cardsRepository, screenManager);
 
             view.Button.Click();
 
@@ -278,12 +293,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void HandAnimationsPlayedInBuildingMode()
         {
+            var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
             var cardsRepository = new Repository<ConstructionCard>();
 
             var mode = new BuildingModeService();
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, mode);
+            new HandPresenter(handView, cardsRepository, mode, screenManager);
 
             Assert.AreEqual("Choose", handView.Animator.Animation);
             mode.Show(new ConstructionCard(new ConstructionScheme()));
@@ -297,6 +313,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void CancelWorks()
         {
+            var assets = new AssetsMock();
+            assets.AddPrefab("Screens/MainScreen", new DefaultViewPrefab(x => new MainScreenView(x)));
+            var screenManager = new ScreenService(new GameAssetsService(assets));
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
 
@@ -305,8 +324,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var mode = new BuildingModeService();
             var viewCollection = new ViewsCollection();
+            screenManager.Bind(new ScreenManagerView(viewCollection));
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, mode);
+            new HandPresenter(handView, cardsRepository, mode, screenManager);
 
             handView.CancelButton.Click();
 

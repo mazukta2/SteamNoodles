@@ -1,5 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models;
-using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
@@ -11,16 +11,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private IGameMenuScreenView _view;
         private GameService _game;
         private KeyCommand _exitKey;
-        private readonly IGameKeysManager _keysManager;
+        private readonly GameControlsService _keysManager;
 
         public GameMenuScreenPresenter(IGameMenuScreenView view) : 
             this(view, 
-                IPresenterServices.Default.Get<GameService>(), 
-                IGameKeysManager.Default)
+                IPresenterServices.Default.Get<GameService>(),
+                IPresenterServices.Default.Get<GameControlsService>())
         {
         }
 
-        public GameMenuScreenPresenter(IGameMenuScreenView view, GameService game, IGameKeysManager keysManager) : base(view)
+        public GameMenuScreenPresenter(IGameMenuScreenView view, GameService game, GameControlsService keysManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _game = game;

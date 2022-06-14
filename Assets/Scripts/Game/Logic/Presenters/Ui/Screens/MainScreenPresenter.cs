@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
@@ -10,12 +11,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private KeyCommand _exitKey;
 
         public MainScreenPresenter(IMainScreenView view) 
-            : this(view, IGameKeysManager.Default)
+            : this(view,
+                IPresenterServices.Default.Get<GameControlsService>())
         {
 
         }
 
-        public MainScreenPresenter(IMainScreenView view, IGameKeysManager gameKeysManager) : base(view)
+        public MainScreenPresenter(IMainScreenView view, GameControlsService gameKeysManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);

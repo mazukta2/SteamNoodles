@@ -39,6 +39,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens
 
         public TScreenView Open<TScreenView>(Action<TScreenView> setPresenter) where TScreenView : class, IScreenView
         {
+            if (!IsBinded())
+                throw new Exception("Service unbinded");
+
             var name = typeof(TScreenView).Name;
             name = name.Replace("View", "");
             name = name.Remove(0, 1);

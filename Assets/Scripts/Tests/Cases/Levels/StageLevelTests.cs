@@ -10,6 +10,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Services;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Levels;
@@ -18,6 +19,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Tests.Cases;
@@ -34,7 +36,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             var manager = new ServiceManager();
             manager.Add(new Repository<ConstructionScheme>());
             manager.Add(new Repository<UnitType>());
+            manager.Add(new GameAssetsService(new AssetsMock()));
             IModelServices.Default = manager;
+            IPresenterServices.Default = manager;
             IGameRandom.Default = new SessionRandom();
             IGameTime.Default = new GameTime();
 
