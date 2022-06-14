@@ -45,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var points = services.Add(new BuildingPointsService(level, time));
             var field = services.Add(new FieldService(level.CellSize, level.PlacementFieldSize));
             var schemes = services.Add(new SchemesService(schemesRep, new(constructionsDeckRep, random), level.ConstructionsReward));
-            var hand = services.Add(new HandService(cardsRep, schemesRep));
+            var hand = services.Add(new HandService(cardsRep));
             var unitsTypes = services.Add(new UnitsTypesService(unitTypesRep, new(unitsDeckRep, random), level));
             var units = services.Add(new UnitsService(unitsRep, random, unitsTypes));
 

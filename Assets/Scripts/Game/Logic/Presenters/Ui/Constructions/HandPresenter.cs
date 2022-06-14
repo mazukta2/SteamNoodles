@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
             var cards = _repository.Get();
             foreach (var item in cards)
-                HandleCardAdded(item, null);
+                HandleCardAdded(item);
             _repository.OnAdded += HandleCardAdded;
             _repository.OnRemoved += HandleCardRemoved;
 
@@ -47,13 +47,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _repository.OnRemoved += HandleCardRemoved;
         }
 
-        private void HandleCardAdded(EntityLink<ConstructionCard> entity, ConstructionCard obj)
+        private void HandleCardAdded(ConstructionCard obj)
         {
             var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
             //_commands.Execute(new AddHandConstructionCommand(entity, _view.Cards, _view.CardPrototype));
         }
 
-        private void HandleCardRemoved(EntityLink<ConstructionCard> entity, ConstructionCard obj)
+        private void HandleCardRemoved(ConstructionCard obj)
         {
             //_commands.Execute(new RemoveHandConstructionCommand(_view.Cards));
         }

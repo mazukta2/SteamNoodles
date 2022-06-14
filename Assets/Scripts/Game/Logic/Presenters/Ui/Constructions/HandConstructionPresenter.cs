@@ -9,40 +9,41 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandConstructionPresenter : BasePresenter<IHandConstructionView>
     {
-        private PresenterModel<ConstructionCard> _model;
+        private ConstructionCard _model;
         private IHandConstructionView _view;
+        private readonly IPresenterRepository<ConstructionCard> _cards;
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
+        private bool _isModelDisposed;
 
-        public HandConstructionPresenter(EntityLink<ConstructionCard> model,
-            IHandConstructionView view) : base(view)
+        public HandConstructionPresenter(ConstructionCard model,
+            IHandConstructionView view, IPresenterRepository<ConstructionCard> cards) : base(view)
         {
-            _model = model.CreateModel() ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
+            _cards = cards ?? throw new ArgumentNullException(nameof(cards));
             _animations = new HandConstructionsAnimations(view);
 
             view.Button.SetAction(HandleClick);
 
-            _model.OnChanged += HandleOnChanged;
-            _model.OnDispose += Model_OnDispose;
+            _cards.OnChanged += HandleOnChanged;
+            _cards.OnRemoved += Model_OnDispose;
             _view.OnHighlihgtedEnter += _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit += _view_OnHighlihgtedExit;
             _animations.OnAnimationsCompleted += _animations_OnAnimationsCompleted;
 
-            _view.Image.SetPath(_model.Get().HandImagePath);
+            _view.Image.SetPath(_model.HandImagePath);
             UpdateAmount();
         }
 
         protected override void DisposeInner()
         {
             base.DisposeInner();
-            _model.Dispose();
             _animations.Dispose();
             _view.TooltipContainer.Clear();
-            _model.OnChanged -= HandleOnChanged;
+            _cards.OnChanged -= HandleOnChanged;
             _view.OnHighlihgtedEnter -= _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit -= _view_OnHighlihgtedExit;
-            _model.OnDispose -= Model_OnDispose;
+            _cards.OnRemoved -= Model_OnDispose;
         }
 
         private void HandleClick()
@@ -53,7 +54,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void UpdateAmount()
         {
-            var amount = _model.Get().Amount.Value;
+            var amount = _model.Amount.Value;
             if (_currentAmount == null)
                 _animations.Add(amount);
             else
@@ -64,24 +65,33 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                     _animations.Remove(_currentAmount.Value - amount);
             }
 
-            _currentAmount = _model.Get().Amount;
+            _currentAmount = _model.Amount;
 
         }
 
-        private void HandleOnChanged()
+        private void HandleOnChanged(ConstructionCard card)
         {
+            if (card.Id != _model.Id)
+                return;
+
+            _model = card;
+
             UpdateAmount();
         }
 
-        private void Model_OnDispose()
+        private void Model_OnDispose(ConstructionCard card)
         {
+            if (card.Id != _model.Id)
+                return;
+
+            _isModelDisposed = true;
             _view.Button.IsActive = false;
             _animations.Destroy();
         }
 
         private void _animations_OnAnimationsCompleted()
         {
-            if (_model.IsDisposed)
+            if (_isModelDisposed)
                 _view.Dispose();
         }
 

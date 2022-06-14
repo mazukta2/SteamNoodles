@@ -12,12 +12,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
     public class HandService : IService
     {
         private readonly IRepository<ConstructionCard> _repository;
-        private readonly IRepository<ConstructionScheme> _schemes;
 
-        public HandService(IRepository<ConstructionCard> repository, IRepository<ConstructionScheme> schemes)
+        public HandService(IRepository<ConstructionCard> repository)
         {
             _repository = repository;
-            _schemes = schemes;
         }
 
         public void Remove(ConstructionCard card)

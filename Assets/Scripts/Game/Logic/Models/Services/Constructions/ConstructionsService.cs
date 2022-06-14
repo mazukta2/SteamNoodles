@@ -25,14 +25,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
 
-            _constructions.OnModelAdded += OnAddedHandled;
-            _constructions.OnModelRemoved += OnRemovedHandled;
+            _constructions.OnAdded += OnAddedHandled;
+            _constructions.OnRemoved += OnRemovedHandled;
         }
 
         protected override void DisposeInner()
         {
-            _constructions.OnModelAdded -= OnAddedHandled;
-            _constructions.OnModelRemoved -= OnRemovedHandled;
+            _constructions.OnAdded -= OnAddedHandled;
+            _constructions.OnRemoved -= OnRemovedHandled;
         }
 
         private void OnRemovedHandled(Construction obj) => OnRemoved(obj);

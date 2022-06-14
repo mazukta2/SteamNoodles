@@ -57,10 +57,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -10, 10, 10), 1);
 
             Assert.AreEqual(1, units.Count);
-            var id = units.GetAll().First().Id;
+            var id = units.Get().First().Id;
             time.MoveTime(100);
             Assert.AreEqual(1, units.Count);
-            var id2 = units.GetAll().First().Id;
+            var id2 = units.Get().First().Id;
             Assert.AreNotEqual(id, id2);
 
             unitsService.Dispose();

@@ -8,12 +8,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Repositories
 {
     public interface IRepository<T> : IBaseRepository where T : class, IEntity
     {
-        event Action<T> OnModelAdded;
-        event Action<T> OnModelRemoved;
-        event Action<T> OnModelChanged;
-        event Action<T, IModelEvent> OnModelEvent;
+        event Action<T> OnAdded;
+        event Action<T> OnRemoved;
+        event Action<T> OnChanged;
+        event Action<T, IModelEvent> OnEvent;
 
-        EntityLink<T> Add(T entity);
+        T Add(T entity);
         void Remove(T entity);
         void Save(T entity);
         IReadOnlyCollection<T> Get();

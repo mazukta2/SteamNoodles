@@ -24,12 +24,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
 
         protected override void DisposeInner()
         {
-            _units.OnModelEvent -= HandleEvent;
+            _units.OnEvent -= HandleEvent;
         }
 
         public override void Play()
         {
-            _units.OnModelEvent += HandleEvent;
+            _units.OnEvent += HandleEvent;
 
             var list = _queue.GetUnits().ToArray();
             for (int i = 0; i < list.Count(); i++)

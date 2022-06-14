@@ -11,14 +11,10 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
     public class Repository<T> : IRepository<T>, IPresenterRepository<T> where T : class, IEntity
     {
-        public event Action<EntityLink<T>, T> OnAdded = delegate { };
-        public event Action<EntityLink<T>, T> OnRemoved = delegate { };
-        public event Action<EntityLink<T>, T> OnChanged = delegate { };
-        public event Action<EntityLink<T>, T, IModelEvent> OnEvent = delegate { };
-        public event Action<T> OnModelAdded = delegate { };
-        public event Action<T> OnModelRemoved = delegate { };
-        public event Action<T> OnModelChanged = delegate { };
-        public event Action<T, IModelEvent> OnModelEvent = delegate { };
+        public event Action<T> OnAdded = delegate { };
+        public event Action<T> OnRemoved = delegate { };
+        public event Action<T> OnChanged = delegate { };
+        public event Action<T, IModelEvent> OnEvent = delegate { };
 
         public int Count => _repository.Count;
 
@@ -28,16 +24,15 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         {
         }
 
-        public EntityLink<T> Add(T entity)
+        public T Add(T entity)
         {
             if (_repository.ContainsKey(entity.Id))
                 throw new Exception("Entity already exist");
 
             _repository.Add(entity.Id, (T)entity.Copy());
-            OnModelAdded(entity);
-            OnAdded(new EntityLink<T>(this, entity.Id), entity);
+            OnAdded(entity);
 
-            return new EntityLink<T>(this, entity.Id);
+            return entity;
         }
 
         public void Remove(T entity)
@@ -46,9 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 throw new Exception("Entity not exist");
 
             _repository.Remove(entity.Id);
-            OnModelRemoved(entity);
-            OnRemoved(new EntityLink<T>(this, entity.Id), entity);
-
+            OnRemoved(entity);
         }
 
         public void Save(T entity)
@@ -60,26 +53,10 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             entity.Clear();
 
             _repository[entity.Id] = (T)entity.Copy();
-            OnModelChanged(entity);
-            OnChanged(new EntityLink<T>(this, entity.Id), entity);
+            OnChanged(entity);
 
             foreach (var evt in events)
                 FireEvent(entity, evt);
-        }
-
-        public EntityLink<T> GetLink(T entity)
-        {
-            return new EntityLink<T>(this, entity.Id);
-        }
-
-        public IReadOnlyCollection<T> Get()
-        {
-            return GetAll();
-        }
-
-        IReadOnlyCollection<EntityLink<T>> IPresenterRepository<T>.Get()
-        {
-            return _repository.Select(x => new EntityLink<T>(this, x.Key)).AsReadOnly();
         }
 
         public T Get(Uid uid)
@@ -96,8 +73,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 Remove(item.Value);
         }
 
-
-        public IReadOnlyCollection<T> GetAll()
+        public IReadOnlyCollection<T> Get()
         {
             return _repository.Select(x => (T)x.Value.Copy()).AsReadOnly();
         }
@@ -107,8 +83,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             if (!_repository.ContainsKey(entity.Id))
                 throw new Exception("Entity not exist");
 
-            OnModelEvent(entity, modelEvent);
-            OnEvent(new EntityLink<T>(this, entity.Id), entity, modelEvent);
+            OnEvent(entity, modelEvent);
         }
 
         public bool Has(T entity)

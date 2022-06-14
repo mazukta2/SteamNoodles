@@ -75,7 +75,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 {
                     style = TextHelpers.TextStyles.HeavyHighlight;
                 }
-                else if (_constructions.GetAll().Any(x => x.Scheme.Compare(construction)))
+                else if (_constructions.Get().Any(x => x.Scheme.Compare(construction)))
                 {
                     style = TextHelpers.TextStyles.Highlight;
                 }

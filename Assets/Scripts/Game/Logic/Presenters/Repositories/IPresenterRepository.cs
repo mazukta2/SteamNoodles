@@ -7,12 +7,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories
 {
     public interface IPresenterRepository<T> : IService where T : class
     {
-        event Action<EntityLink<T>, T> OnAdded;
-        event Action<EntityLink<T>, T> OnRemoved;
-        event Action<EntityLink<T>, T> OnChanged;
-        event Action<EntityLink<T>, T, IModelEvent> OnEvent;
-        IReadOnlyCollection<EntityLink<T>> Get();
-        IReadOnlyCollection<T> GetAll();
+        event Action<T> OnAdded;
+        event Action<T> OnRemoved;
+        event Action<T> OnChanged;
+        event Action<T, IModelEvent> OnEvent;
+        IReadOnlyCollection<T> Get();
         T Get(Uid uid);
     }
 }

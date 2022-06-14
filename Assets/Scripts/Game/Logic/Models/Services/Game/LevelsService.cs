@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             }
 
             if (_firstLevel == null)
-                _firstLevel = _levels.Add(firstLevel).Get();
+                _firstLevel = _levels.Add(firstLevel);
         }
 
 
@@ -55,11 +55,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             {
                 var link = _levels.Add(CreateEntity(levelDefinition, services));
                 if (levelDefinition == firstLevel)
-                    _firstLevel = link.Get();
+                    _firstLevel = link;
             }
 
             if (_firstLevel == null)
-                _firstLevel = _levels.Add(CreateEntity(firstLevel, services)).Get();
+                _firstLevel = _levels.Add(CreateEntity(firstLevel, services));
         }
 
         protected override void DisposeInner()

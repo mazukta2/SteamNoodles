@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var schemesService = new SchemesService(constructionsSchemeRepository, deck);
-            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var buildngService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var schemesService = new SchemesService(constructionsSchemeRepository, deck);
-            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var buildngService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);

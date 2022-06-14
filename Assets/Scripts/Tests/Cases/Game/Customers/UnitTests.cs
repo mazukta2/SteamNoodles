@@ -41,9 +41,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             units.Add(unit);
             var isUnitReachedPosition = false;
 
-            units.OnModelEvent += Units_OnModelEvent;
+            units.OnEvent += Units_OnModelEvent;
             time.MoveTime(100);
-            units.OnModelEvent -= Units_OnModelEvent;
+            units.OnEvent -= Units_OnModelEvent;
 
             Assert.AreEqual(new GameVector3(0, 0, 0), units.Get(unit.Id).Position);
             Assert.IsTrue(isUnitReachedPosition);
@@ -146,7 +146,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var collection = new ViewsCollection();
             var unitView = new UnitView(collection);
-            new UnitPresenter(unitView, link, time);
+            new UnitPresenter(unitView, link, units, time);
 
             AssertHelpers.CompareVectors(new GameVector3(-1, 0, 0), unitView.Rotator.Rotation.ToVector());
             var originalRotation = unitView.Rotator.Rotation;

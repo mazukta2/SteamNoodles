@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             var settings = new ConstructionsSettingsDefinition();
             
             var schemes = new Repository<ConstructionScheme>();
-            var scheme = schemes.Add(new ConstructionScheme(construction, settings)).Get();
+            var scheme = schemes.Add(new ConstructionScheme(construction, settings));
 
             var customer = new CustomerDefinition();
             var unitsDefinition = new UnitsSettingsDefinition();
@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             unitsDefinition.MinSpeed = 1;
 
             var units = new Repository<UnitType>();
-            var unit = units.Add(new UnitType(customer, unitsDefinition)).Get();
+            var unit = units.Add(new UnitType(customer, unitsDefinition));
 
             var constructionsDefinitions = new ConstructionsSettingsDefinition();
             constructionsDefinitions.CellSize = 1;

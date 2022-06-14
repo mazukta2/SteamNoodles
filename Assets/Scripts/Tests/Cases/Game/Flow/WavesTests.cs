@@ -35,7 +35,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var stageLevel = new StageLevel(new[] { scheme });
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
-            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var handService = new HandService(constructionsCardsRepository);
             var rewardService = new RewardsService(stageLevel, handService, schemes, points);
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time);
@@ -73,7 +73,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var stageLevel = new StageLevel(new[] { scheme });
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
-            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var handService = new HandService(constructionsCardsRepository);
             var rewardService = new RewardsService(stageLevel, handService, schemes, points);
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 4);
@@ -120,7 +120,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var stageLevel = new StageLevel(new[] { scheme });
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
-            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var handService = new HandService(constructionsCardsRepository);
             var rewardService = new RewardsService(stageLevel, handService, schemes, points);
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 2);
@@ -165,7 +165,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var stageLevel = new StageLevel(new[] { scheme });
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
-            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var handService = new HandService(constructionsCardsRepository);
             var rewardService = new RewardsService(stageLevel, handService, schemes, points);
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 2);
@@ -206,7 +206,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var stageLevel = new StageLevel(new[] { scheme });
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
-            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var handService = new HandService(constructionsCardsRepository);
             var rewardService = new RewardsService(stageLevel, handService, schemes, points);
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 3);

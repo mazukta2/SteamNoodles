@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _time = time ?? throw new System.ArgumentNullException(nameof(time));
 
             foreach (var item in _repository.Get())
-                SpawnUnit(item);
+                HandleOnAdded(item);
 
             _repository.OnAdded += HandleOnAdded;
         }
@@ -36,15 +36,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             _repository.OnAdded -= HandleOnAdded;
         }
 
-        private void HandleOnAdded(EntityLink<Unit> link, Unit unit)
-        {
-            SpawnUnit(link);
-        }
-
-        private void SpawnUnit(EntityLink<Unit> link)
+        private void HandleOnAdded(Unit unit)
         {
             var view = _unitsManagerView.Container.Spawn<IUnitView>(_unitsManagerView.UnitPrototype);
-            new UnitPresenter(view, link, _time);
+            new UnitPresenter(view, unit, _repository, _time);
         }
+
     }
 }

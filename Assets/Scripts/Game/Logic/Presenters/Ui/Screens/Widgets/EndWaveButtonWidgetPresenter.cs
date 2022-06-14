@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             //ScreenManagerPresenter.Default.GetCollection<CommonScreens>().Open<IDayEndedScreenView>();
         }
 
-        private void HandleOnAdded(EntityLink<Construction> cnst, Construction model)
+        private void HandleOnAdded(Construction model)
         {
             UpdateWaveProgress();
         }

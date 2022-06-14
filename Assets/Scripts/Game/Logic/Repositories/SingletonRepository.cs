@@ -10,10 +10,10 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
     public class SingletonRepository<T> : ISingletonRepository<T>, IPresenterRepository<T> where T : class, IEntity
     {
-        public event Action<EntityLink<T>, T> OnAdded = delegate { };
-        public event Action<EntityLink<T>, T> OnRemoved = delegate { };
-        public event Action<EntityLink<T>, T> OnChanged = delegate { };
-        public event Action<EntityLink<T>, T, IModelEvent> OnEvent = delegate { };
+        public event Action<T> OnAdded = delegate { };
+        public event Action<T> OnRemoved = delegate { };
+        public event Action<T> OnChanged = delegate { };
+        public event Action<T, IModelEvent> OnEvent = delegate { };
 
         private Uid _uid;
         private T _value;
@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
             _uid = entity.Id;
             _value = (T)entity.Copy();
-            OnAdded(new EntityLink<T>(this, entity.Id), entity);
+            OnAdded(entity);
         }
 
         public void Remove(T entity)
@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
             _uid = null;
             _value = null;
-            OnRemoved(new EntityLink<T>(this, entity.Id), entity);
+            OnRemoved(entity);
         }
 
         public void Save(T entity)
@@ -52,12 +52,12 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
             _value = (T)entity.Copy();
 
-            OnChanged(new EntityLink<T>(this, entity.Id), entity);
+            OnChanged(entity);
         }
 
-        public IReadOnlyCollection<EntityLink<T>> Get()
+        public IReadOnlyCollection<T> Get()
         {
-            return new [] { new EntityLink<T>(this, _uid) }.AsReadOnly();
+            return new [] { _value }.AsReadOnly();
         }
 
         public T Get(Uid uid)

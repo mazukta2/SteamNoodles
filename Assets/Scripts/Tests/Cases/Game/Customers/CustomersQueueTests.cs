@@ -86,7 +86,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             custumers.SetQueueSize(new QueueSize(1));
 
             Assert.AreEqual(1, units.Count);
-            Assert.AreEqual(BehaviourState.InQueue, units.GetAll().First().State);
+            Assert.AreEqual(BehaviourState.InQueue, units.Get().First().State);
 
             unitsService.Dispose();
             crowd.Dispose();
@@ -120,7 +120,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var coins = new CoinsService();
             var custumers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
 
-            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var buildngService = new BuildingService(constructionsRepository, constructionsService, points, handService, fieldService);
@@ -654,7 +654,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var coins = new CoinsService();
             var custumers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
 
-            var handService = new HandService(constructionsCardsRepository, constructionsSchemeRepository);
+            var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var buildngService = new BuildingService(constructionsRepository, constructionsService, points, handService, fieldService);

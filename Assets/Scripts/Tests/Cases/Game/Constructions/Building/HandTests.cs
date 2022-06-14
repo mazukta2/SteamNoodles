@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             schemesRepository.Add(scheme);
 
             var deck = new DeckService<ConstructionScheme>();
-            var hand = new HandService(cardsRepository, schemesRepository);
+            var hand = new HandService(cardsRepository);
             var schemes = new SchemesService(schemesRepository, deck);
             var points = new BuildingPointsService();
 
@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             schemesRepository.Add(scheme2);
 
             var cardsRepository = new Repository<ConstructionCard>();
-            var hand = new HandService(cardsRepository, schemesRepository);
+            var hand = new HandService(cardsRepository);
 
             Assert.AreEqual(0, cardsRepository.Count);
 
@@ -87,7 +87,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             schemesRepository.Add(scheme2);
 
             var cardsRepository = new Repository<ConstructionCard>();
-            var hand = new HandService(cardsRepository, schemesRepository);
+            var hand = new HandService(cardsRepository);
 
             Assert.AreEqual(0, cardsRepository.Count);
 
@@ -125,7 +125,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var deck = new DeckService<ConstructionScheme>();
             deck.Add(new ConstructionScheme());
-            var hand = new HandService(cardsRepository, schemesRepository);
+            var hand = new HandService(cardsRepository);
             var schemes = new SchemesService(schemesRepository, deck);
 
             var flow = new RewardsService(stageLevel, hand, schemes, pointsService, 1);
@@ -152,7 +152,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             schemesRepository.Add(scheme2);
 
             var cardsRepository = new Repository<ConstructionCard>();
-            var hand = new HandService(cardsRepository, schemesRepository);
+            var hand = new HandService(cardsRepository);
             var mode = new BuildingModeService();
 
             var viewCollection = new ViewsCollection();
@@ -185,7 +185,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view);
+            new HandConstructionPresenter(link, view, cardsRepository);
 
             Assert.AreEqual("1", view.Amount.Value);
             card.Add(new CardAmount(1));
@@ -218,7 +218,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view);
+            new HandConstructionPresenter(link, view, cardsRepository);
 
             Assert.AreEqual("image", view.Image.Path);
 
@@ -240,7 +240,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view);
+            new HandConstructionPresenter(link, view, cardsRepository);
 
             //Assert.IsTrue(commands.IsEmpty());
             //view.SetHighlight(true);
@@ -265,7 +265,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var viewCollection = new ViewsCollection();
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view);
+            new HandConstructionPresenter(link, view, cardsRepository);
 
             view.Button.Click();
 

@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             var keyManager = new GameKeysManager();
             IGameKeysManager.Default = keyManager;
             ScreenManagerPresenter.Default.Open<IBuildScreenView>(x => 
-                new BuildScreenPresenter(x, card.Get(), buildingModeService, IGameKeysManager.Default));
+                new BuildScreenPresenter(x, card, buildingModeService, IGameKeysManager.Default));
 
             Assert.IsNotNull(screenManager.Screen.FindView<BuildScreenView>());
             Assert.IsNull(screenManager.Screen.FindView<MainScreenView>());
@@ -42,7 +42,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             viewCollection.Dispose();
         }
 
-        private (EntityLink<ConstructionCard>, ScreenManagerView) Setup(ViewsCollection viewCollection)
+        private (ConstructionCard, ScreenManagerView) Setup(ViewsCollection viewCollection)
         {
             var assets = new AssetsMock();
             var schemesRepository = new Repository<ConstructionScheme>();
