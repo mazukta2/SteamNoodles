@@ -29,8 +29,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         {
             var calculator = new FieldService(10, new IntPoint(100, 100));
             var size = new IntRect(0, 0, 1, 1);
-            Assert.AreEqual(new GameVector3(0, 0, 0), calculator.GetMapPositionByGridPosition(new IntPoint(0, 0), size));
-            Assert.AreEqual(new GameVector3(10, 0, -10), calculator.GetMapPositionByGridPosition(new IntPoint(1, -1), size));
+            Assert.AreEqual(new GameVector3(0, 0, 0), calculator.GetWorldPosition(new FieldPosition(0, 0), size));
+            Assert.AreEqual(new GameVector3(10, 0, -10), calculator.GetWorldPosition(new FieldPosition(1, -1), size));
         }
 
         [Test, Order(TestCore.ModelOrder)]
@@ -133,14 +133,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void IsPlacementBoundariesRequestRight()
         {
             var constructionsRepository = new Repository<Construction>();
-            var buildinMode = new BuildingModeService();
             var fieldService = new FieldService(10, new IntPoint(3, 3));
+            var buildingMode = new BuildingModeService(fieldService);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
 
-            new PlacementFieldPresenter(view, buildinMode, fieldService, constructionService);
+            new PlacementFieldPresenter(view, buildingMode, fieldService, constructionService);
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
@@ -194,71 +194,71 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void IsOffsetRight()
         {
             {
-                var fieldPoisition = new FieldService(1, new IntPoint(100, 100));
+                var fieldPosition = new FieldService(1, new IntPoint(100, 100));
                 var size = new IntRect(0, 0, 1, 1);
 
                 // from -0.5 to 0.5 its 0, 0
-                Assert.AreEqual(new IntPoint(0, 0), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(0, 0, 0), size));
-                Assert.AreEqual(new GameVector3(0, 0, 0), fieldPoisition.GetAlignWithAGrid(new GameVector3(0, 0, 0), size));
+                Assert.AreEqual(new FieldPosition(0, 0), fieldPosition.GetFieldPosition(new GameVector3(0, 0, 0), size));
+                Assert.AreEqual(new GameVector3(0, 0, 0), fieldPosition.GetAlignWithAGrid(new GameVector3(0, 0, 0), size));
 
                 // from 0.5 to 1.5 its 1, 0
-                Assert.AreEqual(new IntPoint(1, 0), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(0.6f, 0, 0), size));
-                Assert.AreEqual(new GameVector3(1, 0, 0), fieldPoisition.GetAlignWithAGrid(new GameVector3(0.6f, 0, 0), size));
+                Assert.AreEqual(new FieldPosition(1, 0), fieldPosition.GetFieldPosition(new GameVector3(0.6f, 0, 0), size));
+                Assert.AreEqual(new GameVector3(1, 0, 0), fieldPosition.GetAlignWithAGrid(new GameVector3(0.6f, 0, 0), size));
 
                 // from 1.5 to 2.5 its 2, 0
-                Assert.AreEqual(new IntPoint(2, 0), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(1.6f, 0, 0), size));
-                Assert.AreEqual(new GameVector3(2, 0, 0), fieldPoisition.GetAlignWithAGrid(new GameVector3(1.6f, 0, 0), size));
+                Assert.AreEqual(new FieldPosition(2, 0), fieldPosition.GetFieldPosition(new GameVector3(1.6f, 0, 0), size));
+                Assert.AreEqual(new GameVector3(2, 0, 0), fieldPosition.GetAlignWithAGrid(new GameVector3(1.6f, 0, 0), size));
             }
 
             {
-                var fieldPoisition = new FieldService(1, new IntPoint(100, 100));
+                var fieldPosition = new FieldService(1, new IntPoint(100, 100));
                 var size = new IntRect(0, 0, 2, 2);
 
                 // from 0 to 1 its 0, 0
-                Assert.AreEqual(new IntPoint(0, 0), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(0.1f, 0, 0.1f), size));
-                Assert.AreEqual(new GameVector3(0.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new GameVector3(0.1f, 0, 0), size));
+                Assert.AreEqual(new FieldPosition(0, 0), fieldPosition.GetFieldPosition(new GameVector3(0.1f, 0, 0.1f), size));
+                Assert.AreEqual(new GameVector3(0.5f, 0, 0.5f), fieldPosition.GetAlignWithAGrid(new GameVector3(0.1f, 0, 0), size));
 
                 // from 1 to 2 its 1, 0
-                Assert.AreEqual(new IntPoint(1, 0), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(1.1f, 0, 0.1f), size));
-                Assert.AreEqual(new GameVector3(1.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new GameVector3(1.1f, 0, 0), size));
+                Assert.AreEqual(new FieldPosition(1, 0), fieldPosition.GetFieldPosition(new GameVector3(1.1f, 0, 0.1f), size));
+                Assert.AreEqual(new GameVector3(1.5f, 0, 0.5f), fieldPosition.GetAlignWithAGrid(new GameVector3(1.1f, 0, 0), size));
 
                 // from 2 to 3 its 2, 0
-                Assert.AreEqual(new IntPoint(2, 0), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(2.1f, 0, 0.1f), size));
-                Assert.AreEqual(new GameVector3(2.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new GameVector3(2.1f, 0, 0), size));
+                Assert.AreEqual(new FieldPosition(2, 0), fieldPosition.GetFieldPosition(new GameVector3(2.1f, 0, 0.1f), size));
+                Assert.AreEqual(new GameVector3(2.5f, 0, 0.5f), fieldPosition.GetAlignWithAGrid(new GameVector3(2.1f, 0, 0), size));
             }
 
             {
-                var fieldPoisition = new FieldService(1, new IntPoint(100, 100));
+                var fieldPosition = new FieldService(1, new IntPoint(100, 100));
                 var size = new IntRect(0, 0, 3, 3);
 
                 // from -0.5 to 0.5 its 0, 0
-                Assert.AreEqual(new IntPoint(-1, -1), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(0, 0, 0), size));
-                Assert.AreEqual(new GameVector3(0, 0, 0), fieldPoisition.GetAlignWithAGrid(new GameVector3(0, 0, 0), size));
+                Assert.AreEqual(new FieldPosition(-1, -1), fieldPosition.GetFieldPosition(new GameVector3(0, 0, 0), size));
+                Assert.AreEqual(new GameVector3(0, 0, 0), fieldPosition.GetAlignWithAGrid(new GameVector3(0, 0, 0), size));
 
                 // from 0.5 to 1.5 its 1, 0
-                Assert.AreEqual(new IntPoint(0, -1), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(0.6f, 0, 0), size));
-                Assert.AreEqual(new GameVector3(1, 0, 0), fieldPoisition.GetAlignWithAGrid(new GameVector3(0.6f, 0, 0), size));
+                Assert.AreEqual(new FieldPosition(0, -1), fieldPosition.GetFieldPosition(new GameVector3(0.6f, 0, 0), size));
+                Assert.AreEqual(new GameVector3(1, 0, 0), fieldPosition.GetAlignWithAGrid(new GameVector3(0.6f, 0, 0), size));
 
                 // from 1.5 to 2.5 its 2, 0
-                Assert.AreEqual(new IntPoint(1, -1), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(1.6f, 0, 0), size));
-                Assert.AreEqual(new GameVector3(2, 0, 0), fieldPoisition.GetAlignWithAGrid(new GameVector3(1.6f, 0, 0), size));
+                Assert.AreEqual(new FieldPosition(1, -1), fieldPosition.GetFieldPosition(new GameVector3(1.6f, 0, 0), size));
+                Assert.AreEqual(new GameVector3(2, 0, 0), fieldPosition.GetAlignWithAGrid(new GameVector3(1.6f, 0, 0), size));
             }
 
             {
-                var fieldPoisition = new FieldService(1, new IntPoint(100, 100));
+                var fieldPosition = new FieldService(1, new IntPoint(100, 100));
                 var size = new IntRect(0, 0, 4, 4);
 
                 // from 0 to 1 its 0, 0
-                Assert.AreEqual(new IntPoint(-1, -1), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(0.1f, 0, 0.1f), size));
-                Assert.AreEqual(new GameVector3(0.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new GameVector3(0.1f, 0, 0.1f), size));
+                Assert.AreEqual(new FieldPosition(-1, -1), fieldPosition.GetFieldPosition(new GameVector3(0.1f, 0, 0.1f), size));
+                Assert.AreEqual(new GameVector3(0.5f, 0, 0.5f), fieldPosition.GetAlignWithAGrid(new GameVector3(0.1f, 0, 0.1f), size));
 
                 // from 1 to 2 its 1, 0
-                Assert.AreEqual(new IntPoint(0, -1), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(1.1f, 0, 0.1f), size));
-                Assert.AreEqual(new GameVector3(1.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new GameVector3(1.1f, 0, 0.1f), size));
+                Assert.AreEqual(new FieldPosition(0, -1), fieldPosition.GetFieldPosition(new GameVector3(1.1f, 0, 0.1f), size));
+                Assert.AreEqual(new GameVector3(1.5f, 0, 0.5f), fieldPosition.GetAlignWithAGrid(new GameVector3(1.1f, 0, 0.1f), size));
 
                 // from 2 to 3 its 2, 0
-                Assert.AreEqual(new IntPoint(1, -1), fieldPoisition.GetGridPositionByMapPosition(new GameVector3(2.1f, 0, 0.1f), size));
-                Assert.AreEqual(new GameVector3(2.5f, 0, 0.5f), fieldPoisition.GetAlignWithAGrid(new GameVector3(2.1f, 0, 0.1f), size));
+                Assert.AreEqual(new FieldPosition(1, -1), fieldPosition.GetFieldPosition(new GameVector3(2.1f, 0, 0.1f), size));
+                Assert.AreEqual(new GameVector3(2.5f, 0, 0.5f), fieldPosition.GetAlignWithAGrid(new GameVector3(2.1f, 0, 0.1f), size));
             }
         }
 
@@ -271,8 +271,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
-            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
+            var buildingMode = new BuildingModeService(fieldService);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance: 4, view: "model");
 
@@ -325,8 +325,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
-            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
+            var buildingMode = new BuildingModeService(fieldService);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var placement = new ContructionPlacement(new int[,]
                     {
@@ -358,8 +358,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
-            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
+            var buildingMode = new BuildingModeService(fieldService);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var placement = new ContructionPlacement(new int[,]
                     {
@@ -392,8 +392,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
-            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
+            var buildingMode = new BuildingModeService(fieldService);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var placement = new ContructionPlacement(new int[,]
                     {
@@ -429,8 +429,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var gameAssets = new GameAssetsService(assets);
             var constructionsRepository = new Repository<Construction>();
 
-            var buildingMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(11, 11));
+            var buildingMode = new BuildingModeService(fieldService);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var placement = new ContructionPlacement(new int[,]
                     {

@@ -27,7 +27,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         {
             _view = view;
             _buildingModeService = buildingModeService;
-            _buildingModeService.OnHighligtingChanged += HandleHighligtingChanged;
+            _buildingModeService.OnHighlightingChanged += HandleHighlightingChanged;
             _buildingModeService.OnChanged += HandleOnChanged;
             _tooltip = new HandConstructionTooltipPresenter(_view.Tooltip, constructions);
             Hide();
@@ -36,18 +36,18 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         protected override void DisposeInner()
         {
             _buildingModeService.OnChanged -= HandleOnChanged;
-            _buildingModeService.OnHighligtingChanged -= HandleHighligtingChanged;
+            _buildingModeService.OnHighlightingChanged -= HandleHighlightingChanged;
         }
 
-        private void HandleHighligtingChanged()
+        private void HandleHighlightingChanged()
         {
-            _tooltip.SetHighlight(_buildingModeService.ConstructionsHighlights.Select(x => x.Scheme));
+            _tooltip.SetHighlight(_buildingModeService.GetConstructionsHighlights().Select(x => x.Scheme));
         }
 
         private void HandleOnChanged(bool value)
         {
             if (value)
-                Show(_buildingModeService.Card);
+                Show(_buildingModeService.GetCard());
             else
                 Hide();
         }

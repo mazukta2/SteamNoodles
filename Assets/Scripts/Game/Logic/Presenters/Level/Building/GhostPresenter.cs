@@ -19,8 +19,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         private readonly FieldService _fieldService;
         private readonly GameControlsService _controls;
 
-        private GameVector3 _pointerPosition;
-
         //private readonly IGameTime _time;
         //private readonly IGameKeysManager _gameKeysManager;
         //private readonly ScreenManagerPresenter _screenManager;
@@ -47,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
             _controls = controls ?? throw new ArgumentNullException(nameof(controls));
 
-            if (!_buildingModeService.IsEnabled) throw new Exception("Ghost can exist only in building mode");
+            if (!_buildingModeService.IsEnabled()) throw new Exception("Ghost can exist only in building mode");
 
 
             //_time = time;
@@ -144,8 +142,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         private void HandleOnPointerMoved(GameVector3 worldPosition)
         {
-            _pointerPosition = worldPosition;
-            HandlePointerPositionUpdated();
+            _buildingModeService.SetTargetPosition(worldPosition);
         }
 
         //private bool CanPlace()
@@ -191,18 +188,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         //    return _pointerPosition;
         //}
 
-        private void HandlePointerPositionUpdated()
-        {
-            var size = _buildingModeService.Card.Scheme.Placement.GetRect(_buildingModeService.GetRotation());
-            var fieldPosition = _fieldService.GetWorldConstructionToField(_pointerPosition, size);
-            _buildingModeService.SetTargetPosition(_pointerPosition);
-            _buildingModeService.SetGhostPosition(fieldPosition, _buildingModeService.GetRotation());
-
-            //OnGhostPostionChanged();
-        }
         private void HandleOnPositionChanged()
         {
-            var size = _buildingModeService.Card.Scheme.Placement.GetRect(_buildingModeService.GetRotation());
+            var size = _buildingModeService.GetCard().Scheme.Placement.GetRect(_buildingModeService.GetRotation());
             var worldPosition = _fieldService.GetWorldPosition(_buildingModeService.GetPosition(), size);
             _view.LocalPosition.Value = worldPosition;
             _view.Rotator.Rotation = FieldRotation.ToDirection(_buildingModeService.GetRotation());

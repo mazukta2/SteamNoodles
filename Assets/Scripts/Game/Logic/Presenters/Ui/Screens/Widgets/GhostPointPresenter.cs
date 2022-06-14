@@ -55,15 +55,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         public void UpdatePoints()
         {
-            if (_buildingModeService.IsEnabled)
+            if (_buildingModeService.IsEnabled())
             {
-                var points = _constructionsService.GetPoints(_buildingModeService.Card,
-                    _buildingModeService.GetPosition(), _buildingModeService.GetRotation()).Value;
+                var points = _constructionsService.GetPoints(_buildingModeService.GetCard(),
+                    _buildingModeService.GetPosition(), _buildingModeService.GetRotation());
 
                 var worldPosition = _fieldService.GetWorldPosition(_buildingModeService.GetPosition(),
-                    _buildingModeService.Card.Scheme.Placement.GetRect(_buildingModeService.GetRotation()));
+                    _buildingModeService.GetCard().Scheme.Placement.GetRect(_buildingModeService.GetRotation()));
 
-                _view.Points.Value = $"{points.GetSignedNumber()}";
+                _view.Points.Value = points.AsString();
                 _view.Points.Position = worldPosition;
             }
             else

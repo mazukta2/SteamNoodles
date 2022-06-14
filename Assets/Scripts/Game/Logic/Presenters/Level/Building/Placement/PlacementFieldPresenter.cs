@@ -82,9 +82,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         {
             IReadOnlyCollection<FieldPosition> ocuppiedCells = null;
             var occupiedByBuildings = _constructionsService.GetAllOccupiedSpace();
-            if (_buildingModeService.IsEnabled)
+            if (_buildingModeService.IsEnabled())
             {
-                var scheme = _buildingModeService.Card.Scheme;
+                var scheme = _buildingModeService.GetCard().Scheme;
                 ocuppiedCells = scheme.Placement
                     .GetOccupiedSpace(_buildingModeService.GetPosition(), _buildingModeService.GetRotation());
             }
@@ -96,9 +96,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                 if (occupiedByBuildings.Any(x => x.Value == cell.Position))
                     state = CellPlacementStatus.IsUnderConstruction;
 
-                if (_buildingModeService.IsEnabled)
+                if (_buildingModeService.IsEnabled())
                 {
-                    var scheme = _buildingModeService.Card.Scheme;
+                    var scheme = _buildingModeService.GetCard().Scheme;
                     if (_constructionsService.IsFreeCell(scheme, new FieldPosition(cell.Position), _buildingModeService.GetRotation()))
                         state = CellPlacementStatus.IsReadyToPlace;
 

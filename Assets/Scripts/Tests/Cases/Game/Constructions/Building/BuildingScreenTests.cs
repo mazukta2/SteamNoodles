@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
@@ -20,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void EscFromBuildingScreen()
         {
-            var buildingModeService = new BuildingModeService();
+            var buildingModeService = new BuildingModeService(new FieldService(0, IntPoint.Zero));
             var viewCollection = new ViewsCollection();
             var view = new ScreenManagerView(viewCollection);
 

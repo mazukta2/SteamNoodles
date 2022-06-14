@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Repositories;
@@ -27,24 +24,22 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var constructionsRepository = new Repository<Construction>();
             var constructionsCardsRepository = new Repository<ConstructionCard>();
             var constructionsSchemeRepository = new Repository<ConstructionScheme>();
-            var deck = new DeckService<ConstructionScheme>();
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
-            var schemesService = new SchemesService(constructionsSchemeRepository, deck);
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildngService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
 
             var scheme = ConstructionSetups.GetDefaultScheme();
             constructionsSchemeRepository.Add(scheme);
             var card = handService.Add(scheme);
 
-            Assert.AreEqual(1, scheme.Points.Value);
+            Assert.AreEqual(1, scheme.Points.AsInt());
             Assert.AreEqual(0, scheme.AdjacencyPoints.Count);
             Assert.AreEqual(0, pointsService.GetValue());
 
-            buildngService.Build(card, new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Top));
+            buildingService.Build(card, new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Top));
 
             Assert.AreEqual(1, pointsService.GetValue());
 
@@ -58,37 +53,33 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var constructionsRepository = new Repository<Construction>();
             var constructionsCardsRepository = new Repository<ConstructionCard>();
             var constructionsSchemeRepository = new Repository<ConstructionScheme>();
-            var deck = new DeckService<ConstructionScheme>();
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
-            var schemesService = new SchemesService(constructionsSchemeRepository, deck);
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildngService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
 
-            var scheme = new ConstructionScheme(new Uid(),
-                new DefId("Construction"),
-                new ContructionPlacement(new int[,] { { 1 } }),
-                LocalizationTag.None,
-                new BuildingPoints(1),
-                new AdjacencyBonuses(),
-                "", "", new Requirements());
+            var scheme = new ConstructionScheme(
+                defId:new DefId("Construction"),
+                placement:new ContructionPlacement(new[,] { { 1 } }),
+                points:new BuildingPoints(1));
             scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionScheme, BuildingPoints>() 
                 { { scheme, new BuildingPoints(2) } }));
 
             constructionsSchemeRepository.Add(scheme);
             var card = handService.Add(scheme, new CardAmount(2));
 
-            Assert.AreEqual(1, scheme.Points.Value);
+            Assert.AreEqual(1, scheme.Points.AsInt());
             Assert.AreEqual(1, scheme.AdjacencyPoints.Count);
             Assert.AreEqual(0, pointsService.GetValue());
 
-            buildngService.Build(card, new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Top));
+            buildingService.Build(card, new FieldPosition(0, 0), new FieldRotation(FieldRotation.Rotation.Top));
             
-            Assert.AreEqual(3, constructionsService.GetPoints(card, new FieldPosition(1, 0), new FieldRotation(FieldRotation.Rotation.Top)).Value);
+            Assert.AreEqual(3, constructionsService.GetPoints(card, new FieldPosition(1, 0), 
+                new FieldRotation(FieldRotation.Rotation.Top)).AsInt());
 
-            buildngService.Build(card, new FieldPosition(1, 0), new FieldRotation(FieldRotation.Rotation.Top));
+            buildingService.Build(card, new FieldPosition(1, 0), new FieldRotation(FieldRotation.Rotation.Top));
 
             Assert.AreEqual(4, pointsService.GetValue());
 
@@ -100,29 +91,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         public void IsNotGetPointsForBuildingOutsideField()
         {
             var constructionsRepository = new Repository<Construction>();
-            var buildinMode = new BuildingModeService();
             var fieldService = new FieldService(10, new IntPoint(3, 3));
+            var buildingMode = new BuildingModeService(fieldService);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
-            var scheme = new ConstructionScheme(new Uid(),
-                DefId.None,
-                ContructionPlacement.One,
-                LocalizationTag.None,
-                new BuildingPoints(5),
-                new AdjacencyBonuses(),
-                "", "", new Requirements());
+            var scheme = new ConstructionScheme(
+                points:new BuildingPoints(5));
 
             var viewCollection = new ViewsCollection();
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, buildinMode, constructionService, fieldService);
+            new GhostPointPresenter(view, buildingMode, constructionService, fieldService);
 
-            buildinMode.Show(card);
+            buildingMode.Show(card);
             
             Assert.AreEqual("+5", view.Points.Value);
 
-            buildinMode.SetGhostPosition(new FieldPosition(999, 999), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(999, 999));
 
             Assert.AreEqual("0", view.Points.Value);
 
@@ -134,40 +120,36 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         public void IsPointsChangedByAdjacency()
         {
             var constructionsRepository = new Repository<Construction>();
-            var buildinMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(5, 5));
+            var buildingMode = new BuildingModeService(fieldService);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
-            var placement = new ContructionPlacement(new int[,] {
+            var placement = new ContructionPlacement(new [,] {
                     { 0, 0, 0 },
                     { 0, 1, 0 },
                     { 0, 1, 0 },
                 });
-            var scheme = new ConstructionScheme(new Uid(),
-                DefId.None,
-                placement,
-                LocalizationTag.None,
-                new BuildingPoints(5),
-                new AdjacencyBonuses(),
-                "", "", new Requirements());
+            var scheme = new ConstructionScheme(
+                placement: placement,
+                points:new BuildingPoints(5));
             scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionScheme, BuildingPoints>() { { scheme, new BuildingPoints(2) } }));
 
             var viewCollection = new ViewsCollection();
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, buildinMode, constructionService, fieldService);
+            new GhostPointPresenter(view, buildingMode, constructionService, fieldService);
 
-            buildinMode.Show(card);
+            buildingMode.Show(card);
 
             Assert.AreEqual("+5", view.Points.Value);
 
             constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
 
-            buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(0, 0));
             Assert.AreEqual("0", view.Points.Value);
 
-            buildinMode.SetGhostPosition(new FieldPosition(-2, 0), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(-2, 0));
 
             Assert.AreEqual("+7", view.Points.Value);
 
@@ -176,63 +158,59 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsAdjecencyPointsBoundariesCorrect()
+        public void IsAdjacencyPointsBoundariesCorrect()
         {
             var constructionsRepository = new Repository<Construction>();
-            var buildinMode = new BuildingModeService();
             var fieldService = new FieldService(1, new IntPoint(15, 15));
+            var buildingMode = new BuildingModeService(fieldService);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
-            var placement = new ContructionPlacement(new int[,] {
+            var placement = new ContructionPlacement(new [,] {
                     { 0, 1, 0 },
                     { 0, 1, 0 },
                     { 0, 1, 0 },
                 });
-            var scheme = new ConstructionScheme(new Uid(),
-                DefId.None,
-                placement,
-                LocalizationTag.None,
-                new BuildingPoints(5),
-                new AdjacencyBonuses(),
-                "", "", new Requirements());
+            var scheme = new ConstructionScheme(
+                placement: placement,
+                points: new BuildingPoints(5));
             scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionScheme, BuildingPoints>() { { scheme, new BuildingPoints(2) } }));
 
             var viewCollection = new ViewsCollection();
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, buildinMode, constructionService, fieldService);
+            new GhostPointPresenter(view, buildingMode, constructionService, fieldService);
 
-            buildinMode.Show(card);
+            buildingMode.Show(card);
 
             constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
 
-            buildinMode.SetGhostPosition(new FieldPosition(0, 0), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(0, 0));
             Assert.AreEqual("0", view.Points.Value);
 
-            buildinMode.SetGhostPosition(new FieldPosition(1, 0), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(1, 0));
             Assert.AreEqual("0", view.Points.Value);
 
-            buildinMode.SetGhostPosition(new FieldPosition(2, 0), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(2, 0));
             Assert.AreEqual("0", view.Points.Value);
 
-            buildinMode.SetGhostPosition(new FieldPosition(3, 0), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(3, 0));
             Assert.AreEqual("+7", view.Points.Value);
 
-            buildinMode.SetGhostPosition(new FieldPosition(-1, 0), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(-1, 0));
             Assert.AreEqual("0", view.Points.Value);
 
-            buildinMode.SetGhostPosition(new FieldPosition(-2, 0), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(-2, 0));
             Assert.AreEqual("0", view.Points.Value);
 
-            buildinMode.SetGhostPosition(new FieldPosition(-3, 0), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(-3, 0));
             Assert.AreEqual("+7", view.Points.Value);
 
 
-            buildinMode.SetGhostPosition(new FieldPosition(0, -1), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(0, -1));
             Assert.AreEqual("+7", view.Points.Value);
 
-            buildinMode.SetGhostPosition(new FieldPosition(0, 1), new FieldRotation());
+            buildingMode.SetTargetPosition(new FieldPosition(0, 1));
             Assert.AreEqual("+7", view.Points.Value);
 
             viewCollection.Dispose();

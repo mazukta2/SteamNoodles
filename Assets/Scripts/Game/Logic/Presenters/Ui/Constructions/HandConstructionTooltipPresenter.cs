@@ -12,10 +12,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandConstructionTooltipPresenter : BasePresenter<IHandConstructionTooltipView>
     {
-        private IHandConstructionTooltipView _view;
+        private readonly IHandConstructionTooltipView _view;
         private readonly IPresenterRepository<Construction> _constructions;
         private LocalizatedText _name;
-        private LocalizatedText _adjecensy;
+        private LocalizatedText _adjacency;
         private IEnumerable<ConstructionScheme> _highlights;
         private ConstructionCard _model;
 
@@ -36,7 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         protected override void DisposeInner()
         {
             _name?.Dispose();
-            _adjecensy?.Dispose();
+            _adjacency?.Dispose();
         }
 
         public void SetModel(ConstructionCard card)
@@ -60,11 +60,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 return;
 
             _name?.Dispose();
-            _adjecensy?.Dispose();
+            _adjacency?.Dispose();
             var model = _model;
 
             _name = new LocalizatedText(_view.Name, new LocalizatedString(model.Name));
-            _view.Points.Value = $"+{model.Points}";
+            _view.Points.Value = model.Points.AsString();
 
             var bonuses = new List<ILocalizatedString>();
             foreach (var (construction, points) in model.AdjacencyPoints.GetAll())
@@ -81,10 +81,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 }
 
                 bonuses.Add(new LocalizatedFormatString("{0} ({1})".Style(style),
-                    new LocalizatedString(construction.Name), points.Value.GetSignedNumber()));
+                    new LocalizatedString(construction.Name), points.AsString()));
             }
 
-            _adjecensy = new LocalizatedText(_view.Adjacencies, new LocalizatedJoinString(", ", bonuses.ToArray()));
+            _adjacency = new LocalizatedText(_view.Adjacencies, new LocalizatedJoinString(", ", bonuses.ToArray()));
         }
     }
 }

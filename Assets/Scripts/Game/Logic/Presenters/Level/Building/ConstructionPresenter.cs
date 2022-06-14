@@ -79,7 +79,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             if (!_dropFinished)
                 return;
 
-            if (_buildingModeService.IsEnabled)
+            if (_buildingModeService.IsEnabled())
             {
                 var distance = _buildingModeService.GetTargetPosition()
                     .GetDistanceTo(_constructionsService.GetWorldPosition(_construction));

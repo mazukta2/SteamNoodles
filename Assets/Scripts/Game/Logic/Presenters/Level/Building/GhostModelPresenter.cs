@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _buildingModeService = buildingModeService ?? throw new System.ArgumentNullException(nameof(buildingModeService));
             _constructionsService = constructionsService ?? throw new System.ArgumentNullException(nameof(constructionsService));
 
-            if (!_buildingModeService.IsEnabled) throw new Exception("Ghost can exist only in building mode");
+            if (!_buildingModeService.IsEnabled()) throw new Exception("Ghost can exist only in building mode");
 
             _buildingModeService.OnPositionChanged += HandlePositionUpdate;
             _buildingModeService.OnChanged += HandleModeOnChanged;
@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         private void HandlePositionUpdate()
         {
-            var canPlace = _constructionsService.CanPlace(_buildingModeService.Card, 
+            var canPlace = _constructionsService.CanPlace(_buildingModeService.GetCard(), 
                 _buildingModeService.GetPosition(), _buildingModeService.GetRotation());
 
             _view.BorderAnimator.Play(canPlace ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());

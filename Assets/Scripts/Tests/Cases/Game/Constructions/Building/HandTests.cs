@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
@@ -163,7 +164,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var cardsRepository = new Repository<ConstructionCard>();
             var hand = new HandService(cardsRepository);
-            var mode = new BuildingModeService();
+            var mode = new BuildingModeService(new FieldService(0, IntPoint.Zero));
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
@@ -297,7 +298,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
             var cardsRepository = new Repository<ConstructionCard>();
 
-            var mode = new BuildingModeService();
+            var mode = new BuildingModeService(new FieldService(0, IntPoint.Zero));
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
             new HandPresenter(handView, cardsRepository, mode, screenManager);
@@ -323,7 +324,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);
 
-            var mode = new BuildingModeService();
+            var mode = new BuildingModeService(new FieldService(0, IntPoint.Zero));
             var viewCollection = new ViewsCollection();
             screenManager.Bind(new ScreenManagerView(viewCollection));
             var handView = new HandView(viewCollection);

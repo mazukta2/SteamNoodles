@@ -48,19 +48,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             if (!CanPlace(scheme, position, rotation))
                 return new BuildingPoints(0);
 
-            var adjacentPoints = 0;
+            var adjacentPoints = BuildingPoints.Zero;
             foreach (var construction in GetAdjacentConstructions(scheme, position, rotation))
             {
                 if (scheme.AdjacencyPoints.HasAdjacencyBonusWith(construction.Scheme))
                 {
-                    adjacentPoints += scheme.AdjacencyPoints.GetAdjacencyBonusWith(construction.Scheme).Value;
+                    adjacentPoints += scheme.AdjacencyPoints.GetAdjacencyBonusWith(construction.Scheme);
                 }
             }
 
-            return new BuildingPoints(scheme.Points.Value + adjacentPoints);
+            return scheme.Points + adjacentPoints;
         }
 
-        public IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        private IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
             var result = new Dictionary<Construction, BuildingPoints>();
             if (!CanPlace(scheme, position, rotation))
@@ -87,7 +87,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             return CanPlace(card.Scheme, position, rotation);
         }
 
-        public bool CanPlace(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        private bool CanPlace(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
             return scheme.Placement
                 .GetOccupiedSpace(position, rotation)
@@ -152,20 +152,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 
         private IReadOnlyCollection<Construction> GetAdjacentConstructions(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
-            var adjecentsCells = GetListOfAdjacentCells(scheme, position, rotation);
-            var adjecentConstructions = new List<Construction>();
+            var adjacentCells = GetListOfAdjacentCells(scheme, position, rotation);
+            var adjacentConstructions = new List<Construction>();
             foreach (var construction in _constructions.Get())
             {
                 foreach (var occupiedCell in construction.GetOccupiedScace())
                 {
-                    if (adjecentsCells.Any(x => x == occupiedCell))
+                    if (adjacentCells.Any(x => x == occupiedCell))
                     {
-                        if (!adjecentConstructions.Contains(construction))
-                            adjecentConstructions.Add(construction);
+                        if (!adjacentConstructions.Contains(construction))
+                            adjacentConstructions.Add(construction);
                     }
                 }
             }
-            return adjecentConstructions.AsReadOnly();
+            return adjacentConstructions.AsReadOnly();
         }
     }
 }

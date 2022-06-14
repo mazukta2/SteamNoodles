@@ -9,57 +9,66 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
     public class BuildingModeService : IService
     {
+        private readonly FieldService _fieldService;
         private FieldPosition _fieldPosition;
         private FieldRotation _fieldRotation;
         private GameVector3 _targetPosition;
+        private ConstructionCard _card;
+        private IReadOnlyCollection<Construction> _constructionsHighlights = new List<Construction>();
 
+        public BuildingModeService(FieldService fieldService)
+        {
+            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
+        }
+        
         public event Action<bool> OnChanged = delegate { };
         public event Action OnPositionChanged = delegate { };
-        public event Action OnHighligtingChanged = delegate { };
-
-        public ConstructionCard Card { get; private set; }
-        public bool IsEnabled => Card != null;
-        public IReadOnlyCollection<Construction> ConstructionsHighlights { get; private set; } = new List<Construction>();
-
-        public BuildingModeService()
-        {
-        }
-
+        public event Action OnHighlightingChanged = delegate { };
+        
         public void Show(ConstructionCard constructionCard)
         {
-            Card = constructionCard;
+            _card = constructionCard;
             _fieldPosition = new FieldPosition(0, 0);
             _fieldRotation = new FieldRotation(FieldRotation.Rotation.Top);
-            OnChanged(IsEnabled);
+            OnChanged(IsEnabled());
         }
 
         public void Hide()
         {
-            Card = null;
-            OnChanged(IsEnabled);
+            _card = null;
+            OnChanged(IsEnabled());
+        }
+
+        public bool IsEnabled() => GetCard() != null;
+
+        public IReadOnlyCollection<Construction> GetConstructionsHighlights()
+        {
+            return _constructionsHighlights;
         }
 
         public void SetHighlight(IReadOnlyCollection<Construction> constructions)
         {
-            ConstructionsHighlights = constructions;
-            OnHighligtingChanged();
+            _constructionsHighlights = constructions;
+            OnHighlightingChanged();
         }
 
         public void SetTargetPosition(GameVector3 pointerPosition)
         {
             _targetPosition = pointerPosition;
-            //var size = _buildingModeService.Card.Scheme.Placement.GetRect(_buildingModeService.GetRotation());
-            //var fieldPosition = _fieldService.GetWorldConstructionToField(_pointerPosition, size);
-            //_buildingModeService.SetTargetPosition(_pointerPosition);
-            //_buildingModeService.SetGhostPosition(fieldPosition, _buildingModeService.GetRotation());
-
-            //SetPosition(fieldPosition, fieldRotation);
+            
+            var size = _card.Scheme.Placement.GetRect(_fieldRotation);
+            var fieldPosition = _fieldService.GetFieldPosition(pointerPosition, size);
+            _fieldPosition = fieldPosition;
             OnPositionChanged();
         }
 
-        public void SetGhostPosition(FieldPosition fieldPosition, FieldRotation fieldRotation)
+        public void SetTargetPosition(FieldPosition fieldPosition)
         {
-            SetPosition(fieldPosition, fieldRotation);
+            var size = _card.Scheme.Placement.GetRect(_fieldRotation);
+            _targetPosition = _fieldService.GetWorldPosition(_fieldPosition, size);
+            _fieldPosition = fieldPosition;
+            
+            OnPositionChanged();
         }
 
         public FieldPosition GetPosition()
@@ -77,12 +86,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             return _fieldRotation;
         }
 
-        private void SetPosition(FieldPosition fieldPosition, FieldRotation fieldRotation)
+        public ConstructionCard GetCard()
         {
-            _fieldPosition = fieldPosition;
+            return _card;
+        }
+
+        public void SetRotation(FieldRotation fieldRotation)
+        {
             _fieldRotation = fieldRotation;
             OnPositionChanged();
         }
-
     }
 }

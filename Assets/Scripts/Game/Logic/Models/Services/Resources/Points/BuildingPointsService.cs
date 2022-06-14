@@ -106,14 +106,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
         public void Change(BuildingPoints value, GameVector3 postion)
         {
             var targetLevel = _target.CurrentLevel;
-            _target.Value += value.Value;
+            _target.Value += value.AsInt();
 
             if (_target.CurrentLevel != targetLevel)
                 OnTargetLevelChanged(_target.CurrentLevel - targetLevel);
 
-            if (value.Value > 0)
+            if (value.AsInt() > 0)
             {
-                var animation = new AddPointsAnimation(value.Value, _pieceSpawningTime, _pieceMovingTime, _time, postion);
+                var animation = new AddPointsAnimation(value.AsInt(), _pieceSpawningTime, _pieceMovingTime, _time, postion);
                 animation.OnDispose += Animation_OnDispose;
                 animation.OnPieceReachDestination += Animation_OnPieceReachDestination;
                 _animations.Add(animation);
@@ -132,8 +132,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points
                     OnMaxTargetLevelUp();
                 }
             }
-            else if (value.Value < 0)
-                ChangePointsInner(value.Value);
+            else if (value.AsInt() < 0)
+                ChangePointsInner(value.AsInt());
         }
 
         private void ChangePointsInner(int changes)

@@ -56,7 +56,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var flow = services.Add(new StageTurnService(constructionsRep, field, building, queue));
             var rewards = services.Add(new RewardsService(level, hand, schemes, points));
             var unitsMovement = services.Add(new UnitsMovementsService(unitsRep, time));
-            var buildingMode = services.Add(new BuildingModeService());
+            var buildingMode = services.Add(new BuildingModeService(field));
             
             rewards.Start();
         }

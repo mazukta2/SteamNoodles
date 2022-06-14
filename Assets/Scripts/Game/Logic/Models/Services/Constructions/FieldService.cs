@@ -17,53 +17,42 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             _mapSize = mapSize;
         }
 
-        public GameVector3 GetWorldPosition(Construction construction)
-        {
-            return GetMapPositionByGridPosition(construction.Position.Value, construction.GetSize());
-        }
-
-        public FieldPosition GetWorldConstructionToField(GameVector3 world, IntRect size)
-        {
-            return new FieldPosition(GetGridPositionByMapPosition(world, size));
-        }
-
         public FieldBoundaries GetBoundaries()
         {
             return new FieldBoundaries(_mapSize);
         }
 
-        public GameVector3 GetWorldPosition(FieldPosition position, IntRect sise)
+        public GameVector3 GetWorldPosition(Construction construction)
         {
-            return GetMapPositionByGridPosition(position.Value, sise);
+            return GetWorldPosition(construction.Position, construction.GetSize());
+        }
+
+        public GameVector3 GetWorldPosition(FieldPosition position, IntRect size)
+        {
+            var offset = GetOffset(size);
+            return new GameVector3(position.X * _cellSize, 0, position.Y * _cellSize) + offset;
         }
 
         // any position to cell position
-        public IntPoint GetGridPositionByMapPosition(GameVector3 position, IntRect objectSize)
+        public FieldPosition GetFieldPosition(GameVector3 position, IntRect objectSize)
         {
             var offset = GetOffset(objectSize);
 
             var pos = position - offset;
             var mousePosX = Math.Round(pos.X / _cellSize);
             var mousePosY = Math.Round(pos.Z / _cellSize);
-            return new IntPoint((int)Math.Ceiling(mousePosX), (int)Math.Ceiling(mousePosY));
-        }
-
-        // cell position to position on map
-        public GameVector3 GetMapPositionByGridPosition(IntPoint worldCell, IntRect objectSize)
-        {
-            var offset = GetOffset(objectSize);
-            return new GameVector3(worldCell.X * _cellSize, 0, worldCell.Y * _cellSize) + offset;
+            return new FieldPosition((int)Math.Ceiling(mousePosX), (int)Math.Ceiling(mousePosY));
         }
 
         // any position to position on map
         public GameVector3 GetAlignWithAGrid(GameVector3 position, IntRect objectSize)
         {
-            var worldCell = GetGridPositionByMapPosition(position, objectSize);
-            return GetMapPositionByGridPosition(worldCell, objectSize);
+            var worldCell = GetFieldPosition(position, objectSize);
+            return GetWorldPosition(worldCell, objectSize);
         }
 
         // object offset
-        public GameVector3 GetOffset(IntRect objectSize)
+        private GameVector3 GetOffset(IntRect objectSize)
         {
             var halfCell = _cellSize / 2;
             var offset = new GameVector3(objectSize.Width * halfCell - halfCell, 0, objectSize.Height * halfCell - halfCell);
