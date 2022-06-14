@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -32,7 +33,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             foreach (var item in cards)
                 HandleCardAdded(item);
             _repository.OnAdded += HandleCardAdded;
-            _repository.OnRemoved += HandleCardRemoved;
 
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
@@ -44,25 +44,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             _buildingService.OnChanged -= HandleVisualModesChanged;
             _repository.OnAdded -= HandleCardAdded;
-            _repository.OnRemoved += HandleCardRemoved;
         }
 
         private void HandleCardAdded(ConstructionCard obj)
         {
             var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
-            //_commands.Execute(new AddHandConstructionCommand(entity, _view.Cards, _view.CardPrototype));
-        }
-
-        private void HandleCardRemoved(ConstructionCard obj)
-        {
-            //_commands.Execute(new RemoveHandConstructionCommand(_view.Cards));
+            view.Init(obj);
         }
 
         private void CancelClick()
         {
-            //ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x));
-            //_commands.Execute(new OpenMainScreenCommand());
-            //_commands.Execute(new OpenMainScreenCommand());
+            //ScreenManagerPresenter.Default.Open<IMainScreenView>(x => x.Init());
         }
 
         private void HandleVisualModesChanged(bool state)

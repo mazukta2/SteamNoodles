@@ -109,7 +109,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private void OnExitTap()
         {
-            ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x));
+            //ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x));
         }
 
     }

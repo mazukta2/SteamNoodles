@@ -7,7 +7,7 @@ using System;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui
 {
-    public class ScreenManagerView : ViewWithPresenter<ScreenManagerPresenter>, IScreenManagerView
+    public class ScreenManagerView : View, IScreenManagerView
     {
         public IViewContainer Screen { get; }
 

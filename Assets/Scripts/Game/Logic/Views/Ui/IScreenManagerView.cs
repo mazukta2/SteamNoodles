@@ -1,15 +1,17 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 {
-    public interface IScreenManagerView : IViewWithGenericPresenter<ScreenManagerPresenter>, IViewWithDefaultPresenter
+    public interface IScreenManagerView : IView, IViewWithDefaultPresenter
     {
         IViewContainer Screen { get; }
 
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
-            ScreenManagerPresenter.Default = new ScreenManagerPresenter(this);
+            IPresenterServices.Default.Get<ScreenService>().Bind(this);
         }
     }
 }

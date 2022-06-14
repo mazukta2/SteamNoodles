@@ -12,6 +12,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Tests.Cases;
 using NUnit.Framework;
@@ -185,7 +186,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view, cardsRepository);
+            new HandConstructionPresenter(view, link, cardsRepository);
 
             Assert.AreEqual("1", view.Amount.Value);
             card.Add(new CardAmount(1));
@@ -218,7 +219,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view, cardsRepository);
+            new HandConstructionPresenter(view, link, cardsRepository);
 
             Assert.AreEqual("image", view.Image.Path);
 
@@ -240,13 +241,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view, cardsRepository);
+            new HandConstructionPresenter(view, link, cardsRepository);
 
-            //Assert.IsTrue(commands.IsEmpty());
-            //view.SetHighlight(true);
-            //Assert.IsTrue(commands.Last<OpenConstructionTooltipCommand>());
-            //view.SetHighlight(false);
-            //Assert.IsTrue(commands.Last<CloseConstructionTooltipCommand>());
+            Assert.IsNull(view.TooltipContainer.FindView<IHandConstructionTooltipView>());
+            view.SetHighlight(true);
+            Assert.IsNotNull(view.TooltipContainer.FindView<IHandConstructionTooltipView>());
+            view.SetHighlight(false);
+            Assert.IsNull(view.TooltipContainer.FindView<IHandConstructionTooltipView>());
 
             viewCollection.Dispose();
         }
@@ -265,11 +266,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 
             var viewCollection = new ViewsCollection();
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(link, view, cardsRepository);
+            new HandConstructionPresenter(view, link, cardsRepository);
 
             view.Button.Click();
 
-            //Assert.IsTrue(commands.Only<OpenBuildingScreenCommand>());
+            Assert.IsNotNull(viewCollection.FindView<IBuildScreenView>());
 
             viewCollection.Dispose();
         }
@@ -277,41 +278,41 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test, Order(TestCore.PresenterOrder)]
         public void HandAnimationsPlayedInBuildingMode()
         {
-            //var cardsRepository = new Repository<ConstructionCard>();
+            var cardsRepository = new Repository<ConstructionCard>();
 
-            //var mode = new BuildingModeService();
-            //var viewCollection = new ViewsCollection();
-            //var handView = new HandView(viewCollection);
-            //new HandPresenter(handView, cardsRepository, mode);
+            var mode = new BuildingModeService();
+            var viewCollection = new ViewsCollection();
+            var handView = new HandView(viewCollection);
+            new HandPresenter(handView, cardsRepository, mode);
 
-            //Assert.AreEqual("Choose", handView.Animator.Animation);
-            //mode.Show(new ConstructionCard(new ConstructionScheme()));
-            //Assert.AreEqual("Build", handView.Animator.Animation);
-            //mode.Hide();
-            //Assert.AreEqual("Choose", handView.Animator.Animation);
+            Assert.AreEqual("Choose", handView.Animator.Animation);
+            mode.Show(new ConstructionCard(new ConstructionScheme()));
+            Assert.AreEqual("Build", handView.Animator.Animation);
+            mode.Hide();
+            Assert.AreEqual("Choose", handView.Animator.Animation);
 
-            //viewCollection.Dispose();
+            viewCollection.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
         public void CancelWorks()
         {
-            //var schemesRepository = new Repository<ConstructionScheme>();
-            //var cardsRepository = new Repository<ConstructionCard>();
+            var schemesRepository = new Repository<ConstructionScheme>();
+            var cardsRepository = new Repository<ConstructionCard>();
 
-            //var scheme = new ConstructionScheme();
-            //schemesRepository.Add(scheme);
+            var scheme = new ConstructionScheme();
+            schemesRepository.Add(scheme);
 
-            //var mode = new BuildingModeService();
-            //var viewCollection = new ViewsCollection();
-            //var handView = new HandView(viewCollection);
-            //new HandPresenter(handView, cardsRepository, mode);
+            var mode = new BuildingModeService();
+            var viewCollection = new ViewsCollection();
+            var handView = new HandView(viewCollection);
+            new HandPresenter(handView, cardsRepository, mode);
 
-            //handView.CancelButton.Click();
+            handView.CancelButton.Click();
 
-            ////Assert.IsTrue(commands.Last<OpenMainScreenCommand>());
+            Assert.IsNotNull(viewCollection.FindView<IMainScreenView>());
 
-            //viewCollection.Dispose();
+            viewCollection.Dispose();
         }
 
         [TearDown]

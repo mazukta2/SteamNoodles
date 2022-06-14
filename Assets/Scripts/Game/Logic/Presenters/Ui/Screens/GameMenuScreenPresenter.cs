@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private void CloseClick()
         {
-            ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x));
+            //ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x));
         }
 
         private void ExitGameClick()

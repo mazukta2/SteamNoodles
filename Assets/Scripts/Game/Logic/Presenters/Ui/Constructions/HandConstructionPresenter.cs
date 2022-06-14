@@ -2,7 +2,9 @@
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -16,10 +18,18 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private CardAmount _currentAmount;
         private bool _isModelDisposed;
 
-        public HandConstructionPresenter(ConstructionCard model,
-            IHandConstructionView view, IPresenterRepository<ConstructionCard> cards) : base(view)
+        public HandConstructionPresenter(IHandConstructionView view, ConstructionCard model) 
+            : this(view, model, 
+                  IPresenterServices.Default.Get<IPresenterRepository<ConstructionCard>>())
+        {
+
+        }
+
+        public HandConstructionPresenter(IHandConstructionView view, ConstructionCard model,
+             IPresenterRepository<ConstructionCard> cards) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
+            _model = model ?? throw new ArgumentNullException(nameof(model));
             _cards = cards ?? throw new ArgumentNullException(nameof(cards));
             _animations = new HandConstructionsAnimations(view);
 
@@ -48,8 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleClick()
         {
-            //ScreenManagerPresenter.Default.Open<IBuildScreenView>(view => new BuildScreenPresenter(view, Card));
-            //_commands.Execute(new OpenBuildingScreenCommand(_model.Get()));
+            //ScreenManagerPresenter.Default.Open<IBuildScreenView>(view => view.Init(_model));
         }
 
         private void UpdateAmount()
@@ -97,16 +106,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void _view_OnHighlihgtedEnter()
         {
-            //Container.Clear();
-            //var view = Container.Spawn<IHandConstructionTooltipView>(Prefab);
-            //new HandConstructionTooltipPresenter(view).SetModel(Card);
-            //_commands.Execute(new OpenConstructionTooltipCommand(_model.Get(), _view.TooltipContainer, _view.TooltipPrefab));
+            _view.TooltipContainer.Clear();
+            var view = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
+            view.Init(_model);
         }
 
         private void _view_OnHighlihgtedExit()
         {
-            //_tooltipContainer.Clear();
-            //_commands.Execute(new CloseConstructionTooltipCommand(_view.TooltipContainer));
+            _view.TooltipContainer.Clear();
         }
 
     }

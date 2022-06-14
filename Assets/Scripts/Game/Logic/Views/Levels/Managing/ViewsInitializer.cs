@@ -33,7 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
             }
 
             IEnumerable<TView> SetDefaitPresenterForViews<TView>()
-                where TView : IViewWithPresenter, IViewWithDefaultPresenter
+                where TView : IViewWithDefaultPresenter
             {
                 var views = _collection.FindViews<TView>().ToList();
                 foreach (var item in views)

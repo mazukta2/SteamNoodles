@@ -28,8 +28,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
 
             var keyManager = new GameKeysManager();
             IGameKeysManager.Default = keyManager;
-            ScreenManagerPresenter.Default.Open<IBuildScreenView>(x => 
-                new BuildScreenPresenter(x, card, buildingModeService, IGameKeysManager.Default));
+            //ScreenManagerPresenter.Default.Open<IBuildScreenView>(x => 
+            //    new BuildScreenPresenter(x, card, buildingModeService, IGameKeysManager.Default));
 
             Assert.IsNotNull(screenManager.Screen.FindView<BuildScreenView>());
             Assert.IsNull(screenManager.Screen.FindView<MainScreenView>());
@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             assets.AddPrefab("Screens/MainScreen", new DefaultViewPrefab(x => new MainScreenView(x)));
 
             var view = new ScreenManagerView(viewCollection);
-            ScreenManagerPresenter.Default = new ScreenManagerPresenter(view, new GameAssetsService(assets));
+            //ScreenManagerPresenter.Default = new ScreenManagerPresenter(view, new GameAssetsService(assets));
 
             return (link, view);
         }

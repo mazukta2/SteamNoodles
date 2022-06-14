@@ -37,12 +37,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
 
             var viewCollection = new ViewsCollection();
             var view = new ScreenManagerView(viewCollection);
-            ScreenManagerPresenter.Default = new ScreenManagerPresenter(view, new GameAssetsService(assets));
+            //ScreenManagerPresenter.Default = new ScreenManagerPresenter(view, new GameAssetsService(assets));
 
             var keyManager = new GameKeysManager();
             IGameKeysManager.Default = keyManager;
 
-            ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x, keyManager));
+            //ScreenManagerPresenter.Default.Open<IMainScreenView>(x => new MainScreenPresenter(x, keyManager));
 
             //Assert.IsFalse(commands.Last<OpenGameMenuScreenCommand>());
 
