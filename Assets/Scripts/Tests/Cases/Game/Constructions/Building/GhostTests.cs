@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 {
@@ -28,8 +29,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostCreatedInBuildingMode()
         {
-            var buildingMode = new BuildingModeService(new FieldService(0, IntPoint.Zero));
+            var fieldService = new FieldService(0, IntPoint.Zero);
 
+            var controls = new GameControlsService(new ControlsMock());
+            var buildingMode = new GhostService(fieldService,controls);
+            
             var scheme = new ConstructionScheme();
 
             var viewCollection = new ViewsCollection();
@@ -47,6 +51,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             //Assert.IsTrue(commands.Last<RemoveGhostCommand>());
 
             viewCollection.Dispose();
+            buildingMode.Dispose();
+            controls.Dispose();
         }
 
 
@@ -59,7 +65,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var scheme = new ConstructionScheme();
 
             var fieldService = new FieldService(10, new IntPoint(3, 3));
-            var buildingMode = new BuildingModeService(fieldService);
+            var controls = new GameControlsService(new ControlsMock());
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
@@ -78,6 +85,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             constructionService.Dispose();
+            buildingMode.Dispose();
+            controls.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -101,7 +110,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 "", "", new Requirements());
 
             var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
-            var buildingMode = new BuildingModeService(fieldService);
+            var controls = new GameControlsService(new ControlsMock());
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
@@ -126,6 +136,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             constructionService.Dispose();
+            buildingMode.Dispose();
+            controls.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -148,7 +160,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 "", "", new Requirements());
 
             var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
-            var buildingMode = new BuildingModeService(fieldService);
+            var buildingMode = new GhostService(fieldService,controls);
 
             var viewCollection = new ViewsCollection();
 
@@ -177,6 +189,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             controls.Dispose();
+            buildingMode.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -200,7 +213,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 "", "", new Requirements());
 
             var fieldService = new FieldService(0.5f, new IntPoint(7, 7));
-            var buildingMode = new BuildingModeService(fieldService);
+            var buildingMode = new GhostService(fieldService,controls);
             var viewCollection = new ViewsCollection();
 
             buildingMode.Show(new ConstructionCard(scheme));
@@ -216,6 +229,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             controls.Dispose();
+            buildingMode.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -235,7 +249,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var card = new ConstructionCard(scheme);
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
-            var buildingMode = new BuildingModeService(fieldService);
+            var controls = new GameControlsService(new ControlsMock());
+            var buildingMode = new GhostService(fieldService,controls);
             var viewCollection = new ViewsCollection();
 
             buildingMode.Show(card);
@@ -259,6 +274,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             constructionsService.Dispose();
+            buildingMode.Dispose();
+            controls.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -280,7 +297,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 "", "", new Requirements() { DownEdge = true });
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
-            var buildingMode = new BuildingModeService(fieldService);
+            var controls = new GameControlsService(new ControlsMock());
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
             var viewCollection = new ViewsCollection();
@@ -306,6 +324,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             constructionService.Dispose();
             viewCollection.Dispose();
+            buildingMode.Dispose();
+            controls.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -327,7 +347,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 "", "", new Requirements() { DownEdge = true });
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
-            var buildingMode = new BuildingModeService(fieldService);
+            var controls = new GameControlsService(new ControlsMock());
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             var viewCollection = new ViewsCollection();
 
@@ -353,6 +374,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             constructionService.Dispose();
+            buildingMode.Dispose();
+            controls.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -362,7 +385,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var controls = new GameControlsService(mockControls);
 
             var fieldService = new FieldService(1, new IntPoint(3, 3));
-            var buildingMode = new BuildingModeService(fieldService);
+            var buildingMode = new GhostService(fieldService,controls);
 
             var scheme = new ConstructionScheme(new Uid(),
                 DefId.None,
@@ -383,6 +406,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             controls.Dispose();
+            buildingMode.Dispose();
         }
 
         [Test]
@@ -403,7 +427,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 "", "", new Requirements());
 
             var fieldService = new FieldService(1, new IntPoint(5, 5));
-            var buildingMode = new BuildingModeService(fieldService);
+            var controls = new GameControlsService(new ControlsMock());
+            var buildingMode = new GhostService(fieldService,controls);
 
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             var viewCollection = new ViewsCollection();
@@ -457,6 +482,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             constructionService.Dispose();
+            buildingMode.Dispose();
+            controls.Dispose();
 
             void CheckPosition(int[,] expected)
             {

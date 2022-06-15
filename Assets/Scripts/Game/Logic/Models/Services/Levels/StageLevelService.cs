@@ -15,6 +15,7 @@ using Game.Assets.Scripts.Game.Logic.Repositories;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 {
@@ -56,7 +57,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var flow = services.Add(new StageTurnService(constructionsRep, field, building, queue));
             var rewards = services.Add(new RewardsService(level, hand, schemes, points));
             var unitsMovement = services.Add(new UnitsMovementsService(unitsRep, time));
-            var buildingMode = services.Add(new BuildingModeService(field));
             
             rewards.Start();
         }
@@ -77,7 +77,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             _services.Remove<StageTurnService>();
             _services.Remove<RewardsService>();
             _services.Remove<UnitsMovementsService>();
-            _services.Remove<BuildingModeService>();
+            _services.Remove<GhostService>();
 
             _services.Remove<Repository<ConstructionCard>>();
             _services.Remove<Repository<Construction>>();

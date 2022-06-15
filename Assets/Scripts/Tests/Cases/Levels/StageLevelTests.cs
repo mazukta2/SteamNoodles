@@ -24,6 +24,8 @@ using Game.Assets.Scripts.Tests.Environment;
 using NUnit.Framework;
 using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 
 namespace Game.Assets.Scripts.Tests.Cases.Levels
 {
@@ -36,6 +38,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             manager.Add(new Repository<ConstructionScheme>());
             manager.Add(new Repository<UnitType>());
             manager.Add(new GameAssetsService(new AssetsMock()));
+            manager.Add(new GameControlsService(new ControlsMock()));
+            
             IModelServices.Default = manager;
             IPresenterServices.Default = manager;
             IGameRandom.Default = new SessionRandom();
@@ -127,8 +131,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsTrue(manager.Has<BuildingService>());
             Assert.IsTrue(manager.Has<SchemesService>());
             Assert.IsTrue(manager.Has<CoinsService>());
-            Assert.IsTrue(manager.Has<BuildingModeService>());
-
 
             Assert.IsTrue(manager.Has<Repository<ConstructionCard>>());
             Assert.IsTrue(manager.Has<Repository<Construction>>());
@@ -152,8 +154,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsFalse(manager.Has<BuildingService>());
             Assert.IsFalse(manager.Has<SchemesService>());
             Assert.IsFalse(manager.Has<CoinsService>());
-            Assert.IsFalse(manager.Has<BuildingModeService>());
-
 
             Assert.IsFalse(manager.Has<Repository<ConstructionCard>>());
             Assert.IsFalse(manager.Has<Repository<Construction>>());

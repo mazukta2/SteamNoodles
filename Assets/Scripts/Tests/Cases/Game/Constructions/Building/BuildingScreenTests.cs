@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;
@@ -21,13 +22,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void EscFromBuildingScreen()
         {
-            var buildingModeService = new BuildingModeService(new FieldService(0, IntPoint.Zero));
             var viewCollection = new ViewsCollection();
             var view = new ScreenManagerView(viewCollection);
 
             var (card, screenManager) = Setup(view);
 
             var controls = new GameControlsService(new ControlsMock());
+            var buildingModeService = new GhostService(new FieldService(0, IntPoint.Zero), controls);
 
             screenManager.Open<IBuildScreenView>(x => 
                 new BuildScreenPresenter(x, card, buildingModeService, screenManager, controls));
@@ -42,6 +43,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             controls.Dispose();
+            buildingModeService.Dispose();
         }
 
         private (ConstructionCard, ScreenService) Setup(ScreenManagerView view)

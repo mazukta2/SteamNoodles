@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;
@@ -25,7 +26,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
 
-            var buildingModeService = new BuildingModeService(new FieldService(1, IntPoint.One));
+            // var buildingModeService = new GhostService(new FieldService(1, IntPoint.One));
 
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);

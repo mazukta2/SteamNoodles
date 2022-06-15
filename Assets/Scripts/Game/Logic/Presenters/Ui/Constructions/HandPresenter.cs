@@ -6,27 +6,28 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandPresenter : BasePresenter<IHandView>
     {
         private readonly IPresenterRepository<ConstructionCard> _repository;
-        private readonly BuildingModeService _buildingService;
+        private readonly GhostService _buildingService;
         private readonly ScreenService _screenService;
         private readonly IHandView _view;
 
         public HandPresenter(IHandView view)
             : this(view,
                   IPresenterServices.Default?.Get<IPresenterRepository<ConstructionCard>>(),
-                  IPresenterServices.Default?.Get<BuildingModeService>(),
+                  IPresenterServices.Default?.Get<GhostService>(),
                   IPresenterServices.Default?.Get<ScreenService>())
         {
         }
 
         public HandPresenter(IHandView view,
             IPresenterRepository<ConstructionCard> repository,
-            BuildingModeService buildingService,
+            GhostService buildingService,
             ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));

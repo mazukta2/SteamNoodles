@@ -1,26 +1,46 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using System;
+using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using System;
-using System.Collections.Generic;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions
 {
-    public class BuildingModeService : IService
+    public class GhostService : Disposable, IService
     {
         private readonly FieldService _fieldService;
+        private readonly GameControlsService _controlsService;
         private FieldPosition _fieldPosition;
         private FieldRotation _fieldRotation;
         private GameVector3 _targetPosition;
         private ConstructionCard _card;
         private IReadOnlyCollection<Construction> _constructionsHighlights = new List<Construction>();
 
-        public BuildingModeService(FieldService fieldService)
+        public GhostService() : this(
+            IPresenterServices.Default.Get<FieldService>(),
+            IPresenterServices.Default.Get<GameControlsService>())
         {
-            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
+            
         }
         
+        public GhostService(FieldService fieldService, GameControlsService controlsService)
+        {
+            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
+            _controlsService = controlsService ?? throw new ArgumentNullException(nameof(controlsService));
+            _controlsService.OnLevelPointerMoved += HandleOnOnLevelPointerMoved;
+            _controlsService.OnLevelClick += HandleOnLevelClick;
+        }
+
+        protected override void DisposeInner()
+        {
+            _controlsService.OnLevelClick -= HandleOnLevelClick;
+            _controlsService.OnLevelPointerMoved -= HandleOnOnLevelPointerMoved;
+        }
+
         public event Action<bool> OnChanged = delegate { };
         public event Action OnPositionChanged = delegate { };
         public event Action OnHighlightingChanged = delegate { };
@@ -96,5 +116,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             _fieldRotation = fieldRotation;
             OnPositionChanged();
         }
+        
+        private void HandleOnOnLevelPointerMoved(GameVector3 target)
+        {
+            SetTargetPosition(target);
+        }
+        
+        private void HandleOnLevelClick()
+        {
+        }
+
     }
 }

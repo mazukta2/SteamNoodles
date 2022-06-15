@@ -9,6 +9,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
@@ -18,12 +19,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private IBuildScreenView _view;
         private readonly ConstructionCard _entity;
-        private readonly BuildingModeService _buildingModeService;
+        private readonly GhostService _ghostService;
         private readonly ScreenService _screenService;
 
         public BuildScreenPresenter(IBuildScreenView view, ConstructionCard constructionCard) : this(
                 view, constructionCard,
-                IPresenterServices.Default?.Get<BuildingModeService>(),
+                IPresenterServices.Default?.Get<GhostService>(),
                 IPresenterServices.Default?.Get<ScreenService>(),
                 IPresenterServices.Default?.Get<GameControlsService>())
         {
@@ -31,16 +32,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         public BuildScreenPresenter(IBuildScreenView view,
             ConstructionCard constructionCard,
-            BuildingModeService buildingModeService,
+            GhostService ghostService,
             ScreenService screenService,
             GameControlsService gameKeysManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _entity = constructionCard ?? throw new ArgumentNullException(nameof(constructionCard));
 
-            _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
+            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
             _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
-            _buildingModeService.Show(_entity);
+            _ghostService.Show(_entity);
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
             _exitKey.OnTap += OnExitTap;
         }
@@ -48,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         protected override void DisposeInner()
         {
             _exitKey.OnTap -= OnExitTap;
-            _buildingModeService.Hide();
+            _ghostService.Hide();
         }
 
         private void OnExitTap()

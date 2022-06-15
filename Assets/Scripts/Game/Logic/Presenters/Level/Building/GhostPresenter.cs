@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
@@ -15,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         //public FieldRotation Rotation { get; private set; }
 
         private readonly IGhostView _view;
-        private readonly BuildingModeService _buildingModeService;
+        private readonly GhostService _ghostService;
         private readonly FieldService _fieldService;
         private readonly GameControlsService _controls;
 
@@ -28,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         //private IConstructionModelView _modelView;
 
         public GhostPresenter(IGhostView view) : this(view,
-            IPresenterServices.Default.Get<BuildingModeService>(),
+            IPresenterServices.Default.Get<GhostService>(),
             IPresenterServices.Default.Get<FieldService>(),
             IPresenterServices.Default.Get<GameControlsService>())
         {
@@ -36,16 +37,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         }
 
         public GhostPresenter(IGhostView view,
-            BuildingModeService buildingModeService,
+            GhostService ghostService,
             FieldService fieldService,
             GameControlsService controls) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
+            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
             _controls = controls ?? throw new ArgumentNullException(nameof(controls));
 
-            if (!_buildingModeService.IsEnabled()) throw new Exception("Ghost can exist only in building mode");
+            if (!_ghostService.IsEnabled()) throw new Exception("Ghost can exist only in building mode");
 
 
             //_time = time;
@@ -67,11 +68,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
             //_rotateLeft.OnTap += HandleRotateLeftTap;
             //_rotateRight.OnTap += HandleRotateRightTap;
-            _buildingModeService.OnChanged += HandleModeOnChanged;
-            _buildingModeService.OnPositionChanged += HandleOnPositionChanged;
-            _controls.OnLevelClick += HandleOnLevelClick;
-            _controls.OnLevelPointerMoved += HandleOnPointerMoved;
-
+            _ghostService.OnChanged += HandleModeOnChanged;
+            _ghostService.OnPositionChanged += HandleOnPositionChanged;
 
             HandleOnPointerMoved(_controls.PointerLevelPosition);
         }
@@ -114,8 +112,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         {
             _controls.OnLevelClick -= HandleOnLevelClick;
             _controls.OnLevelPointerMoved -= HandleOnPointerMoved;
-            _buildingModeService.OnChanged -= HandleModeOnChanged;
-            _buildingModeService.OnPositionChanged -= HandleOnPositionChanged;
+            _ghostService.OnChanged -= HandleModeOnChanged;
+            _ghostService.OnPositionChanged -= HandleOnPositionChanged;
 
             //_rotateLeft.OnTap -= HandleRotateLeftTap;
             //_rotateRight.OnTap -= HandleRotateRightTap;
@@ -142,7 +140,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         private void HandleOnPointerMoved(GameVector3 worldPosition)
         {
-            _buildingModeService.SetTargetPosition(worldPosition);
+            _ghostService.SetTargetPosition(worldPosition);
         }
 
         //private bool CanPlace()
@@ -190,10 +188,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         private void HandleOnPositionChanged()
         {
-            var size = _buildingModeService.GetCard().Scheme.Placement.GetRect(_buildingModeService.GetRotation());
-            var worldPosition = _fieldService.GetWorldPosition(_buildingModeService.GetPosition(), size);
+            var size = _ghostService.GetCard().Scheme.Placement.GetRect(_ghostService.GetRotation());
+            var worldPosition = _fieldService.GetWorldPosition(_ghostService.GetPosition(), size);
             _view.LocalPosition.Value = worldPosition;
-            _view.Rotator.Rotation = FieldRotation.ToDirection(_buildingModeService.GetRotation());
+            _view.Rotator.Rotation = FieldRotation.ToDirection(_ghostService.GetRotation());
         }
 
     }

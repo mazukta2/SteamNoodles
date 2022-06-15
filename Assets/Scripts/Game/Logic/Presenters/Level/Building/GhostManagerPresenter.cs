@@ -1,6 +1,7 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
@@ -8,28 +9,28 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class GhostManagerPresenter : BasePresenter<IGhostManagerView>
     {
         private IGhostManagerView _view;
-        private readonly BuildingModeService _buildingModeService;
+        private readonly GhostService _ghostService;
 
         public GhostManagerPresenter(IGhostManagerView view) 
             : this(view,
-                  IPresenterServices.Default?.Get<BuildingModeService>())
+                  IPresenterServices.Default?.Get<GhostService>())
         {
         }
 
-        public GhostManagerPresenter(IGhostManagerView view, BuildingModeService buildingModeService) : base(view)
+        public GhostManagerPresenter(IGhostManagerView view, GhostService ghostService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
-            _buildingModeService.OnChanged += HandleBuildingModeChanged;
+            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
+            _ghostService.OnChanged += HandleGhostChanged;
         }
 
         protected override void DisposeInner()
         {
-            _buildingModeService.OnChanged -= HandleBuildingModeChanged;
+            _ghostService.OnChanged -= HandleGhostChanged;
             RemoveGhost();
         }
 
-        private void HandleBuildingModeChanged(bool value)
+        private void HandleGhostChanged(bool value)
         {
             if (value)
                 CreateGhost();

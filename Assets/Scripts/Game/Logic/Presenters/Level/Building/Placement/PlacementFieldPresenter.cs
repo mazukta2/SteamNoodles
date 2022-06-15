@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
@@ -13,25 +14,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
     public class PlacementFieldPresenter : BasePresenter<IPlacementFieldView>
     {
         private IPlacementFieldView _view;
-        private BuildingModeService _buildingModeService;
+        private GhostService _ghostService;
         private readonly FieldService _fieldService;
         private readonly ConstructionsService _constructionsService;
         private List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
-            IPresenterServices.Default?.Get<BuildingModeService>(),
+            IPresenterServices.Default?.Get<GhostService>(),
             IPresenterServices.Default?.Get<FieldService>(),
             IPresenterServices.Default?.Get<ConstructionsService>())
         {
         }
 
         public PlacementFieldPresenter(IPlacementFieldView view,
-            BuildingModeService buildingModeService,
+            GhostService ghostService,
             FieldService fieldService,
             ConstructionsService constructionsService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
+            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
             _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
 
@@ -44,8 +45,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                 }
             }
 
-            _buildingModeService.OnChanged += HandleModeOnChanged;
-            _buildingModeService.OnPositionChanged += HandleOnPositionChanged;
+            _ghostService.OnChanged += HandleModeOnChanged;
+            _ghostService.OnPositionChanged += HandleOnPositionChanged;
 
             _constructionsService.OnAdded += HandleConstructionsOnAdded;
             _constructionsService.OnRemoved += HandleConstructionsOnRemoved;
@@ -55,8 +56,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         protected override void DisposeInner()
         {
-            _buildingModeService.OnChanged -= HandleModeOnChanged;
-            _buildingModeService.OnPositionChanged -= HandleOnPositionChanged;
+            _ghostService.OnChanged -= HandleModeOnChanged;
+            _ghostService.OnPositionChanged -= HandleOnPositionChanged;
 
             _constructionsService.OnAdded -= HandleConstructionsOnAdded;
             _constructionsService.OnRemoved -= HandleConstructionsOnRemoved;
@@ -82,11 +83,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         {
             IReadOnlyCollection<FieldPosition> ocuppiedCells = null;
             var occupiedByBuildings = _constructionsService.GetAllOccupiedSpace();
-            if (_buildingModeService.IsEnabled())
+            if (_ghostService.IsEnabled())
             {
-                var scheme = _buildingModeService.GetCard().Scheme;
+                var scheme = _ghostService.GetCard().Scheme;
                 ocuppiedCells = scheme.Placement
-                    .GetOccupiedSpace(_buildingModeService.GetPosition(), _buildingModeService.GetRotation());
+                    .GetOccupiedSpace(_ghostService.GetPosition(), _ghostService.GetRotation());
             }
 
             foreach (var cell in _cells)
@@ -96,10 +97,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                 if (occupiedByBuildings.Any(x => x.Value == cell.Position))
                     state = CellPlacementStatus.IsUnderConstruction;
 
-                if (_buildingModeService.IsEnabled())
+                if (_ghostService.IsEnabled())
                 {
-                    var scheme = _buildingModeService.GetCard().Scheme;
-                    if (_constructionsService.IsFreeCell(scheme, new FieldPosition(cell.Position), _buildingModeService.GetRotation()))
+                    var scheme = _ghostService.GetCard().Scheme;
+                    if (_constructionsService.IsFreeCell(scheme, new FieldPosition(cell.Position), _ghostService.GetRotation()))
                         state = CellPlacementStatus.IsReadyToPlace;
 
                     if (ocuppiedCells.Any(x => x.Value == cell.Position))

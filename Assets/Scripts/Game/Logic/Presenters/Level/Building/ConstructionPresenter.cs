@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
@@ -14,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     {
         private readonly IConstructionView _constructionView;
         private readonly Construction _construction;
-        private readonly BuildingModeService _buildingModeService;
+        private readonly GhostService _ghostService;
         private readonly ConstructionsService _constructionsService;
         private readonly GameAssetsService _assets;
 
@@ -23,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         public ConstructionPresenter(IConstructionView view, Construction construction)
             : this(view, construction,
-                  IPresenterServices.Default?.Get<BuildingModeService>(),
+                  IPresenterServices.Default?.Get<GhostService>(),
                   IPresenterServices.Default?.Get<ConstructionsService>(),
                   IPresenterServices.Default?.Get<GameAssetsService>(),
                   IPresenterServices.Default?.Get<GameControlsService>())
@@ -33,14 +34,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         public ConstructionPresenter(IConstructionView view,
             Construction construction,
-            BuildingModeService buildingModeService,
+            GhostService ghostService,
             ConstructionsService constructionsService,
             GameAssetsService assets,
             GameControlsService controls) : base(view)
         {
             _constructionView = view ?? throw new ArgumentNullException(nameof(view));
             _construction = construction ?? throw new ArgumentNullException(nameof(construction));
-            _buildingModeService = buildingModeService ?? throw new ArgumentNullException(nameof(buildingModeService));
+            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
             _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             _constructionView.Position.Value = _constructionsService.GetWorldPosition(construction);
@@ -50,8 +51,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
             _modelView.Animator.OnFinished += DropFinished;
             _constructionsService.OnRemoved += HandleRemoved;
-            _buildingModeService.OnChanged += HandleOnChanged;
-            _buildingModeService.OnPositionChanged += HandleOnPositionChanged;
+            _ghostService.OnChanged += HandleOnChanged;
+            _ghostService.OnPositionChanged += HandleOnPositionChanged;
 
             _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
             controls.ShakeCamera();
@@ -62,8 +63,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         protected override void DisposeInner()
         {
             _constructionsService.OnRemoved -= HandleRemoved;
-            _buildingModeService.OnChanged -= HandleOnChanged;
-            _buildingModeService.OnPositionChanged -= HandleOnPositionChanged;
+            _ghostService.OnChanged -= HandleOnChanged;
+            _ghostService.OnPositionChanged -= HandleOnPositionChanged;
 
             _modelView.Animator.OnFinished -= DropFinished;
             _modelView.Animator.OnFinished -= ExplosionFinished;
@@ -79,9 +80,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             if (!_dropFinished)
                 return;
 
-            if (_buildingModeService.IsEnabled())
+            if (_ghostService.IsEnabled())
             {
-                var distance = _buildingModeService.GetTargetPosition()
+                var distance = _ghostService.GetTargetPosition()
                     .GetDistanceTo(_constructionsService.GetWorldPosition(_construction));
                 if (distance > _construction.Scheme.GhostShrinkDistance)
                     _modelView.Shrink.Value = 1;

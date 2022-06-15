@@ -18,6 +18,7 @@ using NUnit.Framework;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
@@ -37,14 +38,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void IsRectSizeCorrect()
         {
             TestRect(new IntRect(0, 0, 2, 2),
-                new int[,] {
+                new[,] {
                     { 1, 1 },
                     { 1, 1 }
                 }
             );
 
             TestRect(new IntRect(0, 0, 2, 2),
-                new int[,] {
+                new[,] {
                     { 1, 1, 0 },
                     { 1, 1, 0 }
                 }
@@ -52,7 +53,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             );
 
             TestRect(new IntRect(0, 0, 2, 2),
-                new int[,] {
+                new[,] {
                     { 1, 1 },
                     { 1, 1 },
                     { 0, 0 }
@@ -60,14 +61,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             );
 
             TestRect(new IntRect(0, 0, 2, 2),
-                new int[,] {
+                new[,] {
                     { 0, 1, 1 },
                     { 0, 1, 1 },
                 }
             );
 
             TestRect(new IntRect(0, 0, 2, 2),
-                new int[,] {
+                new[,] {
                     { 0, 0 },
                     { 1, 1 },
                     { 1, 1 },
@@ -75,7 +76,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             );
 
             TestRect(new IntRect(0, 0, 2, 2),
-                new int[,] {
+                new[,] {
                     { 0, 0, 0, 0 },
                     { 0, 1, 1, 0 },
                     { 0, 1, 1, 0 },
@@ -84,7 +85,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             );
 
             TestRect(new IntRect(0, 0, 3, 3),
-                new int[,] {
+                new[,] {
                     { 0, 1, 1, 1 },
                     { 0, 1, 1, 1 },
                     { 0, 1, 1, 1 },
@@ -94,7 +95,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
 
             TestRect(new IntRect(0, 0, 3, 3),
-                new int[,] {
+                new[,] {
                     { 0, 0, 0, 0 },
                     { 0, 1, 1, 1 },
                     { 0, 1, 1, 1 },
@@ -104,7 +105,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
 
             TestRect(new IntRect(0, 0, 3, 3),
-                new int[,] {
+                new[,] {
                     { 0, 0, 0, 0, 0 },
                     { 0, 1, 1, 1, 0 },
                     { 0, 1, 1, 1, 0 },
@@ -113,7 +114,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             );
 
             TestRect(new IntRect(0, 0, 3, 3),
-                new int[,] {
+                new[,] {
                     { 0, 0, 0, 0, 0 },
                     { 0, 1, 1, 1, 0 },
                     { 0, 1, 1, 1, 0 },
@@ -134,7 +135,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         {
             var constructionsRepository = new Repository<Construction>();
             var fieldService = new FieldService(10, new IntPoint(3, 3));
-            var buildingMode = new BuildingModeService(fieldService);
+            var controls = new GameControlsService(new ControlsMock());
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
             
             var viewCollection = new ViewsCollection();
@@ -153,6 +155,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new GameVector3(-10, 0, -10)));
 
             constructionService.Dispose();
+            buildingMode.Dispose();
+            controls.Dispose();
+            buildingMode.Dispose();
         }
 
         [Test, Order(TestCore.ModelOrder)]
@@ -166,7 +171,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildngService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
 
             var scheme = new ConstructionScheme();
             constructionsSchemeRepository.Add(scheme);
@@ -176,7 +181,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             Assert.AreEqual(0, constructionsRepository.Count);
 
-            buildngService.Build(card, new FieldPosition(1, 1), new FieldRotation());
+            buildingService.Build(card, new FieldPosition(1, 1), new FieldRotation());
 
             Assert.AreEqual(1, constructionsRepository.Count);
             var construction = constructionsRepository.Get().First();
@@ -263,7 +268,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         }
 
         [Test, Order(TestCore.ModelOrder)]
-        public void ShinkIsCorrect()
+        public void ShrinkIsCorrect()
         {
             var controls = new GameControlsService(new ControlsMock());
             var assets = new AssetsMock();
@@ -272,7 +277,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var buildingMode = new BuildingModeService(fieldService);
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
             var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance: 4, view: "model");
 
@@ -313,6 +318,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             controls.Dispose();
+            buildingMode.Dispose();
             constructionsService.Dispose();
         }
 
@@ -326,9 +332,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var buildingMode = new BuildingModeService(fieldService);
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var placement = new ContructionPlacement(new int[,]
+            var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
                         { 1 },
@@ -347,6 +353,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             constructionsService.Dispose();
             controls.Dispose();
+            buildingMode.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -359,9 +366,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var buildingMode = new BuildingModeService(fieldService);
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var placement = new ContructionPlacement(new int[,]
+            var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
                         { 1 },
@@ -380,6 +387,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             constructionsService.Dispose();
             controls.Dispose();
+            buildingMode.Dispose();
         }
 
 
@@ -393,9 +401,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var buildingMode = new BuildingModeService(fieldService);
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var placement = new ContructionPlacement(new int[,]
+            var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
                         { 1 },
@@ -418,10 +426,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             constructionsService.Dispose();
             controls.Dispose();
+            buildingMode.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void ExpolodeAnimations()
+        public void ExplodeAnimations()
         {
             var controls = new GameControlsService(new ControlsMock());
             var assets = new AssetsMock();
@@ -430,9 +439,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
 
             var fieldService = new FieldService(1, new IntPoint(11, 11));
-            var buildingMode = new BuildingModeService(fieldService);
+            var buildingMode = new GhostService(fieldService,controls);
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var placement = new ContructionPlacement(new int[,]
+            var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
                         { 1 },
@@ -463,6 +472,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             constructionsService.Dispose();
             controls.Dispose();
+            buildingMode.Dispose();
         }
 
         [TearDown]

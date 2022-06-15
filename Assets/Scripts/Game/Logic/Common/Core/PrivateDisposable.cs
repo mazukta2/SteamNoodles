@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Common.Core
@@ -10,6 +11,11 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Core
         public event Action OnDispose = delegate { };
         public bool IsDisposed { get; private set; }
 
+        public PrivateDisposable()
+        {
+            _stackTrace = System.Environment.StackTrace;
+        }
+        
         protected void Dispose() // Implement IDisposable
         {
             Dispose(true);
@@ -43,9 +49,11 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Core
 
 
         private readonly static List<PrivateDisposable> _undisposed = new List<PrivateDisposable>();
-        public static List<PrivateDisposable> GetListOfUndisposed()
+        private readonly string _stackTrace;
+
+        public static Dictionary<PrivateDisposable, string> GetListOfUndisposed()
         {
-            return _undisposed;
+            return _undisposed.ToDictionary(x => x, y => y._stackTrace);
         }
 
         public static void ClearUndisopsed()
