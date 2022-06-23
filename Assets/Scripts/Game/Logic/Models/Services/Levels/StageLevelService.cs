@@ -51,7 +51,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var units = services.Add(new UnitsService(unitsRep, random, unitsTypes));
 
             var constructions = services.Add(new ConstructionsService(constructionsRep, field));
-            var building = services.Add(new BuildingService(constructionsRep, constructions, points, hand, field));
+            var building = services.Add(new BuildingService(constructionsRep, constructions, hand));
+            services.Add(new PointsOnBuildingService(constructionsRep, points, field));
             var crowd = services.Add(new UnitsCrowdService(unitsRep, units, time, level, random));
             var queue = services.Add(new UnitsCustomerQueueService(unitsRep, units, crowd, coins, points, time, random));
             var flow = services.Add(new StageTurnService(constructionsRep, field, building, queue));

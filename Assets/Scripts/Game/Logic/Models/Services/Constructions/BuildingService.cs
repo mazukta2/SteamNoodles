@@ -10,22 +10,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
     public class BuildingService : IService
     {
-        public event Action<Construction> OnBuild = delegate { };
-
         private readonly IRepository<Construction> _constructions;
         private readonly ConstructionsService _constructionsService;
-        private readonly BuildingPointsService _pointsService;
         private readonly HandService _handService;
-        private readonly FieldService _fieldService;
 
         public BuildingService(IRepository<Construction> constructions, ConstructionsService constructionsService,
-            BuildingPointsService pointsService, HandService handService, FieldService fieldService)
+             HandService handService)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _constructionsService = constructionsService;
-            _pointsService = pointsService ?? throw new ArgumentNullException(nameof(pointsService));
             _handService = handService ?? throw new ArgumentNullException(nameof(handService));
-            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
         }
 
         public Construction Build(ConstructionCard card, FieldPosition position, FieldRotation rotation)
@@ -42,10 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             _handService.Remove(card);
             _constructions.Add(construction);
 
-            _pointsService.Change(points, _fieldService.GetWorldPosition(construction));
-
-            OnBuild(construction);
-            _constructions.FireEvent(construction, new ConstructionBuildedByPlayerEvent());
+            _constructions.FireEvent(construction, new ConstructionBuiltByPlayerEvent(points));
 
             return construction;
         }

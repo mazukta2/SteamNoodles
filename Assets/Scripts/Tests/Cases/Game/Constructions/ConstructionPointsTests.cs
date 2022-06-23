@@ -32,7 +32,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService, handService);
+            var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService, fieldService);
 
             var scheme = ConstructionSetups.GetDefaultScheme();
             constructionsSchemeRepository.Add(scheme);
@@ -48,6 +49,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
 
             pointsService.Dispose();
             constructionsService.Dispose();
+            pointsOnBuilding.Dispose();
         }
 
         [Test, Order(TestCore.ModelOrder)]
@@ -61,8 +63,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService, pointsService, handService, fieldService);
-
+            var buildingService = new BuildingService(constructionsRepository, constructionsService, handService);
+            var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService, fieldService);
+            
             var scheme = new ConstructionScheme(
                 defId:new DefId("Construction"),
                 placement:new ContructionPlacement(new[,] { { 1 } }),
@@ -88,6 +91,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
 
             pointsService.Dispose();
             constructionsService.Dispose();
+            pointsOnBuilding.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]

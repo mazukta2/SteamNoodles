@@ -16,6 +16,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
 {
@@ -23,7 +24,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
     {
         private readonly IRepository<Construction> _constructions;
         private readonly FieldService _fieldService;
-        private readonly BuildingService _buildingService;
         private readonly UnitsCustomerQueueService _unitsCustomerQueueService;
         private readonly SequenceManager _sequence = new SequenceManager();
         private int _turnCounter = 0;
@@ -36,14 +36,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
-            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
             _unitsCustomerQueueService = unitsCustomerQueueService ?? throw new ArgumentNullException(nameof(unitsCustomerQueueService));
-            _buildingService.OnBuild += HandleOnBuild;
+            _constructions.OnEvent += HandleOnEvent;
         }
 
         protected override void DisposeInner()
         {
-            _buildingService.OnBuild -= HandleOnBuild;
+            _constructions.OnEvent -= HandleOnEvent;
             _sequence.Dispose();
         }
 
@@ -61,9 +60,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
             _turnCounter++;
         }
 
-        private void HandleOnBuild(Construction obj)
+        private void HandleOnEvent(Construction construction, IModelEvent e)
         {
-            Turn();
+            if (e is ConstructionBuiltByPlayerEvent)
+                Turn();
         }
 
     }

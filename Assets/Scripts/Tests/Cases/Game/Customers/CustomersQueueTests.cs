@@ -121,7 +121,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildngService = new BuildingService(constructionsRepository, constructionsService, points, handService, fieldService);
+            var buildngService = new BuildingService(constructionsRepository, constructionsService, handService);
 
             var turnService = new StageTurnService(constructionsRepository, fieldService, buildngService, custumers);
 
@@ -655,7 +655,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildngService = new BuildingService(constructionsRepository, constructionsService, points, handService, fieldService);
+            var buildngService = new BuildingService(constructionsRepository, constructionsService, handService);
+            var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, points, fieldService);
 
             var turnService = new StageTurnService(constructionsRepository, fieldService, buildngService, custumers);
 
@@ -678,6 +679,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             turnService.Dispose();
             points.Dispose();
             constructionsService.Dispose();
+            pointsOnBuilding.Dispose();
         }
 
         [TearDown]

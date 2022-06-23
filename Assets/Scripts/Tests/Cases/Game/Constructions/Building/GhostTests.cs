@@ -66,8 +66,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new (11,11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService,
-                pointsService, handService, fieldService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService, handService);
             
             var ghostService = new GhostService();
             var ghostBuildingService = new GhostBuildingService(ghostService, constructionsService, 
