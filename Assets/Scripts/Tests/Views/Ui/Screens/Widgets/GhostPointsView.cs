@@ -21,7 +21,6 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets
         {
             AdjacencyContainer = new ContainerViewMock(level);
             AdjacencyPrefab = new AdjecencyPrefab();
-
         }
 
         public class AdjecencyPrefab : ViewCollectionPrefabMock

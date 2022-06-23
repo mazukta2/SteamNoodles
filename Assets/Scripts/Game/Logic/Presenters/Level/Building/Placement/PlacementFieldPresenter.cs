@@ -45,8 +45,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                 }
             }
 
-            _ghostService.OnChanged += HandleModeOnChanged;
-            _ghostService.OnPositionChanged += HandleOnPositionChanged;
+            _ghostService.OnChanged += UpdateGhostCells;
+            _ghostService.OnShowed += UpdateGhostCells;
+            _ghostService.OnHided += UpdateGhostCells;
 
             _constructionsService.OnAdded += HandleConstructionsOnAdded;
             _constructionsService.OnRemoved += HandleConstructionsOnRemoved;
@@ -56,8 +57,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         protected override void DisposeInner()
         {
-            _ghostService.OnChanged -= HandleModeOnChanged;
-            _ghostService.OnPositionChanged -= HandleOnPositionChanged;
+            _ghostService.OnChanged -= UpdateGhostCells;
+            _ghostService.OnShowed -= UpdateGhostCells;
+            _ghostService.OnHided -= UpdateGhostCells;
 
             _constructionsService.OnAdded -= HandleConstructionsOnAdded;
             _constructionsService.OnRemoved -= HandleConstructionsOnRemoved;
@@ -68,26 +70,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             var view = _view.CellsContainer.Spawn<ICellView>(_view.Cell);
             return new PlacementCellPresenter(view, position, _fieldService);
         }
-
-        private void HandleOnPositionChanged()
-        {
-            UpdateGhostCells();
-        }
-
-        private void HandleModeOnChanged(bool obj)
-        {
-            UpdateGhostCells();
-        }
-
+        
         private void UpdateGhostCells()
         {
             IReadOnlyCollection<FieldPosition> ocuppiedCells = null;
             var occupiedByBuildings = _constructionsService.GetAllOccupiedSpace();
             if (_ghostService.IsEnabled())
             {
-                var scheme = _ghostService.GetCard().Scheme;
+                var ghost = _ghostService.GetGhost();
+                var scheme = ghost.Card.Scheme;
                 ocuppiedCells = scheme.Placement
-                    .GetOccupiedSpace(_ghostService.GetPosition(), _ghostService.GetRotation());
+                    .GetOccupiedSpace(ghost.Position, ghost.Rotation);
             }
 
             foreach (var cell in _cells)
@@ -97,10 +90,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                 if (occupiedByBuildings.Any(x => x.Value == cell.Position))
                     state = CellPlacementStatus.IsUnderConstruction;
 
-                if (_ghostService.IsEnabled())
+                if (ocuppiedCells != null)
                 {
-                    var scheme = _ghostService.GetCard().Scheme;
-                    if (_constructionsService.IsFreeCell(scheme, new FieldPosition(cell.Position), _ghostService.GetRotation()))
+                    var ghost = _ghostService.GetGhost();
+                    var scheme = ghost.Card.Scheme;
+                    if (_constructionsService.IsFreeCell(scheme, new FieldPosition(cell.Position), ghost.Rotation))
                         state = CellPlacementStatus.IsReadyToPlace;
 
                     if (ocuppiedCells.Any(x => x.Value == cell.Position))

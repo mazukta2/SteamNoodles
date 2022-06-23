@@ -28,29 +28,33 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         {
             _view = view;
             _ghostService = ghostService;
-            _ghostService.OnHighlightingChanged += HandleHighlightingChanged;
-            _ghostService.OnChanged += HandleOnChanged;
+            // _ghostService.OnHighlightingChanged += HandleHighlightingChanged
+            _ghostService.OnShowed += HandleOnGhostShowed;
+            _ghostService.OnHided += HandleOnGhostHided;
             _tooltip = new HandConstructionTooltipPresenter(_view.Tooltip, constructions);
             Hide();
         }
 
         protected override void DisposeInner()
         {
-            _ghostService.OnChanged -= HandleOnChanged;
-            _ghostService.OnHighlightingChanged -= HandleHighlightingChanged;
+            _ghostService.OnShowed -= HandleOnGhostShowed;
+            _ghostService.OnHided -= HandleOnGhostHided;
+            // _ghostService.OnHighlightingChanged -= HandleHighlightingChanged;
         }
 
         private void HandleHighlightingChanged()
         {
-            _tooltip.SetHighlight(_ghostService.GetConstructionsHighlights().Select(x => x.Scheme));
+            // _tooltip.SetHighlight(_ghostService.GetConstructionsHighlights().Select(x => x.Scheme));
         }
 
-        private void HandleOnChanged(bool value)
+        private void HandleOnGhostHided()
         {
-            if (value)
-                Show(_ghostService.GetCard());
-            else
-                Hide();
+            Hide();
+        }
+
+        private void HandleOnGhostShowed()
+        {
+            Show(_ghostService.GetGhost().Card);
         }
 
         private void Show(ConstructionCard constructionCard)

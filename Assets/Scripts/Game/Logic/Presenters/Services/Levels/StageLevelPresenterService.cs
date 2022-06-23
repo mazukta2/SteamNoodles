@@ -25,12 +25,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Levels
             _services = services ?? throw new ArgumentNullException(nameof(services));
             _services.Add(new ScreenService());
             _services.Add(new GhostService());
+            _services.Add(new GhostMovingService());
+            _services.Add(new GhostBuildingService());
         }
 
         protected override void DisposeInner()
         {
             _services.Remove<ScreenService>();
             _services.Remove<GhostService>();
+            _services.Remove<GhostMovingService>();
+            _services.Remove<GhostBuildingService>();
         }
 
     }

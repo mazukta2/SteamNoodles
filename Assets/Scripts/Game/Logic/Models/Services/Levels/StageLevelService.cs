@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var flow = services.Add(new StageTurnService(constructionsRep, field, building, queue));
             var rewards = services.Add(new RewardsService(level, hand, schemes, points));
             var unitsMovement = services.Add(new UnitsMovementsService(unitsRep, time));
-            
+
             rewards.Start();
         }
 
@@ -77,7 +77,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             _services.Remove<StageTurnService>();
             _services.Remove<RewardsService>();
             _services.Remove<UnitsMovementsService>();
-            _services.Remove<GhostService>();
 
             _services.Remove<Repository<ConstructionCard>>();
             _services.Remove<Repository<Construction>>();

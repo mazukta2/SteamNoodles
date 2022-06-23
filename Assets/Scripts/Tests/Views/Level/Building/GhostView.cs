@@ -21,5 +21,10 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
             PieceSpawner = new PieceSpawnerView(level);
             Container = new ContainerViewMock(level);
         }
+
+        public void Init()
+        {
+            
+        }
     }
 }

@@ -52,7 +52,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _modelView.Animator.OnFinished += DropFinished;
             _constructionsService.OnRemoved += HandleRemoved;
             _ghostService.OnChanged += HandleOnChanged;
-            _ghostService.OnPositionChanged += HandleOnPositionChanged;
+            _ghostService.OnShowed += HandleOnChanged;
+            _ghostService.OnHided += HandleOnChanged;
 
             _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
             controls.ShakeCamera();
@@ -64,7 +65,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         {
             _constructionsService.OnRemoved -= HandleRemoved;
             _ghostService.OnChanged -= HandleOnChanged;
-            _ghostService.OnPositionChanged -= HandleOnPositionChanged;
+            _ghostService.OnShowed -= HandleOnChanged;
+            _ghostService.OnHided -= HandleOnChanged;
 
             _modelView.Animator.OnFinished -= DropFinished;
             _modelView.Animator.OnFinished -= ExplosionFinished;
@@ -82,7 +84,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
             if (_ghostService.IsEnabled())
             {
-                var distance = _ghostService.GetTargetPosition()
+                var distance = _ghostService.GetGhost().TargetPosition
                     .GetDistanceTo(_constructionsService.GetWorldPosition(_construction));
                 if (distance > _construction.Scheme.GhostShrinkDistance)
                     _modelView.Shrink.Value = 1;
@@ -126,12 +128,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
                 HandleExplosion();
         }
 
-        private void HandleOnPositionChanged()
-        {
-            UpdateShrink();
-        }
-
-        private void HandleOnChanged(bool obj)
+        private void HandleOnChanged()
         {
             UpdateShrink();
         }

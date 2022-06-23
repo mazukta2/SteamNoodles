@@ -166,13 +166,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var cardsRepository = new Repository<ConstructionCard>();
             var hand = new HandService(cardsRepository);
-            var fieldService = new FieldService(0, IntPoint.Zero);
             var controls = new GameControlsService(new ControlsMock());
-            var buildingMode = new GhostService(fieldService,controls);
+            var ghostService = new GhostService();
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, buildingMode, screenManager);
+            new HandPresenter(handView, cardsRepository, ghostService, screenManager);
 
             Assert.AreEqual(0, handView.Collection.FindViews<IHandConstructionView>().Count);
             cardsRepository.Add(new ConstructionCard(scheme1));
@@ -184,7 +183,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             controls.Dispose();
-            buildingMode.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -304,22 +302,18 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
             var cardsRepository = new Repository<ConstructionCard>();
 
-            var fieldService = new FieldService(0, IntPoint.Zero);
-            var controls = new GameControlsService(new ControlsMock());
-            var buildingMode = new GhostService(fieldService,controls);
+            var ghostService = new GhostService();
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, buildingMode, screenManager);
+            new HandPresenter(handView, cardsRepository, ghostService, screenManager);
 
             Assert.AreEqual("Choose", handView.Animator.Animation);
-            buildingMode.Show(new ConstructionCard(new ConstructionScheme()));
+            ghostService.Show(new ConstructionCard(new ConstructionScheme()));
             Assert.AreEqual("Build", handView.Animator.Animation);
-            buildingMode.Hide();
+            ghostService.Hide();
             Assert.AreEqual("Choose", handView.Animator.Animation);
 
             viewCollection.Dispose();
-            controls.Dispose();
-            buildingMode.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -334,21 +328,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);
 
-            var fieldService = new FieldService(0, IntPoint.Zero);
-            var controls = new GameControlsService(new ControlsMock());
-            var buildingMode = new GhostService(fieldService,controls);
+            var ghostService = new GhostService();
             var viewCollection = new ViewsCollection();
             screenManager.Bind(new ScreenManagerView(viewCollection));
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, buildingMode, screenManager);
+            new HandPresenter(handView, cardsRepository, ghostService, screenManager);
 
             handView.CancelButton.Click();
 
             Assert.IsNotNull(viewCollection.FindView<IMainScreenView>());
 
             viewCollection.Dispose();
-            controls.Dispose();
-            buildingMode.Dispose();
         }
 
         [TearDown]

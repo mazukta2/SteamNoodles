@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
@@ -37,32 +36,29 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
             _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
 
-            _ghostService.OnChanged += GhostServiceOnChanged;
-            _ghostService.OnPositionChanged += UpdatePoints;
+            _ghostService.OnChanged += UpdatePoints;
+            _ghostService.OnShowed += UpdatePoints;
+            _ghostService.OnHided += UpdatePoints;
             UpdatePoints();
         }
 
 
         protected override void DisposeInner()
         {
-            _ghostService.OnChanged -= GhostServiceOnChanged;
-            _ghostService.OnPositionChanged -= UpdatePoints;
-        }
-
-        private void GhostServiceOnChanged(bool obj)
-        {
-            UpdatePoints();
+            _ghostService.OnChanged -= UpdatePoints;
+            _ghostService.OnShowed -= UpdatePoints;
+            _ghostService.OnHided -= UpdatePoints;
         }
 
         public void UpdatePoints()
         {
             if (_ghostService.IsEnabled())
             {
-                var points = _constructionsService.GetPoints(_ghostService.GetCard(),
-                    _ghostService.GetPosition(), _ghostService.GetRotation());
+                var ghost = _ghostService.GetGhost();
+                var points = _constructionsService.GetPoints(ghost.Card, ghost.Position, ghost.Rotation);
 
-                var worldPosition = _fieldService.GetWorldPosition(_ghostService.GetPosition(),
-                    _ghostService.GetCard().Scheme.Placement.GetRect(_ghostService.GetRotation()));
+                var worldPosition = _fieldService.GetWorldPosition(ghost.Position,
+                    ghost.Card.Scheme.Placement.GetRect(ghost.Rotation));
 
                 _view.Points.Value = points.AsString();
                 _view.Points.Position = worldPosition;

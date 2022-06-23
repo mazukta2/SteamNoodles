@@ -1,5 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
@@ -43,12 +42,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
             SetMode(Modes.Choose);
-            _buildingService.OnChanged += HandleVisualModesChanged;
+            _buildingService.OnShowed += HandleGhostShowed;
+            _buildingService.OnHided += HandleGhostHided;
         }
 
         protected override void DisposeInner()
         {
-            _buildingService.OnChanged -= HandleVisualModesChanged;
+            _buildingService.OnShowed -= HandleGhostShowed;
+            _buildingService.OnHided -= HandleGhostHided;
             _repository.OnAdded -= HandleCardAdded;
         }
 
@@ -63,12 +64,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _screenService.Open<IMainScreenView>(x => x.Init());
         }
 
-        private void HandleVisualModesChanged(bool state)
+        private void HandleGhostHided()
         {
-            if (state)
-                SetMode(Modes.Build);
-            else
-                SetMode(Modes.Choose);
+            SetMode(Modes.Choose);
+        }
+
+        private void HandleGhostShowed()
+        {
+            SetMode(Modes.Build);
         }
 
         private void SetMode(Modes value)

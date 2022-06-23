@@ -20,16 +20,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         }
 
-        public GhostModelPresenter(IConstructionModelView view, GhostService ghostService, ConstructionsService constructionsService) : base(view)
+        public GhostModelPresenter(IConstructionModelView view, GhostService ghostService,
+            ConstructionsService constructionsService) : base(view)
         {
-            _view = view ?? throw new System.ArgumentNullException(nameof(view));
-            _ghostService = ghostService ?? throw new System.ArgumentNullException(nameof(ghostService));
-            _constructionsService = constructionsService ?? throw new System.ArgumentNullException(nameof(constructionsService));
+            _view = view ?? throw new ArgumentNullException(nameof(view));
+            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
+            _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
 
             if (!_ghostService.IsEnabled()) throw new Exception("Ghost can exist only in building mode");
 
-            _ghostService.OnPositionChanged += HandlePositionUpdate;
-            _ghostService.OnChanged += HandleModeOnChanged;
+            _ghostService.OnChanged += HandlePositionUpdate;
+            _ghostService.OnHided += Dispose;
 
             _view.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
 
@@ -38,20 +39,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         protected override void DisposeInner()
         {
-            _ghostService.OnPositionChanged -= HandlePositionUpdate;
-            _ghostService.OnChanged -= HandleModeOnChanged;
-        }
-
-        private void HandleModeOnChanged(bool value)
-        {
-            if (!value) _view.Dispose();
+            _ghostService.OnChanged -= HandlePositionUpdate;
+            _ghostService.OnHided -= Dispose;
         }
 
         private void HandlePositionUpdate()
         {
-            var canPlace = _constructionsService.CanPlace(_ghostService.GetCard(), 
-                _ghostService.GetPosition(), _ghostService.GetRotation());
-
+            var ghost = _ghostService.GetGhost();
+            var canPlace = _constructionsService.CanPlace(ghost.Card, ghost.Position, ghost.Rotation);
             _view.BorderAnimator.Play(canPlace ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
         }
     }

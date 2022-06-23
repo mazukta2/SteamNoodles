@@ -10,6 +10,7 @@ namespace Game.Assets.Scripts.Tests.Cases
     {
         public const int EssentialOrder = 1;
         public const int ModelOrder = 2;
-        public const int PresenterOrder = 3;
+        public const int ModelSecondaryOrder = 3;
+        public const int PresenterOrder = 4;
     }
 }

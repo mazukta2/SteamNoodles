@@ -28,10 +28,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var (card, screenManager) = Setup(view);
 
             var controls = new GameControlsService(new ControlsMock());
-            var buildingModeService = new GhostService(new FieldService(0, IntPoint.Zero), controls);
+            var ghostService = new GhostService();
 
             screenManager.Open<IBuildScreenView>(x => 
-                new BuildScreenPresenter(x, card, buildingModeService, screenManager, controls));
+                new BuildScreenPresenter(x, card, ghostService, screenManager, controls));
 
             Assert.IsNotNull(view.Screen.FindView<BuildScreenView>());
             Assert.IsNull(view.Screen.FindView<MainScreenView>());
@@ -43,7 +43,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             controls.Dispose();
-            buildingModeService.Dispose();
         }
 
         private (ConstructionCard, ScreenService) Setup(ScreenManagerView view)

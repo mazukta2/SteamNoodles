@@ -96,7 +96,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var constructionsRepository = new Repository<Construction>();
             var fieldService = new FieldService(10, new IntPoint(3, 3));
             var controls = new GameControlsService(new ControlsMock());
-            var buildingMode = new GhostService(fieldService,controls);
+            var ghostService = new GhostService();
+            var buildingMode = new GhostMovingService(ghostService, fieldService, controls);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
             var scheme = new ConstructionScheme(
@@ -106,9 +107,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, buildingMode, constructionService, fieldService);
+            new GhostPointPresenter(view, ghostService, constructionService, fieldService);
 
-            buildingMode.Show(card);
+            ghostService.Show(card);
             
             Assert.AreEqual("+5", view.Points.Value);
 
@@ -128,7 +129,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var constructionsRepository = new Repository<Construction>();
             var fieldService = new FieldService(1, new IntPoint(5, 5));
             var controls = new GameControlsService(new ControlsMock());
-            var buildingMode = new GhostService(fieldService,controls);
+            var ghostService = new GhostService();
+            var buildingMode = new GhostMovingService(ghostService, fieldService, controls);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
             var placement = new ContructionPlacement(new [,] {
@@ -145,9 +147,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, buildingMode, constructionService, fieldService);
+            new GhostPointPresenter(view, ghostService, constructionService, fieldService);
 
-            buildingMode.Show(card);
+            ghostService.Show(card);
 
             Assert.AreEqual("+5", view.Points.Value);
 
@@ -172,7 +174,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var constructionsRepository = new Repository<Construction>();
             var fieldService = new FieldService(1, new IntPoint(15, 15));
             var controls = new GameControlsService(new ControlsMock());
-            var buildingMode = new GhostService(fieldService,controls);
+            var ghostService = new GhostService();
+            var buildingMode = new GhostMovingService(ghostService, fieldService, controls);
             var constructionService = new ConstructionsService(constructionsRepository, fieldService);
 
             var placement = new ContructionPlacement(new [,] {
@@ -189,9 +192,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, buildingMode, constructionService, fieldService);
+            new GhostPointPresenter(view, ghostService, constructionService, fieldService);
 
-            buildingMode.Show(card);
+            ghostService.Show(card);
 
             constructionsRepository.Add(new Construction(scheme, new FieldPosition(0, 0), new FieldRotation()));
 

@@ -1,15 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Helpers;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using System.Collections.Generic;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
@@ -44,15 +39,22 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _ghostService.Show(_entity);
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
             _exitKey.OnTap += OnExitTap;
+            _ghostService.OnHided += HandleOnHided;
         }
 
         protected override void DisposeInner()
         {
             _exitKey.OnTap -= OnExitTap;
+            _ghostService.OnHided -= HandleOnHided;
             _ghostService.Hide();
         }
 
         private void OnExitTap()
+        {
+            _screenService.Open<IMainScreenView>(x => x.Init());
+        }
+
+        private void HandleOnHided()
         {
             _screenService.Open<IMainScreenView>(x => x.Init());
         }

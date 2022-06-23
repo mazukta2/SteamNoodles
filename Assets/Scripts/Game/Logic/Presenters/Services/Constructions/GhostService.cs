@@ -1,129 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions
 {
-    public class GhostService : Disposable, IService
+    public class GhostService : IService
     {
-        private readonly FieldService _fieldService;
-        private readonly GameControlsService _controlsService;
-        private FieldPosition _fieldPosition;
-        private FieldRotation _fieldRotation;
-        private GameVector3 _targetPosition;
-        private ConstructionCard _card;
-        private IReadOnlyCollection<Construction> _constructionsHighlights = new List<Construction>();
+        private ConstructionGhost _ghost;
 
-        public GhostService() : this(
-            IPresenterServices.Default.Get<FieldService>(),
-            IPresenterServices.Default.Get<GameControlsService>())
-        {
-            
-        }
-        
-        public GhostService(FieldService fieldService, GameControlsService controlsService)
-        {
-            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
-            _controlsService = controlsService ?? throw new ArgumentNullException(nameof(controlsService));
-            _controlsService.OnLevelPointerMoved += HandleOnOnLevelPointerMoved;
-            _controlsService.OnLevelClick += HandleOnLevelClick;
-        }
-
-        protected override void DisposeInner()
-        {
-            _controlsService.OnLevelClick -= HandleOnLevelClick;
-            _controlsService.OnLevelPointerMoved -= HandleOnOnLevelPointerMoved;
-        }
-
-        public event Action<bool> OnChanged = delegate { };
-        public event Action OnPositionChanged = delegate { };
-        public event Action OnHighlightingChanged = delegate { };
+        public event Action OnShowed = delegate { };
+        public event Action OnHided = delegate { };
+        public event Action OnChanged = delegate { };
         
         public void Show(ConstructionCard constructionCard)
         {
-            _card = constructionCard;
-            _fieldPosition = new FieldPosition(0, 0);
-            _fieldRotation = new FieldRotation(FieldRotation.Rotation.Top);
-            OnChanged(IsEnabled());
+            _ghost = new ConstructionGhost(constructionCard, new FieldPosition(0,0), GameVector3.Zero, FieldRotation.Default);
+            
+            OnShowed();
         }
 
         public void Hide()
         {
-            _card = null;
-            OnChanged(IsEnabled());
+            _ghost = null;
+            OnHided();
         }
 
-        public bool IsEnabled() => GetCard() != null;
-
-        public IReadOnlyCollection<Construction> GetConstructionsHighlights()
+        public void Set(ConstructionGhost ghost)
         {
-            return _constructionsHighlights;
-        }
-
-        public void SetHighlight(IReadOnlyCollection<Construction> constructions)
-        {
-            _constructionsHighlights = constructions;
-            OnHighlightingChanged();
-        }
-
-        public void SetTargetPosition(GameVector3 pointerPosition)
-        {
-            _targetPosition = pointerPosition;
+            if (!IsEnabled())
+                throw new Exception("Not enabled");
             
-            var size = _card.Scheme.Placement.GetRect(_fieldRotation);
-            var fieldPosition = _fieldService.GetFieldPosition(pointerPosition, size);
-            _fieldPosition = fieldPosition;
-            OnPositionChanged();
+            _ghost = ghost;
+            OnChanged();
         }
 
-        public void SetTargetPosition(FieldPosition fieldPosition)
-        {
-            var size = _card.Scheme.Placement.GetRect(_fieldRotation);
-            _targetPosition = _fieldService.GetWorldPosition(_fieldPosition, size);
-            _fieldPosition = fieldPosition;
-            
-            OnPositionChanged();
-        }
+        public bool IsEnabled() => GetGhost() != null;
 
-        public FieldPosition GetPosition()
+        public ConstructionGhost GetGhost()
         {
-            return _fieldPosition;
-        }
-
-        public GameVector3 GetTargetPosition()
-        {
-            return _targetPosition;
-        }
-
-        public FieldRotation GetRotation()
-        {
-            return _fieldRotation;
-        }
-
-        public ConstructionCard GetCard()
-        {
-            return _card;
-        }
-
-        public void SetRotation(FieldRotation fieldRotation)
-        {
-            _fieldRotation = fieldRotation;
-            OnPositionChanged();
-        }
-        
-        private void HandleOnOnLevelPointerMoved(GameVector3 target)
-        {
-            SetTargetPosition(target);
-        }
-        
-        private void HandleOnLevelClick()
-        {
+            return _ghost;
         }
 
     }
