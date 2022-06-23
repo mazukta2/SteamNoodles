@@ -13,6 +13,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using System;
+using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
@@ -22,6 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
     public class StageLevelService : Disposable, IService
     {
         private readonly IModelServices _services;
+        private List<IService> _disposables = new List<IService>();
 
         public StageLevelService(StageLevel level)
             : this(level, IModelServices.Default,IGameRandom.Default, IGameTime.Default)
@@ -36,55 +38,44 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var schemesRep = services.Get<IRepository<ConstructionScheme>>();
             var unitTypesRep = services.Get<IRepository<UnitType>>();
 
-            var cardsRep = services.Add(new Repository<ConstructionCard>());
-            var constructionsRep = services.Add(new Repository<Construction>());
-            var unitsRep = services.Add(new Repository<Unit>());
-            var constructionsDeckRep = services.Add(new SingletonRepository<Deck<ConstructionScheme>>());
-            var unitsDeckRep = services.Add(new SingletonRepository<Deck<UnitType>>());
+            var cardsRep = Add(new Repository<ConstructionCard>());
+            var constructionsRep = Add(new Repository<Construction>());
+            var unitsRep = Add(new Repository<Unit>());
+            var constructionsDeckRep = Add(new SingletonRepository<Deck<ConstructionScheme>>());
+            var unitsDeckRep = Add(new SingletonRepository<Deck<UnitType>>());
 
-            var coins = services.Add(new CoinsService());
-            var points = services.Add(new BuildingPointsService(level, time));
-            var field = services.Add(new FieldService(level.CellSize, level.PlacementFieldSize));
-            var schemes = services.Add(new SchemesService(schemesRep, new(constructionsDeckRep, random), level.ConstructionsReward));
-            var hand = services.Add(new HandService(cardsRep));
-            var unitsTypes = services.Add(new UnitsTypesService(unitTypesRep, new(unitsDeckRep, random), level));
-            var units = services.Add(new UnitsService(unitsRep, random, unitsTypes));
+            var coins = Add(new CoinsService());
+            var points = Add(new BuildingPointsService(level, time));
+            var field = Add(new FieldService(level.CellSize, level.PlacementFieldSize));
+            var schemes = Add(new SchemesService(schemesRep, new(constructionsDeckRep, random), level.ConstructionsReward));
+            var hand = Add(new HandService(cardsRep));
+            var unitsTypes = Add(new UnitsTypesService(unitTypesRep, new(unitsDeckRep, random), level));
+            var units = Add(new UnitsService(unitsRep, random, unitsTypes));
 
-            var constructions = services.Add(new ConstructionsService(constructionsRep, field));
-            var building = services.Add(new BuildingService(constructionsRep, constructions, hand));
-            services.Add(new PointsOnBuildingService(constructionsRep, points, field));
-            var crowd = services.Add(new UnitsCrowdService(unitsRep, units, time, level, random));
-            var queue = services.Add(new UnitsCustomerQueueService(unitsRep, units, crowd, coins, points, time, random));
-            var flow = services.Add(new StageTurnService(constructionsRep, field, building, queue));
-            var rewards = services.Add(new RewardsService(level, hand, schemes, points));
-            var unitsMovement = services.Add(new UnitsMovementsService(unitsRep, time));
+            var constructions = Add(new ConstructionsService(constructionsRep, field));
+            var building = Add(new BuildingService(constructionsRep, constructions));
+            Add(new PointsOnBuildingService(constructionsRep, points, field));
+            Add(new RemoveCardOnBuildingService(constructionsRep, hand));
+            var crowd = Add(new UnitsCrowdService(unitsRep, units, time, level, random));
+            var queue = Add(new UnitsCustomerQueueService(unitsRep, units, crowd, coins, points, time, random));
+            var flow = Add(new StageTurnService(constructionsRep, field, building, queue));
+            var rewards = Add(new RewardsService(level, hand, schemes, points));
+            var unitsMovement = Add(new UnitsMovementsService(unitsRep, time));
 
             rewards.Start();
         }
 
         protected override void DisposeInner()
         {
-            _services.Remove<CoinsService>();
-            _services.Remove<BuildingPointsService>();
-            _services.Remove<FieldService>();
-            _services.Remove<SchemesService>();
-            _services.Remove<HandService>();
-            _services.Remove<UnitsTypesService>();
-            _services.Remove<UnitsService>();
-            _services.Remove<ConstructionsService>();
-            _services.Remove<BuildingService>();
-            _services.Remove<UnitsCrowdService>();
-            _services.Remove<UnitsCustomerQueueService>();
-            _services.Remove<StageTurnService>();
-            _services.Remove<RewardsService>();
-            _services.Remove<UnitsMovementsService>();
-
-            _services.Remove<Repository<ConstructionCard>>();
-            _services.Remove<Repository<Construction>>();
-            _services.Remove<Repository<Unit>>();
-            _services.Remove<SingletonRepository<Deck<ConstructionScheme>>>();
-            _services.Remove<SingletonRepository<Deck<UnitType>>>();
+            foreach (var item in _disposables)
+                _services.Remove(item);
+            _disposables.Clear();
         }
 
+        public T Add<T>(T service) where T : IService
+        {
+            _disposables.Add(service);
+            return _services.Add(service);
+        }
     }
 }

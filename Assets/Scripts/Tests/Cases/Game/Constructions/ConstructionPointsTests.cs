@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService, handService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService, fieldService);
 
             var scheme = ConstructionSetups.GetDefaultScheme();
@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService, handService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService, fieldService);
             
             var scheme = new ConstructionScheme(

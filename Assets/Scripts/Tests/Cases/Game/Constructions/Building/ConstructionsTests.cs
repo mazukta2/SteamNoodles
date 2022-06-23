@@ -172,7 +172,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService, handService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService);
+            var removeFromHandService = new RemoveCardOnBuildingService(constructionsRepository, handService);
 
             var scheme = new ConstructionScheme();
             constructionsSchemeRepository.Add(scheme);
@@ -193,6 +194,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             
             pointsService.Dispose();
             constructionsService.Dispose();
+            removeFromHandService.Dispose();
         }
 
 

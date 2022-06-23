@@ -38,24 +38,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
 
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(0,0, 1, 1), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(0,0, 1, 1));
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
-            var custumers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
+            var customers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
 
             Assert.AreEqual(new BuildingLevel(0), points.GetCurrentLevel());
-            Assert.AreEqual(new QueueSize(0), custumers.GetQueueSize());
+            Assert.AreEqual(new QueueSize(0), customers.GetQueueSize());
 
             points.Change(new BuildingPoints(9));
             Assert.AreEqual(new BuildingLevel(2), points.GetCurrentLevel());
 
-            Assert.AreEqual(new QueueSize(2), custumers.GetQueueSize());
+            Assert.AreEqual(new QueueSize(2), customers.GetQueueSize());
 
             unitsService.Dispose();
             crowd.Dispose();
             points.Dispose();
-            custumers.Dispose();
+            customers.Dispose();
         }
 
         [Test, Order(TestCore.ModelOrder)]
@@ -74,7 +74,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
 
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(0, 0, 1, 1), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(0, 0, 1, 1));
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
@@ -112,7 +112,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
 
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(0, 0, 1, 1), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(0, 0, 1, 1));
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
@@ -121,7 +121,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildngService = new BuildingService(constructionsRepository, constructionsService, handService);
+            var buildngService = new BuildingService(constructionsRepository, constructionsService);
 
             var turnService = new StageTurnService(constructionsRepository, fieldService, buildngService, custumers);
 
@@ -161,7 +161,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -10, 10, 10), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -10, 10, 10));
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
             var queue = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
@@ -216,7 +216,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -10, 10, 10), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -10, 10, 10));
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
             var queue = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
@@ -272,7 +272,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -10, 10, 10), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -10, 10, 10));
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
             var queue = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
@@ -321,7 +321,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8));
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
             var queue = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
@@ -387,7 +387,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8));
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
             var queue = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
@@ -435,7 +435,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8));
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
             var queue = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
@@ -490,7 +490,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8));
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
             var queue = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random, new GameVector3(0, 0, 1), 0, 1);
@@ -548,7 +548,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8));
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
             var queue = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random, new GameVector3(0, 0, 1), 0, 1);
@@ -603,7 +603,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(-10, -4, 20, 8));
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
             var queue = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random, new GameVector3(0, 0, 1));
@@ -646,19 +646,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
 
             var unitsService = new UnitsService(units, random, unitTypesService);
-            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(0, 0, 1, 1), 0);
+            var crowd = new UnitsCrowdService(units, unitsService, time, random, new FloatRect(0, 0, 1, 1));
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
-            var custumers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
+            var customers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
 
             var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new IntPoint(11, 11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildngService = new BuildingService(constructionsRepository, constructionsService, handService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, points, fieldService);
 
-            var turnService = new StageTurnService(constructionsRepository, fieldService, buildngService, custumers);
+            var turnService = new StageTurnService(constructionsRepository, fieldService, buildingService, customers);
 
             var scheme = ConstructionScheme.DefaultWithPoints(new BuildingPoints(3));
             constructionsSchemeRepository.Add(scheme);
@@ -666,7 +666,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             constructionsCardsRepository.Add(card);
             Assert.AreEqual(0, constructionsRepository.Count);
 
-            var construction = buildngService.Build(card, new FieldPosition(1, 1), new FieldRotation());
+            var construction = buildingService.Build(card, new FieldPosition(1, 1), new FieldRotation());
 
             Assert.AreEqual(new BuildingLevel(1), points.GetTargetLevel());
             Assert.AreEqual(new BuildingLevel(1), points.GetCurrentLevel());
@@ -675,7 +675,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             unitsService.Dispose();
             crowd.Dispose();
             points.Dispose();
-            custumers.Dispose();
+            customers.Dispose();
             turnService.Dispose();
             points.Dispose();
             constructionsService.Dispose();

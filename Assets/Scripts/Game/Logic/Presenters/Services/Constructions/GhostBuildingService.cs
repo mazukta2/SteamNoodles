@@ -52,7 +52,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions
             
             if (_constructionsService.CanPlace(ghost.Card, ghost.Position, ghost.Rotation))
                 _buildingService.Build(ghost.Card, ghost.Position, ghost.Rotation);
-            // _screenService.Open<IMainScreenView>(x => x.Init());
+            
+            _ghostService.Hide();
         }
     }
 }

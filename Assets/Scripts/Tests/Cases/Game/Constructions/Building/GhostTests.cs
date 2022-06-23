@@ -59,21 +59,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             
             var constructionsRepository = new Repository<Construction>();
             var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
 
             var controlService = new GameControlsService(c);
-            var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
-            var handService = new HandService(constructionsCardsRepository);
             var fieldService = new FieldService(1, new (11,11));
             var constructionsService = new ConstructionsService(constructionsRepository, fieldService);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService, handService);
+            var buildingService = new BuildingService(constructionsRepository, constructionsService);
             
             var ghostService = new GhostService();
             var ghostBuildingService = new GhostBuildingService(ghostService, constructionsService, 
                 buildingService, controlService);
             
-            var scheme = new ConstructionScheme();
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCard(new ConstructionScheme());
             constructionsCardsRepository.Add(card);
             c.Click();
             
@@ -89,7 +85,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         
             ghostService.Hide();
             controlService.Dispose();
-            pointsService.Dispose();
             constructionsService.Dispose();
             ghostBuildingService.Dispose();
         }
