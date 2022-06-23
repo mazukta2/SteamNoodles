@@ -26,7 +26,6 @@ using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 
 namespace Game.Assets.Scripts.Tests.Cases.Levels
 {
@@ -112,6 +111,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             var manager = new ServiceManager();
             manager.Add(new Repository<ConstructionScheme>());
             manager.Add(new Repository<UnitType>());
+            manager.Add(new GameControlsService(new ControlsMock()));
 
             IModelServices.Default = manager;
             var level = new StageLevel();

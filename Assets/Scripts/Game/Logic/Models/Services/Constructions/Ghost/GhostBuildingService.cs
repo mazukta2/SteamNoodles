@@ -1,12 +1,10 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
+using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
 {
     public class GhostBuildingService : Disposable, IService
     {
@@ -14,16 +12,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions
         private readonly GhostService _ghostService;
         private readonly BuildingService _buildingService;
         private readonly ConstructionsService _constructionsService;
-        
-        public GhostBuildingService() : this(
-            IPresenterServices.Default.Get<GhostService>(),
-            IPresenterServices.Default.Get<ConstructionsService>(),
-            IPresenterServices.Default.Get<BuildingService>(),
-            IPresenterServices.Default.Get<GameControlsService>()
-            )
-        {
-            
-        }
         
         public GhostBuildingService(
             GhostService ghostService,

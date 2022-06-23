@@ -17,9 +17,9 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building

@@ -16,7 +16,8 @@ using System;
 using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 {
@@ -62,6 +63,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var rewards = Add(new RewardsService(level, hand, schemes, points));
             var unitsMovement = Add(new UnitsMovementsService(unitsRep, time));
 
+            var ghost = Add(new GhostService());
+            Add(new GhostMovingService(ghost, field.Get(), services.Get<GameControlsService>()));
+            Add(new GhostBuildingService(ghost, constructions, building,services.Get<GameControlsService>()));
+            
             rewards.Start();
         }
 

@@ -1,11 +1,10 @@
 ﻿using System;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
 {
     public class GhostService : IService
     {
