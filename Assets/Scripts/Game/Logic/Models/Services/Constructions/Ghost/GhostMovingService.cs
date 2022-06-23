@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
 {
@@ -16,7 +13,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
         private readonly GhostService _ghostService;
         private readonly Field _field;
         private readonly GameControlsService _controlsService;
-        private IReadOnlyCollection<Construction> _constructionsHighlights = new List<Construction>();
 
         public GhostMovingService(GhostService ghostService, Field field, GameControlsService controlsService)
         {
@@ -24,15 +20,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             _field = field ?? throw new ArgumentNullException(nameof(field));
             _controlsService = controlsService ?? throw new ArgumentNullException(nameof(controlsService));
             _controlsService.OnLevelPointerMoved += HandleOnOnLevelPointerMoved;
-            
-            //    _rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
-            //    _rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
-
-            //_rotateLeft.OnTap += HandleRotateLeftTap;
-            //_rotateRight.OnTap += HandleRotateRightTap;
-            //_rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
-            //_rotateRight = _gameKeysManager.GetKey(GameKeys.RotateRight);
-
             _ghostService.OnShowed += HandleOnShowed;
         }
 
@@ -40,17 +27,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
         {
             _ghostService.OnShowed -= HandleOnShowed;
             _controlsService.OnLevelPointerMoved -= HandleOnOnLevelPointerMoved;
-        }
-
-        public IReadOnlyCollection<Construction> GetConstructionsHighlights()
-        {
-            return _constructionsHighlights;
-        }
-
-        public void SetHighlight(IReadOnlyCollection<Construction> constructions)
-        {
-            _constructionsHighlights = constructions;
-            // OnHighlightingChanged();
         }
 
         public void SetTargetPosition(GameVector3 pointerPosition)
@@ -70,13 +46,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             _ghostService.Set(ghost);
         }
 
-        public void SetRotation(FieldRotation rotation)
-        {
-            var ghost = _ghostService.GetGhost();
-            ghost.SetRotation(rotation);
-            _ghostService.Set(ghost);
-        }
-
         private void HandleOnOnLevelPointerMoved(GameVector3 target)
         {
             if (!_ghostService.IsEnabled())
@@ -84,18 +53,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
 
             SetTargetPosition(target);
         }
-        
-        //private void HandleRotateLeftTap()
-        //{
-        //    //Rotation = FieldRotation.RotateLeft(Rotation);
-        //    //UpdatePosition();
-        //}
-
-        //private void HandleRotateRightTap()
-        //{
-        //    //Rotation = FieldRotation.RotateRight(Rotation);
-        //    //UpdatePosition();
-        //}
         
         private void HandleOnShowed()
         {

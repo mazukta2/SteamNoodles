@@ -1,7 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
@@ -63,9 +62,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var rewards = Add(new RewardsService(level, hand, schemes, points));
             var unitsMovement = Add(new UnitsMovementsService(unitsRep, time));
 
+            var controls = services.Get<GameControlsService>();
             var ghost = Add(new GhostService());
-            Add(new GhostMovingService(ghost, field.Get(), services.Get<GameControlsService>()));
-            Add(new GhostBuildingService(ghost, constructions, building,services.Get<GameControlsService>()));
+            Add(new GhostMovingService(ghost, field.Get(), controls));
+            Add(new GhostRotatingService(ghost, controls));
+            Add(new GhostBuildingService(ghost, constructions, building,controls));
             
             rewards.Start();
         }
@@ -77,7 +78,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             _disposables.Clear();
         }
 
-        public T Add<T>(T service) where T : IService
+        private T Add<T>(T service) where T : IService
         {
             _disposables.Add(service);
             return _services.Add(service);

@@ -422,7 +422,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var field = new Field(1, new IntPoint(5, 5));
             var controls = new GameControlsService(new ControlsMock());
             var ghostService = new GhostService();
-            var buildingMode = new GhostMovingService(ghostService, field,controls);
+            var rotatingService = new GhostRotatingService(ghostService, controls);
 
             var constructionService = new ConstructionsService(constructionsRepository, field);
             var viewCollection = new ViewsCollection();
@@ -431,8 +431,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var view = new PlacementFieldView(viewCollection);
             new PlacementFieldPresenter(view, ghostService, field, constructionsRepository);
-
-            buildingMode.SetTargetPosition(new CellPosition(0, 0));
 
             var cells = view.CellsContainer.FindViews<CellView>();
             CheckPosition(new [, ]
@@ -444,7 +442,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 { 1,1,1,1,1 }
             });
 
-            buildingMode.SetRotation(new FieldRotation(FieldRotation.Rotation.Right));
+            rotatingService.SetRotation(new FieldRotation(FieldRotation.Rotation.Right));
             CheckPosition(new [, ]
             {
                 { 1,1,1,1,1 },
@@ -454,7 +452,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 { 1,1,1,1,1 }
             });
 
-            buildingMode.SetRotation(new FieldRotation(FieldRotation.Rotation.Bottom));
+            rotatingService.SetRotation(new FieldRotation(FieldRotation.Rotation.Bottom));
             CheckPosition(new [, ]
             {
                 { 1,1,1,1,1 },
@@ -464,7 +462,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 { 1,1,1,1,1 }
             });
 
-            buildingMode.SetRotation(new FieldRotation(FieldRotation.Rotation.Left));
+            rotatingService.SetRotation(new FieldRotation(FieldRotation.Rotation.Left));
             CheckPosition(new [, ]
             {
                 { 1,1,1,1,1 },
@@ -476,8 +474,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             viewCollection.Dispose();
             constructionService.Dispose();
-            buildingMode.Dispose();
             controls.Dispose();
+            rotatingService.Dispose();
 
             void CheckPosition(int[,] expected)
             {
