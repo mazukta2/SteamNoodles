@@ -59,6 +59,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Levels
 
         public StageLevel()
         {
+            CellSize = 1;
+            PlacementFieldSize = new IntPoint(11, 11);
         }
     }
 }

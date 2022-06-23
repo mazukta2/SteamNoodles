@@ -9,17 +9,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
     public record Construction : Entity
     {
         public ConstructionScheme Scheme { get; }
-        public FieldPosition Position { get; }
+        public CellPosition Position { get; }
         public FieldRotation Rotation { get; }
 
-        public Construction(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        public Construction()
+        {
+            Scheme = new ConstructionScheme();
+            Position = new CellPosition(0, 0);
+            Rotation = FieldRotation.Default;
+        }
+        
+        public Construction(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
         {
             Scheme = scheme;
             Position = position;
             Rotation = rotation;
         }
 
-        public IReadOnlyCollection<FieldPosition> GetOccupiedScace()
+        public IReadOnlyCollection<CellPosition> GetOccupiedScace()
         {
             return Scheme.Placement.GetOccupiedSpace(Position, Rotation);
         }

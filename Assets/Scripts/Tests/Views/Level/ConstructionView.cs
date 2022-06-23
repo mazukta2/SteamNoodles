@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
@@ -28,6 +29,11 @@ namespace Game.Assets.Scripts.Tests.Views.Level
 
         private void CreateExplosion(IViewsCollection obj)
         {
+        }
+
+        public void Init(Construction construction)
+        {
+            
         }
     }
 }

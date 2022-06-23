@@ -1,47 +1,48 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
+using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 {
     public class PlacementFieldPresenter : BasePresenter<IPlacementFieldView>
     {
-        private IPlacementFieldView _view;
-        private GhostService _ghostService;
-        private readonly FieldService _fieldService;
-        private readonly ConstructionsService _constructionsService;
-        private List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
+        private readonly IPlacementFieldView _view;
+        private readonly GhostService _ghostService;
+        private readonly Field _field;
+        private readonly IRepository<Construction> _constructions;
+        private readonly List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
             IPresenterServices.Default?.Get<GhostService>(),
-            IPresenterServices.Default?.Get<FieldService>(),
-            IPresenterServices.Default?.Get<ConstructionsService>())
+            IPresenterServices.Default?.Get<ISingletonRepository<Field>>()?.Get(),
+            IPresenterServices.Default?.Get<IRepository<Construction>>())
         {
         }
 
         public PlacementFieldPresenter(IPlacementFieldView view,
             GhostService ghostService,
-            FieldService fieldService,
-            ConstructionsService constructionsService) : base(view)
+            Field field,
+            IRepository<Construction> constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
-            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
-            _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
+            _field = field ?? throw new ArgumentNullException(nameof(field));
+            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
 
-            var boundaries = _fieldService.GetBoundaries();
+            var boundaries = _field.GetBoundaries();
             for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
             {
                 for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
                 {
-                    _cells.Add(CreateCell(new IntPoint(x, y)));
+                    _cells.Add(CreateCell(new FieldPosition(_field, x, y)));
                 }
             }
 
@@ -49,8 +50,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             _ghostService.OnShowed += UpdateGhostCells;
             _ghostService.OnHided += UpdateGhostCells;
 
-            _constructionsService.OnAdded += HandleConstructionsOnAdded;
-            _constructionsService.OnRemoved += HandleConstructionsOnRemoved;
+            _constructions.OnAdded += HandleConstructionsOnAdded;
+            _constructions.OnRemoved += HandleConstructionsOnRemoved;
 
             UpdateGhostCells();
         }
@@ -61,25 +62,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             _ghostService.OnShowed -= UpdateGhostCells;
             _ghostService.OnHided -= UpdateGhostCells;
 
-            _constructionsService.OnAdded -= HandleConstructionsOnAdded;
-            _constructionsService.OnRemoved -= HandleConstructionsOnRemoved;
+            _constructions.OnAdded -= HandleConstructionsOnAdded;
+            _constructions.OnRemoved -= HandleConstructionsOnRemoved;
         }
 
-        private PlacementCellPresenter CreateCell(IntPoint position)
+        private PlacementCellPresenter CreateCell(FieldPosition position)
         {
             var view = _view.CellsContainer.Spawn<ICellView>(_view.Cell);
-            return new PlacementCellPresenter(view, position, _fieldService);
+            return new PlacementCellPresenter(view, position);
         }
         
         private void UpdateGhostCells()
         {
-            IReadOnlyCollection<FieldPosition> ocuppiedCells = null;
-            var occupiedByBuildings = _constructionsService.GetAllOccupiedSpace();
+            IReadOnlyCollection<CellPosition> occupiedCells = null;
+            var occupiedByBuildings = _constructions.GetAllOccupiedSpace();
             if (_ghostService.IsEnabled())
             {
                 var ghost = _ghostService.GetGhost();
                 var scheme = ghost.Card.Scheme;
-                ocuppiedCells = scheme.Placement
+                occupiedCells = scheme.Placement
                     .GetOccupiedSpace(ghost.Position, ghost.Rotation);
             }
 
@@ -87,17 +88,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             {
                 var state = CellPlacementStatus.Normal;
 
-                if (occupiedByBuildings.Any(x => x.Value == cell.Position))
+                if (occupiedByBuildings.Any(x => x.Value == cell.Position.Value))
                     state = CellPlacementStatus.IsUnderConstruction;
 
-                if (ocuppiedCells != null)
+                if (occupiedCells != null)
                 {
                     var ghost = _ghostService.GetGhost();
                     var scheme = ghost.Card.Scheme;
-                    if (_constructionsService.IsFreeCell(scheme, new FieldPosition(cell.Position), ghost.Rotation))
+                    if (_constructions.IsFreeCell(_field, scheme, cell.Position, ghost.Rotation))
                         state = CellPlacementStatus.IsReadyToPlace;
 
-                    if (ocuppiedCells.Any(x => x.Value == cell.Position))
+                    if (occupiedCells.Any(x => x.Value == cell.Position.Value))
                     {
                         if (state == CellPlacementStatus.IsReadyToPlace)
                             state = CellPlacementStatus.IsAvailableGhostPlace;
@@ -117,8 +118,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleConstructionsOnAdded(Construction construction)
         {
-            //ConstructionShrinkerPresenter
-            //_commands.Execute(new BuildConstructionCommand(construction, _view.ConstrcutionContainer, _view.ConstrcutionPrototype));
+            _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(construction);
             UpdateGhostCells();
         }
     }

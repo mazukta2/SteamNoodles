@@ -13,36 +13,25 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
     public class ConstructionsService : Disposable, IService
     {
-        public event Action<Construction> OnAdded = delegate { };
-        public event Action<Construction> OnRemoved = delegate { };
-
         private readonly IRepository<Construction> _constructions;
-        private readonly FieldService _fieldService;
+        private readonly Field _Field;
 
-        public ConstructionsService(IRepository<Construction> constructions, FieldService fieldService)
+        public ConstructionsService(IRepository<Construction> constructions, Field Field)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
-            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
-
-            _constructions.OnAdded += OnAddedHandled;
-            _constructions.OnRemoved += OnRemovedHandled;
+            _Field = Field ?? throw new ArgumentNullException(nameof(Field));
         }
 
         protected override void DisposeInner()
         {
-            _constructions.OnAdded -= OnAddedHandled;
-            _constructions.OnRemoved -= OnRemovedHandled;
         }
-
-        private void OnRemovedHandled(Construction obj) => OnRemoved(obj);
-        private void OnAddedHandled(Construction obj) => OnAdded(obj);
-
+        
         public GameVector3 GetWorldPosition(Construction construction)
         {
-            return _fieldService.GetWorldPosition(construction);
+            return _Field.GetWorldPosition(construction);
         }
 
-        public BuildingPoints GetPoints(ConstructionCard card, FieldPosition position, FieldRotation rotation)
+        public BuildingPoints GetPoints(ConstructionCard card, CellPosition position, FieldRotation rotation)
         {
             var scheme = card.Scheme;
             if (!CanPlace(scheme, position, rotation))
@@ -60,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             return scheme.Points + adjacentPoints;
         }
 
-        private IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        private IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
         {
             var result = new Dictionary<Construction, BuildingPoints>();
             if (!CanPlace(scheme, position, rotation))
@@ -77,26 +66,26 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             return result.AsReadOnly();
         }
 
-        public IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionCard card, FieldPosition position, FieldRotation rotation)
+        public IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionCard card, CellPosition position, FieldRotation rotation)
         {
             return GetAdjacencyPoints(card.Scheme, position, rotation);
         }
 
-        public bool CanPlace(ConstructionCard card, FieldPosition position, FieldRotation rotation)
+        public bool CanPlace(ConstructionCard card, CellPosition position, FieldRotation rotation)
         {
             return CanPlace(card.Scheme, position, rotation);
         }
 
-        private bool CanPlace(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        private bool CanPlace(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
         {
             return scheme.Placement
                 .GetOccupiedSpace(position, rotation)
                 .All(otherPosition => IsFreeCell(scheme, otherPosition, rotation));
         }
 
-        public bool IsFreeCell(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        public bool IsFreeCell(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
         {
-            var boundaries = _fieldService.GetBoundaries();
+            var boundaries = _Field.GetBoundaries();
             if (!boundaries.IsInside(position))
                 return false;
 
@@ -114,9 +103,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             return true;
         }
 
-        public IReadOnlyCollection<FieldPosition> GetAllOccupiedSpace()
+        public IReadOnlyCollection<CellPosition> GetAllOccupiedSpace()
         {
-            var list = new List<FieldPosition>();
+            var list = new List<CellPosition>();
 
             foreach (var construction in _constructions.Get())
                 list.AddRange(construction.GetOccupiedScace());
@@ -124,23 +113,24 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             return list.AsReadOnly();
         }
 
-        private IReadOnlyCollection<FieldPosition> GetListOfAdjacentCells(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+
+        private IReadOnlyCollection<CellPosition> GetListOfAdjacentCells(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
         {
-            var list = new List<FieldPosition>();
+            var list = new List<CellPosition>();
 
             foreach (var cell in scheme.Placement.GetOccupiedSpace(position, rotation))
             {
-                AddCell(cell + new FieldPosition(1, 0));
-                AddCell(cell + new FieldPosition(-1, 0));
-                AddCell(cell + new FieldPosition(0, 1));
-                AddCell(cell + new FieldPosition(0, -1));
+                AddCell(cell + new CellPosition(1, 0));
+                AddCell(cell + new CellPosition(-1, 0));
+                AddCell(cell + new CellPosition(0, 1));
+                AddCell(cell + new CellPosition(0, -1));
             }
 
             return list.AsReadOnly();
 
-            void AddCell(FieldPosition point)
+            void AddCell(CellPosition point)
             {
-                if (!_fieldService.GetBoundaries().IsInside(point))
+                if (!_Field.GetBoundaries().IsInside(point))
                     return;
 
                 if (list.Contains(point))
@@ -150,7 +140,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             }
         }
 
-        private IReadOnlyCollection<Construction> GetAdjacentConstructions(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        private IReadOnlyCollection<Construction> GetAdjacentConstructions(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
         {
             var adjacentCells = GetListOfAdjacentCells(scheme, position, rotation);
             var adjacentConstructions = new List<Construction>();

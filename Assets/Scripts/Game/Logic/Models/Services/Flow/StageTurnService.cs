@@ -23,19 +23,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
     public class StageTurnService : Disposable, IService
     {
         private readonly IRepository<Construction> _constructions;
-        private readonly FieldService _fieldService;
+        private readonly Field _Field;
         private readonly UnitsCustomerQueueService _unitsCustomerQueueService;
         private readonly SequenceManager _sequence = new SequenceManager();
         private int _turnCounter = 0;
 
         public StageTurnService(
             IRepository<Construction> constructions,
-            FieldService fieldService,
+            Field Field,
             BuildingService buildingService,
             UnitsCustomerQueueService unitsCustomerQueueService)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
-            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
+            _Field = Field ?? throw new ArgumentNullException(nameof(Field));
             _unitsCustomerQueueService = unitsCustomerQueueService ?? throw new ArgumentNullException(nameof(unitsCustomerQueueService));
             _constructions.OnEvent += HandleOnEvent;
         }
@@ -51,7 +51,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Flow
             if (_turnCounter == 0)
             {
                 var construction = _constructions.Get().First();
-                var queueStartingPosition = _fieldService.GetWorldPosition(construction).X;
+                var queueStartingPosition = _Field.GetWorldPosition(construction).X;
                 _unitsCustomerQueueService.SetQueuePosition(queueStartingPosition);
             }
 

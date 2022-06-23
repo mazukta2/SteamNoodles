@@ -23,6 +23,7 @@ using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Tests.Environment;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
@@ -127,7 +128,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsTrue(manager.Has<UnitsCustomerQueueService>());
             Assert.IsTrue(manager.Has<UnitsMovementsService>());
             Assert.IsTrue(manager.Has<BuildingPointsService>());
-            Assert.IsTrue(manager.Has<FieldService>());
             Assert.IsTrue(manager.Has<BuildingService>());
             Assert.IsTrue(manager.Has<SchemesService>());
             Assert.IsTrue(manager.Has<CoinsService>());
@@ -137,6 +137,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsTrue(manager.Has<Repository<Unit>>());
             Assert.IsTrue(manager.Has<SingletonRepository<Deck<ConstructionScheme>>>());
             Assert.IsTrue(manager.Has<SingletonRepository<Deck<UnitType>>>());
+            Assert.IsTrue(manager.Has<SingletonRepository<Field>>());
 
             manager.Remove(service);
 
@@ -150,7 +151,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsFalse(manager.Has<UnitsCustomerQueueService>());
             Assert.IsFalse(manager.Has<UnitsMovementsService>());
             Assert.IsFalse(manager.Has<BuildingPointsService>());
-            Assert.IsFalse(manager.Has<FieldService>());
             Assert.IsFalse(manager.Has<BuildingService>());
             Assert.IsFalse(manager.Has<SchemesService>());
             Assert.IsFalse(manager.Has<CoinsService>());
@@ -160,6 +160,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsFalse(manager.Has<Repository<Unit>>());
             Assert.IsFalse(manager.Has<SingletonRepository<Deck<ConstructionScheme>>>());
             Assert.IsFalse(manager.Has<SingletonRepository<Deck<UnitType>>>());
+            Assert.IsFalse(manager.Has<SingletonRepository<Field>>());
 
             manager.Dispose();
         }

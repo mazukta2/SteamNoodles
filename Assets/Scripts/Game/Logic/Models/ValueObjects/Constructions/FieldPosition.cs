@@ -1,23 +1,23 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using System;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 {
-    public record FieldPosition
+    // position RELATIVE to a field. it can be outside the field
+    public record FieldPosition : CellPosition
     {
-        public int X => Value.X;
-        public int Y => Value.Y;
+        private readonly Field _field;
 
-        public IntPoint Value { get; }
-
-        public FieldPosition(IntPoint value) => (Value) = (value);
-
-        public FieldPosition(int x, int y)
+        public FieldPosition(Field field, IntPoint value) : this(field, value.X, value.Y)
         {
-            Value = new IntPoint(x, y);
         }
 
-        public static FieldPosition operator +(FieldPosition current, FieldPosition other) => new FieldPosition(current.Value + other.Value);
-        public static FieldPosition operator -(FieldPosition current, FieldPosition other) => new FieldPosition(current.Value - other.Value);
+        public FieldPosition(Field field, int x, int y) : base(x, y)
+        {
+            _field = field ?? throw new ArgumentNullException(nameof(field));
+        }
+
+        public GameVector3 WorldPosition => _field.GetWorldPosition(this, new IntRect(0, 0, 1, 1));
     }
 }

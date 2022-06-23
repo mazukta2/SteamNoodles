@@ -8,18 +8,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 {
     public class PlacementCellPresenter : BasePresenter<ICellView>
     {
-        public IntPoint Position => _position;
-
+        public FieldPosition Position => _position;
+        
         private ICellView _cellView;
-        private IntPoint _position;
+        private FieldPosition _position;
 
-        public PlacementCellPresenter(ICellView view, IntPoint position,
-            FieldService fieldService) : base(view)
+        public PlacementCellPresenter(ICellView view, FieldPosition position) : base(view)
         {
             _cellView = view ?? throw new ArgumentNullException(nameof(view));
             _position = position;
 
-            view.LocalPosition.Value = fieldService.GetWorldPosition(new FieldPosition(position), new IntRect(0, 0, 1, 1));
+            view.LocalPosition.Value = position.WorldPosition;
         }
 
         public void SetState(CellPlacementStatus state)

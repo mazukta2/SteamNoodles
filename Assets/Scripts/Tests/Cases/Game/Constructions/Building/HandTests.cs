@@ -1,17 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
@@ -165,8 +160,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             schemesRepository.Add(scheme2);
 
             var cardsRepository = new Repository<ConstructionCard>();
-            var hand = new HandService(cardsRepository);
-            var controls = new GameControlsService(new ControlsMock());
             var ghostService = new GhostService();
 
             var viewCollection = new ViewsCollection();
@@ -182,7 +175,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(2, handView.Collection.FindViews<IHandConstructionView>().Count);
 
             viewCollection.Dispose();
-            controls.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -215,19 +207,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void ConstructionIconSetted()
+        public void ConstructionIconSet()
         {
             var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
             
-            var scheme = new ConstructionScheme(new Uid(),
-                DefId.None, 
-                ContructionPlacement.One, 
-                LocalizationTag.None, 
-                new BuildingPoints(0), 
-                new AdjacencyBonuses(), 
-                "image", "", new Requirements());
+            var scheme = new ConstructionScheme(image: "image");
             schemesRepository.Add(scheme);
 
             var link = cardsRepository.Add(new ConstructionCard(scheme));

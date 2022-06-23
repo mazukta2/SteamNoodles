@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
             var schemesRepository = new Repository<ConstructionScheme>();
             var cardsRepository = new Repository<ConstructionCard>();
 
-            // var buildingModeService = new GhostService(new FieldService(1, IntPoint.One));
+            // var buildingModeService = new GhostService(new Field(1, IntPoint.One));
 
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);

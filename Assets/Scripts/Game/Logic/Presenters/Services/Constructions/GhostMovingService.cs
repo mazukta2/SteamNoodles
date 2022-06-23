@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
@@ -13,21 +14,21 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions
     public class GhostMovingService : Disposable, IService
     {
         private readonly GhostService _ghostService;
-        private readonly FieldService _fieldService;
+        private readonly Field _Field;
         private readonly GameControlsService _controlsService;
         private IReadOnlyCollection<Construction> _constructionsHighlights = new List<Construction>();
 
         public GhostMovingService() : this(
             IPresenterServices.Default.Get<GhostService>(),
-            IPresenterServices.Default.Get<FieldService>(),
+            IPresenterServices.Default.Get<ISingletonRepository<Field>>().Get(),
             IPresenterServices.Default.Get<GameControlsService>())
         {
         }
         
-        public GhostMovingService(GhostService ghostService, FieldService fieldService, GameControlsService controlsService)
+        public GhostMovingService(GhostService ghostService, Field Field, GameControlsService controlsService)
         {
             _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
-            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
+            _Field = Field ?? throw new ArgumentNullException(nameof(Field));
             _controlsService = controlsService ?? throw new ArgumentNullException(nameof(controlsService));
             _controlsService.OnLevelPointerMoved += HandleOnOnLevelPointerMoved;
             //    _rotateLeft = _gameKeysManager.GetKey(GameKeys.RotateLeft);
@@ -62,16 +63,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions
         {       
             var ghost = _ghostService.GetGhost();
             var size = ghost.Card.Scheme.Placement.GetRect(ghost.Rotation);
-            var fieldPosition = _fieldService.GetFieldPosition(pointerPosition, size);
+            var fieldPosition = _Field.GetFieldPosition(pointerPosition, size);
             ghost.SetPosition(fieldPosition, pointerPosition);
             _ghostService.Set(ghost);
         }
 
-        public void SetTargetPosition(FieldPosition fieldPosition)
+        public void SetTargetPosition(CellPosition cellPosition)
         {
             var ghost = _ghostService.GetGhost();
             var size = ghost.Card.Scheme.Placement.GetRect(ghost.Rotation);
-            ghost.SetPosition(fieldPosition, _fieldService.GetWorldPosition(fieldPosition, size));
+            ghost.SetPosition(cellPosition, _Field.GetWorldPosition(cellPosition, size));
             _ghostService.Set(ghost);
         }
 

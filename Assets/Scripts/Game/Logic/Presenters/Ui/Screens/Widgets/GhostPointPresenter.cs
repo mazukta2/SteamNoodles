@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
@@ -14,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private IGhostPointsView _view;
         private readonly GhostService _ghostService;
         private readonly ConstructionsService _constructionsService;
-        private readonly FieldService _fieldService;
+        private readonly Field _field;
 
         //private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
@@ -22,19 +23,19 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
                 view,
                 IPresenterServices.Default?.Get<GhostService>(),
                 IPresenterServices.Default?.Get<ConstructionsService>(),
-                IPresenterServices.Default?.Get<FieldService>())
+                IPresenterServices.Default.Get<ISingletonRepository<Field>>().Get())
         {
         }
 
         public GhostPointPresenter(IGhostPointsView view,
             GhostService ghostService,
             ConstructionsService constructionsService,
-            FieldService fieldService) : base(view)
+            Field field) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
             _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
-            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
+            _field = field ?? throw new ArgumentNullException(nameof(Field));
 
             _ghostService.OnChanged += UpdatePoints;
             _ghostService.OnShowed += UpdatePoints;
@@ -57,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
                 var ghost = _ghostService.GetGhost();
                 var points = _constructionsService.GetPoints(ghost.Card, ghost.Position, ghost.Rotation);
 
-                var worldPosition = _fieldService.GetWorldPosition(ghost.Position,
+                var worldPosition = _field.GetWorldPosition(ghost.Position,
                     ghost.Card.Scheme.Placement.GetRect(ghost.Rotation));
 
                 _view.Points.Value = points.AsString();
@@ -95,7 +96,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             //{
             //    var text =_bonuses[item.Key].Text;
             //    text.Value = $"{item.Value}";
-            //    text.Position = _fieldService.GetWorldPosition(item.Key);
+            //    text.Position = _Field.GetWorldPosition(item.Key);
             //}
 
             //_buildingModeService.SetHighlight(_bonuses.Keys.ToArray().AsReadOnly());

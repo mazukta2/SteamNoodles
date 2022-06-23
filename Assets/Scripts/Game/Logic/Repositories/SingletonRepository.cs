@@ -23,6 +23,11 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         {
         }
 
+        public SingletonRepository(T entity)
+        {
+            Add(entity);
+        }
+
         public void Add(T entity)
         {
             if (_value != null)
@@ -56,7 +61,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             OnChanged(entity);
         }
 
-        public IReadOnlyCollection<T> Get()
+        IReadOnlyCollection<T> IPresenterRepository<T>.Get()
         {
             return new [] { _value }.AsReadOnly();
         }
@@ -83,7 +88,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             return new[] { _value }.AsReadOnly();
         }
 
-        T ISingletonRepository<T>.Get()
+        public  T Get()
         {
             return _value;
         }

@@ -43,22 +43,22 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var unitsRep = Add(new Repository<Unit>());
             var constructionsDeckRep = Add(new SingletonRepository<Deck<ConstructionScheme>>());
             var unitsDeckRep = Add(new SingletonRepository<Deck<UnitType>>());
+            var field = Add(new SingletonRepository<Field>(new Field(level.CellSize, level.PlacementFieldSize)));
 
             var coins = Add(new CoinsService());
             var points = Add(new BuildingPointsService(level, time));
-            var field = Add(new FieldService(level.CellSize, level.PlacementFieldSize));
             var schemes = Add(new SchemesService(schemesRep, new(constructionsDeckRep, random), level.ConstructionsReward));
             var hand = Add(new HandService(cardsRep));
             var unitsTypes = Add(new UnitsTypesService(unitTypesRep, new(unitsDeckRep, random), level));
             var units = Add(new UnitsService(unitsRep, random, unitsTypes));
 
-            var constructions = Add(new ConstructionsService(constructionsRep, field));
+            var constructions = Add(new ConstructionsService(constructionsRep, field.Get()));
             var building = Add(new BuildingService(constructionsRep, constructions));
-            Add(new PointsOnBuildingService(constructionsRep, points, field));
+            Add(new PointsOnBuildingService(constructionsRep, points, field.Get()));
             Add(new RemoveCardOnBuildingService(constructionsRep, hand));
             var crowd = Add(new UnitsCrowdService(unitsRep, units, time, level, random));
             var queue = Add(new UnitsCustomerQueueService(unitsRep, units, crowd, coins, points, time, random));
-            var flow = Add(new StageTurnService(constructionsRep, field, building, queue));
+            var flow = Add(new StageTurnService(constructionsRep, field.Get(), building, queue));
             var rewards = Add(new RewardsService(level, hand, schemes, points));
             var unitsMovement = Add(new UnitsMovementsService(unitsRep, time));
 

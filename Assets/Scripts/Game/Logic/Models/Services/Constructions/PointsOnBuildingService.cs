@@ -14,14 +14,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
     {
         private readonly IRepository<Construction> _constructions;
         private readonly BuildingPointsService _pointsService;
-        private readonly FieldService _fieldService;
+        private readonly Field _Field;
 
         public PointsOnBuildingService(IRepository<Construction> constructions, 
-            BuildingPointsService pointsService, FieldService fieldService)
+            BuildingPointsService pointsService, Field Field)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _pointsService = pointsService ?? throw new ArgumentNullException(nameof(pointsService));
-            _fieldService = fieldService ?? throw new ArgumentNullException(nameof(fieldService));
+            _Field = Field ?? throw new ArgumentNullException(nameof(Field));
             _constructions.OnEvent += HandleEvent;
         }
 
@@ -35,7 +35,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             if (e is not ConstructionBuiltByPlayerEvent buildedByPlayerEvent)
                 return;
             
-            _pointsService.Change(buildedByPlayerEvent.Points, _fieldService.GetWorldPosition(construction));
+            _pointsService.Change(buildedByPlayerEvent.Points, _Field.GetWorldPosition(construction));
         }
     }
 }

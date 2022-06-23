@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 
         public IntRect GetRect(FieldRotation rotation)
         {
-            var occupied = GetOccupiedSpace(new FieldPosition(0, 0), rotation);
+            var occupied = GetOccupiedSpace(new CellPosition(0, 0), rotation);
             var minX = occupied.Min(v => v.X);
             var minY = occupied.Min(v => v.Y);
             var maxX = occupied.Max(v => v.X);
@@ -32,19 +32,19 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
             return new IntRect(minX, minY, maxX - minX + 1, maxY - minY + 1);
         }
 
-        public IReadOnlyCollection<FieldPosition> GetOccupiedSpace(FieldPosition position, FieldRotation rotation)
+        public IReadOnlyCollection<CellPosition> GetOccupiedSpace(CellPosition position, FieldRotation rotation)
         {
-            var result = new List<FieldPosition>();
+            var result = new List<CellPosition>();
 
             var rotatedPlacement = Rotate(_placement, rotation);
 
-            var occupied = new List<FieldPosition>();
+            var occupied = new List<CellPosition>();
             for (int x = 0; x < rotatedPlacement.GetLength(0); x++)
             {
                 for (int y = 0; y < rotatedPlacement.GetLength(1); y++)
                 {
                     if (rotatedPlacement[x, y] != 0)
-                        occupied.Add(new FieldPosition(x, y));
+                        occupied.Add(new CellPosition(x, y));
                 }
             }
 
@@ -56,7 +56,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
             var xSize = maxX - minX + 1;
             var ySize = maxY - minY + 1;
 
-            var startingPoint = new FieldPosition(minX, minY);
+            var startingPoint = new CellPosition(minX, minY);
 
             foreach (var point in occupied)
             {

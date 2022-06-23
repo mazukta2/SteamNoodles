@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services.Constructions
         
         public void Show(ConstructionCard constructionCard)
         {
-            _ghost = new ConstructionGhost(constructionCard, new FieldPosition(0,0), GameVector3.Zero, FieldRotation.Default);
+            _ghost = new ConstructionGhost(constructionCard, new CellPosition(0,0), GameVector3.Zero, FieldRotation.Default);
             
             OnShowed();
         }
