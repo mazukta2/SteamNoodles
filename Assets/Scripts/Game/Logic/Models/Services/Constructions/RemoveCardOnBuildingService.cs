@@ -6,7 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {

@@ -125,7 +125,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleConstructionsOnAdded(Construction construction)
         {
-            _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(construction);
+            _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(_constructions.GetAsQuery(construction.Id));
             UpdateGhostCells();
         }
     }

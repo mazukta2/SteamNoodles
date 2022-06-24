@@ -100,7 +100,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var constructionsRepository = new Repository<Construction>();
             var field = new Field(10, new IntPoint(3, 3));
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field, controls);
             var constructionService = new ConstructionsService(constructionsRepository, field);
 
@@ -133,7 +134,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var constructionsRepository = new Repository<Construction>();
             var field = new Field(1, new IntPoint(5, 5));
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field, controls);
             var constructionService = new ConstructionsService(constructionsRepository, field);
 
@@ -178,7 +180,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var constructionsRepository = new Repository<Construction>();
             var field = new Field(1, new IntPoint(15, 15));
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field, controls);
             var constructionService = new ConstructionsService(constructionsRepository, field);
 

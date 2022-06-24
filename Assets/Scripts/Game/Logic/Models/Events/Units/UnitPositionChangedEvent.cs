@@ -1,4 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
+﻿using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Events.Units
 {

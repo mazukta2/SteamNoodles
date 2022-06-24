@@ -33,7 +33,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var field = new Field(1, new (11,11));
             var c = new ControlsMock();
             var controlService = new GameControlsService(c);
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var movingService = new GhostMovingService(ghostService, field, controlService);
             
             c.MovePointer(new GameVector3(1,0,1));
@@ -63,7 +64,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsService = new ConstructionsService(constructionsRepository, field);
             var buildingService = new BuildingService(constructionsRepository, constructionsService);
             
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var ghostBuildingService = new GhostBuildingService(ghostService, constructionsService, 
                 buildingService, controlService);
             
@@ -81,7 +83,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             
             Assert.AreEqual(1, constructionsRepository.Count);
         
-            ghostService.Hide();
+            
             controlService.Dispose();
             constructionsService.Dispose();
             ghostBuildingService.Dispose();
@@ -98,7 +100,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var field = new Field();
 
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field,controls);
             
             var scheme = new ConstructionScheme();
@@ -132,7 +135,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var field = new Field(10, new IntPoint(3, 3));
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field,controls);
             var constructionService = new ConstructionsService(constructionsRepository, field);
             var viewCollection = new ViewsCollection();
@@ -176,7 +180,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var field = new Field(0.5f, new IntPoint(7, 7));
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field,controls);
             var constructionService = new ConstructionsService(constructionsRepository, field);
             var viewCollection = new ViewsCollection();
@@ -226,7 +231,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 placement);
 
             var field = new Field(0.5f, new IntPoint(7, 7));
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field,controls);
             var viewCollection = new ViewsCollection();
 
@@ -257,7 +263,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var field = new Field(1, new IntPoint(5, 5));
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field,controls);
             var assets = CreateAssets("view");
             var viewCollection = new ViewsCollection();
@@ -304,7 +311,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var field = new Field(1, new IntPoint(5, 5));
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field,controls);
 
             var viewCollection = new ViewsCollection();
@@ -350,7 +358,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 0, 0), FieldRotation.Default));
 
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field, controls);
             var viewCollection = new ViewsCollection();
 
@@ -407,7 +416,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var controls = new GameControlsService(mockControls);
 
             var field = new Field(1, new IntPoint(3, 3));
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghostService, field,controls);
 
             var assets = CreateAssets("view");
@@ -444,7 +454,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var field = new Field(1, new IntPoint(5, 5));
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(field);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghostService = new GhostService(ghost, field);
             var rotatingService = new GhostRotatingService(ghostService, controls);
 
             var constructionService = new ConstructionsService(constructionsRepository, field);

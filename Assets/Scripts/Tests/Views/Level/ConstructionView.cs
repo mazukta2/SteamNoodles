@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -31,9 +32,9 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         {
         }
 
-        public void Init(Construction construction)
+        public void Init(ISingleQuery<Construction> construction)
         {
-            
+             construction.Dispose();
         }
     }
 }

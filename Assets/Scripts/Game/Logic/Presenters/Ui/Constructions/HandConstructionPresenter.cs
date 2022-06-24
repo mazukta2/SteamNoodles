@@ -1,12 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions.Animations;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     {
         private ConstructionCard _model;
         private IHandConstructionView _view;
-        private readonly IPresenterRepository<ConstructionCard> _cards;
+        private readonly IQuery<ConstructionCard> _cards;
         private readonly ScreenService _screenService;
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
@@ -22,14 +22,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public HandConstructionPresenter(IHandConstructionView view, ConstructionCard model) 
             : this(view, model, 
-                  IPresenterServices.Default.Get<IPresenterRepository<ConstructionCard>>(),
+                  IPresenterServices.Default.Get<IQuery<ConstructionCard>>(),
                   IPresenterServices.Default.Get<ScreenService>())
         {
 
         }
 
         public HandConstructionPresenter(IHandConstructionView view, ConstructionCard model,
-             IPresenterRepository<ConstructionCard> cards,
+             IQuery<ConstructionCard> cards,
              ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));

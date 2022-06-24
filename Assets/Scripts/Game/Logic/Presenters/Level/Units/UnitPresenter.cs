@@ -5,11 +5,11 @@ using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
 using System;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Units;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
@@ -18,11 +18,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
     {
         private IUnitView _view;
         private Unit _unit;
-        private readonly IPresenterRepository<Unit> _units;
+        private readonly IQuery<Unit> _units;
         private UnitRotator _rotator;
         private bool _isStartingAnimation = false;
 
-        public UnitPresenter(IUnitView view, Unit unit, IPresenterRepository<Unit> units, IGameTime time) : base(view)
+        public UnitPresenter(IUnitView view, Unit unit, IQuery<Unit> units, IGameTime time) : base(view)
         {
             _view = view;
             _unit = unit;

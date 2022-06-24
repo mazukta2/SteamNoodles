@@ -1,29 +1,29 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using System;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 {
     public class EndWaveButtonWidgetPresenter : BasePresenter<IEndWaveButtonView>
     {
         private readonly IEndWaveButtonView _view;
-        private IPresenterRepository<Construction> _constructions;
+        private IQuery<Construction> _constructions;
         private string _lastAnimation;
         private readonly StageWaveService _stageWaveService;
 
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view) : this(view, 
-            IPresenterServices.Default?.Get<IPresenterRepository<Construction>>(),
+            IPresenterServices.Default?.Get<IQuery<Construction>>(),
             IPresenterServices.Default.Get<StageWaveService>())
         {
 
         }
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view, 
-            IPresenterRepository<Construction> constructions,
+            IQuery<Construction> constructions,
             StageWaveService stageWaveService)
             : base(view)
         {

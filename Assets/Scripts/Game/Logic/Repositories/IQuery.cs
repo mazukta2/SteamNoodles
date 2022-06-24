@@ -1,12 +1,11 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Repositories
+namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public interface IPresenterRepository<T> : IService where T : class
+    public interface IQuery<out T> : IService where T : class
     {
         event Action<T> OnAdded;
         event Action<T> OnRemoved;

@@ -1,12 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 {
@@ -17,14 +17,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private HandConstructionTooltipPresenter _tooltip;
 
         public BuildingTooltipPresenter(IBuildingToolitpView view) : this(view,
-                  IPresenterServices.Default?.Get<IPresenterRepository<Construction>>(),
+                  IPresenterServices.Default?.Get<IQuery<Construction>>(),
                   IPresenterServices.Default?.Get<GhostService>())
         {
 
         }
 
         public BuildingTooltipPresenter(IBuildingToolitpView view, 
-            IPresenterRepository<Construction> constructions, GhostService ghostService) : base(view)
+            IQuery<Construction> constructions, GhostService ghostService) : base(view)
         {
             _view = view;
             _ghostService = ghostService;

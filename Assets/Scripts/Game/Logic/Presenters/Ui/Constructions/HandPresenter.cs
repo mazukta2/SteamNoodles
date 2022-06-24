@@ -1,31 +1,31 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandPresenter : BasePresenter<IHandView>
     {
-        private readonly IPresenterRepository<ConstructionCard> _repository;
+        private readonly IQuery<ConstructionCard> _repository;
         private readonly GhostService _buildingService;
         private readonly ScreenService _screenService;
         private readonly IHandView _view;
 
         public HandPresenter(IHandView view)
             : this(view,
-                  IPresenterServices.Default?.Get<IPresenterRepository<ConstructionCard>>(),
+                  IPresenterServices.Default?.Get<IQuery<ConstructionCard>>(),
                   IPresenterServices.Default?.Get<GhostService>(),
                   IPresenterServices.Default?.Get<ScreenService>())
         {
         }
 
         public HandPresenter(IHandView view,
-            IPresenterRepository<ConstructionCard> repository,
+            IQuery<ConstructionCard> repository,
             GhostService buildingService,
             ScreenService screenService) : base(view)
         {

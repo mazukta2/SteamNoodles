@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Units;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 using static Game.Assets.Scripts.Game.Logic.Models.Entities.Units.Unit;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
@@ -42,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
                 FireOnFinished();
         }
 
-        private void HandleEvent(Unit eventUnit, Presenters.Repositories.IModelEvent modelEvent)
+        private void HandleEvent(Unit eventUnit, IModelEvent modelEvent)
         {
             if (modelEvent is not UnitReachedTargetPositionEvent)
                 return;

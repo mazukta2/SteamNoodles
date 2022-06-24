@@ -1,7 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Entities;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public class Repository<T> : IRepository<T>, IPresenterRepository<T> where T : class, IEntity
+    public class Repository<T> : IRepository<T>, IQuery<T> where T : class, IEntity
     {
         public event Action<T> OnAdded = delegate { };
         public event Action<T> OnRemoved = delegate { };
@@ -25,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         {
         }
 
-        public T Add(T entity)
+        public virtual T Add(T entity)
         {
             if (_repository.ContainsKey(entity.Id))
                 throw new Exception("Entity already exist");
@@ -90,6 +89,16 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public bool Has(T entity)
         {
             return _repository.ContainsKey(entity.Id);
+        }
+
+        public ISingleQuery<T> GetAsQuery(Uid id)
+        {
+            return new RepositoryEntityQuery<T>(this, id);
+        }
+
+        public bool Has(Uid id)
+        {
+            return _repository.ContainsKey(id);
         }
     }
 }

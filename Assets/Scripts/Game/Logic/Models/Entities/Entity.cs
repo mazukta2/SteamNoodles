@@ -1,8 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Repositories;
 using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Entities
 {
