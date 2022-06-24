@@ -4,9 +4,11 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
@@ -46,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                 }
             }
 
-            _ghost.OnChanged += UpdateGhostCells;
+            _ghost.OnEvent += HandleOnEvent;
             _ghost.OnAdded += UpdateGhostCells;
             _ghost.OnRemoved += UpdateGhostCells;
 
@@ -60,7 +62,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         {
             _constructions.Dispose();
             _ghost.Dispose();
-            _ghost.OnChanged -= UpdateGhostCells;
+            _ghost.OnEvent -= HandleOnEvent;
             _ghost.OnAdded -= UpdateGhostCells;
             _ghost.OnRemoved -= UpdateGhostCells;
 
@@ -76,14 +78,18 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         
         private void UpdateGhostCells()
         {
-            var freeCells = _constructions.GetUnoccupiedCells(_field);
-            
+            IReadOnlyCollection<FieldPosition> freeCells = null;
             IReadOnlyCollection<FieldPosition> occupiedByGhostCells = null;
+            ConstructionGhost ghost = null;
             if (_ghost.Has())
             {
-                var ghost = _ghost.Get();
-                var scheme = ghost.Card.Scheme;
-                occupiedByGhostCells = scheme.Placement.GetOccupiedSpace(ghost.Position, ghost.Rotation);
+                ghost = _ghost.Get();
+                freeCells = _constructions.GetAvailableToBuildCells(_field, ghost.Card.Scheme, ghost.Rotation);
+                occupiedByGhostCells = ghost.Card.Scheme.Placement.GetOccupiedSpace(ghost.Position, ghost.Rotation);
+            }
+            else
+            {
+                freeCells = _constructions.GetUnoccupiedCells(_field);
             }
 
             foreach (var cell in _cells)
@@ -95,15 +101,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                 if (!isFreeCell)
                     state = CellPlacementStatus.IsUnderConstruction;
 
-                if (occupiedByGhostCells != null)
+                if (ghost != null)
                 {
-                    var ghost = _ghost.Get();
-                    var scheme = ghost.Card.Scheme;
-                    
-                    // is available
-                    var isAvailable = ConstructionsFunctions.IsAvailableToBuild(scheme, cell.Position, ghost.Rotation);
-                    
-                    if (isFreeCell && isAvailable)
+                    if (isFreeCell)
                         state = CellPlacementStatus.IsReadyToPlace;
 
                     // is under ghost
@@ -118,6 +118,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             }
         }
 
+        private void HandleOnEvent(IModelEvent obj)
+        {
+            if (obj is not GhostMovedEvent)
+                return;
+            
+            UpdateGhostCells();
+        }
+        
         private void HandleConstructionsOnRemoved(Construction construction)
         {
             UpdateGhostCells();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
@@ -38,19 +39,26 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
             _field = field ?? throw new ArgumentNullException(nameof(Field));
 
-            _ghost.OnChanged += UpdatePoints;
+            _ghost.OnEvent += HandleOnEvent;
             _ghost.OnAdded += UpdatePoints;
             _ghost.OnRemoved += UpdatePoints;
             UpdatePoints();
         }
 
-
         protected override void DisposeInner()
         {
             _ghost.Dispose();
-            _ghost.OnChanged -= UpdatePoints;
+            _ghost.OnEvent -= HandleOnEvent;
             _ghost.OnAdded -= UpdatePoints;
             _ghost.OnRemoved -= UpdatePoints;
+        }
+        
+        private void HandleOnEvent(IModelEvent obj)
+        {
+            if (obj is not GhostMovedEvent)
+                return;
+            
+            UpdatePoints();
         }
 
         public void UpdatePoints()

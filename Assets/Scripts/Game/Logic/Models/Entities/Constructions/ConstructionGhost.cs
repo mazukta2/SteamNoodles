@@ -34,9 +34,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
 
         public void SetPosition(FieldPosition cellPosition, GameVector3 pointerPosition)
         {
-            Position = cellPosition;
             TargetPosition = pointerPosition;
-            FireEvent(new GhostMovedEvent());
+            if (Position != cellPosition)
+            {
+                Position = cellPosition;
+                FireEvent(new GhostMovedEvent());
+            }
         }
 
         public void SetRotation(FieldRotation rotation)

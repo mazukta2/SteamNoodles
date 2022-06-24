@@ -21,12 +21,14 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
                 .GetOccupiedSpace(position, rotation)
                 .All(otherPosition => constructions.IsAvailable(scheme, otherPosition, rotation));
         }
-        
-        public static IReadOnlyCollection<FieldPosition> GetUnoccupiedCells(this IQuery<Construction> constructions, Field field)
+
+        public static IReadOnlyCollection<FieldPosition> GetAvailableToBuildCells(this IQuery<Construction> constructions,
+            Field field, ConstructionScheme scheme, FieldRotation rotation)
         {
             var list = new List<FieldPosition>();
             
             var constructionsList = constructions.Get();
+            var occupiedSpace = constructionsList.SelectMany(otherBuilding => otherBuilding.GetOccupiedSpace());
             
             var boundaries = field.GetBoundaries();
             for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
@@ -35,8 +37,38 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
                 {
                     var fieldPosition = new FieldPosition(field, x, y);
                     
-                    if (constructionsList.Any(otherBuilding => otherBuilding.GetOccupiedSpace()
-                            .Any(pos => pos == fieldPosition)))
+                    if (scheme.IsDownEdge())
+                    {
+                        var min = boundaries.Value.Y;
+                        var max = boundaries.Value.Y + scheme.Placement.GetHeight(rotation);
+                        if (!(min <= y && y < max))
+                            continue;
+                    }
+                    
+                    if (occupiedSpace.Any(pos => pos == fieldPosition))
+                        continue;
+                    
+                    list.Add(fieldPosition);
+                }
+            }
+            
+            return list.AsReadOnly();
+        }
+        
+        public static IReadOnlyCollection<FieldPosition> GetUnoccupiedCells(this IQuery<Construction> constructions, Field field)
+        {
+            var list = new List<FieldPosition>();
+            
+            var constructionsList = constructions.Get();
+            var occupiedSpace = constructionsList.SelectMany(otherBuilding => otherBuilding.GetOccupiedSpace());
+            
+            var boundaries = field.GetBoundaries();
+            for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
+            {
+                for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
+                {
+                    var fieldPosition = new FieldPosition(field, x, y);
+                    if (occupiedSpace.Any(pos => pos == fieldPosition))
                         continue;
                     
                     list.Add(fieldPosition);

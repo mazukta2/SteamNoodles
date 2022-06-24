@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
@@ -46,9 +47,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _constructionModelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
             
             _ghost.OnRemoved += Dispose;
-            _ghost.OnChanged += HandleOnPositionChanged;
+            _ghost.OnEvent += HandleEvent;
 
-            HandleOnPositionChanged();
+            UpdatePosition();
         }
 
         protected override void DisposeInner()
@@ -56,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _constructions.Dispose();
             _ghost.Dispose();
             _ghost.OnRemoved -= Dispose;
-            _ghost.OnChanged -= HandleOnPositionChanged;
+            _ghost.OnEvent -= HandleEvent;
         }
 
         private IViewPrefab GetPrefab()
@@ -64,7 +65,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             return _assets.GetPrefab(_ghost.Get().Card.Scheme.LevelViewPath);
         }
         
-        private void HandleOnPositionChanged()
+        private void HandleEvent(IModelEvent obj)
+        {
+            if (obj is not GhostMovedEvent)
+                return;
+            
+            UpdatePosition();
+        }
+        
+        private void UpdatePosition()
         {
             var ghost = _ghost.Get();
             var size = ghost.Card.Scheme.Placement.GetRect(ghost.Rotation);
