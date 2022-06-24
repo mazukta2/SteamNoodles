@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using System;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 {
@@ -19,8 +20,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
         {
             Value = new IntPoint(x, y);
         }
+        
+        public FieldPosition AsFieldPosition(Field field)
+        {
+            return new FieldPosition(field, X, Y);
+        }
 
         public static CellPosition operator +(CellPosition current, CellPosition other) => new CellPosition(current.Value + other.Value);
         public static CellPosition operator -(CellPosition current, CellPosition other) => new CellPosition(current.Value - other.Value);
+
     }
 }

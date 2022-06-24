@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 {
@@ -23,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 
         public IntRect GetRect(FieldRotation rotation)
         {
-            var occupied = GetOccupiedSpace(new CellPosition(0, 0), rotation);
+            var occupied = GetOccupiedSpace(rotation);
             var minX = occupied.Min(v => v.X);
             var minY = occupied.Min(v => v.Y);
             var maxX = occupied.Max(v => v.X);
@@ -32,7 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
             return new IntRect(minX, minY, maxX - minX + 1, maxY - minY + 1);
         }
 
-        public IReadOnlyCollection<CellPosition> GetOccupiedSpace(CellPosition position, FieldRotation rotation)
+        public IReadOnlyCollection<CellPosition> GetOccupiedSpace(FieldRotation rotation)
         {
             var result = new List<CellPosition>();
 
@@ -60,10 +61,17 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 
             foreach (var point in occupied)
             {
-                result.Add(point + position - startingPoint);
+                result.Add(point - startingPoint);
             }
 
             return result.AsReadOnly();
+        }
+        
+        public IReadOnlyCollection<FieldPosition> GetOccupiedSpace(FieldPosition position, FieldRotation rotation)
+        {
+            return GetOccupiedSpace(rotation)
+                .Select(x => new FieldPosition(position.Field, x.Value + position.Value))
+                .AsReadOnly();
         }
 
         private int[,] Rotate(int[,] placement, FieldRotation rotation)

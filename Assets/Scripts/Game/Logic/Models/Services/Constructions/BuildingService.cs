@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             _constructionsService = constructionsService;
         }
 
-        public Construction Build(ConstructionCard card, CellPosition position, FieldRotation rotation)
+        public Construction Build(ConstructionCard card, FieldPosition position, FieldRotation rotation)
         {
             if (!_constructionsService.CanPlace(card, position, rotation))
                 throw new Exception("Can't build construction here");

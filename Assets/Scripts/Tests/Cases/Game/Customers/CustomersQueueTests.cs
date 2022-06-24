@@ -119,11 +119,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var custumers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
 
             var handService = new HandService(constructionsCardsRepository);
-            var Field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository, Field);
+            var field = new Field(1, new IntPoint(11, 11));
+            var constructionsService = new ConstructionsService(constructionsRepository, field);
             var buildngService = new BuildingService(constructionsRepository, constructionsService);
 
-            var turnService = new StageTurnService(constructionsRepository, Field, buildngService, custumers);
+            var turnService = new StageTurnService(constructionsRepository, custumers);
 
             var scheme = new ConstructionScheme();
             constructionsSchemeRepository.Add(scheme);
@@ -131,8 +131,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             constructionsCardsRepository.Add(card);
             Assert.AreEqual(0, constructionsRepository.Count);
 
-            var construction = buildngService.Build(card, new CellPosition(1, 1), new FieldRotation());
-            var constructionPosition = Field.GetWorldPosition(construction);
+            var construction = buildngService.Build(card, new FieldPosition(field, 1, 1), new FieldRotation());
+            var constructionPosition = construction.GetWorldPosition();
 
             Assert.AreEqual(constructionPosition.X, custumers.GetQueuePosition().X);
 
@@ -653,12 +653,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var customers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
 
             var handService = new HandService(constructionsCardsRepository);
-            var Field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository, Field);
+            var field = new Field(1, new IntPoint(11, 11));
+            var constructionsService = new ConstructionsService(constructionsRepository, field);
             var buildingService = new BuildingService(constructionsRepository, constructionsService);
-            var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, points, Field);
+            var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, points);
 
-            var turnService = new StageTurnService(constructionsRepository, Field, buildingService, customers);
+            var turnService = new StageTurnService(constructionsRepository, customers);
 
             var scheme = ConstructionScheme.DefaultWithPoints(new BuildingPoints(3));
             constructionsSchemeRepository.Add(scheme);
@@ -666,7 +666,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             constructionsCardsRepository.Add(card);
             Assert.AreEqual(0, constructionsRepository.Count);
 
-            var construction = buildingService.Build(card, new CellPosition(1, 1), new FieldRotation());
+            var construction = buildingService.Build(card, new FieldPosition(field, 1, 1), new FieldRotation());
 
             Assert.AreEqual(new BuildingLevel(1), points.GetTargetLevel());
             Assert.AreEqual(new BuildingLevel(1), points.GetCurrentLevel());

@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var (card, screenManager) = Setup(view);
 
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService();
+            var ghostService = new GhostService(new Field());
 
             screenManager.Open<IBuildScreenView>(x => 
                 new BuildScreenPresenter(x, card, ghostService, screenManager, controls));

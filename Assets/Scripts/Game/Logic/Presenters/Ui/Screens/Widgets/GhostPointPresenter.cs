@@ -58,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
                 var ghost = _ghostService.GetGhost();
                 var points = _constructionsService.GetPoints(ghost.Card, ghost.Position, ghost.Rotation);
 
-                var worldPosition = _field.GetWorldPosition(ghost.Position,
+                var worldPosition = ghost.Position.GetWorldPosition(
                     ghost.Card.Scheme.Placement.GetRect(ghost.Rotation));
 
                 _view.Points.Value = points.AsString();

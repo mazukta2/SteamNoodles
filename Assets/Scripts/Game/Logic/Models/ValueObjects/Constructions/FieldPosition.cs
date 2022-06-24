@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
     // position RELATIVE to a field. it can be outside the field
     public record FieldPosition : CellPosition
     {
-        private readonly Field _field;
+        public Field Field { get; private set; }
 
         public FieldPosition(Field field, IntPoint value) : this(field, value.X, value.Y)
         {
@@ -15,9 +15,22 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
 
         public FieldPosition(Field field, int x, int y) : base(x, y)
         {
-            _field = field ?? throw new ArgumentNullException(nameof(field));
+            Field = field ?? throw new ArgumentNullException(nameof(field));
         }
 
-        public GameVector3 WorldPosition => _field.GetWorldPosition(this, new IntRect(0, 0, 1, 1));
+        public GameVector3 GetWorldPosition()
+        {
+            return GetWorldPosition(new IntRect(0, 0, 1, 1));
+        }
+        
+        public GameVector3 GetWorldPosition(IntRect size)
+        {
+            var position = Field.GetWorldPosition(Value);
+            var offset = Field.GetOffset(size);
+            return position + offset;
+        }
+        
+        public static FieldPosition operator +(FieldPosition current, CellPosition other) => new FieldPosition(current.Field,current.Value + other.Value);
+        public static FieldPosition operator -(FieldPosition current, CellPosition other) => new FieldPosition(current.Field,current.Value - other.Value);
     }
 }

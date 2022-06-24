@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
             Value = new IntRect(-size.X / 2, -size.Y / 2, size.X, size.Y);
         }
 
-        public bool IsInside(CellPosition position)
+        public bool IsInside(FieldPosition position)
         {
             return Value.IsInside(position.Value);
         }

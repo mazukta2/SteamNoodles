@@ -54,16 +54,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 
             var constructions = Add(new ConstructionsService(constructionsRep, field.Get()));
             var building = Add(new BuildingService(constructionsRep, constructions));
-            Add(new PointsOnBuildingService(constructionsRep, points, field.Get()));
+            Add(new PointsOnBuildingService(constructionsRep, points));
             Add(new RemoveCardOnBuildingService(constructionsRep, hand));
             var crowd = Add(new UnitsCrowdService(unitsRep, units, time, level, random));
             var queue = Add(new UnitsCustomerQueueService(unitsRep, units, crowd, coins, points, time, random));
-            var flow = Add(new StageTurnService(constructionsRep, field.Get(), building, queue));
+            var flow = Add(new StageTurnService(constructionsRep, queue));
             var rewards = Add(new RewardsService(level, hand, schemes, points));
             var unitsMovement = Add(new UnitsMovementsService(unitsRep, time));
 
             var controls = services.Get<GameControlsService>();
-            var ghost = Add(new GhostService());
+            var ghost = Add(new GhostService(field.Get()));
             Add(new GhostMovingService(ghost, field.Get(), controls));
             Add(new GhostRotatingService(ghost, controls));
             Add(new GhostBuildingService(ghost, constructions, building,controls));

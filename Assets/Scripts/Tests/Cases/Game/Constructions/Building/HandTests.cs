@@ -160,7 +160,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             schemesRepository.Add(scheme2);
 
             var cardsRepository = new Repository<ConstructionCard>();
-            var ghostService = new GhostService();
+            var ghostService = new GhostService(new Field());
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
@@ -288,7 +288,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
             var cardsRepository = new Repository<ConstructionCard>();
 
-            var ghostService = new GhostService();
+            var ghostService = new GhostService(new Field());
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
             new HandPresenter(handView, cardsRepository, ghostService, screenManager);
@@ -314,7 +314,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var scheme = new ConstructionScheme();
             schemesRepository.Add(scheme);
 
-            var ghostService = new GhostService();
+            var ghostService = new GhostService(new Field());
             var viewCollection = new ViewsCollection();
             screenManager.Bind(new ScreenManagerView(viewCollection));
             var handView = new HandView(viewCollection);

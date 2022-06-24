@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             _cellView = view ?? throw new ArgumentNullException(nameof(view));
             _position = position;
 
-            view.LocalPosition.Value = position.WorldPosition;
+            view.LocalPosition.Value = position.GetWorldPosition();
         }
 
         public void SetState(CellPlacementStatus state)

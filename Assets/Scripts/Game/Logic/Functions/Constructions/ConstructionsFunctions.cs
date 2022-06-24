@@ -8,28 +8,33 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
 {
     public static class ConstructionsFunctions
     {
-        
-        public static IReadOnlyCollection<CellPosition> GetAllOccupiedSpace(this IRepository<Construction> constructions)
+        public static IReadOnlyCollection<FieldPosition> GetUnoccupiedCells(this IRepository<Construction> constructions, Field field)
         {
-            var list = new List<CellPosition>();
-
-            foreach (var construction in constructions.Get())
-                list.AddRange(construction.GetOccupiedScace());
-
+            var list = new List<FieldPosition>();
+            
+            var constructionsList = constructions.Get();
+            
+            var boundaries = field.GetBoundaries();
+            for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
+            {
+                for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
+                {
+                    var fieldPosition = new FieldPosition(field, x, y);
+                    
+                    if (constructionsList.Any(otherBuilding => otherBuilding.GetOccupiedSpace()
+                            .Any(pos => pos == fieldPosition)))
+                        continue;
+                    
+                    list.Add(fieldPosition);
+                }
+            }
+            
             return list.AsReadOnly();
         }
         
-        public static bool IsFreeCell(this IRepository<Construction> constructions, 
-            Field field, ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
+        public static bool IsAvailableToBuild(Field field, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
             var boundaries = field.GetBoundaries();
-            if (!boundaries.IsInside(position))
-                return false;
-
-            var constructionsList = constructions.Get();
-            if (constructionsList.Any(otherBuilding => otherBuilding.GetOccupiedScace().Any(pos => pos == position)))
-                return false;
-
             if (scheme.IsDownEdge())
             {
                 var min = boundaries.Value.Y;
@@ -38,6 +43,15 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
             }
 
             return true;
+        }
+        
+        public static bool IsAvailable(this IRepository<Construction> constructions, Field field, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        {
+            var freeCells = constructions.GetUnoccupiedCells(field);
+            var isAvailable = ConstructionsFunctions.IsAvailableToBuild(field, scheme, position, rotation);
+
+            var isFreeCell = freeCells.Any(x => x.Value == position.Value);
+            return (isFreeCell && isAvailable);
         }
     }
 }

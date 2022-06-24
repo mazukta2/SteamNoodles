@@ -8,30 +8,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
     public class ConstructionsService : Disposable, IService
     {
         private readonly IRepository<Construction> _constructions;
-        private readonly Field _Field;
+        private readonly Field _field;
 
-        public ConstructionsService(IRepository<Construction> constructions, Field Field)
+        public ConstructionsService(IRepository<Construction> constructions, Field field)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
-            _Field = Field ?? throw new ArgumentNullException(nameof(Field));
+            _field = field ?? throw new ArgumentNullException(nameof(field));
         }
 
         protected override void DisposeInner()
         {
         }
         
-        public GameVector3 GetWorldPosition(Construction construction)
-        {
-            return _Field.GetWorldPosition(construction);
-        }
-
-        public BuildingPoints GetPoints(ConstructionCard card, CellPosition position, FieldRotation rotation)
+        public BuildingPoints GetPoints(ConstructionCard card, FieldPosition position, FieldRotation rotation)
         {
             var scheme = card.Scheme;
             if (!CanPlace(scheme, position, rotation))
@@ -49,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             return scheme.Points + adjacentPoints;
         }
 
-        private IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
+        private IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
             var result = new Dictionary<Construction, BuildingPoints>();
             if (!CanPlace(scheme, position, rotation))
@@ -66,57 +62,26 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             return result.AsReadOnly();
         }
 
-        public IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionCard card, CellPosition position, FieldRotation rotation)
+        public IReadOnlyDictionary<Construction, BuildingPoints> GetAdjacencyPoints(ConstructionCard card, FieldPosition position, FieldRotation rotation)
         {
             return GetAdjacencyPoints(card.Scheme, position, rotation);
         }
 
-        public bool CanPlace(ConstructionCard card, CellPosition position, FieldRotation rotation)
+        public bool CanPlace(ConstructionCard card, FieldPosition position, FieldRotation rotation)
         {
             return CanPlace(card.Scheme, position, rotation);
         }
 
-        private bool CanPlace(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
+        private bool CanPlace(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
             return scheme.Placement
                 .GetOccupiedSpace(position, rotation)
-                .All(otherPosition => IsFreeCell(scheme, otherPosition, rotation));
+                .All(otherPosition => _constructions.IsAvailable(_field, scheme, otherPosition, rotation));
         }
 
-        public bool IsFreeCell(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
+        private IReadOnlyCollection<FieldPosition> GetListOfAdjacentCells(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
-            var boundaries = _Field.GetBoundaries();
-            if (!boundaries.IsInside(position))
-                return false;
-
-            var constructions = _constructions.Get();
-            if (constructions.Any(otherBuilding => otherBuilding.GetOccupiedScace().Any(pos => pos == position)))
-                return false;
-
-            if (scheme.IsDownEdge())
-            {
-                var min = boundaries.Value.Y;
-                var max = boundaries.Value.Y + scheme.Placement.GetHeight(rotation);
-                return min <= position.Value.Y && position.Value.Y < max;
-            }
-
-            return true;
-        }
-
-        public IReadOnlyCollection<CellPosition> GetAllOccupiedSpace()
-        {
-            var list = new List<CellPosition>();
-
-            foreach (var construction in _constructions.Get())
-                list.AddRange(construction.GetOccupiedScace());
-
-            return list.AsReadOnly();
-        }
-
-
-        private IReadOnlyCollection<CellPosition> GetListOfAdjacentCells(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
-        {
-            var list = new List<CellPosition>();
+            var list = new List<FieldPosition>();
 
             foreach (var cell in scheme.Placement.GetOccupiedSpace(position, rotation))
             {
@@ -128,9 +93,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 
             return list.AsReadOnly();
 
-            void AddCell(CellPosition point)
+            void AddCell(FieldPosition point)
             {
-                if (!_Field.GetBoundaries().IsInside(point))
+                if (!_field.GetBoundaries().IsInside(point))
                     return;
 
                 if (list.Contains(point))
@@ -140,13 +105,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             }
         }
 
-        private IReadOnlyCollection<Construction> GetAdjacentConstructions(ConstructionScheme scheme, CellPosition position, FieldRotation rotation)
+        private IReadOnlyCollection<Construction> GetAdjacentConstructions(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
             var adjacentCells = GetListOfAdjacentCells(scheme, position, rotation);
             var adjacentConstructions = new List<Construction>();
             foreach (var construction in _constructions.Get())
             {
-                foreach (var occupiedCell in construction.GetOccupiedScace())
+                foreach (var occupiedCell in construction.GetOccupiedSpace())
                 {
                     if (adjacentCells.Any(x => x == occupiedCell))
                     {

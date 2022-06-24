@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time);
 
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(0, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(new Field(), 0, 0), new FieldRotation()));
 
             Assert.IsTrue(waves.CanFailWave());
             Assert.IsFalse(waves.CanWinWave());
@@ -67,6 +67,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             var scheme = new ConstructionScheme();
             constructionsSchemeRepository.Add(scheme);
 
+            var field = new Field();
             var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck,
                 new Dictionary<ConstructionScheme, int>() { { scheme, 1 } });
             var stageLevel = new StageLevel(new[] { scheme });
@@ -77,9 +78,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 4);
 
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(0, 0), new FieldRotation()));
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(1, 0), new FieldRotation()));
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(2, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 1, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 2, 0), new FieldRotation()));
 
             Assert.AreEqual(3, constructionsRepository.Count);
 
@@ -87,9 +88,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
 
             Assert.AreEqual(1, constructionsRepository.Count);
 
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(1, 0), new FieldRotation()));
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(2, 0), new FieldRotation()));
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(2, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 1, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 2, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 2, 0), new FieldRotation()));
 
             Assert.AreEqual(4, constructionsRepository.Count);
 
@@ -122,22 +123,23 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             var handService = new HandService(constructionsCardsRepository);
             var rewardService = new RewardsService(stageLevel, handService, schemes, points);
 
+            var field = new Field();
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 2);
 
             Assert.AreEqual(0, waves.GetWaveProgress());
             Assert.IsFalse(waves.CanWinWave());
 
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(0, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
 
             Assert.AreEqual(0.5f, waves.GetWaveProgress());
             Assert.IsFalse(waves.CanWinWave());
 
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(1, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 1, 0), new FieldRotation()));
 
             Assert.AreEqual(1f, waves.GetWaveProgress());
             Assert.IsTrue(waves.CanWinWave());
 
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(3, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 3, 0), new FieldRotation()));
 
             Assert.AreEqual(1f, waves.GetWaveProgress());
             Assert.IsTrue(waves.CanWinWave());
@@ -166,9 +168,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var handService = new HandService(constructionsCardsRepository);
             var rewardService = new RewardsService(stageLevel, handService, schemes, points);
+            var field = new Field();
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 2);
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(0, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field,0, 0), new FieldRotation()));
 
             Assert.AreEqual(0, constructionsCardsRepository.Count);
 
@@ -177,7 +180,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             Assert.AreEqual(1, constructionsCardsRepository.Count);
             Assert.AreEqual(new CardAmount(3), constructionsCardsRepository.Get().First().Amount);
 
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(1, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field,1, 0), new FieldRotation()));
             waves.WinWave();
             
             Assert.AreEqual(1, constructionsCardsRepository.Count);
@@ -216,13 +219,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             new EndWaveButtonWidgetPresenter(view, constructionsRepository, waves);
 
             constructionsCardsRepository.Add(new ConstructionCard(scheme));
+            var field = new Field();
 
             Assert.IsFalse(view.NextWaveButton.IsActive);
             Assert.IsFalse(view.FailWaveButton.IsActive);
             Assert.AreEqual(EndWaveButtonWidgetPresenter.WaveButtonAnimations.None.ToString(),
                 view.WaveButtonAnimator.Animation);
 
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(0, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field,0, 0), new FieldRotation()));
 
             Assert.IsFalse(view.NextWaveButton.IsActive);
             Assert.IsFalse(view.FailWaveButton.IsActive);
@@ -230,7 +234,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
                 view.WaveButtonAnimator.Animation);
 
             constructionsCardsRepository.Clear();
-            constructionsRepository.Add(new Construction(scheme, new CellPosition(1, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field,1, 0), new FieldRotation()));
 
             Assert.IsFalse(view.NextWaveButton.IsActive);
             Assert.IsTrue(view.FailWaveButton.IsActive);

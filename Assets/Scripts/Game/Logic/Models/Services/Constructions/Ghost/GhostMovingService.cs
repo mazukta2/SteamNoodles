@@ -38,11 +38,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             _ghostService.Set(ghost);
         }
 
-        public void SetTargetPosition(CellPosition cellPosition)
+        public void SetTargetPosition(FieldPosition cellPosition)
         {
             var ghost = _ghostService.GetGhost();
             var size = ghost.Card.Scheme.Placement.GetRect(ghost.Rotation);
-            ghost.SetPosition(cellPosition, _field.GetWorldPosition(cellPosition, size));
+            ghost.SetPosition(cellPosition, cellPosition.GetWorldPosition(size));
             _ghostService.Set(ghost);
         }
 

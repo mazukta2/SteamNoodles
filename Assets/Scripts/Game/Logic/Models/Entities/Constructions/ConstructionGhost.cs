@@ -6,11 +6,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
     public record ConstructionGhost : Entity
     {
         public ConstructionCard Card { get; }
-        public CellPosition Position { get; private set; }
+        public FieldPosition Position { get; private set; }
         public FieldRotation Rotation { get; private set;}
         public GameVector3 TargetPosition { get; private set;}
 
-        public ConstructionGhost(ConstructionCard card, CellPosition position, GameVector3 targetPosition, FieldRotation rotation)
+        public ConstructionGhost(ConstructionCard card, FieldPosition position, GameVector3 targetPosition, FieldRotation rotation)
         {
             Card = card;
             Position = position;
@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             TargetPosition = targetPosition;
         }
 
-        public void SetPosition(CellPosition cellPosition, GameVector3 pointerPosition)
+        public void SetPosition(FieldPosition cellPosition, GameVector3 pointerPosition)
         {
             Position = cellPosition;
             TargetPosition = pointerPosition;

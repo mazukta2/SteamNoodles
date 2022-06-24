@@ -74,31 +74,38 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         
         private void UpdateGhostCells()
         {
-            IReadOnlyCollection<CellPosition> occupiedCells = null;
-            var occupiedByBuildings = _constructions.GetAllOccupiedSpace();
+            var freeCells = _constructions.GetUnoccupiedCells(_field);
+            
+            IReadOnlyCollection<FieldPosition> occupiedByGhostCells = null;
             if (_ghostService.IsEnabled())
             {
                 var ghost = _ghostService.GetGhost();
                 var scheme = ghost.Card.Scheme;
-                occupiedCells = scheme.Placement
-                    .GetOccupiedSpace(ghost.Position, ghost.Rotation);
+                occupiedByGhostCells = scheme.Placement.GetOccupiedSpace(ghost.Position, ghost.Rotation);
             }
 
             foreach (var cell in _cells)
             {
                 var state = CellPlacementStatus.Normal;
 
-                if (occupiedByBuildings.Any(x => x.Value == cell.Position.Value))
+                var isFreeCell = freeCells.Any(x => x.Value == cell.Position.Value);
+
+                if (!isFreeCell)
                     state = CellPlacementStatus.IsUnderConstruction;
 
-                if (occupiedCells != null)
+                if (occupiedByGhostCells != null)
                 {
                     var ghost = _ghostService.GetGhost();
                     var scheme = ghost.Card.Scheme;
-                    if (_constructions.IsFreeCell(_field, scheme, cell.Position, ghost.Rotation))
+                    
+                    // is available
+                    var isAvailable = ConstructionsFunctions.IsAvailableToBuild(_field, scheme, cell.Position, ghost.Rotation);
+                    
+                    if (isFreeCell && isAvailable)
                         state = CellPlacementStatus.IsReadyToPlace;
 
-                    if (occupiedCells.Any(x => x.Value == cell.Position.Value))
+                    // is under ghost
+                    if (occupiedByGhostCells.Any(x => x.Value == cell.Position.Value))
                     {
                         if (state == CellPlacementStatus.IsReadyToPlace)
                             state = CellPlacementStatus.IsAvailableGhostPlace;
