@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghostService = new GhostService(ghost, new Field());
 
             screenManager.Open<IBuildScreenView>(x => 
-                new BuildScreenPresenter(x, card, ghostService, screenManager, controls));
+                new BuildScreenPresenter(x, card, ghost.AsQuery(), ghostService, screenManager, controls));
 
             Assert.IsNotNull(view.Screen.FindView<BuildScreenView>());
             Assert.IsNull(view.Screen.FindView<MainScreenView>());

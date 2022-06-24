@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
@@ -13,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class GhostPointPresenter : BasePresenter<IGhostPointsView>
     {
         private IGhostPointsView _view;
-        private readonly GhostService _ghostService;
+        private readonly ISingleQuery<ConstructionGhost> _ghost;
         private readonly ConstructionsService _constructionsService;
         private readonly Field _field;
 
@@ -21,41 +22,42 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         public GhostPointPresenter(IGhostPointsView view) : this(
                 view,
-                IPresenterServices.Default?.Get<GhostService>(),
+                IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
                 IPresenterServices.Default?.Get<ConstructionsService>(),
-                IPresenterServices.Default.Get<ISingletonRepository<Field>>().Get())
+                IPresenterServices.Default?.Get<ISingletonRepository<Field>>().Get())
         {
         }
 
         public GhostPointPresenter(IGhostPointsView view,
-            GhostService ghostService,
+            ISingleQuery<ConstructionGhost> ghost,
             ConstructionsService constructionsService,
             Field field) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
+            _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
             _field = field ?? throw new ArgumentNullException(nameof(Field));
 
-            _ghostService.OnChanged += UpdatePoints;
-            _ghostService.OnShowed += UpdatePoints;
-            _ghostService.OnHided += UpdatePoints;
+            _ghost.OnChanged += UpdatePoints;
+            _ghost.OnAdded += UpdatePoints;
+            _ghost.OnRemoved += UpdatePoints;
             UpdatePoints();
         }
 
 
         protected override void DisposeInner()
         {
-            _ghostService.OnChanged -= UpdatePoints;
-            _ghostService.OnShowed -= UpdatePoints;
-            _ghostService.OnHided -= UpdatePoints;
+            _ghost.Dispose();
+            _ghost.OnChanged -= UpdatePoints;
+            _ghost.OnAdded -= UpdatePoints;
+            _ghost.OnRemoved -= UpdatePoints;
         }
 
         public void UpdatePoints()
         {
-            if (_ghostService.IsEnabled())
+            if (_ghost.Has())
             {
-                var ghost = _ghostService.GetGhost();
+                var ghost = _ghost.Get();
                 var points = _constructionsService.GetPoints(ghost.Card, ghost.Position, ghost.Rotation);
 
                 var worldPosition = ghost.Position.GetWorldPosition(

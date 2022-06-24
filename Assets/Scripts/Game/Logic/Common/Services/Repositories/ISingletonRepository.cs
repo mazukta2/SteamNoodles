@@ -1,14 +1,18 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Models.Entities;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
 {
     public interface ISingletonRepository<T> : IRepository<T> where T : class, IEntity
     {
-        T Add(T entity);
+        new event Action OnAdded;
+        new event Action OnRemoved;
+        new event Action OnChanged;
+        new event Action<IModelEvent> OnEvent;
+        
         void Remove();
-        void Save(T entity);
-        T Get();
+        new T Get();
         bool Has();
         ISingleQuery<T> AsQuery();
     }

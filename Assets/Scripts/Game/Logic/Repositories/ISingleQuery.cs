@@ -3,7 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Services;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public interface ISingleQuery<out T> : IDisposable, IService where T : class
+    public interface ISingleQuery<out T> : IDisposable where T : class
     {
         event Action OnAdded;
         event Action OnRemoved;

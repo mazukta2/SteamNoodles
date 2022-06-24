@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 throw new Exception("Entity already exist");
 
             _repository.Add(entity.Id, (T)entity.Copy());
-            OnAdded(entity);
+            FireOnAdded(entity);
 
             return entity;
         }
@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 throw new Exception("Entity not exist");
 
             _repository.Remove(entity.Id);
-            OnRemoved(entity);
+            FireOnRemoved(entity);
         }
 
         public void Save(T entity)
@@ -53,7 +53,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             entity.Clear();
 
             _repository[entity.Id] = (T)entity.Copy();
-            OnChanged(entity);
+            FireOnChanged(entity);
 
             foreach (var evt in events)
                 FireEvent(entity, evt);
@@ -83,7 +83,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             if (!_repository.ContainsKey(entity.Id))
                 throw new Exception("Entity not exist");
 
-            OnEvent(entity, modelEvent);
+            FireOnModelEvent(entity, modelEvent);
         }
 
         public bool Has(T entity)
@@ -99,6 +99,26 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public bool Has(Uid id)
         {
             return _repository.ContainsKey(id);
+        }
+
+        protected virtual void FireOnAdded(T entity)
+        {
+            OnAdded(entity);
+        }
+        
+        protected virtual void FireOnRemoved(T entity)
+        {
+            OnRemoved(entity);
+        }
+        
+        protected virtual void FireOnChanged(T entity)
+        {
+            OnChanged(entity);
+        }
+        
+        protected virtual void FireOnModelEvent(T entity, IModelEvent modelEvent)
+        {
+            OnEvent(entity, modelEvent);
         }
     }
 }

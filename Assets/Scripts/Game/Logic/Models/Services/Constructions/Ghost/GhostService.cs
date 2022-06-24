@@ -7,14 +7,10 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
 {
-    public class GhostService : IService
+    public class GhostService : IService, IGhostCommands
     {
         private readonly ISingletonRepository<ConstructionGhost> _ghost;
         private readonly Field _field;
-
-        public event Action OnShowed = delegate { };
-        public event Action OnHided = delegate { };
-        public event Action OnChanged = delegate { };
 
         public GhostService(ISingletonRepository<ConstructionGhost> ghost, Field field)
         {
@@ -27,31 +23,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             _ghost.Add(new ConstructionGhost(constructionCard,
                 new FieldPosition(_field, 0, 0),
                 GameVector3.Zero, FieldRotation.Default));
-            
-            OnShowed();
         }
 
         public void Hide()
         {
             _ghost.Remove();
-            OnHided();
         }
-
-        public void Set(ConstructionGhost ghost)
-        {
-            if (!IsEnabled())
-                throw new Exception("Not enabled");
-            
-            _ghost.Save(ghost);
-            OnChanged();
-        }
-
-        public bool IsEnabled() => GetGhost() != null;
-
-        public ConstructionGhost GetGhost()
-        {
-            return _ghost.Get();
-        }
-
     }
 }

@@ -42,22 +42,22 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         {
             return _repository.Has();
         }
-        private void HandleOnEvent(T entity, IModelEvent arg2)
+        private void HandleOnEvent(IModelEvent arg2)
         {
             OnEvent(arg2);
         }
 
-        private void HandleOnRemoved(T entity)
+        private void HandleOnRemoved()
         {
             OnRemoved();
         }
 
-        private void HandleOnAdded(T entity)
+        private void HandleOnAdded()
         {
             OnAdded();
         }
 
-        private void HadleOnChanged(T entity)
+        private void HadleOnChanged()
         {
             OnChanged();
         }

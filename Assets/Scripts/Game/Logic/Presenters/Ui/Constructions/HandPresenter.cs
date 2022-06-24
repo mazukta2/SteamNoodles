@@ -4,7 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -12,26 +12,26 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     public class HandPresenter : BasePresenter<IHandView>
     {
         private readonly IQuery<ConstructionCard> _repository;
-        private readonly GhostService _buildingService;
+        private readonly ISingleQuery<ConstructionGhost> _ghost;
         private readonly ScreenService _screenService;
         private readonly IHandView _view;
 
         public HandPresenter(IHandView view)
             : this(view,
                   IPresenterServices.Default?.Get<IQuery<ConstructionCard>>(),
-                  IPresenterServices.Default?.Get<GhostService>(),
+                  IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
                   IPresenterServices.Default?.Get<ScreenService>())
         {
         }
 
         public HandPresenter(IHandView view,
             IQuery<ConstructionCard> repository,
-            GhostService buildingService,
+            ISingleQuery<ConstructionGhost> ghost,
             ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
+            _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
 
             var cards = _repository.Get();
@@ -42,14 +42,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
             SetMode(Modes.Choose);
-            _buildingService.OnShowed += HandleGhostShowed;
-            _buildingService.OnHided += HandleGhostHided;
+            _ghost.OnAdded += HandleGhostShowed;
+            _ghost.OnRemoved += HandleGhostHided;
         }
 
         protected override void DisposeInner()
         {
-            _buildingService.OnShowed -= HandleGhostShowed;
-            _buildingService.OnHided -= HandleGhostHided;
+            _ghost.Dispose();
+            _ghost.OnAdded -= HandleGhostShowed;
+            _ghost.OnRemoved -= HandleGhostHided;
             _repository.OnAdded -= HandleCardAdded;
         }
 

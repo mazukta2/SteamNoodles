@@ -1,5 +1,6 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
@@ -22,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         public ConstructionPresenter(IConstructionView view, ISingleQuery<Construction> construction)
             : this(view, construction,
-                  IPresenterServices.Default?.Get<ISingleQuery<ConstructionGhost>>(),
+                  IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
                   IPresenterServices.Default?.Get<GameAssetsService>(),
                   IPresenterServices.Default?.Get<GameControlsService>())
         {

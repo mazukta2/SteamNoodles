@@ -165,7 +165,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, ghostService, screenManager);
+            new HandPresenter(handView, cardsRepository, ghost.AsQuery(), screenManager);
 
             Assert.AreEqual(0, handView.Collection.FindViews<IHandConstructionView>().Count);
             cardsRepository.Add(new ConstructionCard(scheme1));
@@ -293,7 +293,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghostService = new GhostService(ghost, new Field());
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, ghostService, screenManager);
+            new HandPresenter(handView, cardsRepository, ghost.AsQuery(), screenManager);
 
             Assert.AreEqual("Choose", handView.Animator.Animation);
             ghostService.Show(new ConstructionCard(new ConstructionScheme()));
@@ -321,7 +321,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             screenManager.Bind(new ScreenManagerView(viewCollection));
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, ghostService, screenManager);
+            new HandPresenter(handView, cardsRepository, ghost.AsQuery(), screenManager);
 
             handView.CancelButton.Click();
 

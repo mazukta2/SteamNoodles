@@ -1,7 +1,10 @@
 ﻿using System;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
@@ -9,26 +12,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class GhostManagerPresenter : BasePresenter<IGhostManagerView>
     {
         private IGhostManagerView _view;
-        private readonly GhostService _ghostService;
+        private readonly ISingleQuery<ConstructionGhost> _ghost;
 
         public GhostManagerPresenter(IGhostManagerView view) 
             : this(view,
-                  IPresenterServices.Default?.Get<GhostService>())
+                  IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery())
         {
         }
 
-        public GhostManagerPresenter(IGhostManagerView view, GhostService ghostService) : base(view)
+        public GhostManagerPresenter(IGhostManagerView view, ISingleQuery<ConstructionGhost> ghost) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
-            _ghostService.OnShowed += CreateGhost;
-            _ghostService.OnHided += RemoveGhost;
+            _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
+            _ghost.OnAdded += CreateGhost;
+            _ghost.OnRemoved += RemoveGhost;
         }
 
         protected override void DisposeInner()
         {
-            _ghostService.OnShowed -= CreateGhost;
-            _ghostService.OnHided -= RemoveGhost;
+            _ghost.Dispose();
+            _ghost.OnAdded -= CreateGhost;
+            _ghost.OnRemoved -= RemoveGhost;
             RemoveGhost();
         }
 

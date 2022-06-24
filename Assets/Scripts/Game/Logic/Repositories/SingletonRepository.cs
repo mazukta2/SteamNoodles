@@ -16,6 +16,11 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             base.Add(entity);
         }
 
+        public new event Action OnAdded = delegate {  };
+        public new event Action OnRemoved = delegate {  };
+        public new event Action OnChanged = delegate {  };
+        public new event Action<IModelEvent> OnEvent = delegate {  };
+
         public override T Add(T entity)
         {
             if (Count != 0)
@@ -47,6 +52,30 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public ISingleQuery<T> AsQuery()
         {
             return new SingleRepositoryEntityQuery<T>(this);
+        }
+
+        protected override void FireOnAdded(T entity)
+        {
+            base.FireOnAdded(entity);
+            OnAdded();
+        }
+
+        protected override void FireOnRemoved(T entity)
+        {
+            base.FireOnRemoved(entity);
+            OnRemoved();
+        }
+
+        protected override void FireOnChanged(T entity)
+        {
+            base.FireOnChanged(entity);
+            OnChanged();
+        }
+
+        protected override void FireOnModelEvent(T entity, IModelEvent modelEvent)
+        {
+            base.FireOnModelEvent(entity, modelEvent);
+            OnEvent(modelEvent);
         }
     }
 }

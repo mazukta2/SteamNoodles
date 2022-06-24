@@ -63,11 +63,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var unitsMovement = Add(new UnitsMovementsService(unitsRep, time));
 
             var controls = services.Get<GameControlsService>();
-            var ghostRep = new SingletonRepository<ConstructionGhost>();
-            var ghost = Add(new GhostService(ghostRep, field.Get()));
-            Add(new GhostMovingService(ghost, field.Get(), controls));
-            Add(new GhostRotatingService(ghost, controls));
-            Add(new GhostBuildingService(ghost, constructions, building,controls));
+            var ghostRep = Add(new SingletonRepository<ConstructionGhost>());
+            Add(new GhostService(ghostRep, field.Get()));
+            Add(new GhostMovingService(ghostRep, field.AsQuery(), controls));
+            Add(new GhostRotatingService(ghostRep, controls));
+            Add(new GhostBuildingService(ghostRep, constructions, building,controls));
             
             rewards.Start();
         }

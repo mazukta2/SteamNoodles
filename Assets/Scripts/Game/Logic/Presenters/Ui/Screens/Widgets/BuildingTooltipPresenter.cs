@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
@@ -13,32 +14,34 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class BuildingTooltipPresenter : BasePresenter<IBuildingToolitpView>
     {
         private IBuildingToolitpView _view;
-        private GhostService _ghostService;
+        private readonly ISingleQuery<ConstructionGhost> _ghost;
         private HandConstructionTooltipPresenter _tooltip;
 
         public BuildingTooltipPresenter(IBuildingToolitpView view) : this(view,
                   IPresenterServices.Default?.Get<IQuery<Construction>>(),
-                  IPresenterServices.Default?.Get<GhostService>())
+                  IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery())
         {
 
         }
 
         public BuildingTooltipPresenter(IBuildingToolitpView view, 
-            IQuery<Construction> constructions, GhostService ghostService) : base(view)
+            IQuery<Construction> constructions, 
+            ISingleQuery<ConstructionGhost> ghost) : base(view)
         {
             _view = view;
-            _ghostService = ghostService;
+            _ghost = ghost;
             // _ghostService.OnHighlightingChanged += HandleHighlightingChanged
-            _ghostService.OnShowed += HandleOnGhostShowed;
-            _ghostService.OnHided += HandleOnGhostHided;
+            _ghost.OnAdded += HandleOnGhostShowed;
+            _ghost.OnRemoved += HandleOnGhostHided;
             _tooltip = new HandConstructionTooltipPresenter(_view.Tooltip, constructions);
             Hide();
         }
 
         protected override void DisposeInner()
         {
-            _ghostService.OnShowed -= HandleOnGhostShowed;
-            _ghostService.OnHided -= HandleOnGhostHided;
+            _ghost.Dispose();
+            _ghost.OnAdded -= HandleOnGhostShowed;
+            _ghost.OnRemoved -= HandleOnGhostHided;
             // _ghostService.OnHighlightingChanged -= HandleHighlightingChanged;
         }
 
@@ -54,7 +57,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         private void HandleOnGhostShowed()
         {
-            Show(_ghostService.GetGhost().Card);
+            Show(_ghost.Get().Card);
         }
 
         private void Show(ConstructionCard constructionCard)

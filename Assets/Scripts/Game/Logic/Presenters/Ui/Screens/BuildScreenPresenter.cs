@@ -4,7 +4,9 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
@@ -14,12 +16,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private IBuildScreenView _view;
         private readonly ConstructionCard _entity;
-        private readonly GhostService _ghostService;
+        private readonly ISingleQuery<ConstructionGhost> _ghost;
+        private readonly IGhostCommands _ghostCommands;
         private readonly ScreenService _screenService;
 
         public BuildScreenPresenter(IBuildScreenView view, ConstructionCard constructionCard) : this(
                 view, constructionCard,
-                IPresenterServices.Default?.Get<GhostService>(),
+                IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
+                IPresenterServices.Default?.Get<IGhostCommands>(),
                 IPresenterServices.Default?.Get<ScreenService>(),
                 IPresenterServices.Default?.Get<GameControlsService>())
         {
@@ -27,26 +31,30 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         public BuildScreenPresenter(IBuildScreenView view,
             ConstructionCard constructionCard,
-            GhostService ghostService,
+            ISingleQuery<ConstructionGhost> ghost,
+            IGhostCommands ghostCommands,
             ScreenService screenService,
             GameControlsService gameKeysManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _entity = constructionCard ?? throw new ArgumentNullException(nameof(constructionCard));
 
-            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
+            _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
+            _ghostCommands = ghostCommands ?? throw new ArgumentNullException(nameof(ghostCommands));
             _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
-            _ghostService.Show(_entity);
+            _ghostCommands.Show(_entity);
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
             _exitKey.OnTap += OnExitTap;
-            _ghostService.OnHided += HandleOnHided;
+            _ghost.OnRemoved += HandleOnHided;
         }
 
         protected override void DisposeInner()
         {
             _exitKey.OnTap -= OnExitTap;
-            _ghostService.OnHided -= HandleOnHided;
-            _ghostService.Hide();
+            _ghost.OnRemoved -= HandleOnHided;
+            _ghostCommands.Hide();
+            
+            _ghost.Dispose();
         }
 
         private void OnExitTap()

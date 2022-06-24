@@ -13,13 +13,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
 {
     public class GhostRotatingService : Disposable, IService
     {
-        private readonly GhostService _ghostService;
+        private readonly ISingletonRepository<ConstructionGhost> _ghost;
         private readonly KeyCommand _rotateLeft;
         private readonly KeyCommand _rotateRight;
 
-        public GhostRotatingService(GhostService ghostService, GameControlsService controlsService)
+        public GhostRotatingService(ISingletonRepository<ConstructionGhost> ghost, GameControlsService controlsService)
         {
-            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
+            _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             
             _rotateLeft = controlsService.GetKey(GameKeys.RotateLeft);
             _rotateRight = controlsService.GetKey(GameKeys.RotateRight);
@@ -36,26 +36,29 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
 
         public void SetRotation(FieldRotation rotation)
         {
-            var ghost = _ghostService.GetGhost();
+            if (!_ghost.Has())
+                throw new Exception("No ghost available");
+            
+            var ghost = _ghost.Get();
             ghost.SetRotation(rotation);
-            _ghostService.Set(ghost);
+            _ghost.Save(ghost);
         }
 
         private void HandleRotateLeftTap()
         {
-            if (!_ghostService.IsEnabled())
+            if (!_ghost.Has())
                 return;
             
-            var ghost = _ghostService.GetGhost();
+            var ghost = _ghost.Get();
             SetRotation(FieldRotation.RotateLeft(ghost.Rotation));
         }
 
         private void HandleRotateRightTap()
         {
-            if (!_ghostService.IsEnabled())
+            if (!_ghost.Has())
                 return;
             
-            var ghost = _ghostService.GetGhost();
+            var ghost = _ghost.Get();
             SetRotation(FieldRotation.RotateRight(ghost.Rotation));
         }
     }

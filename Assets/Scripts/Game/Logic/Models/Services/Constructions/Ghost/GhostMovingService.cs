@@ -2,53 +2,62 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
 {
     public class GhostMovingService : Disposable, IService
     {
-        private readonly GhostService _ghostService;
-        private readonly Field _field;
+        private readonly ISingletonRepository<ConstructionGhost> _ghost;
+        private readonly ISingleQuery<Field> _field;
         private readonly GameControlsService _controlsService;
 
-        public GhostMovingService(GhostService ghostService, Field field, GameControlsService controlsService)
+        public GhostMovingService(ISingletonRepository<ConstructionGhost> ghost, ISingleQuery<Field> field, GameControlsService controlsService)
         {
-            _ghostService = ghostService ?? throw new ArgumentNullException(nameof(ghostService));
+            _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _field = field ?? throw new ArgumentNullException(nameof(field));
             _controlsService = controlsService ?? throw new ArgumentNullException(nameof(controlsService));
             _controlsService.OnLevelPointerMoved += HandleOnOnLevelPointerMoved;
-            _ghostService.OnShowed += HandleOnShowed;
+            _ghost.OnAdded += HandleOnShowed;
         }
 
         protected override void DisposeInner()
         {
-            _ghostService.OnShowed -= HandleOnShowed;
+            _field.Dispose();
+            _ghost.OnAdded -= HandleOnShowed;
             _controlsService.OnLevelPointerMoved -= HandleOnOnLevelPointerMoved;
         }
 
         public void SetTargetPosition(GameVector3 pointerPosition)
-        {       
-            var ghost = _ghostService.GetGhost();
+        {
+            if (!_ghost.Has())
+                throw new Exception("No available ghost");
+            
+            var ghost = _ghost.Get();
             var size = ghost.Card.Scheme.Placement.GetRect(ghost.Rotation);
-            var fieldPosition = _field.GetFieldPosition(pointerPosition, size);
+            var fieldPosition = _field.Get().GetFieldPosition(pointerPosition, size);
             ghost.SetPosition(fieldPosition, pointerPosition);
-            _ghostService.Set(ghost);
+            _ghost.Save(ghost);
         }
 
         public void SetTargetPosition(FieldPosition cellPosition)
         {
-            var ghost = _ghostService.GetGhost();
+            if (!_ghost.Has())
+                throw new Exception("No available ghost");
+            
+            var ghost = _ghost.Get();
             var size = ghost.Card.Scheme.Placement.GetRect(ghost.Rotation);
             ghost.SetPosition(cellPosition, cellPosition.GetWorldPosition(size));
-            _ghostService.Set(ghost);
+            _ghost.Save(ghost);
         }
 
         private void HandleOnOnLevelPointerMoved(GameVector3 target)
         {
-            if (!_ghostService.IsEnabled())
+            if (!_ghost.Has())
                 return;
 
             SetTargetPosition(target);

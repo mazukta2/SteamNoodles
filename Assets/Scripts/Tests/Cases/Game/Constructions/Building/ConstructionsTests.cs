@@ -138,14 +138,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var field = new Field(10, new IntPoint(3, 3));
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field);
-            var buildingMode = new GhostMovingService(ghostService, field,controls);
+            var buildingMode = new GhostMovingService(ghost, field.AsQuery(),controls);
             var constructionService = new ConstructionsService(constructionsRepository, field);
             
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
 
-            new PlacementFieldPresenter(view, ghostService, field, constructionsRepository);
+            new PlacementFieldPresenter(view, ghost.AsQuery(), field, constructionsRepository);
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
@@ -284,7 +283,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var field = new Field(1, new IntPoint(11, 11));
             var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field);
-            var buildingMode = new GhostMovingService(ghostService, field,controls);
+            var buildingMode = new GhostMovingService(ghost, field.AsQuery(),controls);
             var constructionsService = new ConstructionsService(constructionsRepository, field);
             var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance: 4, view: "model");
 
@@ -494,7 +493,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, ghostService, field, constructionsRepository);
+            new PlacementFieldPresenter(view, ghost.AsQuery(), field, constructionsRepository);
             
             Assert.IsFalse(view.ConstrcutionContainer.Has<IConstructionView>());
 
