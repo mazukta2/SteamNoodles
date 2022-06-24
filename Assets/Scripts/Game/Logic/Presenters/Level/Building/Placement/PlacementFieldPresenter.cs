@@ -99,7 +99,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                     var scheme = ghost.Card.Scheme;
                     
                     // is available
-                    var isAvailable = ConstructionsFunctions.IsAvailableToBuild(_field, scheme, cell.Position, ghost.Rotation);
+                    var isAvailable = ConstructionsFunctions.IsAvailableToBuild(scheme, cell.Position, ghost.Rotation);
                     
                     if (isFreeCell && isAvailable)
                         state = CellPlacementStatus.IsReadyToPlace;

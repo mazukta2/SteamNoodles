@@ -8,6 +8,18 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
 {
     public static class ConstructionsFunctions
     {
+        public static bool CanPlace(this IRepository<Construction> constructions, ConstructionCard card, FieldPosition position, FieldRotation rotation)
+        {
+            return CanPlace(constructions, card.Scheme, position, rotation);
+        }
+
+        private static bool CanPlace(this IRepository<Construction> constructions, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        {
+            return scheme.Placement
+                .GetOccupiedSpace(position, rotation)
+                .All(otherPosition => constructions.IsAvailable(scheme, otherPosition, rotation));
+        }
+        
         public static IReadOnlyCollection<FieldPosition> GetUnoccupiedCells(this IRepository<Construction> constructions, Field field)
         {
             var list = new List<FieldPosition>();
@@ -32,9 +44,9 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
             return list.AsReadOnly();
         }
         
-        public static bool IsAvailableToBuild(Field field, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        public static bool IsAvailableToBuild(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
-            var boundaries = field.GetBoundaries();
+            var boundaries = position.Field.GetBoundaries();
             if (scheme.IsDownEdge())
             {
                 var min = boundaries.Value.Y;
@@ -45,10 +57,10 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
             return true;
         }
         
-        public static bool IsAvailable(this IRepository<Construction> constructions, Field field, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        public static bool IsAvailable(this IRepository<Construction> constructions, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
-            var freeCells = constructions.GetUnoccupiedCells(field);
-            var isAvailable = ConstructionsFunctions.IsAvailableToBuild(field, scheme, position, rotation);
+            var freeCells = constructions.GetUnoccupiedCells(position.Field);
+            var isAvailable = ConstructionsFunctions.IsAvailableToBuild(scheme, position, rotation);
 
             var isFreeCell = freeCells.Any(x => x.Value == position.Value);
             return (isFreeCell && isAvailable);

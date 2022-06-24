@@ -76,7 +76,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
         {
             return scheme.Placement
                 .GetOccupiedSpace(position, rotation)
-                .All(otherPosition => _constructions.IsAvailable(_field, scheme, otherPosition, rotation));
+                .All(otherPosition => _constructions.IsAvailable(scheme, otherPosition, rotation));
         }
 
         private IReadOnlyCollection<FieldPosition> GetListOfAdjacentCells(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)

@@ -212,6 +212,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostReactsToChangingPosition()
         {
+            var constructionsRepository = new Repository<Construction>();
             var mockControls = new ControlsMock();
             var controls = new GameControlsService(mockControls);
 
@@ -232,7 +233,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             ghostService.Show(new ConstructionCard(scheme));
 
             var view = new GhostView(viewCollection);
-            new GhostPresenter(view, ghostService, CreateAssets());
+            new GhostPresenter(view, ghostService, constructionsRepository, CreateAssets());
 
             Assert.AreEqual(new GameVector3(0.25f, 0f, 0), view.LocalPosition.Value);
 
@@ -246,11 +247,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsGhostViewChangeVisualIfItAvailable()
+        public void GhostChangesGlowingEffectWhenBlocked()
         {
             var constructionsRepository = new Repository<Construction>();
 
-            var scheme = new ConstructionScheme(requirements: new Requirements() { DownEdge = true });
+            var scheme = new ConstructionScheme(view:"view", requirements: new Requirements() { DownEdge = true });
 
             var card = new ConstructionCard(scheme);
 
@@ -258,26 +259,29 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var controls = new GameControlsService(new ControlsMock());
             var ghostService = new GhostService(field);
             var buildingMode = new GhostMovingService(ghostService, field,controls);
+            var assets = CreateAssets("view");
             var viewCollection = new ViewsCollection();
 
             ghostService.Show(card);
 
             var constructionsService = new ConstructionsService(constructionsRepository, field);
 
-            var view = new ConstructionModelView(viewCollection);
-            new GhostModelPresenter(view, ghostService, constructionsService);
+            var view = new GhostView(viewCollection);
+            new GhostPresenter(view, ghostService, constructionsRepository, assets);
+
+            var modelView = view.Container.FindView<ConstructionModelView>();
 
             // disallowed because DownEdge enabled.
             Assert.IsFalse(constructionsService.CanPlace(card, new FieldPosition(field, 0, 0), new FieldRotation()));
 
-            Assert.AreEqual("Dragging", ((AnimatorMock)view.Animator).Animation);
-            Assert.AreEqual("Disallowed", ((AnimatorMock)view.BorderAnimator).Animation);
+            Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
+            Assert.AreEqual("Disallowed", (modelView.BorderAnimator).GetCurrentAnimation());
 
             buildingMode.SetTargetPosition(new FieldPosition(field, 0, -2));
             Assert.IsTrue(constructionsService.CanPlace(card, new FieldPosition(field, 0, -2), new FieldRotation()));
 
-            Assert.AreEqual("Dragging", ((AnimatorMock)view.Animator).Animation);
-            Assert.AreEqual("Idle", ((AnimatorMock)view.BorderAnimator).Animation);
+            Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
+            Assert.AreEqual("Idle", (modelView.BorderAnimator).GetCurrentAnimation());
 
             viewCollection.Dispose();
             constructionsService.Dispose();
@@ -397,6 +401,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsGhostSpawnsRightModel()
         {
+            var constructionsRepository = new Repository<Construction>();
+            
             var mockControls = new ControlsMock();
             var controls = new GameControlsService(mockControls);
 
@@ -414,7 +420,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             
             Assert.IsFalse(view.Container.Has<ConstructionModelView>());
             
-            new GhostPresenter(view, ghostService, assets);
+            new GhostPresenter(view, ghostService, constructionsRepository, assets);
 
             Assert.IsTrue(view.Container.Has<ConstructionModelView>());
             
@@ -423,8 +429,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             buildingMode.Dispose();
         }
 
-        [Test]
-        public void IsRotationWorking()
+        [Test, Order(TestCore.PresenterOrder)]
+        public void RotationWorking()
         {
             var constructionsRepository = new Repository<Construction>();
 
@@ -501,6 +507,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             }
         }
         
+        #region  helpers
+
         int[,] ToArray(int size, IReadOnlyCollection<CellView> cells)
         {
             var actual = new int[size, size];
@@ -543,5 +551,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         {
             DisposeTests.TestDisposables();
         }
+        
+
+        #endregion
     }
 }
