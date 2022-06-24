@@ -13,13 +13,14 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public event Action OnAdded = delegate {  };
         public event Action OnRemoved = delegate {  };
         public event Action OnChanged = delegate {  };
+        public event Action OnAny = delegate {  };
         public event Action<IModelEvent> OnEvent = delegate {  };
 
         public SingleRepositoryEntityQuery(ISingletonRepository<T> repository)
         {
             _repository = repository;
 
-            _repository.OnChanged += HadleOnChanged;
+            _repository.OnChanged += HandleOnChanged;
             _repository.OnAdded += HandleOnAdded;
             _repository.OnRemoved += HandleOnRemoved;
             _repository.OnEvent += HandleOnEvent;
@@ -27,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         protected override void DisposeInner()
         {
-            _repository.OnChanged -= HadleOnChanged;
+            _repository.OnChanged -= HandleOnChanged;
             _repository.OnAdded -= HandleOnAdded;
             _repository.OnRemoved -= HandleOnRemoved;
             _repository.OnEvent -= HandleOnEvent;
@@ -45,21 +46,25 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         private void HandleOnEvent(IModelEvent arg2)
         {
             OnEvent(arg2);
+            OnAny();
         }
 
         private void HandleOnRemoved()
         {
             OnRemoved();
+            OnAny();
         }
 
         private void HandleOnAdded()
         {
             OnAdded();
+            OnAny();
         }
 
-        private void HadleOnChanged()
+        private void HandleOnChanged()
         {
             OnChanged();
+            OnAny();
         }
 
     }

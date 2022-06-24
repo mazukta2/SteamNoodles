@@ -53,6 +53,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         protected override void DisposeInner()
         {
             base.DisposeInner();
+            _cards.Dispose();
             _animations.Dispose();
             _view.TooltipContainer.Clear();
             _cards.OnChanged -= HandleOnChanged;

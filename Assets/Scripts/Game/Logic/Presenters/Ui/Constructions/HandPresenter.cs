@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandPresenter : BasePresenter<IHandView>
     {
-        private readonly IQuery<ConstructionCard> _repository;
+        private readonly IQuery<ConstructionCard> _cards;
         private readonly ISingleQuery<ConstructionGhost> _ghost;
         private readonly ScreenService _screenService;
         private readonly IHandView _view;
@@ -30,14 +30,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _cards = repository ?? throw new ArgumentNullException(nameof(repository));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
 
-            var cards = _repository.Get();
+            var cards = _cards.Get();
             foreach (var item in cards)
                 HandleCardAdded(item);
-            _repository.OnAdded += HandleCardAdded;
+            _cards.OnAdded += HandleCardAdded;
 
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
@@ -48,10 +48,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         protected override void DisposeInner()
         {
+            _cards.Dispose();
             _ghost.Dispose();
             _ghost.OnAdded -= HandleGhostShowed;
             _ghost.OnRemoved -= HandleGhostHided;
-            _repository.OnAdded -= HandleCardAdded;
+            _cards.OnAdded -= HandleCardAdded;
         }
 
         private void HandleCardAdded(ConstructionCard obj)

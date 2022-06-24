@@ -25,6 +25,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             Scheme = scheme;
         }
 
+        public ConstructionCard() : this(new ConstructionScheme())
+        {
+        }
+
         public ConstructionCard(ConstructionScheme scheme)
         {
             Amount = new CardAmount(1);

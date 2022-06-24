@@ -24,5 +24,6 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
         bool Has(T entity);
         bool Has(Uid id);
         ISingleQuery<T> GetAsQuery(Uid id);
+        IQuery<T> AsQuery();
     }
 }

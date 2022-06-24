@@ -5,11 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public class Repository<T> : IRepository<T>, IQuery<T> where T : class, IEntity
+    public class Repository<T> : IRepository<T> where T : class, IEntity
     {
         public event Action<T> OnAdded = delegate { };
         public event Action<T> OnRemoved = delegate { };
@@ -94,6 +95,11 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public ISingleQuery<T> GetAsQuery(Uid id)
         {
             return new RepositoryEntityQuery<T>(this, id);
+        }
+
+        public IQuery<T> AsQuery()
+        {
+            return new RepositoryQuery<T>(this);
         }
 
         public bool Has(Uid id)

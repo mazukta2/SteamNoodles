@@ -20,9 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
         
         public void Show(ConstructionCard constructionCard)
         {
-            _ghost.Add(new ConstructionGhost(constructionCard,
-                new FieldPosition(_field, 0, 0),
-                GameVector3.Zero, FieldRotation.Default));
+            _ghost.Add(new ConstructionGhost(constructionCard, new FieldPosition(_field)));
         }
 
         public void Hide()

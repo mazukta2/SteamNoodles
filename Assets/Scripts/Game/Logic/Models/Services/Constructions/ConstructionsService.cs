@@ -9,15 +9,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 {
     public class ConstructionsService : Disposable, IService
     {
-        private readonly IRepository<Construction> _constructions;
+        private readonly IQuery<Construction> _constructions;
         private readonly Field _field;
 
-        public ConstructionsService(IRepository<Construction> constructions, Field field)
+        public ConstructionsService(IQuery<Construction> constructions, Field field)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _field = field ?? throw new ArgumentNullException(nameof(field));
@@ -25,6 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 
         protected override void DisposeInner()
         {
+            _constructions.Dispose();
         }
         
         public BuildingPoints GetPoints(ConstructionCard card, FieldPosition position, FieldRotation rotation)

@@ -49,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             return (Count != 0);
         }
 
-        public ISingleQuery<T> AsQuery()
+        public new ISingleQuery<T> AsQuery()
         {
             return new SingleRepositoryEntityQuery<T>(this);
         }

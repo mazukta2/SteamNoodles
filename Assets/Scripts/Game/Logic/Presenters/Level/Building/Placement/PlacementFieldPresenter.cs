@@ -17,20 +17,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private readonly IPlacementFieldView _view;
         private readonly ISingleQuery<ConstructionGhost> _ghost;
         private readonly Field _field;
-        private readonly IRepository<Construction> _constructions;
+        private readonly IQuery<Construction> _constructions;
         private readonly List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
             IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
             IPresenterServices.Default?.Get<ISingletonRepository<Field>>()?.Get(),
-            IPresenterServices.Default?.Get<IRepository<Construction>>())
+            IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery())
         {
         }
 
         public PlacementFieldPresenter(IPlacementFieldView view,
             ISingleQuery<ConstructionGhost> ghost,
             Field field,
-            IRepository<Construction> constructions) : base(view)
+            IQuery<Construction> constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
@@ -58,6 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         protected override void DisposeInner()
         {
+            _constructions.Dispose();
             _ghost.Dispose();
             _ghost.OnChanged -= UpdateGhostCells;
             _ghost.OnAdded -= UpdateGhostCells;
@@ -124,7 +125,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleConstructionsOnAdded(Construction construction)
         {
-            _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(_constructions.GetAsQuery(construction.Id));
+            _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(
+                _constructions.GetAsQuery(construction.Id));
             UpdateGhostCells();
         }
     }

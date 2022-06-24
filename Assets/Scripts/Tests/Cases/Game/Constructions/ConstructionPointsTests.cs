@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository, field);
+            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
             var buildingService = new BuildingService(constructionsRepository, constructionsService);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService);
 
@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository, field);
+            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
             var buildingService = new BuildingService(constructionsRepository, constructionsService);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService);
             
@@ -102,9 +102,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var field = new Field(10, new IntPoint(3, 3));
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(), controls);
-            var constructionService = new ConstructionsService(constructionsRepository, field);
+            var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
 
             var scheme = new ConstructionScheme(
                 points:new BuildingPoints(5));
@@ -115,7 +114,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var view = new GhostPointsView(viewCollection);
             new GhostPointPresenter(view, ghost.AsQuery(), constructionService, field);
 
-            ghostService.Show(card);
+            ghost.Add(new ConstructionGhost(card, field));
             
             Assert.AreEqual("+5", view.Points.Value);
 
@@ -136,9 +135,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var field = new Field(1, new IntPoint(5, 5));
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(), controls);
-            var constructionService = new ConstructionsService(constructionsRepository, field);
+            var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
 
             var placement = new ContructionPlacement(new [,] {
                     { 0, 0, 0 },
@@ -156,7 +154,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var view = new GhostPointsView(viewCollection);
             new GhostPointPresenter(view, ghost.AsQuery(), constructionService, field);
 
-            ghostService.Show(card);
+            ghost.Add(new ConstructionGhost(card, field));
 
             Assert.AreEqual("+5", view.Points.Value);
 
@@ -182,9 +180,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var field = new Field(1, new IntPoint(15, 15));
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(), controls);
-            var constructionService = new ConstructionsService(constructionsRepository, field);
+            var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
 
             var placement = new ContructionPlacement(new [,] {
                     { 0, 1, 0 },
@@ -202,7 +199,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var view = new GhostPointsView(viewCollection);
             new GhostPointPresenter(view, ghost.AsQuery(), constructionService, field);
 
-            ghostService.Show(card);
+            ghost.Add(new ConstructionGhost(card, field));
 
             constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
 

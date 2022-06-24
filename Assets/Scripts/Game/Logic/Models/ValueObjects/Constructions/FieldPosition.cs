@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using System;
+using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
@@ -9,6 +10,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
     {
         public Field Field { get; private set; }
 
+        public FieldPosition(Field field) : this(field, 0, 0)
+        {
+            
+        }
+        
         public FieldPosition(Field field, IntPoint value) : this(field, value.X, value.Y)
         {
         }
@@ -28,6 +34,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions
             var position = Field.GetWorldPosition(Value);
             var offset = Field.GetOffset(size);
             return position + offset;
+        }
+
+        public bool IsInside()
+        {
+            return Field.GetBoundaries().IsInside(this);
         }
         
         public static FieldPosition operator +(FieldPosition current, CellPosition other) => new FieldPosition(current.Field,current.Value + other.Value);

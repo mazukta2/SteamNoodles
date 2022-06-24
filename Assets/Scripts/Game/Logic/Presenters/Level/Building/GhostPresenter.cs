@@ -16,13 +16,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     {
         private readonly IGhostView _view;
         private readonly ISingleQuery<ConstructionGhost> _ghost;
-        private readonly IRepository<Construction> _constructions;
+        private readonly IQuery<Construction> _constructions;
         private readonly GameAssetsService _assets;
         private readonly IConstructionModelView _constructionModelView;
 
         public GhostPresenter(IGhostView view) : this(view,
             IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
-            IPresenterServices.Default?.Get<IRepository<Construction>>(),
+            IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery(),
             IPresenterServices.Default?.Get<GameAssetsService>())
         {
 
@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         public GhostPresenter(IGhostView view,
             ISingleQuery<ConstructionGhost> ghost,
-            IRepository<Construction> constructions,
+            IQuery<Construction> constructions,
             GameAssetsService assets) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -53,6 +53,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         protected override void DisposeInner()
         {
+            _constructions.Dispose();
             _ghost.Dispose();
             _ghost.OnRemoved -= Dispose;
             _ghost.OnChanged -= HandleOnPositionChanged;

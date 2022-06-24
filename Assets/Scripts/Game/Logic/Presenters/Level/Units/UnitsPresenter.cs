@@ -33,6 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         protected override void DisposeInner()
         {
+            _repository.Dispose();
             _repository.OnAdded -= HandleOnAdded;
         }
 

@@ -1,10 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
@@ -39,15 +41,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
 
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsPointsPresenting()
+        public void PointsPresenting()
         {
             var time = new GameTime();
             var pointsService = new BuildingPointsService(0, 0, time, 2, 2);
+            var ghost = new SingletonRepository<ConstructionGhost>();
 
             var viewCollection = new ViewsCollection();
             var view = new PointCounterWidgetView(viewCollection);
             new PointCounterWidgetPresenter(view,
                 new ProgressBarSliders(view.PointsProgress, time, 0, 0),
+                ghost.AsQuery(),
                 pointsService);
 
             Assert.AreEqual("0/3", view.Points.Value);
@@ -61,16 +65,18 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsPointsProgressPresenting()
+        public void PointsProgressPresenting()
         {
             var time = new GameTime();
             var points = new BuildingPointsService(0, 0, time, 2.2f, 8);
+            var ghost = new SingletonRepository<ConstructionGhost>();
 
             var levelCollection = new ViewsCollection();
             var view = new PointCounterWidgetView(levelCollection);
             var spawner = new PieceSpawnerView(levelCollection);
             new PointPieceSpawnerPresenter(spawner);
-            new PointCounterWidgetPresenter(view, new ProgressBarSliders(view.PointsProgress, time, 0, 0), points);
+            new PointCounterWidgetPresenter(view, new ProgressBarSliders(view.PointsProgress, time, 0, 0), 
+                ghost.AsQuery(),points);
 
             points.Change(new BuildingPoints(1));
             Assert.AreEqual(1 / 9f, view.PointsProgress.MainValue);
@@ -94,6 +100,32 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             points.Dispose();
         }
 
+        [Test, Order(TestCore.PresenterOrder)]
+        public void PointsPreviewPresenting()
+        {
+            var time = new GameTime();
+            var pointsService = new BuildingPointsService(0, 0, time, 2, 2);
+            var ghost = new SingletonRepository<ConstructionGhost>();
+
+            var viewCollection = new ViewsCollection();
+            var view = new PointCounterWidgetView(viewCollection);
+            new PointCounterWidgetPresenter(view,
+                new ProgressBarSliders(view.PointsProgress, time, 0, 0),
+                ghost.AsQuery(),
+                pointsService);
+
+            Assert.AreEqual(0, view.PointsProgress.AddedValue);
+
+            var g = new ConstructionGhost(new ConstructionCard(), new Field());
+            g.SetPoints(new BuildingPoints(1));
+            ghost.Add(g);
+
+            Assert.AreEqual(1/3f, view.PointsProgress.AddedValue);
+
+            viewCollection.Dispose();
+            pointsService.Dispose();
+        }
+        
         [Test, Order(TestCore.ModelOrder)]
         public void IsBuildingPointChangeLevel()
         {

@@ -14,6 +14,6 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
         void Remove();
         new T Get();
         bool Has();
-        ISingleQuery<T> AsQuery();
+        new ISingleQuery<T> AsQuery();
     }
 }

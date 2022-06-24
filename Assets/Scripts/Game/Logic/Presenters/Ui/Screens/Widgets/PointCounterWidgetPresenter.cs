@@ -8,6 +8,9 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions;
 using System;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 {
@@ -16,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private readonly IPointCounterWidgetView _view;
         private BuildingPointsService _points;
         private ProgressBarSliders _progressBar;
-        private int _pointChanges;
+        private readonly ISingleQuery<ConstructionGhost> _ghost;
 
         public PointCounterWidgetPresenter(IPointCounterWidgetView view)
             : this(view,
@@ -31,6 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
                   new ProgressBarSliders(view.PointsProgress, IGameTime.Default,
                       constructionsSettingsDefinition.PointsSliderFrequency,
                       constructionsSettingsDefinition.PointsSliderSpeed),
+                  IPresenterServices.Default.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
                   IPresenterServices.Default.Get<BuildingPointsService>())
         {
 
@@ -38,16 +42,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         public PointCounterWidgetPresenter(IPointCounterWidgetView view,
             ProgressBarSliders progressBar,
+            ISingleQuery<ConstructionGhost> ghost,
             BuildingPointsService pointsService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _progressBar = progressBar ?? throw new ArgumentNullException(nameof(progressBar));
+            _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _points = pointsService ?? throw new ArgumentNullException(nameof(pointsService));
 
             _points.OnCurrentLevelUp += HandleLevelChanged;
             _points.OnCurrentLevelDown += HandleLevelChanged;
             _points.OnPointsChanged += HandleOnPointsChanged;
             _points.OnAnimationStarted += Points_OnAnimationStarted;
+
+            _ghost.OnAny += UpdateValues;
 
             _view.PointsProgress.RemovedValue = 0;
             _view.PointsProgress.AddedValue = 0;
@@ -56,31 +64,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             UpdateValues();
         }
 
-
-        //public PointCounterWidgetPresenter(BuildingPointsService points,
-        //    IGameTime time, IPointCounterWidgetView view, IPointPieceSpawnerView pointPieceSpawner,
-        //    ConstructionsSettingsDefinition constructionsSettings) : base(view)
-        //{
-        //    _pointPieceSpawner = pointPieceSpawner;
-        //    //_ghostManager = ghostManager ?? throw new ArgumentNullException(nameof(ghostManager));
-        //    _time = time ?? throw new ArgumentNullException(nameof(time));
-
-        //    //_ghostManager.OnGhostChanged += HandleGhostUpdate;
-        //    //_ghostManager.OnGhostPostionChanged += HandleGhostUpdate;
-        //    _view.Animator.OnFinished += HandleAnimationFinished;
-
-        //}
-
         protected override void DisposeInner()
         {
+            _ghost.Dispose();
             _progressBar.Dispose();
 
-            //_ghostManager.OnGhostChanged -= HandleGhostUpdate;
-            //_ghostManager.OnGhostPostionChanged -= HandleGhostUpdate;
             _points.OnCurrentLevelUp -= HandleLevelChanged;
             _points.OnCurrentLevelDown -= HandleLevelChanged;
             _view.Animator.OnFinished -= HandleAnimationFinished;
             _points.OnAnimationStarted -= Points_OnAnimationStarted;
+            
+            _ghost.OnAny -= UpdateValues;
         }
 
         private void Points_OnAnimationStarted(AddPointsAnimation obj)
@@ -99,17 +93,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             UpdateValues();
         }
 
-        private void HandleGhostUpdate()
-        {
-            //SetPotentialPoints(_ghostManager.GetPointChanges());
-        }
-
-        public void SetPotentialPoints(int pointChanges)
-        {
-            _pointChanges = pointChanges;
-            UpdateValues();
-        }
-
         private void HandleLevelChanged()
         {
             _view.Animator.Play(Animations.Level.ToString(), true);
@@ -121,9 +104,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _view.Points.Value = $"{_points.GetValue()}/{_points.GetPointsForNextLevel()}";
             _progressBar.Value = _points.GetProgress();
 
-            if (_pointChanges != 0)
+            var ghost = _ghost.Get();
+            if (ghost != null && ghost.PointChanges.AsInt() != 0)
             {
-                var newPoints = _points.GetChangedValue(_pointChanges);
+                var newPoints = _points.GetChangedValue(ghost.PointChanges.AsInt());
                 if (newPoints.Value < _points.GetValue())
                 {
                     _progressBar.Value = newPoints.Progress;

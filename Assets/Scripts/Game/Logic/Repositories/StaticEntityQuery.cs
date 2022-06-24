@@ -13,6 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public event Action OnAdded = delegate {  };
         public event Action OnRemoved = delegate {  };
         public event Action OnChanged = delegate {  };
+        public event Action OnAny = delegate {  };
         public event Action<IModelEvent> OnEvent = delegate {  };
 
         public StaticEntityQuery(T entity)

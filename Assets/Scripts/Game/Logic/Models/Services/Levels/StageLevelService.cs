@@ -52,7 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var unitsTypes = Add(new UnitsTypesService(unitTypesRep, new(unitsDeckRep, random), level));
             var units = Add(new UnitsService(unitsRep, random, unitsTypes));
 
-            var constructions = Add(new ConstructionsService(constructionsRep, field.Get()));
+            var constructions = Add(new ConstructionsService(constructionsRep.AsQuery(), field.Get()));
             var building = Add(new BuildingService(constructionsRep, constructions));
             Add(new PointsOnBuildingService(constructionsRep, points));
             Add(new RemoveCardOnBuildingService(constructionsRep, hand));

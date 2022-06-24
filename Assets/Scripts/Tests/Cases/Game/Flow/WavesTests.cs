@@ -216,7 +216,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             var levelCollection = new ViewsCollection();
 
             var view = new EndWaveButtonView(levelCollection);
-            new EndWaveButtonWidgetPresenter(view, constructionsRepository, waves);
+            new EndWaveButtonWidgetPresenter(view, constructionsRepository.AsQuery(), waves);
 
             constructionsCardsRepository.Add(new ConstructionCard(scheme));
             var field = new Field();

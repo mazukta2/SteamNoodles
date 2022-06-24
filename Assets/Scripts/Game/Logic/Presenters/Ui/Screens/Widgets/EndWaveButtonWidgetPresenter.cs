@@ -42,6 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         protected override void DisposeInner()
         {
+            _constructions.Dispose();
             _constructions.OnAdded -= HandleOnAdded;
             _stageWaveService.OnDayFinished -= HandleOnDayFinished;
         }

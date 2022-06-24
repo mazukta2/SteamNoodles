@@ -120,7 +120,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository, field);
+            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
             var buildngService = new BuildingService(constructionsRepository, constructionsService);
 
             var turnService = new StageTurnService(constructionsRepository, custumers);
@@ -654,7 +654,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository, field);
+            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
             var buildingService = new BuildingService(constructionsRepository, constructionsService);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, points);
 

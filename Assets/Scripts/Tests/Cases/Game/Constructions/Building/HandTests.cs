@@ -161,11 +161,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var cardsRepository = new Repository<ConstructionCard>();
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, new Field());
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, ghost.AsQuery(), screenManager);
+            new HandPresenter(handView, cardsRepository.AsQuery(), ghost.AsQuery(), screenManager);
 
             Assert.AreEqual(0, handView.Collection.FindViews<IHandConstructionView>().Count);
             cardsRepository.Add(new ConstructionCard(scheme1));
@@ -194,7 +193,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, link, cardsRepository, screenManager);
+            new HandConstructionPresenter(view, link, cardsRepository.AsQuery(), screenManager);
 
             Assert.AreEqual("1", view.Amount.Value);
             card.Add(new CardAmount(1));
@@ -222,7 +221,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, link, cardsRepository, screenManager);
+            new HandConstructionPresenter(view, link, cardsRepository.AsQuery(), screenManager);
 
             Assert.AreEqual("image", view.Image.Path);
 
@@ -245,7 +244,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, link, cardsRepository, screenManager);
+            new HandConstructionPresenter(view, link, cardsRepository.AsQuery(), screenManager);
 
             Assert.IsNull(view.TooltipContainer.FindView<IHandConstructionTooltipView>());
             view.SetHighlight(true);
@@ -274,7 +273,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             screenManager.Bind(new ScreenManagerView(viewCollection));
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, link, cardsRepository, screenManager);
+            new HandConstructionPresenter(view, link, cardsRepository.AsQuery(), screenManager);
 
             view.Button.Click();
 
@@ -290,15 +289,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var cardsRepository = new Repository<ConstructionCard>();
 
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, new Field());
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, ghost.AsQuery(), screenManager);
+            new HandPresenter(handView, cardsRepository.AsQuery(), ghost.AsQuery(), screenManager);
 
             Assert.AreEqual("Choose", handView.Animator.Animation);
-            ghostService.Show(new ConstructionCard(new ConstructionScheme()));
+            ghost.Add(new ConstructionGhost(new ConstructionCard(new ConstructionScheme()), new Field()));
             Assert.AreEqual("Build", handView.Animator.Animation);
-            ghostService.Hide();
+            ghost.Remove();
             Assert.AreEqual("Choose", handView.Animator.Animation);
 
             viewCollection.Dispose();
@@ -317,11 +315,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             schemesRepository.Add(scheme);
 
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, new Field());
             var viewCollection = new ViewsCollection();
             screenManager.Bind(new ScreenManagerView(viewCollection));
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, cardsRepository, ghost.AsQuery(), screenManager);
+            new HandPresenter(handView, cardsRepository.AsQuery(), ghost.AsQuery(), screenManager);
 
             handView.CancelButton.Click();
 

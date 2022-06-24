@@ -146,7 +146,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var collection = new ViewsCollection();
             var unitView = new UnitView(collection);
-            new UnitPresenter(unitView, link, units, time);
+            new UnitPresenter(unitView, link, units.AsQuery(), time);
 
             AssertHelpers.CompareVectors(new GameVector3(-1, 0, 0), unitView.Rotator.Rotation.ToVector());
             var originalRotation = unitView.Rotator.Rotation;

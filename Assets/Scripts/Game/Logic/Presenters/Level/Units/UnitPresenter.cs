@@ -49,6 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         protected override void DisposeInner()
         {
             _rotator.Dispose();
+            _units.Dispose();
             _view.Animator.OnFinished -= Animator_OnFinished;
             _units.OnEvent -= HandleEvent;
             _units.OnRemoved -= HandleOnDispose;

@@ -14,6 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public event Action OnAdded = delegate {  };
         public event Action OnRemoved = delegate {  };
         public event Action OnChanged = delegate {  };
+        public event Action OnAny = delegate {  };
         public event Action<IModelEvent> OnEvent = delegate {  };
 
         public RepositoryEntityQuery(IRepository<T> repository, Uid id)
@@ -50,6 +51,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 return;
 
             OnEvent(arg2);
+            OnAny();
         }
 
         private void HandleOnRemoved(T entity)
@@ -58,6 +60,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 return;
             
             OnRemoved();
+            OnAny();
         }
 
         private void HandleOnAdded(T entity)
@@ -66,6 +69,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 return;
             
             OnAdded();
+            OnAny();
         }
 
         private void HadleOnChanged(T entity)
@@ -74,6 +78,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 return;
 
             OnChanged();
+            OnAny();
         }
 
     }
