@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public HandPresenter(IHandView view)
             : this(view,
-                  IPresenterServices.Default?.Get<IQuery<ConstructionCard>>(),
+                  IPresenterServices.Default?.Get<IRepository<ConstructionCard>>().AsQuery(),
                   IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
                   IPresenterServices.Default?.Get<ScreenService>())
         {

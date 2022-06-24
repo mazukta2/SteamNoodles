@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private HandConstructionTooltipPresenter _tooltip;
 
         public BuildingTooltipPresenter(IBuildingToolitpView view) : this(view,
-                  IPresenterServices.Default?.Get<IQuery<Construction>>(),
+                  IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery(),
                   IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery())
         {
 

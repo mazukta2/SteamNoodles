@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -21,7 +22,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view) :
                 this(view,
-                    IPresenterServices.Default?.Get<IQuery<Construction>>())
+                    IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery())
         {
         }
 

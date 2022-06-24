@@ -68,6 +68,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             Add(new GhostMovingService(ghostRep, field.AsQuery(), controls));
             Add(new GhostRotatingService(ghostRep, controls));
             Add(new GhostBuildingService(ghostRep, constructions, building,controls));
+            Add(new GhostPointsService(ghostRep, constructionsRep.AsQuery()));
             
             rewards.Start();
         }

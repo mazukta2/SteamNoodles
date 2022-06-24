@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
+using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions.Animations;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
@@ -22,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public HandConstructionPresenter(IHandConstructionView view, ConstructionCard model) 
             : this(view, model, 
-                  IPresenterServices.Default.Get<IQuery<ConstructionCard>>(),
+                  IPresenterServices.Default.Get<IRepository<ConstructionCard>>().AsQuery(),
                   IPresenterServices.Default.Get<ScreenService>())
         {
 

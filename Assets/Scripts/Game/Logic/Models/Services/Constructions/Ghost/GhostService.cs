@@ -25,7 +25,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
 
         public void Hide()
         {
-            _ghost.Remove();
+            if (_ghost.Has())
+                _ghost.Remove();
         }
     }
 }
