@@ -1,0 +1,26 @@
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Common.Services;
+
+namespace Game.Assets.Scripts.Game.Logic.Services.Resources
+{
+    public class CoinsService : IService
+    {
+        public event Action OnChanged = delegate { };
+
+        public int Value { get; private set; }
+
+        public void Change(int value)
+        {
+            Value += value;
+            if (Value < 0)
+                Value = 0;
+
+            OnChanged();
+        }
+
+        internal void Change(object baseCoins)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

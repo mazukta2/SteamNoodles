@@ -1,5 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
+using Game.Assets.Scripts.Game.Logic.Entities.Levels;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters
 {

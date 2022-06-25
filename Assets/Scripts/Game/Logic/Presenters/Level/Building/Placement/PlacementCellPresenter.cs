@@ -1,7 +1,6 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement

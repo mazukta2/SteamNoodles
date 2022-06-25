@@ -1,16 +1,16 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Services.Definitions;
+using Game.Assets.Scripts.Game.Logic.Services.Resources.Points;
+using Game.Assets.Scripts.Game.Logic.Services.Resources.Points.BuildingPointsAnimations;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 {

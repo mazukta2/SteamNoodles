@@ -1,9 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Assets.Scripts.Game.Logic.Services.Resources;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 {

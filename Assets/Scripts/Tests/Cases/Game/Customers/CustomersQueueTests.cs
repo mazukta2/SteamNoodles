@@ -1,22 +1,22 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Flow;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using NUnit.Framework;
 using System.Linq;
-using static Game.Assets.Scripts.Game.Logic.Models.Entities.Units.Unit;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Entities.Units;
+using Game.Assets.Scripts.Game.Logic.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Services.Flow;
+using Game.Assets.Scripts.Game.Logic.Services.Resources;
+using Game.Assets.Scripts.Game.Logic.Services.Resources.Points;
+using Game.Assets.Scripts.Game.Logic.Services.Session;
+using Game.Assets.Scripts.Game.Logic.Services.Units;
+using Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Units;
+using static Game.Assets.Scripts.Game.Logic.Entities.Units.Unit;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 {

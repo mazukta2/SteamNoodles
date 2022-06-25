@@ -1,11 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -16,10 +10,16 @@ using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using NUnit.Framework;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Functions.Repositories;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Services.Assets;
+using Game.Assets.Scripts.Game.Logic.Services.Constructions;
+using Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost;
+using Game.Assets.Scripts.Game.Logic.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.Services.Resources.Points;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building

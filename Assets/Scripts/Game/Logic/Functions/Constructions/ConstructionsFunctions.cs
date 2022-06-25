@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Fields;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Fields;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 
 namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
 {

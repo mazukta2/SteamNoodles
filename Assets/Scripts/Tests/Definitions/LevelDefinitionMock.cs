@@ -1,5 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 
 namespace Game.Assets.Scripts.Tests.Definitions

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using Game.Assets.Scripts.Game.Logic.Models.Entities;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
-using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Entities;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
-namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
+namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
     public interface IRepository<T> : IEntityList<T>, IBaseRepository where T : class, IEntity
     {

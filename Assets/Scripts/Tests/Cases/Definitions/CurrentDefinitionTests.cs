@@ -3,13 +3,13 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Services;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
 using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Services;
+using Game.Assets.Scripts.Game.Logic.Services.Definitions;
 
 namespace Game.Assets.Scripts.Tests.Cases.Definitions
 {

@@ -1,5 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -8,6 +7,7 @@ using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Common;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using System;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
 {

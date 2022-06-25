@@ -1,13 +1,13 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Services.Assets;
+using Game.Assets.Scripts.Game.Logic.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building

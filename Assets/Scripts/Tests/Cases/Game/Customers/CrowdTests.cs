@@ -1,12 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Units;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Common;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using NUnit.Framework;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Entities.Units;
+using Game.Assets.Scripts.Game.Logic.Services.Common;
+using Game.Assets.Scripts.Game.Logic.Services.Session;
+using Game.Assets.Scripts.Game.Logic.Services.Units;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 {

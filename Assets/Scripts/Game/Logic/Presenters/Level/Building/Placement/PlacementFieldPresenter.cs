@@ -1,15 +1,15 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Events.Constructions;
+using Game.Assets.Scripts.Game.Logic.Events.Fields;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Events.Fields;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement

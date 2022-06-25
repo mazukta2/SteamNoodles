@@ -1,12 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Localization;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 
 namespace Game.Assets.Scripts.Tests.Setups
 {

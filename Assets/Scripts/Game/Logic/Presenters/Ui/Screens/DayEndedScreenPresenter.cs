@@ -1,5 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
-using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
+﻿using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens

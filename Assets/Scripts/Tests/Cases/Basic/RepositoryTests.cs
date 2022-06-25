@@ -1,9 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Repositories;
+﻿using Game.Assets.Scripts.Game.Logic.Repositories;
 using NUnit.Framework;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
+using Game.Assets.Scripts.Game.Logic.Entities;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Tests.Cases.Basic
 {

@@ -1,12 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost;
+using Game.Assets.Scripts.Game.Logic.Services.Controls;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {

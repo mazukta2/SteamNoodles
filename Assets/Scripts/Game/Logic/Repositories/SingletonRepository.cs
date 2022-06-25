@@ -1,7 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities;
-using System;
+﻿using System;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Entities;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {

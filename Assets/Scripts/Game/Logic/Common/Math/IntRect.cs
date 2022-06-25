@@ -1,7 +1,7 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Assets.Scripts.Game.Logic.Services.Session;
 
 namespace Game.Assets.Scripts.Game.Logic.Common.Math
 {

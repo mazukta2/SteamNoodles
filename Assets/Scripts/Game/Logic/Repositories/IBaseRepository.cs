@@ -1,4 +1,6 @@
-﻿namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
+﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
+
+namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
     public interface IBaseRepository : IService
     {

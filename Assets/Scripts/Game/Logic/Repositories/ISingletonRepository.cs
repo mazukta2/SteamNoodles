@@ -1,8 +1,7 @@
 ﻿using System;
-using Game.Assets.Scripts.Game.Logic.Models.Entities;
-using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Entities;
 
-namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
+namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
     public interface ISingletonRepository<T> : IRepository<T> where T : class, IEntity
     {

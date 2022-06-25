@@ -1,10 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Entities.Levels;
 using Game.Assets.Scripts.Tests.Definitions;
 
 namespace Game.Assets.Scripts.Tests.Environment

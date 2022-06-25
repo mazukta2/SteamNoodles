@@ -1,7 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using System;
+using Game.Assets.Scripts.Game.Logic.Services.Controls;
 
 namespace Game.Assets.Scripts.Tests.Environment
 {

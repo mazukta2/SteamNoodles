@@ -1,4 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities;
+﻿using Game.Assets.Scripts.Game.Logic.Entities;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Functions.Repositories

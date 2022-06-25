@@ -5,17 +5,16 @@ using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models;
-using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Services;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Game;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Session;
+using Game.Assets.Scripts.Game.Logic.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Services;
+using Game.Assets.Scripts.Game.Logic.Services.Assets;
+using Game.Assets.Scripts.Game.Logic.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.Services.Definitions;
+using Game.Assets.Scripts.Game.Logic.Services.Game;
+using Game.Assets.Scripts.Game.Logic.Services.Session;
 
 namespace Game.Assets.Scripts.Game.Environment
 {

@@ -1,9 +1,9 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using System;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
+using Game.Assets.Scripts.Game.Logic.Services.Definitions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units

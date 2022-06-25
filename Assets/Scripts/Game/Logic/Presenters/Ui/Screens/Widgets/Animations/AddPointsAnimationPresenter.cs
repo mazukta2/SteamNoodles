@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Services.Resources.Points.BuildingPointsAnimations;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
-using static Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points.BuildingPointsAnimations.AddPointsAnimation;
+using static Game.Assets.Scripts.Game.Logic.Services.Resources.Points.BuildingPointsAnimations.AddPointsAnimation;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets.Animations
 {

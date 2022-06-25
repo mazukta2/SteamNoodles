@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Game.Assets.Scripts.Game.Logic.Models.Services;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Definitions;
+using Game.Assets.Scripts.Game.Logic.Services;
+using Game.Assets.Scripts.Game.Logic.Services.Definitions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

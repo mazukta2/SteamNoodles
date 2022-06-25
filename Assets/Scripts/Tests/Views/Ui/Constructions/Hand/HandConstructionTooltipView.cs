@@ -1,11 +1,11 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Views;
 using Game.Assets.Scripts.Tests.Views.Common;
 using System;
+using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
 {

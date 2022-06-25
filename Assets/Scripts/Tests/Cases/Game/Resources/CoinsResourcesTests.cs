@@ -1,8 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
-using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
+using Game.Assets.Scripts.Game.Logic.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
 using NUnit.Framework;
