@@ -1,14 +1,14 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using System;
-using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Fields;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Fields;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
 {
     public record Field : Entity
     {
-        public IReadOnlyCollection<FieldPosition> AvailableCells { get; private set; } = new List<FieldPosition>();
+        public GroupOfPositions AvailableCells { get; private set; }
 
         private float _cellSize;
         private FieldBoundaries _boundaries;
@@ -25,6 +25,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             
             _cellSize = cellSize;
             _boundaries = new FieldBoundaries(mapSize);
+
+            AvailableCells = new GroupOfPositions(this);
         }
 
         public FieldBoundaries GetBoundaries()
@@ -63,7 +65,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             return offset;
         }
 
-        public void SetAvailableCells(IReadOnlyCollection<FieldPosition> cells)
+        public void SetAvailableCells(GroupOfPositions cells)
         {
             AvailableCells = cells;
             FireEvent(new FieldUpdateEvent());

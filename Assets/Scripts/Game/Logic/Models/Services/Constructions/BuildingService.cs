@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
 
         public Construction Build(ConstructionCard card, FieldPosition position, FieldRotation rotation)
         {
-            if (!_constructions.CanPlace(card, position, rotation))
+            if (! _constructions.CanPlace(card.Scheme, position, rotation))
                 throw new Exception("Can't build construction here");
 
             var construction = new Construction(card.Scheme, position, rotation);
@@ -33,5 +33,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
         }
 
 
+        public void TryBuild(ConstructionCard card, FieldPosition position, FieldRotation rotation)
+        {
+            if (_constructions.CanPlace(card.Scheme, position, rotation))
+                Build(card, position, rotation);
+
+        }
     }
 }

@@ -82,7 +82,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         
         private void UpdateGhostCells()
         {
-            IReadOnlyCollection<FieldPosition> freeCells = _field.Get().AvailableCells;
+            IReadOnlyCollection<FieldPosition> freeCells = _field.Get().AvailableCells.Cells;
             IReadOnlyCollection<FieldPosition> occupiedByGhostCells = null;
             ConstructionGhost ghost = null;
             if (_ghost.Has())

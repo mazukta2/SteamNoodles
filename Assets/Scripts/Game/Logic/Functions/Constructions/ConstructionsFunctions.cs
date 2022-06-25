@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Fields;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
@@ -12,25 +11,14 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
 {
     public static class ConstructionsFunctions
     {
-        public static bool CanPlace(this IEntityList<Construction> constructions, ConstructionCard card, FieldPosition position, FieldRotation rotation)
-        {
-            return CanPlace(constructions, card.Scheme, position, rotation);
-        }
 
-        private static bool CanPlace(this IEntityList<Construction> constructions, ConstructionScheme scheme,
-            FieldPosition position, FieldRotation rotation)
-        {
-            var availableCells = GetAvailableToBuildCells(constructions, position.Field, scheme, rotation);
-            var occupiedCells = scheme.Placement.GetOccupiedSpace(position, rotation);
-            
-            return occupiedCells.All(occupiedPosition => availableCells.Contains(occupiedPosition));
-        }
-
-        public static IReadOnlyCollection<FieldPosition> GetAvailableToBuildCells(this IEntityList<Construction> constructions,
+        public static GroupOfPositions GetAvailableToBuildCells(this IEntityList<Construction> constructions,
             Field field, ConstructionScheme scheme, FieldRotation rotation)
         {
             var list = new HashSet<FieldPosition>();
-            var occupiedSpace = GetOccupiedCells(constructions);
+            var occupiedSpace = constructions.Get()
+                .SelectMany(otherBuilding => otherBuilding.GetOccupiedSpace());
+            
             var boundaries = field.GetBoundaries();
             var minY = boundaries.Value.Y;
             var maxY = boundaries.Value.Y + boundaries.Value.Height;
@@ -53,22 +41,25 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
                     list.Add(fieldPosition);
                 }
             }
-            
-            return list.AsReadOnly();
+
+            return new GroupOfPositions(list);
         }
 
-        public static IReadOnlyCollection<FieldPosition> GetOccupiedCells(this IEntityList<Construction> constructions)
+
+        public static bool CanPlace(this IEntityList<Construction> constructions, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
-            return constructions.Get().SelectMany(otherBuilding => otherBuilding.GetOccupiedSpace()).ToHashSet().AsReadOnly();
+            var available = GetAvailableToBuildCells(constructions, position.Field, scheme, rotation);
+            var occupiedCells = scheme.Placement.GetOccupiedSpace(position, rotation);
+            return occupiedCells.All(occupiedPosition => available.Cells.Contains(occupiedPosition));
         }
         
-        
-        public static IReadOnlyCollection<FieldPosition> GetUnoccupiedCells(this IEntityList<Construction> constructions, Field field)
+        public static GroupOfPositions GetUnoccupiedCells(this IEntityList<Construction> constructions, Field field)
         {
             var list = new List<FieldPosition>();
             
             var constructionsList = constructions.Get();
-            var occupiedSpace = constructionsList.SelectMany(otherBuilding => otherBuilding.GetOccupiedSpace());
+            var occupiedSpace = constructionsList
+                .SelectMany(otherBuilding => otherBuilding.GetOccupiedSpace());
             
             var boundaries = field.GetBoundaries();
             for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
@@ -83,7 +74,7 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
                 }
             }
             
-            return list.AsReadOnly();
+            return new GroupOfPositions(list);
         }
         
         public static bool IsAvailableToBuild(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
@@ -98,11 +89,10 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
 
             return true;
         }
-        
-        public static BuildingPoints GetPoints(this IEntityList<Construction> constructions, 
-            ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+
+        public static BuildingPoints GetPoints(this IEntityList<Construction> constructions, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
-            if (!CanPlace(constructions, scheme, position, rotation))
+            if (!constructions.CanPlace(scheme, position, rotation))
                 return new BuildingPoints(0);
 
             var adjacentPoints = BuildingPoints.Zero;

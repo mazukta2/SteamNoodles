@@ -81,7 +81,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _view.LocalPosition.Value = worldPosition;
             _view.Rotator.Rotation = FieldRotation.ToDirection(ghost.Rotation);
             
-            var canPlace = _constructions.CanPlace(ghost.Card, ghost.Position, ghost.Rotation);
+            var canPlace = _ghost.Get().CanPlace();
             _constructionModelView.BorderAnimator.Play(canPlace ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
         }
 

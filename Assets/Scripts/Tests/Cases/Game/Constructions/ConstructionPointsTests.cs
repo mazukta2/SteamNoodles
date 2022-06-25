@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Fields;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
@@ -127,11 +128,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         public void IsPointsChangedByAdjacency()
         {
             var constructionsRepository = new Repository<Construction>();
-            var field = new Field(1, new IntPoint(5, 5));
+            var field = new SingletonRepository<Field>(new Field(1, new IntPoint(5, 5)));
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(), controls);
             var points = new GhostPointsService(ghost, constructionsRepository.AsQuery());
+            var cells = new FieldCellsService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
 
             var placement = new ContructionPlacement(new [,] {
                     { 0, 0, 0 },
@@ -147,20 +149,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, ghost.AsQuery(), constructionsRepository.AsQuery(), field);
+            new GhostPointPresenter(view, ghost.AsQuery(), constructionsRepository.AsQuery(), field.Get());
            
             Assert.AreEqual("", view.Points.Value);
             
-            ghost.Add(new ConstructionGhost(card, field));
+            ghost.Add(new ConstructionGhost(card, field.Get()));
 
             Assert.AreEqual("+5", view.Points.Value);
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
+            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field.Get(), 0, 0), new FieldRotation()));
 
-            buildingMode.SetTargetPosition(new FieldPosition(field, 0, 0));
             Assert.AreEqual("0", view.Points.Value);
 
-            buildingMode.SetTargetPosition(new FieldPosition(field, -2, 0));
+            buildingMode.SetTargetPosition(new FieldPosition(field.Get(), -2, 0));
 
             Assert.AreEqual("+7", view.Points.Value);
 
@@ -168,6 +169,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             controls.Dispose();
             buildingMode.Dispose();
             points.Dispose();
+            cells.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]

@@ -58,16 +58,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var c = new ControlsMock();
             
             var constructionsRepository = new Repository<Construction>();
+            var field = new SingletonRepository<Field>(new Field(1, new (11,11)));
             var constructionsCardsRepository = new Repository<ConstructionCard>();
 
             var controlService = new GameControlsService(c);
-            var field = new Field(1, new (11,11));
             var buildingService = new BuildingService(constructionsRepository);
             
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field);
-            var ghostBuildingService = new GhostBuildingService(ghost, constructionsRepository,
-                buildingService, controlService);
+            var ghostService = new GhostService(ghost, field.Get());
+            var cells = new FieldCellsService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var ghostBuildingService = new GhostBuildingService(ghost, buildingService, controlService);
             
             var card = new ConstructionCard(new ConstructionScheme());
             constructionsCardsRepository.Add(card);
@@ -83,9 +83,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             
             Assert.AreEqual(1, constructionsRepository.Count);
         
-            
             controlService.Dispose();
             ghostBuildingService.Dispose();
+            cells.Dispose();
         }
         
         [Test, Order(TestCore.ModelOrder)]
@@ -281,16 +281,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void GhostChangesGlowingEffectWhenBlocked()
         {
             var constructionsRepository = new Repository<Construction>();
+            var field = new SingletonRepository<Field>(new Field(1, new IntPoint(5, 5)));
+            var ghost = new SingletonRepository<ConstructionGhost>();
 
             var scheme = new ConstructionScheme(view:"view", requirements: new Requirements() { DownEdge = true });
 
             var card = new ConstructionCard(scheme);
 
-            var field = new Field(1, new IntPoint(5, 5));
             var controls = new GameControlsService(new ControlsMock());
-            var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field);
-            var buildingMode = new GhostMovingService(ghost, field.AsQuery(),controls);
+            var ghostService = new GhostService(ghost, field.Get());
+            var moving = new GhostMovingService(ghost, field.AsQuery(),controls);
+            var cells = new FieldCellsService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var canBuildService = new GhostCanBuildService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+
             var assets = CreateAssets("view");
             var viewCollection = new ViewsCollection();
 
@@ -302,20 +305,22 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var modelView = view.Container.FindView<ConstructionModelView>();
 
             // disallowed because DownEdge enabled.
-            Assert.IsFalse(constructionsRepository.CanPlace(card, new FieldPosition(field, 0, 0), new FieldRotation()));
+            Assert.IsFalse(ghost.Get().CanPlace());
 
             Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
             Assert.AreEqual("Disallowed", (modelView.BorderAnimator).GetCurrentAnimation());
 
-            buildingMode.SetTargetPosition(new FieldPosition(field, 0, -2));
-            Assert.IsTrue(constructionsRepository.CanPlace(card, new FieldPosition(field, 0, -2), new FieldRotation()));
+            moving.SetTargetPosition(new FieldPosition(field.Get(), 0, -2));
+            Assert.IsTrue(ghost.Get().CanPlace());
 
             Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
             Assert.AreEqual("Idle", (modelView.BorderAnimator).GetCurrentAnimation());
 
             viewCollection.Dispose();
-            buildingMode.Dispose();
+            moving.Dispose();
             controls.Dispose();
+            cells.Dispose();
+            canBuildService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
