@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Services
 {
@@ -6,5 +7,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Services
     {
         public static IPresenterServices Default { get; set; }
         public T Get<T>() where T : IService;
+        public IDataQuery<T> GetQuery<T>() where T : IData;
     }
 }

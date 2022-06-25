@@ -1,9 +1,9 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
-using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
@@ -16,13 +16,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class GhostPresenter : BasePresenter<IGhostView>
     {
         private readonly IGhostView _view;
-        private readonly ISingleQuery<ConstructionGhost> _ghost;
+        private readonly IDataQuery<GhostData> _ghost;
         private readonly IQuery<Construction> _constructions;
         private readonly GameAssetsService _assets;
         private readonly IConstructionModelView _constructionModelView;
 
         public GhostPresenter(IGhostView view) : this(view,
-            IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
+            IPresenterServices.Default?.GetQuery<GhostData>(),
             IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery(),
             IPresenterServices.Default?.Get<GameAssetsService>())
         {
@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         }
 
         public GhostPresenter(IGhostView view,
-            ISingleQuery<ConstructionGhost> ghost,
+            IDataQuery<GhostData> ghost,
             IQuery<Construction> constructions,
             GameAssetsService assets) : base(view)
         {
@@ -81,8 +81,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _view.LocalPosition.Value = worldPosition;
             _view.Rotator.Rotation = FieldRotation.ToDirection(ghost.Rotation);
             
-            var canPlace = _ghost.Get().CanPlace();
-            _constructionModelView.BorderAnimator.Play(canPlace ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
+            _constructionModelView.BorderAnimator.Play(_ghost.Get().CanBuild ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
         }
 
     }

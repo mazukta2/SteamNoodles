@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Services;
 
@@ -59,6 +60,14 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
             return _list.OfType<T>().Last();
         }
 
+        public IDataQuery<T> GetQuery<T>() where T : IData
+        {
+            if (!Has<IDataQueryHandler<T>>())
+                throw new Exception($"No service with name {typeof(T)}");
+
+            return new DataQuery<T>(_list.OfType<IDataQueryHandler<T>>().Last());
+        }
+        
         public bool Has<T>() where T : IService
         {
             return _list.OfType<T>().Any();

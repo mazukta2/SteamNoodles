@@ -11,10 +11,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
         public FieldPosition Position { get; private set; }
         public FieldRotation Rotation { get; private set;}
         public GameVector3 TargetPosition { get; private set;}
-        public BuildingPoints PointChanges { get; private set; }
         
-        private bool _canPlace;
-
         public ConstructionGhost(ConstructionCard card, Field field) : this(card, new FieldPosition(field))
         {
             
@@ -31,7 +28,6 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
             Position = position;
             Rotation = rotation;
             TargetPosition = targetPosition;
-            PointChanges = BuildingPoints.Zero;
         }
 
         public void SetPosition(FieldPosition cellPosition, GameVector3 pointerPosition)
@@ -48,22 +44,6 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
         {
             Rotation = rotation;
             FireEvent(new GhostMovedEvent());
-        }
-
-        public void SetPoints(BuildingPoints points)
-        {
-            PointChanges = points;
-            FireEvent(new GhostPointsChangedEvent());
-        }
-
-        public bool CanPlace()
-        {
-            return _canPlace;
-        }
-
-        public void SetCanPlace(bool value)
-        {
-            _canPlace = value;
         }
     }
 }

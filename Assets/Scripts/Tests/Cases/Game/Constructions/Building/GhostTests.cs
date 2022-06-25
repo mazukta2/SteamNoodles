@@ -9,8 +9,10 @@ using Game.Assets.Scripts.Tests.Views.Level.Building;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Fields;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Functions.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
@@ -60,14 +62,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsRepository = new Repository<Construction>();
             var field = new SingletonRepository<Field>(new Field(1, new (11,11)));
             var constructionsCardsRepository = new Repository<ConstructionCard>();
+            var ghost = new SingletonRepository<ConstructionGhost>();
 
             var controlService = new GameControlsService(c);
             var buildingService = new BuildingService(constructionsRepository);
             
-            var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field.Get());
-            var cells = new FieldCellsService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
-            var ghostBuildingService = new GhostBuildingService(ghost, buildingService, controlService);
+            var cells = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var ghostMock = new GhostData();
+            
+            var ghostBuildingService = new GhostBuildingService(ghost, ghostMock.AsDataQuery(), buildingService, controlService);
             
             var card = new ConstructionCard(new ConstructionScheme());
             constructionsCardsRepository.Add(card);
@@ -93,19 +97,20 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         {
             var ghost = new SingletonRepository<ConstructionGhost>();
             var constructions = new Repository<Construction>();
-            var field = new Field();
+            var field = new SingletonRepository<Field>(new Field());
 
-            var pointsService = new GhostPointsService(ghost, constructions.AsQuery());
+            var pointsService = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructions.AsQuery());
+            var ghostData = new DataQuery<GhostData>(pointsService);
 
             ghost.Add(new ConstructionGhost(new ConstructionCard(new ConstructionScheme(points: new BuildingPoints(2))),
-                field));
+                field.Get()));
             
-            Assert.AreEqual(2, ghost.Get().PointChanges.AsInt());
+            Assert.AreEqual(2, ghostData.Get().Points.AsInt());
 
             var g = ghost.Get();
-            g.SetPosition(new FieldPosition(field, 100, 100), GameVector3.One);
+            g.SetPosition(new FieldPosition(field.Get(), 100, 100), GameVector3.One);
             
-            Assert.AreEqual(0, ghost.Get().PointChanges.AsInt());
+            Assert.AreEqual(0, ghostData.Get().Points.AsInt());
             
             pointsService.Dispose();
         }
@@ -147,19 +152,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         {
             var constructionsRepository = new Repository<Construction>();
             var field = new SingletonRepository<Field>(new Field(10, new IntPoint(3, 3)));
+            var ghost = new SingletonRepository<ConstructionGhost>();
 
             var scheme = new ConstructionScheme();
 
             var controls = new GameControlsService(new ControlsMock());
-            var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field.Get());
             var moving = new GhostMovingService(ghost, field.AsQuery(),controls);
-            var fieldCellsService = new FieldCellsService(field.AsQuery(), ghost.AsQuery(),
+            var fieldCellsService = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(),
                 constructionsRepository.AsQuery());
             
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, ghost.AsQuery(), field.AsQuery(), constructionsRepository.AsQuery());
+            new PlacementFieldPresenter(view, ghost.AsQuery(), new DataQuery<FieldData>(fieldCellsService), constructionsRepository.AsQuery());
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
@@ -201,12 +206,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field.Get());
             var movingService = new GhostMovingService(ghost, field.AsQuery(),controls);
-            var fieldCellsService = new FieldCellsService(field.AsQuery(), ghost.AsQuery(),
+            var fieldCellsService = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(),
                 constructionsRepository.AsQuery());
             
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, ghost.AsQuery(), field.AsQuery(), constructionsRepository.AsQuery());
+            new PlacementFieldPresenter(view, ghost.AsQuery(), new DataQuery<FieldData>(fieldCellsService), constructionsRepository.AsQuery());
 
             ghostService.Show(new ConstructionCard(scheme));
 
@@ -255,7 +260,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field.Get());
             var moving = new GhostMovingService(ghost, field.AsQuery(),controls);
-            var fieldCellsService = new FieldCellsService(field.AsQuery(), ghost.AsQuery(),
+            var fieldCellsService = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(),
                 constructionsRepository.AsQuery());
             
             var viewCollection = new ViewsCollection();
@@ -263,7 +268,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             ghostService.Show(new ConstructionCard(scheme));
 
             var view = new GhostView(viewCollection);
-            new GhostPresenter(view, ghost.AsQuery(), constructionsRepository.AsQuery(), CreateAssets());
+            new GhostPresenter(view, new DataQuery<GhostData>(fieldCellsService), constructionsRepository.AsQuery(), CreateAssets());
 
             Assert.AreEqual(new GameVector3(0.25f, 0f, 0), view.LocalPosition.Value);
 
@@ -291,27 +296,28 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var controls = new GameControlsService(new ControlsMock());
             var ghostService = new GhostService(ghost, field.Get());
             var moving = new GhostMovingService(ghost, field.AsQuery(),controls);
-            var cells = new FieldCellsService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
-            var canBuildService = new GhostCanBuildService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
-
+            var cells = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var canBuildService = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var ghostData = new DataQuery<GhostData>(canBuildService);
+            
             var assets = CreateAssets("view");
             var viewCollection = new ViewsCollection();
 
             ghostService.Show(card);
 
             var view = new GhostView(viewCollection);
-            new GhostPresenter(view, ghost.AsQuery(), constructionsRepository.AsQuery(), assets);
+            new GhostPresenter(view, ghostData, constructionsRepository.AsQuery(), assets);
 
             var modelView = view.Container.FindView<ConstructionModelView>();
 
             // disallowed because DownEdge enabled.
-            Assert.IsFalse(ghost.Get().CanPlace());
+            Assert.IsFalse(ghostData.Get().CanBuild);
 
             Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
             Assert.AreEqual("Disallowed", (modelView.BorderAnimator).GetCurrentAnimation());
 
             moving.SetTargetPosition(new FieldPosition(field.Get(), 0, -2));
-            Assert.IsTrue(ghost.Get().CanPlace());
+            Assert.IsTrue(ghostData.Get().CanBuild);
 
             Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
             Assert.AreEqual("Idle", (modelView.BorderAnimator).GetCurrentAnimation());
@@ -327,6 +333,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void CellsStatusCorrectWithDownEdgeRequirement()
         {
             var constructionsRepository = new Repository<Construction>();
+            var ghost = new SingletonRepository<ConstructionGhost>();
             var field = new SingletonRepository<Field>(new Field(1, new IntPoint(5, 5)));
 
             var placement = new ContructionPlacement(new[,] {
@@ -338,15 +345,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 placement, requirements: new Requirements() { DownEdge = true });
 
             var controls = new GameControlsService(new ControlsMock());
-            var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field.Get());
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(),controls);
-            var fieldCellsService = new FieldCellsService(field.AsQuery(), ghost.AsQuery(),
+            var fieldCellsService = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(),
                 constructionsRepository.AsQuery());
 
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, ghost.AsQuery(), field.AsQuery(), constructionsRepository.AsQuery());
+            new PlacementFieldPresenter(view, ghost.AsQuery(), new DataQuery<FieldData>(fieldCellsService), constructionsRepository.AsQuery());
 
             ghostService.Show(new ConstructionCard(scheme));
 
@@ -391,13 +397,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field.Get());
             var moving = new GhostMovingService(ghost, field.AsQuery(), controls);
-            var fieldCellsService = new FieldCellsService(field.AsQuery(), ghost.AsQuery(),
+            var fieldCellsService = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(),
                 constructionsRepository.AsQuery());
             
             var viewCollection = new ViewsCollection();
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, ghost.AsQuery(), field.AsQuery(), constructionsRepository.AsQuery());
+            new PlacementFieldPresenter(view, ghost.AsQuery(),new DataQuery<FieldData>(fieldCellsService), constructionsRepository.AsQuery());
 
             {
                 
@@ -464,7 +470,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             
             Assert.IsFalse(view.Container.Has<ConstructionModelView>());
             
-            new GhostPresenter(view, ghost.AsQuery(), constructionsRepository.AsQuery(), assets);
+            new GhostPresenter(view, new GhostData().AsDataQuery(), constructionsRepository.AsQuery(), assets);
 
             Assert.IsTrue(view.Container.Has<ConstructionModelView>());
             
@@ -491,7 +497,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var controls = new GameControlsService(new ControlsMock());
             var ghostService = new GhostService(ghost, field.Get());
             var rotatingService = new GhostRotatingService(ghost, controls);
-            var fieldCellsService = new FieldCellsService(field.AsQuery(), ghost.AsQuery(),
+            var fieldCellsService = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(),
                 constructionsRepository.AsQuery());
 
             var viewCollection = new ViewsCollection();
@@ -499,7 +505,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             ghostService.Show(new ConstructionCard(scheme));
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, ghost.AsQuery(), field.AsQuery(), constructionsRepository.AsQuery());
+            new PlacementFieldPresenter(view, ghost.AsQuery(), new DataQuery<FieldData>(fieldCellsService), constructionsRepository.AsQuery());
 
             var cells = view.CellsContainer.FindViews<CellView>();
             CheckPosition(new [, ]

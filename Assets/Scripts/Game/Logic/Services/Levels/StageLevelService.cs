@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Levels;
@@ -64,13 +66,11 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Levels
             var controls = services.Get<GameControlsService>();
             var ghostRep = Add(new SingletonRepository<ConstructionGhost>());
             
-            Add(new FieldCellsService(field.AsQuery(), ghostRep.AsQuery(), constructionsRep.AsQuery()));
+            var buildingAggregator = Add(new BuildingAggregatorService(field.AsQuery(), ghostRep.AsQuery(), constructionsRep.AsQuery()));
             Add(new GhostService(ghostRep, field.Get()));
             Add(new GhostMovingService(ghostRep, field.AsQuery(), controls));
             Add(new GhostRotatingService(ghostRep, controls));
-            Add(new GhostBuildingService(ghostRep, building, controls));
-            Add(new GhostPointsService(ghostRep, constructionsRep.AsQuery()));
-            Add(new GhostCanBuildService(field.AsQuery(), ghostRep.AsQuery(), constructionsRep.AsQuery()));
+            Add(new GhostBuildingService(ghostRep, new DataQuery<GhostData>(buildingAggregator), building, controls));
             
             rewards.Start();
         }

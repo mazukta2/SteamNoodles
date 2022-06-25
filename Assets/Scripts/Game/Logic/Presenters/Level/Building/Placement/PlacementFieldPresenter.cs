@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Fields;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Fields;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
-using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
@@ -18,20 +18,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
     {
         private readonly IPlacementFieldView _view;
         private readonly ISingleQuery<ConstructionGhost> _ghost;
-        private readonly ISingleQuery<Field> _field;
+        private readonly IDataQuery<FieldData> _field;
         private readonly IQuery<Construction> _constructions;
         private readonly List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
             IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
-            IPresenterServices.Default?.Get<ISingletonRepository<Field>>()?.AsQuery(),
+            IPresenterServices.Default?.GetQuery<FieldData>(),
             IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery())
         {
         }
 
         public PlacementFieldPresenter(IPlacementFieldView view,
             ISingleQuery<ConstructionGhost> ghost,
-            ISingleQuery<Field> field,
+            IDataQuery<FieldData> field,
             IQuery<Construction> constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -39,14 +39,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             _field = field ?? throw new ArgumentNullException(nameof(field));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
 
-            var boundaries = _field.Get().GetBoundaries();
-            for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
-            {
-                for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
-                {
-                    _cells.Add(CreateCell(new FieldPosition(_field.Get(), x, y)));
-                }
-            }
+            foreach (var position in _field.Get().Cells)
+                _cells.Add(CreateCell(position));
 
             _ghost.OnEvent += HandleOnEvent;
             _ghost.OnAdded += UpdateGhostCells;

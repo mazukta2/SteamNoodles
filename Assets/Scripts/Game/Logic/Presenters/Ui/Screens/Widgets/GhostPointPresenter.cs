@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
-using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class GhostPointPresenter : BasePresenter<IGhostPointsView>
     {
         private IGhostPointsView _view;
-        private readonly ISingleQuery<ConstructionGhost> _ghost;
+        private readonly IDataQuery<GhostData> _ghost;
         private readonly Field _field;
         private readonly IQuery<Construction> _constructions;
 
@@ -22,14 +22,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         public GhostPointPresenter(IGhostPointsView view) : this(
                 view,
-                IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
+                IPresenterServices.Default?.GetQuery<GhostData>(),
                 IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery(),
                 IPresenterServices.Default?.Get<ISingletonRepository<Field>>().Get())
         {
         }
 
         public GhostPointPresenter(IGhostPointsView view,
-            ISingleQuery<ConstructionGhost> ghost,
+            IDataQuery<GhostData> ghost,
             IQuery<Construction> constructions,
             Field field) : base(view)
         {
@@ -66,12 +66,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             if (_ghost.Has())
             {
                 var ghost = _ghost.Get();
-                var points = _constructions.GetPoints(ghost.Card.Scheme, ghost.Position, ghost.Rotation);
 
                 var worldPosition = ghost.Position.GetWorldPosition(
                     ghost.Card.Scheme.Placement.GetRect(ghost.Rotation));
 
-                _view.Points.Value = points.AsString();
+                _view.Points.Value = ghost.Points.AsString();
                 _view.Points.Position = worldPosition;
             }
             else

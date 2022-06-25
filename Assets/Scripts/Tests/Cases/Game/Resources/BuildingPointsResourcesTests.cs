@@ -1,9 +1,12 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Services.Fields;
 using Game.Assets.Scripts.Game.Logic.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -42,15 +45,19 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         [Test, Order(TestCore.PresenterOrder)]
         public void PointsPresenting()
         {
+            var constructionsRepository = new Repository<Construction>();
+            var field = new SingletonRepository<Field>(new Field());
+            var ghost = new SingletonRepository<ConstructionGhost>();
+            var building = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            
             var time = new GameTime();
             var pointsService = new BuildingPointsService(0, 0, time, 2, 2);
-            var ghost = new SingletonRepository<ConstructionGhost>();
-
+            
             var viewCollection = new ViewsCollection();
             var view = new PointCounterWidgetView(viewCollection);
             new PointCounterWidgetPresenter(view,
                 new ProgressBarSliders(view.PointsProgress, time, 0, 0),
-                ghost.AsQuery(),
+                new DataQuery<GhostData>(building),
                 pointsService);
 
             Assert.AreEqual("0/3", view.Points.Value);
@@ -61,6 +68,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
 
             viewCollection.Dispose();
             pointsService.Dispose();
+            building.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -69,13 +77,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             var time = new GameTime();
             var points = new BuildingPointsService(0, 0, time, 2.2f, 8);
             var ghost = new SingletonRepository<ConstructionGhost>();
-
+            
+            var constructionsRepository = new Repository<Construction>();
+            var field = new SingletonRepository<Field>(new Field());
+            var building = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            
             var levelCollection = new ViewsCollection();
             var view = new PointCounterWidgetView(levelCollection);
             var spawner = new PieceSpawnerView(levelCollection);
             new PointPieceSpawnerPresenter(spawner);
             new PointCounterWidgetPresenter(view, new ProgressBarSliders(view.PointsProgress, time, 0, 0), 
-                ghost.AsQuery(),points);
+                new DataQuery<GhostData>(building), points);
 
             points.Change(new BuildingPoints(1));
             Assert.AreEqual(1 / 9f, view.PointsProgress.MainValue);
@@ -97,6 +109,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
 
             levelCollection.Dispose();
             points.Dispose();
+            building.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -105,21 +118,31 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             var time = new GameTime();
             var pointsService = new BuildingPointsService(0, 0, time, 2, 2);
             var ghost = new SingletonRepository<ConstructionGhost>();
+            var constructionsRepository = new Repository<Construction>();
+            var field = new SingletonRepository<Field>(new Field());
 
+            var ghostQuery = new StaticDataQuery<GhostData>();
+            
             var viewCollection = new ViewsCollection();
             var view = new PointCounterWidgetView(viewCollection);
             new PointCounterWidgetPresenter(view,
                 new ProgressBarSliders(view.PointsProgress, time, 0, 0),
-                ghost.AsQuery(),
+                ghostQuery,
                 pointsService);
 
             Assert.AreEqual(0, view.PointsProgress.AddedValue);
 
-            var g = new ConstructionGhost(new ConstructionCard(), new Field());
-            g.SetPoints(new BuildingPoints(1));
-            ghost.Add(g);
-
+            ghostQuery.Add(new GhostData(){Points = new BuildingPoints(1)});
+            
             Assert.AreEqual(1/3f, view.PointsProgress.AddedValue);
+            
+            ghostQuery.Get().Points = new BuildingPoints(2);
+
+            Assert.AreEqual(2/3f, view.PointsProgress.AddedValue);
+            
+            ghostQuery.Remove();
+            
+            Assert.AreEqual(0, view.PointsProgress.AddedValue);
 
             viewCollection.Dispose();
             pointsService.Dispose();

@@ -8,7 +8,6 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 {
     public record Field : Entity
     {
-        public GroupOfPositions AvailableCells { get; private set; }
 
         private float _cellSize;
         private FieldBoundaries _boundaries;
@@ -25,8 +24,6 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
             
             _cellSize = cellSize;
             _boundaries = new FieldBoundaries(mapSize);
-
-            AvailableCells = new GroupOfPositions(this);
         }
 
         public FieldBoundaries GetBoundaries()
@@ -63,12 +60,6 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
             var halfCell = _cellSize / 2;
             var offset = new GameVector3(objectSize.Width * halfCell - halfCell, 0, objectSize.Height * halfCell - halfCell);
             return offset;
-        }
-
-        public void SetAvailableCells(GroupOfPositions cells)
-        {
-            AvailableCells = cells;
-            FireEvent(new FieldUpdateEvent());
         }
         
 
