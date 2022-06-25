@@ -4,7 +4,6 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
@@ -97,21 +96,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                 var state = CellPlacementStatus.Normal;
 
                 var isFreeCell = freeCells.Any(x => x.Value == cell.Position.Value);
-
-                if (!isFreeCell)
-                    state = CellPlacementStatus.IsUnderConstruction;
-
                 if (ghost != null)
                 {
-                    if (isFreeCell)
-                        state = CellPlacementStatus.IsReadyToPlace;
-
                     // is under ghost
                     if (occupiedByGhostCells.Any(x => x.Value == cell.Position.Value))
                     {
-                        state = state == CellPlacementStatus.IsReadyToPlace ?
-                            CellPlacementStatus.IsAvailableGhostPlace : CellPlacementStatus.IsNotAvailableGhostPlace;
+                        state = isFreeCell ? CellPlacementStatus.IsAvailableGhostPlace : CellPlacementStatus.IsNotAvailableGhostPlace;
                     }
+                    else
+                    {
+                        if (isFreeCell)
+                            state = CellPlacementStatus.IsReadyToPlace;
+                        else
+                            state = CellPlacementStatus.IsUnderConstruction;
+                    }
+                }
+                else
+                {
+                    if (isFreeCell)
+                        state = CellPlacementStatus.Normal;
+                    else
+                        state = CellPlacementStatus.IsUnderConstruction;
                 }
 
                 cell.SetState(state);

@@ -20,12 +20,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _ghost.OnAdded += HandleOnAdded;
             _ghost.OnEvent += HandleOnMoved;
+            _constructions.OnAny += HandleConstructionChanged;
         }
 
         protected override void DisposeInner()
         {
             _ghost.OnAdded -= HandleOnAdded;
             _ghost.OnEvent -= HandleOnMoved;
+            _constructions.OnAny -= HandleConstructionChanged;
             _constructions.Dispose();
         }
 
@@ -48,5 +50,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             ghost.SetPoints(_constructions.GetPoints(ghost.Card.Scheme, ghost.Position, ghost.Rotation));
             _ghost.Save(ghost);
         }
+        
+        private void HandleConstructionChanged(Construction obj)
+        {
+            HandleUpdate();
+        }
+
     }
 }

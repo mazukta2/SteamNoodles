@@ -51,6 +51,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
         public void SetPoints(BuildingPoints points)
         {
             PointChanges = points;
+            FireEvent(new GhostPointsChangedEvent());
         }
     }
 }

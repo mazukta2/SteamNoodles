@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         
         private void HandleOnEvent(IModelEvent obj)
         {
-            if (obj is not GhostMovedEvent)
+            if (obj is not GhostMovedEvent && obj is not GhostPointsChangedEvent)
                 return;
             
             UpdatePoints();

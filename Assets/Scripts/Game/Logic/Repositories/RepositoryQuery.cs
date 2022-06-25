@@ -12,6 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public event Action<T> OnAdded = delegate {  };
         public event Action<T> OnRemoved= delegate {  };
         public event Action<T> OnChanged= delegate {  };
+        public event Action<T> OnAny= delegate {  };
         public event Action<T, IModelEvent> OnEvent= delegate {  };
         
         private readonly IRepository<T> _repository;
@@ -36,21 +37,25 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         private void HandleOnEvent(T entity, IModelEvent arg2)
         {
             OnEvent(entity, arg2);
+            OnAny(entity);
         }
         
         private void HandleOnRemoved(T entity)
         {
             OnRemoved(entity);
+            OnAny(entity);
         }
         
         private void HandleOnAdded(T entity)
         {
             OnAdded(entity);
+            OnAny(entity);
         }
         
         private void HandleOnChanged(T entity)
         {
             OnChanged(entity);
+            OnAny(entity);
         }
         public IReadOnlyCollection<T> Get()
         {

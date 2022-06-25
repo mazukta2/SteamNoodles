@@ -8,6 +8,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
     {
         event Action<T> OnAdded;
         event Action<T> OnRemoved;
+        event Action<T> OnAny;
         event Action<T> OnChanged;
         event Action<T, IModelEvent> OnEvent;
         IReadOnlyCollection<T> Get();

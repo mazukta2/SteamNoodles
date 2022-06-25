@@ -136,6 +136,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(), controls);
+            var points = new GhostPointsService(ghost, constructionsRepository.AsQuery());
             var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
 
             var placement = new ContructionPlacement(new [,] {
@@ -153,7 +154,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
 
             var view = new GhostPointsView(viewCollection);
             new GhostPointPresenter(view, ghost.AsQuery(), constructionService, field);
-
+           
+            Assert.AreEqual("", view.Points.Value);
+            
             ghost.Add(new ConstructionGhost(card, field));
 
             Assert.AreEqual("+5", view.Points.Value);
@@ -171,6 +174,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             constructionService.Dispose();
             controls.Dispose();
             buildingMode.Dispose();
+            points.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]

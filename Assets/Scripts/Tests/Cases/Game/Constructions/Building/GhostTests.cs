@@ -344,11 +344,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var actual = ToArray(5, cells);
             var expected = new [,]
             {
-                { 1,1,0,0,0 },
-                { 1,1,0,0,0 },
-                { 1,2,3,0,0 },
-                { 1,2,3,0,0 },
-                { 1,1,0,0,0 }
+                { 1,1,4,4,4 },
+                { 1,1,4,4,4 },
+                { 1,2,3,4,4 },
+                { 1,2,3,4,4 },
+                { 1,1,4,4,4 }
             };
 
             Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
