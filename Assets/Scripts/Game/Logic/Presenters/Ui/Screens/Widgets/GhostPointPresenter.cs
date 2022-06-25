@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
@@ -16,28 +17,28 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     {
         private IGhostPointsView _view;
         private readonly ISingleQuery<ConstructionGhost> _ghost;
-        private readonly ConstructionsService _constructionsService;
         private readonly Field _field;
+        private readonly IQuery<Construction> _constructions;
 
         //private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
         public GhostPointPresenter(IGhostPointsView view) : this(
                 view,
                 IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
-                IPresenterServices.Default?.Get<ConstructionsService>(),
+                IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery(),
                 IPresenterServices.Default?.Get<ISingletonRepository<Field>>().Get())
         {
         }
 
         public GhostPointPresenter(IGhostPointsView view,
             ISingleQuery<ConstructionGhost> ghost,
-            ConstructionsService constructionsService,
+            IQuery<Construction> constructions,
             Field field) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
-            _constructionsService = constructionsService ?? throw new ArgumentNullException(nameof(constructionsService));
-            _field = field ?? throw new ArgumentNullException(nameof(Field));
+            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+            _field = field ?? throw new ArgumentNullException(nameof(field));
 
             _ghost.OnEvent += HandleOnEvent;
             _ghost.OnAdded += UpdatePoints;
@@ -47,6 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         protected override void DisposeInner()
         {
+            _constructions.Dispose();
             _ghost.Dispose();
             _ghost.OnEvent -= HandleOnEvent;
             _ghost.OnAdded -= UpdatePoints;
@@ -66,7 +68,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             if (_ghost.Has())
             {
                 var ghost = _ghost.Get();
-                var points = _constructionsService.GetPoints(ghost.Card, ghost.Position, ghost.Rotation);
+                var points = _constructions.GetPoints(ghost.Card.Scheme, ghost.Position, ghost.Rotation);
 
                 var worldPosition = ghost.Position.GetWorldPosition(
                     ghost.Card.Scheme.Placement.GetRect(ghost.Rotation));

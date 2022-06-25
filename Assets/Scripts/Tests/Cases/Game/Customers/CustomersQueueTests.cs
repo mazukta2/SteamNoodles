@@ -116,14 +116,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var coins = new CoinsService();
-            var custumers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
+            var customers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
 
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
-            var buildngService = new BuildingService(constructionsRepository, constructionsService);
+            var buildingService = new BuildingService(constructionsRepository);
 
-            var turnService = new StageTurnService(constructionsRepository, custumers);
+            var turnService = new StageTurnService(constructionsRepository, customers);
 
             var scheme = new ConstructionScheme();
             constructionsSchemeRepository.Add(scheme);
@@ -131,18 +130,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             constructionsCardsRepository.Add(card);
             Assert.AreEqual(0, constructionsRepository.Count);
 
-            var construction = buildngService.Build(card, new FieldPosition(field, 1, 1), new FieldRotation());
+            var construction = buildingService.Build(card, new FieldPosition(field, 1, 1), new FieldRotation());
             var constructionPosition = construction.GetWorldPosition();
 
-            Assert.AreEqual(constructionPosition.X, custumers.GetQueuePosition().X);
+            Assert.AreEqual(constructionPosition.X, customers.GetQueuePosition().X);
 
             unitsService.Dispose();
             crowd.Dispose();
             points.Dispose();
-            custumers.Dispose();
+            customers.Dispose();
             turnService.Dispose();
             points.Dispose();
-            constructionsService.Dispose();
         }
 
         [Test, Order(TestCore.ModelOrder)]
@@ -654,8 +652,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService);
+            var buildingService = new BuildingService(constructionsRepository);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, points);
 
             var turnService = new StageTurnService(constructionsRepository, customers);
@@ -678,7 +675,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             customers.Dispose();
             turnService.Dispose();
             points.Dispose();
-            constructionsService.Dispose();
             pointsOnBuilding.Dispose();
         }
 

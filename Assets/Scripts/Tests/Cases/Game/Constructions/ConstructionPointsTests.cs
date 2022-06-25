@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
+using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Functions.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions;
@@ -32,8 +33,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService);
+            var buildingService = new BuildingService(constructionsRepository);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService);
 
             var scheme = ConstructionSetups.GetDefaultScheme();
@@ -49,7 +49,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             Assert.AreEqual(1, pointsService.GetValue());
 
             pointsService.Dispose();
-            constructionsService.Dispose();
             pointsOnBuilding.Dispose();
         }
 
@@ -63,8 +62,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService);
+            var buildingService = new BuildingService(constructionsRepository);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService);
             
             var scheme = new ConstructionScheme(
@@ -83,7 +81,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
 
             buildingService.Build(card, new FieldPosition(field, 0, 0), new FieldRotation(FieldRotation.Rotation.Top));
             
-            Assert.AreEqual(3, constructionsService.GetPoints(card, new FieldPosition(field,1, 0), 
+            Assert.AreEqual(3, constructionsRepository.GetPoints(card.Scheme, new FieldPosition(field,1, 0), 
                 new FieldRotation(FieldRotation.Rotation.Top)).AsInt());
 
             buildingService.Build(card, new FieldPosition(field, 1, 0), new FieldRotation(FieldRotation.Rotation.Top));
@@ -91,7 +89,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             Assert.AreEqual(4, pointsService.GetValue());
 
             pointsService.Dispose();
-            constructionsService.Dispose();
             pointsOnBuilding.Dispose();
         }
 
@@ -103,7 +100,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(), controls);
-            var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
 
             var scheme = new ConstructionScheme(
                 points:new BuildingPoints(5));
@@ -112,7 +108,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, ghost.AsQuery(), constructionService, field);
+            new GhostPointPresenter(view, ghost.AsQuery(), constructionsRepository.AsQuery(), field);
 
             ghost.Add(new ConstructionGhost(card, field));
             
@@ -123,7 +119,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             Assert.AreEqual("0", view.Points.Value);
 
             viewCollection.Dispose();
-            constructionService.Dispose();
             controls.Dispose();
             buildingMode.Dispose();
         }
@@ -137,7 +132,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var ghost = new SingletonRepository<ConstructionGhost>();
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(), controls);
             var points = new GhostPointsService(ghost, constructionsRepository.AsQuery());
-            var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
 
             var placement = new ContructionPlacement(new [,] {
                     { 0, 0, 0 },
@@ -153,7 +147,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, ghost.AsQuery(), constructionService, field);
+            new GhostPointPresenter(view, ghost.AsQuery(), constructionsRepository.AsQuery(), field);
            
             Assert.AreEqual("", view.Points.Value);
             
@@ -171,7 +165,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             Assert.AreEqual("+7", view.Points.Value);
 
             viewCollection.Dispose();
-            constructionService.Dispose();
             controls.Dispose();
             buildingMode.Dispose();
             points.Dispose();
@@ -185,7 +178,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(), controls);
-            var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
 
             var placement = new ContructionPlacement(new [,] {
                     { 0, 1, 0 },
@@ -201,7 +193,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, ghost.AsQuery(), constructionService, field);
+            new GhostPointPresenter(view, ghost.AsQuery(), constructionsRepository.AsQuery(), field);
 
             ghost.Add(new ConstructionGhost(card, field));
 
@@ -236,7 +228,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             Assert.AreEqual("+7", view.Points.Value);
 
             viewCollection.Dispose();
-            constructionService.Dispose();
             buildingMode.Dispose();
             controls.Dispose();
         }

@@ -52,8 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             var unitsTypes = Add(new UnitsTypesService(unitTypesRep, new(unitsDeckRep, random), level));
             var units = Add(new UnitsService(unitsRep, random, unitsTypes));
 
-            var constructions = Add(new ConstructionsService(constructionsRep.AsQuery(), field.Get()));
-            var building = Add(new BuildingService(constructionsRep, constructions));
+            var building = Add(new BuildingService(constructionsRep));
             Add(new PointsOnBuildingService(constructionsRep, points));
             Add(new RemoveCardOnBuildingService(constructionsRep, hand));
             var crowd = Add(new UnitsCrowdService(unitsRep, units, time, level, random));
@@ -67,7 +66,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             Add(new GhostService(ghostRep, field.Get()));
             Add(new GhostMovingService(ghostRep, field.AsQuery(), controls));
             Add(new GhostRotatingService(ghostRep, controls));
-            Add(new GhostBuildingService(ghostRep, constructions, building,controls));
+            Add(new GhostBuildingService(ghostRep, constructionsRep, building,controls));
             Add(new GhostPointsService(ghostRep, constructionsRep.AsQuery()));
             
             rewards.Start();

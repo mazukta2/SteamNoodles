@@ -15,6 +15,7 @@ using Game.Assets.Scripts.Tests.Views.Level.Building;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Functions.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
@@ -60,12 +61,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var controlService = new GameControlsService(c);
             var field = new Field(1, new (11,11));
-            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
-            var buildingService = new BuildingService(constructionsRepository, constructionsService);
+            var buildingService = new BuildingService(constructionsRepository);
             
             var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field);
-            var ghostBuildingService = new GhostBuildingService(ghost, constructionsService, 
+            var ghostBuildingService = new GhostBuildingService(ghost, constructionsRepository,
                 buildingService, controlService);
             
             var card = new ConstructionCard(new ConstructionScheme());
@@ -84,7 +84,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         
             
             controlService.Dispose();
-            constructionsService.Dispose();
             ghostBuildingService.Dispose();
         }
         
@@ -154,7 +153,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(),controls);
-            var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
             new PlacementFieldPresenter(view, ghost.AsQuery(), field, constructionsRepository.AsQuery());
@@ -171,7 +169,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
 
             viewCollection.Dispose();
-            constructionService.Dispose();
             buildingMode.Dispose();
             controls.Dispose();
         }
@@ -199,7 +196,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghost = new SingletonRepository<ConstructionGhost>();
             var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(),controls);
-            var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
             new PlacementFieldPresenter(view, ghost.AsQuery(), field, constructionsRepository.AsQuery());
@@ -225,7 +221,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(new GameVector3(1f, 0, 0), highlightedCells.Last().LocalPosition.Value);
 
             viewCollection.Dispose();
-            constructionService.Dispose();
             buildingMode.Dispose();
             controls.Dispose();
         }
@@ -287,27 +282,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             ghostService.Show(card);
 
-            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
-
             var view = new GhostView(viewCollection);
             new GhostPresenter(view, ghost.AsQuery(), constructionsRepository.AsQuery(), assets);
 
             var modelView = view.Container.FindView<ConstructionModelView>();
 
             // disallowed because DownEdge enabled.
-            Assert.IsFalse(constructionsService.CanPlace(card, new FieldPosition(field, 0, 0), new FieldRotation()));
+            Assert.IsFalse(constructionsRepository.CanPlace(card, new FieldPosition(field, 0, 0), new FieldRotation()));
 
             Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
             Assert.AreEqual("Disallowed", (modelView.BorderAnimator).GetCurrentAnimation());
 
             buildingMode.SetTargetPosition(new FieldPosition(field, 0, -2));
-            Assert.IsTrue(constructionsService.CanPlace(card, new FieldPosition(field, 0, -2), new FieldRotation()));
+            Assert.IsTrue(constructionsRepository.CanPlace(card, new FieldPosition(field, 0, -2), new FieldRotation()));
 
             Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
             Assert.AreEqual("Idle", (modelView.BorderAnimator).GetCurrentAnimation());
 
             viewCollection.Dispose();
-            constructionsService.Dispose();
             buildingMode.Dispose();
             controls.Dispose();
         }
@@ -474,7 +466,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghostService = new GhostService(ghost, field);
             var rotatingService = new GhostRotatingService(ghost, controls);
 
-            var constructionService = new ConstructionsService(constructionsRepository.AsQuery(), field);
             var viewCollection = new ViewsCollection();
 
             ghostService.Show(new ConstructionCard(scheme));
@@ -523,7 +514,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             });
 
             viewCollection.Dispose();
-            constructionService.Dispose();
             controls.Dispose();
             rotatingService.Dispose();
 

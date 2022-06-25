@@ -20,14 +20,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _ghost.OnAdded += HandleOnAdded;
             _ghost.OnEvent += HandleOnMoved;
-            _constructions.OnAny += HandleConstructionChanged;
+            _constructions.OnAdded += HandleConstructionChanged;
+            _constructions.OnRemoved += HandleConstructionChanged;
         }
 
         protected override void DisposeInner()
         {
             _ghost.OnAdded -= HandleOnAdded;
             _ghost.OnEvent -= HandleOnMoved;
-            _constructions.OnAny -= HandleConstructionChanged;
+            _constructions.OnAdded -= HandleConstructionChanged;
+            _constructions.OnRemoved -= HandleConstructionChanged;
             _constructions.Dispose();
         }
 

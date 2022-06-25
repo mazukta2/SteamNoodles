@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
@@ -10,26 +12,26 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
 {
     public static class ConstructionsFunctions
     {
-        public static bool CanPlace(this IQuery<Construction> constructions, ConstructionCard card, FieldPosition position, FieldRotation rotation)
+        public static bool CanPlace(this IEntityList<Construction> constructions, ConstructionCard card, FieldPosition position, FieldRotation rotation)
         {
             return CanPlace(constructions, card.Scheme, position, rotation);
         }
 
-        private static bool CanPlace(this IQuery<Construction> constructions, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        private static bool CanPlace(this IEntityList<Construction> constructions, ConstructionScheme scheme,
+            FieldPosition position, FieldRotation rotation)
         {
-            return scheme.Placement
-                .GetOccupiedSpace(position, rotation)
-                .All(otherPosition => constructions.IsAvailable(scheme, otherPosition, rotation));
+            var availableCells = GetAvailableToBuildCells(constructions, position.Field, scheme, rotation);
+            var occupiedCells = scheme.Placement.GetOccupiedSpace(position, rotation);
+            
+            return occupiedCells.All(occupiedPosition => availableCells.Contains(occupiedPosition));
         }
 
-        public static IReadOnlyCollection<FieldPosition> GetAvailableToBuildCells(this IQuery<Construction> constructions,
+        public static IReadOnlyCollection<FieldPosition> GetAvailableToBuildCells(this IEntityList<Construction> constructions,
             Field field, ConstructionScheme scheme, FieldRotation rotation)
         {
-            var list = new List<FieldPosition>();
-            
-            var constructionsList = constructions.Get();
-            var occupiedSpace = constructionsList.SelectMany(otherBuilding => otherBuilding.GetOccupiedSpace());
-            
+            var list = new HashSet<FieldPosition>();
+            var occupiedSpace = GetOccupiedCells(constructions);
+
             var boundaries = field.GetBoundaries();
             for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
             {
@@ -44,8 +46,8 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
                         if (!(min <= y && y < max))
                             continue;
                     }
-                    
-                    if (occupiedSpace.Any(pos => pos == fieldPosition))
+
+                    if (occupiedSpace.Contains(fieldPosition))
                         continue;
                     
                     list.Add(fieldPosition);
@@ -54,8 +56,14 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
             
             return list.AsReadOnly();
         }
+
+        public static IReadOnlyCollection<FieldPosition> GetOccupiedCells(this IEntityList<Construction> constructions)
+        {
+            return constructions.Get().SelectMany(otherBuilding => otherBuilding.GetOccupiedSpace()).ToHashSet().AsReadOnly();
+        }
         
-        public static IReadOnlyCollection<FieldPosition> GetUnoccupiedCells(this IQuery<Construction> constructions, Field field)
+        
+        public static IReadOnlyCollection<FieldPosition> GetUnoccupiedCells(this IEntityList<Construction> constructions, Field field)
         {
             var list = new List<FieldPosition>();
             
@@ -91,16 +99,7 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
             return true;
         }
         
-        public static bool IsAvailable(this IQuery<Construction> constructions, ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
-        {
-            var freeCells = constructions.GetUnoccupiedCells(position.Field);
-            var isAvailable = ConstructionsFunctions.IsAvailableToBuild(scheme, position, rotation);
-
-            var isFreeCell = freeCells.Any(x => x.Value == position.Value);
-            return (isFreeCell && isAvailable);
-        }
-        
-        public static BuildingPoints GetPoints(this IQuery<Construction> constructions, 
+        public static BuildingPoints GetPoints(this IEntityList<Construction> constructions, 
             ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
             if (!CanPlace(constructions, scheme, position, rotation))
@@ -118,7 +117,7 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
             return scheme.Points + adjacentPoints;
         }
 
-        private static IReadOnlyCollection<Construction> GetAdjacentConstructions(this IQuery<Construction> constructions, 
+        private static IReadOnlyCollection<Construction> GetAdjacentConstructions(this IEntityList<Construction> constructions, 
             ConstructionScheme scheme,
             FieldPosition position, FieldRotation rotation)
         {
