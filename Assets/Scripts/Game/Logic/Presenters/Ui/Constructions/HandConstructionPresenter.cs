@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions.Animations;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
@@ -41,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
             view.Button.SetAction(HandleClick);
 
-            _cards.OnChanged += HandleOnChanged;
+            _cards.OnEvent += HandleOnEvent;
             _cards.OnRemoved += Model_OnDispose;
             _view.OnHighlihgtedEnter += _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit += _view_OnHighlihgtedExit;
@@ -57,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _cards.Dispose();
             _animations.Dispose();
             _view.TooltipContainer.Clear();
-            _cards.OnChanged -= HandleOnChanged;
+            _cards.OnEvent -= HandleOnEvent;
             _view.OnHighlihgtedEnter -= _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit -= _view_OnHighlihgtedExit;
             _cards.OnRemoved -= Model_OnDispose;
@@ -85,8 +86,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         }
 
-        private void HandleOnChanged(ConstructionCard card)
+        private void HandleOnEvent(ConstructionCard card, IModelEvent e)
         {
+            if (e is not HandConstructionAmountChangedEvent)
+                return;
+            
             if (card.Id != _model.Id)
                 return;
 

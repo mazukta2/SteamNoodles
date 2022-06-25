@@ -11,12 +11,10 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
     {
         event Action<T> OnAdded;
         event Action<T> OnRemoved;
-        event Action<T> OnChanged;
         event Action<T, IModelEvent> OnEvent;
 
         T Add(T entity);
         void Remove(T entity);
-        void Save(T entity);
         IReadOnlyCollection<T> Get();
         T Get(Uid id);
         int Count { get; }

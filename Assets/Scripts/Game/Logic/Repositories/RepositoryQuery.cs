@@ -11,7 +11,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
     {
         public event Action<T> OnAdded = delegate {  };
         public event Action<T> OnRemoved= delegate {  };
-        public event Action<T> OnChanged= delegate {  };
         public event Action<T> OnAny= delegate {  };
         public event Action<T, IModelEvent> OnEvent= delegate {  };
         
@@ -21,7 +20,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         {
             _repository = repository;
 
-            _repository.OnChanged += HandleOnChanged;
             _repository.OnAdded += HandleOnAdded;
             _repository.OnRemoved += HandleOnRemoved;
             _repository.OnEvent += HandleOnEvent;
@@ -29,7 +27,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         protected override void DisposeInner()
         {
-            _repository.OnChanged -= HandleOnChanged;
             _repository.OnAdded -= HandleOnAdded;
             _repository.OnRemoved -= HandleOnRemoved;
             _repository.OnEvent -= HandleOnEvent;
@@ -52,11 +49,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             OnAny(entity);
         }
         
-        private void HandleOnChanged(T entity)
-        {
-            OnChanged(entity);
-            OnAny(entity);
-        }
         public IReadOnlyCollection<T> Get()
         {
             return _repository.Get();

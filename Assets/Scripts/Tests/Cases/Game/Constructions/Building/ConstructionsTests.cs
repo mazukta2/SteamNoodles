@@ -271,25 +271,26 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             }
         }
 
-        [Test, Order(TestCore.ModelSecondaryOrder)]
+        [Test, Order(TestCore.PresenterOrder)]
         public void ShrinkIsCorrect()
         {
             var controls = new GameControlsService(new ControlsMock());
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
             var gameAssets = new GameAssetsService(assets);
+            
             var constructionsRepository = new Repository<Construction>();
+            var ghost = new SingletonRepository<ConstructionGhost>();
 
             var field = new Field(1, new IntPoint(11, 11));
-            var ghost = new SingletonRepository<ConstructionGhost>();
             var buildingMode = new GhostMovingService(ghost, field.AsQuery(),controls);
-            var constructionsService = new ConstructionsService(constructionsRepository.AsQuery(), field);
+            
             var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance: 4, view: "model");
-
             var construction = new Construction(scheme, new FieldPosition(field, 0, 0), new FieldRotation());
             constructionsRepository.Add(construction);
 
             var viewCollection = new ViewsCollection();
+            
             var view = new ConstructionView(viewCollection);
             new ConstructionPresenter(view, construction.AsQuery(), ghost.AsQuery(), gameAssets, controls);
 
@@ -324,7 +325,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             controls.Dispose();
             buildingMode.Dispose();
-            constructionsService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]

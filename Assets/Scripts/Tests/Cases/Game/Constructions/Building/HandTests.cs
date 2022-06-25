@@ -197,10 +197,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             Assert.AreEqual("1", view.Amount.Value);
             card.Add(new CardAmount(1));
-            cardsRepository.Save(card);
             Assert.AreEqual("2", view.Amount.Value);
             card.Remove(new CardAmount(1));
-            cardsRepository.Save(card);
             Assert.AreEqual("1", view.Amount.Value);
 
             viewCollection.Dispose();

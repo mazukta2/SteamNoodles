@@ -104,7 +104,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var g = ghost.Get();
             g.SetPosition(new FieldPosition(field, 100, 100), GameVector3.One);
-            ghost.Save(g);
             
             Assert.AreEqual(0, ghost.Get().PointChanges.AsInt());
             

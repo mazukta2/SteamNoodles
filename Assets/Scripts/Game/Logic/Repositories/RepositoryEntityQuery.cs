@@ -22,7 +22,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             _repository = repository;
             _id = id;
 
-            _repository.OnChanged += HadleOnChanged;
             _repository.OnAdded += HandleOnAdded;
             _repository.OnRemoved += HandleOnRemoved;
             _repository.OnEvent += HandleOnEvent;
@@ -30,7 +29,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         protected override void DisposeInner()
         {
-            _repository.OnChanged -= HadleOnChanged;
             _repository.OnAdded -= HandleOnAdded;
             _repository.OnRemoved -= HandleOnRemoved;
             _repository.OnEvent -= HandleOnEvent;
@@ -72,14 +70,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             OnAny();
         }
 
-        private void HadleOnChanged(T entity)
-        {
-            if (entity.Id != _id)
-                return;
-
-            OnChanged();
-            OnAny();
-        }
 
     }
 }

@@ -41,7 +41,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             
             var ghost = _ghost.Get();
             ghost.SetRotation(rotation);
-            _ghost.Save(ghost);
         }
 
         private void HandleRotateLeftTap()

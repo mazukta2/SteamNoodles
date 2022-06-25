@@ -2,6 +2,7 @@
 using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
@@ -47,7 +48,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
             _modelView.Animator.OnFinished += DropFinished;
             _construction.OnRemoved += HandleRemoved;
-            _ghost.OnChanged += HandleOnChanged;
+            _ghost.OnEvent += HandleOnEvent;
             _ghost.OnAdded += HandleOnChanged;
             _ghost.OnRemoved += HandleOnChanged;
 
@@ -62,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _construction.Dispose();
             _ghost.Dispose();
             _construction.OnRemoved -= HandleRemoved;
-            _ghost.OnChanged -= HandleOnChanged;
+            _ghost.OnEvent -= HandleOnEvent;
             _ghost.OnAdded -= HandleOnChanged;
             _ghost.OnRemoved -= HandleOnChanged;
 
@@ -129,5 +130,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         {
             UpdateShrink();
         }
+        
+        private void HandleOnEvent(IModelEvent obj)
+        {
+            if (obj is not GhostMovedEvent)
+                return;
+            
+            UpdateShrink();
+        }
+
     }
 }

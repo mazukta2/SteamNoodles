@@ -64,7 +64,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
         public void LookAt(Unit unit, GameVector3 target, bool skip = false)
         {
             unit.LookAt(target, skip);
-            _units.Save(unit);
         }
 
         public void DestroyUnit(Unit unit)

@@ -160,13 +160,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
         private void RemoveFromQueue(Unit unit)
         {
             unit.SetBehaviourState(Unit.BehaviourState.Free);
-            _units.Save(unit);
         }
 
         private void AddToQueue(Unit unit)
         {
             unit.SetBehaviourState(Unit.BehaviourState.InQueue);
-            _units.Save(unit);
         }
 
         private void Points_OnTargetLevelChanged(int changes)

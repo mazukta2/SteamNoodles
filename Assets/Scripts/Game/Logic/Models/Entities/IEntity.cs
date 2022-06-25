@@ -12,9 +12,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities
     public interface IEntity
     {
         Uid Id { get; }
-
-        IEntity Copy();
-        IReadOnlyCollection<IModelEvent> GetEvents();
-        void Clear();
+        event Action<IEntity, IModelEvent> OnEvent;
     }
 }

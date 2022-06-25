@@ -41,7 +41,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             var size = ghost.Card.Scheme.Placement.GetRect(ghost.Rotation);
             var fieldPosition = _field.Get().GetFieldPosition(pointerPosition, size);
             ghost.SetPosition(fieldPosition, pointerPosition);
-            _ghost.Save(ghost);
         }
 
         public void SetTargetPosition(FieldPosition cellPosition)
@@ -52,7 +51,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
             var ghost = _ghost.Get();
             var size = ghost.Card.Scheme.Placement.GetRect(ghost.Rotation);
             ghost.SetPosition(cellPosition, cellPosition.GetWorldPosition(size));
-            _ghost.Save(ghost);
         }
 
         private void HandleOnOnLevelPointerMoved(GameVector3 target)

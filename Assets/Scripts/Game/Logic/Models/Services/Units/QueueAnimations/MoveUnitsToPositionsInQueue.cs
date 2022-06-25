@@ -37,7 +37,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units.QueueAnimations
             for (int i = 0; i < list.Count(); i++)
             {
                 list[i].SetTarget(_queue.GetPositionFor(i));
-                _units.Save(list[i]);
             }
             if (list.Length == 0)
                 FireOnFinished();

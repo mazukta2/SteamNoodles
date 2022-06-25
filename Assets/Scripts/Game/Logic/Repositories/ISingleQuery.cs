@@ -7,7 +7,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
     {
         event Action OnAdded;
         event Action OnRemoved;
-        event Action OnChanged;
         event Action OnAny;
         event Action<IModelEvent> OnEvent;
         

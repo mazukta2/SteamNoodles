@@ -44,7 +44,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
                     currentSpeed -= delta * unit.UnitType.SpeedUp;
 
                 unit.SetTargetSpeed(currentSpeed);
-                _units.Save(unit);
             }
         }
 
@@ -65,8 +64,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
                 unit.SetPosition(unit.Position + normalizeDirection * movement);
                 if (unit.Position.Y != 0)
                     throw new Exception();
-
-                _units.Save(unit);
             }
         }
     }

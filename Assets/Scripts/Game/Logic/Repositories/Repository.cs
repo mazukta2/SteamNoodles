@@ -14,7 +14,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
     {
         public event Action<T> OnAdded = delegate { };
         public event Action<T> OnRemoved = delegate { };
-        public event Action<T> OnChanged = delegate { };
         public event Action<T, IModelEvent> OnEvent = delegate { };
 
         public int Count => _repository.Count;
@@ -30,7 +29,9 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             if (_repository.ContainsKey(entity.Id))
                 throw new Exception("Entity already exist");
 
-            _repository.Add(entity.Id, (T)entity.Copy());
+            _repository.Add(entity.Id, entity);
+            entity.OnEvent += HandleEvent;
+            
             FireOnAdded(entity);
 
             return entity;
@@ -42,22 +43,8 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 throw new Exception("Entity not exist");
 
             _repository.Remove(entity.Id);
+            entity.OnEvent -= HandleEvent;
             FireOnRemoved(entity);
-        }
-
-        public void Save(T entity)
-        {
-            if (!_repository.ContainsKey(entity.Id))
-                throw new Exception("Entity not exist");
-
-            var events = entity.GetEvents().ToArray();
-            entity.Clear();
-
-            _repository[entity.Id] = (T)entity.Copy();
-            FireOnChanged(entity);
-
-            foreach (var evt in events)
-                FireEvent(entity, evt);
         }
 
         public T Get(Uid uid)
@@ -65,7 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             if (!_repository.ContainsKey(uid))
                 return null;
 
-            return (T)_repository[uid].Copy();
+            return _repository[uid];
         }
 
         public void Clear()
@@ -76,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         public IReadOnlyCollection<T> Get()
         {
-            return _repository.Select(x => (T)x.Value.Copy()).AsReadOnly();
+            return _repository.Select(x => x.Value).AsReadOnly();
         }
 
         public void FireEvent(T entity, IModelEvent modelEvent)
@@ -117,14 +104,15 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             OnRemoved(entity);
         }
         
-        protected virtual void FireOnChanged(T entity)
-        {
-            OnChanged(entity);
-        }
-        
         protected virtual void FireOnModelEvent(T entity, IModelEvent modelEvent)
         {
             OnEvent(entity, modelEvent);
         }
+        
+        private void HandleEvent(IEntity entity, IModelEvent modelEvent)
+        {
+            FireOnModelEvent((T)entity, modelEvent);
+        }
+
     }
 }

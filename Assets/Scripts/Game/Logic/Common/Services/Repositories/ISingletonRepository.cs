@@ -8,7 +8,6 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
     {
         new event Action OnAdded;
         new event Action OnRemoved;
-        new event Action OnChanged;
         new event Action<IModelEvent> OnEvent;
         
         void Remove();

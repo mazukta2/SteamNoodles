@@ -48,7 +48,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost
         {
             var ghost = _ghost.Get();
             ghost.SetPoints(_constructions.GetPoints(ghost.Card.Scheme, ghost.Position, ghost.Rotation));
-            _ghost.Save(ghost);
         }
         
         private void HandleConstructionChanged(Construction obj)

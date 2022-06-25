@@ -21,7 +21,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
         public void Remove(ConstructionCard card)
         {
             card.Remove(new CardAmount(1));
-            _repository.Save(card);
             if (card.Amount.Value == 0)
                 _repository.Remove(card);
         }
@@ -39,7 +38,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Constructions
             if (card != null)
             {
                 card.Add(amount);
-                _repository.Save(card);
                 return card;
             }
             else

@@ -18,7 +18,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         public new event Action OnAdded = delegate {  };
         public new event Action OnRemoved = delegate {  };
-        public new event Action OnChanged = delegate {  };
         public new event Action<IModelEvent> OnEvent = delegate {  };
 
         public override T Add(T entity)
@@ -64,12 +63,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         {
             base.FireOnRemoved(entity);
             OnRemoved();
-        }
-
-        protected override void FireOnChanged(T entity)
-        {
-            base.FireOnChanged(entity);
-            OnChanged();
         }
 
         protected override void FireOnModelEvent(T entity, IModelEvent modelEvent)

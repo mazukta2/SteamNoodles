@@ -47,7 +47,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
                 var target = GetRandomPointDirection(_random.GetRandom() ? CrowdDirection.Left : CrowdDirection.Right);
                 var unit = _unitsService.SpawnUnit(position, target);
                 unit.SetBehaviourState(Unit.BehaviourState.InCrowd);
-                _units.Save(unit);
             }
             _time.OnTimeChanged += Time_OnTimeChanged;
         }
@@ -81,7 +80,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
 
                 var unit = _unitsService.SpawnUnit(position, target);
                 unit.SetBehaviourState(Unit.BehaviourState.InCrowd);
-                _units.Save(unit);
             }
         }
 
@@ -94,7 +92,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Units
         {
             unit.SetBehaviourState(Unit.BehaviourState.InCrowd);
             unit.SetTarget(GetRandomPointDirection(direction));
-            _units.Save(unit);
         }
 
         public GameVector3 GetRandomPointDirection(CrowdDirection direction)

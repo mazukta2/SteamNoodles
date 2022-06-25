@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Resources;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Localization;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
@@ -44,11 +45,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
         public void Add(CardAmount amount)
         {
             Amount = new CardAmount(Amount.Value + amount.Value);
+            FireEvent(new HandConstructionAmountChangedEvent());
         }
 
         public void Remove(CardAmount amount)
         {
             Amount = new CardAmount(Amount.Value - amount.Value);
+            FireEvent(new HandConstructionAmountChangedEvent());
         }
     }
 }

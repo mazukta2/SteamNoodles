@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Common;
@@ -9,8 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities
     public abstract record Entity : IEntity
     {
         public Uid Id { get; }
-
-        private RecordList<IModelEvent> _events = new RecordList<IModelEvent>();
+        public event Action<IEntity, IModelEvent> OnEvent = delegate { };
 
         public Entity(Uid id)
         {
@@ -37,19 +37,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities
             return this with { };
         }
 
-        protected void FireEvent(IModelEvent evt) 
+        protected void FireEvent(IModelEvent evt)
         {
-            _events.Add(evt);
-        }
-
-        public IReadOnlyCollection<IModelEvent> GetEvents()
-        {
-            return _events.AsReadOnly();
-        }
-
-        public void Clear()
-        {
-            _events.Clear();
+            OnEvent(this, evt);
         }
     }
 }

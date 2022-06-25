@@ -153,7 +153,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var targetRotation = new GameVector3(0, 0, 1).ToQuaternion();
 
             unit.LookAt(new GameVector3(0, 0, 1));
-            units.Save(unit);
 
             var timePassed = 0.1f;
             time.MoveTime(timePassed);
