@@ -1,4 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Services.Assets;
+﻿using Game.Assets.Scripts.Game.Logic.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Units;
 
 namespace GameUnity.Assets.Scripts.Unity.Views.Common

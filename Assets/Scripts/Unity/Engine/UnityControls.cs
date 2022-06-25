@@ -1,6 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.Services.Controls;
 using GameUnity.Assets.Scripts.Unity.Views.Level.Common;
 using System;
 using UnityEngine;
