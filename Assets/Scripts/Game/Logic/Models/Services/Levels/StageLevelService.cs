@@ -17,6 +17,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Models.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Models.Services.Controls;
+using Game.Assets.Scripts.Game.Logic.Models.Services.Fields;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
 {
@@ -68,6 +69,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Services.Levels
             Add(new GhostRotatingService(ghostRep, controls));
             Add(new GhostBuildingService(ghostRep, constructionsRep, building,controls));
             Add(new GhostPointsService(ghostRep, constructionsRep.AsQuery()));
+
+            Add(new FieldCellsService(field.AsQuery(), ghostRep.AsQuery(), constructionsRep.AsQuery()));
             
             rewards.Start();
         }

@@ -8,6 +8,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.Functions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Events.Constructions;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Fields;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
@@ -17,20 +18,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
     {
         private readonly IPlacementFieldView _view;
         private readonly ISingleQuery<ConstructionGhost> _ghost;
-        private readonly Field _field;
+        private readonly ISingleQuery<Field> _field;
         private readonly IQuery<Construction> _constructions;
         private readonly List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
             IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
-            IPresenterServices.Default?.Get<ISingletonRepository<Field>>()?.Get(),
+            IPresenterServices.Default?.Get<ISingletonRepository<Field>>()?.AsQuery(),
             IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery())
         {
         }
 
         public PlacementFieldPresenter(IPlacementFieldView view,
             ISingleQuery<ConstructionGhost> ghost,
-            Field field,
+            ISingleQuery<Field> field,
             IQuery<Construction> constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -38,18 +39,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             _field = field ?? throw new ArgumentNullException(nameof(field));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
 
-            var boundaries = _field.GetBoundaries();
+            var boundaries = _field.Get().GetBoundaries();
             for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
             {
                 for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
                 {
-                    _cells.Add(CreateCell(new FieldPosition(_field, x, y)));
+                    _cells.Add(CreateCell(new FieldPosition(_field.Get(), x, y)));
                 }
             }
 
             _ghost.OnEvent += HandleOnEvent;
             _ghost.OnAdded += UpdateGhostCells;
             _ghost.OnRemoved += UpdateGhostCells;
+
+            _field.OnEvent += HandleOnEvent;
 
             _constructions.OnAdded += HandleConstructionsOnAdded;
             _constructions.OnRemoved += HandleConstructionsOnRemoved;
@@ -59,11 +62,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         protected override void DisposeInner()
         {
+            _field.Dispose();
             _constructions.Dispose();
             _ghost.Dispose();
             _ghost.OnEvent -= HandleOnEvent;
             _ghost.OnAdded -= UpdateGhostCells;
             _ghost.OnRemoved -= UpdateGhostCells;
+            _field.OnEvent -= HandleOnEvent;
 
             _constructions.OnAdded -= HandleConstructionsOnAdded;
             _constructions.OnRemoved -= HandleConstructionsOnRemoved;
@@ -77,18 +82,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         
         private void UpdateGhostCells()
         {
-            IReadOnlyCollection<FieldPosition> freeCells = null;
+            IReadOnlyCollection<FieldPosition> freeCells = _field.Get().AvailableCells;
             IReadOnlyCollection<FieldPosition> occupiedByGhostCells = null;
             ConstructionGhost ghost = null;
             if (_ghost.Has())
             {
                 ghost = _ghost.Get();
-                freeCells = _constructions.GetAvailableToBuildCells(_field, ghost.Card.Scheme, ghost.Rotation);
                 occupiedByGhostCells = ghost.Card.Scheme.Placement.GetOccupiedSpace(ghost.Position, ghost.Rotation);
-            }
-            else
-            {
-                freeCells = _constructions.GetUnoccupiedCells(_field);
             }
 
             foreach (var cell in _cells)
@@ -125,7 +125,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         private void HandleOnEvent(IModelEvent obj)
         {
-            if (obj is not GhostMovedEvent)
+            if (obj is not GhostMovedEvent && obj is not FieldUpdateEvent)
                 return;
             
             UpdateGhostCells();

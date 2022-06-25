@@ -143,7 +143,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
 
-            new PlacementFieldPresenter(view, ghost.AsQuery(), field, constructionsRepository.AsQuery());
+            new PlacementFieldPresenter(view, ghost.AsQuery(), field.AsQuery(), constructionsRepository.AsQuery());
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
@@ -475,7 +475,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, ghost.AsQuery(), field, constructionsRepository.AsQuery());
+            new PlacementFieldPresenter(view, ghost.AsQuery(), field.AsQuery(), constructionsRepository.AsQuery());
             
             Assert.IsFalse(view.ConstrcutionContainer.Has<IConstructionView>());
 

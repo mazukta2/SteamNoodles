@@ -1,11 +1,15 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.ValueObjects.Constructions;
 using System;
+using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Models.Events.Fields;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
 {
     public record Field : Entity
     {
+        public IReadOnlyCollection<FieldPosition> AvailableCells { get; private set; } = new List<FieldPosition>();
+
         private float _cellSize;
         private FieldBoundaries _boundaries;
 
@@ -58,5 +62,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Entities.Constructions
             var offset = new GameVector3(objectSize.Width * halfCell - halfCell, 0, objectSize.Height * halfCell - halfCell);
             return offset;
         }
+
+        public void SetAvailableCells(IReadOnlyCollection<FieldPosition> cells)
+        {
+            AvailableCells = cells;
+            FireEvent(new FieldUpdateEvent());
+        }
+        
+
     }
 }
