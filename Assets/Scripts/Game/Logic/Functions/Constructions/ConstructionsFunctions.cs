@@ -31,21 +31,21 @@ namespace Game.Assets.Scripts.Game.Logic.Functions.Constructions
         {
             var list = new HashSet<FieldPosition>();
             var occupiedSpace = GetOccupiedCells(constructions);
-
             var boundaries = field.GetBoundaries();
+            var minY = boundaries.Value.Y;
+            var maxY = boundaries.Value.Y + boundaries.Value.Height;
+            
+            if (scheme.IsDownEdge())
+                maxY = boundaries.Value.Y + scheme.Placement.GetHeight(rotation);
+
             for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
             {
                 for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
                 {
                     var fieldPosition = new FieldPosition(field, x, y);
                     
-                    if (scheme.IsDownEdge())
-                    {
-                        var min = boundaries.Value.Y;
-                        var max = boundaries.Value.Y + scheme.Placement.GetHeight(rotation);
-                        if (!(min <= y && y < max))
-                            continue;
-                    }
+                    if (!(minY <= y && y < maxY))
+                        continue;
 
                     if (occupiedSpace.Contains(fieldPosition))
                         continue;
