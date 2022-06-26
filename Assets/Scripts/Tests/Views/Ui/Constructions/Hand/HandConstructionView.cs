@@ -7,6 +7,8 @@ using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Common;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using System;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
@@ -31,7 +33,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
             new HandConstructionTooltipView(collection);
         }
 
-        public void Init(ConstructionCard card)
+        public void Init(IDataProvider<ConstructionCardData>  card)
         {
         }
     }

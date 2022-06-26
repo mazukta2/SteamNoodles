@@ -16,7 +16,5 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         void FireEvent(T entity, IModelEvent modelEvent);
         bool Has(T entity);
         bool Has(Uid id);
-        ISingleQuery<T> GetAsQuery(Uid id);
-        IQuery<T> AsQuery();
     }
 }

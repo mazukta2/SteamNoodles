@@ -4,6 +4,8 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions.Animations;
@@ -14,54 +16,49 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandConstructionPresenter : BasePresenter<IHandConstructionView>
     {
-        private ConstructionCard _model;
         private IHandConstructionView _view;
-        private readonly IQuery<ConstructionCard> _cards;
         private readonly ScreenService _screenService;
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
         private bool _isModelDisposed;
+        private readonly IDataProvider<ConstructionCardData> _model;
 
-        public HandConstructionPresenter(IHandConstructionView view, ConstructionCard model) 
+        public HandConstructionPresenter(IHandConstructionView view, IDataProvider<ConstructionCardData> model) 
             : this(view, model, 
-                  IPresenterServices.Default.Get<IRepository<ConstructionCard>>().AsQuery(),
                   IPresenterServices.Default.Get<ScreenService>())
         {
 
         }
 
-        public HandConstructionPresenter(IHandConstructionView view, ConstructionCard model,
-             IQuery<ConstructionCard> cards,
+        public HandConstructionPresenter(IHandConstructionView view, IDataProvider<ConstructionCardData> model,
              ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _model = model ?? throw new ArgumentNullException(nameof(model));
-            _cards = cards ?? throw new ArgumentNullException(nameof(cards));
             _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
             _animations = new HandConstructionsAnimations(view);
 
             view.Button.SetAction(HandleClick);
 
-            _cards.OnEvent += HandleOnEvent;
-            _cards.OnRemoved += Model_OnDispose;
+            _model.OnEvent += HandleOnEvent;
+            _model.OnRemoved += Model_OnDispose;
             _view.OnHighlihgtedEnter += _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit += _view_OnHighlihgtedExit;
             _animations.OnAnimationsCompleted += _animations_OnAnimationsCompleted;
 
-            _view.Image.SetPath(_model.HandImagePath);
+            _view.Image.SetPath(_model.Get().HandImagePath);
             UpdateAmount();
         }
 
         protected override void DisposeInner()
         {
             base.DisposeInner();
-            _cards.Dispose();
             _animations.Dispose();
             _view.TooltipContainer.Clear();
-            _cards.OnEvent -= HandleOnEvent;
+            _model.OnEvent -= HandleOnEvent;
             _view.OnHighlihgtedEnter -= _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit -= _view_OnHighlihgtedExit;
-            _cards.OnRemoved -= Model_OnDispose;
+            _model.OnRemoved -= Model_OnDispose;
         }
 
         private void HandleClick()
@@ -71,7 +68,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void UpdateAmount()
         {
-            var amount = _model.Amount.Value;
+            var amount = _model.Get().Amount.Value;
             if (_currentAmount == null)
                 _animations.Add(amount);
             else
@@ -82,28 +79,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                     _animations.Remove(_currentAmount.Value - amount);
             }
 
-            _currentAmount = _model.Amount;
+            _currentAmount = _model.Get().Amount;
 
         }
 
-        private void HandleOnEvent(ConstructionCard card, IModelEvent e)
+        private void HandleOnEvent(IModelEvent e)
         {
             if (e is not HandConstructionAmountChangedEvent)
                 return;
             
-            if (card.Id != _model.Id)
-                return;
-
-            _model = card;
-
             UpdateAmount();
         }
 
-        private void Model_OnDispose(ConstructionCard card)
+        private void Model_OnDispose()
         {
-            if (card.Id != _model.Id)
-                return;
-
             _isModelDisposed = true;
             _view.Button.IsActive = false;
             _animations.Destroy();

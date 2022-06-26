@@ -4,13 +4,8 @@ using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.DataObjects
 {
-    public interface IDataQueryHandler<T> : IService
+    public interface IDataProviderService<T> : IService where T : class, IData
     {
-        public T Get();
-
-        public IDataQuery<T> MakeQuery()
-        {
-            return new DataQuery<T>(this);
-        }
+        public IDataProvider<T> Get();
     }
 }

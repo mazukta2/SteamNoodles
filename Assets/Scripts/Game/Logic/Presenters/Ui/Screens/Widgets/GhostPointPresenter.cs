@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
@@ -14,23 +15,23 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class GhostPointPresenter : BasePresenter<IGhostPointsView>
     {
         private IGhostPointsView _view;
-        private readonly IDataQuery<GhostData> _ghost;
+        private readonly IDataProvider<GhostData> _ghost;
         private readonly Field _field;
-        private readonly IQuery<Construction> _constructions;
+        private readonly IDataCollectionProvider<ConstructionData> _constructions;
 
         //private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
         public GhostPointPresenter(IGhostPointsView view) : this(
                 view,
-                IPresenterServices.Default?.GetQuery<GhostData>(),
-                IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery(),
+                IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
+                IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionData>>().Get(),
                 IPresenterServices.Default?.Get<ISingletonRepository<Field>>().Get())
         {
         }
 
         public GhostPointPresenter(IGhostPointsView view,
-            IDataQuery<GhostData> ghost,
-            IQuery<Construction> constructions,
+            IDataProvider<GhostData> ghost,
+            IDataCollectionProvider<ConstructionData> constructions,
             Field field) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -46,8 +47,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         protected override void DisposeInner()
         {
-            _constructions.Dispose();
-            _ghost.Dispose();
             _ghost.OnEvent -= HandleOnEvent;
             _ghost.OnAdded -= UpdatePoints;
             _ghost.OnRemoved -= UpdatePoints;

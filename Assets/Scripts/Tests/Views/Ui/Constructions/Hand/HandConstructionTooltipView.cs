@@ -5,6 +5,8 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Views;
 using Game.Assets.Scripts.Tests.Views.Common;
 using System;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
@@ -19,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         {
         }
 
-        public void Init(ConstructionCard card)
+        public void Init(IDataProvider<ConstructionCardData> card)
         {
             //new HandConstructionTooltipPresenter(this).SetModel(card);
         }

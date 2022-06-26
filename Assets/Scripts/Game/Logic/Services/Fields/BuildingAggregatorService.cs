@@ -16,18 +16,21 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 namespace Game.Assets.Scripts.Game.Logic.Services.Fields
 {
     public class BuildingAggregatorService : Disposable, IService, 
-        IDataQueryHandler<GhostData>, IDataQueryHandler<FieldData>
+        IDataProviderService<GhostData>, IDataProviderService<FieldData>
     {
-        private readonly ISingleQuery<ConstructionGhost> _ghost;
-        private readonly IQuery<Construction> _constructions;
-        private readonly ISingleQuery<Field> _field;
+        IDataProvider<GhostData> IDataProviderService<GhostData>.Get() => Ghost;
+        IDataProvider<FieldData> IDataProviderService<FieldData>.Get() => Field;
+        
+        private readonly ISingletonRepository<ConstructionGhost> _ghost;
+        private readonly IRepository<Construction> _constructions;
+        private readonly ISingletonRepository<Field> _field;
 
-        private FieldData _fieldData;
-        private GhostData _ghostData;
-
-        public BuildingAggregatorService(ISingleQuery<Field> field, 
-            ISingleQuery<ConstructionGhost> ghost,
-            IQuery<Construction> constructions)
+        public DataProvider<FieldData> Field { get; }= new DataProvider<FieldData>();
+        public DataProvider<GhostData> Ghost { get; }= new DataProvider<GhostData>();
+        
+        public BuildingAggregatorService(ISingletonRepository<Field> field, 
+            ISingletonRepository<ConstructionGhost> ghost,
+            IRepository<Construction> constructions)
         {
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
@@ -40,6 +43,8 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Fields
             _constructions.OnAdded += HandleConstructionChanged;
             _constructions.OnRemoved += HandleConstructionChanged;
 
+            Field.Add(new FieldData());
+
             UpdateCells();
         }
 
@@ -51,9 +56,6 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Fields
             
             _constructions.OnAdded -= HandleConstructionChanged;
             _constructions.OnRemoved -= HandleConstructionChanged;
-            
-            _constructions.Dispose();
-            _ghost.Dispose();
         }
 
         private void UpdateCells()
@@ -63,23 +65,21 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Fields
             {
                 ghost = _ghost.Get();
                 var cells = GetAvailableToBuildCells( ghost.Card.Scheme, ghost.Rotation);
-                _fieldData = new FieldData()
-                {
-                    AvailableCells = cells
-                };
-
-                _ghostData = new GhostData();
-                _ghostData.CanBuild = CanPlace(ghost.Card.Scheme, ghost.Position, ghost.Rotation);
-                _ghostData.Points = GetPoints(ghost.Card.Scheme, ghost.Position, ghost.Rotation);
+                var field = Field.Get();
+                field.AvailableCells = cells;
+                
+                
+                var ghostData = Ghost.Get() ?? new GhostData();
+                ghostData.CanBuild = CanPlace(ghost.Card.Scheme, ghost.Position, ghost.Rotation);
+                ghostData.Points = GetPoints(ghost.Card.Scheme, ghost.Position, ghost.Rotation);
+                if (!Ghost.Has()) Ghost.Add(ghostData);
             }
             else
             {
                 var cells = GetUnoccupiedCells();
-                _fieldData = new FieldData()
-                {
-                    AvailableCells = cells
-                };
-                _ghostData = null;
+                var field = Field.Get();
+                field.AvailableCells = cells;
+                Ghost.Remove();
             }
             
             
@@ -109,7 +109,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Fields
         private bool CanPlace(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
             var occupiedCells = scheme.Placement.GetOccupiedSpace(position, rotation);
-            return occupiedCells.All(occupiedPosition => _fieldData.AvailableCells.Cells.Contains(occupiedPosition));
+            return occupiedCells.All(occupiedPosition => Field.Get().AvailableCells.Cells.Contains(occupiedPosition));
         }
 
         private GroupOfPositions GetAvailableToBuildCells(ConstructionScheme scheme, FieldRotation rotation)
@@ -183,7 +183,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Fields
 
         private BuildingPoints GetPoints(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
         {
-            if (!_ghostData.CanBuild)
+            if (!Ghost.Get().CanBuild)
                 return new BuildingPoints(0);
 
             var adjacentPoints = BuildingPoints.Zero;
@@ -242,16 +242,6 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Fields
 
                 list.Add(point);
             }
-        }
-
-        GhostData IDataQueryHandler<GhostData>.Get()
-        {
-            return _ghostData;
-        }
-
-        FieldData IDataQueryHandler<FieldData>.Get()
-        {
-            return _fieldData;
         }
     }
 }

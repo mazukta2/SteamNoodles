@@ -4,6 +4,9 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
@@ -11,22 +14,22 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandPresenter : BasePresenter<IHandView>
     {
-        private readonly IQuery<ConstructionCard> _cards;
-        private readonly ISingleQuery<ConstructionGhost> _ghost;
+        private readonly IDataCollectionProvider<ConstructionCardData> _cards;
+        private readonly IDataProvider<GhostData> _ghost;
         private readonly ScreenService _screenService;
         private readonly IHandView _view;
 
         public HandPresenter(IHandView view)
             : this(view,
-                  IPresenterServices.Default?.Get<IRepository<ConstructionCard>>().AsQuery(),
-                  IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
+                  IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionCardData>>().Get(),
+                  IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
                   IPresenterServices.Default?.Get<ScreenService>())
         {
         }
 
         public HandPresenter(IHandView view,
-            IQuery<ConstructionCard> repository,
-            ISingleQuery<ConstructionGhost> ghost,
+            IDataCollectionProvider<ConstructionCardData> repository,
+            IDataProvider<GhostData> ghost,
             ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -48,14 +51,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         protected override void DisposeInner()
         {
-            _cards.Dispose();
-            _ghost.Dispose();
             _ghost.OnAdded -= HandleGhostShowed;
             _ghost.OnRemoved -= HandleGhostHided;
             _cards.OnAdded -= HandleCardAdded;
         }
 
-        private void HandleCardAdded(ConstructionCard obj)
+        private void HandleCardAdded(IDataProvider<ConstructionCardData> obj)
         {
             var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
             view.Init(obj);

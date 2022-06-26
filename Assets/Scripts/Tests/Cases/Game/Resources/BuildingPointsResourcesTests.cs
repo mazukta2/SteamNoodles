@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             var constructionsRepository = new Repository<Construction>();
             var field = new SingletonRepository<Field>(new Field());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var building = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var building = new BuildingAggregatorService(field, ghost, constructionsRepository);
             
             var time = new GameTime();
             var pointsService = new BuildingPointsService(0, 0, time, 2, 2);
@@ -57,7 +57,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             var view = new PointCounterWidgetView(viewCollection);
             new PointCounterWidgetPresenter(view,
                 new ProgressBarSliders(view.PointsProgress, time, 0, 0),
-                new DataQuery<GhostData>(building),
+                new DataProvider<GhostData>(),
                 pointsService);
 
             Assert.AreEqual("0/3", view.Points.Value);
@@ -80,14 +80,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             
             var constructionsRepository = new Repository<Construction>();
             var field = new SingletonRepository<Field>(new Field());
-            var building = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var building = new BuildingAggregatorService(field, ghost, constructionsRepository);
             
             var levelCollection = new ViewsCollection();
             var view = new PointCounterWidgetView(levelCollection);
             var spawner = new PieceSpawnerView(levelCollection);
             new PointPieceSpawnerPresenter(spawner);
             new PointCounterWidgetPresenter(view, new ProgressBarSliders(view.PointsProgress, time, 0, 0), 
-                new DataQuery<GhostData>(building), points);
+                new DataProvider<GhostData>(), points);
 
             points.Change(new BuildingPoints(1));
             Assert.AreEqual(1 / 9f, view.PointsProgress.MainValue);
@@ -121,7 +121,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
             var constructionsRepository = new Repository<Construction>();
             var field = new SingletonRepository<Field>(new Field());
 
-            var ghostQuery = new StaticDataQuery<GhostData>();
+            var ghostQuery = new DataProvider<GhostData>();
             
             var viewCollection = new ViewsCollection();
             var view = new PointCounterWidgetView(viewCollection);

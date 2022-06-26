@@ -3,6 +3,8 @@ using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
@@ -13,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         IText Points { get; }
         IText Adjacencies { get; }
 
-        void Init(ConstructionCard card)
+        void Init(IDataProvider<ConstructionCardData> card)
         {
             new HandConstructionTooltipPresenter(this).SetModel(card);
         }

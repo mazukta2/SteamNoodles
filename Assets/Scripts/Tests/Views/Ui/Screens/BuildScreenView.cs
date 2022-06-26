@@ -1,5 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views;
@@ -21,7 +23,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
 
         }
 
-        public void Init(ConstructionCard card)
+        public void Init(IDataProvider<ConstructionCardData> card)
         {
 
         }

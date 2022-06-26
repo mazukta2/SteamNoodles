@@ -1,23 +1,21 @@
 ﻿using System;
-using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.DataObjects
 {
-    public class StaticDataQuery<T> : Disposable, IDataQuery<T> where T : class, IData
+    public class DataProvider<T> : IDataProvider<T> where T : class, IData
     {
-        private T _data;
-        
         public event Action OnAdded = delegate {  };
         public event Action OnRemoved = delegate {  };
         public event Action<IModelEvent> OnEvent = delegate {  };
 
-        public StaticDataQuery()
+        private T _data;
+        
+        public DataProvider()
         {
         }
         
-        public StaticDataQuery(T data)
+        public DataProvider(T data)
         {
             _data = data;
         }
@@ -34,6 +32,11 @@ namespace Game.Assets.Scripts.Game.Logic.DataObjects
             OnRemoved();
         }
 
+        public void FireEvent(IModelEvent e)
+        {
+            OnEvent(e);
+        }
+        
         public T Get()
         {
             return _data;
@@ -43,6 +46,5 @@ namespace Game.Assets.Scripts.Game.Logic.DataObjects
         {
             return _data != null;
         }
-
     }
 }

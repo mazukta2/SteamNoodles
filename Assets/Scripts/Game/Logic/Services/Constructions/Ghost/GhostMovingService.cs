@@ -2,6 +2,8 @@
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Fields;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
@@ -12,10 +14,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost
     public class GhostMovingService : Disposable, IService
     {
         private readonly ISingletonRepository<ConstructionGhost> _ghost;
-        private readonly ISingleQuery<Field> _field;
+        private readonly ISingletonRepository<Field> _field;
         private readonly GameControlsService _controlsService;
 
-        public GhostMovingService(ISingletonRepository<ConstructionGhost> ghost, ISingleQuery<Field> field, GameControlsService controlsService)
+        public GhostMovingService(ISingletonRepository<ConstructionGhost> ghost, ISingletonRepository<Field> field, GameControlsService controlsService)
         {
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _field = field ?? throw new ArgumentNullException(nameof(field));
@@ -26,7 +28,6 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost
 
         protected override void DisposeInner()
         {
-            _field.Dispose();
             _ghost.OnAdded -= HandleOnShowed;
             _controlsService.OnLevelPointerMoved -= HandleOnOnLevelPointerMoved;
         }

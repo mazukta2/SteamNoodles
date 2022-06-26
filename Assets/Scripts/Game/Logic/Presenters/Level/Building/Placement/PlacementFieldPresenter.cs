@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Fields;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
@@ -17,29 +19,29 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
     public class PlacementFieldPresenter : BasePresenter<IPlacementFieldView>
     {
         private readonly IPlacementFieldView _view;
-        private readonly ISingleQuery<ConstructionGhost> _ghost;
-        private readonly IDataQuery<FieldData> _field;
-        private readonly IQuery<Construction> _constructions;
+        private readonly IDataProvider<GhostData> _ghost;
+        private readonly IDataProvider<FieldData> _field;
+        private readonly IDataCollectionProvider<ConstructionData> _constructions;
         private readonly List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
-            IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
-            IPresenterServices.Default?.GetQuery<FieldData>(),
-            IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery())
+            IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
+            IPresenterServices.Default?.Get<IDataProviderService<FieldData>>().Get(),
+            IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionData>>().Get())
         {
         }
 
         public PlacementFieldPresenter(IPlacementFieldView view,
-            ISingleQuery<ConstructionGhost> ghost,
-            IDataQuery<FieldData> field,
-            IQuery<Construction> constructions) : base(view)
+            IDataProvider<GhostData> ghost,
+            IDataProvider<FieldData> field,
+            IDataCollectionProvider<ConstructionData> constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _field = field ?? throw new ArgumentNullException(nameof(field));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
 
-            foreach (var position in _field.Get().Cells)
+            foreach (var position in _field.Get().AllCells.Cells)
                 _cells.Add(CreateCell(position));
 
             _ghost.OnEvent += HandleOnEvent;
@@ -56,9 +58,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
         protected override void DisposeInner()
         {
-            _field.Dispose();
-            _constructions.Dispose();
-            _ghost.Dispose();
             _ghost.OnEvent -= HandleOnEvent;
             _ghost.OnAdded -= UpdateGhostCells;
             _ghost.OnRemoved -= UpdateGhostCells;
@@ -78,10 +77,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         {
             IReadOnlyCollection<FieldPosition> freeCells = _field.Get().AvailableCells.Cells;
             IReadOnlyCollection<FieldPosition> occupiedByGhostCells = null;
-            ConstructionGhost ghost = null;
             if (_ghost.Has())
             {
-                ghost = _ghost.Get();
+                var ghost = _ghost.Get();
                 occupiedByGhostCells = ghost.Card.Scheme.Placement.GetOccupiedSpace(ghost.Position, ghost.Rotation);
             }
 
@@ -90,7 +88,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
                 var state = CellPlacementStatus.Normal;
 
                 var isFreeCell = freeCells.Any(x => x.Value == cell.Position.Value);
-                if (ghost != null)
+                if (_ghost.Has())
                 {
                     // is under ghost
                     if (occupiedByGhostCells.Any(x => x.Value == cell.Position.Value))
@@ -125,15 +123,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             UpdateGhostCells();
         }
         
-        private void HandleConstructionsOnRemoved(Construction construction)
+        private void HandleConstructionsOnRemoved(IDataProvider<ConstructionData> construction)
         {
             UpdateGhostCells();
         }
 
-        private void HandleConstructionsOnAdded(Construction construction)
+        private void HandleConstructionsOnAdded(IDataProvider<ConstructionData> construction)
         {
-            _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(
-                _constructions.GetAsQuery(construction.Id));
+            _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(construction);
             UpdateGhostCells();
         }
     }

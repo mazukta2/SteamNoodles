@@ -77,16 +77,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             return _repository.ContainsKey(entity.Id);
         }
 
-        public ISingleQuery<T> GetAsQuery(Uid id)
-        {
-            return new RepositoryEntityQuery<T>(this, id);
-        }
-
-        public IQuery<T> AsQuery()
-        {
-            return new RepositoryQuery<T>(this);
-        }
-
         public bool Has(Uid id)
         {
             return _repository.ContainsKey(id);

@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 
@@ -14,20 +16,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     public class HandConstructionTooltipPresenter : BasePresenter<IHandConstructionTooltipView>
     {
         private readonly IHandConstructionTooltipView _view;
-        private readonly IQuery<Construction> _constructions;
+        private readonly IDataCollectionProvider<ConstructionData> _constructions;
         private LocalizatedText _name;
         private LocalizatedText _adjacency;
         private IEnumerable<ConstructionScheme> _highlights;
-        private ConstructionCard _model;
+        private IDataProvider<ConstructionCardData> _model;
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view) :
                 this(view,
-                    IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery())
+                    IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionData>>().Get())
         {
         }
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view,
-            IQuery<Construction> constructions) : base(view)
+            IDataCollectionProvider<ConstructionData> constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
@@ -40,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _adjacency?.Dispose();
         }
 
-        public void SetModel(ConstructionCard card)
+        public void SetModel(IDataProvider<ConstructionCardData> card)
         {
             _model = card ?? throw new ArgumentNullException(nameof(card));
             UpdateView();
@@ -64,11 +66,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _adjacency?.Dispose();
             var model = _model;
 
-            _name = new LocalizatedText(_view.Name, new LocalizatedString(model.Name));
-            _view.Points.Value = model.Points.AsString();
+            _name = new LocalizatedText(_view.Name, new LocalizatedString(model.Get().Name));
+            _view.Points.Value = model.Get().Points.AsString();
 
             var bonuses = new List<ILocalizatedString>();
-            foreach (var (construction, points) in model.AdjacencyPoints.GetAll())
+            foreach (var (construction, points) in model.Get().AdjacencyPoints.GetAll())
             {
                 var style = TextHelpers.TextStyles.None;
 
@@ -76,7 +78,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 {
                     style = TextHelpers.TextStyles.HeavyHighlight;
                 }
-                else if (_constructions.Get().Any(x => x.Scheme.Compare(construction)))
+                else if (_constructions.Get().Any(x => x.Get().Scheme.Compare(construction)))
                 {
                     style = TextHelpers.TextStyles.Highlight;
                 }

@@ -5,6 +5,8 @@ using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
 using System;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Units;
 using Game.Assets.Scripts.Game.Logic.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Events.Units;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Animations;
@@ -16,27 +18,27 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
     public class UnitPresenter : BasePresenter<IUnitView>
     {
         private IUnitView _view;
-        private Unit _unit;
-        private readonly IQuery<Unit> _units;
+        private readonly IDataProvider<UnitData> _unit;
         private UnitRotator _rotator;
         private bool _isStartingAnimation = false;
 
-        public UnitPresenter(IUnitView view, Unit unit, IQuery<Unit> units, IGameTime time) : base(view)
+        public UnitPresenter(IUnitView view, IDataProvider<UnitData> unit, IGameTime time) : base(view)
         {
             _view = view;
             _unit = unit;
-            _units = units;
-            _rotator = new UnitRotator(view.Rotator, time, 0.1f, unit.UnitType.RotationSpeed);
+            
+            var unitData = _unit.Get();
+            _rotator = new UnitRotator(view.Rotator, time, 0.1f, unitData.UnitType.RotationSpeed);
 
-            _view.Position.Value = unit.Position;
-            if (unit.Target != unit.Position)
-                _rotator.Direction = (unit.Target - unit.Position).ToQuaternion();
+            _view.Position.Value = unitData.Position;
+            if (unitData.Target != unitData.Position)
+                _rotator.Direction = (unitData.Target - unitData.Position).ToQuaternion();
             else
                 _rotator.Direction = new GameVector3(-1, 0, 0).ToQuaternion();
 
             _rotator.Skip();
-            _units.OnEvent += HandleEvent;
-            _units.OnRemoved += HandleOnDispose;
+            _unit.OnEvent += HandleEvent;
+            _unit.OnRemoved += HandleOnDispose;
 
             DressUnit();
             _view.Animator.OnFinished += Animator_OnFinished;
@@ -48,19 +50,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         protected override void DisposeInner()
         {
             _rotator.Dispose();
-            _units.Dispose();
             _view.Animator.OnFinished -= Animator_OnFinished;
-            _units.OnEvent -= HandleEvent;
-            _units.OnRemoved -= HandleOnDispose;
+            _unit.OnEvent -= HandleEvent;
+            _unit.OnRemoved -= HandleOnDispose;
         }
 
-        private void HandleEvent(Unit unit, IModelEvent evnt)
+        private void HandleEvent(IModelEvent evnt)
         {
-            if (unit.Id != _unit.Id)
-                return;
-
-            _unit = unit;
-
             if (evnt is UnitSmokeEvent) HandleOnSmoke();
             if (evnt is UnitPositionChangedEvent) HandleOnPositionChanged();
             if (evnt is UnitReachedTargetPositionEvent) HandleOnReachedPosition();
@@ -75,26 +71,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
 
         private void HandleOnPositionChanged()
         {
-            _view.Position.Value = _unit.Position;
+            var unit = _unit.Get();
+            _view.Position.Value = unit.Position;
             UpdateAnimations();
-            if (_unit.IsMoving())
-                _view.Animator.SetSpeed(_unit.CurrentSpeed / _unit.GetMaxSpeed());
+            if (unit.IsMoving)
+                _view.Animator.SetSpeed(unit.CurrentSpeed / unit.MaxSpeed);
             else
                 _view.Animator.SetSpeed(1);
         }
 
         private void HandleOnTargetChanged()
         {
-            if (_unit.Target != _unit.Position)
-                _rotator.Direction = (_unit.Target - _unit.Position).ToQuaternion();
+            var unit = _unit.Get();
+            if (unit.Target != unit.Position)
+                _rotator.Direction = (unit.Target - unit.Position).ToQuaternion();
             UpdateAnimations();
         }
 
-        private void HandleOnDispose(Unit unit)
+        private void HandleOnDispose()
         {
-            if (unit.Id != _unit.Id)
-                return;
-
             _view.Dispose();
         }
 
@@ -103,9 +98,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             UpdateAnimations();
         }
 
-        private void HandleOnLookAt(Common.Math.GameVector3 target, bool skip)
+        private void HandleOnLookAt(GameVector3 target, bool skip)
         {
-            _rotator.Direction = (target - _unit.Position).ToQuaternion();
+            _rotator.Direction = (target - _unit.Get().Position).ToQuaternion();
             if (skip)
                 _rotator.Skip();
         }
@@ -115,7 +110,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             if (_isStartingAnimation)
                 return;
 
-            PlayAnimation(_unit.IsMoving() ? Animations.Run : Animations.Idle);
+            PlayAnimation(_unit.Get().IsMoving ? Animations.Run : Animations.Idle);
         }
 
         private void Animator_OnFinished()
@@ -133,7 +128,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
         {
             _view.UnitDresser.Clear();
 
-            var hair = _unit.GetHair();
+            var hair = _unit.Get().Hair;
             if (!string.IsNullOrEmpty(hair))
                 _view.UnitDresser.SetHair(hair);
         }

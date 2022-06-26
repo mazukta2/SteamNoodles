@@ -1,6 +1,9 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
@@ -15,16 +18,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class ConstructionPresenter : BasePresenter<IConstructionView>
     {
         private readonly IConstructionView _constructionView;
-        private readonly ISingleQuery<Construction> _construction;
-        private readonly ISingleQuery<ConstructionGhost> _ghost;
+        private readonly IDataProvider<ConstructionData> _construction;
+        private readonly IDataProvider<GhostData> _ghost;
         private readonly GameAssetsService _assets;
 
         private bool _dropFinished;
         private IConstructionModelView _modelView;
 
-        public ConstructionPresenter(IConstructionView view, ISingleQuery<Construction> construction)
+        public ConstructionPresenter(IConstructionView view, IDataProvider<ConstructionData> construction)
             : this(view, construction,
-                  IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
+                  IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
                   IPresenterServices.Default?.Get<GameAssetsService>(),
                   IPresenterServices.Default?.Get<GameControlsService>())
         {
@@ -32,8 +35,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         }
 
         public ConstructionPresenter(IConstructionView view,
-            ISingleQuery<Construction> construction,
-            ISingleQuery<ConstructionGhost> ghost,
+            IDataProvider<ConstructionData> construction,
+            IDataProvider<GhostData> ghost,
             GameAssetsService assets,
             GameControlsService controls) : base(view)
         {
@@ -41,7 +44,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _construction = construction ?? throw new ArgumentNullException(nameof(construction));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
-            _constructionView.Position.Value = _construction.Get().GetWorldPosition();
+            _constructionView.Position.Value = _construction.Get().WorldPosition;
             _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_construction.Get().Rotation);
 
             _modelView = _constructionView.Container.Spawn<IConstructionModelView>(GetPrefab());
@@ -60,8 +63,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         protected override void DisposeInner()
         {
-            _construction.Dispose();
-            _ghost.Dispose();
             _construction.OnRemoved -= HandleRemoved;
             _ghost.OnEvent -= HandleOnEvent;
             _ghost.OnAdded -= HandleOnChanged;
@@ -85,7 +86,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             {
                 var construction = _construction.Get();
                 var distance = _ghost.Get().TargetPosition
-                    .GetDistanceTo(construction.GetWorldPosition());
+                    .GetDistanceTo(construction.WorldPosition);
                 if (distance > construction.Scheme.GhostShrinkDistance)
                     _modelView.Shrink.Value = 1;
                 else if (distance > construction.Scheme.GhostHalfShrinkDistance)

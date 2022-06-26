@@ -1,6 +1,7 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
@@ -16,22 +17,22 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class GhostPresenter : BasePresenter<IGhostView>
     {
         private readonly IGhostView _view;
-        private readonly IDataQuery<GhostData> _ghost;
-        private readonly IQuery<Construction> _constructions;
+        private readonly IDataProvider<GhostData> _ghost;
+        private readonly IDataCollectionProvider<ConstructionData> _constructions;
         private readonly GameAssetsService _assets;
         private readonly IConstructionModelView _constructionModelView;
 
         public GhostPresenter(IGhostView view) : this(view,
-            IPresenterServices.Default?.GetQuery<GhostData>(),
-            IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery(),
+            IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
+            IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionData>>().Get(),
             IPresenterServices.Default?.Get<GameAssetsService>())
         {
 
         }
 
         public GhostPresenter(IGhostView view,
-            IDataQuery<GhostData> ghost,
-            IQuery<Construction> constructions,
+            IDataProvider<GhostData> ghost,
+            IDataCollectionProvider<ConstructionData> constructions,
             GameAssetsService assets) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -54,8 +55,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         protected override void DisposeInner()
         {
-            _constructions.Dispose();
-            _ghost.Dispose();
             _ghost.OnRemoved -= Dispose;
             _ghost.OnEvent -= HandleEvent;
         }

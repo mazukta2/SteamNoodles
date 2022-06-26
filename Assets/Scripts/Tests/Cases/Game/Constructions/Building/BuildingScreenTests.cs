@@ -1,4 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
@@ -31,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghostService = new GhostService(ghost, new Field());
 
             screenManager.Open<IBuildScreenView>(x => 
-                new BuildScreenPresenter(x, card, ghost.AsQuery(), ghostService, screenManager, controls));
+                new BuildScreenPresenter(x, new DataProvider<ConstructionCardData>(), new DataProvider<GhostData>(), ghostService, screenManager, controls));
 
             Assert.IsNotNull(view.Screen.FindView<BuildScreenView>());
             Assert.IsNull(view.Screen.FindView<MainScreenView>());

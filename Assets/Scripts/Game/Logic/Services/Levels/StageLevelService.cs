@@ -66,11 +66,11 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Levels
             var controls = services.Get<GameControlsService>();
             var ghostRep = Add(new SingletonRepository<ConstructionGhost>());
             
-            var buildingAggregator = Add(new BuildingAggregatorService(field.AsQuery(), ghostRep.AsQuery(), constructionsRep.AsQuery()));
+            var buildingAggregator = Add(new BuildingAggregatorService(field, ghostRep, constructionsRep));
             Add(new GhostService(ghostRep, field.Get()));
-            Add(new GhostMovingService(ghostRep, field.AsQuery(), controls));
+            Add(new GhostMovingService(ghostRep, field, controls));
             Add(new GhostRotatingService(ghostRep, controls));
-            Add(new GhostBuildingService(ghostRep, new DataQuery<GhostData>(buildingAggregator), building, controls));
+            Add(new GhostBuildingService(ghostRep, buildingAggregator.Ghost, building, controls));
             
             rewards.Start();
         }

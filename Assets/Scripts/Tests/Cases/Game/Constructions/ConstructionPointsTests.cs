@@ -2,9 +2,9 @@
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Functions.Repositories;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Services.Constructions;
@@ -67,8 +67,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var field = new Field(1, new IntPoint(11, 11));
             var buildingService = new BuildingService(constructionsRepository);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService);
-            var building = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
-            var data = new DataQuery<GhostData>(building);
+            var building = new BuildingAggregatorService(new SingletonRepository<Field>(), ghost, constructionsRepository);
+            var data = new DataProvider<GhostData>();
             
             var scheme = new ConstructionScheme(
                 defId:new DefId("Construction"),
@@ -97,7 +97,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             pointsService.Dispose();
             pointsOnBuilding.Dispose();
             building.Dispose();
-            data.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -107,8 +106,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var field = new Field(10, new IntPoint(3, 3));
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var moving = new GhostMovingService(ghost, field.AsQuery(), controls);
-            var building = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var moving = new GhostMovingService(ghost, new SingletonRepository<Field>(), controls);
+            var building = new BuildingAggregatorService(new SingletonRepository<Field>(), ghost, constructionsRepository);
 
             var scheme = new ConstructionScheme(
                 points:new BuildingPoints(5));
@@ -117,7 +116,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, new DataQuery<GhostData>(building), constructionsRepository.AsQuery(), field);
+            new GhostPointPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionData>(), field);
 
             ghost.Add(new ConstructionGhost(card, field));
             
@@ -139,8 +138,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var field = new SingletonRepository<Field>(new Field(1, new IntPoint(5, 5)));
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var moving = new GhostMovingService(ghost, field.AsQuery(), controls);
-            var building = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var moving = new GhostMovingService(ghost, field, controls);
+            var building = new BuildingAggregatorService(field, ghost, constructionsRepository);
 
             var placement = new ContructionPlacement(new [,] {
                     { 0, 0, 0 },
@@ -156,7 +155,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, new DataQuery<GhostData>(building), constructionsRepository.AsQuery(), field.Get());
+            new GhostPointPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionData>(), field.Get());
            
             Assert.AreEqual("", view.Points.Value);
             
@@ -185,8 +184,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var field = new Field(1, new IntPoint(15, 15));
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var moving = new GhostMovingService(ghost, field.AsQuery(), controls);
-            var building = new BuildingAggregatorService(field.AsQuery(), ghost.AsQuery(), constructionsRepository.AsQuery());
+            var moving = new GhostMovingService(ghost, new SingletonRepository<Field>(), controls);
+            var building = new BuildingAggregatorService(new SingletonRepository<Field>(), ghost, constructionsRepository);
 
             var placement = new ContructionPlacement(new [,] {
                     { 0, 1, 0 },
@@ -202,7 +201,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var card = new ConstructionCard(scheme);
 
             var view = new GhostPointsView(viewCollection);
-            new GhostPointPresenter(view, new DataQuery<GhostData>(building), constructionsRepository.AsQuery(), field);
+            new GhostPointPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionData>(), field);
 
             ghost.Add(new ConstructionGhost(card, field));
 

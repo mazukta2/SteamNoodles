@@ -2,6 +2,8 @@
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Services.Flow;
@@ -11,20 +13,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class EndWaveButtonWidgetPresenter : BasePresenter<IEndWaveButtonView>
     {
         private readonly IEndWaveButtonView _view;
-        private IQuery<Construction> _constructions;
+        private IDataCollectionProvider<ConstructionData> _constructions;
         private string _lastAnimation;
         private readonly StageWaveService _stageWaveService;
 
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view) : this(view, 
-            IPresenterServices.Default?.Get<IRepository<Construction>>().AsQuery(),
+            IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionData>>().Get(),
             IPresenterServices.Default.Get<StageWaveService>())
         {
 
         }
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view, 
-            IQuery<Construction> constructions,
+            IDataCollectionProvider<ConstructionData> constructions,
             StageWaveService stageWaveService)
             : base(view)
         {
@@ -43,7 +45,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         protected override void DisposeInner()
         {
-            _constructions.Dispose();
             _constructions.OnAdded -= HandleOnAdded;
             _stageWaveService.OnDayFinished -= HandleOnDayFinished;
         }
@@ -65,7 +66,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             //ScreenManagerPresenter.Default.GetCollection<CommonScreens>().Open<IDayEndedScreenView>();
         }
 
-        private void HandleOnAdded(Construction model)
+        private void HandleOnAdded(IDataProvider<ConstructionData> model)
         {
             UpdateWaveProgress();
         }

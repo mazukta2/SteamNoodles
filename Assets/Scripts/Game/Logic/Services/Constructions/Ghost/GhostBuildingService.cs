@@ -14,13 +14,13 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost
     {
         private readonly GameControlsService _controlsService;
         private readonly ISingletonRepository<ConstructionGhost> _ghost;
-        private readonly IDataQuery<GhostData> _ghostData;
+        private readonly IDataProvider<GhostData> _ghostData;
         private readonly BuildingService _buildingService;
         private readonly BuildingAggregatorService _statusAggregatorService;
 
         public GhostBuildingService(
             ISingletonRepository<ConstructionGhost> ghost,
-            IDataQuery<GhostData> ghostData,
+            IDataProvider<GhostData> ghostData,
             BuildingService buildingService,
             GameControlsService controlsService)
         {
@@ -33,7 +33,6 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost
 
         protected override void DisposeInner()
         {
-            _ghostData.Dispose();
             _controlsService.OnLevelClick -= HandleOnLevelClick;
         }
 

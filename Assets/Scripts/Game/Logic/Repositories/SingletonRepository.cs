@@ -48,11 +48,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             return (Count != 0);
         }
 
-        public new ISingleQuery<T> AsQuery()
-        {
-            return new SingleRepositoryEntityQuery<T>(this);
-        }
-
         protected override void FireOnAdded(T entity)
         {
             base.FireOnAdded(entity);

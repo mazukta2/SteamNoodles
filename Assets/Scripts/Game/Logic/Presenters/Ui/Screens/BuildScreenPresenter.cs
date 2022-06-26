@@ -3,6 +3,9 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.DataObjects;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
+using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost;
@@ -15,14 +18,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private KeyCommand _exitKey;
 
         private IBuildScreenView _view;
-        private readonly ConstructionCard _entity;
-        private readonly ISingleQuery<ConstructionGhost> _ghost;
+        private readonly IDataProvider<ConstructionCardData> _entity;
+        private readonly IDataProvider<GhostData> _ghost;
         private readonly IGhostCommands _ghostCommands;
         private readonly ScreenService _screenService;
 
-        public BuildScreenPresenter(IBuildScreenView view, ConstructionCard constructionCard) : this(
+        public BuildScreenPresenter(IBuildScreenView view, IDataProvider<ConstructionCardData> constructionCard) : this(
                 view, constructionCard,
-                IPresenterServices.Default?.Get<ISingletonRepository<ConstructionGhost>>().AsQuery(),
+                IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
                 IPresenterServices.Default?.Get<IGhostCommands>(),
                 IPresenterServices.Default?.Get<ScreenService>(),
                 IPresenterServices.Default?.Get<GameControlsService>())
@@ -30,8 +33,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         }
 
         public BuildScreenPresenter(IBuildScreenView view,
-            ConstructionCard constructionCard,
-            ISingleQuery<ConstructionGhost> ghost,
+            IDataProvider<ConstructionCardData> constructionCard,
+            IDataProvider<GhostData> ghost,
             IGhostCommands ghostCommands,
             ScreenService screenService,
             GameControlsService gameKeysManager) : base(view)
@@ -42,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _ghostCommands = ghostCommands ?? throw new ArgumentNullException(nameof(ghostCommands));
             _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
-            _ghostCommands.Show(_entity);
+            _ghostCommands.Show(_entity.Get().Id);
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
             _exitKey.OnTap += OnExitTap;
             _ghost.OnRemoved += HandleOnHided;
@@ -53,8 +56,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _exitKey.OnTap -= OnExitTap;
             _ghost.OnRemoved -= HandleOnHided;
             _ghostCommands.Hide();
-            
-            _ghost.Dispose();
         }
 
         private void OnExitTap()
