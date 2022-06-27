@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         {
         }
 
-        public void Init(IDataProvider<ConstructionData> construction)
+        public void Init(IDataProvider<ConstructionPresenterData> construction)
         {
         }
     }

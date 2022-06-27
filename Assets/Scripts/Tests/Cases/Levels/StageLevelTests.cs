@@ -127,7 +127,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsTrue(manager.Has<UnitsCustomerQueueService>());
             Assert.IsTrue(manager.Has<UnitsMovementsService>());
             Assert.IsTrue(manager.Has<BuildingPointsService>());
-            Assert.IsTrue(manager.Has<BuildingService>());
+            // Assert.IsTrue(manager.Has<BuildingService>());
             Assert.IsTrue(manager.Has<SchemesService>());
             Assert.IsTrue(manager.Has<CoinsService>());
 
@@ -149,7 +149,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsFalse(manager.Has<UnitsCustomerQueueService>());
             Assert.IsFalse(manager.Has<UnitsMovementsService>());
             Assert.IsFalse(manager.Has<BuildingPointsService>());
-            Assert.IsFalse(manager.Has<BuildingService>());
+            // Assert.IsFalse(manager.Has<BuildingService>());
             Assert.IsFalse(manager.Has<SchemesService>());
             Assert.IsFalse(manager.Has<CoinsService>());
 

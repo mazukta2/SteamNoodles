@@ -1,7 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
@@ -166,7 +165,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, new DataCollectionProvider<ConstructionCardData>(), new DataProvider<GhostData>(), screenManager);
+            // new HandPresenter(handView, new DataCollectionProvider<ConstructionCardData>(), new DataProvider<GhostData>(), screenManager);
 
             Assert.AreEqual(0, handView.Collection.FindViews<IHandConstructionView>().Count);
             cardsRepository.Add(new ConstructionCard(scheme1));
@@ -291,7 +290,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghost = new SingletonRepository<ConstructionGhost>();
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, new DataCollectionProvider<ConstructionCardData>(), new DataProvider<GhostData>(), screenManager);
+            // new HandPresenter(handView, new DataCollectionProvider<ConstructionCardData>(), new DataProvider<GhostData>(), screenManager);
 
             Assert.AreEqual("Choose", handView.Animator.Animation);
             ghost.Add(new ConstructionGhost(new ConstructionCard(new ConstructionScheme()), new Field()));
@@ -318,7 +317,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             screenManager.Bind(new ScreenManagerView(viewCollection));
             var handView = new HandView(viewCollection);
-            new HandPresenter(handView, new DataCollectionProvider<ConstructionCardData>(), new DataProvider<GhostData>(), screenManager);
+            // new HandPresenter(handView, new DataCollectionProvider<ConstructionCardData>(), new DataProvider<GhostData>(), screenManager);
 
             handView.CancelButton.Click();
 

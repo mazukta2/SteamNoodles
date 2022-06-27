@@ -6,6 +6,7 @@ using System;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
@@ -15,9 +16,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         IText Points { get; }
         IText Adjacencies { get; }
 
-        void Init(IDataProvider<ConstructionCardData> card)
+        void Init(Uid cardId)
         {
-            new HandConstructionTooltipPresenter(this).SetModel(card);
+            new HandConstructionTooltipPresenter(this).SetModel(cardId);
         }
     }
 }

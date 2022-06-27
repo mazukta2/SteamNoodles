@@ -4,10 +4,17 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.DataObjects.Constructions
 {
-    public class ConstructionData : IData
+    public struct ConstructionPresenterData : IData
     {
         public GameVector3 WorldPosition { get; set; }
         public FieldRotation Rotation { get; set; }
         public ConstructionScheme Scheme { get; set; }
+
+        public ConstructionPresenterData(ConstructionScheme scheme)
+        {
+            Scheme = scheme;
+            Rotation = FieldRotation.Default;
+            WorldPosition = GameVector3.Zero;
+        }
     }
 }

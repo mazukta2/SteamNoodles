@@ -3,38 +3,39 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandPresenter : BasePresenter<IHandView>
     {
         private readonly IDataCollectionProvider<ConstructionCardData> _cards;
-        private readonly IDataProvider<GhostData> _ghost;
+        private readonly GhostRepository _ghostRepository;
         private readonly ScreenService _screenService;
         private readonly IHandView _view;
 
         public HandPresenter(IHandView view)
             : this(view,
                   IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionCardData>>().Get(),
-                  IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
+                  IPresenterServices.Default?.Get<GhostRepository>(),
                   IPresenterServices.Default?.Get<ScreenService>())
         {
         }
 
         public HandPresenter(IHandView view,
             IDataCollectionProvider<ConstructionCardData> repository,
-            IDataProvider<GhostData> ghost,
+            GhostRepository ghostRepository,
             ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _cards = repository ?? throw new ArgumentNullException(nameof(repository));
-            _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
+            _ghostRepository = ghostRepository ?? throw new ArgumentNullException(nameof(ghostRepository));
             _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
 
             var cards = _cards.Get();
@@ -45,14 +46,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
             SetMode(Modes.Choose);
-            _ghost.OnAdded += HandleGhostShowed;
-            _ghost.OnRemoved += HandleGhostHided;
+            // _ghostRepository.OnAdded += HandleGhostRepositoryShowed;
+            // _ghostRepository.OnRemoved += HandleGhostRepositoryHided;
         }
 
         protected override void DisposeInner()
         {
-            _ghost.OnAdded -= HandleGhostShowed;
-            _ghost.OnRemoved -= HandleGhostHided;
+            // _ghostRepository.OnAdded -= HandleGhostRepositoryShowed;
+            // _ghostRepository.OnRemoved -= HandleGhostRepositoryHided;
             _cards.OnAdded -= HandleCardAdded;
         }
 
@@ -67,12 +68,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _screenService.Open<IMainScreenView>(x => x.Init());
         }
 
-        private void HandleGhostHided()
+        private void HandleGhostRepositoryHided()
         {
             SetMode(Modes.Choose);
         }
 
-        private void HandleGhostShowed()
+        private void HandleGhostRepositoryShowed()
         {
             SetMode(Modes.Build);
         }

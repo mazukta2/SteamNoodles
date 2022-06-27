@@ -1,12 +1,11 @@
 ﻿using System;
-using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
@@ -17,22 +16,21 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class GhostPresenter : BasePresenter<IGhostView>
     {
         private readonly IGhostView _view;
-        private readonly IDataProvider<GhostData> _ghost;
-        private readonly IDataCollectionProvider<ConstructionData> _constructions;
+        private readonly GhostPresentation _ghost;
+        private readonly IDataCollectionProvider<ConstructionPresenterData> _constructions;
         private readonly GameAssetsService _assets;
         private readonly IConstructionModelView _constructionModelView;
 
-        public GhostPresenter(IGhostView view) : this(view,
-            IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
-            IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionData>>().Get(),
+        public GhostPresenter(IGhostView view, GhostPresentation ghost) : this(view, ghost,
+            IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionPresenterData>>().Get(),
             IPresenterServices.Default?.Get<GameAssetsService>())
         {
 
         }
 
         public GhostPresenter(IGhostView view,
-            IDataProvider<GhostData> ghost,
-            IDataCollectionProvider<ConstructionData> constructions,
+            GhostPresentation ghost,
+            IDataCollectionProvider<ConstructionPresenterData> constructions,
             GameAssetsService assets) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -40,30 +38,23 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
 
-            if (!_ghost.Has()) throw new Exception("Ghost can exist only in building mode");
-
             _view.Container.Clear();
-            var modelView = _view.Container.Spawn<IConstructionModelView>(GetPrefab());
+            var modelView = _view.Container.Spawn<IConstructionModelView>(_ghost.GetPrefab());
             _constructionModelView = modelView;
             _constructionModelView.Animator.Play(IConstructionModelView.Animations.Dragging.ToString());
             
-            _ghost.OnRemoved += Dispose;
-            _ghost.OnEvent += HandleEvent;
+            _ghost.OnDispose += Dispose;
+            //_ghost.OnEvent += HandleEvent;
 
             UpdatePosition();
         }
 
         protected override void DisposeInner()
         {
-            _ghost.OnRemoved -= Dispose;
-            _ghost.OnEvent -= HandleEvent;
+            _ghost.OnDispose -= Dispose;
+            //_ghost.OnEvent -= HandleEvent;
         }
 
-        private IViewPrefab GetPrefab()
-        {
-            return _assets.GetPrefab(_ghost.Get().Card.Scheme.LevelViewPath);
-        }
-        
         private void HandleEvent(IModelEvent obj)
         {
             if (obj is not GhostMovedEvent)
@@ -74,13 +65,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         
         private void UpdatePosition()
         {
-            var ghost = _ghost.Get();
-            var size = ghost.Card.Scheme.Placement.GetRect(ghost.Rotation);
-            var worldPosition = ghost.Position.GetWorldPosition(size);
-            _view.LocalPosition.Value = worldPosition;
-            _view.Rotator.Rotation = FieldRotation.ToDirection(ghost.Rotation);
+            _view.LocalPosition.Value = _ghost.GetWorldPosition();
+            _view.Rotator.Rotation = FieldRotation.ToDirection(_ghost.GetRotation());
             
-            _constructionModelView.BorderAnimator.Play(_ghost.Get().CanBuild ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
+            _constructionModelView.BorderAnimator.Play(_ghost.GetCanBuild() ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
         }
 
     }

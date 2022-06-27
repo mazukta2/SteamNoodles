@@ -120,7 +120,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var buildingService = new BuildingService(constructionsRepository);
+            // var buildingService = new BuildingService(constructionsRepository);
 
             var turnService = new StageTurnService(constructionsRepository, customers);
 
@@ -130,10 +130,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             constructionsCardsRepository.Add(card);
             Assert.AreEqual(0, constructionsRepository.Count);
 
-            var construction = buildingService.Build(card, new FieldPosition(field, 1, 1), new FieldRotation());
-            var constructionPosition = construction.GetWorldPosition();
+            // var construction = buildingService.Build(card, new FieldPosition(field, 1, 1), new FieldRotation());
+            // var constructionPosition = construction.GetWorldPosition();
 
-            Assert.AreEqual(constructionPosition.X, customers.GetQueuePosition().X);
+            // Assert.AreEqual(constructionPosition.X, customers.GetQueuePosition().X);
 
             unitsService.Dispose();
             crowd.Dispose();
@@ -652,7 +652,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var handService = new HandService(constructionsCardsRepository);
             var field = new Field(1, new IntPoint(11, 11));
-            var buildingService = new BuildingService(constructionsRepository);
+            // var buildingService = new BuildingService(constructionsRepository);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, points);
 
             var turnService = new StageTurnService(constructionsRepository, customers);
@@ -663,7 +663,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             constructionsCardsRepository.Add(card);
             Assert.AreEqual(0, constructionsRepository.Count);
 
-            var construction = buildingService.Build(card, new FieldPosition(field, 1, 1), new FieldRotation());
+            // var construction = buildingService.Build(card, new FieldPosition(field, 1, 1), new FieldRotation());
 
             Assert.AreEqual(new BuildingLevel(1), points.GetTargetLevel());
             Assert.AreEqual(new BuildingLevel(1), points.GetCurrentLevel());

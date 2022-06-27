@@ -13,20 +13,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class EndWaveButtonWidgetPresenter : BasePresenter<IEndWaveButtonView>
     {
         private readonly IEndWaveButtonView _view;
-        private IDataCollectionProvider<ConstructionData> _constructions;
+        private IDataCollectionProvider<ConstructionPresenterData> _constructions;
         private string _lastAnimation;
         private readonly StageWaveService _stageWaveService;
 
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view) : this(view, 
-            IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionData>>().Get(),
+            IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionPresenterData>>().Get(),
             IPresenterServices.Default.Get<StageWaveService>())
         {
 
         }
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view, 
-            IDataCollectionProvider<ConstructionData> constructions,
+            IDataCollectionProvider<ConstructionPresenterData> constructions,
             StageWaveService stageWaveService)
             : base(view)
         {
@@ -66,7 +66,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             //ScreenManagerPresenter.Default.GetCollection<CommonScreens>().Open<IDayEndedScreenView>();
         }
 
-        private void HandleOnAdded(IDataProvider<ConstructionData> model)
+        private void HandleOnAdded(IDataProvider<ConstructionPresenterData> model)
         {
             UpdateWaveProgress();
         }

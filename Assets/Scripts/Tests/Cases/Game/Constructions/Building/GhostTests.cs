@@ -9,17 +9,16 @@ using Game.Assets.Scripts.Tests.Views.Level.Building;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Fields;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
-using Game.Assets.Scripts.Game.Logic.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Services.Fields;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Localization;
@@ -37,11 +36,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var c = new ControlsMock();
             var controlService = new GameControlsService(c);
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field);
+            // var ghostService = new GhostService(ghost, field);
             var movingService = new GhostMovingService(ghost, new SingletonRepository<Field>(), controlService);
             
             c.MovePointer(new GameVector3(1,0,1));
-            ghostService.Show(new ConstructionCard(new ConstructionScheme()));
+            // ghostService.Show(new ConstructionCard(new ConstructionScheme()));
             
             Assert.AreEqual(new GameVector3(1,0, 1), ghost.Get().TargetPosition);
             Assert.AreEqual(new FieldPosition(field,1, 1), ghost.Get().Position);
@@ -64,14 +63,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var constructionsCardsRepository = new Repository<ConstructionCard>();
             var ghost = new SingletonRepository<ConstructionGhost>();
 
+            var ghostCollection = new GhostPresentationRepository();
+
             var controlService = new GameControlsService(c);
-            var buildingService = new BuildingService(constructionsRepository);
+            // var buildingService = new BuildingService(constructionsRepository);
+            //
+            // var ghostService = new GhostService(ghost, field.Get());
+            // var cells = new BuildingAggregatorService(field, ghost, constructionsRepository);
+            // var ghostMock = new GhostData();
             
-            var ghostService = new GhostService(ghost, field.Get());
-            var cells = new BuildingAggregatorService(field, ghost, constructionsRepository);
-            var ghostMock = new GhostData();
-            
-            var ghostBuildingService = new GhostBuildingService(ghost, new DataProvider<GhostData>(), buildingService, controlService);
+            // var ghostBuildingService = new GhostBuildingService(ghost, ghostCollection, controlService);
             
             var card = new ConstructionCard(new ConstructionScheme());
             constructionsCardsRepository.Add(card);
@@ -79,7 +80,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             
             Assert.AreEqual(0, constructionsRepository.Count);
             
-            ghostService.Show(card);
+            // ghostService.Show(card);
             
             Assert.AreEqual(0, constructionsRepository.Count);
         
@@ -88,31 +89,31 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(1, constructionsRepository.Count);
         
             controlService.Dispose();
-            ghostBuildingService.Dispose();
-            cells.Dispose();
+            // ghostBuildingService.Dispose();
+            // cells.Dispose();
         }
         
         [Test, Order(TestCore.ModelOrder)]
         public void GhostFillingPoints()
         {
-            var ghost = new SingletonRepository<ConstructionGhost>();
             var constructions = new Repository<Construction>();
-            var field = new SingletonRepository<Field>(new Field());
+            var field = new Field();
 
-            var pointsService = new BuildingAggregatorService(field, ghost, constructions);
-            var ghostData = new DataProvider<GhostData>();
+            // var pointsService = new BuildingAggregatorService(field, ghost, constructions);
+            var c = new ConstructionGhost(new ConstructionCard(new ConstructionScheme(points: new BuildingPoints(2))),
+                     field);
+            var ghost = new GhostPlacing(c, constructions, field);
 
-            ghost.Add(new ConstructionGhost(new ConstructionCard(new ConstructionScheme(points: new BuildingPoints(2))),
-                field.Get()));
+            // ghost.Add();
             
-            Assert.AreEqual(2, ghostData.Get().Points.AsInt());
+            Assert.AreEqual(2, ghost.GetPoints().AsInt());
 
-            var g = ghost.Get();
-            g.SetPosition(new FieldPosition(field.Get(), 100, 100), GameVector3.One);
+            // var g = ghost.Get();
+            // g.SetPosition(new FieldPosition(field.Get(), 100, 100), GameVector3.One);
             
-            Assert.AreEqual(0, ghostData.Get().Points.AsInt());
+            Assert.AreEqual(0, ghost.GetPoints().AsInt());
             
-            pointsService.Dispose();
+            // pointsService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -122,22 +123,22 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field);
+            // var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghost, new SingletonRepository<Field>(),controls);
             
             var scheme = new ConstructionScheme();
 
             var viewCollection = new ViewsCollection();
             var view = new GhostManagerView(viewCollection);
-            new GhostManagerPresenter(view, new DataProvider<GhostData>());
+            // new GhostManagerPresenter(view, new DataProvider<GhostData>());
 
             Assert.IsFalse(view.Container.Has<GhostView>());
             
-            ghostService.Show(new ConstructionCard(scheme));
+            // ghostService.Show(new ConstructionCard(scheme));
 
             Assert.IsTrue(view.Container.Has<GhostView>());
 
-            ghostService.Hide();
+            // ghostService.Hide();
 
             Assert.IsFalse(view.Container.Has<GhostView>());
 
@@ -157,30 +158,30 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var scheme = new ConstructionScheme();
 
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(ghost, field.Get());
+            // var ghostService = new GhostService(ghost, field.Get());
             var moving = new GhostMovingService(ghost, field,controls);
-            var fieldCellsService = new BuildingAggregatorService(field, ghost,
-                constructionsRepository);
+            // var fieldCellsService = new BuildingAggregatorService(field, ghost,
+            //     constructionsRepository);
             
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionData>());
+            // new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionPresenterData>());
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
 
-            ghostService.Show(new ConstructionCard(scheme));
+            // ghostService.Show(new ConstructionCard(scheme));
 
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.IsReadyToPlace || x.State.Value == CellPlacementStatus.IsAvailableGhostPlace));
 
-            ghostService.Hide();
+            // ghostService.Hide();
 
             Assert.IsTrue(cells.All(x => x.State.Value == CellPlacementStatus.Normal));
 
             viewCollection.Dispose();
             moving.Dispose();
             controls.Dispose();
-            fieldCellsService.Dispose();
+            // fieldCellsService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -204,16 +205,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field.Get());
+            // var ghostService = new GhostService(ghost, field.Get());
             var movingService = new GhostMovingService(ghost, field,controls);
-            var fieldCellsService = new BuildingAggregatorService(field, ghost,
-                constructionsRepository);
+            // var fieldCellsService = new BuildingAggregatorService(field, ghost,
+            //     constructionsRepository);
             
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionData>());
-
-            ghostService.Show(new ConstructionCard(scheme));
+            // new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionPresenterData>());
+            //
+            // ghostService.Show(new ConstructionCard(scheme));
 
             var cells = view.CellsContainer.FindViews<CellView>();
             var highlightedCells = cells
@@ -236,7 +237,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             movingService.Dispose();
             controls.Dispose();
-            fieldCellsService.Dispose();
+            // fieldCellsService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -258,17 +259,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 placement);
 
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field.Get());
+            // var ghostService = new GhostService(ghost, field.Get());
             var moving = new GhostMovingService(ghost, field,controls);
-            var fieldCellsService = new BuildingAggregatorService(field, ghost,
-                constructionsRepository);
+            // var fieldCellsService = new BuildingAggregatorService(field, ghost,
+            //     constructionsRepository);
             
             var viewCollection = new ViewsCollection();
 
-            ghostService.Show(new ConstructionCard(scheme));
+            // ghostService.Show(new ConstructionCard(scheme));
 
             var view = new GhostView(viewCollection);
-            new GhostPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionData>(), CreateAssets());
+            // new GhostPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionPresenterData>(), CreateAssets());
 
             Assert.AreEqual(new GameVector3(0.25f, 0f, 0), view.LocalPosition.Value);
 
@@ -279,7 +280,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             controls.Dispose();
             moving.Dispose();
-            fieldCellsService.Dispose();
+            // fieldCellsService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -294,30 +295,30 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var card = new ConstructionCard(scheme);
 
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(ghost, field.Get());
+            // var ghostService = new GhostService(ghost, field.Get());
             var moving = new GhostMovingService(ghost, field,controls);
-            var cells = new BuildingAggregatorService(field, ghost, constructionsRepository);
-            var canBuildService = new BuildingAggregatorService(field, ghost, constructionsRepository);
-            var ghostData = new DataProvider<GhostData>();
+            // var cells = new BuildingAggregatorService(field, ghost, constructionsRepository);
+            // var canBuildService = new BuildingAggregatorService(field, ghost, constructionsRepository);
+            // var ghostData = new DataProvider<GhostData>();
             
             var assets = CreateAssets("view");
             var viewCollection = new ViewsCollection();
 
-            ghostService.Show(card);
+            // ghostService.Show(card);
 
             var view = new GhostView(viewCollection);
-            new GhostPresenter(view, ghostData, new DataCollectionProvider<ConstructionData>(), assets);
+            // new GhostPresenter(view, ghostData, new DataCollectionProvider<ConstructionPresenterData>(), assets);
 
             var modelView = view.Container.FindView<ConstructionModelView>();
 
             // disallowed because DownEdge enabled.
-            Assert.IsFalse(ghostData.Get().CanBuild);
+            // Assert.IsFalse(ghostData.Get().CanBuild);
 
             Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
             Assert.AreEqual("Disallowed", (modelView.BorderAnimator).GetCurrentAnimation());
 
             moving.SetTargetPosition(new FieldPosition(field.Get(), 0, -2));
-            Assert.IsTrue(ghostData.Get().CanBuild);
+            // Assert.IsTrue(ghostData.Get().CanBuild);
 
             Assert.AreEqual("Dragging", (modelView.Animator).GetCurrentAnimation());
             Assert.AreEqual("Idle", (modelView.BorderAnimator).GetCurrentAnimation());
@@ -325,8 +326,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             moving.Dispose();
             controls.Dispose();
-            cells.Dispose();
-            canBuildService.Dispose();
+            // cells.Dispose();
+            // canBuildService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -345,16 +346,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 placement, requirements: new Requirements() { DownEdge = true });
 
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(ghost, field.Get());
+            // var ghostService = new GhostService(ghost, field.Get());
             var buildingMode = new GhostMovingService(ghost, field,controls);
-            var fieldCellsService = new BuildingAggregatorService(field, ghost,
-                constructionsRepository);
+            // var fieldCellsService = new BuildingAggregatorService(field, ghost,
+                // constructionsRepository);
 
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionData>());
+            // new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionPresenterData>());
 
-            ghostService.Show(new ConstructionCard(scheme));
+            // ghostService.Show(new ConstructionCard(scheme));
 
             buildingMode.SetTargetPosition(new FieldPosition(field.Get(), 0, -1));
 
@@ -374,7 +375,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             buildingMode.Dispose();
             controls.Dispose();
-            fieldCellsService.Dispose();
+            // fieldCellsService.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
@@ -395,15 +396,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field.Get());
+            // var ghostService = new GhostService(ghost, field.Get());
             var moving = new GhostMovingService(ghost, field, controls);
-            var fieldCellsService = new BuildingAggregatorService(field, ghost,
-                constructionsRepository);
+            // var fieldCellsService = new BuildingAggregatorService(field, ghost,
+                // constructionsRepository);
             
             var viewCollection = new ViewsCollection();
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionData>());
+            // new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionPresenterData>());
 
             {
                 
@@ -422,7 +423,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             }
             
 
-            ghostService.Show(new ConstructionCard(scheme));
+            // ghostService.Show(new ConstructionCard(scheme));
 
             moving.SetTargetPosition(new FieldPosition(field.Get(), 0, -1));
 
@@ -441,7 +442,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 Assert.AreEqual(expected, actual, $"Wrong position : \r\n {PrintPosition(actual)}");
             }
 
-            fieldCellsService.Dispose();
+            // fieldCellsService.Dispose();
             viewCollection.Dispose();
             moving.Dispose();
             controls.Dispose();
@@ -457,20 +458,20 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var field = new Field(1, new IntPoint(3, 3));
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, field);
+            // var ghostService = new GhostService(ghost, field);
             var buildingMode = new GhostMovingService(ghost, new SingletonRepository<Field>(),controls);
 
             var assets = CreateAssets("view");
             var scheme = new ConstructionScheme(view:"view");
 
             var viewCollection = new ViewsCollection();
-            ghostService.Show(new ConstructionCard(scheme));
+            // ghostService.Show(new ConstructionCard(scheme));
 
             var view = new GhostView(viewCollection);
             
             Assert.IsFalse(view.Container.Has<ConstructionModelView>());
             
-            new GhostPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionData>(), assets);
+            // new GhostPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionPresenterData>(), assets);
 
             Assert.IsTrue(view.Container.Has<ConstructionModelView>());
             
@@ -495,17 +496,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
                 placement);
 
             var controls = new GameControlsService(new ControlsMock());
-            var ghostService = new GhostService(ghost, field.Get());
+            // var ghostService = new GhostService(ghost, field.Get());
             var rotatingService = new GhostRotatingService(ghost, controls);
-            var fieldCellsService = new BuildingAggregatorService(field, ghost,
-                constructionsRepository);
+            // var fieldCellsService = new BuildingAggregatorService(field, ghost,
+                // constructionsRepository);
 
             var viewCollection = new ViewsCollection();
 
-            ghostService.Show(new ConstructionCard(scheme));
+            // ghostService.Show(new ConstructionCard(scheme));
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionData>());
+            // new PlacementFieldPresenter(view, new DataProvider<GhostData>(), new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionPresenterData>());
 
             var cells = view.CellsContainer.FindViews<CellView>();
             CheckPosition(new [, ]
@@ -550,7 +551,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             viewCollection.Dispose();
             controls.Dispose();
             rotatingService.Dispose();
-            fieldCellsService.Dispose();
+            // fieldCellsService.Dispose();
 
             void CheckPosition(int[,] expected)
             {

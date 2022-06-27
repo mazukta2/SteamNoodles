@@ -108,7 +108,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             _view.TooltipContainer.Clear();
             var view = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
-            view.Init(_model);
+            view.Init(_model.Get().Id);
         }
 
         private void _view_OnHighlihgtedExit()

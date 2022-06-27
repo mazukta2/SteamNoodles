@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
@@ -22,7 +23,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
             Container = new ContainerViewMock(level);
         }
 
-        public void Init()
+        public void Init(GhostPresentation ghost)
         {
             
         }

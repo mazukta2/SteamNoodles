@@ -1,11 +1,12 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations;
+using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
@@ -31,10 +32,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var controls = new GameControlsService(new ControlsMock());
             var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostService = new GhostService(ghost, new Field());
+            var ghostRepository = new GhostPresentationRepository();
 
             screenManager.Open<IBuildScreenView>(x => 
-                new BuildScreenPresenter(x, new DataProvider<ConstructionCardData>(), new DataProvider<GhostData>(), ghostService, screenManager, controls));
+                new BuildScreenPresenter(x, 
+                    new DataProvider<ConstructionCardData>(new ConstructionCardData()), ghostRepository, screenManager, controls));
 
             Assert.IsNotNull(view.Screen.FindView<BuildScreenView>());
             Assert.IsNull(view.Screen.FindView<MainScreenView>());

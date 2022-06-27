@@ -3,11 +3,10 @@ using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
@@ -18,16 +17,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class ConstructionPresenter : BasePresenter<IConstructionView>
     {
         private readonly IConstructionView _constructionView;
-        private readonly IDataProvider<ConstructionData> _construction;
-        private readonly IDataProvider<GhostData> _ghost;
+        private readonly IDataProvider<ConstructionPresenterData> _construction;
+        private readonly GhostPresentationRepository _ghost;
         private readonly GameAssetsService _assets;
 
         private bool _dropFinished;
         private IConstructionModelView _modelView;
 
-        public ConstructionPresenter(IConstructionView view, IDataProvider<ConstructionData> construction)
+        public ConstructionPresenter(IConstructionView view, IDataProvider<ConstructionPresenterData> construction)
             : this(view, construction,
-                  IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
+                  IPresenterServices.Default?.Get<GhostPresentationRepository>(),
                   IPresenterServices.Default?.Get<GameAssetsService>(),
                   IPresenterServices.Default?.Get<GameControlsService>())
         {
@@ -35,8 +34,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         }
 
         public ConstructionPresenter(IConstructionView view,
-            IDataProvider<ConstructionData> construction,
-            IDataProvider<GhostData> ghost,
+            IDataProvider<ConstructionPresenterData> construction,
+            GhostPresentationRepository ghost,
             GameAssetsService assets,
             GameControlsService controls) : base(view)
         {
@@ -51,9 +50,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
             _modelView.Animator.OnFinished += DropFinished;
             _construction.OnRemoved += HandleRemoved;
-            _ghost.OnEvent += HandleOnEvent;
-            _ghost.OnAdded += HandleOnChanged;
-            _ghost.OnRemoved += HandleOnChanged;
+            //_ghost.OnEvent += HandleOnEvent;
+            // _ghost.OnAdded += HandleOnChanged;
+            // _ghost.OnRemoved += HandleOnChanged;
 
             _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
             controls.ShakeCamera();
@@ -64,9 +63,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
         protected override void DisposeInner()
         {
             _construction.OnRemoved -= HandleRemoved;
-            _ghost.OnEvent -= HandleOnEvent;
-            _ghost.OnAdded -= HandleOnChanged;
-            _ghost.OnRemoved -= HandleOnChanged;
+            //_ghost.OnEvent -= HandleOnEvent;
+            // _ghost.OnAdded -= HandleOnChanged;
+            // _ghost.OnRemoved -= HandleOnChanged;
 
             _modelView.Animator.OnFinished -= DropFinished;
             _modelView.Animator.OnFinished -= ExplosionFinished;
@@ -82,22 +81,21 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             if (!_dropFinished)
                 return;
 
-            if (_ghost.Has())
-            {
-                var construction = _construction.Get();
-                var distance = _ghost.Get().TargetPosition
-                    .GetDistanceTo(construction.WorldPosition);
-                if (distance > construction.Scheme.GhostShrinkDistance)
-                    _modelView.Shrink.Value = 1;
-                else if (distance > construction.Scheme.GhostHalfShrinkDistance)
-                    _modelView.Shrink.Value = distance / construction.Scheme.GhostShrinkDistance;
-                else
-                    _modelView.Shrink.Value = 0.2f;
-            }
-            else
-            {
-                _modelView.Shrink.Value = 1;
-            }
+            // if (_ghost.Has())
+            // {
+            //     var construction = _construction.Get();
+            //     var distance = _ghost.Get().GetTargetPosition().GetDistanceTo(construction.WorldPosition);
+            //     if (distance > construction.Scheme.GhostShrinkDistance)
+            //         _modelView.Shrink.Value = 1;
+            //     else if (distance > construction.Scheme.GhostHalfShrinkDistance)
+            //         _modelView.Shrink.Value = distance / construction.Scheme.GhostShrinkDistance;
+            //     else
+            //         _modelView.Shrink.Value = 0.2f;
+            // }
+            // else
+            // {
+            //     _modelView.Shrink.Value = 1;
+            // }
         }
 
         private void DropFinished()

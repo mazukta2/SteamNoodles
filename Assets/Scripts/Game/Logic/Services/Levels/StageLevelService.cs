@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
-using Game.Assets.Scripts.Game.Logic.Services.Fields;
 using Game.Assets.Scripts.Game.Logic.Services.Flow;
 using Game.Assets.Scripts.Game.Logic.Services.Resources;
 using Game.Assets.Scripts.Game.Logic.Services.Resources.Points;
@@ -39,7 +37,6 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Levels
 
             var schemesRep = services.Get<IRepository<ConstructionScheme>>();
             var unitTypesRep = services.Get<IRepository<UnitType>>();
-
             var cardsRep = Add(new Repository<ConstructionCard>());
             var constructionsRep = Add(new Repository<Construction>());
             var unitsRep = Add(new Repository<Unit>());
@@ -47,6 +44,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Levels
             var unitsDeckRep = Add(new SingletonRepository<Deck<UnitType>>());
             var field = Add(new SingletonRepository<Field>(new Field(level.CellSize, level.PlacementFieldSize)));
 
+            
+            var ghost = Add(new GhostRepository());
+            
+            
             var coins = Add(new CoinsService());
             var points = Add(new BuildingPointsService(level, time));
             var schemes = Add(new SchemesService(schemesRep, new(constructionsDeckRep, random), level.ConstructionsReward));
@@ -54,7 +55,6 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Levels
             var unitsTypes = Add(new UnitsTypesService(unitTypesRep, new(unitsDeckRep, random), level));
             var units = Add(new UnitsService(unitsRep, random, unitsTypes));
 
-            var building = Add(new BuildingService(constructionsRep));
             Add(new PointsOnBuildingService(constructionsRep, points));
             Add(new RemoveCardOnBuildingService(constructionsRep, hand));
             var crowd = Add(new UnitsCrowdService(unitsRep, units, time, level, random));
@@ -66,11 +66,9 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Levels
             var controls = services.Get<GameControlsService>();
             var ghostRep = Add(new SingletonRepository<ConstructionGhost>());
             
-            var buildingAggregator = Add(new BuildingAggregatorService(field, ghostRep, constructionsRep));
-            Add(new GhostService(ghostRep, field.Get()));
             Add(new GhostMovingService(ghostRep, field, controls));
             Add(new GhostRotatingService(ghostRep, controls));
-            Add(new GhostBuildingService(ghostRep, buildingAggregator.Ghost, building, controls));
+            Add(new GhostBuildingService(ghost, controls));
             
             rewards.Start();
         }

@@ -7,9 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions;
 using System;
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Definitions;
 using Game.Assets.Scripts.Game.Logic.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.Services.Resources.Points.BuildingPointsAnimations;
@@ -21,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private readonly IPointCounterWidgetView _view;
         private BuildingPointsService _points;
         private ProgressBarSliders _progressBar;
-        private readonly IDataProvider<GhostData> _ghost;
+        private readonly GhostPresentationRepository _ghost;
 
         public PointCounterWidgetPresenter(IPointCounterWidgetView view)
             : this(view,
@@ -36,7 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
                   new ProgressBarSliders(view.PointsProgress, IGameTime.Default,
                       constructionsSettingsDefinition.PointsSliderFrequency,
                       constructionsSettingsDefinition.PointsSliderSpeed),
-                  IPresenterServices.Default.Get<IDataProviderService<GhostData>>().Get(),
+                  IPresenterServices.Default.Get<GhostPresentationRepository>(),
                   IPresenterServices.Default.Get<BuildingPointsService>())
         {
 
@@ -44,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         public PointCounterWidgetPresenter(IPointCounterWidgetView view,
             ProgressBarSliders progressBar,
-            IDataProvider<GhostData> ghost,
+            GhostPresentationRepository ghost,
             BuildingPointsService pointsService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -57,8 +55,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _points.OnPointsChanged += HandleOnPointsChanged;
             _points.OnAnimationStarted += Points_OnAnimationStarted;
 
-            _ghost.OnAdded += UpdateValues;
-            _ghost.OnRemoved += UpdateValues;
+            // _ghost.OnAdded += UpdateValues;
+            // _ghost.OnRemoved += UpdateValues;
 
             _view.PointsProgress.RemovedValue = 0;
             _view.PointsProgress.AddedValue = 0;
@@ -76,8 +74,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _view.Animator.OnFinished -= HandleAnimationFinished;
             _points.OnAnimationStarted -= Points_OnAnimationStarted;
             
-            _ghost.OnAdded -= UpdateValues;
-            _ghost.OnRemoved -= UpdateValues;
+            // _ghost.OnAdded -= UpdateValues;
+            // _ghost.OnRemoved -= UpdateValues;
         }
 
         private void Points_OnAnimationStarted(AddPointsAnimation obj)
@@ -107,34 +105,34 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _view.Points.Value = $"{_points.GetValue()}/{_points.GetPointsForNextLevel()}";
             _progressBar.Value = _points.GetProgress();
 
-            var ghost = _ghost.Get();
-            if (ghost != null && ghost.Points.AsInt() != 0)
-            {
-                var newPoints = _points.GetChangedValue(ghost.Points.AsInt());
-                if (newPoints.Value < _points.GetValue())
-                {
-                    _progressBar.Value = newPoints.Progress;
-                    if (newPoints.CurrentLevel == _points.GetCurrentLevel().Value)
-                        _progressBar.Remove = _points.GetProgress();
-                    else
-                        _progressBar.Remove = 1;
-                    _progressBar.Add = 0;
-                }
-                else
-                {
-                    _progressBar.Value = _points.GetProgress();
-                    if (newPoints.CurrentLevel == _points.GetCurrentLevel().Value)
-                        _progressBar.Add = newPoints.Progress;
-                    else
-                        _progressBar.Add = 1;
-                    _progressBar.Remove = 0;
-                }
-            }
-            else
-            {
-                _progressBar.Add = 0;
-                _progressBar.Remove = 0;
-            }
+            // if (_ghost.Has())
+            // {
+            //     var ghost = _ghost.Get();
+            //     var newPoints = _points.GetChangedValue(ghost.GetPoints().AsInt());
+            //     if (newPoints.Value < _points.GetValue())
+            //     {
+            //         _progressBar.Value = newPoints.Progress;
+            //         if (newPoints.CurrentLevel == _points.GetCurrentLevel().Value)
+            //             _progressBar.Remove = _points.GetProgress();
+            //         else
+            //             _progressBar.Remove = 1;
+            //         _progressBar.Add = 0;
+            //     }
+            //     else
+            //     {
+            //         _progressBar.Value = _points.GetProgress();
+            //         if (newPoints.CurrentLevel == _points.GetCurrentLevel().Value)
+            //             _progressBar.Add = newPoints.Progress;
+            //         else
+            //             _progressBar.Add = 1;
+            //         _progressBar.Remove = 0;
+            //     }
+            // }
+            // else
+            // {
+            //     _progressBar.Add = 0;
+            //     _progressBar.Remove = 0;
+            // }
 
         }
 

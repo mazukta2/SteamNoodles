@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 
@@ -15,23 +15,23 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class GhostPointPresenter : BasePresenter<IGhostPointsView>
     {
         private IGhostPointsView _view;
-        private readonly IDataProvider<GhostData> _ghost;
+        private readonly GhostPresentationRepository _ghost;
         private readonly Field _field;
-        private readonly IDataCollectionProvider<ConstructionData> _constructions;
+        private readonly IDataCollectionProvider<ConstructionPresenterData> _constructions;
 
         //private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
         public GhostPointPresenter(IGhostPointsView view) : this(
                 view,
-                IPresenterServices.Default?.Get<IDataProviderService<GhostData>>().Get(),
-                IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionData>>().Get(),
+                IPresenterServices.Default?.Get<GhostPresentationRepository>(),
+                IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionPresenterData>>().Get(),
                 IPresenterServices.Default?.Get<ISingletonRepository<Field>>().Get())
         {
         }
 
         public GhostPointPresenter(IGhostPointsView view,
-            IDataProvider<GhostData> ghost,
-            IDataCollectionProvider<ConstructionData> constructions,
+            GhostPresentationRepository ghost,
+            IDataCollectionProvider<ConstructionPresenterData> constructions,
             Field field) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -39,17 +39,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _field = field ?? throw new ArgumentNullException(nameof(field));
 
-            _ghost.OnEvent += HandleOnEvent;
-            _ghost.OnAdded += UpdatePoints;
-            _ghost.OnRemoved += UpdatePoints;
+            //_ghost.OnEvent += HandleOnEvent;
+            // _ghost.OnAdded += UpdatePoints;
+            // _ghost.OnRemoved += UpdatePoints;
             UpdatePoints();
         }
 
         protected override void DisposeInner()
         {
-            _ghost.OnEvent -= HandleOnEvent;
-            _ghost.OnAdded -= UpdatePoints;
-            _ghost.OnRemoved -= UpdatePoints;
+            //_ghost.OnEvent -= HandleOnEvent;
+            // _ghost.OnAdded -= UpdatePoints;
+            // _ghost.OnRemoved -= UpdatePoints;
         }
         
         private void HandleOnEvent(IModelEvent obj)
@@ -62,20 +62,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         public void UpdatePoints()
         {
-            if (_ghost.Has())
-            {
-                var ghost = _ghost.Get();
-
-                var worldPosition = ghost.Position.GetWorldPosition(
-                    ghost.Card.Scheme.Placement.GetRect(ghost.Rotation));
-
-                _view.Points.Value = ghost.Points.AsString();
-                _view.Points.Position = worldPosition;
-            }
-            else
-            {
-                _view.Points.Value = "";
-            }
+            // if (_ghost.Has())
+            // {
+            //     var ghost = _ghost.Get();
+            //     _view.Points.Value = ghost.GetPoints().AsString();
+            //     _view.Points.Position = ghost.GetWorldPosition();
+            // }
+            // else
+            // {
+            //     _view.Points.Value = "";
+            // }
 
             //UpdateBonuses(bonuses);
         }

@@ -3,13 +3,13 @@ using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.DataObjects
 {
-    public class DataProvider<T> : IDataProvider<T> where T : class, IData
+    public class DataProvider<T> : IDataProvider<T> where T : struct, IData
     {
         public event Action OnAdded = delegate {  };
         public event Action OnRemoved = delegate {  };
         public event Action<IModelEvent> OnEvent = delegate {  };
 
-        private T _data;
+        private T? _data;
         
         public DataProvider()
         {
@@ -26,6 +26,12 @@ namespace Game.Assets.Scripts.Game.Logic.DataObjects
             OnAdded();
         }
         
+
+        public void Set(T data)
+        {
+            _data = data;
+        }
+        
         public void Remove()
         {
             _data = null;
@@ -39,7 +45,8 @@ namespace Game.Assets.Scripts.Game.Logic.DataObjects
         
         public T Get()
         {
-            return _data;
+            if (_data != null) return _data.Value;
+            throw new Exception("No data");
         }
 
         public bool Has()

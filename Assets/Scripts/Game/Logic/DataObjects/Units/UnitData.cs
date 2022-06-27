@@ -3,7 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Entities.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.DataObjects.Units
 {
-    public class UnitData : IData
+    public struct UnitData : IData
     {
         public UnitType UnitType { get; set; }
         public GameVector3 Position { get; set; }

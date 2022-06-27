@@ -5,18 +5,19 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Fields;
 
 namespace Game.Assets.Scripts.Game.Logic.DataObjects.Fields
 {
-    public class FieldData : IData
+    public struct FieldData : IData
     {
         public GroupOfPositions AvailableCells { get; set; }
         public FieldBoundaries Boundaries { get; set; }
         public GroupOfPositions AllCells { get; set; }
 
-        public FieldData()
+        public static FieldData Default()
         {
-            AvailableCells = new GroupOfPositions(new List<FieldPosition>());
-            Boundaries = new FieldBoundaries(new IntPoint(1,1));
-            AllCells = new GroupOfPositions(new List<FieldPosition>());
-            
+            var data = new FieldData();
+            data.AvailableCells = new GroupOfPositions(new List<FieldPosition>());
+            data.Boundaries = new FieldBoundaries(new IntPoint(1,1));
+            data.AllCells = new GroupOfPositions(new List<FieldPosition>());
+            return data;
         }
     }
 }

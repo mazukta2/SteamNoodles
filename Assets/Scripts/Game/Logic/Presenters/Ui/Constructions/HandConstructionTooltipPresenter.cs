@@ -10,13 +10,14 @@ using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandConstructionTooltipPresenter : BasePresenter<IHandConstructionTooltipView>
     {
         private readonly IHandConstructionTooltipView _view;
-        private readonly IDataCollectionProvider<ConstructionData> _constructions;
+        private readonly IDataCollectionProvider<ConstructionPresenterData> _constructions;
         private LocalizatedText _name;
         private LocalizatedText _adjacency;
         private IEnumerable<ConstructionScheme> _highlights;
@@ -24,12 +25,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view) :
                 this(view,
-                    IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionData>>().Get())
+                    IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionPresenterData>>().Get())
         {
         }
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view,
-            IDataCollectionProvider<ConstructionData> constructions) : base(view)
+            IDataCollectionProvider<ConstructionPresenterData> constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
@@ -42,9 +43,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _adjacency?.Dispose();
         }
 
-        public void SetModel(IDataProvider<ConstructionCardData> card)
+        public void SetModel(Uid cardId)
         {
-            _model = card ?? throw new ArgumentNullException(nameof(card));
+            ///_model = card ?? throw new ArgumentNullException(nameof(card));
             UpdateView();
         }
 

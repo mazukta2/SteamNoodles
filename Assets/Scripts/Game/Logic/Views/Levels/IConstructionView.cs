@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels
         IViewContainer EffectsContainer { get; }
         IViewPrefab ExplosionPrototype { get; }
 
-        void Init(IDataProvider<ConstructionData> construction)
+        void Init(IDataProvider<ConstructionPresenterData> construction)
         {
             new ConstructionPresenter(this, construction);
         }

@@ -4,7 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.DataObjects
 {
-    public class DataCollectionProvider<T> : IDataCollectionProvider<T> where T : class, IData
+    public class DataCollectionProvider<T> : IDataCollectionProvider<T> where T : struct, IData
     {
         public event Action<IDataProvider<T>> OnAdded = delegate { };
         public event Action<IDataProvider<T>> OnRemoved = delegate { };

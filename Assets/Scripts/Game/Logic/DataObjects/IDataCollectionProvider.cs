@@ -6,7 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.DataObjects
 {
-    public interface IDataCollectionProvider<T> where T : class, IData
+    public interface IDataCollectionProvider<T> where T : struct, IData
     {
         event Action<IDataProvider<T>> OnAdded;
         event Action<IDataProvider<T>> OnRemoved;
