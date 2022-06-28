@@ -2,7 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Entities;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
-namespace Game.Assets.Scripts.Game.Logic.Repositories
+namespace Game.Assets.Scripts.Game.Logic.Databases
 {
     public interface IDatabase<T> : IEntityList<T>, IBasicDatabase where T : class, IEntity
     {

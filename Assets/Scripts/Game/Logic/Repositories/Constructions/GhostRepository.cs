@@ -3,10 +3,11 @@ using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
+using Game.Assets.Scripts.Game.Logic.Databases;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
-namespace Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Repositories.Constructions
 {
     public class GhostRepository : Disposable, IService
     {

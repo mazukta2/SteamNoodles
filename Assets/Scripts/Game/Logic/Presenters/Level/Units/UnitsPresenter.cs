@@ -4,7 +4,6 @@ using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Units;
 using Game.Assets.Scripts.Game.Logic.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Repositories;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units

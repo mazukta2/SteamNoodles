@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
-namespace Game.Assets.Scripts.Game.Logic.Repositories
+namespace Game.Assets.Scripts.Game.Logic.Databases
 {
     public interface IEntityList<out T> where T : class
     {

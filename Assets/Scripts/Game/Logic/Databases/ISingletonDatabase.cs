@@ -1,7 +1,7 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Logic.Entities;
 
-namespace Game.Assets.Scripts.Game.Logic.Repositories
+namespace Game.Assets.Scripts.Game.Logic.Databases
 {
     public interface ISingletonDatabase<T> : IDatabase<T> where T : class, IEntity
     {

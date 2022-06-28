@@ -1,33 +1,23 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
-using Game.Assets.Scripts.Game.Logic.Entities;
+using Game.Assets.Scripts.Game.Logic.Aggregations;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public class Database<T> : IDatabase<T> where T : class, IEntity
+    public class AggregationRepository<T> : IAggregationRepository<T> where T : class, IAggregation
     {
         public event Action<T> OnAdded = delegate { };
         public event Action<T> OnRemoved = delegate { };
-        public event Action<T, IModelEvent> OnEvent = delegate { };
 
         public int Count => _repository.Count;
 
         private Dictionary<Uid, T> _repository = new ();
 
-        public Database()
+        public AggregationRepository()
         {
-        }
-
-        public Database<T> AddRange(params T[] entities)
-        {
-            foreach (var entity in entities)
-                Add(entity);
-            
-            return this;
         }
 
         public virtual T Add(T entity)
@@ -36,7 +26,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 throw new Exception("Entity already exist");
 
             _repository.Add(entity.Id, entity);
-            entity.OnEvent += HandleEvent;
             
             FireOnAdded(entity);
 
@@ -49,7 +38,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
                 throw new Exception("Entity not exist");
 
             _repository.Remove(entity.Id);
-            entity.OnEvent -= HandleEvent;
             FireOnRemoved(entity);
         }
 
@@ -72,14 +60,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             return _repository.Select(x => x.Value).AsReadOnly();
         }
 
-        public void FireEvent(T entity, IModelEvent modelEvent)
-        {
-            if (!_repository.ContainsKey(entity.Id))
-                throw new Exception("Entity not exist");
-
-            FireOnModelEvent(entity, modelEvent);
-        }
-
         public bool Has(T entity)
         {
             return _repository.ContainsKey(entity.Id);
@@ -98,16 +78,6 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         protected virtual void FireOnRemoved(T entity)
         {
             OnRemoved(entity);
-        }
-        
-        protected virtual void FireOnModelEvent(T entity, IModelEvent modelEvent)
-        {
-            OnEvent(entity, modelEvent);
-        }
-        
-        private void HandleEvent(IEntity entity, IModelEvent modelEvent)
-        {
-            FireOnModelEvent((T)entity, modelEvent);
         }
 
     }

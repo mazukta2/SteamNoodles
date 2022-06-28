@@ -1,5 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Repositories;
+using Game.Assets.Scripts.Game.Logic.Databases;
 
 namespace Game.Assets.Scripts.Game.Logic.Events.Units
 {

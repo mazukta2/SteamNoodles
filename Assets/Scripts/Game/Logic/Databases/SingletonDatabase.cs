@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Aggregations;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Entities;
 
-namespace Game.Assets.Scripts.Game.Logic.Repositories.Aggregations
+namespace Game.Assets.Scripts.Game.Logic.Databases
 {
-    public class AggregationRepositorySingle<T> : AggregationRepository<T>, 
-        IAggregationRepositorySingle<T> where T : class, IAggregation
+    public class SingletonDatabase<T> : Database<T>, ISingletonDatabase<T> where T : class, IEntity
     {
-        public AggregationRepositorySingle()
+        public SingletonDatabase()
         {
         }
 
-        public AggregationRepositorySingle(T entity)
+        public SingletonDatabase(T entity)
         {
             base.Add(entity);
         }
 
         public new event Action OnAdded = delegate {  };
         public new event Action OnRemoved = delegate {  };
+        public new event Action<IModelEvent> OnEvent = delegate {  };
 
+        public new SingletonDatabase<T> AddRange(params T[] entities)
+        {
+            foreach (var entity in entities)
+                Add(entity);
+            
+            return this;
+        }
+        
         public override T Add(T entity)
         {
             if (Count != 0)
@@ -32,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories.Aggregations
         {
             if (Count == 0)
                 throw new Exception("No entity");
-
+            
             base.Remove(Get());
         }
 
@@ -59,6 +65,12 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories.Aggregations
         {
             base.FireOnRemoved(entity);
             OnRemoved();
+        }
+
+        protected override void FireOnModelEvent(T entity, IModelEvent modelEvent)
+        {
+            base.FireOnModelEvent(entity, modelEvent);
+            OnEvent(modelEvent);
         }
     }
 }

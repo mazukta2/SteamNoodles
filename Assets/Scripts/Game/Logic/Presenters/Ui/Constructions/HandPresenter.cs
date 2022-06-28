@@ -8,8 +8,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.DataObjects;
 using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
+using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {

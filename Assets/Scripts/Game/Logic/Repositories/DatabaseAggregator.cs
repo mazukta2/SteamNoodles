@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Databases;
 using Game.Assets.Scripts.Game.Logic.Entities;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
-namespace Game.Assets.Scripts.Game.Logic.Repositories.Aggregations
+namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
     public class DatabaseAggregator<TEntity, TAggregator> : Disposable 
         where TEntity : class, IEntity

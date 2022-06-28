@@ -1,8 +1,7 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations;
-using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
+using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
