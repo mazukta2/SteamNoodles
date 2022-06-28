@@ -33,7 +33,7 @@ namespace Game.Assets.Scripts.Game.Environment
             IPresenterServices.Default = Services;
             IModelServices.Default = Services;
 
-            var levelsRepository = Services.Add(new Repository<Level>());
+            var levelsRepository = Services.Add(new Database<Level>());
 
             Services.Add(new GameService(engine));
             Services.Add(new GameAssetsService(assets));

@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Game
 {
     public class LevelsService : Disposable, IService
     {
-        private IRepository<Level> _levels;
+        private IDatabase<Level> _levels;
         private Level _firstLevel;
         private Level _currentLevel;
         private ViewsCollection _views;
@@ -20,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Game
         private ILevelsManager _levelsManager;
 
         public LevelsService(ILevelsManager levelsManager,
-            IRepository<Level> levels,
+            IDatabase<Level> levels,
             Level firstLevel)
         {
             _levelsManager = levelsManager;
@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Game
 
 
         public LevelsService(ServiceManager services, ILevelsManager levelsManager, 
-            IRepository<Level> levels,
+            IDatabase<Level> levels,
             IReadOnlyCollection<LevelDefinition> levelDefinitions,
             LevelDefinition firstLevel)
         {

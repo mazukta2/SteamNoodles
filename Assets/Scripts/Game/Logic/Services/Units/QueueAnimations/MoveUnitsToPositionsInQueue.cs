@@ -10,11 +10,11 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations
 {
     public class MoveUnitsToPositionsInQueue : BaseSequenceStep
     {
-        private readonly IRepository<Unit> _units;
+        private readonly IDatabase<Unit> _units;
         private readonly UnitsService _unitsService;
         private readonly UnitsCustomerQueueService _queue;
 
-        public MoveUnitsToPositionsInQueue(IRepository<Unit> units, UnitsService unitsService,
+        public MoveUnitsToPositionsInQueue(IDatabase<Unit> units, UnitsService unitsService,
             UnitsCustomerQueueService queue)
         {
             _units = units;

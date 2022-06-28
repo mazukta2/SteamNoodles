@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Levels
         public float LevelUpPower { get; private set; }
         public float LevelUpOffset { get; private set; }
 
-        public StageLevel(LevelDefinition definition, ConstructionsSettingsDefinition constructionsSettingsDefinition, IRepository<ConstructionScheme> schemes, IRepository<UnitType> units) : base(definition)
+        public StageLevel(LevelDefinition definition, ConstructionsSettingsDefinition constructionsSettingsDefinition, IDatabase<ConstructionScheme> schemes, IDatabase<UnitType> units) : base(definition)
         {
             PlacementFieldSize = definition.PlacementField.Size;
 

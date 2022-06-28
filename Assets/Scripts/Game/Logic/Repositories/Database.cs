@@ -8,7 +8,7 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class, IEntity
+    public class Database<T> : IDatabase<T> where T : class, IEntity
     {
         public event Action<T> OnAdded = delegate { };
         public event Action<T> OnRemoved = delegate { };
@@ -18,8 +18,16 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         private Dictionary<Uid, T> _repository = new ();
 
-        public Repository()
+        public Database()
         {
+        }
+
+        public Database<T> AddRange(params T[] entities)
+        {
+            foreach (var entity in entities)
+                Add(entity);
+            
+            return this;
         }
 
         public virtual T Add(T entity)

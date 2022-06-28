@@ -24,9 +24,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void EndWaveWorksWhenHandIsEmpty()
         {
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Database<Construction>();
+            var constructionsCardsRepository = new Database<ConstructionCard>();
+            var constructionsSchemeRepository = new Database<ConstructionScheme>();
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();
@@ -61,9 +61,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void EndWaveButtonRemovesBuildings()
         {
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Database<Construction>();
+            var constructionsCardsRepository = new Database<ConstructionCard>();
+            var constructionsSchemeRepository = new Database<ConstructionScheme>();
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();
@@ -109,9 +109,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void WaveProgressWorks()
         {
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Database<Construction>();
+            var constructionsCardsRepository = new Database<ConstructionCard>();
+            var constructionsSchemeRepository = new Database<ConstructionScheme>();
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();
@@ -155,9 +155,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void EndWaveGiveYouNewBuildings()
         {
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Database<Construction>();
+            var constructionsCardsRepository = new Database<ConstructionCard>();
+            var constructionsSchemeRepository = new Database<ConstructionScheme>();
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();
@@ -197,9 +197,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void ButtonsAreActivated()
         {
             var time = new GameTime();
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-            var constructionsSchemeRepository = new Repository<ConstructionScheme>();
+            var constructionsRepository = new Database<Construction>();
+            var constructionsCardsRepository = new Database<ConstructionCard>();
+            var constructionsSchemeRepository = new Database<ConstructionScheme>();
             var constructionDeck = new DeckService<ConstructionScheme>();
 
             var scheme = new ConstructionScheme();

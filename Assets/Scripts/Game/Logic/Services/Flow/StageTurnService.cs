@@ -12,13 +12,13 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Flow
 {
     public class StageTurnService : Disposable, IService
     {
-        private readonly IRepository<Construction> _constructions;
+        private readonly IDatabase<Construction> _constructions;
         private readonly UnitsCustomerQueueService _unitsCustomerQueueService;
         private readonly SequenceManager _sequence = new SequenceManager();
         private int _turnCounter = 0;
 
         public StageTurnService(
-            IRepository<Construction> constructions,
+            IDatabase<Construction> constructions,
             UnitsCustomerQueueService unitsCustomerQueueService)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));

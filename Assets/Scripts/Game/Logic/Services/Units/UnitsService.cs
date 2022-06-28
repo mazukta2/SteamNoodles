@@ -16,15 +16,15 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
         private readonly IGameRandom _random;
         private readonly UnitsTypesService _unitsTypesService;
         private readonly float _unitSize;
-        private readonly IRepository<Unit> _units;
+        private readonly IDatabase<Unit> _units;
 
-        public UnitsService(IRepository<Unit> units, UnitsSettingsDefinition unitsSettings,
+        public UnitsService(IDatabase<Unit> units, UnitsSettingsDefinition unitsSettings,
             LevelDefinition levelDefinition, IGameRandom random, UnitsTypesService unitsTypesService) 
             : this(units, random, unitsTypesService, unitsSettings.UnitSize)
         {
         }
 
-        public UnitsService(IRepository<Unit> units, IGameRandom random, UnitsTypesService unitsTypesService, float unitSize = 1)
+        public UnitsService(IDatabase<Unit> units, IGameRandom random, UnitsTypesService unitsTypesService, float unitSize = 1)
         {
             _units = units ?? throw new ArgumentNullException(nameof(units));
             _random = random ?? throw new ArgumentNullException(nameof(random));

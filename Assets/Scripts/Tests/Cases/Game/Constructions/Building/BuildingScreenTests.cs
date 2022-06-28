@@ -1,20 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
+﻿using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
-using Game.Assets.Scripts.Game.Logic.Repositories;
-using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations;
-using Game.Assets.Scripts.Game.Logic.Repositories.Aggregations.Constructions;
-using Game.Assets.Scripts.Game.Logic.Services.Assets;
-using Game.Assets.Scripts.Game.Logic.Services.Constructions.Ghost;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Environment;
-using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
-using Game.Assets.Scripts.Tests.Views.Ui;
+using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
 using NUnit.Framework;
 
@@ -26,49 +16,32 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void EscFromBuildingScreen()
         {
             var viewCollection = new ViewsCollection();
-            var view = new ScreenManagerView(viewCollection);
-
-            var (card, screenManager) = Setup(view);
-
+            var ghostSetup = new GhostConstructionSetup().FullDefault();
+            var screensSetup = new ScreensSetup(viewCollection).FullDefault();
+            
             var controls = new GameControlsService(new ControlsMock());
-            var ghost = new SingletonRepository<ConstructionGhost>();
-            var ghostRepository = new GhostPresentationRepository();
 
-            screenManager.Open<IBuildScreenView>(x => 
-                new BuildScreenPresenter(x, 
-                    new DataProvider<ConstructionCardData>(new ConstructionCardData()), ghostRepository, screenManager, controls));
+            screensSetup.ScreenService.Open<IBuildScreenView>(x => 
+                new BuildScreenPresenter(x,
+                    ghostSetup.ConstructionsCardsDatabase.Get().First().Id, 
+                    ghostSetup.GhostRepository, screensSetup.ScreenService, controls));
 
-            Assert.IsNotNull(view.Screen.FindView<BuildScreenView>());
-            Assert.IsNull(view.Screen.FindView<MainScreenView>());
+            Assert.IsNotNull(screensSetup.View.Screen.FindView<BuildScreenView>());
+            Assert.IsNull(screensSetup.View.Screen.FindView<MainScreenView>());
 
             controls.TapKey(GameKeys.Exit);
 
-            Assert.IsNull(view.Screen.FindView<BuildScreenView>());
-            Assert.IsNotNull(view.Screen.FindView<MainScreenView>());
+            Assert.IsNull(screensSetup.View.Screen.FindView<BuildScreenView>());
+            Assert.IsNotNull(screensSetup.View.Screen.FindView<MainScreenView>());
 
             viewCollection.Dispose();
             controls.Dispose();
+            
+            ghostSetup.Dispose();
+            screensSetup.Dispose();
+            controls.Dispose();
         }
 
-        private (ConstructionCard, ScreenService) Setup(ScreenManagerView view)
-        {
-            var assets = new AssetsMock();
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
-
-            var scheme = new ConstructionScheme();
-            schemesRepository.Add(scheme);
-            var card = new ConstructionCard(scheme);
-            var link = cardsRepository.Add(card);
-
-            assets.AddPrefab("Screens/BuildScreen", new DefaultViewPrefab(x => new BuildScreenView(x)));
-            assets.AddPrefab("Screens/MainScreen", new DefaultViewPrefab(x => new MainScreenView(x)));
-
-            var screenService = new ScreenService(new GameAssetsService(assets));
-            screenService.Bind(view);
-
-            return (link, screenService);
-        }
 
         [TearDown]
         public void TestDisposables()

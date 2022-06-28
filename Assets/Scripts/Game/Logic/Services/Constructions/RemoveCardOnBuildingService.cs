@@ -9,10 +9,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
 {
     public class RemoveCardOnBuildingService : Disposable, IService
     {
-        private readonly IRepository<Construction> _constructions;
+        private readonly IDatabase<Construction> _constructions;
         private readonly HandService _handService;
 
-        public RemoveCardOnBuildingService(IRepository<Construction> constructions, HandService handService)
+        public RemoveCardOnBuildingService(IDatabase<Construction> constructions, HandService handService)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _handService = handService ?? throw new ArgumentNullException(nameof(handService));

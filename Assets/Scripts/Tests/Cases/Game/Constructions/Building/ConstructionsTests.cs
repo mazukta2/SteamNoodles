@@ -138,8 +138,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void IsPlacementBoundariesRequestRight()
         {
-            var constructions = new Repository<Construction>();
-            var field = new SingletonRepository<Field>(new Field(10, new IntPoint(3, 3)));
+            var constructions = new Database<Construction>();
+            var field = new SingletonDatabase<Field>(new Field(10, new IntPoint(3, 3)));
             
             
             var viewCollection = new ViewsCollection();
@@ -161,39 +161,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new GameVector3(-10, 0, -10)));
         }
 
-        [Test, Order(TestCore.ModelOrder)]
-        public void IsBuildingWorks()
-        {
-            var constructionsRepository = new Repository<Construction>();
-            var constructionsCardsRepository = new Repository<ConstructionCard>();
-
-            var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
-            var handService = new HandService(constructionsCardsRepository);
-            var field = new Field(1, new IntPoint(11, 11));
-            var removeFromHandService = new RemoveCardOnBuildingService(constructionsRepository, handService);
-
-            var card = new ConstructionCard();
-            var ghost = new ConstructionGhost(card, field);
-            var ghostPlacing = new GhostPlacing(ghost, constructionsRepository, field);
-
-            var scheme = new ConstructionScheme();
-            constructionsCardsRepository.Add(card);
-
-            Assert.AreEqual(0, constructionsRepository.Count);
-
-            ghost.SetPosition(new FieldPosition(field, 1, 1), GameVector3.Zero);
-            ghostPlacing.Build();
-
-            Assert.AreEqual(1, constructionsRepository.Count);
-            var construction = constructionsRepository.Get().First();
-            Assert.AreEqual(new FieldPosition(field, 1, 1), construction.Position);
-            Assert.AreEqual(scheme, construction.Scheme);
-
-            Assert.AreEqual(0, constructionsCardsRepository.Count);
-            
-            pointsService.Dispose();
-            removeFromHandService.Dispose();
-        }
 
 
         [Test, Order(TestCore.ModelOrder)]
@@ -268,60 +235,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             }
         }
 
-        [Test, Order(TestCore.PresenterOrder)]
-        public void ShrinkIsCorrect()
-        {
-            var controls = new GameControlsService(new ControlsMock());
-            var assets = new AssetsMock();
-            assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssetsService(assets);
-            
-            // var field = new Field(1, new IntPoint(11, 11));
-            // var buildingMode = new GhostMovingService(ghost, new SingletonRepository<Field>(),controls);
-            
-            var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance: 4, view: "model");
-            var construction = new DataProvider<ConstructionPresenterData>(new ConstructionPresenterData(scheme));
-
-            var ghost = new GhostPresentation();
-            var ghostCollection = new GhostRepository();
-            var ghostPresentationCollection = new GhostPresentationRepository();
-            
-            var viewCollection = new ViewsCollection();
-            
-            var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, construction, ghostPresentationCollection, gameAssets, controls);
-
-            var viewModel = view.Container.FindView<ConstructionModelView>();
-
-            Assert.AreEqual(1, viewModel.Shrink.Value);
-
-            Assert.AreEqual(0.2f, viewModel.Shrink.Value);
-
-            // ghostPresentationCollection.Show();
-            
-            // buildingMode.SetTargetPosition(new GameVector3(0, 0, 1));
-
-            Assert.AreEqual(0.2f, viewModel.Shrink.Value);
-
-            // buildingMode.SetTargetPosition(new GameVector3(0, 0, 2));
-
-            Assert.AreEqual(0.5f, viewModel.Shrink.Value);
-
-            // buildingMode.SetTargetPosition(new GameVector3(0, 0, 4));
-
-            Assert.AreEqual(1f, viewModel.Shrink.Value);
-
-            // buildingMode.SetTargetPosition(new GameVector3(0, 0, 0));
-            Assert.AreEqual(0.2f, viewModel.Shrink.Value);
-
-            // ghost.Remove();
-
-            Assert.AreEqual(1f, viewModel.Shrink.Value);
-
-
-            viewCollection.Dispose();
-            controls.Dispose();
-        }
 
         [Test, Order(TestCore.PresenterOrder)]
         public void IsConstructionPlacedInRightPosition()
@@ -330,10 +243,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
             var gameAssets = new GameAssetsService(assets);
-            var constructionsRepository = new Repository<Construction>();
+            var constructionsRepository = new Database<Construction>();
 
             var field = new Field(1, new IntPoint(11, 11));
-            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghost = new SingletonDatabase<ConstructionGhost>();
             var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
@@ -363,10 +276,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
             var gameAssets = new GameAssetsService(assets);
-            var constructionsRepository = new Repository<Construction>();
+            var constructionsRepository = new Database<Construction>();
 
             var field = new Field(1, new IntPoint(11, 11));
-            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghost = new SingletonDatabase<ConstructionGhost>();
             var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
@@ -397,10 +310,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
             var gameAssets = new GameAssetsService(assets);
-            var constructionsRepository = new Repository<Construction>();
+            var constructionsRepository = new Database<Construction>();
 
             var field = new Field(1, new IntPoint(11, 11));
-            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghost = new SingletonDatabase<ConstructionGhost>();
             var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
@@ -434,10 +347,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var assets = new AssetsMock();
             assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
             var gameAssets = new GameAssetsService(assets);
-            var constructionsRepository = new Repository<Construction>();
+            var constructionsRepository = new Database<Construction>();
 
             var field = new Field(1, new IntPoint(11, 11));
-            var ghost = new SingletonRepository<ConstructionGhost>();
+            var ghost = new SingletonDatabase<ConstructionGhost>();
             var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
@@ -475,8 +388,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void PlacementFieldSpawnsConstructions()
         {
-            var constructionsRepository = new Repository<Construction>();
-            var ghost = new SingletonRepository<ConstructionGhost>();
+            var constructionsRepository = new Database<Construction>();
+            var ghost = new SingletonDatabase<ConstructionGhost>();
             var field = new FieldData();
             
             var viewCollection = new ViewsCollection();

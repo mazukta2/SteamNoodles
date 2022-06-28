@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories;
@@ -12,15 +13,15 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 
 namespace Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts
 {
-    public class GhostPlacing : PrivateDisposable, IAggregation
+    public class ConstructionGhostPlacing : Disposable, IAggregation
     {
         public Uid Id => _constructionGhost.Id;
         
-        private readonly IRepository<Construction> _constructions;
+        private readonly IDatabase<Construction> _constructions;
         private readonly Field _field;
         private readonly ConstructionGhost _constructionGhost;
 
-        public GhostPlacing(ConstructionGhost ghost, IRepository<Construction> constructions, Field field)
+        public ConstructionGhostPlacing(ConstructionGhost ghost, IDatabase<Construction> constructions, Field field)
         {
             _constructions = constructions;
             _field = field;
@@ -57,6 +58,11 @@ namespace Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts
             return occupiedCells.All(occupiedPosition => GetAvailableToBuildCells().Cells.Contains(occupiedPosition));
         }
 
+        public FieldRotation GetRotation()
+        {
+            return _constructionGhost.Rotation;
+        }
+
         public BuildingPoints GetPoints()
         {
             if (!CanBuild())
@@ -75,10 +81,18 @@ namespace Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts
             return _constructionGhost.Card.Scheme.Points + adjacentPoints;
         }
 
-        public void Destroy()
+        public void SetPosition(GameVector3 pointerPosition)
         {
+            var size = _constructionGhost.Card.Scheme.Placement.GetRect(_constructionGhost.Rotation);
+            var fieldPosition = _field.GetFieldPosition(pointerPosition, size);
+            _constructionGhost.SetPosition(fieldPosition, pointerPosition);
         }
-        
+
+        public void SetRotation(FieldRotation rotation)
+        {
+            _constructionGhost.SetRotation(rotation);
+        }
+
         private IReadOnlyCollection<Construction> GetAdjacentConstructions( 
             ConstructionScheme scheme,
             FieldPosition position, FieldRotation rotation)
@@ -157,6 +171,5 @@ namespace Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts
 
             return new GroupOfPositions(list);
         }
-
     }
 }

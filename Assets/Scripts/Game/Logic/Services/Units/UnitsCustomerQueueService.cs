@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
 {
     public class UnitsCustomerQueueService : Disposable, IService
     {
-        private readonly IRepository<Unit> _units;
+        private readonly IDatabase<Unit> _units;
         private readonly UnitsService _unitsService;
         private readonly UnitsCrowdService _crowd;
         private readonly BuildingPointsService _points;
@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
         private GameVector3 _queueFirstPosition;
         private float _queuePositionZ;
 
-        public UnitsCustomerQueueService(IRepository<Unit> units, 
+        public UnitsCustomerQueueService(IDatabase<Unit> units, 
             UnitsService unitsService,
             UnitsCrowdService crowd,
             CoinsService coins,
@@ -42,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
         {
         }
 
-        public UnitsCustomerQueueService(IRepository<Unit> units, UnitsService unitsService, UnitsCrowdService crowd,
+        public UnitsCustomerQueueService(IDatabase<Unit> units, UnitsService unitsService, UnitsCrowdService crowd,
             CoinsService coins,
             BuildingPointsService points,
             IGameTime time, IGameRandom random, GameVector3 firstPositionOffset, float queuePositionZ = 0, float animationDelay = 0)

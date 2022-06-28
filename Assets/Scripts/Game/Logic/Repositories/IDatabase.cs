@@ -4,7 +4,7 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public interface IRepository<T> : IEntityList<T>, IBaseRepository where T : class, IEntity
+    public interface IDatabase<T> : IEntityList<T>, IBasicDatabase where T : class, IEntity
     {
         event Action<T> OnAdded;
         event Action<T> OnRemoved;

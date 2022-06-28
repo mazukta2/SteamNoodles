@@ -11,16 +11,16 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
 {
     public class SchemesService : IService
     {
-        private readonly IRepository<ConstructionScheme> _schemes;
+        private readonly IDatabase<ConstructionScheme> _schemes;
         private readonly DeckService<ConstructionScheme> _deck;
 
-        public SchemesService(IRepository<ConstructionScheme> schemes, DeckService<ConstructionScheme> deck)
+        public SchemesService(IDatabase<ConstructionScheme> schemes, DeckService<ConstructionScheme> deck)
         {
             _schemes = schemes ?? throw new ArgumentNullException(nameof(schemes));
             _deck = deck ?? throw new ArgumentNullException(nameof(deck));
         }
 
-        public SchemesService(IRepository<ConstructionScheme> schemes, DeckService<ConstructionScheme> deck,
+        public SchemesService(IDatabase<ConstructionScheme> schemes, DeckService<ConstructionScheme> deck,
             IReadOnlyDictionary<ConstructionScheme, int> availableConstructions)
         {
             _schemes = schemes ?? throw new ArgumentNullException(nameof(schemes));

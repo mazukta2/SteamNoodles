@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         private void HandleClick()
         {
-            _screenService.Open<IBuildScreenView>(view => view.Init(_model));
+            _screenService.Open<IBuildScreenView>(view => view.Init(_model.Get().Id));
         }
 
         private void UpdateAmount()

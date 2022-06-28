@@ -5,13 +5,13 @@ using Game.Assets.Scripts.Game.Logic.Entities;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public class SingletonRepository<T> : Repository<T>, ISingletonRepository<T> where T : class, IEntity
+    public class SingletonDatabase<T> : Database<T>, ISingletonDatabase<T> where T : class, IEntity
     {
-        public SingletonRepository()
+        public SingletonDatabase()
         {
         }
 
-        public SingletonRepository(T entity)
+        public SingletonDatabase(T entity)
         {
             base.Add(entity);
         }
@@ -20,6 +20,14 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         public new event Action OnRemoved = delegate {  };
         public new event Action<IModelEvent> OnEvent = delegate {  };
 
+        public new SingletonDatabase<T> AddRange(params T[] entities)
+        {
+            foreach (var entity in entities)
+                Add(entity);
+            
+            return this;
+        }
+        
         public override T Add(T entity)
         {
             if (Count != 0)

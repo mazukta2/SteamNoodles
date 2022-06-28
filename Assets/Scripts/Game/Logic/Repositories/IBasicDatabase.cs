@@ -2,7 +2,7 @@
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public interface IBaseRepository : IService
+    public interface IBasicDatabase : IService
     {
     }
 }

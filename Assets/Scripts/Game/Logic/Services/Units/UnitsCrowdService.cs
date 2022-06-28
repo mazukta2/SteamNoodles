@@ -14,21 +14,21 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
 {
     public class UnitsCrowdService : Disposable, IService
     {
-        private readonly IRepository<Unit> _units;
+        private readonly IDatabase<Unit> _units;
         private readonly UnitsService _unitsService;
         private readonly IGameRandom _random;
         private readonly IGameTime _time;
         private readonly int _crowdAmount;
         private readonly FloatRect _unitRect;
 
-        public UnitsCrowdService(IRepository<Unit> units, UnitsService unitsService, IGameTime time, StageLevel stageLevel,
+        public UnitsCrowdService(IDatabase<Unit> units, UnitsService unitsService, IGameTime time, StageLevel stageLevel,
             IGameRandom random) : this(units, unitsService, time, random,
                 stageLevel.UnitsRect,
                 stageLevel.CrowdUnitsAmount)
         {
         }
 
-        public UnitsCrowdService(IRepository<Unit> units, UnitsService unitsService, IGameTime time,
+        public UnitsCrowdService(IDatabase<Unit> units, UnitsService unitsService, IGameTime time,
             IGameRandom random, FloatRect rect, int crowdAmount = 0)
         {
             _units = units;

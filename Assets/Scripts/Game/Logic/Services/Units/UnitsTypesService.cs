@@ -9,10 +9,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
 {
     public class UnitsTypesService : IService
     {
-        private IRepository<UnitType> _types;
+        private IDatabase<UnitType> _types;
         private DeckService<UnitType> _deck;
 
-        public UnitsTypesService(IRepository<UnitType> types, DeckService<UnitType> deck, StageLevel level)
+        public UnitsTypesService(IDatabase<UnitType> types, DeckService<UnitType> deck, StageLevel level)
         {
             _types = types ?? throw new ArgumentNullException(nameof(types));
             _deck = deck ?? throw new ArgumentNullException(nameof(deck));
@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
                 _deck.Add(item.Key, item.Value);
         }
 
-        public UnitsTypesService(IRepository<UnitType> types, DeckService<UnitType> deck)
+        public UnitsTypesService(IDatabase<UnitType> types, DeckService<UnitType> deck)
         {
             _types = types ?? throw new ArgumentNullException(nameof(types));
             _deck = deck ?? throw new ArgumentNullException(nameof(deck));

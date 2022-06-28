@@ -26,7 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
 
             _list.Add(service);
 
-            if (service is IBaseRepository repository)
+            if (service is IBasicDatabase repository)
                 _repository.Add(repository);
 
             return service;
@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
 
             _list.Remove(service);
 
-            if (service is IBaseRepository repository)
+            if (service is IBasicDatabase repository)
                 _repository.Remove(repository);
 
             if (service is IDisposable disposable)

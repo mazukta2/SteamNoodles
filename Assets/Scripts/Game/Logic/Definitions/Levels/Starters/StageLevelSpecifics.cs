@@ -17,8 +17,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters
     {
         public override Level CreateEntity(LevelDefinition definition, ServiceManager services)
         {
-            var schemes = services.Get<IRepository<ConstructionScheme>>();
-            var units = services.Get<IRepository<UnitType>>();
+            var schemes = services.Get<IDatabase<ConstructionScheme>>();
+            var units = services.Get<IDatabase<UnitType>>();
             var definitions = services.Get<DefinitionsService>();
             return new StageLevel(definition, definitions.Get<ConstructionsSettingsDefinition>(), schemes, units);
         }

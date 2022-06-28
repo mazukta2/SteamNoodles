@@ -6,14 +6,14 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services.Repositories
 {
     public class RepositoryManager
     {
-        private List<IBaseRepository> _list = new List<IBaseRepository>();
+        private List<IBasicDatabase> _list = new List<IBasicDatabase>();
 
-        public void Add(IBaseRepository repository)
+        public void Add(IBasicDatabase repository)
         {
             _list.Add(repository);
         }
 
-        public void Remove(IBaseRepository repository)
+        public void Remove(IBasicDatabase repository)
         {
             _list.Remove(repository);
         }

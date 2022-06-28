@@ -41,7 +41,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         public void IsEventsWorking()
         {
             var entity = new TestEntity(1, new TestValueObject(2));
-            var repository = new Repository<TestEntity>();
+            var repository = new Database<TestEntity>();
             repository.Add(entity);
             var isEvent = false;
             repository.OnEvent += Repository_OnModelEvent;

@@ -74,7 +74,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         public void LevelIsLoading()
         {
             var levelManager = new LevelsManagerMock();
-            var levels = new Repository<Level>();
+            var levels = new Database<Level>();
             var firstLevel = levelManager.Add(new Level());
             var levelService = new LevelsService(levelManager, levels, firstLevel);
 
@@ -100,7 +100,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         public void LevelReloadingWorked()
         {
             var levelManager = new LevelsManagerMock();
-            var levels = new Repository<Level>();
+            var levels = new Database<Level>();
             var firstLevel = levelManager.Add(new Level());
             var levelService = new LevelsService(levelManager, levels, firstLevel);
             levelService.StartFirstLevel();
@@ -135,7 +135,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
 
             var levelManager = new LevelsManagerMock();
             levelManager.Add(level);
-            var levels = new Repository<Level>();
+            var levels = new Database<Level>();
 
             var levelService = new LevelsService(services, levelManager, levels, definitions, level);
             levelService.StartFirstLevel();

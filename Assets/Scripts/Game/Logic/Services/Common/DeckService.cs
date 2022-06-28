@@ -9,62 +9,62 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Common
     public class DeckService<T>
     {
         private readonly IGameRandom _random;
-        private readonly ISingletonRepository<Deck<T>> _repository;
+        private readonly ISingletonDatabase<Deck<T>> _database;
 
         public DeckService()
         {
             _random = new SessionRandom();
-            _repository = new SingletonRepository<Deck<T>>();
+            _database = new SingletonDatabase<Deck<T>>();
             CreateDeck();
         }
 
         public DeckService(IGameRandom random)
         {
             _random = random;
-            _repository = new SingletonRepository<Deck<T>>();
+            _database = new SingletonDatabase<Deck<T>>();
             CreateDeck();
         }
 
-        public DeckService(ISingletonRepository<Deck<T>> repository, IGameRandom random)
+        public DeckService(ISingletonDatabase<Deck<T>> database, IGameRandom random)
         {
             _random = random;
-            _repository = repository;
+            _database = database;
             CreateDeck();
         }
 
         public void Add(T element, int value = 1)
         {
-            _repository.Get().Add(element, value);
+            _database.Get().Add(element, value);
         }
 
         public void Remove(T element, int value = 1)
         {
-            _repository.Get().Remove(element, value);
+            _database.Get().Remove(element, value);
         }
 
         public IReadOnlyDictionary<T, int> GetItems()
         {
-            return _repository.Get().GetItems();
+            return _database.Get().GetItems();
         }
 
         public ReadOnlyCollection<T> GetItemsList()
         {
-            return _repository.Get().GetItemsList();
+            return _database.Get().GetItemsList();
         }
 
         public T Take()
         {
-            return _repository.Get().Take(_random);
+            return _database.Get().Take(_random);
         }
 
         public bool IsEmpty()
         {
-            return _repository.Get().IsEmpty();
+            return _database.Get().IsEmpty();
         }
 
         private void CreateDeck()
         {
-            if (!_repository.Has()) _repository.Add(new Deck<T>());
+            if (!_database.Has()) _database.Add(new Deck<T>());
         }
     }
 }

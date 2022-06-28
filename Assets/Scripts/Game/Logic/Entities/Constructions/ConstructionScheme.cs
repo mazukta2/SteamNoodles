@@ -107,7 +107,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
         }
 
         public static IReadOnlyCollection<ConstructionScheme> FillWithDefinitions(IEnumerable<ConstructionDefinition> definitions,
-            IRepository<ConstructionScheme> repository,
+            IDatabase<ConstructionScheme> database,
             ConstructionsSettingsDefinition constructionsSettingsDefinition)
         {
             var result = new Dictionary<ConstructionDefinition, ConstructionScheme>();
@@ -126,7 +126,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 
             foreach (var (definition, entity) in result)
             {
-                repository.Add(entity);
+                database.Add(entity);
             }
 
             return result.Values.AsReadOnly();

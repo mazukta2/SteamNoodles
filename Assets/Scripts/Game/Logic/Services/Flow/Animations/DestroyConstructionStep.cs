@@ -8,12 +8,12 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Flow.Animations
 {
     public class DestroyConstructionStep : BaseSequenceStep
     {
-        private readonly IRepository<Construction> _constructions;
+        private readonly IDatabase<Construction> _constructions;
         private readonly Construction _construction;
         private readonly float _delay;
         private readonly TimeUpdater _updater;
 
-        public DestroyConstructionStep(IRepository<Construction> constructions, Construction construction, IGameTime time, float delay)
+        public DestroyConstructionStep(IDatabase<Construction> constructions, Construction construction, IGameTime time, float delay)
         {
             _constructions = constructions;
             _construction = construction;

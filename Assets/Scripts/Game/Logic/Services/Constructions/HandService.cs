@@ -10,18 +10,18 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
 {
     public class HandService : IService
     {
-        private readonly IRepository<ConstructionCard> _repository;
+        private readonly IDatabase<ConstructionCard> _database;
 
-        public HandService(IRepository<ConstructionCard> repository)
+        public HandService(IDatabase<ConstructionCard> database)
         {
-            _repository = repository;
+            _database = database;
         }
 
         public void Remove(ConstructionCard card)
         {
             card.Remove(new CardAmount(1));
             if (card.Amount.Value == 0)
-                _repository.Remove(card);
+                _database.Remove(card);
         }
 
         public ConstructionCard Add(ConstructionScheme scheme)
@@ -42,19 +42,19 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
             else
             {
                 var newCard = new ConstructionCard(scheme, amount);
-                _repository.Add(newCard);
+                _database.Add(newCard);
                 return newCard;
             }
         }
 
         public IReadOnlyCollection<ConstructionCard> GetCards()
         {
-            return _repository.Get();
+            return _database.Get();
         }
 
         public bool Has(ConstructionCard card)
         {
-            return _repository.Has(card);
+            return _database.Has(card);
         }
     }
 }

@@ -19,8 +19,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
         public void EscFromMainScreen()
         {
             var assets = new AssetsMock();
-            var schemesRepository = new Repository<ConstructionScheme>();
-            var cardsRepository = new Repository<ConstructionCard>();
+            var schemesRepository = new Database<ConstructionScheme>();
+            var cardsRepository = new Database<ConstructionCard>();
 
             // var buildingModeService = new GhostService(new Field(1, IntPoint.One));
 

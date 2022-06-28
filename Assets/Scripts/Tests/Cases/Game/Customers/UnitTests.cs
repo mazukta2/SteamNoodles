@@ -22,8 +22,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void MovementEventsWorks()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var units = new Database<Unit>();
+            var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
             unitTypes.Add(type);
@@ -62,8 +62,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void SpeedUpWorks()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var units = new Database<Unit>();
+            var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType(new UnitSpeed(0.5f), new UnitSpeed(1), 0, 0.5f, 1, 1);
             unitTypes.Add(type);
@@ -97,8 +97,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void SpeedDownWorks()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var units = new Database<Unit>();
+            var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType(new UnitSpeed(0.5f), new UnitSpeed(1), 0, 0.5f, 1, 1);
             unitTypes.Add(type);
@@ -130,8 +130,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.PresenterOrder)]
         public void RotationWorks()
         {
-            var units = new Repository<Unit>();
-            var unitTypes = new Repository<UnitType>();
+            var units = new Database<Unit>();
+            var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType(new UnitSpeed(0.5f), new UnitSpeed(1), 0, 0.5f, 1, 1);
             unitTypes.Add(type);

@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
                 view,
                 IPresenterServices.Default?.Get<GhostPresentationRepository>(),
                 IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionPresenterData>>().Get(),
-                IPresenterServices.Default?.Get<ISingletonRepository<Field>>().Get())
+                IPresenterServices.Default?.Get<ISingletonDatabase<Field>>().Get())
         {
         }
 

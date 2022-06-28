@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Flow
     {
         public event Action OnDayFinished = delegate { };
 
-        private readonly IRepository<Construction> _constructions;
+        private readonly IDatabase<Construction> _constructions;
         private readonly HandService _hand;
         private readonly RewardsService _rewardsService;
         private readonly IGameTime _time;
@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Flow
         private readonly SequenceManager _sequence = new SequenceManager();
         private int _wave;
 
-        public StageWaveService(IRepository<Construction> constructions, 
+        public StageWaveService(IDatabase<Construction> constructions, 
             HandService handService, 
             RewardsService rewardsService,
             IGameTime time,

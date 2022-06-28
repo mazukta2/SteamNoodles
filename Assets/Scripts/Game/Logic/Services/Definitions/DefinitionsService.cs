@@ -49,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Definitions
         private void LoadUnits()
         {
             var unitSettings = _definitions.Get<UnitsSettingsDefinition>();
-            var repository = new Repository<UnitType>();
+            var repository = new Database<UnitType>();
             var definitions = _definitions.GetList<CustomerDefinition>();
             foreach (var item in _definitions.GetList<CustomerDefinition>())
                 repository.Add(new UnitType(item, unitSettings));
@@ -58,7 +58,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Definitions
 
         private void LoadConstructions()
         {
-            var repository = new Repository<ConstructionScheme>();
+            var repository = new Database<ConstructionScheme>();
             var constructionsDefinitions = _definitions.GetList<ConstructionDefinition>();
             var constructionSettings = _definitions.Get<ConstructionsSettingsDefinition>();
             ConstructionScheme.FillWithDefinitions(constructionsDefinitions, repository, constructionSettings);

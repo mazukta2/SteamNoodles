@@ -10,10 +10,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
 {
     public class PointsOnBuildingService : Disposable, IService
     {
-        private readonly IRepository<Construction> _constructions;
+        private readonly IDatabase<Construction> _constructions;
         private readonly BuildingPointsService _pointsService;
 
-        public PointsOnBuildingService(IRepository<Construction> constructions, 
+        public PointsOnBuildingService(IDatabase<Construction> constructions, 
             BuildingPointsService pointsService)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));

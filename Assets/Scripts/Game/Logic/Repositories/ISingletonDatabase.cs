@@ -3,7 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Entities;
 
 namespace Game.Assets.Scripts.Game.Logic.Repositories
 {
-    public interface ISingletonRepository<T> : IRepository<T> where T : class, IEntity
+    public interface ISingletonDatabase<T> : IDatabase<T> where T : class, IEntity
     {
         new event Action OnAdded;
         new event Action OnRemoved;
