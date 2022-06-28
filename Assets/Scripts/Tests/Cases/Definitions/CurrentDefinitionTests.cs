@@ -1,5 +1,4 @@
-﻿using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Definitions;
+﻿using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
@@ -7,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using NUnit.Framework;
 using System.IO;
 using System.Linq;
+using Game.Assets.Scripts.Game.Environment.Engine;
 
 namespace Game.Assets.Scripts.Tests.Cases.Definitions
 {

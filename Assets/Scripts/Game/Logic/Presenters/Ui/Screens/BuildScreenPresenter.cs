@@ -1,5 +1,4 @@
-﻿using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Common.Helpers;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;

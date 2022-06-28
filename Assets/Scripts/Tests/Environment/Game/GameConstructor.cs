@@ -1,10 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
-using Game.Assets.Scripts.Game.External;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Tests.Setups;
-using Game.Tests.Controllers;
-using Game.Tests.Mocks.Settings.Levels;
 using System;
+using Game.Assets.Scripts.Tests.Definitions;
 
 namespace Game.Assets.Scripts.Tests.Environment.Game
 {

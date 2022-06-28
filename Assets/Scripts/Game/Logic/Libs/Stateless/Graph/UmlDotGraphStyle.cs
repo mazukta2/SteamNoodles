@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Stateless.Graph
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Graph
 {
     /// <summary>
     /// Generate DOT graphs in basic UML style

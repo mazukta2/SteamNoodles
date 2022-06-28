@@ -1,7 +1,6 @@
-﻿using Game.Assets.Scripts.Tests.Environment.Game;
+﻿using Game.Assets.Scripts.Tests.Definitions;
+using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Views.Level.Units;
-using Game.Tests.Cases;
-using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers

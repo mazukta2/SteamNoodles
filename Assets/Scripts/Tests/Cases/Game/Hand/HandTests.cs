@@ -1,5 +1,4 @@
-﻿using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
@@ -8,11 +7,11 @@ using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Setups;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
-using Game.Tests.Cases;
-using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Definitions.Common;
+using Game.Assets.Scripts.Tests.Definitions;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
 {

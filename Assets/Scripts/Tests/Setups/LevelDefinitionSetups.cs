@@ -4,10 +4,10 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
-using Game.Tests.Mocks.Settings.Levels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Assets.Scripts.Tests.Definitions;
 
 namespace Game.Assets.Scripts.Tests.Setups
 {

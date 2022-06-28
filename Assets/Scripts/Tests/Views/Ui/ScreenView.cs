@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Tests.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Assets.Scripts.Game.Logic.Views.Ui;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui
 {

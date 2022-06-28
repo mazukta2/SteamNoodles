@@ -1,4 +1,4 @@
-﻿namespace Stateless.Reflection
+﻿namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Reflection
 {
     /// <summary>
     /// Represents a trigger in a statemachine.

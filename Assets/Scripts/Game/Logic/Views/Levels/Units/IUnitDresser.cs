@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
+﻿namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Units
 {
     public interface IUnitDresser
     {

@@ -10,12 +10,11 @@ using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
-using Game.Tests.Cases;
-using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Tests.Definitions;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 {

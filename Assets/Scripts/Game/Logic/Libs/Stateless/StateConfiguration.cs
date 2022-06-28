@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Stateless
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless
 {
     public partial class StateMachine<TState, TTrigger>
     {

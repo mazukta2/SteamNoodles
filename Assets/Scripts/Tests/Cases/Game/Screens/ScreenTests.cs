@@ -3,7 +3,6 @@ using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
-using Game.Tests.Cases;
 using NUnit.Framework;
 using System.Linq;
 

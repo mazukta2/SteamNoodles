@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Definitions.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Definitions.Customers
 {
     public class UnitsSettingsDefinition
     {

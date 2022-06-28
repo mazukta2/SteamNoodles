@@ -1,9 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Views.Common;
+﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
+namespace Game.Assets.Scripts.Game.Logic.Common.Json.Convertors
 {
     public class AssetConventer : ReadOnlyJsonConverter
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Stateless.Reflection
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Reflection
 {
     /// <summary>
     /// 

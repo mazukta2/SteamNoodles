@@ -1,5 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

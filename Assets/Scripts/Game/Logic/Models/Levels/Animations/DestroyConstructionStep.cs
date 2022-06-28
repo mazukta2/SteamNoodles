@@ -3,7 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Calculations;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
+namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Animations
 {
     public class DestroyConstructionStep : BaseSequenceStep
     {

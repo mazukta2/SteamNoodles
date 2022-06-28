@@ -1,19 +1,17 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using System;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
-using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
-using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
+using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
-using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Level
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 {
     public class GhostManagerPresenter : BasePresenter<IGhostManagerView>, IGhostPresenter
     {

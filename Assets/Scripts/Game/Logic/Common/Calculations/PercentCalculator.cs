@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.Game.Logic.Common.Math;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 
 namespace Game.Assets.Scripts.Game.Logic.Common.Calculations
 {

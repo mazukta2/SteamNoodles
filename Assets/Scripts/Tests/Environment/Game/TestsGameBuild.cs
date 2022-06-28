@@ -9,10 +9,10 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Views.Assets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using Game.Tests.Controllers;
-using Game.Tests.Mocks.Settings.Levels;
 using System;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Views.Controls;
+using Game.Assets.Scripts.Tests.Presenters.Localization;
 
 namespace Game.Assets.Scripts.Tests.Environment.Game
 {

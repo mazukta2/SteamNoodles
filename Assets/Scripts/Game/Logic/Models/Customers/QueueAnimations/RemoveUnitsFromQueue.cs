@@ -1,11 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
-using Game.Assets.Scripts.Game.Logic.Models.Units;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
+using Game.Assets.Scripts.Game.Logic.Common.Animations;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
+namespace Game.Assets.Scripts.Game.Logic.Models.Customers.QueueAnimations
 {
     public class RemoveUnitsFromQueue : BaseSequenceStep
     {

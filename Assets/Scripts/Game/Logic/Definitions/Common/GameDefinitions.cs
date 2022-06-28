@@ -1,8 +1,8 @@
-﻿using Game.Assets.Scripts.Game.External;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Assets.Scripts.Game.Environment.Engine;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Common
 {

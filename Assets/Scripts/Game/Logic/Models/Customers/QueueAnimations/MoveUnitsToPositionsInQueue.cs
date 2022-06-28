@@ -1,12 +1,9 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
+﻿using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Animations;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Customers.Animations
+namespace Game.Assets.Scripts.Game.Logic.Models.Customers.QueueAnimations
 {
     public class MoveUnitsToPositionsInQueue : BaseSequenceStep
     {

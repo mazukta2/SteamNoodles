@@ -1,9 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
-using Game.Assets.Scripts.Tests.Environment.Game;
-using Game.Tests.Cases;
+﻿using Game.Assets.Scripts.Tests.Environment.Game;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Common.Json.Convertors;
 
 namespace Game.Assets.Scripts.Tests.Cases.Definitions
 {

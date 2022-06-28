@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Tests.Views.Ui.Screens.Elements;
-using Game.Assets.Scripts.Game.Environment.Creation;
+﻿using Game.Assets.Scripts.Game.Environment.Creation;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens;
 using Game.Assets.Scripts.Game.Logic.Views;
@@ -9,6 +8,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using Game.Assets.Scripts.Tests.Views.Ui;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens.Elements;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
 {

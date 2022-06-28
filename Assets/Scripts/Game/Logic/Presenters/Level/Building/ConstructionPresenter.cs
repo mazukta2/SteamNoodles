@@ -1,11 +1,10 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using System;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level;
-using Game.Assets.Scripts.Game.Logic.Views.Level;
-using System;
+using Game.Assets.Scripts.Game.Logic.Views.Levels;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Constructions.Placements
+namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 {
     public class ConstructionPresenter : BasePresenter<IConstructionView>
     {

@@ -5,13 +5,13 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Animations;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {

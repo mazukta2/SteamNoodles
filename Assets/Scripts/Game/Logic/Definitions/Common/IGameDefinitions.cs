@@ -1,9 +1,6 @@
-﻿using Game.Assets.Scripts.Game.External;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Game.Assets.Scripts.Game.Logic.Definitions
+namespace Game.Assets.Scripts.Game.Logic.Definitions.Common
 {
     public interface IGameDefinitions
     {

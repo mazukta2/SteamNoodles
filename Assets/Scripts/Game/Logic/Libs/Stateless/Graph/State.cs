@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Libs.Stateless.Reflection;
 
-using Stateless.Reflection;
-
-namespace Stateless.Graph
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Graph
 {
     /// <summary>
     /// Used to keep track of a state that has substates

@@ -1,16 +1,14 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Animations;
+﻿using System;
+using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Common.Animations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Customers;
-using Game.Assets.Scripts.Game.Logic.Models.Customers.Animations;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Customers.QueueAnimations;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Models.Units;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Units
+namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 {
     public class CustomerQueue : Disposable
     {

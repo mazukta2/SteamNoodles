@@ -1,7 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
 
-namespace Game.Tests.Mocks.Settings.Levels
+namespace Game.Assets.Scripts.Tests.Definitions
 {
     public class LevelDefinitionMock : LevelDefinition
     {

@@ -1,6 +1,6 @@
-﻿using Stateless.Reflection;
+﻿using Game.Assets.Scripts.Game.Logic.Libs.Stateless.Reflection;
 
-namespace Stateless.Graph
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Graph
 {
     /// <summary>
     /// Class to generate a DOT grah in UML format

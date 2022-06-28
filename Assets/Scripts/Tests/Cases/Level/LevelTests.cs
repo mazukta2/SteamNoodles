@@ -5,7 +5,6 @@ using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Setups;
-using Game.Tests.Cases;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Level

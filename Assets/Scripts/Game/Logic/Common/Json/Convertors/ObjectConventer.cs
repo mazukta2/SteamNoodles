@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reflection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors
+namespace Game.Assets.Scripts.Game.Logic.Common.Json.Convertors
 {
     public class ObjectConventer<TMain, TInterface>: ReadOnlyJsonConverter
     {

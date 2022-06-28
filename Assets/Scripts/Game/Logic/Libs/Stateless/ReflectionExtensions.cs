@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Stateless
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless
 {
     internal static class ReflectionExtensions
     {

@@ -5,8 +5,6 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
-using Game.Tests.Cases;
-using Game.Tests.Controllers;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Resources

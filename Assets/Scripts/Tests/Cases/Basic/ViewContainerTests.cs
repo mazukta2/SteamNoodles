@@ -3,7 +3,6 @@ using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Views;
 using Game.Assets.Scripts.Tests.Views.Common.Creation;
-using Game.Tests.Cases;
 using NUnit.Framework;
 
 namespace Game.Assets.Scripts.Tests.Cases.Basic

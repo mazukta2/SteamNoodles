@@ -2,9 +2,9 @@
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using Game.Tests.Mocks.Settings.Levels;
 using System;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Tests.Definitions;
 
 namespace Game.Assets.Scripts.Tests.Environment
 {

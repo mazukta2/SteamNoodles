@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 
 namespace Game.Assets.Scripts.Tests.Setups
 {

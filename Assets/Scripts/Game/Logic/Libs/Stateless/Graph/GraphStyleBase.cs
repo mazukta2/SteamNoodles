@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Stateless.Graph
+namespace Game.Assets.Scripts.Game.Logic.Libs.Stateless.Graph
 {
     /// <summary>
     /// Style definition for StateGraph.

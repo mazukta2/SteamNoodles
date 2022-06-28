@@ -1,11 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Newtonsoft.Json;
 
-namespace Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion
+namespace Game.Assets.Scripts.Game.Logic.Common.Json
 {
     public abstract class ReadOnlyJsonConverter : JsonConverter
     {

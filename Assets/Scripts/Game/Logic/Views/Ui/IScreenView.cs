@@ -1,9 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Presenters.Ui;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Game.Assets.Scripts.Game.Logic.Views
+﻿namespace Game.Assets.Scripts.Game.Logic.Views.Ui
 {
     public interface IScreenView : IViewWithPresenter
     {

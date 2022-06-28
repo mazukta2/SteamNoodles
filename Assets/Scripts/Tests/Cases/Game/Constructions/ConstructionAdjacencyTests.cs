@@ -1,18 +1,16 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
+using Game.Assets.Scripts.Tests.Definitions;
 using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens;
-using Game.Tests.Cases;
-using Game.Tests.Mocks.Settings.Levels;
 using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
+namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
 {
     public class ConstructionAdjacencyTests
     {

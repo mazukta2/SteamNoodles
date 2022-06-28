@@ -1,12 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Models.Units;
-using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
-using System;
 
-namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
+namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Units
 {
     public interface IUnitView : IViewWithPresenter
     {

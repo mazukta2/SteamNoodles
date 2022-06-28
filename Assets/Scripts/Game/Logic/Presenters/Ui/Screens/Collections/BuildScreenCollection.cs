@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions;
+using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;

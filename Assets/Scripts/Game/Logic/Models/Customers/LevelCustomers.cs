@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 {

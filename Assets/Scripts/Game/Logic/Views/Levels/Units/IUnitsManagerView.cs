@@ -1,13 +1,10 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Definitions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Definitions.Common;
+using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
 
-namespace Game.Assets.Scripts.Game.Logic.Views.Level.Units
+namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Units
 {
     public interface IUnitsManagerView : IViewWithPresenter, IViewWithDefaultPresenter
     {

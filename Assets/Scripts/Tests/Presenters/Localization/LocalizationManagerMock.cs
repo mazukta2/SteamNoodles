@@ -1,10 +1,7 @@
-﻿using Game.Assets.Scripts.Game.External;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 
-namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
+namespace Game.Assets.Scripts.Tests.Presenters.Localization
 {
     public class LocalizationManagerMock : ILocalizationManager
     {
