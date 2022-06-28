@@ -1,4 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Settings.Convertion.Convertors;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Json.Convertors;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Newtonsoft.Json;
 
