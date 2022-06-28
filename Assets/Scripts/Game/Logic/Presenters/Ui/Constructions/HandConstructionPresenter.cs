@@ -3,13 +3,12 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Databases;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions.Animations;
+using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -21,16 +20,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
         private bool _isModelDisposed;
-        private readonly IDataProvider<ConstructionCardData> _model;
+        private readonly ConstructionCardPresentation _model;
 
-        public HandConstructionPresenter(IHandConstructionView view, IDataProvider<ConstructionCardData> model) 
-            : this(view, model, 
+        public HandConstructionPresenter(IHandConstructionView view,
+            Uid modelId) 
+            : this(view, IPresenterServices.Default.Get<ConstructionCardsRepository>().Get(modelId), 
                   IPresenterServices.Default.Get<ScreenService>())
         {
 
         }
 
-        public HandConstructionPresenter(IHandConstructionView view, IDataProvider<ConstructionCardData> model,
+        public HandConstructionPresenter(IHandConstructionView view, ConstructionCardPresentation model,
              ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -40,13 +40,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
             view.Button.SetAction(HandleClick);
 
-            _model.OnEvent += HandleOnEvent;
-            _model.OnRemoved += Model_OnDispose;
+            // _model.OnEvent += HandleOnEvent;
+            // _model.OnRemoved += Model_OnDispose;
             _view.OnHighlihgtedEnter += _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit += _view_OnHighlihgtedExit;
             _animations.OnAnimationsCompleted += _animations_OnAnimationsCompleted;
 
-            _view.Image.SetPath(_model.Get().HandImagePath);
+            // _view.Image.SetPath(_model.Get().HandImagePath);
             UpdateAmount();
         }
 
@@ -55,20 +55,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             base.DisposeInner();
             _animations.Dispose();
             _view.TooltipContainer.Clear();
-            _model.OnEvent -= HandleOnEvent;
+            // _model.OnEvent -= HandleOnEvent;
             _view.OnHighlihgtedEnter -= _view_OnHighlihgtedEnter;
             _view.OnHighlihgtedExit -= _view_OnHighlihgtedExit;
-            _model.OnRemoved -= Model_OnDispose;
+            // _model.OnRemoved -= Model_OnDispose;
         }
 
         private void HandleClick()
         {
-            _screenService.Open<IBuildScreenView>(view => view.Init(_model.Get().Id));
+            _screenService.Open<IBuildScreenView>(view => view.Init(_model.Id));
         }
 
         private void UpdateAmount()
         {
-            var amount = _model.Get().Amount.Value;
+            var amount = _model.Amount.Value;
             if (_currentAmount == null)
                 _animations.Add(amount);
             else
@@ -79,7 +79,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                     _animations.Remove(_currentAmount.Value - amount);
             }
 
-            _currentAmount = _model.Get().Amount;
+            _currentAmount = _model.Amount;
 
         }
 
@@ -108,7 +108,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             _view.TooltipContainer.Clear();
             var view = _view.TooltipContainer.Spawn<IHandConstructionTooltipView>(_view.TooltipPrefab);
-            view.Init(_model.Get().Id);
+            view.Init(_model.Id);
         }
 
         private void _view_OnHighlihgtedExit()

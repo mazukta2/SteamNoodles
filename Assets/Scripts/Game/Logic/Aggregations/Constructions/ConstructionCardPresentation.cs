@@ -1,13 +1,13 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Localization;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 
-namespace Game.Assets.Scripts.Game.Logic.DataObjects.Constructions
+namespace Game.Assets.Scripts.Game.Logic.Aggregations.Constructions
 {
-    public struct ConstructionCardData : IData
+    public class ConstructionCardPresentation : Disposable, IAggregation
     {
         public string HandImagePath { get; set; }
         public Uid Id { get; set; }
@@ -17,9 +17,9 @@ namespace Game.Assets.Scripts.Game.Logic.DataObjects.Constructions
         public AdjacencyBonuses AdjacencyPoints { get; set; }
         public IntRect Size { get; set; }
 
-        public static ConstructionCardData Default()
+        public static ConstructionCardPresentation Default()
         {
-            var card = new ConstructionCardData();
+            var card = new ConstructionCardPresentation();
 
             return card;
         }

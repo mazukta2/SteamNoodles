@@ -8,12 +8,10 @@ using Game.Assets.Scripts.Tests.Views.Level.Building;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Databases;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Fields;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
@@ -608,7 +606,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             // var buildingMode = new GhostMovingService(ghost, new SingletonRepository<Field>(),controls);
             
             var scheme = new ConstructionScheme(ghostHalfShrinkDistance: 1, ghostShrinkDistance: 4, view: "model");
-            var construction = new DataProvider<ConstructionPresenterData>(new ConstructionPresenterData(scheme));
+            // var construction = new DataProvider<ConstructionPresentation>(new ConstructionPresentation(scheme));
 
             var ghost = new GhostPresentation();
             // var ghostCollection = new GhostRepository(new SingletonDatabase<ConstructionGhost>());
@@ -617,7 +615,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, construction, ghostPresentationCollection, gameAssets, controls);
+            // new ConstructionPresenter(view, construction, ghostPresentationCollection, gameAssets, controls);
 
             var viewModel = view.Container.FindView<ConstructionModelView>();
 

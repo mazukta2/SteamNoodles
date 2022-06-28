@@ -1,9 +1,11 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Math;
+﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Entities.Units;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
-namespace Game.Assets.Scripts.Game.Logic.DataObjects.Units
+namespace Game.Assets.Scripts.Game.Logic.Aggregations.Units
 {
-    public struct UnitData : IData
+    public class UnitPresentation : Disposable, IAggregation
     {
         public UnitType UnitType { get; set; }
         public GameVector3 Position { get; set; }
@@ -12,5 +14,6 @@ namespace Game.Assets.Scripts.Game.Logic.DataObjects.Units
         public float CurrentSpeed { get; set; }
         public float MaxSpeed { get; set; }
         public string Hair { get; set; }
+        public Uid Id { get; }
     }
 }

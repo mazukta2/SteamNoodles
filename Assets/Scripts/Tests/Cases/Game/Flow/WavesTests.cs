@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Databases;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
@@ -218,7 +217,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             var levelCollection = new ViewsCollection();
 
             var view = new EndWaveButtonView(levelCollection);
-            new EndWaveButtonWidgetPresenter(view, new DataCollectionProvider<ConstructionPresenterData>(), waves);
+            // new EndWaveButtonWidgetPresenter(view, new DataCollectionProvider<ConstructionPresentation>(), waves);
 
             constructionsCardsRepository.Add(new ConstructionCard(scheme));
             var field = new Field();

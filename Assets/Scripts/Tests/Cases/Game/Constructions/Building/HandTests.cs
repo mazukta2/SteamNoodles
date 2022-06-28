@@ -1,7 +1,6 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Time;
+﻿using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
+using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Databases;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
@@ -194,7 +193,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, new DataProvider<ConstructionCardData>(), screenManager);
+            // new HandConstructionPresenter(view, new DataProvider<ConstructionCardPresentation>(), screenManager);
 
             Assert.AreEqual("1", view.Amount.Value);
             card.Add(new CardAmount(1));
@@ -220,7 +219,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, new DataProvider<ConstructionCardData>(), screenManager);
+            // new HandConstructionPresenter(view, new DataProvider<ConstructionCardPresentation>(), screenManager);
 
             Assert.AreEqual("image", view.Image.Path);
 
@@ -243,7 +242,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
 
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, new DataProvider<ConstructionCardData>(), screenManager);
+            // new HandConstructionPresenter(view, new DataProvider<ConstructionCardPresentation>(), screenManager);
 
             Assert.IsNull(view.TooltipContainer.FindView<IHandConstructionTooltipView>());
             view.SetHighlight(true);
@@ -272,7 +271,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var viewCollection = new ViewsCollection();
             screenManager.Bind(new ScreenManagerView(viewCollection));
             var view = new HandConstructionView(viewCollection);
-            new HandConstructionPresenter(view, new DataProvider<ConstructionCardData>(), screenManager);
+            // new HandConstructionPresenter(view, new DataProvider<ConstructionCardPresentation>(), screenManager);
 
             view.Button.Click();
 

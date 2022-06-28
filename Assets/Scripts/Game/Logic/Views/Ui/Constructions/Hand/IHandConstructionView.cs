@@ -2,10 +2,7 @@
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
-using System;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
 {
@@ -18,9 +15,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         IText Amount { get; }
         IAnimator Animator { get;}
 
-        void Init(IDataProvider<ConstructionCardData>  card)
+        void Init(Uid constructionCardId)
         {
-            new HandConstructionPresenter(this, card);
+            new HandConstructionPresenter(this, constructionCardId);
         }
     }
 }

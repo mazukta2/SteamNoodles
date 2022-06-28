@@ -1,8 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Levels
@@ -15,9 +13,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels
         IViewContainer EffectsContainer { get; }
         IViewPrefab ExplosionPrototype { get; }
 
-        void Init(IDataProvider<ConstructionPresenterData> construction)
+        void Init(Uid constructionId)
         {
-            new ConstructionPresenter(this, construction);
+            new ConstructionPresenter(this, constructionId);
         }
     }
 }

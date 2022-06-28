@@ -1,19 +1,24 @@
 ﻿using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Fields;
 
-namespace Game.Assets.Scripts.Game.Logic.DataObjects.Fields
+namespace Game.Assets.Scripts.Game.Logic.Aggregations.Fields
 {
-    public struct FieldData : IData
+    public class FieldPresentation : Disposable, IAggregation
     {
+
+        public Uid Id { get; }
+        
         public GroupOfPositions AvailableCells { get; set; }
         public FieldBoundaries Boundaries { get; set; }
         public GroupOfPositions AllCells { get; set; }
 
-        public static FieldData Default()
+        public static FieldPresentation Default()
         {
-            var data = new FieldData();
+            var data = new FieldPresentation();
             data.AvailableCells = new GroupOfPositions(new List<FieldPosition>());
             data.Boundaries = new FieldBoundaries(new IntPoint(1,1));
             data.AllCells = new GroupOfPositions(new List<FieldPosition>());

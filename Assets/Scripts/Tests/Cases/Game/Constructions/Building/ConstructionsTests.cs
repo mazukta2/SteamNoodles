@@ -9,11 +9,10 @@ using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using NUnit.Framework;
 using System.Linq;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Databases;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Fields;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
@@ -147,7 +146,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var ghostCollection = new GhostPresentationRepository();
             
 
-            new PlacementFieldPresenter(view, ghostCollection, new DataProvider<FieldData>(), new DataCollectionProvider<ConstructionPresenterData>());
+            // new PlacementFieldPresenter(view, ghostCollection, new DataProvider<FieldPresentation>(), new DataCollectionProvider<ConstructionPresentation>());
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
@@ -259,8 +258,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, new DataProvider<ConstructionPresenterData>(),
-                ghostPresentationCollection,  gameAssets, controls);
+            // new ConstructionPresenter(view, new DataProvider<ConstructionPresentation>(),
+            //     ghostPresentationCollection,  gameAssets, controls);
 
             Assert.AreEqual(new GameVector3(1.5f, 0, 1f), view.Position.Value);
 
@@ -292,8 +291,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view,  new DataProvider<ConstructionPresenterData>(), 
-                ghostPresentationCollection, gameAssets, controls);
+            // new ConstructionPresenter(view,  new DataProvider<ConstructionPresentation>(), 
+            //     ghostPresentationCollection, gameAssets, controls);
 
             Assert.IsNotNull(view.Container.FindView<IConstructionModelView>());
 
@@ -326,8 +325,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, new DataProvider<ConstructionPresenterData>(), 
-                ghostPresentationCollection,  gameAssets, controls);
+            // new ConstructionPresenter(view, new DataProvider<ConstructionPresentation>(), 
+            //     ghostPresentationCollection,  gameAssets, controls);
 
             var modelView = view.Container.FindView<IConstructionModelView>();
             var animator = ((AnimatorMock)modelView.Animator);
@@ -363,8 +362,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, new DataProvider<ConstructionPresenterData>(), 
-                ghostPresentationCollection, gameAssets, controls);
+            // new ConstructionPresenter(view, new DataProvider<ConstructionPresentation>(), 
+            //     ghostPresentationCollection, gameAssets, controls);
 
             var modelView = view.Container.FindView<IConstructionModelView>();
             var animator = ((AnimatorMock)modelView.Animator);
@@ -389,15 +388,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         {
             var constructionsRepository = new Database<Construction>();
             var ghost = new SingletonDatabase<ConstructionGhost>();
-            var field = new FieldData();
+            var field = new FieldPresentation();
             
             var viewCollection = new ViewsCollection();
             var ghostPresentationCollection = new GhostPresentationRepository();
 
             var view = new PlacementFieldView(viewCollection);
-            new PlacementFieldPresenter(view, ghostPresentationCollection, 
-                new DataProvider<FieldData>(),
-                new DataCollectionProvider<ConstructionPresenterData>());
+            // new PlacementFieldPresenter(view, ghostPresentationCollection, 
+            //     new DataProvider<FieldPresentation>(),
+            //     new DataCollectionProvider<ConstructionPresentation>());
             
             Assert.IsFalse(view.ConstrcutionContainer.Has<IConstructionView>());
 

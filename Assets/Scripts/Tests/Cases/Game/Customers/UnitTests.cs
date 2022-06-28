@@ -1,9 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Helpers;
+﻿using Game.Assets.Scripts.Game.Logic.Aggregations.Units;
+using Game.Assets.Scripts.Game.Logic.Common.Helpers;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Databases;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Units;
 using Game.Assets.Scripts.Game.Logic.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Events.Units;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Units;
@@ -147,7 +146,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var collection = new ViewsCollection();
             var unitView = new UnitView(collection);
-            new UnitPresenter(unitView,new DataProvider<UnitData>(), time);
+            // new UnitPresenter(unitView,new DataProvider<UnitPresentation>(), time);
 
             AssertHelpers.CompareVectors(new GameVector3(-1, 0, 0), unitView.Rotator.Rotation.ToVector());
             var originalRotation = unitView.Rotator.Rotation;

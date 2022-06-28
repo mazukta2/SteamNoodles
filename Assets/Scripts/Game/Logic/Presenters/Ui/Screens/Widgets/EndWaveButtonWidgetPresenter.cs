@@ -1,10 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using System;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
+using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Flow;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
@@ -12,20 +10,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class EndWaveButtonWidgetPresenter : BasePresenter<IEndWaveButtonView>
     {
         private readonly IEndWaveButtonView _view;
-        private IDataCollectionProvider<ConstructionPresenterData> _constructions;
+        private ConstructionsPresentationRepository _constructions;
         private string _lastAnimation;
         private readonly StageWaveService _stageWaveService;
 
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view) : this(view, 
-            IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionPresenterData>>().Get(),
+            IPresenterServices.Default?.Get<ConstructionsPresentationRepository>(),
             IPresenterServices.Default.Get<StageWaveService>())
         {
 
         }
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view, 
-            IDataCollectionProvider<ConstructionPresenterData> constructions,
+            ConstructionsPresentationRepository constructions,
             StageWaveService stageWaveService)
             : base(view)
         {
@@ -36,7 +34,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _view.NextWaveButton.SetAction(NextWaveClick);
             _view.FailWaveButton.SetAction(FailWaveClick);
 
-            _constructions.OnAdded += HandleOnAdded;
+            //_constructions.OnAdded += HandleOnAdded;
             _stageWaveService.OnDayFinished += HandleOnDayFinished;
 
             UpdateWaveProgress();
@@ -44,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         protected override void DisposeInner()
         {
-            _constructions.OnAdded -= HandleOnAdded;
+            //_constructions.OnAdded -= HandleOnAdded;
             _stageWaveService.OnDayFinished -= HandleOnDayFinished;
         }
 
@@ -65,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             //ScreenManagerPresenter.Default.GetCollection<CommonScreens>().Open<IDayEndedScreenView>();
         }
 
-        private void HandleOnAdded(IDataProvider<ConstructionPresenterData> model)
+        private void HandleOnAdded(ConstructionPresentation model)
         {
             UpdateWaveProgress();
         }

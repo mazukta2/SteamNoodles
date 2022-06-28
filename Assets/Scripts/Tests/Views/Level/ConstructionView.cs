@@ -1,8 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
@@ -33,7 +31,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         {
         }
 
-        public void Init(IDataProvider<ConstructionPresenterData> construction)
+        public void Init(Uid constructionId)
         {
         }
     }

@@ -3,32 +3,28 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
-using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
     public class HandPresenter : BasePresenter<IHandView>
     {
-        private readonly IDataCollectionProvider<ConstructionCardData> _cards;
+        private readonly ConstructionCardsRepository _cards;
         private readonly GhostRepository _ghostRepository;
         private readonly ScreenService _screenService;
         private readonly IHandView _view;
 
         public HandPresenter(IHandView view)
             : this(view,
-                  IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionCardData>>().Get(),
+                  IPresenterServices.Default?.Get<ConstructionCardsRepository>(),
                   IPresenterServices.Default?.Get<GhostRepository>(),
                   IPresenterServices.Default?.Get<ScreenService>())
         {
         }
 
         public HandPresenter(IHandView view,
-            IDataCollectionProvider<ConstructionCardData> repository,
+            ConstructionCardsRepository repository,
             GhostRepository ghostRepository,
             ScreenService screenService) : base(view)
         {
@@ -37,10 +33,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             _ghostRepository = ghostRepository ?? throw new ArgumentNullException(nameof(ghostRepository));
             _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
 
-            var cards = _cards.Get();
-            foreach (var item in cards)
-                HandleCardAdded(item);
-            _cards.OnAdded += HandleCardAdded;
+            // var cards = _cards.Get();
+            // foreach (var item in cards)
+            //     HandleCardAdded(item);
+            // _cards.OnAdded += HandleCardAdded;
 
             _view.CancelButton.SetAction(CancelClick);
             _view.Animator.SwitchTo(Modes.Disabled.ToString());
@@ -53,13 +49,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         {
             // _ghostRepository.OnAdded -= HandleGhostRepositoryShowed;
             // _ghostRepository.OnRemoved -= HandleGhostRepositoryHided;
-            _cards.OnAdded -= HandleCardAdded;
+            // _cards.OnAdded -= HandleCardAdded;
         }
 
-        private void HandleCardAdded(IDataProvider<ConstructionCardData> obj)
+        private void HandleCardAdded(ConstructionCardPresentation obj)
         {
             var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
-            view.Init(obj);
+            view.Init(obj.Id);
         }
 
         private void CancelClick()

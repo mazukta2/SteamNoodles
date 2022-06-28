@@ -1,10 +1,10 @@
 ﻿using System;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Databases;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.DataObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
+using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
@@ -16,12 +16,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     {
         private readonly IGhostView _view;
         private readonly GhostPresentation _ghost;
-        private readonly IDataCollectionProvider<ConstructionPresenterData> _constructions;
+        private readonly ConstructionsPresentationRepository _constructions;
         private readonly GameAssetsService _assets;
         private readonly IConstructionModelView _constructionModelView;
 
         public GhostPresenter(IGhostView view, GhostPresentation ghost) : this(view, ghost,
-            IPresenterServices.Default?.Get<IDataCollectionProviderService<ConstructionPresenterData>>().Get(),
+            IPresenterServices.Default?.Get<ConstructionsPresentationRepository>(),
             IPresenterServices.Default?.Get<GameAssetsService>())
         {
 
@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
         public GhostPresenter(IGhostView view,
             GhostPresentation ghost,
-            IDataCollectionProvider<ConstructionPresenterData> constructions,
+            ConstructionsPresentationRepository constructions,
             GameAssetsService assets) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
