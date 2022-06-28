@@ -28,11 +28,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _constructionView.Position.Value = _construction.WorldPosition;
             _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_construction.Rotation);
 
-            _visualView = _constructionView.Container.Spawn<IConstructionVisualView>(construction.Prefab);
 
-            _visualView.Animator.OnFinished += DropFinished;
             _construction.OnDispose += HandleRemoved;
             _construction.OnShrinkChanged += HandleOnChanged;
+            
+            _visualView = _constructionView.Container.Spawn<IConstructionVisualView>(construction.Prefab);
+            _visualView.Animator.OnFinished += DropFinished;
             _visualView.Animator.Play(IConstructionVisualView.Animations.Drop.ToString());
             //controls.ShakeCamera();
             UpdateShrink();

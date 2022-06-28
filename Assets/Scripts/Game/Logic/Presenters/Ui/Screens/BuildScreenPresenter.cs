@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
+using Game.Assets.Scripts.Game.Logic.Aggregations.ViewModels.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
@@ -26,8 +27,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         }
 
         public BuildScreenPresenter(IBuildScreenView view, 
-            Uid cardId,
-            GhostRepository ghostCommands,
+            Uid cardId, GhostViewModel ghost,
             ScreenService screenService,
             GameControlsService gameKeysManager) : base(view)
         {

@@ -5,15 +5,15 @@ using Game.Assets.Scripts.Game.Logic.Repositories;
 
 namespace Game.Assets.Scripts.Game.Logic.Aggregations.ViewModels.Ghosts
 {
-    public class GhostViewModelRepository : CommonSingletonRepository<ConstructionEntity, GhostViewModel>
+    public class GhostViewModelRepository : CommonSingletonRepository<GhostEntity, GhostViewModel>
     {
         public Action<GhostViewModel> OnFillRequest = delegate {  };
         
-        public GhostViewModelRepository(ISingletonDatabase<ConstructionEntity> database) : base(database)
+        public GhostViewModelRepository(ISingletonDatabase<GhostEntity> database) : base(database)
         {
         }
 
-        protected override GhostViewModel HandleAdding(ConstructionEntity entity)
+        protected override GhostViewModel HandleAdding(GhostEntity entity)
         {
             var model = new GhostViewModel(entity.Id);
             OnFillRequest(model);

@@ -10,15 +10,15 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Field
     public class FieldConstructionViewModelService : Disposable, IService
     {
         private readonly ConstructionViewModelRepository _viewModels;
-        private readonly ConstructionsRepository _constructions;
+        private readonly FieldConstructionsRepository _fieldConstructions;
         private readonly GameAssetsService _assets;
 
         public FieldConstructionViewModelService(
             ConstructionViewModelRepository viewModels,
-            ConstructionsRepository constructions, GameAssetsService assets)
+            FieldConstructionsRepository fieldConstructions, GameAssetsService assets)
         {
             _viewModels = viewModels ?? throw new ArgumentNullException(nameof(viewModels));
-            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+            _fieldConstructions = fieldConstructions ?? throw new ArgumentNullException(nameof(fieldConstructions));
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             _viewModels.OnFillRequest += HandleOnFill;
         }
@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Field
 
         private void HandleOnFill(ConstructionViewModel viewModel)
         {
-            var construction = _constructions.Get(viewModel.Id);
+            var construction = _fieldConstructions.Get(viewModel.Id);
             viewModel.WorldPosition = construction.GetWorldPosition();
             viewModel.Rotation = construction.GetRotation();
             viewModel.Prefab = _assets.GetPrefab(construction.GetViewPath());

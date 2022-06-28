@@ -19,25 +19,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private readonly IPlacementFieldView _view;
         private readonly GhostRepository _ghost;
         private readonly Field _field;
-        private readonly ConstructionsRepository _constructions;
+        private readonly FieldConstructionsRepository _fieldConstructions;
         private readonly List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
             IPresenterServices.Default?.Get<GhostRepository>(),
             IPresenterServices.Default?.Get<FieldRepository>().Get(),
-            IPresenterServices.Default?.Get<ConstructionsRepository>())
+            IPresenterServices.Default?.Get<FieldConstructionsRepository>())
         {
         }
 
         public PlacementFieldPresenter(IPlacementFieldView view,
             GhostRepository ghost,
             Field field,
-            ConstructionsRepository constructions) : base(view)
+            FieldConstructionsRepository fieldConstructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _field = field ?? throw new ArgumentNullException(nameof(field));
-            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+            _fieldConstructions = fieldConstructions ?? throw new ArgumentNullException(nameof(fieldConstructions));
 
             foreach (var position in _field.GetCellsPositions().Cells)
                 _cells.Add(CreateCell(position));
@@ -48,8 +48,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
 
             // _field.OnEvent += HandleOnEvent;
 
-            _constructions.OnAdded += HandleConstructionsOnAdded;
-            _constructions.OnRemoved += HandleConstructionsOnRemoved;
+            _fieldConstructions.OnAdded += HandleConstructionsOnAdded;
+            _fieldConstructions.OnRemoved += HandleConstructionsOnRemoved;
 
             UpdateGhostCells();
         }

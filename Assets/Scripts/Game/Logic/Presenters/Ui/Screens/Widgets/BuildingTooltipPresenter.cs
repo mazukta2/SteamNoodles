@@ -14,14 +14,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private HandConstructionTooltipPresenter _tooltip;
 
         public BuildingTooltipPresenter(IBuildingToolitpView view) : this(view,
-                  IPresenterServices.Default?.Get<ConstructionsRepository>(),
+                  IPresenterServices.Default?.Get<FieldConstructionsRepository>(),
                   IPresenterServices.Default?.Get<GhostRepository>())
         {
 
         }
 
         public BuildingTooltipPresenter(IBuildingToolitpView view, 
-            ConstructionsRepository constructions, 
+            FieldConstructionsRepository fieldConstructions, 
             GhostRepository ghost) : base(view)
         {
             _view = view;
@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             // _ghostService.OnHighlightingChanged += HandleHighlightingChanged
             // _ghost.OnAdded += HandleOnGhostShowed;
             // _ghost.OnRemoved += HandleOnGhostHided;
-            _tooltip = new HandConstructionTooltipPresenter(_view.Tooltip, constructions);
+            _tooltip = new HandConstructionTooltipPresenter(_view.Tooltip, fieldConstructions);
             Hide();
         }
 

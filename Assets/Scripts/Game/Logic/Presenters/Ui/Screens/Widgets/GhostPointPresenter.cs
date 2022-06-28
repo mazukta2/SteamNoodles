@@ -16,26 +16,26 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private IGhostPointsView _view;
         private readonly GhostRepository _ghost;
         private readonly FieldEntity _fieldEntity;
-        private readonly ConstructionsRepository _constructions;
+        private readonly FieldConstructionsRepository _fieldConstructions;
 
         //private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
         public GhostPointPresenter(IGhostPointsView view) : this(
                 view,
                 IPresenterServices.Default?.Get<GhostRepository>(),
-                IPresenterServices.Default?.Get<ConstructionsRepository>(),
+                IPresenterServices.Default?.Get<FieldConstructionsRepository>(),
                 IPresenterServices.Default?.Get<ISingletonDatabase<FieldEntity>>().Get())
         {
         }
 
         public GhostPointPresenter(IGhostPointsView view,
             GhostRepository ghost,
-            ConstructionsRepository constructions,
+            FieldConstructionsRepository fieldConstructions,
             FieldEntity fieldEntity) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
-            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+            _fieldConstructions = fieldConstructions ?? throw new ArgumentNullException(nameof(fieldConstructions));
             _fieldEntity = fieldEntity ?? throw new ArgumentNullException(nameof(fieldEntity));
 
             //_ghost.OnEvent += HandleOnEvent;

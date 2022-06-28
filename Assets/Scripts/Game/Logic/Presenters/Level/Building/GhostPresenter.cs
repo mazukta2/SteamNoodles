@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     {
         private readonly IGhostView _view;
         private readonly GhostViewModel _ghost;
-        private readonly ConstructionsRepository _constructions;
+        private readonly FieldConstructionsRepository _fieldConstructions;
         private readonly GameAssetsService _assets;
         private readonly IConstructionVisualView _constructionVisualView;
 

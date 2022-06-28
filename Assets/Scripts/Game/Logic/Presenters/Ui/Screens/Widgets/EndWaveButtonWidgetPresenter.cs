@@ -10,25 +10,25 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class EndWaveButtonWidgetPresenter : BasePresenter<IEndWaveButtonView>
     {
         private readonly IEndWaveButtonView _view;
-        private ConstructionsRepository _constructions;
+        private FieldConstructionsRepository _fieldConstructions;
         private string _lastAnimation;
         private readonly StageWaveService _stageWaveService;
 
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view) : this(view, 
-            IPresenterServices.Default?.Get<ConstructionsRepository>(),
+            IPresenterServices.Default?.Get<FieldConstructionsRepository>(),
             IPresenterServices.Default.Get<StageWaveService>())
         {
 
         }
 
         public EndWaveButtonWidgetPresenter(IEndWaveButtonView view, 
-            ConstructionsRepository constructions,
+            FieldConstructionsRepository fieldConstructions,
             StageWaveService stageWaveService)
             : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+            _fieldConstructions = fieldConstructions ?? throw new ArgumentNullException(nameof(fieldConstructions));
             _stageWaveService = stageWaveService ?? throw new ArgumentNullException(nameof(stageWaveService));
 
             _view.NextWaveButton.SetAction(NextWaveClick);

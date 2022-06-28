@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     public class HandConstructionTooltipPresenter : BasePresenter<IHandConstructionTooltipView>
     {
         private readonly IHandConstructionTooltipView _view;
-        private readonly ConstructionsRepository _constructions;
+        private readonly FieldConstructionsRepository _fieldConstructions;
         private LocalizatedText _name;
         private LocalizatedText _adjacency;
         private IEnumerable<ConstructionSchemeEntity> _highlights;
@@ -23,15 +23,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view) :
                 this(view,
-                    IPresenterServices.Default?.Get<ConstructionsRepository>())
+                    IPresenterServices.Default?.Get<FieldConstructionsRepository>())
         {
         }
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view,
-            ConstructionsRepository constructions) : base(view)
+            FieldConstructionsRepository fieldConstructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
+            _fieldConstructions = fieldConstructions ?? throw new ArgumentNullException(nameof(fieldConstructions));
             UpdateView();
         }
 
@@ -77,7 +77,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 {
                     style = TextHelpers.TextStyles.HeavyHighlight;
                 }
-                else if (_constructions.Get().Any(x => x.IsItHaveSameScheme(construction)))
+                else if (_fieldConstructions.Get().Any(x => x.IsItHaveSameScheme(construction)))
                 {
                     style = TextHelpers.TextStyles.Highlight;
                 }

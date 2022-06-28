@@ -1,11 +1,14 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Aggregations.ViewModels.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.ViewModels.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Databases;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
+using Game.Assets.Scripts.Game.Logic.Services.Building;
+using Game.Assets.Scripts.Game.Logic.Services.Field;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Tests.Environment;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels;
@@ -16,35 +19,37 @@ namespace Game.Assets.Scripts.Tests.Setups
     public class BuildingSetup : Disposable
     {
         private readonly ServiceManager _services;
-        public SingletonDatabase<GhostEntity> GhostDatabase { get;private set; }
-        public GhostRepository GhostRepository { get; private set; }
-        public Database<ConstructionEntity> ConstructionsDatabase{ get; private set; }
-        public Database<ConstructionCardEntity> ConstructionsCardsDatabase{ get; private set; }
-        public SingletonDatabase<FieldEntity> FieldDatabase{ get; private set; }
-        public FieldRepository FieldRepository{ get; private set; }
-        public ConstructionsRepository ConstructionsRepository{ get; private set; }
-        public AssetsMock AssetsMock { get; private set; }
-        public GameAssetsService GameAssets { get; private set; }
-        
+        private AssetsMock _assetsMock;
 
         public BuildingSetup()
         {
             _services = new ServiceManager();
             
-            AssetsMock = new AssetsMock();
-            GameAssets = _services.Add(new GameAssetsService(AssetsMock));
+            _assetsMock = new AssetsMock();
+            var gameAssets = _services.Add(new GameAssetsService(_assetsMock));
             
-            GhostDatabase = _services.Add(new SingletonDatabase<GhostEntity>());
-            ConstructionsDatabase = _services.Add(new Database<ConstructionEntity>());
-            ConstructionsCardsDatabase = _services.Add(new Database<ConstructionCardEntity>());
-            FieldDatabase = _services.Add(new SingletonDatabase<FieldEntity>());
+            // databases
+            var ghostDatabase = _services.Add(new SingletonDatabase<GhostEntity>());
+            var constructionsDatabase = _services.Add(new Database<ConstructionEntity>());
+            var constructionsCardsDatabase = _services.Add(new Database<ConstructionCardEntity>());
+            var fieldDatabase = _services.Add(new SingletonDatabase<FieldEntity>());
             
-            GhostRepository = _services.Add(new GhostRepository(GhostDatabase, ConstructionsDatabase, ConstructionsCardsDatabase, 
-                FieldDatabase));
-            FieldRepository = _services.Add(new FieldRepository(FieldDatabase, ConstructionsDatabase));
-            ConstructionsRepository = _services.Add(new ConstructionsRepository(ConstructionsDatabase));
+            // repositories
+            var ghostRepository = _services.Add(new GhostRepository(ghostDatabase, 
+                constructionsDatabase, constructionsCardsDatabase, 
+                fieldDatabase));
+            var fieldRepository = _services.Add(new FieldRepository(fieldDatabase, constructionsDatabase));
+            var constructionsRepository = _services.Add(new FieldConstructionsRepository(constructionsDatabase));
+            var constructionBuildingRepository = _services.Add(new BuildingConstructionsRepository(constructionsDatabase));
+            var constructionsViewModelRepository = _services.Add(new ConstructionViewModelRepository(constructionsDatabase));
+            var ghostViewModelRepository = _services.Add(new GhostViewModelRepository(ghostDatabase));
             
-            _services.Add(new ConstructionViewModelRepository(ConstructionsDatabase));
+            // services
+            _services.Add(new BuildingGhostViewModelService(ghostViewModelRepository, ghostRepository, gameAssets));
+            _services.Add(new BuildingConstructionViewModelService(constructionsViewModelRepository, 
+                ghostRepository, constructionBuildingRepository));
+            _services.Add(new FieldConstructionViewModelService(constructionsViewModelRepository, 
+                constructionsRepository, gameAssets));
         }
 
         protected override void DisposeInner()
@@ -56,25 +61,26 @@ namespace Game.Assets.Scripts.Tests.Setups
         public BuildingSetup FillDefault()
         {
             var field = new FieldEntity();
-            FieldDatabase.Add(field);
+            _services.Get<SingletonDatabase<FieldEntity>>().Add(field);
             
             var card = new ConstructionCardEntity();
-            ConstructionsCardsDatabase.Add(card);
+            _services.Get<SingletonDatabase<ConstructionCardEntity>>().Add(card);
             
             return this;
         }
         
         public BuildingSetup Fill(FieldEntity entity)
         {
-            if (FieldDatabase.Has())
-                FieldDatabase.Remove();
-            FieldDatabase.Add(entity);
+            var field = _services.Get<SingletonDatabase<FieldEntity>>();
+            if (field.Has())
+                field.Remove();
+            field.Add(entity);
             return this;
         }
         
         public BuildingSetup FillDefaultModel()
         {
-            AssetsMock.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionVisualView(x)));
+            _assetsMock.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionVisualView(x)));
             return this;
         }
 

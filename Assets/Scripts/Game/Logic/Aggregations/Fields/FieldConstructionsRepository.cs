@@ -5,11 +5,11 @@ using Game.Assets.Scripts.Game.Logic.Services.Assets;
 
 namespace Game.Assets.Scripts.Game.Logic.Aggregations.Fields
 {
-    public class ConstructionsRepository : CommonRepository<ConstructionEntity, FieldConstruction>
+    public class FieldConstructionsRepository : CommonRepository<ConstructionEntity, FieldConstruction>
     {
         private readonly GameAssetsService _assets;
 
-        public ConstructionsRepository(IDatabase<ConstructionEntity> database) : base(database)
+        public FieldConstructionsRepository(IDatabase<ConstructionEntity> database) : base(database)
         {
         }
 
