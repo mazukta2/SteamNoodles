@@ -4,9 +4,6 @@ using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Tests.Views;
 using Game.Assets.Scripts.Tests.Views.Common;
-using System;
-using Game.Assets.Scripts.Game.Logic.DataObjects;
-using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
