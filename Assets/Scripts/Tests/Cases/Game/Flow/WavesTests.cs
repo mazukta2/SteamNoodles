@@ -23,12 +23,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void EndWaveWorksWhenHandIsEmpty()
         {
             var time = new GameTime();
-            var constructionsRepository = new Database<Construction>();
-            var constructionsCardsRepository = new Database<ConstructionCard>();
-            var constructionsSchemeRepository = new Database<ConstructionScheme>();
-            var constructionDeck = new DeckService<ConstructionScheme>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var constructionsCardsRepository = new Database<ConstructionCardEntity>();
+            var constructionsSchemeRepository = new Database<ConstructionSchemeEntity>();
+            var constructionDeck = new DeckService<ConstructionSchemeEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             constructionsSchemeRepository.Add(scheme);
 
             var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck);
@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time);
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(new Field(), 0, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(new FieldEntity(), 0, 0), new FieldRotation()));
 
             Assert.IsTrue(waves.CanFailWave());
             Assert.IsFalse(waves.CanWinWave());
@@ -60,17 +60,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void EndWaveButtonRemovesBuildings()
         {
             var time = new GameTime();
-            var constructionsRepository = new Database<Construction>();
-            var constructionsCardsRepository = new Database<ConstructionCard>();
-            var constructionsSchemeRepository = new Database<ConstructionScheme>();
-            var constructionDeck = new DeckService<ConstructionScheme>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var constructionsCardsRepository = new Database<ConstructionCardEntity>();
+            var constructionsSchemeRepository = new Database<ConstructionSchemeEntity>();
+            var constructionDeck = new DeckService<ConstructionSchemeEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             constructionsSchemeRepository.Add(scheme);
 
-            var field = new Field();
+            var field = new FieldEntity();
             var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck,
-                new Dictionary<ConstructionScheme, int>() { { scheme, 1 } });
+                new Dictionary<ConstructionSchemeEntity, int>() { { scheme, 1 } });
             var stageLevel = new StageLevel(new[] { scheme });
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
@@ -79,9 +79,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 4);
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 1, 0), new FieldRotation()));
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 2, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 1, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 2, 0), new FieldRotation()));
 
             Assert.AreEqual(3, constructionsRepository.Count);
 
@@ -89,9 +89,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
 
             Assert.AreEqual(1, constructionsRepository.Count);
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 1, 0), new FieldRotation()));
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 2, 0), new FieldRotation()));
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 2, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 1, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 2, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 2, 0), new FieldRotation()));
 
             Assert.AreEqual(4, constructionsRepository.Count);
 
@@ -108,39 +108,39 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void WaveProgressWorks()
         {
             var time = new GameTime();
-            var constructionsRepository = new Database<Construction>();
-            var constructionsCardsRepository = new Database<ConstructionCard>();
-            var constructionsSchemeRepository = new Database<ConstructionScheme>();
-            var constructionDeck = new DeckService<ConstructionScheme>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var constructionsCardsRepository = new Database<ConstructionCardEntity>();
+            var constructionsSchemeRepository = new Database<ConstructionSchemeEntity>();
+            var constructionDeck = new DeckService<ConstructionSchemeEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             constructionsSchemeRepository.Add(scheme);
 
             var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck,
-                new Dictionary<ConstructionScheme, int>() { { scheme, 1 } });
+                new Dictionary<ConstructionSchemeEntity, int>() { { scheme, 1 } });
             var stageLevel = new StageLevel(new[] { scheme });
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var handService = new HandService(constructionsCardsRepository);
             var rewardService = new RewardsService(stageLevel, handService, schemes, points);
 
-            var field = new Field();
+            var field = new FieldEntity();
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 2);
 
             Assert.AreEqual(0, waves.GetWaveProgress());
             Assert.IsFalse(waves.CanWinWave());
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
 
             Assert.AreEqual(0.5f, waves.GetWaveProgress());
             Assert.IsFalse(waves.CanWinWave());
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 1, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 1, 0), new FieldRotation()));
 
             Assert.AreEqual(1f, waves.GetWaveProgress());
             Assert.IsTrue(waves.CanWinWave());
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 3, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 3, 0), new FieldRotation()));
 
             Assert.AreEqual(1f, waves.GetWaveProgress());
             Assert.IsTrue(waves.CanWinWave());
@@ -154,25 +154,25 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void EndWaveGiveYouNewBuildings()
         {
             var time = new GameTime();
-            var constructionsRepository = new Database<Construction>();
-            var constructionsCardsRepository = new Database<ConstructionCard>();
-            var constructionsSchemeRepository = new Database<ConstructionScheme>();
-            var constructionDeck = new DeckService<ConstructionScheme>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var constructionsCardsRepository = new Database<ConstructionCardEntity>();
+            var constructionsSchemeRepository = new Database<ConstructionSchemeEntity>();
+            var constructionDeck = new DeckService<ConstructionSchemeEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             constructionsSchemeRepository.Add(scheme);
 
             var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck,
-                new Dictionary<ConstructionScheme, int>() { { scheme, 1 } });
+                new Dictionary<ConstructionSchemeEntity, int>() { { scheme, 1 } });
             var stageLevel = new StageLevel(new[] { scheme });
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
             var handService = new HandService(constructionsCardsRepository);
             var rewardService = new RewardsService(stageLevel, handService, schemes, points);
-            var field = new Field();
+            var field = new FieldEntity();
 
             var waves = new StageWaveService(constructionsRepository, handService, rewardService, time, constructionsToEndWave: 2);
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field,0, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field,0, 0), new FieldRotation()));
 
             Assert.AreEqual(0, constructionsCardsRepository.Count);
 
@@ -181,7 +181,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             Assert.AreEqual(1, constructionsCardsRepository.Count);
             Assert.AreEqual(new CardAmount(3), constructionsCardsRepository.Get().First().Amount);
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field,1, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field,1, 0), new FieldRotation()));
             waves.WinWave();
             
             Assert.AreEqual(1, constructionsCardsRepository.Count);
@@ -196,16 +196,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void ButtonsAreActivated()
         {
             var time = new GameTime();
-            var constructionsRepository = new Database<Construction>();
-            var constructionsCardsRepository = new Database<ConstructionCard>();
-            var constructionsSchemeRepository = new Database<ConstructionScheme>();
-            var constructionDeck = new DeckService<ConstructionScheme>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var constructionsCardsRepository = new Database<ConstructionCardEntity>();
+            var constructionsSchemeRepository = new Database<ConstructionSchemeEntity>();
+            var constructionDeck = new DeckService<ConstructionSchemeEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             constructionsSchemeRepository.Add(scheme);
 
             var schemes = new SchemesService(constructionsSchemeRepository, constructionDeck,
-                new Dictionary<ConstructionScheme, int>() { { scheme, 1 } });
+                new Dictionary<ConstructionSchemeEntity, int>() { { scheme, 1 } });
             var stageLevel = new StageLevel(new[] { scheme });
 
             var points = new BuildingPointsService(0, 0, time, 2, 2);
@@ -219,15 +219,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             var view = new EndWaveButtonView(levelCollection);
             // new EndWaveButtonWidgetPresenter(view, new DataCollectionProvider<ConstructionPresentation>(), waves);
 
-            constructionsCardsRepository.Add(new ConstructionCard(scheme));
-            var field = new Field();
+            constructionsCardsRepository.Add(new ConstructionCardEntity(scheme));
+            var field = new FieldEntity();
 
             Assert.IsFalse(view.NextWaveButton.IsActive);
             Assert.IsFalse(view.FailWaveButton.IsActive);
             Assert.AreEqual(EndWaveButtonWidgetPresenter.WaveButtonAnimations.None.ToString(),
                 view.WaveButtonAnimator.Animation);
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field,0, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field,0, 0), new FieldRotation()));
 
             Assert.IsFalse(view.NextWaveButton.IsActive);
             Assert.IsFalse(view.FailWaveButton.IsActive);
@@ -235,7 +235,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
                 view.WaveButtonAnimator.Animation);
 
             constructionsCardsRepository.Clear();
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field,1, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field,1, 0), new FieldRotation()));
 
             Assert.IsFalse(view.NextWaveButton.IsActive);
             Assert.IsTrue(view.FailWaveButton.IsActive);

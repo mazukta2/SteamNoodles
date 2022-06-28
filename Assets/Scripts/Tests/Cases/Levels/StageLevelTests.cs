@@ -35,7 +35,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         public void StageLevelServiceIsLoadedByScepifics()
         {
             var manager = new ServiceManager();
-            manager.Add(new Database<ConstructionScheme>());
+            manager.Add(new Database<ConstructionSchemeEntity>());
             manager.Add(new Database<UnitType>());
             manager.Add(new GameAssetsService(new AssetsMock()));
             manager.Add(new GameControlsService(new ControlsMock()));
@@ -61,8 +61,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             construction.Name = "construction";
             var settings = new ConstructionsSettingsDefinition();
             
-            var schemes = new Database<ConstructionScheme>();
-            var scheme = schemes.Add(new ConstructionScheme(construction, settings));
+            var schemes = new Database<ConstructionSchemeEntity>();
+            var scheme = schemes.Add(new ConstructionSchemeEntity(construction, settings));
 
             var customer = new CustomerDefinition();
             var unitsDefinition = new UnitsSettingsDefinition();
@@ -109,7 +109,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
         public void StageLevelServiceStartAllNeededServices()
         {
             var manager = new ServiceManager();
-            manager.Add(new Database<ConstructionScheme>());
+            manager.Add(new Database<ConstructionSchemeEntity>());
             manager.Add(new Database<UnitType>());
             manager.Add(new GameControlsService(new ControlsMock()));
 
@@ -131,12 +131,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsTrue(manager.Has<SchemesService>());
             Assert.IsTrue(manager.Has<CoinsService>());
 
-            Assert.IsTrue(manager.Has<Database<ConstructionCard>>());
-            Assert.IsTrue(manager.Has<Database<Construction>>());
+            Assert.IsTrue(manager.Has<Database<ConstructionCardEntity>>());
+            Assert.IsTrue(manager.Has<Database<ConstructionEntity>>());
             Assert.IsTrue(manager.Has<Database<Unit>>());
-            Assert.IsTrue(manager.Has<SingletonDatabase<Deck<ConstructionScheme>>>());
+            Assert.IsTrue(manager.Has<SingletonDatabase<Deck<ConstructionSchemeEntity>>>());
             Assert.IsTrue(manager.Has<SingletonDatabase<Deck<UnitType>>>());
-            Assert.IsTrue(manager.Has<SingletonDatabase<Field>>());
+            Assert.IsTrue(manager.Has<SingletonDatabase<FieldEntity>>());
 
             manager.Remove(service);
 
@@ -153,12 +153,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
             Assert.IsFalse(manager.Has<SchemesService>());
             Assert.IsFalse(manager.Has<CoinsService>());
 
-            Assert.IsFalse(manager.Has<Database<ConstructionCard>>());
-            Assert.IsFalse(manager.Has<Database<Construction>>());
+            Assert.IsFalse(manager.Has<Database<ConstructionCardEntity>>());
+            Assert.IsFalse(manager.Has<Database<ConstructionEntity>>());
             Assert.IsFalse(manager.Has<Database<Unit>>());
-            Assert.IsFalse(manager.Has<SingletonDatabase<Deck<ConstructionScheme>>>());
+            Assert.IsFalse(manager.Has<SingletonDatabase<Deck<ConstructionSchemeEntity>>>());
             Assert.IsFalse(manager.Has<SingletonDatabase<Deck<UnitType>>>());
-            Assert.IsFalse(manager.Has<SingletonDatabase<Field>>());
+            Assert.IsFalse(manager.Has<SingletonDatabase<FieldEntity>>());
 
             manager.Dispose();
         }

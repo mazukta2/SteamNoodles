@@ -42,12 +42,13 @@ namespace Game.Assets.Scripts.Game.Logic.Databases
             return entity;
         }
 
-        public void Remove(T entity)
+        public void Remove(Uid id)
         {
-            if (!_repository.ContainsKey(entity.Id))
+            if (!_repository.ContainsKey(id))
                 throw new Exception("Entity not exist");
 
-            _repository.Remove(entity.Id);
+            var entity = _repository[id];
+            _repository.Remove(id);
             entity.OnEvent -= HandleEvent;
             FireOnRemoved(entity);
         }
@@ -63,7 +64,7 @@ namespace Game.Assets.Scripts.Game.Logic.Databases
         public void Clear()
         {
             foreach (var item in _repository.ToList())
-                Remove(item.Value);
+                Remove(item.Value.Id);
         }
 
         public IReadOnlyCollection<T> Get()

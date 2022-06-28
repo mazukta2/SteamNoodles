@@ -35,15 +35,15 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Levels
             _services = services ?? throw new ArgumentNullException(nameof(services));
 
             // databases
-            var schemesRep = services.Get<IDatabase<ConstructionScheme>>();
+            var schemesRep = services.Get<IDatabase<ConstructionSchemeEntity>>();
             var unitTypesRep = services.Get<IDatabase<UnitType>>();
-            var cardsRep = Add(new Database<ConstructionCard>());
-            var constructionsRep = Add(new Database<Construction>());
+            var cardsRep = Add(new Database<ConstructionCardEntity>());
+            var constructionsRep = Add(new Database<ConstructionEntity>());
             var unitsRep = Add(new Database<Unit>());
-            var constructionsDeckRep = Add(new SingletonDatabase<Deck<ConstructionScheme>>());
+            var constructionsDeckRep = Add(new SingletonDatabase<Deck<ConstructionSchemeEntity>>());
             var unitsDeckRep = Add(new SingletonDatabase<Deck<UnitType>>());
-            var field = Add(new SingletonDatabase<Field>(new Field(level.CellSize, level.PlacementFieldSize)));
-            var ghostDataBase = new SingletonDatabase<ConstructionGhost>();
+            var field = Add(new SingletonDatabase<FieldEntity>(new FieldEntity(level.CellSize, level.PlacementFieldSize)));
+            var ghostDataBase = new SingletonDatabase<GhostEntity>();
             
             // repositories
             var ghost = Add(new GhostRepository(ghostDataBase, constructionsRep, cardsRep, field));

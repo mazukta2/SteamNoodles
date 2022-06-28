@@ -10,30 +10,30 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
 {
     public class HandService : IService
     {
-        private readonly IDatabase<ConstructionCard> _database;
+        private readonly IDatabase<ConstructionCardEntity> _database;
 
-        public HandService(IDatabase<ConstructionCard> database)
+        public HandService(IDatabase<ConstructionCardEntity> database)
         {
             _database = database;
         }
 
-        public void Remove(ConstructionCard card)
+        public void Remove(ConstructionCardEntity cardEntity)
         {
-            card.Remove(new CardAmount(1));
-            if (card.Amount.Value == 0)
-                _database.Remove(card);
+            cardEntity.Remove(new CardAmount(1));
+            if (cardEntity.Amount.Value == 0)
+                _database.Remove(cardEntity.Id);
         }
 
-        public ConstructionCard Add(ConstructionScheme scheme)
+        public ConstructionCardEntity Add(ConstructionSchemeEntity schemeEntity)
         {
-            return Add(scheme, new CardAmount(1));
+            return Add(schemeEntity, new CardAmount(1));
         }
 
-        public ConstructionCard Add(ConstructionScheme scheme, CardAmount amount)
+        public ConstructionCardEntity Add(ConstructionSchemeEntity schemeEntity, CardAmount amount)
         {
-            if (scheme is null) throw new ArgumentNullException(nameof(scheme));
+            if (schemeEntity is null) throw new ArgumentNullException(nameof(schemeEntity));
 
-            var card = GetCards().FirstOrDefault(x => x.Scheme == scheme);
+            var card = GetCards().FirstOrDefault(x => x.SchemeEntity == schemeEntity);
             if (card != null)
             {
                 card.Add(amount);
@@ -41,20 +41,20 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
             }
             else
             {
-                var newCard = new ConstructionCard(scheme, amount);
+                var newCard = new ConstructionCardEntity(schemeEntity, amount);
                 _database.Add(newCard);
                 return newCard;
             }
         }
 
-        public IReadOnlyCollection<ConstructionCard> GetCards()
+        public IReadOnlyCollection<ConstructionCardEntity> GetCards()
         {
             return _database.Get();
         }
 
-        public bool Has(ConstructionCard card)
+        public bool Has(ConstructionCardEntity cardEntity)
         {
-            return _database.Has(card);
+            return _database.Has(cardEntity);
         }
     }
 }

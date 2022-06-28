@@ -8,15 +8,15 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Flow.Animations
 {
     public class DestroyConstructionStep : BaseSequenceStep
     {
-        private readonly IDatabase<Construction> _constructions;
-        private readonly Construction _construction;
+        private readonly IDatabase<ConstructionEntity> _constructions;
+        private readonly ConstructionEntity _constructionEntity;
         private readonly float _delay;
         private readonly TimeUpdater _updater;
 
-        public DestroyConstructionStep(IDatabase<Construction> constructions, Construction construction, IGameTime time, float delay)
+        public DestroyConstructionStep(IDatabase<ConstructionEntity> constructions, ConstructionEntity constructionEntity, IGameTime time, float delay)
         {
             _constructions = constructions;
-            _construction = construction;
+            _constructionEntity = constructionEntity;
             _delay = delay;
             _updater = new TimeUpdater(time, delay);
         }
@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Flow.Animations
 
         public override void Play()
         {
-            _constructions.Remove(_construction);
+            _constructions.Remove(_constructionEntity.Id);
 
             if (_delay == 0)
             {

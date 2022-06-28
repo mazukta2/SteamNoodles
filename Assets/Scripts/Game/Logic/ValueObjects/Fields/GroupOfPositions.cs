@@ -13,15 +13,15 @@ namespace Game.Assets.Scripts.Game.Logic.ValueObjects.Fields
             Cells = cells;
         }
 
-        public GroupOfPositions(Field field)
+        public GroupOfPositions(FieldEntity fieldEntity)
         {
-            var boundaries = field.GetBoundaries();
+            var boundaries = fieldEntity.GetBoundaries();
             var list = new List<FieldPosition>();
             for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
             {
                 for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
                 {
-                    list.Add(new FieldPosition(field, x, y));
+                    list.Add(new FieldPosition(fieldEntity, x, y));
                 }
             }
 

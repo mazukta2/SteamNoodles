@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Databases
             if (Count == 0)
                 throw new Exception("No entity");
             
-            base.Remove(Get());
+            base.Remove(Get().Id);
         }
 
         public new T Get()

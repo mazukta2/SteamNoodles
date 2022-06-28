@@ -15,21 +15,22 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class GhostPresenter : BasePresenter<IGhostView>
     {
         private readonly IGhostView _view;
-        private readonly GhostPresentation _ghost;
-        private readonly ConstructionsPresentationRepository _constructions;
+        private readonly Ghost _ghost;
+        private readonly ConstructionsRepository _constructions;
         private readonly GameAssetsService _assets;
         private readonly IConstructionModelView _constructionModelView;
 
-        public GhostPresenter(IGhostView view, GhostPresentation ghost) : this(view, ghost,
-            IPresenterServices.Default?.Get<ConstructionsPresentationRepository>(),
+        public GhostPresenter(IGhostView view) : this(view, 
+            IPresenterServices.Default?.Get<GhostRepository>().Get(),
+            IPresenterServices.Default?.Get<ConstructionsRepository>(),
             IPresenterServices.Default?.Get<GameAssetsService>())
         {
 
         }
 
         public GhostPresenter(IGhostView view,
-            GhostPresentation ghost,
-            ConstructionsPresentationRepository constructions,
+            Ghost ghost,
+            ConstructionsRepository constructions,
             GameAssetsService assets) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
@@ -67,7 +68,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             _view.LocalPosition.Value = _ghost.GetWorldPosition();
             _view.Rotator.Rotation = FieldRotation.ToDirection(_ghost.GetRotation());
             
-            _constructionModelView.BorderAnimator.Play(_ghost.GetCanBuild() ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
+            _constructionModelView.BorderAnimator.Play(_ghost.CanBuild() ? IConstructionModelView.BorderAnimations.Idle.ToString() : IConstructionModelView.BorderAnimations.Disallowed.ToString());
         }
 
     }

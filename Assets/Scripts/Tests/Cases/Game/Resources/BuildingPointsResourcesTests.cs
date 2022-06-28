@@ -39,9 +39,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         [Test, Order(TestCore.PresenterOrder)]
         public void PointsPresenting()
         {
-            var constructionsRepository = new Database<Construction>();
-            var field = new SingletonDatabase<Field>(new Field());
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var field = new SingletonDatabase<FieldEntity>(new FieldEntity());
+            var ghost = new SingletonDatabase<GhostEntity>();
             // var building = new BuildingAggregatorService(field, ghost, constructionsRepository);
             
             var time = new GameTime();
@@ -70,10 +70,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         {
             var time = new GameTime();
             var points = new BuildingPointsService(0, 0, time, 2.2f, 8);
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var ghost = new SingletonDatabase<GhostEntity>();
             
-            var constructionsRepository = new Database<Construction>();
-            var field = new SingletonDatabase<Field>(new Field());
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var field = new SingletonDatabase<FieldEntity>(new FieldEntity());
             // var building = new BuildingAggregatorService(field, ghost, constructionsRepository);
             
             var levelCollection = new ViewsCollection();
@@ -111,9 +111,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         {
             var time = new GameTime();
             var pointsService = new BuildingPointsService(0, 0, time, 2, 2);
-            var ghost = new SingletonDatabase<ConstructionGhost>();
-            var constructionsRepository = new Database<Construction>();
-            var field = new SingletonDatabase<Field>(new Field());
+            var ghost = new SingletonDatabase<GhostEntity>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var field = new SingletonDatabase<FieldEntity>(new FieldEntity());
 
             // var ghostQuery = new DataProvider<GhostData>();
             

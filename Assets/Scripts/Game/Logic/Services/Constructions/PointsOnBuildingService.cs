@@ -10,10 +10,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
 {
     public class PointsOnBuildingService : Disposable, IService
     {
-        private readonly IDatabase<Construction> _constructions;
+        private readonly IDatabase<ConstructionEntity> _constructions;
         private readonly BuildingPointsService _pointsService;
 
-        public PointsOnBuildingService(IDatabase<Construction> constructions, 
+        public PointsOnBuildingService(IDatabase<ConstructionEntity> constructions, 
             BuildingPointsService pointsService)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
@@ -26,12 +26,12 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
             _constructions.OnEvent -= HandleEvent;
         }
 
-        private void HandleEvent(Construction construction, IModelEvent e)
+        private void HandleEvent(ConstructionEntity constructionEntity, IModelEvent e)
         {
             if (e is not ConstructionBuiltByPlayerEvent buildedByPlayerEvent)
                 return;
             
-            _pointsService.Change(buildedByPlayerEvent.Points, construction.GetWorldPosition());
+            _pointsService.Change(buildedByPlayerEvent.Points, constructionEntity.GetWorldPosition());
         }
     }
 }

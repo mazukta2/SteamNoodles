@@ -15,20 +15,20 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
     public class HandConstructionTooltipPresenter : BasePresenter<IHandConstructionTooltipView>
     {
         private readonly IHandConstructionTooltipView _view;
-        private readonly ConstructionsPresentationRepository _constructions;
+        private readonly ConstructionsRepository _constructions;
         private LocalizatedText _name;
         private LocalizatedText _adjacency;
-        private IEnumerable<ConstructionScheme> _highlights;
+        private IEnumerable<ConstructionSchemeEntity> _highlights;
         private ConstructionCardPresentation _model;
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view) :
                 this(view,
-                    IPresenterServices.Default?.Get<ConstructionsPresentationRepository>())
+                    IPresenterServices.Default?.Get<ConstructionsRepository>())
         {
         }
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view,
-            ConstructionsPresentationRepository constructions) : base(view)
+            ConstructionsRepository constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
@@ -47,7 +47,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             UpdateView();
         }
 
-        public void SetHighlight(IEnumerable<ConstructionScheme> highlights)
+        public void SetHighlight(IEnumerable<ConstructionSchemeEntity> highlights)
         {
             if (highlights != null && _highlights != null && highlights.Equals(_highlights))
                 return;
@@ -77,7 +77,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
                 {
                     style = TextHelpers.TextStyles.HeavyHighlight;
                 }
-                else if (_constructions.Get().Any(x => x.Scheme.Compare(construction)))
+                else if (_constructions.Get().Any(x => x.IsItHaveSameScheme(construction)))
                 {
                     style = TextHelpers.TextStyles.Highlight;
                 }

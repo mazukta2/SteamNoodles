@@ -65,7 +65,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
 
         public void DestroyUnit(Unit unit)
         {
-            _units.Remove(unit);
+            _units.Remove(unit.Id);
         }
 
         public float GetUnitSize()

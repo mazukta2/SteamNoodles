@@ -9,6 +9,7 @@ using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Fields;
 using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.Repositories.Fields;
+using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
@@ -18,29 +19,29 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
     public class PlacementFieldPresenter : BasePresenter<IPlacementFieldView>
     {
         private readonly IPlacementFieldView _view;
-        private readonly GhostPresentationRepository _ghost;
-        private readonly FieldPresentation _field;
-        private readonly ConstructionsPresentationRepository _constructions;
+        private readonly GhostRepository _ghost;
+        private readonly Field _field;
+        private readonly ConstructionsRepository _constructions;
         private readonly List<PlacementCellPresenter> _cells = new List<PlacementCellPresenter>();
 
         public PlacementFieldPresenter(IPlacementFieldView view) : this(view,
-            IPresenterServices.Default?.Get<GhostPresentationRepository>(),
-            IPresenterServices.Default?.Get<FieldPresentationRepository>().Get(),
-            IPresenterServices.Default?.Get<ConstructionsPresentationRepository>())
+            IPresenterServices.Default?.Get<GhostRepository>(),
+            IPresenterServices.Default?.Get<FieldRepository>().Get(),
+            IPresenterServices.Default?.Get<ConstructionsRepository>())
         {
         }
 
         public PlacementFieldPresenter(IPlacementFieldView view,
-            GhostPresentationRepository ghost,
-            FieldPresentation field,
-            ConstructionsPresentationRepository constructions) : base(view)
+            GhostRepository ghost,
+            Field field,
+            ConstructionsRepository constructions) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _field = field ?? throw new ArgumentNullException(nameof(field));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
 
-            foreach (var position in _field.AllCells.Cells)
+            foreach (var position in _field.GetCellsPositions().Cells)
                 _cells.Add(CreateCell(position));
 
             //_ghost.OnEvent += HandleOnEvent;
@@ -48,9 +49,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             // _ghost.OnRemoved += UpdateGhostCells;
 
             // _field.OnEvent += HandleOnEvent;
-            //
-            // _constructions.OnAdded += HandleConstructionsOnAdded;
-            // _constructions.OnRemoved += HandleConstructionsOnRemoved;
+
+            _constructions.OnAdded += HandleConstructionsOnAdded;
+            _constructions.OnRemoved += HandleConstructionsOnRemoved;
 
             UpdateGhostCells();
         }
@@ -74,43 +75,48 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         
         private void UpdateGhostCells()
         {
-            IReadOnlyCollection<FieldPosition> freeCells = _field.AvailableCells.Cells;
+            IReadOnlyCollection<FieldPosition> freeCells; 
             IReadOnlyCollection<FieldPosition> occupiedByGhostCells = null;
-            // if (_ghost.Has())
-            // {
-            //     var ghost = _ghost.Get();
-            //     occupiedByGhostCells = ghost.GetOccupiedSpace();
-            // }
+            if (_ghost.Has())
+            {
+                var ghost = _ghost.Get();
+                occupiedByGhostCells = ghost.GetAvailableToBuildCells().Cells;
+                freeCells = _field.GetFreeCells().Cells;
+            }
+            else
+            {
+                freeCells = _field.GetFreeCells().Cells;
+            }
 
             foreach (var cell in _cells)
             {
-                // var state = CellPlacementStatus.Normal;
-                //
-                // var isFreeCell = freeCells.Any(x => x.Value == cell.Position.Value);
-                // if (_ghost.Has())
-                // {
-                //     // is under ghost
-                //     if (occupiedByGhostCells.Any(x => x.Value == cell.Position.Value))
-                //     {
-                //         state = isFreeCell ? CellPlacementStatus.IsAvailableGhostPlace : CellPlacementStatus.IsNotAvailableGhostPlace;
-                //     }
-                //     else
-                //     {
-                //         if (isFreeCell)
-                //             state = CellPlacementStatus.IsReadyToPlace;
-                //         else
-                //             state = CellPlacementStatus.IsUnderConstruction;
-                //     }
-                // }
-                // else
-                // {
-                //     if (isFreeCell)
-                //         state = CellPlacementStatus.Normal;
-                //     else
-                //         state = CellPlacementStatus.IsUnderConstruction;
-                // }
-                //
-                // cell.SetState(state);
+                var state = CellPlacementStatus.Normal;
+                
+                var isFreeCell = freeCells.Any(x => x.Value == cell.Position.Value);
+                if (_ghost.Has())
+                {
+                    // is under ghost
+                    if (occupiedByGhostCells.Any(x => x.Value == cell.Position.Value))
+                    {
+                        state = isFreeCell ? CellPlacementStatus.IsAvailableGhostPlace : CellPlacementStatus.IsNotAvailableGhostPlace;
+                    }
+                    else
+                    {
+                        if (isFreeCell)
+                            state = CellPlacementStatus.IsReadyToPlace;
+                        else
+                            state = CellPlacementStatus.IsUnderConstruction;
+                    }
+                }
+                else
+                {
+                    if (isFreeCell)
+                        state = CellPlacementStatus.Normal;
+                    else
+                        state = CellPlacementStatus.IsUnderConstruction;
+                }
+                
+                cell.SetState(state);
             }
         }
 
@@ -122,15 +128,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             UpdateGhostCells();
         }
         
-        private void HandleConstructionsOnRemoved(ConstructionPresentation construction)
-        {
-            UpdateGhostCells();
-        }
-
-        private void HandleConstructionsOnAdded(ConstructionPresentation construction)
+        private void HandleConstructionsOnAdded(Construction construction)
         {
             _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(construction.Id);
             UpdateGhostCells();
         }
+        
+        private void HandleConstructionsOnRemoved(Uid constructionId)
+        {
+            UpdateGhostCells();
+        }
+
     }
 }

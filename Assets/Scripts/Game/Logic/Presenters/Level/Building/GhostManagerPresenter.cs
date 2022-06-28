@@ -9,15 +9,15 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class GhostManagerPresenter : BasePresenter<IGhostManagerView>
     {
         private readonly IGhostManagerView _view;
-        private readonly GhostPresentationRepository _ghost;
+        private readonly GhostRepository _ghost;
 
         public GhostManagerPresenter(IGhostManagerView view) 
             : this(view,
-                  IPresenterServices.Default?.Get<GhostPresentationRepository>())
+                  IPresenterServices.Default?.Get<GhostRepository>())
         {
         }
 
-        public GhostManagerPresenter(IGhostManagerView view, GhostPresentationRepository ghost) : base(view)
+        public GhostManagerPresenter(IGhostManagerView view, GhostRepository ghost) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));

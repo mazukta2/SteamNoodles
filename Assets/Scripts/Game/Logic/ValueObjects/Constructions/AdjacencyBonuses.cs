@@ -9,36 +9,36 @@ namespace Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions
 {
     public record AdjacencyBonuses
     {
-        private IReadOnlyDictionary<ConstructionScheme, BuildingPoints> _adjacencyPoints;
+        private IReadOnlyDictionary<ConstructionSchemeEntity, BuildingPoints> _adjacencyPoints;
 
         public AdjacencyBonuses()
         {
-            _adjacencyPoints = new Dictionary<ConstructionScheme, BuildingPoints>();
+            _adjacencyPoints = new Dictionary<ConstructionSchemeEntity, BuildingPoints>();
         }
 
-        public AdjacencyBonuses(IReadOnlyDictionary<ConstructionScheme, BuildingPoints> bonuses)
+        public AdjacencyBonuses(IReadOnlyDictionary<ConstructionSchemeEntity, BuildingPoints> bonuses)
         {
             _adjacencyPoints = bonuses;
         }
 
         public int Count => _adjacencyPoints.Count;
 
-        public bool HasAdjacencyBonusWith(ConstructionScheme scheme)
+        public bool HasAdjacencyBonusWith(ConstructionSchemeEntity schemeEntity)
         {
-            return _adjacencyPoints.Any(x => x.Key.Id == scheme.Id);
+            return _adjacencyPoints.Any(x => x.Key.Id == schemeEntity.Id);
         }
 
-        public BuildingPoints GetAdjacencyBonusWith(ConstructionScheme scheme)
+        public BuildingPoints GetAdjacencyBonusWith(ConstructionSchemeEntity schemeEntity)
         {
-            if (!HasAdjacencyBonusWith(scheme))
+            if (!HasAdjacencyBonusWith(schemeEntity))
                 return new BuildingPoints(0);
 
-            return _adjacencyPoints.First(x => x.Key.Id == scheme.Id).Value;
+            return _adjacencyPoints.First(x => x.Key.Id == schemeEntity.Id).Value;
         }
 
-        public IReadOnlyCollection<Tuple<ConstructionScheme, BuildingPoints>> GetAll()
+        public IReadOnlyCollection<Tuple<ConstructionSchemeEntity, BuildingPoints>> GetAll()
         {
-            return _adjacencyPoints.Select(x => new Tuple<ConstructionScheme, BuildingPoints> (x.Key, x.Value)).AsReadOnly();
+            return _adjacencyPoints.Select(x => new Tuple<ConstructionSchemeEntity, BuildingPoints> (x.Key, x.Value)).AsReadOnly();
         }
     }
 }

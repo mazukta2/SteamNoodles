@@ -66,7 +66,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
             SetTargetPosition(target);
         }
         
-        private void HandleOnShowed(ConstructionGhostPlacing placing)
+        private void HandleOnShowed(Ghost placing)
         {
             SetTargetPosition(_controlsService.PointerLevelPosition);
         }

@@ -69,7 +69,7 @@ namespace Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions
         public IReadOnlyCollection<FieldPosition> GetOccupiedSpace(FieldPosition position, FieldRotation rotation)
         {
             return GetOccupiedSpace(rotation)
-                .Select(x => new FieldPosition(position.Field, x.Value + position.Value))
+                .Select(x => new FieldPosition(position.FieldEntity, x.Value + position.Value))
                 .AsReadOnly();
         }
 

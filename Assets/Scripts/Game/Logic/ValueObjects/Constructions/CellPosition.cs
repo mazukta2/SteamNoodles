@@ -20,9 +20,9 @@ namespace Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions
             Value = new IntPoint(x, y);
         }
         
-        public FieldPosition AsFieldPosition(Field field)
+        public FieldPosition AsFieldPosition(FieldEntity fieldEntity)
         {
-            return new FieldPosition(field, X, Y);
+            return new FieldPosition(fieldEntity, X, Y);
         }
 
         public static CellPosition operator +(CellPosition current, CellPosition other) => new CellPosition(current.Value + other.Value);

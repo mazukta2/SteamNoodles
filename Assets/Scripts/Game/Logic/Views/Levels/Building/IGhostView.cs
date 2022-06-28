@@ -11,9 +11,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Building
         IViewContainer Container { get; }
         IRotator Rotator { get; }
 
-        public void Init(GhostPresentation ghost)
+        public void Init()
         {
-            new GhostPresenter(this, ghost);
+            new GhostPresenter(this);
         }
     }
 }

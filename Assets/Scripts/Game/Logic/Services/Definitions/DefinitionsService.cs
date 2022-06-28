@@ -58,10 +58,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Definitions
 
         private void LoadConstructions()
         {
-            var repository = new Database<ConstructionScheme>();
+            var repository = new Database<ConstructionSchemeEntity>();
             var constructionsDefinitions = _definitions.GetList<ConstructionDefinition>();
             var constructionSettings = _definitions.Get<ConstructionsSettingsDefinition>();
-            ConstructionScheme.FillWithDefinitions(constructionsDefinitions, repository, constructionSettings);
+            ConstructionSchemeEntity.FillWithDefinitions(constructionsDefinitions, repository, constructionSettings);
             _services.Add(repository);
         }
     }

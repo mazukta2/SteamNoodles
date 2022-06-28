@@ -23,6 +23,7 @@ using Game.Assets.Scripts.Game.Logic.Services.Resources.Points;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Levels;
+using Game.Assets.Scripts.Tests.Setups;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 {
@@ -31,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void IsCellCalculationIsCorrect()
         {
-            var calculator = new Field(10, new IntPoint(101, 101));
+            var calculator = new FieldEntity(10, new IntPoint(101, 101));
             var size = new IntRect(0, 0, 1, 1);
             Assert.AreEqual(new GameVector3(0, 0, 0), new FieldPosition(calculator, 0, 0).GetWorldPosition(size));
             Assert.AreEqual(new GameVector3(10, 0, -10), new FieldPosition(calculator, 1, -1).GetWorldPosition(size));
@@ -134,29 +135,27 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsPlacementBoundariesRequestRight()
+        public void PlacementBoundariesRequestRight()
         {
-            var constructions = new Database<Construction>();
-            var field = new SingletonDatabase<Field>(new Field(10, new IntPoint(3, 3)));
-            
-            
+            var setup = new GhostConstructionSetup().Fill(new FieldEntity(10, new IntPoint(3, 3)));
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
-            var ghost = new GhostPresentation();
-            var ghostCollection = new GhostPresentationRepository();
             
+            new PlacementFieldPresenter(view, setup.GhostRepository, setup.FieldRepository.Get(),
+                setup.ConstructionsRepository);
 
-            // new PlacementFieldPresenter(view, ghostCollection, new DataProvider<FieldPresentation>(), new DataCollectionProvider<ConstructionPresentation>());
+            Assert.AreEqual(9, setup.FieldRepository.Get().GetCellsPositions().Cells.Count);
 
             var cells = view.CellsContainer.FindViews<CellView>();
             Assert.AreEqual(9, cells.Count());
-
-            viewCollection.Dispose();
 
             Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new GameVector3(10, 0, 10)));
             Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new GameVector3(-10, 0, 10)));
             Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new GameVector3(10, 0, -10)));
             Assert.AreEqual(1, cells.Count(x => x.LocalPosition.Value == new GameVector3(-10, 0, -10)));
+            
+            viewCollection.Dispose();
+            setup.Dispose();
         }
 
 
@@ -165,7 +164,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void IsOffsetRight()
         {
             {
-                var fieldPosition = new Field(1, new IntPoint(101, 101));
+                var fieldPosition = new FieldEntity(1, new IntPoint(101, 101));
                 var size = new IntRect(0, 0, 1, 1);
 
                 // from -0.5 to 0.5 its 0, 0
@@ -182,7 +181,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             }
 
             {
-                var fieldPosition = new Field(1, new IntPoint(101, 101));
+                var fieldPosition = new FieldEntity(1, new IntPoint(101, 101));
                 var size = new IntRect(0, 0, 2, 2);
 
                 // from 0 to 1 its 0, 0
@@ -199,7 +198,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             }
 
             {
-                var fieldPosition = new Field(1, new IntPoint(101, 101));
+                var fieldPosition = new FieldEntity(1, new IntPoint(101, 101));
                 var size = new IntRect(0, 0, 3, 3);
 
                 // from -0.5 to 0.5 its 0, 0
@@ -216,7 +215,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             }
 
             {
-                var fieldPosition = new Field(1, new IntPoint(101, 101));
+                var fieldPosition = new FieldEntity(1, new IntPoint(101, 101));
                 var size = new IntRect(0, 0, 4, 4);
 
                 // from 0 to 1 its 0, 0
@@ -235,98 +234,89 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsConstructionPlacedInRightPosition()
+        public void ConstructionPlacedInRightPosition()
         {
-            var controls = new GameControlsService(new ControlsMock());
-            var assets = new AssetsMock();
-            assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssetsService(assets);
-            var constructionsRepository = new Database<Construction>();
-
-            var field = new Field(1, new IntPoint(11, 11));
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var setup = new GhostConstructionSetup()
+                .Fill(new FieldEntity(1, new IntPoint(11, 11)))
+                .FillDefaultModel();
+            
             var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
                         { 1 },
                     });
-            var scheme = new ConstructionScheme(new Uid(), placement: placement, view: "model");
-            var ghostPresentationCollection = new GhostPresentationRepository();
-
-            var construction = new Construction(scheme, new FieldPosition(field, 1, 1), new FieldRotation());
-            constructionsRepository.Add(construction);
+            var scheme = new ConstructionSchemeEntity(new Uid(), placement: placement, view: "model");
+            var construction = new ConstructionEntity(scheme, 
+                new FieldPosition(setup.FieldDatabase.Get(), 1, 1), 
+                new FieldRotation());
+            setup.ConstructionsDatabase.Add(construction);
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            // new ConstructionPresenter(view, new DataProvider<ConstructionPresentation>(),
-            //     ghostPresentationCollection,  gameAssets, controls);
+            new ConstructionPresenter(view, 
+                setup.ConstructionsRepository.Get(construction.Id), 
+                setup.GhostRepository);
 
             Assert.AreEqual(new GameVector3(1.5f, 0, 1f), view.Position.Value);
 
             viewCollection.Dispose();
-            controls.Dispose();
+            
+            setup.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
-        public void IsConstructionSpawnsVisual()
+        public void ConstructionSpawnsVisual()
         {
-            var controls = new GameControlsService(new ControlsMock());
-            var assets = new AssetsMock();
-            assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssetsService(assets);
-            var constructionsRepository = new Database<Construction>();
-
-            var field = new Field(1, new IntPoint(11, 11));
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var setup = new GhostConstructionSetup()
+                .Fill(new FieldEntity(1, new IntPoint(11, 11)))
+                .FillDefaultModel();
+            
             var placement = new ContructionPlacement(new[,]
-                    {
-                        { 1 },
-                        { 1 },
-                    });
-            var scheme = new ConstructionScheme(new Uid(), placement: placement, view: "model");
-            var ghostPresentationCollection = new GhostPresentationRepository();
-
-            var construction = new Construction(scheme, new FieldPosition(field, 1, 1), new FieldRotation());
-            constructionsRepository.Add(construction);
+            {
+                { 1 },
+                { 1 },
+            });
+            var scheme = new ConstructionSchemeEntity(new Uid(), placement: placement, view: "model");
+            var construction = new ConstructionEntity(scheme,
+                new FieldPosition(setup.FieldDatabase.Get(), 1, 1), 
+                new FieldRotation());
+            setup.ConstructionsDatabase.Add(construction);
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            // new ConstructionPresenter(view,  new DataProvider<ConstructionPresentation>(), 
-            //     ghostPresentationCollection, gameAssets, controls);
+            new ConstructionPresenter(view, 
+                setup.ConstructionsRepository.Get(construction.Id), 
+                setup.GhostRepository);
 
             Assert.IsNotNull(view.Container.FindView<IConstructionModelView>());
 
             viewCollection.Dispose();
-            controls.Dispose();
+            setup.Dispose();
         }
 
 
         [Test, Order(TestCore.PresenterOrder)]
         public void DropAnimations()
         {
-            var controls = new GameControlsService(new ControlsMock());
-            var assets = new AssetsMock();
-            assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssetsService(assets);
-            var constructionsRepository = new Database<Construction>();
-
-            var field = new Field(1, new IntPoint(11, 11));
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var setup = new GhostConstructionSetup()
+                .Fill(new FieldEntity(1, new IntPoint(11, 11)))
+                .FillDefaultModel();
+            
             var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
                         { 1 },
                     });
-            var scheme = new ConstructionScheme(new Uid(), placement: placement, view: "model");
-            var ghostPresentationCollection = new GhostPresentationRepository();
-
-            var construction = new Construction(scheme, new FieldPosition(field, 1, 1), new FieldRotation());
-            constructionsRepository.Add(construction);
+            var scheme = new ConstructionSchemeEntity(new Uid(), placement: placement, view: "model");
+            var construction = new ConstructionEntity(scheme, new FieldPosition(setup.FieldDatabase.Get(), 1, 1),
+                new FieldRotation());
+            setup.ConstructionsDatabase.Add(construction);
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            // new ConstructionPresenter(view, new DataProvider<ConstructionPresentation>(), 
-            //     ghostPresentationCollection,  gameAssets, controls);
+            new ConstructionPresenter(view, 
+                setup.ConstructionsRepository.Get(construction.Id), 
+                setup.GhostRepository);
 
             var modelView = view.Container.FindView<IConstructionModelView>();
             var animator = ((AnimatorMock)modelView.Animator);
@@ -335,35 +325,31 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             Assert.AreEqual("Idle", animator.Animations[1]);
 
             viewCollection.Dispose();
-            controls.Dispose();
+            setup.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
         public void ExplodeAnimations()
         {
-            var controls = new GameControlsService(new ControlsMock());
-            var assets = new AssetsMock();
-            assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
-            var gameAssets = new GameAssetsService(assets);
-            var constructionsRepository = new Database<Construction>();
-
-            var field = new Field(1, new IntPoint(11, 11));
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var setup = new GhostConstructionSetup()
+                .Fill(new FieldEntity(1, new IntPoint(11, 11)))
+                .FillDefaultModel();
+            
             var placement = new ContructionPlacement(new[,]
                     {
                         { 1 },
                         { 1 },
                     });
-            var scheme = new ConstructionScheme(new Uid(), placement: placement, view: "model");
-            var ghostPresentationCollection = new GhostPresentationRepository();
+            var scheme = new ConstructionSchemeEntity(new Uid(), placement: placement, view: "model");
 
-            var construction = new Construction(scheme, new FieldPosition(field, 1, 1), new FieldRotation());
-            constructionsRepository.Add(construction);
+            var construction = new ConstructionEntity(scheme, new FieldPosition(setup.FieldDatabase.Get(), 1, 1), new FieldRotation());
+            setup.ConstructionsDatabase.Add(construction);
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            // new ConstructionPresenter(view, new DataProvider<ConstructionPresentation>(), 
-            //     ghostPresentationCollection, gameAssets, controls);
+            new ConstructionPresenter(view, 
+                setup.ConstructionsRepository.Get(construction.Id), 
+                setup.GhostRepository);
 
             var modelView = view.Container.FindView<IConstructionModelView>();
             var animator = ((AnimatorMock)modelView.Animator);
@@ -373,38 +359,36 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             Assert.IsFalse(view.IsDisposed);
 
-            constructionsRepository.Remove(construction);
+            setup.ConstructionsDatabase.Remove(construction.Id);
 
             Assert.AreEqual("Explode", animator.Animations[2]);
             Assert.AreEqual("Idle", animator.Animations[3]);
 
             Assert.IsTrue(view.IsDisposed);
             viewCollection.Dispose();
-            controls.Dispose();
+            setup.Dispose();
         }
 
         [Test, Order(TestCore.PresenterOrder)]
         public void PlacementFieldSpawnsConstructions()
         {
-            var constructionsRepository = new Database<Construction>();
-            var ghost = new SingletonDatabase<ConstructionGhost>();
-            var field = new FieldPresentation();
+            var setup = new GhostConstructionSetup().FillDefault();
             
             var viewCollection = new ViewsCollection();
-            var ghostPresentationCollection = new GhostPresentationRepository();
 
             var view = new PlacementFieldView(viewCollection);
-            // new PlacementFieldPresenter(view, ghostPresentationCollection, 
-            //     new DataProvider<FieldPresentation>(),
-            //     new DataCollectionProvider<ConstructionPresentation>());
+            new PlacementFieldPresenter(view, setup.GhostRepository, 
+                setup.FieldRepository.Get(),
+                setup.ConstructionsRepository);
             
             Assert.IsFalse(view.ConstrcutionContainer.Has<IConstructionView>());
 
-            constructionsRepository.Add(new Construction(new Field()));
+            setup.ConstructionsDatabase.Add(new ConstructionEntity());
             
             Assert.IsTrue(view.ConstrcutionContainer.Has<IConstructionView>());
             
             viewCollection.Dispose();
+            setup.Dispose();
         }
 
         [TearDown]

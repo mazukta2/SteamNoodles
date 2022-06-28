@@ -19,14 +19,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Screens
         public void EscFromMainScreen()
         {
             var assets = new AssetsMock();
-            var schemesRepository = new Database<ConstructionScheme>();
-            var cardsRepository = new Database<ConstructionCard>();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
 
             // var buildingModeService = new GhostService(new Field(1, IntPoint.One));
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             schemesRepository.Add(scheme);
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCardEntity(scheme);
             var link = cardsRepository.Add(card);
 
             assets.AddPrefab("Screens/MainScreen", new DefaultViewPrefab(x => new MainScreenView(x)));

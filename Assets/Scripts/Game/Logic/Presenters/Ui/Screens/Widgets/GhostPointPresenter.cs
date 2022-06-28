@@ -14,29 +14,29 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class GhostPointPresenter : BasePresenter<IGhostPointsView>
     {
         private IGhostPointsView _view;
-        private readonly GhostPresentationRepository _ghost;
-        private readonly Field _field;
-        private readonly ConstructionsPresentationRepository _constructions;
+        private readonly GhostRepository _ghost;
+        private readonly FieldEntity _fieldEntity;
+        private readonly ConstructionsRepository _constructions;
 
         //private Dictionary<Construction, IAdjacencyTextView> _bonuses = new Dictionary<Construction, IAdjacencyTextView>();
 
         public GhostPointPresenter(IGhostPointsView view) : this(
                 view,
-                IPresenterServices.Default?.Get<GhostPresentationRepository>(),
-                IPresenterServices.Default?.Get<ConstructionsPresentationRepository>(),
-                IPresenterServices.Default?.Get<ISingletonDatabase<Field>>().Get())
+                IPresenterServices.Default?.Get<GhostRepository>(),
+                IPresenterServices.Default?.Get<ConstructionsRepository>(),
+                IPresenterServices.Default?.Get<ISingletonDatabase<FieldEntity>>().Get())
         {
         }
 
         public GhostPointPresenter(IGhostPointsView view,
-            GhostPresentationRepository ghost,
-            ConstructionsPresentationRepository constructions,
-            Field field) : base(view)
+            GhostRepository ghost,
+            ConstructionsRepository constructions,
+            FieldEntity fieldEntity) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
-            _field = field ?? throw new ArgumentNullException(nameof(field));
+            _fieldEntity = fieldEntity ?? throw new ArgumentNullException(nameof(fieldEntity));
 
             //_ghost.OnEvent += HandleOnEvent;
             // _ghost.OnAdded += UpdatePoints;
@@ -75,7 +75,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             //UpdateBonuses(bonuses);
         }
 
-        private void UpdateBonuses(IReadOnlyDictionary<Construction, BuildingPoints> newBonuses)
+        private void UpdateBonuses(IReadOnlyDictionary<ConstructionEntity, BuildingPoints> newBonuses)
         {
             //foreach (var item in _bonuses.ToList())
             //{

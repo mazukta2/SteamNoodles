@@ -7,12 +7,12 @@ namespace Game.Assets.Scripts.Game.Logic.Events.Constructions
     public record ConstructionBuiltByPlayerEvent : IModelEvent
     {
         public BuildingPoints Points { get; set; }
-        public ConstructionCard Card { get; set; }
+        public ConstructionCardEntity CardEntity { get; set; }
 
-        public ConstructionBuiltByPlayerEvent(BuildingPoints points, ConstructionCard card)
+        public ConstructionBuiltByPlayerEvent(BuildingPoints points, ConstructionCardEntity cardEntity)
         {
             Points = points;
-            Card = card;
+            CardEntity = cardEntity;
         }
     }
 }

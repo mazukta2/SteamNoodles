@@ -16,37 +16,31 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
     public class ConstructionPresenter : BasePresenter<IConstructionView>
     {
         private readonly IConstructionView _constructionView;
-        private readonly ConstructionPresentation _construction;
-        private readonly GhostPresentationRepository _ghost;
-        private readonly GameAssetsService _assets;
+        private readonly Construction _construction;
+        private readonly GhostRepository _ghost;
 
         private bool _dropFinished;
         private IConstructionModelView _modelView;
 
         public ConstructionPresenter(IConstructionView view, Uid constructionId)
             : this(view, 
-                IPresenterServices.Default?.Get<ConstructionsPresentationRepository>().Get(constructionId),
-                  IPresenterServices.Default?.Get<GhostPresentationRepository>(),
-                  IPresenterServices.Default?.Get<GameAssetsService>(),
-                  IPresenterServices.Default?.Get<GameControlsService>())
+                IPresenterServices.Default?.Get<ConstructionsRepository>().Get(constructionId),
+                  IPresenterServices.Default?.Get<GhostRepository>())
         {
 
         }
 
         public ConstructionPresenter(IConstructionView view,
-            ConstructionPresentation construction,
-            GhostPresentationRepository ghost,
-            GameAssetsService assets,
-            GameControlsService controls) : base(view)
+            Construction construction,
+            GhostRepository ghost) : base(view)
         {
             _constructionView = view ?? throw new ArgumentNullException(nameof(view));
             _construction = construction ?? throw new ArgumentNullException(nameof(construction));
             _ghost = ghost ?? throw new ArgumentNullException(nameof(ghost));
-            _assets = assets ?? throw new ArgumentNullException(nameof(assets));
-            _constructionView.Position.Value = _construction.WorldPosition;
-            _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_construction.Rotation);
+            _constructionView.Position.Value = _construction.GetWorldPosition();
+            _constructionView.Rotator.Rotation = FieldRotation.ToDirection(_construction.GetRotation());
 
-            _modelView = _constructionView.Container.Spawn<IConstructionModelView>(GetPrefab());
+            _modelView = _constructionView.Container.Spawn<IConstructionModelView>(construction.GetPrefab());
 
             _modelView.Animator.OnFinished += DropFinished;
             _construction.OnDispose += HandleRemoved;
@@ -55,7 +49,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
             // _ghost.OnRemoved += HandleOnChanged;
 
             _modelView.Animator.Play(IConstructionModelView.Animations.Drop.ToString());
-            controls.ShakeCamera();
+            //controls.ShakeCamera();
             UpdateShrink();
         }
 
@@ -69,11 +63,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building
 
             _modelView.Animator.OnFinished -= DropFinished;
             _modelView.Animator.OnFinished -= ExplosionFinished;
-        }
-
-        private IViewPrefab GetPrefab()
-        {
-            return _assets.GetPrefab(_construction.Scheme.LevelViewPath);
         }
 
         private void UpdateShrink()

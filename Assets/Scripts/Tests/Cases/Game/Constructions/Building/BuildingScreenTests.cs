@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void EscFromBuildingScreen()
         {
             var viewCollection = new ViewsCollection();
-            var ghostSetup = new GhostConstructionSetup().FullDefault();
+            var ghostSetup = new GhostConstructionSetup().FillDefault();
             var screensSetup = new ScreensSetup(viewCollection).FullDefault();
             
             var controls = new GameControlsService(new ControlsMock());

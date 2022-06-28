@@ -12,13 +12,13 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Flow
 {
     public class StageTurnService : Disposable, IService
     {
-        private readonly IDatabase<Construction> _constructions;
+        private readonly IDatabase<ConstructionEntity> _constructions;
         private readonly UnitsCustomerQueueService _unitsCustomerQueueService;
         private readonly SequenceManager _sequence = new SequenceManager();
         private int _turnCounter = 0;
 
         public StageTurnService(
-            IDatabase<Construction> constructions,
+            IDatabase<ConstructionEntity> constructions,
             UnitsCustomerQueueService unitsCustomerQueueService)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
@@ -46,7 +46,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Flow
             _turnCounter++;
         }
 
-        private void HandleOnEvent(Construction construction, IModelEvent e)
+        private void HandleOnEvent(ConstructionEntity constructionEntity, IModelEvent e)
         {
             if (e is ConstructionBuiltByPlayerEvent)
                 Turn();

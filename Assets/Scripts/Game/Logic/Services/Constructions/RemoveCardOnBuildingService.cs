@@ -9,10 +9,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
 {
     public class RemoveCardOnBuildingService : Disposable, IService
     {
-        private readonly IDatabase<Construction> _constructions;
+        private readonly IDatabase<ConstructionEntity> _constructions;
         private readonly HandService _handService;
 
-        public RemoveCardOnBuildingService(IDatabase<Construction> constructions, HandService handService)
+        public RemoveCardOnBuildingService(IDatabase<ConstructionEntity> constructions, HandService handService)
         {
             _constructions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _handService = handService ?? throw new ArgumentNullException(nameof(handService));
@@ -24,15 +24,15 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
             _constructions.OnEvent -= HandleEvent;
         }
 
-        private void HandleEvent(Construction construction, IModelEvent e)
+        private void HandleEvent(ConstructionEntity constructionEntity, IModelEvent e)
         {
             if (e is not ConstructionBuiltByPlayerEvent builtByPlayerEvent)
                 return;
             
-            if (!_handService.Has(builtByPlayerEvent.Card))
+            if (!_handService.Has(builtByPlayerEvent.CardEntity))
                 throw new Exception("No such card in hand");
             
-            _handService.Remove(builtByPlayerEvent.Card);
+            _handService.Remove(builtByPlayerEvent.CardEntity);
         }
     }
 }

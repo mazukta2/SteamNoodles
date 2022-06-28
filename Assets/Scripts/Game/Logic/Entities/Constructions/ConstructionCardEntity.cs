@@ -6,36 +6,36 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 
 namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 {
-    public record ConstructionCard : Entity
+    public record ConstructionCardEntity : Entity
     {
-        public ConstructionScheme Scheme { get; }
+        public ConstructionSchemeEntity SchemeEntity { get; }
         public CardAmount Amount { get; private set; }
 
-        public LocalizationTag Name => Scheme.Name;
-        public BuildingPoints Points => Scheme.Points;
-        public string HandImagePath => Scheme.HandImagePath;
-        public AdjacencyBonuses AdjacencyPoints => Scheme.AdjacencyPoints;
+        public LocalizationTag Name => SchemeEntity.Name;
+        public BuildingPoints Points => SchemeEntity.Points;
+        public string HandImagePath => SchemeEntity.HandImagePath;
+        public AdjacencyBonuses AdjacencyPoints => SchemeEntity.AdjacencyPoints;
 
-        public ConstructionCard(Uid id, ConstructionScheme scheme) : base(id)
+        public ConstructionCardEntity(Uid id, ConstructionSchemeEntity schemeEntity) : base(id)
         {
             Amount = new CardAmount(1);
-            Scheme = scheme;
+            SchemeEntity = schemeEntity;
         }
 
-        public ConstructionCard() : this(new ConstructionScheme())
+        public ConstructionCardEntity() : this(new ConstructionSchemeEntity())
         {
         }
 
-        public ConstructionCard(ConstructionScheme scheme)
+        public ConstructionCardEntity(ConstructionSchemeEntity schemeEntity)
         {
             Amount = new CardAmount(1);
-            Scheme = scheme;
+            SchemeEntity = schemeEntity;
         }
 
-        public ConstructionCard(ConstructionScheme scheme, CardAmount amount)
+        public ConstructionCardEntity(ConstructionSchemeEntity schemeEntity, CardAmount amount)
         {
             Amount = amount;
-            Scheme = scheme;
+            SchemeEntity = schemeEntity;
         }
 
         public void Add(CardAmount amount)

@@ -11,17 +11,17 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
 {
     public class SchemesService : IService
     {
-        private readonly IDatabase<ConstructionScheme> _schemes;
-        private readonly DeckService<ConstructionScheme> _deck;
+        private readonly IDatabase<ConstructionSchemeEntity> _schemes;
+        private readonly DeckService<ConstructionSchemeEntity> _deck;
 
-        public SchemesService(IDatabase<ConstructionScheme> schemes, DeckService<ConstructionScheme> deck)
+        public SchemesService(IDatabase<ConstructionSchemeEntity> schemes, DeckService<ConstructionSchemeEntity> deck)
         {
             _schemes = schemes ?? throw new ArgumentNullException(nameof(schemes));
             _deck = deck ?? throw new ArgumentNullException(nameof(deck));
         }
 
-        public SchemesService(IDatabase<ConstructionScheme> schemes, DeckService<ConstructionScheme> deck,
-            IReadOnlyDictionary<ConstructionScheme, int> availableConstructions)
+        public SchemesService(IDatabase<ConstructionSchemeEntity> schemes, DeckService<ConstructionSchemeEntity> deck,
+            IReadOnlyDictionary<ConstructionSchemeEntity, int> availableConstructions)
         {
             _schemes = schemes ?? throw new ArgumentNullException(nameof(schemes));
             _deck = deck ?? throw new ArgumentNullException(nameof(deck));
@@ -30,12 +30,12 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
                 _deck.Add(item.Key, item.Value);
         }
 
-        public ConstructionScheme TakeRandom()
+        public ConstructionSchemeEntity TakeRandom()
         {
             return _deck.Take();
         }
 
-        private ConstructionScheme Find(ConstructionDefinition item)
+        private ConstructionSchemeEntity Find(ConstructionDefinition item)
         {
             return _schemes.Get().First(x => x.IsConnectedToDefinition(item));
         }

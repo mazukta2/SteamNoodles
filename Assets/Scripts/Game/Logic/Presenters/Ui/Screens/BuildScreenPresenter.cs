@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private KeyCommand _exitKey;
 
         private IBuildScreenView _view;
-        private readonly ConstructionGhostPlacing _ghost;
+        private readonly Ghost _ghost;
         private readonly GhostRepository _ghostRepository;
         private readonly ScreenService _screenService;
 

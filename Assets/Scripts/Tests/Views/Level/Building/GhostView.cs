@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
             Container = new ContainerViewMock(level);
         }
 
-        public void Init(GhostPresentation ghost)
+        public void Init()
         {
             
         }

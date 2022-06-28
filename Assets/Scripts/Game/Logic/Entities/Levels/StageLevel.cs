@@ -12,9 +12,9 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Levels
 {
     public record StageLevel : Level
     {
-        public IReadOnlyCollection<ConstructionScheme> StartingSchemes { get; } = new List<ConstructionScheme>();
+        public IReadOnlyCollection<ConstructionSchemeEntity> StartingSchemes { get; } = new List<ConstructionSchemeEntity>();
         public IntPoint PlacementFieldSize { get; private set; }
-        public IReadOnlyDictionary<ConstructionScheme, int> ConstructionsReward { get; private set; } = new Dictionary<ConstructionScheme, int>();
+        public IReadOnlyDictionary<ConstructionSchemeEntity, int> ConstructionsReward { get; private set; } = new Dictionary<ConstructionSchemeEntity, int>();
         public IReadOnlyDictionary<UnitType, int> CrowdUnits { get; private set; } = new Dictionary<UnitType, int>();
         public FloatRect UnitsRect { get; private set; }
         public int CrowdUnitsAmount { get; private set; }
@@ -24,16 +24,16 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Levels
         public float LevelUpPower { get; private set; }
         public float LevelUpOffset { get; private set; }
 
-        public StageLevel(LevelDefinition definition, ConstructionsSettingsDefinition constructionsSettingsDefinition, IDatabase<ConstructionScheme> schemes, IDatabase<UnitType> units) : base(definition)
+        public StageLevel(LevelDefinition definition, ConstructionsSettingsDefinition constructionsSettingsDefinition, IDatabase<ConstructionSchemeEntity> schemes, IDatabase<UnitType> units) : base(definition)
         {
             PlacementFieldSize = definition.PlacementField.Size;
 
-            var startingHand = new List<ConstructionScheme>();
+            var startingHand = new List<ConstructionSchemeEntity>();
             foreach (var construction in definition.StartingHand)
                 startingHand.Add(schemes.Get().First(x => x.IsConnectedToDefinition(construction)));
             StartingSchemes = startingHand;
 
-            var constructionsReward = new Dictionary<ConstructionScheme, int>();
+            var constructionsReward = new Dictionary<ConstructionSchemeEntity, int>();
             foreach (var construction in definition.ConstructionsReward)
                 constructionsReward.Add(schemes.Get().First(x => x.IsConnectedToDefinition(construction.Key)), construction.Value);
             ConstructionsReward = constructionsReward;
@@ -52,7 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Levels
             LevelUpOffset = constructionsSettingsDefinition.LevelUpOffset;
         }
 
-        public StageLevel(IEnumerable<ConstructionScheme> startingSchemes)
+        public StageLevel(IEnumerable<ConstructionSchemeEntity> startingSchemes)
         {
             StartingSchemes = startingSchemes.AsReadOnly();
         }

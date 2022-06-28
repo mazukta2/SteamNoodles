@@ -10,7 +10,7 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 
 namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 {
-    public record ConstructionScheme : Entity
+    public record ConstructionSchemeEntity : Entity
     {
         public LocalizationTag Name { get; }
         public BuildingPoints Points { get;}
@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 
         private DefId _defintionId; // don't expose this field
 
-        public ConstructionScheme(Uid id, 
+        public ConstructionSchemeEntity(Uid id, 
             ConstructionDefinition definition,
             ConstructionsSettingsDefinition constructionsSettingsDefinition) : base(id)
         {
@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
             _defintionId = definition.DefId;
         }
 
-        public ConstructionScheme(ConstructionDefinition definition, 
+        public ConstructionSchemeEntity(ConstructionDefinition definition, 
             ConstructionsSettingsDefinition constructionsSettingsDefinition)
         {
             Name = new LocalizationTag(definition.Name);
@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
             _defintionId = definition.DefId;
         }
 
-        public ConstructionScheme(DefId defId = null, ContructionPlacement placement = null,
+        public ConstructionSchemeEntity(DefId defId = null, ContructionPlacement placement = null,
             LocalizationTag name = null, BuildingPoints points = null,
             AdjacencyBonuses adjacencyPoints = null,
             string image = "", string view = "",
@@ -75,7 +75,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
             _defintionId = defId ?? DefId.None;
         }
 
-        public ConstructionScheme(Uid id, DefId defId = null, ContructionPlacement placement = null,
+        public ConstructionSchemeEntity(Uid id, DefId defId = null, ContructionPlacement placement = null,
             LocalizationTag name = null, BuildingPoints points = null,
             AdjacencyBonuses adjacencyPoints = null,
             string image = "", string view = "",
@@ -95,9 +95,9 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
             _defintionId = defId ?? DefId.None;
         }
 
-        public static ConstructionScheme DefaultWithPoints(BuildingPoints points)
+        public static ConstructionSchemeEntity DefaultWithPoints(BuildingPoints points)
         {
-            return new ConstructionScheme(new Uid(),
+            return new ConstructionSchemeEntity(new Uid(),
                 DefId.None,
                 ContructionPlacement.One,
                 LocalizationTag.None,
@@ -106,14 +106,14 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
                 "", "", new Requirements());
         }
 
-        public static IReadOnlyCollection<ConstructionScheme> FillWithDefinitions(IEnumerable<ConstructionDefinition> definitions,
-            IDatabase<ConstructionScheme> database,
+        public static IReadOnlyCollection<ConstructionSchemeEntity> FillWithDefinitions(IEnumerable<ConstructionDefinition> definitions,
+            IDatabase<ConstructionSchemeEntity> database,
             ConstructionsSettingsDefinition constructionsSettingsDefinition)
         {
-            var result = new Dictionary<ConstructionDefinition, ConstructionScheme>();
+            var result = new Dictionary<ConstructionDefinition, ConstructionSchemeEntity>();
             foreach (var definition in definitions)
             {
-                var entity = new ConstructionScheme(definition, constructionsSettingsDefinition);
+                var entity = new ConstructionSchemeEntity(definition, constructionsSettingsDefinition);
                 result.Add(definition, entity);
             }
 
@@ -131,7 +131,7 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 
             return result.Values.AsReadOnly();
 
-            ConstructionScheme Get(ConstructionDefinition definition)
+            ConstructionSchemeEntity Get(ConstructionDefinition definition)
             {
                 return result[definition];
             }

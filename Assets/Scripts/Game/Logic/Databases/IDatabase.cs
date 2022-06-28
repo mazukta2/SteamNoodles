@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Game.Logic.Databases
         event Action<T, IModelEvent> OnEvent;
 
         T Add(T entity);
-        void Remove(T entity);
+        void Remove(Uid id);
         int Count { get; }
         void FireEvent(T entity, IModelEvent modelEvent);
         bool Has(T entity);

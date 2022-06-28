@@ -22,19 +22,20 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         [Test, Order(TestCore.ModelOrder)]
         public void IsPointsForBuildingModelWorking()
         {
-            var constructionsRepository = new Database<Construction>();
-            var constructionsCardsRepository = new Database<ConstructionCard>();
-            var constructionsSchemeRepository = new Database<ConstructionScheme>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var constructionsCardsRepository = new Database<ConstructionCardEntity>();
+            var constructionsSchemeRepository = new Database<ConstructionSchemeEntity>();
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var handService = new HandService(constructionsCardsRepository);
-            var field = new Field(1, new IntPoint(11, 11));
+            var field = new FieldEntity(1, new IntPoint(11, 11));
             // var buildingService = new BuildingService(constructionsRepository);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService);
 
-            var scheme = ConstructionSetups.GetDefaultScheme();
-            constructionsSchemeRepository.Add(scheme);
-            var card = handService.Add(scheme);
+            // var scheme = ConstructionSetup.GetDefaultScheme();
+            // constructionsSchemeRepository.Add(scheme);
+            // var card = handService.Add(scheme);
+            var scheme = new ConstructionSchemeEntity();
 
             Assert.AreEqual(1, scheme.Points.AsInt());
             Assert.AreEqual(0, scheme.AdjacencyPoints.Count);
@@ -51,24 +52,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         [Test, Order(TestCore.ModelOrder)]
         public void IsAdjacencyPointsForBuildingModelWorking()
         {
-            var constructionsRepository = new Database<Construction>();
-            var constructionsCardsRepository = new Database<ConstructionCard>();
-            var constructionsSchemeRepository = new Database<ConstructionScheme>();
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var constructionsCardsRepository = new Database<ConstructionCardEntity>();
+            var constructionsSchemeRepository = new Database<ConstructionSchemeEntity>();
+            var ghost = new SingletonDatabase<GhostEntity>();
 
             var pointsService = new BuildingPointsService(0, 0, new GameTime(), 2, 2);
             var handService = new HandService(constructionsCardsRepository);
-            var field = new Field(1, new IntPoint(11, 11));
+            var field = new FieldEntity(1, new IntPoint(11, 11));
             // var buildingService = new BuildingService(constructionsRepository);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, pointsService);
             // var building = new BuildingAggregatorService(new SingletonRepository<Field>(), ghost, constructionsRepository);
             // var data = new DataProvider<GhostData>();
             
-            var scheme = new ConstructionScheme(
+            var scheme = new ConstructionSchemeEntity(
                 defId:new DefId("Construction"),
                 placement:new ContructionPlacement(new[,] { { 1 } }),
                 points:new BuildingPoints(1));
-            scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionScheme, BuildingPoints>() 
+            scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionSchemeEntity, BuildingPoints>() 
                 { { scheme, new BuildingPoints(2) } }));
 
             constructionsSchemeRepository.Add(scheme);
@@ -80,7 +81,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
 
             // buildingService.Build(card, new FieldPosition(field, 0, 0), new FieldRotation(FieldRotation.Rotation.Top));
 
-            ghost.Add(new ConstructionGhost(card, new FieldPosition(field, 1, 0)));
+            // ghost.Add(new GhostEntity(card, new FieldPosition(field, 1, 0)));
             
             // Assert.AreEqual(3, data.Get().Points.AsInt());
 
@@ -96,23 +97,23 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         [Test, Order(TestCore.PresenterOrder)]
         public void IsNotGetPointsForBuildingOutsideField()
         {
-            var constructionsRepository = new Database<Construction>();
-            var field = new Field(10, new IntPoint(3, 3));
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var field = new FieldEntity(10, new IntPoint(3, 3));
             var controls = new GameControlsService(new ControlsMock());
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var ghost = new SingletonDatabase<GhostEntity>();
             // var moving = new GhostMovingControlsService(ghost, new SingletonDatabase<Field>(), controls);
             // var building = new BuildingAggregatorService(new SingletonRepository<Field>(), ghost, constructionsRepository);
 
-            var scheme = new ConstructionScheme(
+            var scheme = new ConstructionSchemeEntity(
                 points:new BuildingPoints(5));
 
             var viewCollection = new ViewsCollection();
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCardEntity(scheme);
 
             var view = new GhostPointsView(viewCollection);
             // new GhostPointPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionPresenterData>(), field);
 
-            ghost.Add(new ConstructionGhost(card, field));
+            // ghost.Add(new GhostEntity(card, field));
             
             Assert.AreEqual("+5", view.Points.Value);
 
@@ -128,10 +129,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         [Test, Order(TestCore.PresenterOrder)]
         public void IsPointsChangedByAdjacency()
         {
-            var constructionsRepository = new Database<Construction>();
-            var field = new SingletonDatabase<Field>(new Field(1, new IntPoint(5, 5)));
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var field = new SingletonDatabase<FieldEntity>(new FieldEntity(1, new IntPoint(5, 5)));
             var controls = new GameControlsService(new ControlsMock());
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var ghost = new SingletonDatabase<GhostEntity>();
             // var moving = new GhostMovingControlsService(ghost, field, controls);
             // var building = new BuildingAggregatorService(field, ghost, constructionsRepository);
 
@@ -140,24 +141,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
                     { 0, 1, 0 },
                     { 0, 1, 0 },
                 });
-            var scheme = new ConstructionScheme(
+            var scheme = new ConstructionSchemeEntity(
                 placement: placement,
                 points:new BuildingPoints(5));
-            scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionScheme, BuildingPoints>() { { scheme, new BuildingPoints(2) } }));
+            scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionSchemeEntity, BuildingPoints>() { { scheme, new BuildingPoints(2) } }));
 
             var viewCollection = new ViewsCollection();
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCardEntity(scheme);
 
             var view = new GhostPointsView(viewCollection);
             // new GhostPointPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionPresenterData>(), field.Get());
            
             Assert.AreEqual("", view.Points.Value);
             
-            ghost.Add(new ConstructionGhost(card, field.Get()));
+            // ghost.Add(new GhostEntity(card, field.Get()));
 
             Assert.AreEqual("+5", view.Points.Value);
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field.Get(), 0, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field.Get(), 0, 0), new FieldRotation()));
 
             Assert.AreEqual("0", view.Points.Value);
 
@@ -174,10 +175,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         [Test, Order(TestCore.PresenterOrder)]
         public void IsAdjacencyPointsBoundariesCorrect()
         {
-            var constructionsRepository = new Database<Construction>();
-            var field = new Field(1, new IntPoint(15, 15));
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var field = new FieldEntity(1, new IntPoint(15, 15));
             var controls = new GameControlsService(new ControlsMock());
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var ghost = new SingletonDatabase<GhostEntity>();
             // var moving = new GhostMovingControlsService(ghost, new SingletonDatabase<Field>(), controls);
             // var building = new BuildingAggregatorService(new SingletonRepository<Field>(), ghost, constructionsRepository);
 
@@ -186,20 +187,20 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
                     { 0, 1, 0 },
                     { 0, 1, 0 },
                 });
-            var scheme = new ConstructionScheme(
+            var scheme = new ConstructionSchemeEntity(
                 placement: placement,
                 points: new BuildingPoints(5));
-            scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionScheme, BuildingPoints>() { { scheme, new BuildingPoints(2) } }));
+            scheme.SetAdjecity(new AdjacencyBonuses(new Dictionary<ConstructionSchemeEntity, BuildingPoints>() { { scheme, new BuildingPoints(2) } }));
 
             var viewCollection = new ViewsCollection();
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCardEntity(scheme);
 
             var view = new GhostPointsView(viewCollection);
             // new GhostPointPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionPresenterData>(), field);
 
-            ghost.Add(new ConstructionGhost(card, field));
+            // ghost.Add(new GhostEntity(card, field));
 
-            constructionsRepository.Add(new Construction(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
+            constructionsRepository.Add(new ConstructionEntity(scheme, new FieldPosition(field, 0, 0), new FieldRotation()));
 
             // moving.SetTargetPosition(new FieldPosition(field, 0, 0));
             Assert.AreEqual("0", view.Points.Value);

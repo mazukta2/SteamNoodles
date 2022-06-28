@@ -98,9 +98,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var units = new Database<Unit>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
-            var constructionsRepository = new Database<Construction>();
-            var constructionsCardsRepository = new Database<ConstructionCard>();
-            var constructionsSchemeRepository = new Database<ConstructionScheme>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var constructionsCardsRepository = new Database<ConstructionCardEntity>();
+            var constructionsSchemeRepository = new Database<ConstructionSchemeEntity>();
 
             var type = new UnitType();
             unitTypes.Add(type);
@@ -119,14 +119,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var customers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
 
             var handService = new HandService(constructionsCardsRepository);
-            var field = new Field(1, new IntPoint(11, 11));
+            var field = new FieldEntity(1, new IntPoint(11, 11));
             // var buildingService = new BuildingService(constructionsRepository);
 
             var turnService = new StageTurnService(constructionsRepository, customers);
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             constructionsSchemeRepository.Add(scheme);
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCardEntity(scheme);
             constructionsCardsRepository.Add(card);
             Assert.AreEqual(0, constructionsRepository.Count);
 
@@ -630,9 +630,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var units = new Database<Unit>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
-            var constructionsRepository = new Database<Construction>();
-            var constructionsCardsRepository = new Database<ConstructionCard>();
-            var constructionsSchemeRepository = new Database<ConstructionScheme>();
+            var constructionsRepository = new Database<ConstructionEntity>();
+            var constructionsCardsRepository = new Database<ConstructionCardEntity>();
+            var constructionsSchemeRepository = new Database<ConstructionSchemeEntity>();
 
             var type = new UnitType();
             unitTypes.Add(type);
@@ -651,15 +651,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var customers = new UnitsCustomerQueueService(units, unitsService, crowd, coins, points, time, random);
 
             var handService = new HandService(constructionsCardsRepository);
-            var field = new Field(1, new IntPoint(11, 11));
+            var field = new FieldEntity(1, new IntPoint(11, 11));
             // var buildingService = new BuildingService(constructionsRepository);
             var pointsOnBuilding = new PointsOnBuildingService(constructionsRepository, points);
 
             var turnService = new StageTurnService(constructionsRepository, customers);
 
-            var scheme = ConstructionScheme.DefaultWithPoints(new BuildingPoints(3));
+            var scheme = ConstructionSchemeEntity.DefaultWithPoints(new BuildingPoints(3));
             constructionsSchemeRepository.Add(scheme);
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCardEntity(scheme);
             constructionsCardsRepository.Add(card);
             Assert.AreEqual(0, constructionsRepository.Count);
 

@@ -29,13 +29,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void CardsSpawnedOnStart()
         {
-            var schemesRepository = new Database<ConstructionScheme>();
-            var cardsRepository = new Database<ConstructionCard>();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             schemesRepository.Add(scheme);
 
-            var deck = new DeckService<ConstructionScheme>();
+            var deck = new DeckService<ConstructionSchemeEntity>();
             var hand = new HandService(cardsRepository);
             var schemes = new SchemesService(schemesRepository, deck);
             var points = new BuildingPointsService();
@@ -56,13 +56,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void SameCardsCollapse()
         {
-            var schemesRepository = new Database<ConstructionScheme>();
-            var scheme1 = new ConstructionScheme();
-            var scheme2 = new ConstructionScheme();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var scheme1 = new ConstructionSchemeEntity();
+            var scheme2 = new ConstructionSchemeEntity();
             schemesRepository.Add(scheme1);
             schemesRepository.Add(scheme2);
 
-            var cardsRepository = new Database<ConstructionCard>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
             var hand = new HandService(cardsRepository);
 
             Assert.AreEqual(0, cardsRepository.Count);
@@ -86,13 +86,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void SameCardsRemoved()
         {
-            var schemesRepository = new Database<ConstructionScheme>();
-            var scheme1 = new ConstructionScheme();
-            var scheme2 = new ConstructionScheme();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var scheme1 = new ConstructionSchemeEntity();
+            var scheme2 = new ConstructionSchemeEntity();
             schemesRepository.Add(scheme1);
             schemesRepository.Add(scheme2);
 
-            var cardsRepository = new Database<ConstructionCard>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
             var hand = new HandService(cardsRepository);
 
             Assert.AreEqual(0, cardsRepository.Count);
@@ -122,15 +122,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void YouGetNewCardsAfterLevelUp()
         {
-            var cardsRepository = new Database<ConstructionCard>();
-            var schemesRepository = new Database<ConstructionScheme>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
 
             var time = new GameTime();
             var stageLevel = new StageLevel();
             var pointsService = new BuildingPointsService(0,0, time, 2, 2);
 
-            var deck = new DeckService<ConstructionScheme>();
-            deck.Add(new ConstructionScheme());
+            var deck = new DeckService<ConstructionSchemeEntity>();
+            deck.Add(new ConstructionSchemeEntity());
             var hand = new HandService(cardsRepository);
             var schemes = new SchemesService(schemesRepository, deck);
 
@@ -153,25 +153,25 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         {
             var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
 
-            var schemesRepository = new Database<ConstructionScheme>();
-            var scheme1 = new ConstructionScheme();
-            var scheme2 = new ConstructionScheme();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var scheme1 = new ConstructionSchemeEntity();
+            var scheme2 = new ConstructionSchemeEntity();
             schemesRepository.Add(scheme1);
             schemesRepository.Add(scheme2);
 
-            var cardsRepository = new Database<ConstructionCard>();
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
+            var ghost = new SingletonDatabase<GhostEntity>();
 
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
             // new HandPresenter(handView, new DataCollectionProvider<ConstructionCardData>(), new DataProvider<GhostData>(), screenManager);
 
             Assert.AreEqual(0, handView.Collection.FindViews<IHandConstructionView>().Count);
-            cardsRepository.Add(new ConstructionCard(scheme1));
+            cardsRepository.Add(new ConstructionCardEntity(scheme1));
 
             Assert.AreEqual(1, handView.Collection.FindViews<IHandConstructionView>().Count);
 
-            cardsRepository.Add(new ConstructionCard(scheme2));
+            cardsRepository.Add(new ConstructionCardEntity(scheme2));
             Assert.AreEqual(2, handView.Collection.FindViews<IHandConstructionView>().Count);
 
             viewCollection.Dispose();
@@ -181,13 +181,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void AmountShownCorrectly()
         {
             var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
-            var schemesRepository = new Database<ConstructionScheme>();
-            var cardsRepository = new Database<ConstructionCard>();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             schemesRepository.Add(scheme);
 
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCardEntity(scheme);
             var link = cardsRepository.Add(card);
 
             var viewCollection = new ViewsCollection();
@@ -208,13 +208,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void ConstructionIconSet()
         {
             var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
-            var schemesRepository = new Database<ConstructionScheme>();
-            var cardsRepository = new Database<ConstructionCard>();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
             
-            var scheme = new ConstructionScheme(image: "image");
+            var scheme = new ConstructionSchemeEntity(image: "image");
             schemesRepository.Add(scheme);
 
-            var link = cardsRepository.Add(new ConstructionCard(scheme));
+            var link = cardsRepository.Add(new ConstructionCardEntity(scheme));
 
             var viewCollection = new ViewsCollection();
 
@@ -230,13 +230,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void TooltipViewSpawning()
         {
             var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
-            var schemesRepository = new Database<ConstructionScheme>();
-            var cardsRepository = new Database<ConstructionCard>();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             schemesRepository.Add(scheme);
 
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCardEntity(scheme);
             var link = cardsRepository.Add(card);
 
             var viewCollection = new ViewsCollection();
@@ -259,13 +259,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var assets = new AssetsMock();
             assets.AddPrefab("Screens/BuildScreen", new DefaultViewPrefab(x => new BuildScreenView(x)));
             var screenManager = new ScreenService(new GameAssetsService(assets));
-            var schemesRepository = new Database<ConstructionScheme>();
-            var cardsRepository = new Database<ConstructionCard>();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             schemesRepository.Add(scheme);
 
-            var card = new ConstructionCard(scheme);
+            var card = new ConstructionCardEntity(scheme);
             var link = cardsRepository.Add(card);
 
             var viewCollection = new ViewsCollection();
@@ -284,15 +284,15 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         public void HandAnimationsPlayedInBuildingMode()
         {
             var screenManager = new ScreenService(new GameAssetsService(new AssetsMock()));
-            var cardsRepository = new Database<ConstructionCard>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
 
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var ghost = new SingletonDatabase<GhostEntity>();
             var viewCollection = new ViewsCollection();
             var handView = new HandView(viewCollection);
             // new HandPresenter(handView, new DataCollectionProvider<ConstructionCardData>(), new DataProvider<GhostData>(), screenManager);
 
             Assert.AreEqual("Choose", handView.Animator.Animation);
-            ghost.Add(new ConstructionGhost(new ConstructionCard(new ConstructionScheme()), new Field()));
+            ghost.Add(new GhostEntity(new ConstructionCardEntity(new ConstructionSchemeEntity())));
             Assert.AreEqual("Build", handView.Animator.Animation);
             ghost.Remove();
             Assert.AreEqual("Choose", handView.Animator.Animation);
@@ -306,13 +306,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var assets = new AssetsMock();
             assets.AddPrefab("Screens/MainScreen", new DefaultViewPrefab(x => new MainScreenView(x)));
             var screenManager = new ScreenService(new GameAssetsService(assets));
-            var schemesRepository = new Database<ConstructionScheme>();
-            var cardsRepository = new Database<ConstructionCard>();
+            var schemesRepository = new Database<ConstructionSchemeEntity>();
+            var cardsRepository = new Database<ConstructionCardEntity>();
 
-            var scheme = new ConstructionScheme();
+            var scheme = new ConstructionSchemeEntity();
             schemesRepository.Add(scheme);
 
-            var ghost = new SingletonDatabase<ConstructionGhost>();
+            var ghost = new SingletonDatabase<GhostEntity>();
             var viewCollection = new ViewsCollection();
             screenManager.Bind(new ScreenManagerView(viewCollection));
             var handView = new HandView(viewCollection);

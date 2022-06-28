@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
@@ -6,39 +7,27 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 
 namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 {
-    public record ConstructionGhost : Entity
+    public record GhostEntity : Entity
     {
-        public ConstructionCard Card { get; }
-        public FieldPosition Position { get; private set; }
+        public ConstructionCardEntity CardEntity { get; }
         public FieldRotation Rotation { get; private set;}
         public GameVector3 TargetPosition { get; private set;}
         
-        public ConstructionGhost(ConstructionCard card, Field field) : this(card, new FieldPosition(field))
-        {
-            
-        }
-
-        public ConstructionGhost(ConstructionCard card, FieldPosition position) : this(card, position, GameVector3.Zero, FieldRotation.Default)
+        public GhostEntity(ConstructionCardEntity cardEntity) : this(cardEntity,GameVector3.Zero, FieldRotation.Default)
         {
             
         }
         
-        public ConstructionGhost(ConstructionCard card, FieldPosition position, GameVector3 targetPosition, FieldRotation rotation)
+        public GhostEntity(ConstructionCardEntity cardEntity, GameVector3 targetPosition, FieldRotation rotation)
         {
-            Card = card;
-            Position = position;
+            CardEntity = cardEntity;
             Rotation = rotation;
             TargetPosition = targetPosition;
         }
 
-        public void SetPosition(FieldPosition cellPosition, GameVector3 pointerPosition)
+        public void SetPosition(GameVector3 pointerPosition)
         {
             TargetPosition = pointerPosition;
-            if (Position != cellPosition)
-            {
-                Position = cellPosition;
-                FireEvent(new GhostMovedEvent());
-            }
         }
 
         public void SetRotation(FieldRotation rotation)

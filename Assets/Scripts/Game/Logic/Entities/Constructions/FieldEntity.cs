@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Events.Fields;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
@@ -6,17 +7,17 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Fields;
 
 namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 {
-    public record Field : Entity
+    public record FieldEntity : Entity
     {
 
         private float _cellSize;
         private FieldBoundaries _boundaries;
 
-        public Field() : this(1, new IntPoint(11, 11))
+        public FieldEntity() : this(1, new IntPoint(11, 11))
         {
         }
         
-        public Field(float cellSize, IntPoint mapSize)
+        public FieldEntity(float cellSize, IntPoint mapSize)
         {
             if (cellSize <= 0) throw new Exception("Field size can't be less or equal 0");
             if (mapSize.X <= 0) throw new Exception("Field size can't be less or equal 0");
@@ -62,6 +63,19 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
             return offset;
         }
         
+        public GroupOfPositions GetAllCells()
+        {
+            var list = new List<FieldPosition>();
+            var boundaries = GetBoundaries();
+            for (int x = boundaries.Value.xMin; x <= boundaries.Value.xMax; x++)
+            {
+                for (int y = boundaries.Value.yMin; y <= boundaries.Value.yMax; y++)
+                {
+                    list.Add(new FieldPosition(this, x, y));
+                }
+            }
+            return new GroupOfPositions(list);
+        }
 
     }
 }

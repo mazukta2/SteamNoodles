@@ -10,19 +10,19 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
     public class BuildingTooltipPresenter : BasePresenter<IBuildingToolitpView>
     {
         private IBuildingToolitpView _view;
-        private readonly GhostPresentationRepository _ghost;
+        private readonly GhostRepository _ghost;
         private HandConstructionTooltipPresenter _tooltip;
 
         public BuildingTooltipPresenter(IBuildingToolitpView view) : this(view,
-                  IPresenterServices.Default?.Get<ConstructionsPresentationRepository>(),
-                  IPresenterServices.Default?.Get<GhostPresentationRepository>())
+                  IPresenterServices.Default?.Get<ConstructionsRepository>(),
+                  IPresenterServices.Default?.Get<GhostRepository>())
         {
 
         }
 
         public BuildingTooltipPresenter(IBuildingToolitpView view, 
-            ConstructionsPresentationRepository constructions, 
-            GhostPresentationRepository ghost) : base(view)
+            ConstructionsRepository constructions, 
+            GhostRepository ghost) : base(view)
         {
             _view = view;
             _ghost = ghost;

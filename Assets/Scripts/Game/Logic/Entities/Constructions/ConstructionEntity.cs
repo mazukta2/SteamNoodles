@@ -6,42 +6,42 @@ using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 
 namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 {
-    public record Construction : Entity
+    public record ConstructionEntity : Entity
     {
-        public ConstructionScheme Scheme { get; }
+        public ConstructionSchemeEntity SchemeEntity { get; }
         public FieldPosition Position { get; }
         public FieldRotation Rotation { get; }
 
-        public Construction()
+        public ConstructionEntity()
         {
-            Scheme = new ConstructionScheme();
-            Position = new FieldPosition(new Field(),0, 0);
+            SchemeEntity = new ConstructionSchemeEntity();
+            Position = new FieldPosition(new FieldEntity(),0, 0);
             Rotation = FieldRotation.Default;
         }
         
-        public Construction(Field field)
+        public ConstructionEntity(FieldEntity fieldEntity)
         {
-            Scheme = new ConstructionScheme();
-            Position = new FieldPosition(field,0, 0);
+            SchemeEntity = new ConstructionSchemeEntity();
+            Position = new FieldPosition(fieldEntity,0, 0);
             Rotation = FieldRotation.Default;
         }
         
-        public Construction(ConstructionScheme scheme, FieldPosition position, FieldRotation rotation)
+        public ConstructionEntity(ConstructionSchemeEntity schemeEntity, FieldPosition position, FieldRotation rotation)
         {
-            Scheme = scheme;
+            SchemeEntity = schemeEntity;
             Position = position;
             Rotation = rotation;
         }
 
         public IReadOnlyCollection<FieldPosition> GetOccupiedSpace()
         {
-            return Scheme.Placement.GetOccupiedSpace(Position, Rotation)
-                .Select(x => x.AsFieldPosition(Position.Field)).AsReadOnly();
+            return SchemeEntity.Placement.GetOccupiedSpace(Position, Rotation)
+                .Select(x => x.AsFieldPosition(Position.FieldEntity)).AsReadOnly();
         }
 
         public IntRect GetSize()
         {
-            return Scheme.Placement.GetRect(Rotation);
+            return SchemeEntity.Placement.GetRect(Rotation);
         }
 
         public GameVector3 GetWorldPosition()

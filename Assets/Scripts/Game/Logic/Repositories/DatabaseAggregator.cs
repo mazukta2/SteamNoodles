@@ -62,5 +62,10 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         {
             return _aggregators.Values;
         }
+        
+        public TAggregator Get(Uid uid)
+        {
+            return _aggregators[uid];
+        }
     }
 }

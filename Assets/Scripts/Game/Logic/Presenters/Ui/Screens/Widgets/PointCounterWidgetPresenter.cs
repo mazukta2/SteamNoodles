@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private readonly IPointCounterWidgetView _view;
         private BuildingPointsService _points;
         private ProgressBarSliders _progressBar;
-        private readonly GhostPresentationRepository _ghost;
+        private readonly GhostRepository _ghost;
 
         public PointCounterWidgetPresenter(IPointCounterWidgetView view)
             : this(view,
@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
                   new ProgressBarSliders(view.PointsProgress, IGameTime.Default,
                       constructionsSettingsDefinition.PointsSliderFrequency,
                       constructionsSettingsDefinition.PointsSliderSpeed),
-                  IPresenterServices.Default.Get<GhostPresentationRepository>(),
+                  IPresenterServices.Default.Get<GhostRepository>(),
                   IPresenterServices.Default.Get<BuildingPointsService>())
         {
 
@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         public PointCounterWidgetPresenter(IPointCounterWidgetView view,
             ProgressBarSliders progressBar,
-            GhostPresentationRepository ghost,
+            GhostRepository ghost,
             BuildingPointsService pointsService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
