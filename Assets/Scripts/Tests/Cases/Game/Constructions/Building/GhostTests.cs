@@ -9,13 +9,11 @@ using Game.Assets.Scripts.Tests.Views.Level.Building;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Databases;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
@@ -34,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.ModelOrder)]
         public void IsGhostMoving()
         {
-            var setup = new GhostConstructionSetup()
+            var setup = new BuildingSetup()
                 .Fill(new FieldEntity(1, new IntPoint(11, 11)))
                 .FillDefaultModel();
 
@@ -73,7 +71,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var card = new ConstructionCardEntity();
             var ghost = new GhostEntity(card);
-            var ghostPlacing = new Ghost(ghost, constructionsRepository, field);
+            var ghostPlacing = new BuildingGhost(ghost, constructionsRepository, field);
 
             var scheme = new ConstructionSchemeEntity();
             constructionsCardsRepository.Add(card);
@@ -351,7 +349,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var view = new GhostView(viewCollection);
             // new GhostPresenter(view, ghostData, new DataCollectionProvider<ConstructionPresenterData>(), assets);
 
-            var modelView = view.Container.FindView<ConstructionModelView>();
+            var modelView = view.Container.FindView<ConstructionVisualView>();
 
             // disallowed because DownEdge enabled.
             // Assert.IsFalse(ghostData.Get().CanBuild);
@@ -511,11 +509,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var view = new GhostView(viewCollection);
             
-            Assert.IsFalse(view.Container.Has<ConstructionModelView>());
+            Assert.IsFalse(view.Container.Has<ConstructionVisualView>());
             
             // new GhostPresenter(view, new DataProvider<GhostData>(), new DataCollectionProvider<ConstructionPresenterData>(), assets);
 
-            Assert.IsTrue(view.Container.Has<ConstructionModelView>());
+            Assert.IsTrue(view.Container.Has<ConstructionVisualView>());
             
             viewCollection.Dispose();
             controls.Dispose();
@@ -607,7 +605,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         {
             var controls = new GameControlsService(new ControlsMock());
             var assets = new AssetsMock();
-            assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionModelView(x)));
+            assets.AddPrefab("model", new DefaultViewPrefab(x => new ConstructionVisualView(x)));
             var gameAssets = new GameAssetsService(assets);
             
             // var field = new Field(1, new IntPoint(11, 11));
@@ -625,7 +623,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
             var view = new ConstructionView(viewCollection);
             // new ConstructionPresenter(view, construction, ghostPresentationCollection, gameAssets, controls);
 
-            var viewModel = view.Container.FindView<ConstructionModelView>();
+            var viewModel = view.Container.FindView<ConstructionVisualView>();
 
             Assert.AreEqual(1, viewModel.Shrink.Value);
 
@@ -691,7 +689,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         private GameAssetsService CreateAssets(string name = "")
         {
             var assets = new AssetsMock();
-            assets.AddPrefab(name, new DefaultViewPrefab(x => new ConstructionModelView(x)));
+            assets.AddPrefab(name, new DefaultViewPrefab(x => new ConstructionVisualView(x)));
             var gameAssets = new GameAssetsService(assets);
             return gameAssets;
         }

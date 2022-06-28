@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Constructions
     {
         public override void Fill(IViewsCollection collection)
         {
-            new ConstructionModelView(collection);
+            new ConstructionVisualView(collection);
         }
     }
 }

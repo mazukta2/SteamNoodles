@@ -16,7 +16,7 @@ using Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Units;
-using static Game.Assets.Scripts.Game.Logic.Entities.Units.Unit;
+using static Game.Assets.Scripts.Game.Logic.Entities.Units.UnitEntity;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 {
@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void PointsConvertsToQueueSize()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
@@ -61,7 +61,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void QueueSpawnsUnits()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
@@ -95,7 +95,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void QueuePositioningIsAlightWithFirstBuilding()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var constructionsRepository = new Database<ConstructionEntity>();
@@ -149,7 +149,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var time = new GameTime();
             var random = new SessionRandom();
 
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
 
@@ -167,8 +167,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var moveUnits = new MoveUnitsToPositionsInQueue(units, unitsService, queue);
 
-            var unit1 = new Unit(new GameVector3(1, 0, 0), new GameVector3(1, 0, 0), type, random);
-            var unit2 = new Unit(new GameVector3(2, 0, 0), new GameVector3(2, 0, 0), type, random);
+            var unit1 = new UnitEntity(new GameVector3(1, 0, 0), new GameVector3(1, 0, 0), type, random);
+            var unit2 = new UnitEntity(new GameVector3(2, 0, 0), new GameVector3(2, 0, 0), type, random);
 
             unit1.SetBehaviourState(BehaviourState.InQueue);
             unit2.SetBehaviourState(BehaviourState.InQueue);
@@ -204,7 +204,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var time = new GameTime();
             var random = new SessionRandom();
 
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
 
@@ -222,8 +222,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var serveFirstUnit = new ServeFirstCustomer(queue, crowd, Serve);
 
-            var unit1 = new Unit(new GameVector3(1, 0, 0), new GameVector3(1, 0, 0), type, random);
-            var unit2 = new Unit(new GameVector3(2, 0, 0), new GameVector3(2, 0, 0), type, random);
+            var unit1 = new UnitEntity(new GameVector3(1, 0, 0), new GameVector3(1, 0, 0), type, random);
+            var unit2 = new UnitEntity(new GameVector3(2, 0, 0), new GameVector3(2, 0, 0), type, random);
             unit1.SetBehaviourState(BehaviourState.InQueue);
             unit2.SetBehaviourState(BehaviourState.InQueue);
             units.Add(unit1);
@@ -248,7 +248,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             movement.Dispose();
             serveFirstUnit.Dispose();
 
-            void Serve(Unit obj)
+            void Serve(UnitEntity obj)
             {
                 isServed = true;
             }
@@ -260,7 +260,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var time = new GameTime();
             var random = new SessionRandom();
 
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
 
@@ -306,7 +306,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void LevelCrowdGetUnitsCorrectly()
         {
             var unitTypes = new Database<UnitType>();
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -372,7 +372,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void QueueFreeAllWorking()
         {
             var unitTypes = new Database<UnitType>();
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -420,7 +420,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void ServeAllWorking()
         {
             var unitTypes = new Database<UnitType>();
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -475,7 +475,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void ServeAllTimerWorking()
         {
             var unitTypes = new Database<UnitType>();
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -533,7 +533,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void ServeAllPositionsWorking()
         {
             var unitTypes = new Database<UnitType>();
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -588,7 +588,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void ServeCoinsWorking()
         {
             var unitTypes = new Database<UnitType>();
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
 
             var time = new GameTime();
             var random = new SessionRandom();
@@ -627,7 +627,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void FirstUnitAppearsAfterFirstBuilding()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var constructionsRepository = new Database<ConstructionEntity>();

@@ -11,11 +11,11 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations
     {
         private readonly UnitsCustomerQueueService _queue;
         private readonly UnitsService _unitsController;
-        private readonly Action<Unit> _addToQueue;
+        private readonly Action<UnitEntity> _addToQueue;
         private readonly float _delay;
         private readonly TimeUpdater _updater;
 
-        public AddUnitsToQueue(UnitsCustomerQueueService queue, UnitsService unitsController, Action<Unit> addToQueue, IGameTime time, float delay)
+        public AddUnitsToQueue(UnitsCustomerQueueService queue, UnitsService unitsController, Action<UnitEntity> addToQueue, IGameTime time, float delay)
         {
             _queue = queue;
             _unitsController = unitsController;

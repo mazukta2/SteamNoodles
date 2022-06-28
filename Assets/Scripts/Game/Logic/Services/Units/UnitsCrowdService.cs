@@ -14,21 +14,21 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
 {
     public class UnitsCrowdService : Disposable, IService
     {
-        private readonly IDatabase<Unit> _units;
+        private readonly IDatabase<UnitEntity> _units;
         private readonly UnitsService _unitsService;
         private readonly IGameRandom _random;
         private readonly IGameTime _time;
         private readonly int _crowdAmount;
         private readonly FloatRect _unitRect;
 
-        public UnitsCrowdService(IDatabase<Unit> units, UnitsService unitsService, IGameTime time, StageLevel stageLevel,
+        public UnitsCrowdService(IDatabase<UnitEntity> units, UnitsService unitsService, IGameTime time, StageLevel stageLevel,
             IGameRandom random) : this(units, unitsService, time, random,
                 stageLevel.UnitsRect,
                 stageLevel.CrowdUnitsAmount)
         {
         }
 
-        public UnitsCrowdService(IDatabase<Unit> units, UnitsService unitsService, IGameTime time,
+        public UnitsCrowdService(IDatabase<UnitEntity> units, UnitsService unitsService, IGameTime time,
             IGameRandom random, FloatRect rect, int crowdAmount = 0)
         {
             _units = units;
@@ -43,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
                 var position = GetRandomPoint(GetUnitsField(), _random);
                 var target = GetRandomPointDirection(_random.GetRandom() ? CrowdDirection.Left : CrowdDirection.Right);
                 var unit = _unitsService.SpawnUnit(position, target);
-                unit.SetBehaviourState(Unit.BehaviourState.InCrowd);
+                unit.SetBehaviourState(UnitEntity.BehaviourState.InCrowd);
             }
             _time.OnTimeChanged += Time_OnTimeChanged;
         }
@@ -76,7 +76,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
                 var position = new GameVector3(targetOposite.X, 0, target.Z);
 
                 var unit = _unitsService.SpawnUnit(position, target);
-                unit.SetBehaviourState(Unit.BehaviourState.InCrowd);
+                unit.SetBehaviourState(UnitEntity.BehaviourState.InCrowd);
             }
         }
 
@@ -85,10 +85,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
             return new GameVector3(random.GetRandom(rect.xMin, rect.xMax), 0, random.GetRandom(rect.yMin, rect.yMax));
         }
 
-        public void SendToCrowd(Unit unit, CrowdDirection direction)
+        public void SendToCrowd(UnitEntity unitEntity, CrowdDirection direction)
         {
-            unit.SetBehaviourState(Unit.BehaviourState.InCrowd);
-            unit.SetTarget(GetRandomPointDirection(direction));
+            unitEntity.SetBehaviourState(UnitEntity.BehaviourState.InCrowd);
+            unitEntity.SetTarget(GetRandomPointDirection(direction));
         }
 
         public GameVector3 GetRandomPointDirection(CrowdDirection direction)
@@ -100,9 +100,9 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
                 return new GameVector3(GetUnitsField().X, 0, position.Z);
         }
 
-        public IReadOnlyCollection<Unit> GetUnits()
+        public IReadOnlyCollection<UnitEntity> GetUnits()
         {
-            return _units.Get().Where(x => x.State == Unit.BehaviourState.InCrowd).AsReadOnly();
+            return _units.Get().Where(x => x.State == UnitEntity.BehaviourState.InCrowd).AsReadOnly();
         }
 
         public enum CrowdDirection

@@ -11,9 +11,9 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations
         private readonly UnitsCustomerQueueService _queue;
         private readonly UnitsCrowdService _crowd;
         private readonly IGameRandom _random;
-        private readonly Action<Unit> _removeFromQueue;
+        private readonly Action<UnitEntity> _removeFromQueue;
 
-        public FreeAllFromQueue(UnitsCustomerQueueService queue, UnitsCrowdService crowd, IGameRandom random, Action<Unit> removeFromQueue)
+        public FreeAllFromQueue(UnitsCustomerQueueService queue, UnitsCrowdService crowd, IGameRandom random, Action<UnitEntity> removeFromQueue)
         {
             _queue = queue;
             _crowd = crowd;

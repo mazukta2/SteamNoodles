@@ -13,11 +13,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
     public class UnitPresenter : BasePresenter<IUnitView>
     {
         private IUnitView _view;
-        private readonly UnitPresentation _unit;
+        private readonly Unit _unit;
         private UnitRotator _rotator;
         private bool _isStartingAnimation = false;
 
-        public UnitPresenter(IUnitView view, UnitPresentation unit, IGameTime time) : base(view)
+        public UnitPresenter(IUnitView view, Unit unit, IGameTime time) : base(view)
         {
             _view = view;
             _unit = unit;

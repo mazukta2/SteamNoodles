@@ -9,9 +9,9 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations
     {
         private readonly UnitsCustomerQueueService _queue;
         private readonly UnitsCrowdService _crowd;
-        private readonly Action<Unit> _removeFromQueue;
+        private readonly Action<UnitEntity> _removeFromQueue;
 
-        public RemoveUnitsFromQueue(UnitsCustomerQueueService queue, UnitsCrowdService crowd, Action<Unit> removeFromQueue)
+        public RemoveUnitsFromQueue(UnitsCustomerQueueService queue, UnitsCrowdService crowd, Action<UnitEntity> removeFromQueue)
         {
             _queue = queue;
             _crowd = crowd;

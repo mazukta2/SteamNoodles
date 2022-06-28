@@ -1,8 +1,8 @@
-﻿using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
+﻿using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets

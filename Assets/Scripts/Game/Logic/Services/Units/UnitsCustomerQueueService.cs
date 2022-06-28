@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
 {
     public class UnitsCustomerQueueService : Disposable, IService
     {
-        private readonly IDatabase<Unit> _units;
+        private readonly IDatabase<UnitEntity> _units;
         private readonly UnitsService _unitsService;
         private readonly UnitsCrowdService _crowd;
         private readonly BuildingPointsService _points;
@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
         private GameVector3 _queueFirstPosition;
         private float _queuePositionZ;
 
-        public UnitsCustomerQueueService(IDatabase<Unit> units, 
+        public UnitsCustomerQueueService(IDatabase<UnitEntity> units, 
             UnitsService unitsService,
             UnitsCrowdService crowd,
             CoinsService coins,
@@ -42,7 +42,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
         {
         }
 
-        public UnitsCustomerQueueService(IDatabase<Unit> units, UnitsService unitsService, UnitsCrowdService crowd,
+        public UnitsCustomerQueueService(IDatabase<UnitEntity> units, UnitsService unitsService, UnitsCrowdService crowd,
             CoinsService coins,
             BuildingPointsService points,
             IGameTime time, IGameRandom random, GameVector3 firstPositionOffset, float queuePositionZ = 0, float animationDelay = 0)
@@ -107,9 +107,9 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
             return GetQueuePosition() + offset + new GameVector3(_unitsService.GetUnitSize(), 0, 0) * index;
         }
 
-        public IReadOnlyCollection<Unit> GetUnits()
+        public IReadOnlyCollection<UnitEntity> GetUnits()
         {
-            return _units.Get().Where(x => x.State == Unit.BehaviourState.InQueue).AsReadOnly();
+            return _units.Get().Where(x => x.State == UnitEntity.BehaviourState.InQueue).AsReadOnly();
         }
 
         public GameVector3 GetQueueFirstPositionOffset()
@@ -133,15 +133,15 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
             _queueSize = new QueueSize(0);
         }
 
-        public void Serve(Unit unit)
+        public void Serve(UnitEntity unitEntity)
         {
-            RemoveFromQueue(unit);
-            _coins.Change(unit.GetCoins());
+            RemoveFromQueue(unitEntity);
+            _coins.Change(unitEntity.GetCoins());
         }
 
-        public IReadOnlyCollection<Unit> GetQueueUnits()
+        public IReadOnlyCollection<UnitEntity> GetQueueUnits()
         {
-            return _units.Get().Where(x => x.State == Unit.BehaviourState.InQueue).AsReadOnly();
+            return _units.Get().Where(x => x.State == UnitEntity.BehaviourState.InQueue).AsReadOnly();
         }
 
         public bool IsAnimating()
@@ -157,14 +157,14 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
             _sequenceManager.ProcessSteps();
         }
 
-        private void RemoveFromQueue(Unit unit)
+        private void RemoveFromQueue(UnitEntity unitEntity)
         {
-            unit.SetBehaviourState(Unit.BehaviourState.Free);
+            unitEntity.SetBehaviourState(UnitEntity.BehaviourState.Free);
         }
 
-        private void AddToQueue(Unit unit)
+        private void AddToQueue(UnitEntity unitEntity)
         {
-            unit.SetBehaviourState(Unit.BehaviourState.InQueue);
+            unitEntity.SetBehaviourState(UnitEntity.BehaviourState.InQueue);
         }
 
         private void Points_OnTargetLevelChanged(int changes)

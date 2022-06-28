@@ -9,9 +9,9 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations
     {
         private UnitsCustomerQueueService _queue;
         private readonly UnitsCrowdService _crowd;
-        private readonly Action<Unit> _serve;
+        private readonly Action<UnitEntity> _serve;
 
-        public ServeFirstCustomer(UnitsCustomerQueueService queue, UnitsCrowdService crowd, Action<Unit> serve)
+        public ServeFirstCustomer(UnitsCustomerQueueService queue, UnitsCrowdService crowd, Action<UnitEntity> serve)
         {
             _queue = queue;
             _crowd = crowd;

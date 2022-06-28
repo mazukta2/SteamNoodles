@@ -2,8 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
@@ -14,7 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private KeyCommand _exitKey;
 
         private IBuildScreenView _view;
-        private readonly Ghost _ghost;
+        private readonly BuildingGhost _buildingGhost;
         private readonly GhostRepository _ghostRepository;
         private readonly ScreenService _screenService;
 
@@ -36,16 +35,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
             _ghostRepository = ghostCommands ?? throw new ArgumentNullException(nameof(ghostCommands));
             _screenService = screenService ?? throw new ArgumentNullException(nameof(screenService));
-            _ghost = _ghostRepository.AddAndGet(cardId);
+            _buildingGhost = _ghostRepository.AddAndGet(cardId);
             _exitKey = gameKeysManager.GetKey(GameKeys.Exit);
             _exitKey.OnTap += OnExitTap;
-            _ghost.OnDispose += HandleOnHided;
+            _buildingGhost.OnDispose += HandleOnHided;
         }
 
         protected override void DisposeInner()
         {
             _exitKey.OnTap -= OnExitTap;
-            _ghost.OnDispose -= HandleOnHided;
+            _buildingGhost.OnDispose -= HandleOnHided;
             _ghostRepository.Remove();
         }
 

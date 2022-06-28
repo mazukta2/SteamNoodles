@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
@@ -8,7 +9,6 @@ using Game.Assets.Scripts.Game.Logic.Entities.Common;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Entities.Levels;
 using Game.Assets.Scripts.Game.Logic.Entities.Units;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.Services.Flow;
@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Levels
             var unitTypesRep = services.Get<IDatabase<UnitType>>();
             var cardsRep = Add(new Database<ConstructionCardEntity>());
             var constructionsRep = Add(new Database<ConstructionEntity>());
-            var unitsRep = Add(new Database<Unit>());
+            var unitsRep = Add(new Database<UnitEntity>());
             var constructionsDeckRep = Add(new SingletonDatabase<Deck<ConstructionSchemeEntity>>());
             var unitsDeckRep = Add(new SingletonDatabase<Deck<UnitType>>());
             var field = Add(new SingletonDatabase<FieldEntity>(new FieldEntity(level.CellSize, level.PlacementFieldSize)));

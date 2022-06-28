@@ -2,7 +2,6 @@
 using Game.Assets.Scripts.Game.Logic.Common.Services.Repositories;
 using Game.Assets.Scripts.Game.Logic.Common.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Repositories.Units;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Units;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
@@ -37,7 +36,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Units
             // _units.OnAdded -= HandleOnAdded;
         }
 
-        private void HandleOnAdded(UnitPresentation unit)
+        private void HandleOnAdded(Unit unit)
         {
             var view = _unitsManagerView.Container.Spawn<IUnitView>(_unitsManagerView.UnitPrototype);
             new UnitPresenter(view, unit, _time);

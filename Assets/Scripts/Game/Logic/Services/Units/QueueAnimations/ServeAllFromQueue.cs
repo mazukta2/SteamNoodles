@@ -14,10 +14,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations
         private readonly float _delay;
         private readonly UnitsCrowdService _crowd;
         private readonly IGameRandom _random;
-        private readonly Action<Unit> _serve;
+        private readonly Action<UnitEntity> _serve;
         private readonly TimeUpdater _updater;
 
-        public ServeAllFromQueue(UnitsCustomerQueueService queue, UnitsCrowdService crowd, IGameRandom random, Action<Unit> serve, IGameTime time, float delay)
+        public ServeAllFromQueue(UnitsCustomerQueueService queue, UnitsCrowdService crowd, IGameRandom random, Action<UnitEntity> serve, IGameTime time, float delay)
         {
             _queue = queue;
             _delay = delay;

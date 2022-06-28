@@ -1,8 +1,8 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Presenters.Services;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 using System;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Services.Flow;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             //ScreenManagerPresenter.Default.GetCollection<CommonScreens>().Open<IDayEndedScreenView>();
         }
 
-        private void HandleOnAdded(Construction model)
+        private void HandleOnAdded(FieldConstruction model)
         {
             UpdateWaveProgress();
         }

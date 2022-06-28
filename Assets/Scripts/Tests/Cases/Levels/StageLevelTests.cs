@@ -133,7 +133,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
 
             Assert.IsTrue(manager.Has<Database<ConstructionCardEntity>>());
             Assert.IsTrue(manager.Has<Database<ConstructionEntity>>());
-            Assert.IsTrue(manager.Has<Database<Unit>>());
+            Assert.IsTrue(manager.Has<Database<UnitEntity>>());
             Assert.IsTrue(manager.Has<SingletonDatabase<Deck<ConstructionSchemeEntity>>>());
             Assert.IsTrue(manager.Has<SingletonDatabase<Deck<UnitType>>>());
             Assert.IsTrue(manager.Has<SingletonDatabase<FieldEntity>>());
@@ -155,7 +155,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Levels
 
             Assert.IsFalse(manager.Has<Database<ConstructionCardEntity>>());
             Assert.IsFalse(manager.Has<Database<ConstructionEntity>>());
-            Assert.IsFalse(manager.Has<Database<Unit>>());
+            Assert.IsFalse(manager.Has<Database<UnitEntity>>());
             Assert.IsFalse(manager.Has<SingletonDatabase<Deck<ConstructionSchemeEntity>>>());
             Assert.IsFalse(manager.Has<SingletonDatabase<Deck<UnitType>>>());
             Assert.IsFalse(manager.Has<SingletonDatabase<FieldEntity>>());

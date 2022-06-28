@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         where TAggregator : IDisposable
     {
         public Action<TAggregator> OnAdded = delegate {  };
-        public Action<Uid> OnRemoved = delegate {  };
+        public Action<TAggregator> OnRemoved = delegate {  };
         
         private readonly IDatabase<TEntity> _database;
         private readonly Func<TEntity, TAggregator> _add;
@@ -55,7 +55,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
             var aggregator = _aggregators[obj.Id];
             aggregator.Dispose();
             _aggregators.Remove(obj.Id);
-            OnRemoved(obj.Id);
+            OnRemoved(aggregator);
         }
 
         public IReadOnlyCollection<TAggregator> Get()

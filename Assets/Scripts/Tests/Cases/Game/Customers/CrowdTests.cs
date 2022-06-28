@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void IsCrowdUnitsSpawned()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
@@ -39,7 +39,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void IsCrowdDestroying()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType();

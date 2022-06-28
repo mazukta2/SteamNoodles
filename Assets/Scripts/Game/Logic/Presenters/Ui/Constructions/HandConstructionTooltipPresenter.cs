@@ -5,9 +5,9 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Cards;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private LocalizatedText _name;
         private LocalizatedText _adjacency;
         private IEnumerable<ConstructionSchemeEntity> _highlights;
-        private ConstructionCardPresentation _model;
+        private CardConstruction _model;
 
         public HandConstructionTooltipPresenter(IHandConstructionTooltipView view) :
                 this(view,

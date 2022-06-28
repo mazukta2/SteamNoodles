@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Databases;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Services;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Resources;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets;
 

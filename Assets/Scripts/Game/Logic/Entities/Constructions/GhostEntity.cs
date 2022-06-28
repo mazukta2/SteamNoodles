@@ -1,4 +1,4 @@
-﻿using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
+﻿using System;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
@@ -9,6 +9,8 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 {
     public record GhostEntity : Entity
     {
+        public event Action<GameVector3, GameVector3> OnMoved = delegate { };
+        public event Action OnRotated = delegate { };
         public ConstructionCardEntity CardEntity { get; }
         public FieldRotation Rotation { get; private set;}
         public GameVector3 TargetPosition { get; private set;}
@@ -27,13 +29,15 @@ namespace Game.Assets.Scripts.Game.Logic.Entities.Constructions
 
         public void SetPosition(GameVector3 pointerPosition)
         {
+            var odl = TargetPosition;
             TargetPosition = pointerPosition;
+            OnMoved(odl, pointerPosition);
         }
 
         public void SetRotation(FieldRotation rotation)
         {
             Rotation = rotation;
-            FireEvent(new GhostMovedEvent());
+            OnRotated();
         }
     }
 }

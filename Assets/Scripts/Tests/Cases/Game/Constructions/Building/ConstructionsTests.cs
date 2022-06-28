@@ -9,13 +9,10 @@ using Game.Assets.Scripts.Tests.Views.Level;
 using Game.Assets.Scripts.Tests.Views.Level.Building;
 using NUnit.Framework;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Databases;
 using Game.Assets.Scripts.Game.Logic.Entities.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Assets;
 using Game.Assets.Scripts.Game.Logic.Services.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
@@ -137,7 +134,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void PlacementBoundariesRequestRight()
         {
-            var setup = new GhostConstructionSetup().Fill(new FieldEntity(10, new IntPoint(3, 3)));
+            var setup = new BuildingSetup().Fill(new FieldEntity(10, new IntPoint(3, 3)));
             var viewCollection = new ViewsCollection();
             var view = new PlacementFieldView(viewCollection);
             
@@ -236,7 +233,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void ConstructionPlacedInRightPosition()
         {
-            var setup = new GhostConstructionSetup()
+            var setup = new BuildingSetup()
                 .Fill(new FieldEntity(1, new IntPoint(11, 11)))
                 .FillDefaultModel();
             
@@ -253,9 +250,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, 
-                setup.ConstructionsRepository.Get(construction.Id), 
-                setup.GhostRepository);
+            new ConstructionPresenter(view, setup.GetConstructionViewModel(construction.Id));
 
             Assert.AreEqual(new GameVector3(1.5f, 0, 1f), view.Position.Value);
 
@@ -267,7 +262,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void ConstructionSpawnsVisual()
         {
-            var setup = new GhostConstructionSetup()
+            var setup = new BuildingSetup()
                 .Fill(new FieldEntity(1, new IntPoint(11, 11)))
                 .FillDefaultModel();
             
@@ -284,11 +279,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, 
-                setup.ConstructionsRepository.Get(construction.Id), 
-                setup.GhostRepository);
+            new ConstructionPresenter(view, setup.GetConstructionViewModel(construction.Id));
 
-            Assert.IsNotNull(view.Container.FindView<IConstructionModelView>());
+            Assert.IsNotNull(view.Container.FindView<IConstructionVisualView>());
 
             viewCollection.Dispose();
             setup.Dispose();
@@ -298,7 +291,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void DropAnimations()
         {
-            var setup = new GhostConstructionSetup()
+            var setup = new BuildingSetup()
                 .Fill(new FieldEntity(1, new IntPoint(11, 11)))
                 .FillDefaultModel();
             
@@ -314,11 +307,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, 
-                setup.ConstructionsRepository.Get(construction.Id), 
-                setup.GhostRepository);
+            new ConstructionPresenter(view, setup.GetConstructionViewModel(construction.Id));
 
-            var modelView = view.Container.FindView<IConstructionModelView>();
+            var modelView = view.Container.FindView<IConstructionVisualView>();
             var animator = ((AnimatorMock)modelView.Animator);
 
             Assert.AreEqual("Drop", animator.Animations[0]);
@@ -331,7 +322,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void ExplodeAnimations()
         {
-            var setup = new GhostConstructionSetup()
+            var setup = new BuildingSetup()
                 .Fill(new FieldEntity(1, new IntPoint(11, 11)))
                 .FillDefaultModel();
             
@@ -347,11 +338,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
 
             var viewCollection = new ViewsCollection();
             var view = new ConstructionView(viewCollection);
-            new ConstructionPresenter(view, 
-                setup.ConstructionsRepository.Get(construction.Id), 
-                setup.GhostRepository);
+            new ConstructionPresenter(view, setup.GetConstructionViewModel(construction.Id));
 
-            var modelView = view.Container.FindView<IConstructionModelView>();
+            var modelView = view.Container.FindView<IConstructionVisualView>();
             var animator = ((AnimatorMock)modelView.Animator);
 
             Assert.AreEqual("Drop", animator.Animations[0]);
@@ -372,7 +361,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions.Building
         [Test, Order(TestCore.PresenterOrder)]
         public void PlacementFieldSpawnsConstructions()
         {
-            var setup = new GhostConstructionSetup().FillDefault();
+            var setup = new BuildingSetup().FillDefault();
             
             var viewCollection = new ViewsCollection();
 

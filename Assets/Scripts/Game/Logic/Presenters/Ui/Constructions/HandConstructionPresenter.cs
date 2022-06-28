@@ -3,11 +3,10 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Cards;
 using Game.Assets.Scripts.Game.Logic.Databases;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions.Animations;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 
@@ -20,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
         private HandConstructionsAnimations _animations;
         private CardAmount _currentAmount;
         private bool _isModelDisposed;
-        private readonly ConstructionCardPresentation _model;
+        private readonly CardConstruction _model;
 
         public HandConstructionPresenter(IHandConstructionView view,
             Uid modelId) 
@@ -30,7 +29,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 
         }
 
-        public HandConstructionPresenter(IHandConstructionView view, ConstructionCardPresentation model,
+        public HandConstructionPresenter(IHandConstructionView view, CardConstruction model,
              ScreenService screenService) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));

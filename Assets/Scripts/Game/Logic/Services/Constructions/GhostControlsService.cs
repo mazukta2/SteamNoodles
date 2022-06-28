@@ -1,9 +1,8 @@
 ﻿using System;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
 using Game.Assets.Scripts.Game.Logic.Services.Controls;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
 
@@ -66,7 +65,7 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Constructions
             SetTargetPosition(target);
         }
         
-        private void HandleOnShowed(Ghost placing)
+        private void HandleOnShowed(BuildingGhost placing)
         {
             SetTargetPosition(_controlsService.PointerLevelPosition);
         }

@@ -4,17 +4,17 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Databases;
 using Game.Assets.Scripts.Game.Logic.Entities.Units;
 using Game.Assets.Scripts.Game.Logic.Events.Units;
-using static Game.Assets.Scripts.Game.Logic.Entities.Units.Unit;
+using static Game.Assets.Scripts.Game.Logic.Entities.Units.UnitEntity;
 
 namespace Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations
 {
     public class MoveUnitsToPositionsInQueue : BaseSequenceStep
     {
-        private readonly IDatabase<Unit> _units;
+        private readonly IDatabase<UnitEntity> _units;
         private readonly UnitsService _unitsService;
         private readonly UnitsCustomerQueueService _queue;
 
-        public MoveUnitsToPositionsInQueue(IDatabase<Unit> units, UnitsService unitsService,
+        public MoveUnitsToPositionsInQueue(IDatabase<UnitEntity> units, UnitsService unitsService,
             UnitsCustomerQueueService queue)
         {
             _units = units;
@@ -40,12 +40,12 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units.QueueAnimations
                 FireOnFinished();
         }
 
-        private void HandleEvent(Unit eventUnit, IModelEvent modelEvent)
+        private void HandleEvent(UnitEntity eventUnitEntity, IModelEvent modelEvent)
         {
             if (modelEvent is not UnitReachedTargetPositionEvent)
                 return;
 
-            if (eventUnit.State != BehaviourState.InQueue)
+            if (eventUnitEntity.State != BehaviourState.InQueue)
                 return;
 
             var list = _queue.GetUnits().ToArray();

@@ -9,10 +9,10 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
 {
     public class UnitsMovementsService : Disposable, IService
     {
-        private IDatabase<Unit> _units;
+        private IDatabase<UnitEntity> _units;
         private IGameTime _time;
 
-        public UnitsMovementsService(IDatabase<Unit> units, IGameTime time)
+        public UnitsMovementsService(IDatabase<UnitEntity> units, IGameTime time)
         {
             _units = units;
             _time = time;

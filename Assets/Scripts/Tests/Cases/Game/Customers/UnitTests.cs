@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void MovementEventsWorks()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType();
@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 
             var movement = new UnitsMovementsService(units, time);
 
-            var unit = new Unit(new GameVector3(1, 0, 0), new GameVector3(0, 0, 0), type, random);
+            var unit = new UnitEntity(new GameVector3(1, 0, 0), new GameVector3(0, 0, 0), type, random);
             units.Add(unit);
             var isUnitReachedPosition = false;
 
@@ -51,7 +51,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             movement.Dispose();
             unitsService.Dispose();
 
-            void Units_OnModelEvent(Unit arg1, IModelEvent evt)
+            void Units_OnModelEvent(UnitEntity arg1, IModelEvent evt)
             {
                 if (evt is UnitReachedTargetPositionEvent)
                     isUnitReachedPosition = true;
@@ -61,7 +61,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void SpeedUpWorks()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType(new UnitSpeed(0.5f), new UnitSpeed(1), 0, 0.5f, 1, 1);
@@ -73,7 +73,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
             var movement = new UnitsMovementsService(units, time);
-            var unit = new Unit(new GameVector3(2, 0, 0), new GameVector3(0, 0, 0), type, random);
+            var unit = new UnitEntity(new GameVector3(2, 0, 0), new GameVector3(0, 0, 0), type, random);
             units.Add(unit);
 
             var timePassed = 0.1f;
@@ -96,7 +96,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.ModelOrder)]
         public void SpeedDownWorks()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType(new UnitSpeed(0.5f), new UnitSpeed(1), 0, 0.5f, 1, 1);
@@ -108,7 +108,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
             var movement = new UnitsMovementsService(units, time);
-            var unit = new Unit(new GameVector3(1, 0, 0), new GameVector3(0, 0, 0), type, random);
+            var unit = new UnitEntity(new GameVector3(1, 0, 0), new GameVector3(0, 0, 0), type, random);
             unit.SetTargetSpeed(1);
             units.Add(unit);
 
@@ -129,7 +129,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test, Order(TestCore.PresenterOrder)]
         public void RotationWorks()
         {
-            var units = new Database<Unit>();
+            var units = new Database<UnitEntity>();
             var unitTypes = new Database<UnitType>();
             var deck = new DeckService<UnitType>();
             var type = new UnitType(new UnitSpeed(0.5f), new UnitSpeed(1), 0, 0.5f, 1, 1);
@@ -141,7 +141,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var unitTypesService = new UnitsTypesService(unitTypes, deck);
             var unitsService = new UnitsService(units, random, unitTypesService);
             var movement = new UnitsMovementsService(units, time);
-            var unit = new Unit(new GameVector3(0, 0, 0), new GameVector3(0, 0, 0), type, random);
+            var unit = new UnitEntity(new GameVector3(0, 0, 0), new GameVector3(0, 0, 0), type, random);
             var link = units.Add(unit);
 
             var collection = new ViewsCollection();

@@ -1,5 +1,4 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions;
 using Game.Assets.Scripts.Game.Logic.Views.Common;

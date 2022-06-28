@@ -3,8 +3,8 @@ using Game.Assets.Scripts.Game.Logic.Presenters.Services.Screens;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Cards;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
 {
@@ -52,7 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions
             // _cards.OnAdded -= HandleCardAdded;
         }
 
-        private void HandleCardAdded(ConstructionCardPresentation obj)
+        private void HandleCardAdded(CardConstruction obj)
         {
             var view = _view.Cards.Spawn<IHandConstructionView>(_view.CardPrototype);
             view.Init(obj.Id);

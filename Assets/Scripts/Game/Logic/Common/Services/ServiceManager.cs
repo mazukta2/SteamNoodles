@@ -59,6 +59,11 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Services
             return _list.OfType<T>().Last();
         }
 
+        public IReadOnlyCollection<T> GetAll<T>() where T : IService
+        {
+            return _list.OfType<T>().AsReadOnly();
+        }
+
         public bool Has<T>() where T : IService
         {
             return _list.OfType<T>().Any();

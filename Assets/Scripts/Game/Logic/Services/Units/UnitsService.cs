@@ -16,15 +16,15 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
         private readonly IGameRandom _random;
         private readonly UnitsTypesService _unitsTypesService;
         private readonly float _unitSize;
-        private readonly IDatabase<Unit> _units;
+        private readonly IDatabase<UnitEntity> _units;
 
-        public UnitsService(IDatabase<Unit> units, UnitsSettingsDefinition unitsSettings,
+        public UnitsService(IDatabase<UnitEntity> units, UnitsSettingsDefinition unitsSettings,
             LevelDefinition levelDefinition, IGameRandom random, UnitsTypesService unitsTypesService) 
             : this(units, random, unitsTypesService, unitsSettings.UnitSize)
         {
         }
 
-        public UnitsService(IDatabase<Unit> units, IGameRandom random, UnitsTypesService unitsTypesService, float unitSize = 1)
+        public UnitsService(IDatabase<UnitEntity> units, IGameRandom random, UnitsTypesService unitsTypesService, float unitSize = 1)
         {
             _units = units ?? throw new ArgumentNullException(nameof(units));
             _random = random ?? throw new ArgumentNullException(nameof(random));
@@ -36,36 +36,36 @@ namespace Game.Assets.Scripts.Game.Logic.Services.Units
         {
         }
 
-        public Unit SpawnUnit(GameVector3 pos)
+        public UnitEntity SpawnUnit(GameVector3 pos)
         {
             return SpawnUnit(pos, pos, _unitsTypesService.TakeRandom());
         }
 
-        public Unit SpawnUnit(GameVector3 pos, GameVector3 target)
+        public UnitEntity SpawnUnit(GameVector3 pos, GameVector3 target)
         {
             return SpawnUnit(pos, target, _unitsTypesService.TakeRandom());
         }
 
-        public Unit SpawnUnit(GameVector3 position, GameVector3 target, UnitType type)
+        public UnitEntity SpawnUnit(GameVector3 position, GameVector3 target, UnitType type)
         {
-            var unit = new Unit(position, target, type, _random);
+            var unit = new UnitEntity(position, target, type, _random);
             _units.Add(unit);
             return unit;
         }
 
-        public void Smoke(Unit unit)
+        public void Smoke(UnitEntity unitEntity)
         {
-            _units.FireEvent(unit, new UnitSmokeEvent());
+            _units.FireEvent(unitEntity, new UnitSmokeEvent());
         }
 
-        public void LookAt(Unit unit, GameVector3 target, bool skip = false)
+        public void LookAt(UnitEntity unitEntity, GameVector3 target, bool skip = false)
         {
-            unit.LookAt(target, skip);
+            unitEntity.LookAt(target, skip);
         }
 
-        public void DestroyUnit(Unit unit)
+        public void DestroyUnit(UnitEntity unitEntity)
         {
-            _units.Remove(unit.Id);
+            _units.Remove(unitEntity.Id);
         }
 
         public float GetUnitSize()

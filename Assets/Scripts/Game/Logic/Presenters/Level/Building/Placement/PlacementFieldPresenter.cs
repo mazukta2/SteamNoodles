@@ -2,13 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions;
+using Game.Assets.Scripts.Game.Logic.Aggregations.Building;
 using Game.Assets.Scripts.Game.Logic.Aggregations.Fields;
 using Game.Assets.Scripts.Game.Logic.Databases;
 using Game.Assets.Scripts.Game.Logic.Events.Constructions;
 using Game.Assets.Scripts.Game.Logic.Events.Fields;
-using Game.Assets.Scripts.Game.Logic.Repositories.Constructions;
-using Game.Assets.Scripts.Game.Logic.Repositories.Fields;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Building;
 using Game.Assets.Scripts.Game.Logic.ValueObjects.Constructions;
@@ -128,13 +126,13 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
             UpdateGhostCells();
         }
         
-        private void HandleConstructionsOnAdded(Construction construction)
+        private void HandleConstructionsOnAdded(FieldConstruction fieldConstruction)
         {
-            _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(construction.Id);
+            _view.ConstrcutionContainer.Spawn<IConstructionView>(_view.ConstrcutionPrototype).Init(fieldConstruction.Id);
             UpdateGhostCells();
         }
         
-        private void HandleConstructionsOnRemoved(Uid constructionId)
+        private void HandleConstructionsOnRemoved(FieldConstruction constructionId)
         {
             UpdateGhostCells();
         }

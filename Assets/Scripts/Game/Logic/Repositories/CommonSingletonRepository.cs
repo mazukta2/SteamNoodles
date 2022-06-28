@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Game.Assets.Scripts.Game.Logic.Aggregations.Constructions.Ghosts;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Services;
 using Game.Assets.Scripts.Game.Logic.Databases;
@@ -15,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
         where TAggregator : IDisposable
     {
         public Action<TAggregator> OnAdded = delegate {  };
-        public Action<Uid> OnRemoved = delegate {  };
+        public Action<TAggregator> OnRemoved = delegate {  };
 
         protected ISingletonDatabase<TEntity> Database => _database;
         
@@ -54,7 +53,7 @@ namespace Game.Assets.Scripts.Game.Logic.Repositories
 
         protected abstract TAggregator HandleAdding(TEntity entity);
         
-        private void HandleRemoved(Uid obj)
+        private void HandleRemoved(TAggregator obj)
         {
             OnRemoved(obj);
         }
