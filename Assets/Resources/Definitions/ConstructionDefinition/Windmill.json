@@ -9,6 +9,7 @@
 	"Points": 5,
 	"AdjacencyPoints": {
 		"Windmill": -15,
+		"Aquarium" : 2,
 		"Farm" : 2
 	}
 }

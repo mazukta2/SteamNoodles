@@ -9,6 +9,7 @@
 	"Points": 4,
 	"AdjacencyPoints": {
 		"Well": 4,
+		"Windmill" : 2,
 		"Boiler" : -5
 	}
 }

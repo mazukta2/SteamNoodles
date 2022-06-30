@@ -1,9 +1,9 @@
 {
 	"StartingHand": [ "SimpleShop" ],
 	"ConstructionsReward": {
-		"Farm": 5,
-		"Well": 2,
-		"Boiler": 2,
+		"Farm": 4,
+		"Well": 3,
+		"Boiler": 1,
 		"Windmill": 4,
 		"Pen": 4,
 		"Aquarium": 3
