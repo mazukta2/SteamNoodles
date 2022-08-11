@@ -26,6 +26,7 @@
     <Compile Remove="Assets\Scripts\Unity\**" />
     <Compile Remove="Assets\Scripts\Editor\**" />
     <Compile Remove="Assets\Settings\**" />
+    <Compile Remove="Assets\Shaders\**" />
     <Compile Remove="Assets\Sounds\**" />
     <Compile Remove="Assets\TextMesh Pro\**" />
     <Compile Remove="Library\**" />
@@ -47,6 +48,7 @@
     <EmbeddedResource Remove="Assets\Scripts\Unity\**" />
     <EmbeddedResource Remove="Assets\Scripts\Editor\**" />
     <EmbeddedResource Remove="Assets\Settings\**" />
+    <EmbeddedResource Remove="Assets\Shaders\**" />
     <EmbeddedResource Remove="Assets\Sounds\**" />
     <EmbeddedResource Remove="Assets\TextMesh Pro\**" />
     <EmbeddedResource Remove="Library\**" />
@@ -69,6 +71,7 @@
     <None Remove="Assets\Scripts\Unity\**" />
     <None Remove="Assets\Scripts\Editor\**" />
     <None Remove="Assets\Settings\**" />
+    <None Remove="Assets\Shaders\**" />
     <None Remove="Assets\Sounds\**" />
     <None Remove="Assets\TextMesh Pro\**" />
     <None Remove="Library\**" />

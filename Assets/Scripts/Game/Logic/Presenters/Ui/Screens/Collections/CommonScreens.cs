@@ -22,7 +22,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
             {
                 if (screenView is IMainScreenView mainScreen)
                     return new MainScreenPresenter(mainScreen, managerPresenter,
-                        IBattleLevel.Default.Constructions, IBattleLevel.Default.TurnManager, IHandView.Default.Presenter, IGameKeysManager.Default);
+                        IBattleLevel.Default.TurnManager, IHandView.Default.Presenter, IGameKeysManager.Default);
 
                 if (screenView is IDayEndedScreenView dayEndedScreen)
                     return new DayEndedScreenPresenter(dayEndedScreen, IGameSession.Default, managerPresenter);
