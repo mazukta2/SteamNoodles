@@ -47,6 +47,9 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         private void UpdateAnimation()
         {
+            if (IsDisposed)
+                return;
+
             var animation = GetAnimation().ToString();
             if (string.IsNullOrEmpty(_lastAnimation) || animation != _lastAnimation)
             {

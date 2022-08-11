@@ -10,7 +10,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
-    public class MainScreenPresenter : BasePresenter<IMainScreenView>
+    public class MainScreenPresenter : BasePresenter<IMainScreenView>, IScreenPresenter
     {
         private ScreenManagerPresenter _screenManager;
         private FlowManager _turnManager;
@@ -52,6 +52,5 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         {
             _screenManager.GetCollection<CommonScreens>().Open<IGameMenuScreenView>();
         }
-
     }
 }

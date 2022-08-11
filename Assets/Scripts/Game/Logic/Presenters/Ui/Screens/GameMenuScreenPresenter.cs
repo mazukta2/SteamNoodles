@@ -7,7 +7,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
-    public class GameMenuScreenPresenter : BasePresenter<IGameMenuScreenView>
+    public class GameMenuScreenPresenter : BasePresenter<IGameMenuScreenView>, IScreenPresenter
     {
         private IGameMenuScreenView _view;
         private readonly IGameSession _session;
@@ -49,6 +49,5 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         {
             CloseClick();
         }
-
     }
 }

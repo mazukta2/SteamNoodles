@@ -4,7 +4,7 @@ using System;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
-    public class DayEndedScreenPresenter : BasePresenter<IDayEndedScreenView>
+    public class DayEndedScreenPresenter : BasePresenter<IDayEndedScreenView>, IScreenPresenter
     {
         private IDayEndedScreenView _view;
         private readonly IGameSession _session;
@@ -26,6 +26,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private void NextDayClick()
         {
             _session.StartLastAvailableLevel();
+        }
+
+        public void Close()
+        {
         }
     }
 }

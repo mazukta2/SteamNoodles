@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 {
-    public class BuildScreenPresenter : BasePresenter<IBuildScreenView>
+    public class BuildScreenPresenter : BasePresenter<IBuildScreenView>, IScreenPresenter
     {
         private FieldPositionsCalculator _positionCalculator;
         private KeyCommand _exitKey;
@@ -97,5 +97,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _screenManager.GetCollection<CommonScreens>().Open<IMainScreenView>();
         }
 
+        public void Close()
+        {
+        }
     }
 }

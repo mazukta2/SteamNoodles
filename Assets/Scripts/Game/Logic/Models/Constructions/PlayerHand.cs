@@ -31,7 +31,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         {
             foreach (var card in _cards)
                 card.Dispose();
-            _cards = null;
         }
 
         public void Remove(ConstructionCard card)

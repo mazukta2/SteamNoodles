@@ -31,6 +31,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
             _constructionsManager.OnConstructionAdded += Placement_OnConstructionAdded;
             _constructionsManager.OnConstructionRemoved += _constructionsManager_OnConstructionRemoved;
+            _turnManager.OnWaveEnded += _turnManager_OnWaveEnded;
             _view.NextWaveButton.SetAction(NextWaveClick);
             _view.FailWaveButton.SetAction(FailWaveClick);
             UpdateWaveProgress();
@@ -38,10 +39,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
             _presenters.Add(this);
         }
 
+
         protected override void DisposeInner()
         {
             _constructionsManager.OnConstructionAdded -= Placement_OnConstructionAdded;
             _constructionsManager.OnConstructionRemoved -= _constructionsManager_OnConstructionRemoved;
+            _turnManager.OnWaveEnded -= _turnManager_OnWaveEnded;
 
             _presenters.Remove(this);
         }
@@ -76,8 +79,16 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         }
 
 
+        private void _turnManager_OnWaveEnded(bool obj)
+        {
+            UpdateWaveProgress();
+        }
+
         private void UpdateWaveProgress()
         {
+            if (IsDisposed)
+                return;
+
             _view.NextWaveButton.IsActive = _turnManager.CanNextWave();
             _view.FailWaveButton.IsActive = _turnManager.CanFailWave();
             _view.NextWaveProgress.Value = _turnManager.GetWaveProgress();

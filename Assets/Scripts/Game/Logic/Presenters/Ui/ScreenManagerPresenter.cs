@@ -17,6 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
 
         private readonly IScreenManagerView _view;
         private readonly IAssets _screenAssets;
+        private IScreenPresenter _currentScreen;
 
         public ScreenManagerPresenter(IScreenManagerView view, IAssets screenAssets) : base(view)
         {
@@ -41,6 +42,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui
             _view.Screen.Clear();
             var view = _view.Screen.Spawn<TScreen>(screenPrefab);
             init(view, this);
+
+            _currentScreen = (IScreenPresenter)view.Presenter;
             OnScreenOpened(view);
         }
 
