@@ -17,5 +17,8 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Screens.Widgets
         [SerializeField] UnityText _text;
 
         public IText Text => _text;
+
+        [SerializeField] AnimatorUnity _animator;
+        public IAnimator Animator => _animator;
     }
 }

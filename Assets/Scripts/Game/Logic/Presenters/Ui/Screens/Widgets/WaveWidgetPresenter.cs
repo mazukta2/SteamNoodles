@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private IWaveWidgetView _view;
         private PlacementField _constructionsManager;
         private FlowManager _turnManager;
-        private static string _lastAnimation;
+        private string _lastAnimation;
 
         private static bool _isEnabled;
         private static List<WaveWidgetPresenter> _presenters = new List<WaveWidgetPresenter>();

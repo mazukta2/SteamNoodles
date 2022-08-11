@@ -30,6 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _exitKey.OnTap += OnExitTap;
 
             WaveWidgetPresenter.SetEnabled(true);
+            CustumerCoinsPresenter.SetEnabled(true);
         }
 
         protected override void DisposeInner()
@@ -39,6 +40,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
             _handPresenter.Mode = HandPresenter.Modes.Disabled;
 
             WaveWidgetPresenter.SetEnabled(false);
+            CustumerCoinsPresenter.SetEnabled(false);
         }
 
         private void HandleOnDayFinished()

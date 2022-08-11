@@ -8,6 +8,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets
     public interface ICustumerCoinsView : IViewWithGenericPresenter<CustumerCoinsPresenter>, IViewWithDefaultPresenter
     {
         IText Text { get; }
+        IAnimator Animator { get; }
 
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
