@@ -1,0 +1,6 @@
+{
+	"SceneName": "StartMenu",
+	"Starter": {
+		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters.StartMenuLevel"
+	}
+}
