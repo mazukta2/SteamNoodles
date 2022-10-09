@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
@@ -18,12 +19,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
     {
         private FloatRect UnitsField => _levelDefinition.UnitsRect;
         private List<Unit> _crowd = new List<Unit>();
-        private LevelDefinition _levelDefinition;
+        private MainLevelVariation _levelDefinition;
         private readonly IUnits _unitsController;
         private IGameRandom _random;
         private IGameTime _time;
 
-        public LevelCrowd(IUnits unitsController, IGameTime time, LevelDefinition levelDefinition,
+        public LevelCrowd(IUnits unitsController, IGameTime time, MainLevelVariation levelDefinition,
             IGameRandom random)
         {
             _levelDefinition = levelDefinition;

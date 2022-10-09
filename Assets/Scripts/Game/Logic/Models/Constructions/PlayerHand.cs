@@ -1,6 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Constructions
         public IReadOnlyCollection<ConstructionCard> Cards => _cards.AsReadOnly();
         private List<ConstructionCard> _cards { get; set; } = new List<ConstructionCard>();
 
-        private LevelDefinition _definition;
+        private MainLevelVariation _definition;
 
-        public PlayerHand(LevelDefinition definition, IReadOnlyCollection<ConstructionDefinition> hand)
+        public PlayerHand(MainLevelVariation definition, IReadOnlyCollection<ConstructionDefinition> hand)
         {
             _definition = definition ?? throw new ArgumentNullException(nameof(definition));
             if (hand == null) throw new ArgumentNullException(nameof(hand));

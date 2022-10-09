@@ -5,9 +5,11 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels
 {
-    public abstract class LevelStarter
+    public abstract class LevelVariation
     {
+        public string SceneName { get; set; }
+
         public abstract ILevel CreateModel(LevelDefinition definition);
-        public abstract void Start();
+        public abstract void Validate();
     }
 }

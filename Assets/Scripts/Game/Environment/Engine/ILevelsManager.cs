@@ -8,7 +8,7 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
     public interface ILevelsManager
     {
         event Action OnLoadFinished;
-        void Load(LevelDefinition prototype, IViewsCollection views);
+        void Load(ILevel prototype, IViewsCollection views);
         void Unload();
     }
 }

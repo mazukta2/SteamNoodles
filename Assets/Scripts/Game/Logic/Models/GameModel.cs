@@ -2,10 +2,10 @@
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using System;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
 
 namespace Game.Assets.Scripts.Game.Logic.Models
 {
@@ -36,10 +36,10 @@ namespace Game.Assets.Scripts.Game.Logic.Models
         private void StartLevel(LevelDefinition level)
         {
             DestroyLevel();
-            CurrentLevel = level.Starter.CreateModel(level);
+            CurrentLevel = level.Variation.CreateModel(level);
 
             ILevel.Default = CurrentLevel;
-            if (ILevel.Default is IBattleLevel bl) IBattleLevel.Default = bl;
+            if (ILevel.Default is IMainLevel bl) IMainLevel.Default = bl;
 
             OnLevelCreated(CurrentLevel);
         }
@@ -51,7 +51,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
                 CurrentLevel.Dispose();
                 CurrentLevel = null;
                 ILevel.Default = null;
-                IBattleLevel.Default = null;
+                IMainLevel.Default = null;
                 OnLevelDestroyed();
             }
         }

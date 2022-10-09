@@ -5,18 +5,23 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
+using Game.Assets.Scripts.Game.Logic.Views.Ui;
+using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Levels
+namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
 {
-    public class GameLevel : Disposable, IBattleLevel
+    public class GameLevel : Disposable, IMainLevel
     {
+        public event Action OnStart = delegate { };
+
         public FlowManager TurnManager { get; }
         public PlayerHand Hand { get; private set; }
         public PlacementField Constructions { get; private set; }
@@ -27,13 +32,16 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public CustomerQueue Queue { get; }
 
         public Resources Resources { get; }
-        public LevelDefinition Definition { get; private set; }
         public IGameTime Time { get; }
-        private IGameRandom _random;
 
-        public GameLevel(LevelDefinition settings, IGameRandom random, IGameTime time, IGameDefinitions definitions)
+        public string SceneName => _definition.SceneName;
+
+        private IGameRandom _random;
+        private MainLevelVariation _definition;
+
+        public GameLevel(MainLevelVariation settings, IGameRandom random, IGameTime time, IGameDefinitions definitions)
         {
-            Definition = settings ?? throw new ArgumentNullException(nameof(settings));
+            _definition = settings ?? throw new ArgumentNullException(nameof(settings));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             Time = time ?? throw new ArgumentNullException(nameof(time));
 
@@ -42,9 +50,9 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
             var unitSettings = definitions.Get<UnitsSettingsDefinition>();
 
-            Constructions = new PlacementField(definitions.Get<ConstructionsSettingsDefinition>(), Definition.PlacementField, Resources);
+            Constructions = new PlacementField(definitions.Get<ConstructionsSettingsDefinition>(), _definition.PlacementField, Resources);
             Units = new LevelUnits(time, definitions.Get<UnitsSettingsDefinition>(), settings, _random);
-            TurnManager = new FlowManager(definitions.Get<ConstructionsSettingsDefinition>(), Definition, random, Constructions, Hand);
+            TurnManager = new FlowManager(definitions.Get<ConstructionsSettingsDefinition>(), _definition, random, Constructions, Hand);
             TurnManager.OnTurn += TurnManager_OnTurn;
             TurnManager.OnWaveEnded += TurnManager_OnWaveEnded;
 
@@ -70,6 +78,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Queue.Dispose();
             _customers.Dispose();
         }
+
+
+        public void Start()
+        {
+            OnStart();
+        }
+
 
         private void OnLevelUp()
         {

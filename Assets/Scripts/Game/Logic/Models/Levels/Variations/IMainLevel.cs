@@ -1,15 +1,17 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
 
-namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Types
+namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
 {
-    public interface IBattleLevel : ILevel
+    public interface IMainLevel : ILevel
     {
-        new static IBattleLevel Default { get; set; }
+        new static IMainLevel Default { get; set; }
 
+        event Action OnStart;
         FlowManager TurnManager { get; }
         PlayerHand Hand { get;}
         PlacementField Constructions { get; }

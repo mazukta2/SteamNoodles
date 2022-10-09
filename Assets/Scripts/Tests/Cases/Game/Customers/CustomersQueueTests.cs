@@ -5,7 +5,6 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Customers;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Models.Units;
@@ -27,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Tests.Definitions;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 {
@@ -106,7 +106,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new GameConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 9)
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 0)
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 0)
                 .Build();
 
             Assert.AreEqual("0/3", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
@@ -135,7 +135,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new GameConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 3)
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 0)
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 0)
                 .UpdateDefinition<UnitsSettingsDefinition>(x => x.UnitSize = 0)
                 .Build();
 
@@ -270,9 +270,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
             var time = uc.Time;
             var level = LevelDefinitionSetups.GetDefault();
-            level.UnitsRect = new FloatRect(-10, -4, 20, 8);
-            level.CrowdUnitsAmount = 0;
-            var crowd = new LevelCrowd(uc, time, level, uc.Random);
+            level.MainLevelVariation.UnitsRect = new FloatRect(-10, -4, 20, 8);
+            level.MainLevelVariation.CrowdUnitsAmount = 0;
+            var crowd = new LevelCrowd(uc, time, level.MainLevelVariation, uc.Random);
 
             var unit = uc.SpawnUnit(new GameVector3(0, 0, 0));
             crowd.SendToCrowd(unit, LevelCrowd.CrowdDirection.Left);
@@ -517,14 +517,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new GameConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.PieceMovingTime = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 3)
-                .UpdateDefinition<LevelDefinitionMock>(x => x.CrowdUnitsAmount = 0)
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.CrowdUnitsAmount = 0)
                 .Build();
 
             game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(1, IBattleLevel.Default.Resources.Points.TargetLevel);
-            Assert.AreEqual(0, IBattleLevel.Default.Resources.Points.CurrentLevel);
+            Assert.AreEqual(1, IMainLevel.Default.Resources.Points.TargetLevel);
+            Assert.AreEqual(0, IMainLevel.Default.Resources.Points.CurrentLevel);
             Assert.AreEqual(1, game.LevelCollection.FindViews<UnitView>().Count);
 
             game.Dispose();

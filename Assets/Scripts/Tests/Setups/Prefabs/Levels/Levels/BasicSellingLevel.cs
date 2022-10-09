@@ -8,6 +8,7 @@ using Game.Assets.Scripts.Tests.Views.Level.Building;
 using Game.Assets.Scripts.Tests.Views.Level.Units;
 using Game.Assets.Scripts.Tests.Views.Ui;
 using Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand;
+using Game.Assets.Scripts.Tests.Views.Ui.Screens.Variations;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
 
 namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
@@ -18,6 +19,8 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
         {
             var screenSpawnPoint = new ContainerViewMock(collection);
             new ScreenManagerView(collection, screenSpawnPoint);
+
+            new MainLevelView(collection);
 
             var ghostContainer = new ContainerViewMock(collection);
             var ghostPrototype = new GhostViewPrefab();

@@ -71,8 +71,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var game = new GameConstructor()
                 .AddDefinition("construction1", construction1)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
-                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
-                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { construction1, construction1 })
                 .Build();
 
@@ -108,8 +108,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             var game = new GameConstructor()
                 .AddDefinition("construction1", constructionDefinition)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
-                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
-                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition })
                 .Build();
 

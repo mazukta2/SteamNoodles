@@ -1,6 +1,7 @@
 {
-	"SceneName": "StartMenu",
-	"Starter": {
-		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters.StartMenuLevel"
+	"Variation": {
+		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations.StartMenuVariation",
+
+		"SceneName": "StartMenu"
 	}
 }

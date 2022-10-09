@@ -22,7 +22,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
                 .Build();
 
@@ -56,8 +56,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
             var game = new GameConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.LevelUpOffset = 10)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.LevelUpPower = 10)
-                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 5)
-                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsForNextWave = 5)
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
                 .Build();
 
@@ -91,9 +91,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
-                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 2)
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsForNextWave = 2)
                 .Build();
 
             Assert.AreEqual(0, game.LevelCollection.FindView<WaveWidgetViewMock>().NextWaveProgress.Value);
@@ -126,7 +126,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
                 .Build();
 
@@ -147,8 +147,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 5)
-                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsForNextWave = 5)
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
                 .Build();
 
@@ -170,8 +170,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsForNextWave = 3)
-                .UpdateDefinition<LevelDefinitionMock>(x => x.
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsForNextWave = 3)
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition })
                 .Build();
 

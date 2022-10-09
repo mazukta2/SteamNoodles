@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsPlacementCreateCellsUnevenSize()
         {
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.PlacementField.Size = new IntPoint(3, 3))
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.PlacementField.Size = new IntPoint(3, 3))
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 10)
                 .Build();
 
@@ -264,7 +264,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsGhostViewChangeVisualIfItAvailable()
         {
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.StartingHand.First().Requirements = new Requirements() {  DownEdge = true })
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.StartingHand.First().Requirements = new Requirements() {  DownEdge = true })
                 .Build();
             var cellSize = 0.5f;
 
@@ -294,13 +294,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1 )
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
-                    d.PlacementField.Size = new IntPoint(size, size);
-                    d.StartingHand.First().Placement = new int[,]
+                    d.MainLevelVariation.PlacementField.Size = new IntPoint(size, size);
+                    d.MainLevelVariation.StartingHand.First().Placement = new int[,]
                     {
                         { 1, 1 },
                         { 1, 1 }
                     };
-                    d.StartingHand.First().Requirements = new Requirements() { DownEdge = true };
+                    d.MainLevelVariation.StartingHand.First().Requirements = new Requirements() { DownEdge = true };
                 })
                 .Build();
 
@@ -422,7 +422,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1)
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
-                    d.StartingHand.First().Placement = new int[,]
+                    d.MainLevelVariation.StartingHand.First().Placement = new int[,]
                     {
                         { 1 },
                         { 1 },
@@ -459,7 +459,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var game = new GameConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
-                    d.StartingHand.First().HandImagePath = imagePath;
+                    d.MainLevelVariation.StartingHand.First().HandImagePath = imagePath;
                 })
                 .Build();
 
@@ -472,7 +472,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsRemovedFromHand()
         {
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.ConstructionsReward = new Dictionary<ConstructionDefinition,int>())
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsReward = new Dictionary<ConstructionDefinition,int>())
                 .Build();
 
             Assert.AreEqual(1, game.LevelCollection.FindViews<HandConstructionView>().Count);
@@ -489,7 +489,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var construction = ConstructionSetups.GetDefault();
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.StartingHand = new List<ConstructionDefinition>() { construction, construction })
+                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.StartingHand = new List<ConstructionDefinition>() { construction, construction })
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .Build();
 
@@ -514,8 +514,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .UpdateDefinition<ConstructionsSettingsDefinition>((d) => d.CellSize = 1)
                 .UpdateDefinition<LevelDefinitionMock>((d) =>
                 {
-                    d.PlacementField.Size = new IntPoint(size, size);
-                    d.StartingHand.First().Placement = new int[,]
+                    d.MainLevelVariation.PlacementField.Size = new IntPoint(size, size);
+                    d.MainLevelVariation.StartingHand.First().Placement = new int[,]
                     {
                         { 1, 1 },
                         { 1, 0 }

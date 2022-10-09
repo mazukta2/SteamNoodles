@@ -8,18 +8,19 @@ using Game.Assets.Scripts.Game.Logic.Models.Units;
 using System;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Customers
 {
     public class LevelCustomers : Disposable, ICustomers
     {
         private readonly PlacementField _placementField;
-        private readonly LevelDefinition _levelDefinition;
+        private readonly MainLevelVariation _levelDefinition;
         private readonly UnitsSettingsDefinition _unitsSettings;
         private readonly Resources _resources;
         private int _queueSize = 0;
 
-        public LevelCustomers(PlacementField placementField, LevelDefinition levelDefinition, UnitsSettingsDefinition unitsSettings, Levels.Resources resources)
+        public LevelCustomers(PlacementField placementField, MainLevelVariation levelDefinition, UnitsSettingsDefinition unitsSettings, Levels.Resources resources)
         {
             _placementField = placementField ?? throw new ArgumentNullException(nameof(placementField));
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));

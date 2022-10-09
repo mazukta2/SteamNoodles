@@ -3,16 +3,16 @@ using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 
-namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters
+namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 {
-    public class StartMenuLevel : LevelStarter
+    public class EmptyLevelVariation : LevelVariation
     {
         public override ILevel CreateModel(LevelDefinition definition)
         {
-            return new StartMenu(definition, IGameRandom.Default, IGameTime.Default, IGameDefinitions.Default);
+            return null;
         }
 
-        public override void Start()
+        public override void Validate()
         {
         }
     }

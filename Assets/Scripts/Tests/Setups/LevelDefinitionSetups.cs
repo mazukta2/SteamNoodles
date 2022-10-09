@@ -2,7 +2,7 @@
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations;
 using Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,8 @@ namespace Game.Assets.Scripts.Tests.Setups
             {
                 Size = new IntPoint(9, 9)
             };
-            var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel())
+            var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel(),
+            new MainLevelVariation()
             {
                 PlacementField = fields,
                 StartingHand = new List<ConstructionDefinition>() { construciton },
@@ -41,9 +42,8 @@ namespace Game.Assets.Scripts.Tests.Setups
                 {
                     { construciton, 1}
                 },
-                Starter = new MainLevelStarter(),
                 Waves = 10,
-            };
+            });
             return level;
         }
 
@@ -57,7 +57,8 @@ namespace Game.Assets.Scripts.Tests.Setups
             {
                 Size = new IntPoint(9, 9)
             };
-            var level = new LevelDefinitionMock(name, new EmptyLevel())
+            var level = new LevelDefinitionMock(name, new EmptyLevel(),
+            new MainLevelVariation()
             {
                 PlacementField = fields,
                 StartingHand = new List<ConstructionDefinition>() { construciton },
@@ -69,9 +70,8 @@ namespace Game.Assets.Scripts.Tests.Setups
                 ConstructionsReward = new Dictionary<ConstructionDefinition, int>()
                 {
                     { construciton, 1}
-                },
-                Starter = new EmptyLevelStarter()
-            };
+                }
+            });
             return level;
         }
     }

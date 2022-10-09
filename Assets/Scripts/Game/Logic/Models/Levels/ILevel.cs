@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public static ILevel Default { get; set; }
         
         bool IsDisposed { get; }
-
-        LevelDefinition Definition { get; }
+        public string SceneName { get; }
+        public void Start();
     }
 }

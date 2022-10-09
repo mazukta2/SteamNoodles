@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Animations;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
@@ -22,14 +23,14 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         public event Action OnDayFinished = delegate { };
 
         private readonly ConstructionsSettingsDefinition _constructionsDefinitions;
-        private LevelDefinition _levelDefinition;
+        private MainLevelVariation _levelDefinition;
         private PlacementField _constructionsManager;
         private PlayerHand _hand;
         private Deck<ConstructionDefinition> _rewardDeck;
         private int _wave;
         private SequenceManager _sequence = new SequenceManager();
 
-        public FlowManager(ConstructionsSettingsDefinition constructions, LevelDefinition levelDefinition, IGameRandom random, PlacementField constructionsManager, PlayerHand hand)
+        public FlowManager(ConstructionsSettingsDefinition constructions, MainLevelVariation levelDefinition, IGameRandom random, PlacementField constructionsManager, PlayerHand hand)
         {
             _constructionsDefinitions = constructions ?? throw new ArgumentNullException(nameof(constructions));
             _levelDefinition = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));

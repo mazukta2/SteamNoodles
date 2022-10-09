@@ -11,7 +11,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void IsCrowdUnitsSpawned()
         {
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 15)
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 15)
                 .Build();
 
             Assert.AreEqual(1, game.LevelCollection.FindViews<UnitsManagerView>().Count);
@@ -24,8 +24,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         public void CrowdIsMoving()
         {
             var game = new GameConstructor()
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.CrowdUnitsAmount = 1)
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.UnitsRect = new Scripts.Game.Logic.Common.Math.FloatRect(-10, -10, 10, 10))
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 1)
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.UnitsRect = new Scripts.Game.Logic.Common.Math.FloatRect(-10, -10, 10, 10))
                 .Build();
 
             var unit = game.LevelCollection.FindView<UnitView>();

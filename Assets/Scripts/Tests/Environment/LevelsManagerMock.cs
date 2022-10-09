@@ -13,28 +13,28 @@ namespace Game.Assets.Scripts.Tests.Environment
         public event Action OnLoadFinished = delegate { };
 
         private List<LevelDefinitionMock> _availableLevels = new List<LevelDefinitionMock>();
-        private LevelDefinition _definition;
+        private ILevel _model;
         private IViewsCollection _collection;
 
         public LevelsManagerMock()
         {
         }
 
-        public void Load(LevelDefinition prototype, IViewsCollection collection)
+        public void Load(ILevel prototype, IViewsCollection collection)
         {
-            if (_definition != null)
+            if (_model != null)
                 throw new Exception("Already loading");
 
-            _definition = prototype;
+            _model = prototype;
             _collection = collection;
         }
 
         public void Unload()
         {
-            if (_definition == null)
+            if (_model == null)
                 throw new Exception("Currently loading");
 
-            _definition = null;
+            _model = null;
             _collection = null;
         }
 
@@ -45,10 +45,14 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public void FinishLoading()
         {
-            if (_definition == null)
+            if (_model == null)
                 throw new Exception("Nothing is loading");
 
-            ((LevelDefinitionMock)_definition).LevelPrefab.Fill(_collection);
+            foreach (var item in _availableLevels)
+            {
+                if (item.Variation.SceneName == _model.SceneName)
+                    item.LevelPrefab.Fill(_collection);
+            }
 
             OnLoadFinished();
         }

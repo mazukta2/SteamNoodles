@@ -1,7 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using System;
@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         public event Action OnLoaded = delegate { };
 
-        private LevelDefinition _prototype;
+        private ILevel _levelModel;
         private ILevelsManager _levelManager;
         private readonly IGame _model;
 
@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 
         private void HandleOnLevelCreated(ILevel level)
         {
-            Load(level.Definition);
+            Load(level);
         }
 
         private void HandleOnLevelDestroyed()
@@ -45,7 +45,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             Unload();
         }
 
-        private void Load(LevelDefinition levelDefinition)
+        private void Load(ILevel level)
         {
             if (State == LevelsState.IsLoaded)
                 Unload();
@@ -55,8 +55,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
             State = LevelsState.IsLoading;
 
             Views = new ViewsCollection();
-            _prototype = levelDefinition ?? throw new ArgumentNullException(nameof(levelDefinition));
-            _levelManager.Load(levelDefinition, Views);
+            _levelModel = level ?? throw new ArgumentNullException(nameof(level));
+            _levelManager.Load(_levelModel, Views);
         }
 
         private void Unload()
@@ -72,7 +72,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         private void HandleOnFinished()
         {
             new ViewsInitializer(Views).Init();
-            _prototype.Starter.Start();
+            _levelModel.Start();
 
             State = LevelsState.IsLoaded;
             OnLoaded();

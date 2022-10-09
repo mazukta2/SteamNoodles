@@ -4,6 +4,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Definitions.Constructions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations;
 using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
@@ -25,7 +26,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Units
         private readonly UnitsSettingsDefinition _unitsSettings;
         private readonly IGameRandom _random;
 
-        public LevelUnits(IGameTime time, UnitsSettingsDefinition unitsSettings, LevelDefinition levelDefinition, IGameRandom random)
+        public LevelUnits(IGameTime time, UnitsSettingsDefinition unitsSettings, MainLevelVariation levelDefinition, IGameRandom random)
         {
             _time = time ?? throw new ArgumentNullException(nameof(time));
             _unitsSettings = unitsSettings ?? throw new ArgumentNullException(nameof(unitsSettings));

@@ -50,10 +50,10 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             Core = null;
         }
 
-        public void LoadLevel(LevelDefinition loadLevel)
+        public void LoadLevel(ILevel level)
         {
-            ((GameModel)IGame.Default).SetLevel(loadLevel);
-            Levels.FinishLoading();
+           // ((GameModel)IGame.Default).SetLevel(loadLevel);
+           // Levels.FinishLoading();
         }
     }
 }

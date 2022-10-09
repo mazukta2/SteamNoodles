@@ -1,4 +1,7 @@
 {
+	"Variation": {
+		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations.MainLevelVariation",
+
 	"StartingHand": [ "SimpleShop" ],
 	"ConstructionsReward": {
 		"Farm": 4,
@@ -36,8 +39,6 @@
 		"Height": 2.5
 	},
 	"ConstructionsForNextWave": 8,
-	"Waves" : 3,
-	"Starter": {
-		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters.MainLevelStarter"
+	"Waves" : 3
 	}
 }

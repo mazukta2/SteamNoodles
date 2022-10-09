@@ -1,18 +1,19 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 
-namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Starters
+namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 {
-    public class EmptyLevelStarter : LevelStarter
+    public class StartMenuVariation : LevelVariation
     {
         public override ILevel CreateModel(LevelDefinition definition)
         {
-            return new GameLevel(definition, IGameRandom.Default, IGameTime.Default, IGameDefinitions.Default);
+            return new StartMenu(this, IGameRandom.Default, IGameTime.Default, IGameDefinitions.Default);
         }
 
-        public override void Start()
+        public override void Validate()
         {
         }
     }

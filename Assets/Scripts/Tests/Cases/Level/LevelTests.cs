@@ -1,6 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Types;
+using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment.Game;
@@ -36,7 +36,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
         {
             var levelDefinition = LevelDefinitionSetups.GetEmpty("lvl");
             var build = new GameConstructor().DisableAutoLoad().AddLevel(levelDefinition).Build();
-            build.LoadLevel(levelDefinition);
+            //build.LoadLevel(levelDefinition);
             build.Levels.FinishLoading();
 
             Assert.IsTrue(build.Core.Levels.State == LevelLoading.LevelsState.IsLoaded);
@@ -59,16 +59,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
             var build = new GameConstructor().Build();
             Assert.AreEqual(LevelLoading.LevelsState.IsLoaded, build.Core.Levels.State);
 
-            var level = IBattleLevel.Default;
+            var level = IMainLevel.Default;
 
-            Assert.AreEqual(level, IBattleLevel.Default);
-            build.LoadLevel(level.Definition);
+            Assert.AreEqual(level, IMainLevel.Default);
+            build.LoadLevel(level);
             build.Levels.FinishLoading();
 
             Assert.IsFalse(build.Core.IsDisposed);
             Assert.IsFalse(build.Core.Levels.IsDisposed);
             Assert.AreEqual(LevelLoading.LevelsState.IsLoaded, build.Core.Levels.State);
-            Assert.AreNotEqual(level, IBattleLevel.Default);
+            Assert.AreNotEqual(level, IMainLevel.Default);
             Assert.IsTrue(level.IsDisposed);
 
             build.Dispose();
