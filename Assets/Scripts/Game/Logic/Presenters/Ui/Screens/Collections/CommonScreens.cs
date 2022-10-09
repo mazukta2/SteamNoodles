@@ -9,6 +9,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using System;
 using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
+using Game.Assets.Scripts.Game.Logic.Infrastructure;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
 {
@@ -28,7 +29,8 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
                     return new DayEndedScreenPresenter(dayEndedScreen, IGameSession.Default, managerPresenter);
 
                 if (screenView is IGameMenuScreenView gameMenuScreen)
-                    return new GameMenuScreenPresenter(gameMenuScreen, IGameSession.Default, IGame.Default, IGameKeysManager.Default, managerPresenter);
+                    return new GameMenuScreenPresenter(gameMenuScreen, IGameSession.Default,
+                        IInfrastructure.Default.Core, IGameKeysManager.Default, managerPresenter);
                 
 
                 throw new Exception("Unknown screen " + typeof(TScreen));

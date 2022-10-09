@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void IsEndWaveButtonRemovesBuildings()
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
                 .Build();
@@ -53,7 +53,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void IsFailWaveButtonRemovesBuildings()
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.LevelUpOffset = 10)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.LevelUpPower = 10)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsForNextWave = 5)
@@ -90,7 +90,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void IsEndWaveButtonProgress()
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition, constructionDefinition })
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsForNextWave = 2)
@@ -125,7 +125,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void IsEndWaveButtonGiveYouNewBuildings()
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
                 .Build();
@@ -146,7 +146,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void IsFailWaveButtonGiveYouNewBuildings()
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsForNextWave = 5)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition })
@@ -169,7 +169,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Flow
         public void IsFailButtonActivating()
         {
             var constructionDefinition = ConstructionSetups.GetDefault();
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsForNextWave = 3)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition })

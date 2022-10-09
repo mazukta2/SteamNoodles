@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var constructionDef1 = ConstructionSetups.GetDefault();
             var constructionDef2 = ConstructionSetups.GetDefault();
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.StartingHand = new List<ConstructionDefinition>() { })
                 .Build();
 
@@ -44,7 +44,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         public void IsCountersWorks()
         {
             var constructionDef1 = ConstructionSetups.GetDefault();
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.StartingHand = new List<ConstructionDefinition>() { })
                 .Build();
 

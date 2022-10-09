@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void SettingsConversion()
         {
             var commmonField = new CommonCase();
-            var build = new GameConstructor()
+            var build = new BuildConstructor()
                 .AddDefinition("testDef", commmonField)
                 .Build();
 
@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void DictionarySettingsConversion()
         {
             var commmonField = new CommonCase();
-            var build = new GameConstructor()
+            var build = new BuildConstructor()
                 .AddDefinition("testDef", commmonField)
                 .Build();
 

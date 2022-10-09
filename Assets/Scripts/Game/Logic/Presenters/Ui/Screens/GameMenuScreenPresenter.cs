@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models;
+﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections;
@@ -12,11 +13,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
         private IGameMenuScreenView _view;
         private readonly IGameSession _session;
         private ScreenManagerPresenter _screenManager;
-        private IGame _game;
+        private Core _game;
         private KeyCommand _exitKey;
         private readonly IGameKeysManager _keysManager;
 
-        public GameMenuScreenPresenter(IGameMenuScreenView view, IGameSession session, IGame game, IGameKeysManager keysManager, ScreenManagerPresenter screenManager) : base(view)
+        public GameMenuScreenPresenter(IGameMenuScreenView view, IGameSession session, Core game, IGameKeysManager keysManager, ScreenManagerPresenter screenManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _session = session ?? throw new ArgumentNullException(nameof(session));
@@ -42,7 +43,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private void ExitGameClick()
         {
-            _game.Exit();
+            _game.Dispose();
         }
 
         private void OnExitTap()

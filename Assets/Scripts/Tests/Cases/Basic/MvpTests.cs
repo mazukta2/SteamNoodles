@@ -11,14 +11,14 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         [Test]
         public void IsBuildedAndDisposed()
         {
-            var build = new GameConstructor().Build();
+            var build = new BuildConstructor().Build();
             build.Dispose();
         }
 
         [Test]
         public void ViewIsCreatingPresenter()
         {
-            var build = new GameConstructor().Build();
+            var build = new BuildConstructor().Build();
             var view = new TestView(build.LevelCollection);
 
             Assert.IsTrue(view.IsInited);

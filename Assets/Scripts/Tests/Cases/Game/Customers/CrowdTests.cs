@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsCrowdUnitsSpawned()
         {
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 15)
                 .Build();
 
@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void CrowdIsMoving()
         {
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 1)
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.UnitsRect = new Scripts.Game.Logic.Common.Math.FloatRect(-10, -10, 10, 10))
                 .Build();

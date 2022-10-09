@@ -103,7 +103,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsPointsConvertsToQueueSize()
         {
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 9)
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 0)
@@ -132,7 +132,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsQueuePositioningIsRight()
         {
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 3)
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 0)
@@ -514,7 +514,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
         [Test]
         public void IsFirstUnitAppearsAfterFirstBuilding()
         {
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.PieceMovingTime = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 3)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.CrowdUnitsAmount = 0)

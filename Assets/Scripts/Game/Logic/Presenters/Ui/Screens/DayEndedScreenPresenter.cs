@@ -25,7 +25,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
 
         private void NextDayClick()
         {
-            _session.StartLastAvailableLevel();
+            //_session.StartLastAvailableLevel();
         }
 
         public void Close()

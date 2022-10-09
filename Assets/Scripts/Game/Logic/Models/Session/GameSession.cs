@@ -9,20 +9,12 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Session
 {
     public class GameSession : Disposable, IGameSession
     {
-        private readonly GameModel _gameModel;
-
-        public GameSession(GameModel gameModel)
+        public GameSession()
         {
-            _gameModel = gameModel;
         }
 
         protected override void DisposeInner()
         {
-        }
-
-        public void StartLastAvailableLevel()
-        {
-            _gameModel.StartNewGame();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         public void IsFirstCardSpawned()
         {
             var construction = new ConstructionDefinition();
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.StartingHand = new List<ConstructionDefinition>() { construction })
                 .Build();
 
@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var construction = ConstructionSetups.GetDefault();
             construction.Points = 2;
 
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.StartingHand = new List<ConstructionDefinition>() { construction, construction })
                 .Build();
 
@@ -75,7 +75,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test]
         public void IsIconSettedInHand()
         {
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .Build();
 
             var construction = IGameDefinitions.Default.Get<ConstructionDefinition>("Construction1");
@@ -89,7 +89,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         [Test]
         public void IsTooltipShowing()
         {
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .Build();
 
             var construction1 = game.LevelCollection.FindViews<HandConstructionView>().First();

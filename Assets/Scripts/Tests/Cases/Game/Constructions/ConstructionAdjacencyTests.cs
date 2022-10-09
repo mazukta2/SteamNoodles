@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         [Test]
         public void IsPointsForBuildingWorking()
         {
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 5)
                 .Build();
 
@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
         [Test]
         public void IsNotGetPointsForBuildingOutsideField()
         {
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 5)
                 .Build();
 
@@ -68,7 +68,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
             };
             construction1.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { construction1, 2 } };
 
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .AddDefinition("construction1", construction1)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
@@ -105,7 +105,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
                 LevelViewPath = "DebugConstruction",
             };
             constructionDefinition.AdjacencyPoints = new Dictionary<ConstructionDefinition, int>() { { constructionDefinition, 2 } };
-            var game = new GameConstructor()
+            var game = new BuildConstructor()
                 .AddDefinition("construction1", constructionDefinition)
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.ConstructionsReward = new Dictionary<ConstructionDefinition, int>())
