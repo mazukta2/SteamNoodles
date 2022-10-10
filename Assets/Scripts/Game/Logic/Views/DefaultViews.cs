@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 {
-    public class ViewsCollection : IViewsCollection
+    public class DefaultViews : IViews
     {
         public event Action OnDispose = delegate { };
 
@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 
             if (recursively)
             {
-                foreach (var collection in _views.OfType<IViewsCollection>())
+                foreach (var collection in _views.OfType<IViews>())
                 {
                     result.AddRange(collection.FindViews<T>(recursively));
                 }

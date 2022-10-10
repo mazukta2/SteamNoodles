@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Tests.Definitions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
+using Game.Assets.Scripts.Game.Logic.Models;
 
 namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
 {
@@ -41,7 +42,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var points = new BuildingPointsManager(settings, time, 2.2f, 8);
             var ghost = new GhostMock();
 
-            var levelCollection = new ViewsCollection();
+            var levelCollection = new DefaultViews();
             var view = new PointCounterWidgetView(levelCollection);
             IPointCounterWidgetView.Default = view;
             var spawner = new PieceSpawnerView(levelCollection);
@@ -109,11 +110,11 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 0)
                 .Build();
 
-            Assert.AreEqual("0/3", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
-            Assert.AreEqual(0, game.LevelCollection.FindView<PointCounterWidgetView>().PointsProgress.MainValue);
-            Assert.AreEqual(0, game.LevelCollection.FindViews<UnitView>().Count);
+            Assert.AreEqual("0/3", game.Views.FindView<PointCounterWidgetView>().Points.Value);
+            Assert.AreEqual(0, game.Views.FindView<PointCounterWidgetView>().PointsProgress.MainValue);
+            Assert.AreEqual(0, game.Views.FindViews<UnitView>().Count);
 
-            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            game.Views.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
             var points = new BuildingPointsCalculator(2, 2);
@@ -122,9 +123,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             Assert.AreEqual(15, points.PointsForNextLevel);
             Assert.IsTrue(points.Progress != 0);
 
-            Assert.AreEqual("9/15", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
-            Assert.AreEqual(points.Progress, game.LevelCollection.FindView<PointCounterWidgetView>().PointsProgress.MainValue);
-            Assert.AreEqual(2, game.LevelCollection.FindViews<UnitView>().Count);
+            Assert.AreEqual("9/15", game.Views.FindView<PointCounterWidgetView>().Points.Value);
+            Assert.AreEqual(points.Progress, game.Views.FindView<PointCounterWidgetView>().PointsProgress.MainValue);
+            Assert.AreEqual(2, game.Views.FindViews<UnitView>().Count);
 
             game.Dispose();
         }
@@ -139,16 +140,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<UnitsSettingsDefinition>(x => x.UnitSize = 0)
                 .Build();
 
-            Assert.AreEqual(0, game.LevelCollection.FindViews<UnitView>().Count);
+            Assert.AreEqual(0, game.Views.FindViews<UnitView>().Count);
 
-            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            game.Views.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(1, game.LevelCollection.FindViews<UnitView>().Count);
-            Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
+            Assert.AreEqual(1, game.Views.FindViews<UnitView>().Count);
+            Assert.AreEqual(1, game.Views.FindViews<ConstructionView>().Count);
 
-            var building = game.LevelCollection.FindView<ConstructionView>();
-            var unit = game.LevelCollection.FindView<UnitView>();
+            var building = game.Views.FindView<ConstructionView>();
+            var unit = game.Views.FindView<UnitView>();
 
             Assert.AreEqual(building.Position.Value.X, unit.Position.Value.X);
 
@@ -230,7 +231,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var cr = new CrowdMock();
             var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
 
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
             new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
  
             uc.QueueSize = 2;
@@ -315,7 +316,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var cr = new CrowdMock();
             var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
 
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
             new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
 
             uc.QueueSize = 2;
@@ -354,7 +355,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var cr = new CrowdMock();
             var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
 
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
             new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
 
             uc.QueueSize = 2;
@@ -400,7 +401,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var cr = new CrowdMock();
             var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
 
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
             new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
 
             uc.QueueSize = 2;
@@ -452,7 +453,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             uc.SettingsDef.MinSpeed = 1f;
             uc.SettingsDef.RotationSpeed = 1f;
 
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
             new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
 
             uc.QueueSize = 4;
@@ -494,7 +495,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var cr = new CrowdMock();
             var queue = new CustomerQueue(uc, uc, cr, uc.Time, uc.Random);
 
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
             new UnitsPresenter(uc, new UnitsManagerView(collection), uc.SettingsDef);
 
             Assert.AreEqual(0, uc.Coins);
@@ -520,12 +521,12 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
                 .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.CrowdUnitsAmount = 0)
                 .Build();
 
-            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            game.Views.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            Assert.AreEqual(1, IMainLevel.Default.Resources.Points.TargetLevel);
-            Assert.AreEqual(0, IMainLevel.Default.Resources.Points.CurrentLevel);
-            Assert.AreEqual(1, game.LevelCollection.FindViews<UnitView>().Count);
+            Assert.AreEqual(1, IModels.Default.Find<BuildingPointsManager>().TargetLevel);
+            Assert.AreEqual(0, IModels.Default.Find<BuildingPointsManager>().CurrentLevel);
+            Assert.AreEqual(1, game.Views.FindViews<UnitView>().Count);
 
             game.Dispose();
         }

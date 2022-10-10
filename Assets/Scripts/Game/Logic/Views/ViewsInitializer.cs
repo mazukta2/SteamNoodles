@@ -8,9 +8,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Managing
 {
     public class ViewsInitializer 
     {
-        private IViewsCollection _collection;
+        private IViews _collection;
 
-        public ViewsInitializer(IViewsCollection collection) 
+        public ViewsInitializer(IViews collection) 
         {
             _collection = collection;
         }

@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Animations
             var definitions = new ConstructionsSettingsDefinition();
 
             var time = new GameTime();
-            var level = new ViewsCollection();
+            var level = new DefaultViews();
 
             var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, new GameVector3(1, 0, 0), new GameVector3(1, 0, 0));
             var animationModel = new AddPointsAnimation(10, definitions, time, GameVector3.Zero);
@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Animations
 
             var time = new GameTime();
             time.MoveTime(10);
-            var level = new ViewsCollection();
+            var level = new DefaultViews();
             var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, new GameVector3(1, 0, 0), new GameVector3(1, 0, 0));
 
             var animationModel = new AddPointsAnimation(10, definitions, time, GameVector3.Zero);
@@ -86,7 +86,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Animations
 
             var time = new GameTime();
             time.MoveTime(10);
-            var level = new ViewsCollection();
+            var level = new DefaultViews();
             var curve = new BezierCurve(GameVector3.Zero, GameVector3.One, GameVector3.One, GameVector3.Zero);
             var animationModel = new AddPointsAnimation(1, definitions, time, GameVector3.Zero);
             var animation = new AddPointsAnimationPresenter(curve, CreatePieceSpawner(level), animationModel);
@@ -111,7 +111,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Animations
 
             var time = new GameTime();
             time.MoveTime(10);
-            var level = new ViewsCollection();
+            var level = new DefaultViews();
             var curve = new BezierCurve(new GameVector3(1, 1, 1), new GameVector3(-1, 1, -1), new GameVector3(1, 3, 1), new GameVector3(-1, 3, -1));
 
             var animationModel = new AddPointsAnimation(1, definitions, time, new GameVector3(1, 1, 1));
@@ -126,7 +126,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Animations
             level.Dispose();
         }
 
-        private PointPieceSpawnerPresenter CreatePieceSpawner(ViewsCollection level)
+        private PointPieceSpawnerPresenter CreatePieceSpawner(DefaultViews level)
         {
             var view = new PieceSpawnerView(level);
             return new PointPieceSpawnerPresenter(view);

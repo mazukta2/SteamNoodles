@@ -8,7 +8,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
 {
     public class MainScreenView : ScreenView<MainScreenPresenter>, IMainScreenView
     {
-        public MainScreenView(IViewsCollection level) : base(level)
+        public MainScreenView(IViews level) : base(level)
         {
         }
     }

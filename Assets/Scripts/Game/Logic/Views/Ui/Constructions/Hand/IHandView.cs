@@ -1,4 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Creation;
+using Game.Assets.Scripts.Game.Logic.Models;
+using Game.Assets.Scripts.Game.Logic.Models.Building;
+using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
 using Game.Assets.Scripts.Game.Logic.Presenters.Level.Building;
@@ -19,7 +22,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
             Default = this;
-            new HandPresenter(IMainLevel.Default.Hand, IScreenManagerView.Default.Presenter, this, IMainLevel.Default.Constructions);
+            new HandPresenter(IModels.Default.Find<PlayerHand>(), IScreenManagerView.Default.Presenter, this,
+                IModels.Default.Find<PlacementField>());
         }
     }
 }

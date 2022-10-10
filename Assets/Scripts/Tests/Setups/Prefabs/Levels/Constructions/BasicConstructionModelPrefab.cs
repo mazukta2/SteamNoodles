@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Constructions
 {
     public class BasicConstructionModelPrefab : ViewCollectionPrefabMock
     {
-        public override void Fill(IViewsCollection collection)
+        public override void Fill(IViews collection)
         {
             new ConstructionModelView(collection);
         }

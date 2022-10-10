@@ -20,7 +20,8 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 
         private ILevelsManager _levelManager;
         private LevelDefinition _definiton;
-        private ViewsCollection _views;
+        private DefaultViews _views;
+        private DefaultModels _models;
         private ILevel _levelModel;
         private CurrentLevel _result;
 
@@ -31,9 +32,11 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 
             _levelManager.OnLoadFinished += HandleOnFinished;
 
-            _views = new ViewsCollection();
+            _views = new DefaultViews();
+            _models = new DefaultModels();
 
-            _levelModel = definition.Variation.CreateModel(definition);
+            _levelModel = definition.Variation.CreateModel(definition, _models);
+
             _levelManager.Load(_levelModel.SceneName, _views);
         }
 
@@ -60,9 +63,9 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 
         private void HandleOnFinished()
         {
-            new ViewsInitializer(_views).Init();
+            _result = new CurrentLevel(_levelManager, _levelModel, _models, _views);
 
-            _result = new CurrentLevel(_levelManager, _levelModel, _views);
+            new ViewsInitializer(_views).Init();
 
             OnLoaded(_result);
             Dispose();

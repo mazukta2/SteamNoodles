@@ -22,6 +22,8 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
         public StartMenu(StartMenuVariation settings, IGameRandom random, IGameTime time, IGameDefinitions definitions)
         {
             _definition = settings;
+            if (string.IsNullOrEmpty(_definition.SceneName))
+                throw new Exception("No name for scene");
         }
 
         public string SceneName => _definition.SceneName;

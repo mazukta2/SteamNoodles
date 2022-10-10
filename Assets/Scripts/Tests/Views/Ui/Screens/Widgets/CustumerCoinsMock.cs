@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets
         public AnimatorMock Animator { get; set; } = new AnimatorMock();
         IAnimator ICustumerCoinsView.Animator => Animator;
 
-        public CustumerCoinsMock(IViewsCollection collection) : base(collection)
+        public CustumerCoinsMock(IViews collection) : base(collection)
         {
 
         }

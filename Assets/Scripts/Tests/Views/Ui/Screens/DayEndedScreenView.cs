@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
     {
         public IButton NextDayButton { get; set; } = new ButtonMock();
 
-        public DayEndedScreenView(IViewsCollection level) : base(level)
+        public DayEndedScreenView(IViews level) : base(level)
         {
         }
     }

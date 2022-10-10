@@ -6,14 +6,12 @@ namespace Game.Assets.Scripts.Tests.Definitions
 {
     public class LevelDefinitionMock : LevelDefinition
     {
-        public string Name { get; set; } = "DebugLevel";
         public ViewCollectionPrefabMock LevelPrefab { get; private set; }
 
         public MainLevelVariation MainLevelVariation { get;  }
 
-        public LevelDefinitionMock(string name, ViewCollectionPrefabMock level, MainLevelVariation variation)
+        public LevelDefinitionMock(ViewCollectionPrefabMock level, MainLevelVariation variation)
         {
-            Name = name;
             LevelPrefab = level;
             MainLevelVariation = variation;
             Variation = MainLevelVariation;

@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
 
         public IViewPrefab SmokePrefab { get; set; }
 
-        public UnitView(IViewsCollection level, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
+        public UnitView(IViews level, IRotator rotator, IAnimator animator, IUnitDresser unitDresser) : base(level)
         {
             Rotator = rotator;
             Animator = animator;
@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
             SmokePrefab = new DefaultViewCollectionPrefabMock(SpawnSmoke);
         }
 
-        private void SpawnSmoke(IViewsCollection obj)
+        private void SpawnSmoke(IViews obj)
         {
         }
     }

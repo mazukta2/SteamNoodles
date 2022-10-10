@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
         public IPointsProgressBar PointsProgress { get; set; } = new PointsProgressBarMock();
         public IAnimator Animator { get; set; } = new AnimatorMock();
 
-        public PointCounterWidgetView(IViewsCollection level) : base(level)
+        public PointCounterWidgetView(IViews level) : base(level)
         {
         }
 

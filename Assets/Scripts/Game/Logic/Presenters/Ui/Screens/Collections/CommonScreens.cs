@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
             {
                 if (screenView is IMainScreenView mainScreen)
                     return new MainScreenPresenter(mainScreen, managerPresenter,
-                        IMainLevel.Default.TurnManager, IHandView.Default.Presenter, IGameKeysManager.Default);
+                        IModels.Default.Find<FlowManager>(), IHandView.Default.Presenter, IGameKeysManager.Default);
 
                 if (screenView is IDayEndedScreenView dayEndedScreen)
                     return new DayEndedScreenPresenter(dayEndedScreen, IGameSession.Default, managerPresenter);

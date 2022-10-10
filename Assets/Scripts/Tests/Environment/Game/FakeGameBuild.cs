@@ -17,12 +17,13 @@ using Game.Assets.Scripts.Game.Logic.Infrastructure.Flow;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Infrastructure;
+using Game.Assets.Scripts.Tests.Definitions;
 
 namespace Game.Assets.Scripts.Tests.Environment.Game
 {
     public class FakeGameBuild : IDisposable
     {
-        public IViewsCollection LevelCollection => _currentLevel.GetViews();
+        public IViews Views => _currentLevel.GetViews();
         public GameTime Time => _time;
         public ControlsMock Controls => _controls;
         public GameKeysManager Keys => (GameKeysManager)IGameKeysManager.Default;
@@ -47,7 +48,9 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
 
             if (!disableAutoload)
             {
-                LoadLevel(IGameDefinitions.Default.Get<MainDefinition>().StartLevel);
+                var level = IGameDefinitions.Default.Get<MainDefinition>().StartLevel;
+                _levelManager.Add((LevelDefinitionMock)level);
+                LoadLevel(level);
             }
         }
 
@@ -64,6 +67,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         private void LoadLevel(LevelDefinition level)
         {
             var loading = _core.LoadLevel(level);
+
             _levelManager.FinishLoading();
             _currentLevel = loading.GetResult();
         }

@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
         public IRotator Rotator { get; }
         public IPointPieceSpawnerView PieceSpawner { get; }
 
-        public GhostView(IViewsCollection level, IViewContainer container, IRotator rotator) : base(level)
+        public GhostView(IViews level, IViewContainer container, IRotator rotator) : base(level)
         {
             Container = container;
             Rotator = rotator;

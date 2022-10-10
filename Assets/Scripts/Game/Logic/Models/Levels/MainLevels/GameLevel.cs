@@ -18,64 +18,75 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
 {
-    public class GameLevel : Disposable, IMainLevel
+    public class GameLevel : Disposable, ILevel
     {
         public event Action OnStart = delegate { };
-
-        public FlowManager TurnManager { get; }
-        public PlayerHand Hand { get; private set; }
-        public PlacementField Constructions { get; private set; }
-        public LevelUnits Units { get; }
-
-        private LevelCustomers _customers;
-        private LevelCrowd _crowd;
-        public CustomerQueue Queue { get; }
-
-        public Resources Resources { get; }
-        public IGameTime Time { get; }
 
         public string SceneName => _definition.SceneName;
 
         private IGameRandom _random;
         private MainLevelVariation _definition;
+        private IModels _models;
+        private FlowManager _turnManager;
+        private PlayerHand _hand;
+        private PlacementField _constructions;
+        private LevelUnits _units;
+        private IGameTime _time;
+        private Resources _resources;
+        private CustomerQueue _queue;
+        private LevelCustomers _customers;
+        private LevelCrowd _crowd;
 
-        public GameLevel(MainLevelVariation settings, IGameRandom random, IGameTime time, IGameDefinitions definitions)
+
+        public GameLevel(MainLevelVariation settings, IModels models, IGameRandom random, IGameTime time, IGameDefinitions definitions)
         {
             _definition = settings ?? throw new ArgumentNullException(nameof(settings));
+            if (string.IsNullOrEmpty(_definition.SceneName))
+                throw new Exception("No name for scene");
             _random = random ?? throw new ArgumentNullException(nameof(random));
-            Time = time ?? throw new ArgumentNullException(nameof(time));
+            _time = time ?? throw new ArgumentNullException(nameof(time));
+            _models = models;
 
-            Hand = new PlayerHand(settings, settings.StartingHand);
-            Resources = new Resources(definitions.Get<ConstructionsSettingsDefinition>(), time);
+
+            _hand = new PlayerHand(settings, settings.StartingHand);
+            _resources = new Resources(definitions.Get<ConstructionsSettingsDefinition>(), time);
 
             var unitSettings = definitions.Get<UnitsSettingsDefinition>();
 
-            Constructions = new PlacementField(definitions.Get<ConstructionsSettingsDefinition>(), _definition.PlacementField, Resources);
-            Units = new LevelUnits(time, definitions.Get<UnitsSettingsDefinition>(), settings, _random);
-            TurnManager = new FlowManager(definitions.Get<ConstructionsSettingsDefinition>(), _definition, random, Constructions, Hand);
-            TurnManager.OnTurn += TurnManager_OnTurn;
-            TurnManager.OnWaveEnded += TurnManager_OnWaveEnded;
+            _constructions = new PlacementField(definitions.Get<ConstructionsSettingsDefinition>(), _definition.PlacementField, _resources);
+            _units = new LevelUnits(time, definitions.Get<UnitsSettingsDefinition>(), settings, _random);
+            _turnManager = new FlowManager(definitions.Get<ConstructionsSettingsDefinition>(), _definition, random, _constructions, _hand);
+            _turnManager.OnTurn += TurnManager_OnTurn;
+            _turnManager.OnWaveEnded += TurnManager_OnWaveEnded;
 
-            _customers = new LevelCustomers(Constructions, settings, definitions.Get<UnitsSettingsDefinition>(), Resources);
-            _crowd = new LevelCrowd(Units, time, settings, random);
-            Queue = new CustomerQueue(_customers, Units, _crowd, time, random);
+            _customers = new LevelCustomers(_constructions, settings, definitions.Get<UnitsSettingsDefinition>(), _resources);
+            _crowd = new LevelCrowd(_units, time, settings, random);
+            _queue = new CustomerQueue(_customers, _units, _crowd, time, random);
 
-            Resources.Points.OnMaxTargetLevelUp += OnLevelUp;
+            _models.Add(_turnManager);
+            _models.Add(_hand);
+            _models.Add(_constructions);
+            _models.Add(_units);
+            _models.Add(_resources.Coins);
+            _models.Add(_resources.Points);
+            _models.Add(this);
+
+            _resources.Points.OnMaxTargetLevelUp += OnLevelUp;
         }
 
         protected override void DisposeInner()
         {
-            Resources.Points.OnMaxTargetLevelUp -= OnLevelUp;
-            TurnManager.OnTurn -= TurnManager_OnTurn;
-            TurnManager.OnWaveEnded -= TurnManager_OnWaveEnded;
+            _resources.Points.OnMaxTargetLevelUp -= OnLevelUp;
+            _turnManager.OnTurn -= TurnManager_OnTurn;
+            _turnManager.OnWaveEnded -= TurnManager_OnWaveEnded;
 
-            TurnManager.Dispose();
-            Hand.Dispose();
-            Constructions.Dispose();
-            Units.Dispose();
-            Resources.Dispose();
+            _turnManager.Dispose();
+            _hand.Dispose();
+            _constructions.Dispose();
+            _units.Dispose();
+            _resources.Dispose();
             _crowd.Dispose();
-            Queue.Dispose();
+            _queue.Dispose();
             _customers.Dispose();
         }
 
@@ -88,22 +99,22 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
 
         private void OnLevelUp()
         {
-            TurnManager.GiveCards(PlayerHand.ConstructionSource.LevelUp);
+            _turnManager.GiveCards(PlayerHand.ConstructionSource.LevelUp);
         }
 
         private void TurnManager_OnTurn()
         {
-            Queue.ServeCustomer();
+            _queue.ServeCustomer();
         }
 
         private void TurnManager_OnWaveEnded(bool victory)
         {
             if (victory)
-                Queue.ServeAll();
+                _queue.ServeAll();
             else
             {
                 _customers.ClearQueue();
-                Queue.FreeAll();
+                _queue.FreeAll();
             }
         }
     }

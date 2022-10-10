@@ -14,15 +14,15 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         private List<LevelDefinitionMock> _availableLevels = new List<LevelDefinitionMock>();
         private string _name;
-        private IViewsCollection _collection;
+        private IViews _collection;
 
         public LevelsManagerMock()
         {
         }
 
-        public void Load(string name, IViewsCollection collection)
+        public void Load(string name, IViews collection)
         {
-            _name = name;
+            _name = name ?? throw new Exception("name is empty");
             _collection = collection;
         }
 
@@ -39,11 +39,18 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public void FinishLoading()
         {
+            var wasFound = false;
             foreach (var item in _availableLevels)
             {
                 if (item.Variation.SceneName == _name)
+                {
+                    wasFound = true;
                     item.LevelPrefab.Fill(_collection);
+                }
             }
+
+            if (!wasFound)
+                throw new Exception($"Can't find scene with name {_name}");
 
             OnLoadFinished();
         }

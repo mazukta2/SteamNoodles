@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Elements
     {
         public IWorldText Text { get; } = new UiWorldText();
 
-        public AdjecencyTextView(IViewsCollection level) : base(level)
+        public AdjecencyTextView(IViews level) : base(level)
         {
         }
     }

@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Views
     {
         public TPresenter Presenter { get; set; }
         IPresenter IViewWithPresenter.Presenter { get => Presenter; set => Presenter = (TPresenter)value; }
-        protected ViewWithPresenter(IViewsCollection level) : base(level)
+        protected ViewWithPresenter(IViews level) : base(level)
         {
         }
     }

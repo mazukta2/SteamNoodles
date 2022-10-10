@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         public IText Points { get; } = new TextMock();
         public IText Adjacencies { get; } = new TextMock();
 
-        public HandConstructionTooltipView(IViewsCollection level) : base(level)
+        public HandConstructionTooltipView(IViews level) : base(level)
         {
         }
     }

@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets
     {
         public IHandConstructionTooltipView Tooltip { get; set; }
         public IAnimator Animator { get; set; } = new AnimatorMock();
-        public BuildingTooltipMock(IViewsCollection collection) : base(collection)
+        public BuildingTooltipMock(IViews collection) : base(collection)
         {
             Tooltip = new HandConstructionTooltipView(collection);
         }

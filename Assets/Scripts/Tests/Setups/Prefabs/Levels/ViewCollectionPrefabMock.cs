@@ -5,6 +5,6 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels
 {
     public abstract class ViewCollectionPrefabMock : IViewPrefab
     {
-        public abstract void Fill(IViewsCollection collection);
+        public abstract void Fill(IViews collection);
     }
 }

@@ -35,7 +35,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         public BuildConstructor AddLevel(LevelDefinitionMock levelDefinition)
         {
             _levelsManager.Add(levelDefinition);
-            _definitions.Add(levelDefinition.Name, levelDefinition);
+            _definitions.Add(levelDefinition.Variation.SceneName, levelDefinition);
             return this;
         }
 

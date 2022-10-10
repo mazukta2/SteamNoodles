@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
 
         public IAnimator Animator { get; } = new AnimatorMock();
 
-        public CellView(IViewsCollection level, ISwitcher<CellPlacementStatus> state) : base(level)
+        public CellView(IViews level, ISwitcher<CellPlacementStatus> state) : base(level)
         {
             State = state;
         }

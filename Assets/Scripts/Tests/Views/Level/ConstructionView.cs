@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level
         public IViewContainer EffectsContainer { get; set; }
         public IViewPrefab ExplosionPrototype { get; set; }
 
-        public ConstructionView(IViewsCollection level, IViewContainer container, IRotator rotator) : base(level)
+        public ConstructionView(IViews level, IViewContainer container, IRotator rotator) : base(level)
         {
             Container = container;
             Rotator = rotator;
@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level
             ExplosionPrototype = new DefaultViewCollectionPrefabMock(CreateExplosion);
         }
 
-        private void CreateExplosion(IViewsCollection obj)
+        private void CreateExplosion(IViews obj)
         {
         }
     }

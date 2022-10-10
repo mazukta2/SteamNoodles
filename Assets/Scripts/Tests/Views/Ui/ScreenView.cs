@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui
     public abstract class ScreenView<T> : ViewWithPresenter<T>, IScreenView
         where T : IPresenter
     {
-        protected ScreenView(IViewsCollection level) : base(level)
+        protected ScreenView(IViews level) : base(level)
         {
         }
 

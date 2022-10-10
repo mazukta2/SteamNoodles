@@ -5,14 +5,14 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels
 {
     public class DefaultViewCollectionPrefabMock : ViewCollectionPrefabMock
     {
-        private Action<IViewsCollection> _action;
+        private Action<IViews> _action;
 
-        public DefaultViewCollectionPrefabMock(Action<IViewsCollection> action)
+        public DefaultViewCollectionPrefabMock(Action<IViews> action)
         {
             _action = action;
         }
 
-        public override void Fill(IViewsCollection collection)
+        public override void Fill(IViews collection)
         {
             _action(collection);
         }

@@ -21,16 +21,16 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 5)
                 .Build();
 
-            Assert.IsNotNull(game.LevelCollection.FindView<PointCounterWidgetView>());
-            Assert.AreEqual("0/3", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
+            Assert.IsNotNull(game.Views.FindView<PointCounterWidgetView>());
+            Assert.AreEqual("0/3", game.Views.FindView<PointCounterWidgetView>().Points.Value);
 
-            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            game.Views.FindViews<HandConstructionView>().First().Button.Click();
 
-            Assert.AreEqual("+5", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("+5", game.Views.FindView<BuildScreenView>().Points.Value);
 
             game.Controls.Click();
 
-            Assert.AreEqual("5/8", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
+            Assert.AreEqual("5/8", game.Views.FindView<PointCounterWidgetView>().Points.Value);
 
             game.Dispose();
         }
@@ -42,13 +42,13 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 5)
                 .Build();
 
-            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            game.Views.FindViews<HandConstructionView>().First().Button.Click();
 
-            Assert.AreEqual("+5", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("+5", game.Views.FindView<BuildScreenView>().Points.Value);
 
             game.Controls.MovePointer(new Scripts.Game.Logic.Common.Math.GameVector3(999, 0, 999));
 
-            Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("0", game.Views.FindView<BuildScreenView>().Points.Value);
 
             game.Dispose();
         }
@@ -76,17 +76,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
                     StartingHand = new List<ConstructionDefinition>() { construction1, construction1 })
                 .Build();
 
-            Assert.AreEqual("0/3", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
-            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            Assert.AreEqual("+5", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("0/3", game.Views.FindView<PointCounterWidgetView>().Points.Value);
+            game.Views.FindViews<HandConstructionView>().First().Button.Click();
+            Assert.AreEqual("+5", game.Views.FindView<BuildScreenView>().Points.Value);
             game.Controls.Click();
-            Assert.AreEqual(1, game.LevelCollection.FindViews<ConstructionView>().Count);
-            Assert.AreEqual("5/8", game.LevelCollection.FindView<PointCounterWidgetView>().Points.Value);
+            Assert.AreEqual(1, game.Views.FindViews<ConstructionView>().Count);
+            Assert.AreEqual("5/8", game.Views.FindView<PointCounterWidgetView>().Points.Value);
 
-            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            game.Views.FindViews<HandConstructionView>().First().Button.Click();
+            Assert.AreEqual("0", game.Views.FindView<BuildScreenView>().Points.Value);
             game.Controls.MovePointer(new GameVector3(-2, 0, 0));
-            Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("+7", game.Views.FindView<BuildScreenView>().Points.Value);
 
             game.Dispose();
         }
@@ -113,32 +113,32 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Constructions
                     StartingHand = new List<ConstructionDefinition>() { constructionDefinition, constructionDefinition })
                 .Build();
 
-            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
+            game.Views.FindViews<HandConstructionView>().First().Button.Click();
             game.Controls.Click();
 
-            game.LevelCollection.FindViews<HandConstructionView>().First().Button.Click();
-            Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            game.Views.FindViews<HandConstructionView>().First().Button.Click();
+            Assert.AreEqual("0", game.Views.FindView<BuildScreenView>().Points.Value);
 
             game.Controls.MovePointer(new GameVector3(1, 0, 0));
-            Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("0", game.Views.FindView<BuildScreenView>().Points.Value);
             game.Controls.MovePointer(new GameVector3(2, 0, 0));
-            Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("0", game.Views.FindView<BuildScreenView>().Points.Value);
             game.Controls.MovePointer(new GameVector3(3, 0, 0));
-            Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("+7", game.Views.FindView<BuildScreenView>().Points.Value);
 
 
             game.Controls.MovePointer(new GameVector3(-1, 0, 0));
-            Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("0", game.Views.FindView<BuildScreenView>().Points.Value);
             game.Controls.MovePointer(new GameVector3(-2, 0, 0));
-            Assert.AreEqual("0", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("0", game.Views.FindView<BuildScreenView>().Points.Value);
             game.Controls.MovePointer(new GameVector3(-3, 0, 0));
-            Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("+7", game.Views.FindView<BuildScreenView>().Points.Value);
 
             game.Controls.MovePointer(new GameVector3(0, 0, -1));
-            Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("+7", game.Views.FindView<BuildScreenView>().Points.Value);
 
             game.Controls.MovePointer(new GameVector3(0, 0, 1));
-            Assert.AreEqual("+7", game.LevelCollection.FindView<BuildScreenView>().Points.Value);
+            Assert.AreEqual("+7", game.Views.FindView<BuildScreenView>().Points.Value);
 
             game.Dispose();
         }

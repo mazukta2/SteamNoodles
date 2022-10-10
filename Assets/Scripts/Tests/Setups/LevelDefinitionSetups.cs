@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Tests.Setups
             {
                 Size = new IntPoint(9, 9)
             };
-            var level = new LevelDefinitionMock("DebugLevel", new BasicSellingLevel(),
+            var level = new LevelDefinitionMock(new BasicMainLevel(),
             new MainLevelVariation()
             {
                 PlacementField = fields,
@@ -43,6 +43,7 @@ namespace Game.Assets.Scripts.Tests.Setups
                     { construciton, 1}
                 },
                 Waves = 10,
+                SceneName = "DebugLevel"
             });
             return level;
         }
@@ -57,7 +58,7 @@ namespace Game.Assets.Scripts.Tests.Setups
             {
                 Size = new IntPoint(9, 9)
             };
-            var level = new LevelDefinitionMock(name, new EmptyLevel(),
+            var level = new LevelDefinitionMock(new EmptyLevel(),
             new MainLevelVariation()
             {
                 PlacementField = fields,
@@ -70,7 +71,8 @@ namespace Game.Assets.Scripts.Tests.Setups
                 ConstructionsReward = new Dictionary<ConstructionDefinition, int>()
                 {
                     { construciton, 1}
-                }
+                },
+                SceneName = name
             });
             return level;
         }

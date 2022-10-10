@@ -10,12 +10,12 @@ namespace Game.Assets.Scripts.Tests.Views
 {
     public abstract class View : Disposable, IView
     {
-        public IViewsCollection Collection { get; private set; }
+        public IViews Collection { get; private set; }
         public bool IsHighlihgted { get; private set; }
         public event Action OnHighlihgtedEnter = delegate { };
         public event Action OnHighlihgtedExit = delegate { };
 
-        public View(IViewsCollection collection)
+        public View(IViews collection)
         {
             Collection = collection;
             Collection.Add(this);

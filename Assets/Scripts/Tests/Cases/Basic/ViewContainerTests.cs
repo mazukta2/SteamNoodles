@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         [Test]
         public void IsCollectionDisposeViews()
         {
-            var container = new ViewsCollection();
+            var container = new DefaultViews();
             var view = new ViewMock(container);
             container.Dispose();
             Assert.IsTrue(view.IsDisposed);
@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         [Test]
         public void IsContainerDisposeViews()
         {
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
             var container = new ContainerViewMock(collection);
             var view = new ViewMock(container);
 
@@ -34,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         [Test]
         public void IsViewDisposeRemovesItFromCollection()
         {
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
             var view = new ViewMock(collection);
             Assert.AreEqual(1, collection.Views.Count);
 
@@ -47,7 +47,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         [Test]
         public void IsViewDisposeRemovesItFromContrainer()
         {
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
             var container = new ContainerViewMock(collection);
             var view = new ViewMock(container);
             Assert.AreEqual(1, collection.Views.Count);
@@ -62,7 +62,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
 
         private class ViewMock : View
         {
-            public ViewMock(IViewsCollection level) : base(level)
+            public ViewMock(IViews level) : base(level)
             {
             }
         }

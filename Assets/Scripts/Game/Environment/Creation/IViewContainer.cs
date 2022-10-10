@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Game.Environment.Creation
 {
-    public interface IViewContainer : IViewsCollection
+    public interface IViewContainer : IViews
     {
         T Spawn<T>(IViewPrefab prefab) where T : class, IView;
         void Spawn(IViewPrefab prefab);

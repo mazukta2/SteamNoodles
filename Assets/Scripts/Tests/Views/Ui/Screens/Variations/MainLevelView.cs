@@ -9,7 +9,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Variations
 {
     public class MainLevelView : ViewWithPresenter<MainLevelPresenter>, IMainLevelView
     {
-        public MainLevelView(IViewsCollection collection) : base(collection)
+        public MainLevelView(IViews collection) : base(collection)
         {
         }
     }

@@ -6,7 +6,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Screens
 {
     public class MainScreenPrefab : ViewCollectionPrefabMock
     {
-        public override void Fill(IViewsCollection collection)
+        public override void Fill(IViews collection)
         {
             new MainScreenView(collection);
         }

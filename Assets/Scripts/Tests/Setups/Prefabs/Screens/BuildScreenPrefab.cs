@@ -7,7 +7,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Screens
 {
     public class BuildScreenPrefab : ViewCollectionPrefabMock
     {
-        public override void Fill(IViewsCollection collection)
+        public override void Fill(IViews collection)
         {
             new BuildScreenView(collection, new UiWorldText());
         }

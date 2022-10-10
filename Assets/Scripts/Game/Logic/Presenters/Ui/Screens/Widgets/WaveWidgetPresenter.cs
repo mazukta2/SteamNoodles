@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Models.Building;
+﻿using Game.Assets.Scripts.Game.Logic.Models;
+using Game.Assets.Scripts.Game.Logic.Models.Building;
 using Game.Assets.Scripts.Game.Logic.Models.Constructions;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
@@ -19,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private static List<WaveWidgetPresenter> _presenters = new List<WaveWidgetPresenter>();
 
         public WaveWidgetPresenter(IWaveWidgetView view) : this(view,
-            IMainLevel.Default.Constructions, IMainLevel.Default.TurnManager)
+            IModels.Default.Find<PlacementField>(), IModels.Default.Find<FlowManager>())
         {
         }
 

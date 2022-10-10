@@ -13,6 +13,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Newtonsoft.Json;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
+using Game.Assets.Scripts.Game.Logic.Models;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 {
@@ -76,9 +77,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 
         }
 
-        public override ILevel CreateModel(LevelDefinition definition)
+        public override ILevel CreateModel(LevelDefinition definition, IModels models)
         {
-            return new GameLevel(this, IGameRandom.Default, IGameTime.Default, IGameDefinitions.Default);
+            return new GameLevel(this, models, IGameRandom.Default, IGameTime.Default, IGameDefinitions.Default);
         }
 
     }

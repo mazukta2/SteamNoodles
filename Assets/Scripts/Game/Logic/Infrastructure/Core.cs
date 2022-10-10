@@ -31,12 +31,12 @@ namespace Game.Assets.Scripts.Game.Environment
             ILocalizationManager localizationManager, IGameTime time)
         {
             IGameKeysManager.Default = new GameKeysManager();
-            IGameAssets.Default = assets;
-            IGameDefinitions.Default = definitions;
-            IGameControls.Default = controls;
-            IGameTime.Default = time;
+            IGameAssets.Default = assets ?? throw new ArgumentNullException();
+            IGameDefinitions.Default = definitions ?? throw new ArgumentNullException();
+            IGameControls.Default = controls ?? throw new ArgumentNullException();
+            IGameTime.Default = time ?? throw new ArgumentNullException();
             IGameRandom.Default = new SessionRandom();
-            ILocalizationManager.Default = localizationManager;
+            ILocalizationManager.Default = localizationManager ?? throw new ArgumentNullException();
             _levelsManager = levelsManager;
         }
 

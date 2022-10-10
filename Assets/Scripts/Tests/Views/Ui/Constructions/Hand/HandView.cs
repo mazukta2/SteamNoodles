@@ -18,13 +18,13 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
         public AnimatorMock Animator { get; set; } = new AnimatorMock();
         IAnimator IHandView.Animator => Animator;
 
-        public HandView(IViewsCollection level) : base(level)
+        public HandView(IViews level) : base(level)
         {
             Cards = new ContainerViewMock(level);
             CardPrototype = new DefaultViewCollectionPrefabMock(SpawnCardPrototype);
         }
 
-        private void SpawnCardPrototype(IViewsCollection collection)
+        private void SpawnCardPrototype(IViews collection)
         {
             var handTooltipContainer = new ContainerViewMock(collection);
             var handTooltipPrefab = new DefaultViewCollectionPrefabMock(SpawnTooltip);
@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
             new HandConstructionView(collection, new ButtonMock(), new ImageMock(), handTooltipContainer, handTooltipPrefab);
         }
 
-        private void SpawnTooltip(IViewsCollection collection)
+        private void SpawnTooltip(IViews collection)
         {
             new HandConstructionTooltipView(collection);
         }

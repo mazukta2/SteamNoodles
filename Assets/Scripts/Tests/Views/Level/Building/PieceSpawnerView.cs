@@ -13,7 +13,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
         public IViewContainer Container { get; }
         public IViewPrefab PiecePrefab { get; }
 
-        public PieceSpawnerView(IViewsCollection level) : base(level)
+        public PieceSpawnerView(IViews level) : base(level)
         {
             Container = new ContainerViewMock(level);
             PiecePrefab = new PiecePrefabMock();
@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
 
         private class PiecePrefabMock : ViewCollectionPrefabMock
         {
-            public override void Fill(IViewsCollection collection)
+            public override void Fill(IViews collection)
             {
                 new PieceView(collection);
             }

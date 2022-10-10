@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Building
         public IViewContainer CellsContainer { get; private set; }
         public IViewPrefab Cell { get; private set; }
 
-        public PlacementFieldView(IViewsCollection level, ViewCollectionPrefabMock construction, ViewCollectionPrefabMock cell) : base(level)
+        public PlacementFieldView(IViews level, ViewCollectionPrefabMock construction, ViewCollectionPrefabMock cell) : base(level)
         {
             ConstrcutionContainer = new ContainerViewMock(level);
             Cell = cell;

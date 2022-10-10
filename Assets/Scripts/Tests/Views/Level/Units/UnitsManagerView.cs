@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
         public IViewContainer Container { get; private set; }
         public IViewPrefab UnitPrototype { get; private set; }
 
-        public UnitsManagerView(IViewsCollection level) : base(level)
+        public UnitsManagerView(IViews level) : base(level)
         {
             Container = new ContainerViewMock(level);
             UnitPrototype = new UnitViewPrefab();
@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Tests.Views.Level.Units
 
         private class UnitViewPrefab : ViewCollectionPrefabMock
         {
-            public override void Fill(IViewsCollection collection)
+            public override void Fill(IViews collection)
             {
                 new UnitView(collection, new Rotator(), new AnimatorMock(), new UnitDresser());
             }

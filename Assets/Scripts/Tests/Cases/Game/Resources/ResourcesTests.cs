@@ -87,7 +87,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Resources
         public void IsCoinsViewWorking()
         {
             var coins = new Coins();
-            var collection = new ViewsCollection();
+            var collection = new DefaultViews();
 
             var view = new CustumerCoinsMock(collection);
             new CustumerCoinsPresenter(coins, view);

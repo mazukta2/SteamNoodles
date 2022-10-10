@@ -13,9 +13,9 @@ using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
 
 namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 {
-    public class BasicSellingLevel : ViewCollectionPrefabMock
+    public class BasicMainLevel : ViewCollectionPrefabMock
     {
-        public override void Fill(IViewsCollection collection)
+        public override void Fill(IViews collection)
         {
             var screenSpawnPoint = new ContainerViewMock(collection);
             new ScreenManagerView(collection, screenSpawnPoint);
@@ -43,7 +43,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
         private class GhostViewPrefab : ViewCollectionPrefabMock
         {
-            public override void Fill(IViewsCollection collection)
+            public override void Fill(IViews collection)
             {
                 var contrainer = new ContainerViewMock(collection);
                 new GhostView(collection, contrainer, new Rotator());
@@ -52,7 +52,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
         private class CellViewPrefab : ViewCollectionPrefabMock
         {
-            public override void Fill(IViewsCollection collection)
+            public override void Fill(IViews collection)
             {
                 new CellView(collection, new Switcher<CellPlacementStatus>());
             }
@@ -60,7 +60,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
         private class ConstructionViewPrefab : ViewCollectionPrefabMock
         {
-            public override void Fill(IViewsCollection collection)
+            public override void Fill(IViews collection)
             {
                 var c = new ContainerViewMock(collection);
                 new ConstructionView(collection, c, new Rotator());
@@ -69,7 +69,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
         private class UnitViewPrefab : ViewCollectionPrefabMock
         {
-            public override void Fill(IViewsCollection collection)
+            public override void Fill(IViews collection)
             {
                 new UnitView(collection, new Rotator(), new AnimatorMock(), new UnitDresser());
             }

@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         public void ViewIsCreatingPresenter()
         {
             var build = new BuildConstructor().Build();
-            var view = new TestView(build.LevelCollection);
+            var view = new TestView(build.Views);
 
             Assert.IsTrue(view.IsInited);
             Assert.IsNotNull(view.Presenter);
@@ -37,7 +37,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
         {
             public bool IsInited { get; private set; }
 
-            public TestView(IViewsCollection level) : base(level)
+            public TestView(IViews level) : base(level)
             {
                 new TestPresenter(this);
                 IsInited = true;

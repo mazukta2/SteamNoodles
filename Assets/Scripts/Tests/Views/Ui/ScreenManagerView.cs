@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui
     {
         public IViewContainer Screen { get; }
 
-        public ScreenManagerView(IViewsCollection level, IViewContainer screen) : base(level)
+        public ScreenManagerView(IViews level, IViewContainer screen) : base(level)
         {
             if (screen == null) throw new ArgumentNullException(nameof(screen));
             Screen = screen;

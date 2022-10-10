@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
 
         public IButton ExitGame { get; set; } = new ButtonMock();
 
-        public GameMenuScreenView(IViewsCollection level) : base(level)
+        public GameMenuScreenView(IViews level) : base(level)
         {
         }
     }

@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets
         public AnimatorMock WaveButtonAnimator { get; set; } = new AnimatorMock();
         IAnimator IWaveWidgetView.WaveButtonAnimator => WaveButtonAnimator;
 
-        public WaveWidgetViewMock(IViewsCollection collection) : base(collection)
+        public WaveWidgetViewMock(IViews collection) : base(collection)
         {
 
         }

@@ -7,8 +7,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
 {
     public interface ILevel : IDisposable
     {
-        public static ILevel Default { get; set; }
-        
         bool IsDisposed { get; }
         public string SceneName { get; }
         public void Start();

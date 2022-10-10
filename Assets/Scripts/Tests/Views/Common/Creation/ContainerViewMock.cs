@@ -15,9 +15,9 @@ namespace Game.Assets.Scripts.Tests.Views.Common.Creation
     public class ContainerViewMock : View, IViewContainer
     {
         public IReadOnlyCollection<IView> Views => _collection.Views;
-        private ViewsCollection _collection = new ViewsCollection();
+        private DefaultViews _collection = new DefaultViews();
 
-        public ContainerViewMock(IViewsCollection level) : base(level)
+        public ContainerViewMock(IViews level) : base(level)
         {
         }
 

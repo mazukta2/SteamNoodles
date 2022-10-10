@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
         public IViewContainer AdjacencyContainer { get; }
         public IViewPrefab AdjacencyPrefab { get; }
 
-        public BuildScreenView(IViewsCollection level, IWorldText points) : base(level)
+        public BuildScreenView(IViews level, IWorldText points) : base(level)
         {
             Points = points;
             AdjacencyContainer = new ContainerViewMock(level);
@@ -29,7 +29,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens
 
         public class AdjecencyPrefab : ViewCollectionPrefabMock
         {
-            public override void Fill(IViewsCollection collection)
+            public override void Fill(IViews collection)
             {
                 new AdjecencyTextView(collection);
             }
