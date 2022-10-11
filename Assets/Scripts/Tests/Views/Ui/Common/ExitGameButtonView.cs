@@ -11,7 +11,7 @@ using Game.Assets.Scripts.Tests.Views.Common.Creation;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Constructions.Hand
 {
-    public class ExitGameButtonView : ViewWithPresenter<ExitButtonPresenter>, IExitGameButtonView
+    public class ExitGameButtonView : View, IExitGameButtonView
     {
         public IButton Button { get; } = new ButtonMock();
 

@@ -1,12 +1,13 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Infrastructure;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Common;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions.Hand;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common
 {
-    public class ExitButtonPresenter : BasePresenter<IExitGameButtonView>
+    public class ExitButtonPresenter : Disposable, IPresenter
     {
         private IExitGameButtonView _view;
         private Core _core;
@@ -16,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common
 
         }
 
-        public ExitButtonPresenter(IExitGameButtonView view, Core core) : base(view)
+        public ExitButtonPresenter(IExitGameButtonView view, Core core)
         {
             _view = view;
             _core = core;

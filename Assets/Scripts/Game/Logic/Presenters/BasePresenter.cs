@@ -15,12 +15,17 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters
             _view = view ?? throw new ArgumentNullException(nameof(view));
             if (_view.IsDisposed) throw new ArgumentException(nameof(view) + " is disposed");
 
-            _view.OnDispose += _model_OnDispose;
+            _view.OnDispose += HandleViewDisposed;
         }
 
-        private void _model_OnDispose()
+        void IPresenter.Dispose()
         {
-            _view.OnDispose -= _model_OnDispose;
+            Dispose();
+        }
+
+        private void HandleViewDisposed()
+        {
+            _view.OnDispose -= HandleViewDisposed;
             _view = null;
             Dispose();
         }

@@ -505,6 +505,7 @@
     <None Remove="Assets\Scripts\Game\Logic\Models\Levels\MainLevels\Units\" />
     <None Remove="Assets\Scripts\Tests\Views\Ui\Common\" />
     <None Remove="Assets\Scripts\Game\Logic\Views\Ui\Common\" />
+    <None Remove="Assets\Scripts\Game\Logic\Infrastructure\Mapping\" />
   </ItemGroup>
 
 
@@ -520,5 +521,6 @@
     <Folder Include="Assets\Scripts\Game\Logic\Models\Levels\MainLevels\Units\" />
     <Folder Include="Assets\Scripts\Tests\Views\Ui\Common\" />
     <Folder Include="Assets\Scripts\Game\Logic\Views\Ui\Common\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Infrastructure\Mapping\" />
   </ItemGroup>
 </Project>
