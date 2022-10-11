@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets
 {
-    public class WaveWidgetViewMock : ViewWithPresenter<WaveWidgetPresenter>, IWaveWidgetView
+    public class WaveWidgetView : ViewWithPresenter<WaveWidgetPresenter>, IWaveWidgetView
     {
         public IButton NextWaveButton { get; set; } = new ButtonMock();
         public IButton FailWaveButton { get; set; } = new ButtonMock();
@@ -18,7 +18,7 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets
         public AnimatorMock WaveButtonAnimator { get; set; } = new AnimatorMock();
         IAnimator IWaveWidgetView.WaveButtonAnimator => WaveButtonAnimator;
 
-        public WaveWidgetViewMock(IViews collection) : base(collection)
+        public WaveWidgetView(IViews collection) : base(collection)
         {
 
         }

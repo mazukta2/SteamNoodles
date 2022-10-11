@@ -26,10 +26,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
                         IModels.Default.Find<FlowManager>(), IHandView.Default.Presenter, IGameKeysManager.Default);
 
                 if (screenView is IDayEndedScreenView dayEndedScreen)
-                    return new DayEndedScreenPresenter(dayEndedScreen, IGameSession.Default, managerPresenter);
+                    return new DayEndedScreenPresenter(dayEndedScreen, managerPresenter);
 
                 if (screenView is IGameMenuScreenView gameMenuScreen)
-                    return new GameMenuScreenPresenter(gameMenuScreen, IGameSession.Default,
+                    return new GameMenuScreenPresenter(gameMenuScreen, 
                         IInfrastructure.Default.Core, IGameKeysManager.Default, managerPresenter);
                 
 

@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Tests.Setups.Prefabs.Levels.Levels
 
             new BuildingTooltipMock(collection);
 
-            new WaveWidgetViewMock(collection);
+            new WaveWidgetView(collection);
         }
 
         private class GhostViewPrefab : ViewCollectionPrefabMock

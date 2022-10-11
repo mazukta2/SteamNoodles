@@ -3,6 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using System;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,18 +12,13 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     public class LevelsManager : ILevelsManager
     {
         public event Action OnLoadFinished = delegate { };
-        public static IViewsCollection Collection { get; private set; }
+        public static IViews Collection { get; private set; }
 
         public LevelsManager()
         {
         }
 
-        public void Load(LevelDefinition prototype, IViewsCollection views)
-        {
-            Load(prototype.SceneName, views);
-        }
-
-        public void Load(string scene, IViewsCollection views)
+        public void Load(string scene, IViews views)
         {
             if (Collection != null)
                 throw new Exception("Loading before unloading");

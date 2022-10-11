@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Common
     {
         [SerializeField] Transform _pointer;
 
-        private ViewsCollection _viewsCollection = new ViewsCollection();
+        private DefaultViews _viewsCollection = new DefaultViews();
         private List<GameObject> _spawnedGo = new List<GameObject>();
 
         public TView Spawn<TView>(IViewPrefab prefab) where TView : class, IView

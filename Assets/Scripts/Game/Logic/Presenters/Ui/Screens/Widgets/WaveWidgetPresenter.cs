@@ -109,7 +109,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
         private WaveButtonAnimations GetCurrentWaveButtonAnimation()
         {
             if (!_isEnabled)
-                return WaveButtonAnimations.None;
+                return WaveButtonAnimations.Hidden;
 
             if (_turnManager.CanFailWave())
                 return WaveButtonAnimations.FailWave;
@@ -119,7 +119,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets
 
         public enum WaveButtonAnimations
         {
-            None,
+            Hidden, 
             NextWave,
             FailWave
         }

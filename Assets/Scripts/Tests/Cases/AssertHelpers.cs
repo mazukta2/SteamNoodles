@@ -12,4 +12,11 @@ namespace Game.Assets.Scripts.Tests.Cases
             Assert.That(vector1.Z, Is.EqualTo(vector2.Z).Within(offset));
         }
     }
+
+    public static class TestOrders
+    {
+        public const int Essential = 1;
+        public const int First = 2;
+        public const int Second = 3;
+    }
 }

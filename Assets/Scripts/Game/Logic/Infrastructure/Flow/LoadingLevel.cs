@@ -67,6 +67,8 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 
             new ViewsInitializer(_views).Init();
 
+            _result.Start();
+
             OnLoaded(_result);
             Dispose();
         }

@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 {
     public class BuildingHandTests
     {
-        [Test]
+        [Test, Order(TestOrders.First)]
         public void IsHandSpawnCorrect()
         {
             var constructionDef1 = ConstructionSetups.GetDefault();
@@ -52,22 +52,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
                 .Build();
 
             var hand = IModels.Default.Find<PlayerHand>();
-            var handView = IViews.Default.FindViews<HandConstructionView>().First();
 
             hand.Add(constructionDef1, PlayerHand.ConstructionSource.NewWave);
+            var handView = IViews.Default.FindViews<HandConstructionView>().First();
             Assert.AreEqual(1, hand.Cards.First().Amount);
             Assert.AreEqual("1", handView.Amount.Value);
 
             hand.Add(constructionDef1, PlayerHand.ConstructionSource.NewWave);
+            handView = IViews.Default.FindViews<HandConstructionView>().First();
             Assert.AreEqual(2, hand.Cards.First().Amount);
             Assert.AreEqual("2", handView.Amount.Value);
 
             hand.Cards.First().Remove(1);
+            handView = IViews.Default.FindViews<HandConstructionView>().First();
             Assert.AreEqual(1, hand.Cards.First().Amount);
             Assert.AreEqual("1", handView.Amount.Value);
 
             hand.Cards.First().Remove(1);
-
+            
             Assert.AreEqual(0, hand.Cards.Count);
             Assert.AreEqual(0, IViews.Default.FindViews<HandConstructionView>().Count);
 

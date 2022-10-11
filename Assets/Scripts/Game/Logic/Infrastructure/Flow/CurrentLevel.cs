@@ -22,8 +22,6 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 
             IModels.Default = models;
             IViews.Default = views;
-
-            _model.Start();
         }
 
         protected override void DisposeInner()
@@ -38,6 +36,11 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
         public IViews GetViews()
         {
             return _views;
+        }
+
+        public void Start()
+        { 
+            _model.Start();
         }
     }
 }

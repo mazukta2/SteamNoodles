@@ -7,13 +7,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
     public class DayEndedScreenPresenter : BasePresenter<IDayEndedScreenView>, IScreenPresenter
     {
         private IDayEndedScreenView _view;
-        private readonly IGameSession _session;
         private ScreenManagerPresenter _screenManager;
 
-        public DayEndedScreenPresenter(IDayEndedScreenView view, IGameSession session, ScreenManagerPresenter screenManager) : base(view)
+        public DayEndedScreenPresenter(IDayEndedScreenView view, ScreenManagerPresenter screenManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _session = session ?? throw new ArgumentNullException(nameof(session));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));
 
             _view.NextDayButton.SetAction(NextDayClick);

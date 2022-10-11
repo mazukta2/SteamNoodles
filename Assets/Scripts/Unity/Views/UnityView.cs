@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         public event Action OnHighlihgtedEnter = delegate { };
         public event Action OnHighlihgtedExit = delegate { };
 
-        public IViewsCollection Collection { get; private set; }
+        public IViews Collection { get; private set; }
         public TPresenter Presenter { get; set; }
         public bool IsDisposed { get; private set; }
         IPresenter IViewWithPresenter.Presenter { get => Presenter; set => Presenter = (TPresenter)value; }
