@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
+using Game.Assets.Scripts.Game.Logic.Infrastructure;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
@@ -26,6 +27,8 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
             var localization = new LocalizationManager(definitions, "English");
             _core = new Core(new LevelsManager(), new GameAssets(new AssetsLoader()), definitions, new GameControls(_controls), localization, _time);
             _core.OnDispose += _core_OnDispose;
+            IInfrastructure.Default = new DefaultInfrastructure(_core);
+            _core.Start();
         }
 
         protected void OnApplicationQuit()

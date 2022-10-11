@@ -50,7 +50,9 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             {
                 var level = IGameDefinitions.Default.Get<MainDefinition>().StartLevel;
                 _levelManager.Add((LevelDefinitionMock)level);
-                LoadLevel(level);
+                var loading = _core.Start();
+                _levelManager.FinishLoading();
+                _currentLevel = loading.GetResult();
             }
         }
 

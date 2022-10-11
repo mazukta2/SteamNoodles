@@ -84,6 +84,12 @@ namespace Game.Assets.Scripts.Game.Environment
             return _loading;
         }
 
+        public LoadingLevel Start()
+        {
+            var level = IGameDefinitions.Default.Get<MainDefinition>().StartLevel;
+            return LoadLevel(level);
+        }
+
         private void WaitLoading(CurrentLevel level)
         {
             _currentLevel = level;
