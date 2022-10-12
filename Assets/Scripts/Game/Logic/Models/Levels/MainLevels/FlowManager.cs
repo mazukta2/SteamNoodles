@@ -28,7 +28,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels
         private PlayerHand _hand;
         private Deck<ConstructionDefinition> _rewardDeck;
         private int _wave;
-        private SequenceManager _sequence = new SequenceManager();
+        private Sequence _sequence = new Sequence();
 
         public FlowManager(ConstructionsSettingsDefinition constructions, MainLevelVariation levelDefinition, IGameRandom random, PlacementField constructionsManager, PlayerHand hand)
         {

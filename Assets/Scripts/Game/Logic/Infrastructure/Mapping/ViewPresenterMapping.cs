@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
+using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.StartMenuLevel;
 using Game.Assets.Scripts.Game.Logic.Views;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Game.Logic.Views.Levels.StartMenuLevels;
 using Game.Assets.Scripts.Game.Logic.Views.Ui.Common;
 
 namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Mapping
@@ -95,6 +97,7 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Mapping
         private void MapEverything()
         {
             Map<IExitGameButtonView, ExitButtonPresenter>();
+            Map<IStartNewGameView, StartGameButtonPresenter>();
         }
 
         private void Connect(IView view, IPresenter presenter)

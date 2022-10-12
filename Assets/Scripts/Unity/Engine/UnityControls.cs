@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Environment.Engine;
+﻿using Assets.Scripts.Views.Cameras;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
@@ -101,6 +102,11 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         public void ShakeCamera()
         {
             UnityShaker.Instance.Shake();
+        }
+
+        public void ChangeCamera(string name, float time)
+        {
+            MainCamera.Instance.SwitchTo(name, time);
         }
     }
 }

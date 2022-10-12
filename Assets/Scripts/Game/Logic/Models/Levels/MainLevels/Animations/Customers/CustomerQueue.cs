@@ -20,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Customers
         private readonly IGameTime _time;
         private readonly IGameRandom _random;
         private List<Unit> _queue = new List<Unit>();
-        private SequenceManager _sequenceManager = new SequenceManager();
+        private Sequence _sequenceManager = new Sequence();
 
         public CustomerQueue(ICustomers customers, IUnits unitsController, ICrowd crowd, IGameTime time, IGameRandom random)
         {

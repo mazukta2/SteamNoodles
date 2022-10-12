@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace Game.Assets.Scripts.Game.Logic.Common.Animations
 {
-    public class SequenceManager : Disposable
+    public class Sequence : Disposable
     {
+        public event Action OnFinished = delegate { };
+
         private List<BaseSequenceStep> _orders = new List<BaseSequenceStep>();
         private BaseSequenceStep _currentStep;
+        private int _processedSteps;
 
         protected override void DisposeInner()
         {
@@ -32,7 +35,10 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Animations
                 return;
 
             if (_orders.Count == 0)
+            {
+                OnFinished();
                 return;
+            }
 
             _currentStep = _orders.First();
             _orders.RemoveAt(0);
@@ -46,11 +52,17 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Animations
             return _currentStep != null;
         }
 
+        public int GetCurrentStepIndex()
+        {
+            return _processedSteps;
+        }
+
         private void FinishCurrentStep()
         {
             _currentStep.OnFinished -= FinishCurrentStep;
             _currentStep.Dispose();
             _currentStep = null;
+            _processedSteps++;
             ProcessSteps();
         }
 

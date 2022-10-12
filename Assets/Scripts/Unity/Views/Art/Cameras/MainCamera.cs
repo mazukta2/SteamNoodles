@@ -9,14 +9,14 @@ namespace Assets.Scripts.Views.Cameras
 {
     [RequireComponent(typeof(Camera))]
     [RequireComponent(typeof(CinemachineBrain))]
-    public class MainCameraController : SingletonMonoBehaviour<MainCameraController>
+    public class MainCamera : SingletonMonoBehaviour<MainCamera>
     {
         private CinemachineBrain _cinemachine;
         private Camera _camera;
 
-        private readonly Plane _plane = new Plane(Vector3.up, Vector3.zero);
-        private List<GameCameraController> _cameraControllers = new List<GameCameraController>();
-        private GameCameraController _currentCameraController;
+       //private readonly Plane _plane = new Plane(Vector3.up, Vector3.zero);
+        private List<GameCamera> _cameraControllers = new List<GameCamera>();
+        private GameCamera _currentCameraController;
 
         protected override void Awake()
         {
@@ -25,10 +25,11 @@ namespace Assets.Scripts.Views.Cameras
             _cinemachine = GetComponent<CinemachineBrain>();
             _camera = GetComponent<Camera>();
 
-            _camera.transparencySortMode = TransparencySortMode.CustomAxis;
-            _camera.transparencySortAxis = new Vector3(0, 1, 1);
+           // _camera.transparencySortMode = TransparencySortMode.CustomAxis;
+          // _camera.transparencySortAxis = new Vector3(0, 1, 1);
         }
 
+        /*
         public Vector2 GetCameraPosition()
         {
             return _camera.transform.position;
@@ -49,27 +50,31 @@ namespace Assets.Scripts.Views.Cameras
 
             return null;
         }
+        */
 
-        public void RequisterCamera(GameCameraController controller)
+        public void RequisterCamera(GameCamera controller)
         {
             _cameraControllers.Add(controller);
-            if (_currentCameraController == null)
-                SwithTo(controller);
+            //if (_currentCameraController == null)
+              //  SwithTo(controller);
         }
 
-        public void UnrequisterCamera(GameCameraController controller)
+        public void UnrequisterCamera(GameCamera controller)
         {
             _cameraControllers.Remove(controller);
+            /*
             if (_currentCameraController == controller)
             {
                 _currentCameraController = null;
                 if (_cameraControllers.Count > 0)
                     SwithTo(_cameraControllers.Last());
             }
+            */
         }
 
         public Camera GetCamera() => _camera;
 
+        /*
         public void SwithTo(GameCameraController cameraController)
         {
             if (cameraController == _currentCameraController)
@@ -85,7 +90,8 @@ namespace Assets.Scripts.Views.Cameras
         {
             SwithTo(GetController<T>());
         }
-
+        */
+        /*
         public void SwithTo(GameCameraController cameraController, bool inheritZoom = false)
         {
             if (cameraController == _currentCameraController)
@@ -100,6 +106,27 @@ namespace Assets.Scripts.Views.Cameras
             _currentCameraController.SetEnable(true);
         }
         
+        */
+
+
+        public void SwitchTo(string name, float time)
+        {
+            foreach (var camera in _cameraControllers)
+                camera.SwitchOff();
+
+            foreach (var camera in _cameraControllers)
+            {
+                if (camera.gameObject.name == name)
+                {
+                    camera.SwitchOn();
+                    return;
+                }
+            }
+
+            throw new System.Exception($"Can't find camera '{name}'");
+        }
+
+
         public Vector3 WorldToUISpace(Canvas parentCanvas, Vector3 worldPos)
         {
             //Convert the world for screen point so that it can be used with ScreenPointToLocalPointInRectangle function

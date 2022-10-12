@@ -11,6 +11,13 @@ namespace Game.Assets.Scripts.Tests.Environment
         public event Action OnLevelClick = delegate { };
         public event Action<GameVector3> OnLevelPointerMoved = delegate { };
 
+        public string CurrentCamera { get; set; }
+
+        public void ChangeCamera(string name, float time)
+        {
+            CurrentCamera = name;
+        }
+
         public void Click()
         {
             OnLevelClick();

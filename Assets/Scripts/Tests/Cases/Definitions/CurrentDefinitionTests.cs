@@ -68,6 +68,17 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
             def.Validate();
         }
 
+
+        [Test]
+        public void CutscenesDefinitions()
+        {
+            CreateDefinitions();
+            var defs = IGameDefinitions.Default.GetList<CutsceneDefinition>();
+
+            foreach (var cutscene in defs)
+                cutscene.Validate();
+        }
+
         #region Helpers
         private void CreateDefinitions()
         {

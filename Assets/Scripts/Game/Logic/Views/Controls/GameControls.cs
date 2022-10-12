@@ -37,5 +37,9 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Controls
             OnLevelClick();
         }
 
+        public void ChangeCamera(string name, float time)
+        {
+            _controls.ChangeCamera(name, time);
+        }
     }
 }

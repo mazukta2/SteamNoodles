@@ -1,0 +1,9 @@
+{
+	"Steps": [
+		{
+			"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations.SwitchCamera",
+			"Time": 3,
+			"CameraName" : "Camera2"
+		}
+	]
+}

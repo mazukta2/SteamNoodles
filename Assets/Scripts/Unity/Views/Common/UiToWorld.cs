@@ -13,7 +13,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Common
         {
             var rectTransform = (RectTransform)transform;
             var worldPosition = rectTransform.TransformPoint(rectTransform.rect.center);
-            Ray ray = MainCameraController.Instance.GetCamera().ScreenPointToRay(worldPosition);
+            Ray ray = MainCamera.Instance.GetCamera().ScreenPointToRay(worldPosition);
             _target.transform.position = ray.origin + ray.direction * _offset;
         }
     }

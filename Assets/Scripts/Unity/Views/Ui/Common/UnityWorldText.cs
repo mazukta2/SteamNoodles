@@ -39,7 +39,7 @@ namespace GameUnity.Assets.Scripts.Unity.Views.Ui.Common
         private void UpdateView()
         {
             
-            var pos = MainCameraController.Instance.WorldToUISpace(_text.canvas, _position.ToVector());
+            var pos = MainCamera.Instance.WorldToUISpace(_text.canvas, _position.ToVector());
             _text.transform.position = pos + (Vector3)_screenOffset;
         }
 

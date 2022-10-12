@@ -2,6 +2,7 @@
 	"Variation": {
 		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations.StartMenuVariation",
 
-		"SceneName": "StartMenu"
+		"SceneName": "StartMenu",
+		"StartCutscene": "StartGameScene"
 	}
 }

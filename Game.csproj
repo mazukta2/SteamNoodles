@@ -506,6 +506,11 @@
     <None Remove="Assets\Scripts\Tests\Views\Ui\Common\" />
     <None Remove="Assets\Scripts\Game\Logic\Views\Ui\Common\" />
     <None Remove="Assets\Scripts\Game\Logic\Infrastructure\Mapping\" />
+    <None Remove="Assets\Scripts\Tests\Views\Ui\Screens\StartMenu\" />
+    <None Remove="Assets\Scripts\Game\Logic\Definitions\Cutscenes\" />
+    <None Remove="Assets\Scripts\Game\Logic\Definitions\Cutscenes\Variations\" />
+    <None Remove="Assets\Scripts\Tests\Cases\Game\Cutscenes\" />
+    <None Remove="Assets\Scripts\Game\Logic\Models\Cutscenes\StepVariations\" />
   </ItemGroup>
 
 
@@ -522,5 +527,10 @@
     <Folder Include="Assets\Scripts\Tests\Views\Ui\Common\" />
     <Folder Include="Assets\Scripts\Game\Logic\Views\Ui\Common\" />
     <Folder Include="Assets\Scripts\Game\Logic\Infrastructure\Mapping\" />
+    <Folder Include="Assets\Scripts\Tests\Views\Ui\Screens\StartMenu\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Definitions\Cutscenes\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Definitions\Cutscenes\Variations\" />
+    <Folder Include="Assets\Scripts\Tests\Cases\Game\Cutscenes\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Models\Cutscenes\StepVariations\" />
   </ItemGroup>
 </Project>
