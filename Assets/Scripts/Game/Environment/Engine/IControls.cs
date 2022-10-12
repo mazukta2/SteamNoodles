@@ -14,5 +14,6 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
         event Action<GameVector3> OnLevelPointerMoved;
         GameVector3 PointerLevelPosition { get; }
         void ChangeCamera(string name, float time);
+        void PlayAnimation(string name, string animationName);
     }
 }

@@ -108,5 +108,10 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         {
             MainCamera.Instance.SwitchTo(name, time);
         }
+
+        public void PlayAnimation(string name, string animationName)
+        {
+            SceneAnimation.Play(name, animationName);
+        }
     }
 }

@@ -32,5 +32,9 @@ namespace Game.Assets.Scripts.Tests.Environment
         public void ShakeCamera()
         {
         }
+
+        public void PlayAnimation(string name, string animationName)
+        {
+        }
     }
 }

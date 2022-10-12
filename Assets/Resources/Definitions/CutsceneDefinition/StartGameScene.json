@@ -1,9 +1,16 @@
 {
 	"Steps": [
 		{
+
+			"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations.PlayAnimation",
+			"Time": 0,
+			"ObjectName": "MenuAnimations",
+			"AnimationName": "StartGame"
+		},
+		{
 			"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations.SwitchCamera",
 			"Time": 3,
-			"CameraName" : "Camera2"
+			"CameraName": "Camera2"
 		}
 	]
 }

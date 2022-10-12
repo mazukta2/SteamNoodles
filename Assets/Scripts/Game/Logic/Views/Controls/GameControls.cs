@@ -41,5 +41,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Controls
         {
             _controls.ChangeCamera(name, time);
         }
+
+        public void PlayAnimation(string name, string animationName)
+        {
+            _controls.PlayAnimation(name, animationName);
+        }
     }
 }
