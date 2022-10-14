@@ -3,7 +3,7 @@ using Game.Assets.Scripts.Game.Logic.Common.Animations;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Cutscenes
 {
-    public abstract class CutsceneStep : LevelSequencerStep
+    public abstract class LevelSequencerStep : BaseSequenceStep
     {
     }
 }

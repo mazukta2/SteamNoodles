@@ -16,7 +16,7 @@ namespace Game.Assets.Scripts.Tests.Cases
     public static class TestOrders
     {
         public const int Essential = 1;
-        public const int First = 2;
-        public const int Second = 3;
+        public const int Models = 2;
+        public const int Presenters = 3;
     }
 }

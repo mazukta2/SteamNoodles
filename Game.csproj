@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
@@ -511,6 +511,7 @@
     <None Remove="Assets\Scripts\Game\Logic\Definitions\Cutscenes\Variations\" />
     <None Remove="Assets\Scripts\Tests\Cases\Game\Cutscenes\" />
     <None Remove="Assets\Scripts\Game\Logic\Models\Cutscenes\StepVariations\" />
+    <None Remove="Assets\Scripts\Game\Logic\Models\Sequencer\" />
   </ItemGroup>
 
 
@@ -532,5 +533,6 @@
     <Folder Include="Assets\Scripts\Game\Logic\Definitions\Cutscenes\Variations\" />
     <Folder Include="Assets\Scripts\Tests\Cases\Game\Cutscenes\" />
     <Folder Include="Assets\Scripts\Game\Logic\Models\Cutscenes\StepVariations\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Models\Sequencer\" />
   </ItemGroup>
 </Project>

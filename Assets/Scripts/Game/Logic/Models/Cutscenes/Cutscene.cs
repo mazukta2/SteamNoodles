@@ -7,56 +7,67 @@ using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Cutscenes;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Models.Sequencer;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 
 namespace Game.Assets.Scripts.Game.Logic.Models
 {
     public class Cutscene : Disposable
     {
-        private Sequence _steps = new Sequence();
+        private LevelSequencer _levelSequencer;
+        private List<CutsceneStep> _steps = new List<CutsceneStep>();
 
-        public Cutscene(IEnumerable<CutsceneStep> steps)
+        public Cutscene(LevelSequencer levelSequencer, IEnumerable<CutsceneStep> steps)
         {
-
             if (steps.Count() == 0)
                 throw new Exception("No steps in definition");
 
-            foreach (var step in steps)
-                _steps.Add(step);
-            
-            _steps.OnFinished += _steps_OnFinished;
+            _levelSequencer = levelSequencer;
 
-            _steps.ProcessSteps();
+            foreach (var step in steps)
+            {
+                _steps.Add(step);
+                _levelSequencer.Add(step);
+            }
+
+            _levelSequencer.ProcessSteps();
+
+            _levelSequencer.OnStepFinished += _step_OnFinished;
+
         }
 
 
-        public Cutscene(CutsceneDefinition definition)
+        public Cutscene(LevelSequencer levelSequencer, CutsceneDefinition definition)
         {
             if (definition.Steps.Count == 0)
                 throw new Exception("No steps in definition");
 
+            _levelSequencer = levelSequencer;
+
             for (int i = 0; i < definition.Steps.Count; i++)
             {
-                _steps.Add(definition.Steps.ElementAt(i).Create());
+                var step = definition.Steps.ElementAt(i).Create();
+                _steps.Add(step);
+                _levelSequencer.Add(step);
             }
 
-            _steps.OnFinished += _steps_OnFinished;
+            _levelSequencer.OnStepFinished += _step_OnFinished;
 
-            _steps.ProcessSteps();
+            _levelSequencer.ProcessSteps();
         }
 
         protected override void DisposeInner()
         {
-            _steps.OnFinished -= _steps_OnFinished;
-            _steps.Dispose();
+            _levelSequencer.OnStepFinished -= _step_OnFinished;
         }
 
-        private void _steps_OnFinished()
+        private void _step_OnFinished(LevelSequencerStep step)
         {
+            if (!_steps.All(x => x.IsDisposed))
+                return;
+
             Dispose();
         }
-
-        public int GetProcessedStepsAmount() => _steps.GetCurrentStepIndex();
     }
 }
 

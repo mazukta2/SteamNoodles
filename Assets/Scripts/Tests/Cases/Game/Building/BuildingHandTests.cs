@@ -15,7 +15,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
 {
     public class BuildingHandTests
     {
-        [Test, Order(TestOrders.First)]
+        [Test, Order(TestOrders.Models)]
         public void IsHandSpawnCorrect()
         {
             var constructionDef1 = ConstructionSetups.GetDefault();

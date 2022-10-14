@@ -1,4 +1,5 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Models.Cutscenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Animations
 {
     public class Sequence : Disposable
     {
+        public event Action<BaseSequenceStep> OnStepStarted = delegate { };
+        public event Action<BaseSequenceStep> OnStepFinished = delegate { };
         public event Action OnFinished = delegate { };
 
         private List<BaseSequenceStep> _orders = new List<BaseSequenceStep>();
@@ -44,6 +47,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Animations
             _orders.RemoveAt(0);
 
             _currentStep.OnFinished += FinishCurrentStep;
+            OnStepStarted(_currentStep);
             _currentStep.Play();
         }
 
@@ -59,12 +63,18 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Animations
 
         private void FinishCurrentStep()
         {
+            var step = _currentStep;
             _currentStep.OnFinished -= FinishCurrentStep;
             _currentStep.Dispose();
             _currentStep = null;
             _processedSteps++;
+            OnStepFinished(step);
             ProcessSteps();
         }
 
+        public BaseSequenceStep GetCurrentStep()
+        {
+            return _currentStep;
+        }
     }
 }

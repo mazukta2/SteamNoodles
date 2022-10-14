@@ -11,6 +11,14 @@
 			"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations.SwitchCamera",
 			"Time": 3,
 			"CameraName": "Camera2"
+		},
+		{
+
+			"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations.Wait",
+			"Time": 2
+		},
+		{
+			"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations.Dialog"
 		}
 	]
 }
