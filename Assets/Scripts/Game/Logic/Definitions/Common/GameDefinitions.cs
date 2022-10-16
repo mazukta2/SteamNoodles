@@ -6,12 +6,12 @@ using Game.Assets.Scripts.Game.Environment.Engine;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Common
 {
-    public class GameDefinitions : IGameDefinitions
+    public class GameDefinitions : IDefinitions
     {
         private Dictionary<string, object> _cached = new Dictionary<string, object>();
-        private IDefinitions _definitions;
+        private IDefinitionsLoader _definitions;
 
-        public GameDefinitions(IDefinitions definitions)
+        public GameDefinitions(IDefinitionsLoader definitions)
         {
             _definitions = definitions;
         }

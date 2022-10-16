@@ -1,13 +1,10 @@
 ﻿using System;
 using Game.Assets.Scripts.Game.Environment.Engine;
-using Game.Assets.Scripts.Game.Logic;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Infrastructure.Flow;
-using Game.Assets.Scripts.Game.Logic.Models;
-using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
@@ -25,27 +22,30 @@ namespace Game.Assets.Scripts.Game.Environment
     {
         private LoadingLevel _loading;
         private CurrentLevel _currentLevel;
+        private UnityEnviroment _enviroment;
         private readonly ILevelsManager _levelsManager;
 
-        public Core(ILevelsManager levelsManager, IGameAssets assets, IGameDefinitions definitions, IGameControls controls,
-            ILocalizationManager localizationManager, IGameTime time)
+        public Core(UnityEnviroment enviroment)
         {
-            IGameKeysManager.Default = new GameKeysManager();
-            IGameAssets.Default = assets ?? throw new ArgumentNullException();
-            IGameDefinitions.Default = definitions ?? throw new ArgumentNullException();
-            IGameControls.Default = controls ?? throw new ArgumentNullException();
-            IGameTime.Default = time ?? throw new ArgumentNullException();
-            IGameRandom.Default = new SessionRandom();
-            ILocalizationManager.Default = localizationManager ?? throw new ArgumentNullException();
-            _levelsManager = levelsManager;
-        }
+            _enviroment = enviroment;
 
+            var localization = new LocalizationManager(_enviroment.Definitions, "English");
+            ILocalizationManager.Default = localization ?? throw new ArgumentNullException();
+
+            IGameKeysManager.Default = new GameKeysManager();
+            IGameAssets.Default = new GameAssets(_enviroment.Assets) ?? throw new ArgumentNullException();
+            IDefinitions.Default = _enviroment.Definitions ?? throw new ArgumentNullException();
+            IGameControls.Default = new GameControls(_enviroment.Controls) ?? throw new ArgumentNullException();
+            IGameTime.Default = _enviroment.Time ?? throw new ArgumentNullException();
+            IGameRandom.Default = new SessionRandom();
+            _levelsManager = _enviroment.Levels;
+        }
 
         protected override void DisposeInner()
         {
             IGameKeysManager.Default = null;
             IGameAssets.Default = null;
-            IGameDefinitions.Default = null;
+            IDefinitions.Default = null;
             IGameControls.Default.Dispose();
             IGameControls.Default = null;
             ILocalizationManager.Default = null;
@@ -86,7 +86,7 @@ namespace Game.Assets.Scripts.Game.Environment
 
         public LoadingLevel Start()
         {
-            var level = IGameDefinitions.Default.Get<MainDefinition>().StartLevel;
+            var level = IDefinitions.Default.Get<MainDefinition>().StartLevel;
             return LoadLevel(level);
         }
 

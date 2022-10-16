@@ -20,14 +20,14 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Json.Convertors
                 var result = new List<T>();
                 foreach (var key in list)
                 {
-                    result.Add(IGameDefinitions.Default.Get<T>(key));
+                    result.Add(IDefinitions.Default.Get<T>(key));
                 }
                 return new ReadOnlyCollection<T>(result);
             }
             else
             {
                 var key = obj.ToString();
-                return IGameDefinitions.Default.Get<T>(key);
+                return IDefinitions.Default.Get<T>(key);
             }
 
         }

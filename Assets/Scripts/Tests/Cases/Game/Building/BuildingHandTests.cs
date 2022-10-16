@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
             var constructionDef1 = ConstructionSetups.GetDefault();
             var constructionDef2 = ConstructionSetups.GetDefault();
             var game = new BuildConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.StartingHand = new List<ConstructionDefinition>() { })
+                .UpdateDefinition<LevelDefinitionMock>(x => x.LevelSettings.StartingHand = new List<ConstructionDefinition>() { })
                 .Build();
             var hand = IModels.Default.Find<PlayerHand>();
 
@@ -48,7 +48,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Building
         {
             var constructionDef1 = ConstructionSetups.GetDefault();
             var game = new BuildConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.StartingHand = new List<ConstructionDefinition>() { })
+                .UpdateDefinition<LevelDefinitionMock>(x => x.LevelSettings.StartingHand = new List<ConstructionDefinition>() { })
                 .Build();
 
             var hand = IModels.Default.Find<PlayerHand>();

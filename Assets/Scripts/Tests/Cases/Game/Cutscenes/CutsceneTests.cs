@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Cutscenes;
 using Game.Assets.Scripts.Game.Logic.Models.Cutscenes.StepVariations;
 using Game.Assets.Scripts.Game.Logic.Models.Sequencer;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 using Game.Assets.Scripts.Tests.Environment;
@@ -78,7 +79,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Cutscenes
         {
             var steps = new List<CutsceneStep>()
             {
-                new DialogStep(),
+                new DialogStep(new EmptyLocalizatedString(), new EmptyLocalizatedString()),
             };
 
             var levelSequencer = new LevelSequencer();
@@ -104,17 +105,24 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Cutscenes
             var levelSequencer = new LevelSequencer();
             var view = new DialogView(views);
             var presenter = new DialogPresenter(view, levelSequencer);
+            var nameTag = "NameTag";
+            var textTag = "TextTag";
+            var localizationManager = new LocalizationManager(new LanguagePack("en",
+                new Dictionary<string, string>() { { nameTag, "Name" }, { textTag, "Text" } }));
 
             Assert.AreEqual(null, view.Animator.Animation);
 
             var steps = new List<CutsceneStep>()
             {
-                new DialogStep(),
+                new DialogStep(new LocalizatedString(localizationManager, nameTag), new LocalizatedString(localizationManager, textTag)),
             };
 
             var cutscene = new Cutscene(levelSequencer, steps);
 
             Assert.AreEqual("Show", view.Animator.Animation);
+
+            Assert.AreEqual("Name", view.Name.Value);
+            Assert.AreEqual("Text", view.Text.Value);
 
             view.Button.Click();
 

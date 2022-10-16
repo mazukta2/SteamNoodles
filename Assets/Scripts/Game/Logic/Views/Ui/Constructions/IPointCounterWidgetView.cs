@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Constructions
             Default = this; 
             new PointCounterWidgetPresenter(IModels.Default.Find<BuildingPointsManager>(), 
                 IGhostManagerView.Default.Presenter, IGameTime.Default, this, IPointPieceSpawnerView.Default,
-                IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>());
+                IDefinitions.Default.Get<ConstructionsSettingsDefinition>());
         }
     }
 }

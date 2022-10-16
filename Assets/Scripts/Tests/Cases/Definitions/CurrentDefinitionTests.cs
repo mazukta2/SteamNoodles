@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System.IO;
 using System.Linq;
 using Game.Assets.Scripts.Game.Environment.Engine;
+using Game.Assets.Scripts.Game.Logic.Definitions.Languages;
 
 namespace Game.Assets.Scripts.Tests.Cases.Definitions
 {
@@ -22,7 +23,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void LevelDefinitions()
         {
             CreateDefinitions();
-            var defs = IGameDefinitions.Default.GetList<LevelDefinition>();
+            var defs = IDefinitions.Default.GetList<LevelDefinition>();
             Assert.IsTrue(defs.Count > 0);
 
             foreach (var level in defs)
@@ -33,7 +34,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void CustomerDefinitions()
         {
             CreateDefinitions();
-            var defs = IGameDefinitions.Default.GetList<CustomerDefinition>();
+            var defs = IDefinitions.Default.GetList<CustomerDefinition>();
             Assert.IsTrue(defs.Count > 0);
 
             foreach (var custumer in defs)
@@ -44,7 +45,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void ConstructionDefinitions()
         {
             CreateDefinitions();
-            var defs = IGameDefinitions.Default.GetList<ConstructionDefinition>();
+            var defs = IDefinitions.Default.GetList<ConstructionDefinition>();
             Assert.IsTrue(defs.Count > 0);
 
             foreach (var level in defs)
@@ -55,7 +56,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void UnitsSettingsDefinitions()
         {
             CreateDefinitions();
-            var def = IGameDefinitions.Default.Get<UnitsSettingsDefinition>();
+            var def = IDefinitions.Default.Get<UnitsSettingsDefinition>();
             def.Validate();
         }
 
@@ -64,7 +65,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void ConstructionsSettingsDefinitions()
         {
             CreateDefinitions();
-            var def = IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>();
+            var def = IDefinitions.Default.Get<ConstructionsSettingsDefinition>();
             def.Validate();
         }
 
@@ -73,7 +74,20 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         public void CutscenesDefinitions()
         {
             CreateDefinitions();
-            var defs = IGameDefinitions.Default.GetList<CutsceneDefinition>();
+            var defs = IDefinitions.Default.GetList<CutsceneDefinition>();
+
+            foreach (var cutscene in defs)
+                cutscene.Validate();
+        }
+
+        [Test]
+        public void LanguagesDefinitions()
+        {
+            CreateDefinitions();
+            var defs = IDefinitions.Default.GetList<LanguageDefinition>();
+
+            Assert.IsTrue(defs.Count > 0);
+            Assert.IsTrue(defs.Any(x => x.Name == "English"));
 
             foreach (var cutscene in defs)
                 cutscene.Validate();
@@ -84,10 +98,10 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         {
             var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
             var project = currentDirectory.Parent.Parent.Parent;
-            IGameDefinitions.Default = new GameDefinitions(new FileDefinitions(new DirectoryInfo(project.FullName + "/Assets/Resources/Definitions")));
+            IDefinitions.Default = new GameDefinitions(new FileDefinitions(new DirectoryInfo(project.FullName + "/Assets/Resources/Definitions")));
         }
 
-        public class FileDefinitions : IDefinitions
+        public class FileDefinitions : IDefinitionsLoader
         {
             private DirectoryInfo _definitionFolder;
 

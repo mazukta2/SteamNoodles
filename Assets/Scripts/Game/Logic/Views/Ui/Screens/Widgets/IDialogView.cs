@@ -7,6 +7,8 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Ui.Screens.Widgets
     {
         IAnimator Animator { get; }
         IButton Next { get; }
+        IText Text { get; }
+        IText Name { get; }
     }
 }
 

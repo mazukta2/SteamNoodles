@@ -21,7 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Building
         {
             Default = this;
             new GhostManagerPresenter(IScreenManagerView.Default.Presenter,
-                IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IGameControls.Default,
+                IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IGameControls.Default,
                 IModels.Default.Find<PlacementField>(), this, IGameTime.Default);
         }
     }

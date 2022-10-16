@@ -3,6 +3,8 @@ using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Tests.Setups;
 using System;
 using Game.Assets.Scripts.Tests.Definitions;
+using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Definitions.Languages;
 
 namespace Game.Assets.Scripts.Tests.Environment.Game
 {
@@ -17,6 +19,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         public BuildConstructor()
         {
             _setup = new DefaultSceneSetup(_assets, _definitions);
+            _definitions.Add("English", new LanguageDefinition() { Name = "English" });
             _setup.Create();
         }
 

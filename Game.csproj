@@ -512,6 +512,9 @@
     <None Remove="Assets\Scripts\Tests\Cases\Game\Cutscenes\" />
     <None Remove="Assets\Scripts\Game\Logic\Models\Cutscenes\StepVariations\" />
     <None Remove="Assets\Scripts\Game\Logic\Models\Sequencer\" />
+    <None Remove="Assets\Scripts\Game\Logic\Presenters\Localization\" />
+    <None Remove="Assets\Scripts\Game\Logic\Events\" />
+    <None Remove="Assets\Scripts\Game\Logic\Events\Game\" />
   </ItemGroup>
 
 
@@ -534,5 +537,8 @@
     <Folder Include="Assets\Scripts\Tests\Cases\Game\Cutscenes\" />
     <Folder Include="Assets\Scripts\Game\Logic\Models\Cutscenes\StepVariations\" />
     <Folder Include="Assets\Scripts\Game\Logic\Models\Sequencer\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Presenters\Localization\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Events\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Events\Game\" />
   </ItemGroup>
 </Project>

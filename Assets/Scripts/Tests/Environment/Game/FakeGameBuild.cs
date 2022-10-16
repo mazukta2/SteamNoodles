@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
 
         private ControlsMock _controls;
         private GameTime _time;
-        private Core _core;
+        private UnityEnviroment _fakeUnityEnviroment;
         private CurrentLevel _currentLevel;
         private AssetsMock _assets;
         private LevelsManagerMock _levelManager;
@@ -42,15 +42,16 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             _assets = assets;
             _levelManager = levelManager;
 
-            _core = new Core(levelManager, new GameAssets(assets), definitions,
-                new GameControls(_controls), new LocalizationManagerMock(), _time);
-            IInfrastructure.Default = new DefaultInfrastructure(_core);
+            _fakeUnityEnviroment = new UnityEnviroment(levelManager, assets, definitions, _controls, _time);
+            
+            IInfrastructure.Default.ConnectEnviroment(_fakeUnityEnviroment, false);
+            ILocalizationManager.Default = new LocalizationManagerMock();
 
             if (!disableAutoload)
             {
-                var level = IGameDefinitions.Default.Get<MainDefinition>().StartLevel;
+                var level = IDefinitions.Default.Get<MainDefinition>().StartLevel;
                 _levelManager.Add((LevelDefinitionMock)level);
-                var loading = _core.Start();
+                var loading = IInfrastructure.Default.Core.Start();
                 _levelManager.FinishLoading();
                 _currentLevel = loading.GetResult();
             }
@@ -60,15 +61,13 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         {
             _assets.ClearPrefabs();
 
-            IInfrastructure.Default = null;
-
-            _core.Dispose();
-            _core = null;
+            _fakeUnityEnviroment.Dispose();
+            _fakeUnityEnviroment = null;
         }
 
         private void LoadLevel(LevelDefinition level)
         {
-            var loading = _core.LoadLevel(level);
+            var loading = IInfrastructure.Default.Core.LoadLevel(level);
 
             _levelManager.FinishLoading();
             _currentLevel = loading.GetResult();

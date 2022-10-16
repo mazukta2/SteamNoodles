@@ -18,6 +18,12 @@ namespace Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets
         public ButtonMock Button { get; set; } = new ButtonMock();
         IButton IDialogView.Next => Button;
 
+        public TextMock Text { get; set; } = new TextMock();
+        IText IDialogView.Text => Text;
+
+        public TextMock Name { get; set; } = new TextMock();
+        IText IDialogView.Name => Name;
+
         public DialogView(IViews collection) : base(collection)
         {
 

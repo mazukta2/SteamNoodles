@@ -8,13 +8,13 @@ namespace Game.Assets.Scripts.Tests.Definitions
     {
         public ViewCollectionPrefabMock LevelPrefab { get; private set; }
 
-        public MainLevelVariation MainLevelVariation { get;  }
+        public MainLevelVariation LevelSettings { get;  }
 
         public LevelDefinitionMock(ViewCollectionPrefabMock level, MainLevelVariation variation)
         {
             LevelPrefab = level;
-            MainLevelVariation = variation;
-            Variation = MainLevelVariation;
+            LevelSettings = variation;
+            Variation = LevelSettings;
         }
 
     }

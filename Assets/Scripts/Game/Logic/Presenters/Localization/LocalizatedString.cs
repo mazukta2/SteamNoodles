@@ -14,7 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
         private ILocalizationManager _localization;
         private object[] _args;
 
-        public LocalizatedString(string tag, params object[] args)
+        public LocalizatedString(string tag, params object[] args) 
         {
             _tag = tag ?? throw new ArgumentNullException(nameof(tag));
             _args = args ?? throw new ArgumentNullException(nameof(args));
@@ -22,8 +22,10 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 
         }
 
-        public LocalizatedString(ILocalizationManager manager, string tag, params object[] args) : this(tag, args)
+        public LocalizatedString(ILocalizationManager manager, string tag, params object[] args)
         {
+            _tag = tag ?? throw new ArgumentNullException(nameof(tag));
+            _args = args ?? throw new ArgumentNullException(nameof(args));
             _localization = manager ?? throw new ArgumentNullException(nameof(manager));
         }
 

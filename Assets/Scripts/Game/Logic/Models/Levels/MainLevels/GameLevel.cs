@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
         private LevelCrowd _crowd;
 
 
-        public GameLevel(MainLevelVariation settings, IModels models, IGameRandom random, IGameTime time, IGameDefinitions definitions)
+        public GameLevel(MainLevelVariation settings, IModels models, IGameRandom random, IGameTime time, IDefinitions definitions)
         {
             _definition = settings ?? throw new ArgumentNullException(nameof(settings));
             if (string.IsNullOrEmpty(_definition.SceneName))

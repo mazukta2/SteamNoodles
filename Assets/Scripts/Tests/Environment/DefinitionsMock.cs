@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 
 namespace Game.Assets.Scripts.Tests.Environment
 {
-    public class DefinitionsMock : IGameDefinitions
+    public class DefinitionsMock : IDefinitions
     {
         private Dictionary<string, object> _list = new Dictionary<string, object>();
         public T Get<T>()
@@ -27,5 +28,6 @@ namespace Game.Assets.Scripts.Tests.Environment
         {
             return _list.Values.OfType<T>().AsReadOnly();
         }
+
     }
 }

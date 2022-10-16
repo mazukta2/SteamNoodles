@@ -1,4 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Logic.Common.Core;
+using Game.Assets.Scripts.Game.Logic.Events;
+using Game.Assets.Scripts.Game.Logic.Events.Game;
 using Game.Assets.Scripts.Game.Logic.Views.Common;
 using System;
 using System.Collections.Generic;
@@ -8,28 +10,29 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 {
     public class LocalizatedText : Disposable
     {
+        private readonly IEvents _events;
         private IText _text;
         private ILocalizatedString _localizatedString;
-        private ILocalizationManager _localization;
+        private Subscription<OnLanguageChanged> _languageChangedSubscription;
 
-        public LocalizatedText(IText text, ILocalizatedString localizatedString)
+        public LocalizatedText(IText text, ILocalizatedString localizatedString) : this(IEvents.Default, text, localizatedString)
         {
-            _text = text ?? throw new ArgumentNullException(nameof(text));
-            _localizatedString = localizatedString ?? throw new ArgumentNullException(nameof(localizatedString));
-            _localization = ILocalizationManager.Default ?? throw new ArgumentNullException(nameof(ILocalizationManager.Default));
-
-            UpdateText();
-            _localization.OnChangeLanguage += UpdateText;
         }
 
-        public LocalizatedText(ILocalizationManager manager, IText text, ILocalizatedString localizatedString) : this(text, localizatedString)
+        public LocalizatedText(IEvents events, IText text, ILocalizatedString localizatedString)
         {
-            _localization = manager ?? throw new ArgumentNullException(nameof(manager));
+            _events = events ?? throw new ArgumentNullException(nameof(events));
+            _text = text ?? throw new ArgumentNullException(nameof(text));
+            _localizatedString = localizatedString ?? throw new ArgumentNullException(nameof(localizatedString));
+
+            UpdateText();
+
+            _languageChangedSubscription = new Subscription<OnLanguageChanged>(_events, UpdateText);
         }
 
         protected override void DisposeInner()
         {
-            _localization.OnChangeLanguage -= UpdateText;
+            _languageChangedSubscription.Dispose();
         }
 
         private void UpdateText()

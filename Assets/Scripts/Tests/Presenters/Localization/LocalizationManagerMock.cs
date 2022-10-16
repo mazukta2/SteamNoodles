@@ -5,7 +5,6 @@ namespace Game.Assets.Scripts.Tests.Presenters.Localization
 {
     public class LocalizationManagerMock : ILocalizationManager
     {
-        public event Action OnChangeLanguage = delegate { };
         public LocalizationManagerMock()
         {
         }

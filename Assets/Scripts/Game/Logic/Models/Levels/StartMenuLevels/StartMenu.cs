@@ -23,7 +23,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
         private StartMenuVariation _definition;
         private IModels _models;
 
-        public StartMenu(StartMenuVariation settings, IModels models, IGameRandom random, IGameTime time, IGameDefinitions definitions)
+        public StartMenu(StartMenuVariation settings, IModels models, IGameRandom random, IGameTime time, IDefinitions definitions)
         {
             _definition = settings;
             if (string.IsNullOrEmpty(_definition.SceneName))

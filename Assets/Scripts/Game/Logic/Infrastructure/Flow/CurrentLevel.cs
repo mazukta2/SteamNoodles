@@ -10,14 +10,14 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
     public class CurrentLevel : Disposable
     {
         private ILevelsManager _levelManager;
-        private ILevel _model;
+        private ILevel _level;
         private IViews _views;
 
 
         public CurrentLevel(ILevelsManager levelsManager, ILevel level, IModels models, IViews views)
         {
             _levelManager = levelsManager;
-            _model = level;
+            _level = level;
             _views = views;
 
             IModels.Default = models;
@@ -26,11 +26,12 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 
         protected override void DisposeInner()
         {
+            IModels.Default.Dispose();
+            IViews.Default.Dispose();
             IModels.Default = null;
             IViews.Default = null;
 
-            _views.Dispose();
-            _model.Dispose();
+            _level.Dispose();
         }
 
         public IViews GetViews()
@@ -40,7 +41,7 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 
         public void Start()
         { 
-            _model.Start();
+            _level.Start();
         }
     }
 }

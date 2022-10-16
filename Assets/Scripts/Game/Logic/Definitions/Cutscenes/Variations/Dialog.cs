@@ -7,6 +7,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations
 {
     public class Dialog : CutsceneStepVariation
     {
+        public string Name { get; set; }
+        public string Text { get; set; }
 
         public override CutsceneStep Create()
         {
@@ -15,6 +17,11 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations
 
         public override void Validate()
         {
+            if (string.IsNullOrEmpty(Name))
+                throw new Exception();
+
+            if (string.IsNullOrEmpty(Text))
+                throw new Exception();
         }
     }
 }

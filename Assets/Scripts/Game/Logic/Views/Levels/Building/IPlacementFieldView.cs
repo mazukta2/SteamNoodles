@@ -19,7 +19,7 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Levels.Building
         void IViewWithDefaultPresenter.InitDefaultPresenter()
         {
             new PlacementFieldPresenter(IGhostManagerView.Default.Presenter, IModels.Default.Find<PlacementField>(), this,
-                IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IGameAssets.Default);
+                IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), IGameAssets.Default);
         }
     }
 }

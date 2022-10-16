@@ -24,7 +24,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
         {
             var construction = new ConstructionDefinition();
             var game = new BuildConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.StartingHand = new List<ConstructionDefinition>() { construction })
+                .UpdateDefinition<LevelDefinitionMock>(x => x.LevelSettings.StartingHand = new List<ConstructionDefinition>() { construction })
                 .Build();
 
             var hand = game.Views.FindView<HandView>();
@@ -40,7 +40,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             construction.Points = 2;
 
             var game = new BuildConstructor()
-                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.StartingHand = new List<ConstructionDefinition>() { construction, construction })
+                .UpdateDefinition<LevelDefinitionMock>(x => x.LevelSettings.StartingHand = new List<ConstructionDefinition>() { construction, construction })
                 .Build();
 
             var point = IModels.Default.Find<BuildingPointsManager>();
@@ -82,7 +82,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Hand
             var game = new BuildConstructor()
                 .Build();
 
-            var construction = IGameDefinitions.Default.Get<ConstructionDefinition>("Construction1");
+            var construction = IDefinitions.Default.Get<ConstructionDefinition>("Construction1");
 
             Assert.AreEqual(construction.HandImagePath, game.Views.FindView<HandConstructionView>().Image.Path);
 

@@ -10,12 +10,12 @@ using UnityEngine;
 
 namespace GameUnity.Assets.Scripts.Unity.Engine.Definitions
 {
-    public class UnityDefinitions : IDefinitions
+    public class UnityDefinitions : IDefinitionsLoader
     {
         public string[] GetDefintionPaths(string folder)
         {
-            var list = Resources.LoadAll<TextAsset>(folder);
-            return list.Select(x => x.name).ToArray();
+            var list = Resources.LoadAll<TextAsset>("Definitions/" + folder);
+            return list.Select(x => folder + "/" + x.name).ToArray();
         }
 
         public string LoadResourceTextfile(string path)

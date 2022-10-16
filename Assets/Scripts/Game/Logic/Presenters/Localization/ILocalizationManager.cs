@@ -6,7 +6,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 {
     public interface ILocalizationManager
     {
-        event Action OnChangeLanguage;
         string Get(string key, params object[] args);
         static ILocalizationManager Default { get; set; }
     }

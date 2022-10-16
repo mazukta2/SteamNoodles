@@ -1,8 +1,13 @@
-﻿namespace Game.Assets.Scripts.Game.Environment.Engine
+﻿using System.Collections.Generic;
+
+namespace Game.Assets.Scripts.Game.Logic.Definitions.Common
 {
     public interface IDefinitions
     {
-        string LoadResourceTextfile(string path);
-        string[] GetDefintionPaths(string folder);
+        static IDefinitions Default { get; set; }
+        T Get<T>(string id);
+        T Get<T>();
+        IReadOnlyCollection<T> GetList<T>();
+
     }
 }

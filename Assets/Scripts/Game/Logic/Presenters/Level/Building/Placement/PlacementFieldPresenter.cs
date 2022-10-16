@@ -63,7 +63,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.Building.Placement
         private PlacementCellPresenter CreateCell(IntPoint position)
         {
             var view = _view.CellsContainer.Spawn<ICellView>(_view.Cell);
-            return new PlacementCellPresenter(view, this, IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), position);
+            return new PlacementCellPresenter(view, this, IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), position);
         }
 
         public void UpdateGhostCells()

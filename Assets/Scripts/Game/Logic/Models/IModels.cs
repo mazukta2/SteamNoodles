@@ -8,6 +8,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models
         public static IModels Default { get; set; }
 
         void Add<T>(T model);
+        void Dispose();
         T Find<T>();
     }
 }

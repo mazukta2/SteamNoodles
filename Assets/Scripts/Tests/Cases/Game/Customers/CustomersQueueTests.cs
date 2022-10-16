@@ -107,7 +107,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new BuildConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 9)
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 0)
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.LevelSettings.CrowdUnitsAmount = 0)
                 .Build();
 
             Assert.AreEqual("0/3", game.Views.FindView<PointCounterWidgetView>().Points.Value);
@@ -136,7 +136,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new BuildConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(c => c.CellSize = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 3)
-                .UpdateDefinition<LevelDefinitionMock>((d) => d.MainLevelVariation.CrowdUnitsAmount = 0)
+                .UpdateDefinition<LevelDefinitionMock>((d) => d.LevelSettings.CrowdUnitsAmount = 0)
                 .UpdateDefinition<UnitsSettingsDefinition>(x => x.UnitSize = 0)
                 .Build();
 
@@ -271,9 +271,9 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             uc.SettingsDef = UnitDefinitionSetup.GetDefaultUnitsDefinitions();
             var time = uc.Time;
             var level = LevelDefinitionSetups.GetDefault();
-            level.MainLevelVariation.UnitsRect = new FloatRect(-10, -4, 20, 8);
-            level.MainLevelVariation.CrowdUnitsAmount = 0;
-            var crowd = new LevelCrowd(uc, time, level.MainLevelVariation, uc.Random);
+            level.LevelSettings.UnitsRect = new FloatRect(-10, -4, 20, 8);
+            level.LevelSettings.CrowdUnitsAmount = 0;
+            var crowd = new LevelCrowd(uc, time, level.LevelSettings, uc.Random);
 
             var unit = uc.SpawnUnit(new GameVector3(0, 0, 0));
             crowd.SendToCrowd(unit, LevelCrowd.CrowdDirection.Left);
@@ -518,7 +518,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Customers
             var game = new BuildConstructor()
                 .UpdateDefinition<ConstructionsSettingsDefinition>(x => x.PieceMovingTime = 1)
                 .UpdateDefinition<ConstructionDefinition>(x => x.Points = 3)
-                .UpdateDefinition<LevelDefinitionMock>(x => x.MainLevelVariation.CrowdUnitsAmount = 0)
+                .UpdateDefinition<LevelDefinitionMock>(x => x.LevelSettings.CrowdUnitsAmount = 0)
                 .Build();
 
             game.Views.FindViews<HandConstructionView>().First().Button.Click();

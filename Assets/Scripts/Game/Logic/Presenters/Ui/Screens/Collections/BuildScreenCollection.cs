@@ -20,7 +20,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
             object Init(IBuildScreenView screenView, ScreenManagerPresenter managerPresenter)
             {
                 return new BuildScreenPresenter(screenView, constructionCard,
-                    IGameDefinitions.Default.Get<ConstructionsSettingsDefinition>(), 
+                    IDefinitions.Default.Get<ConstructionsSettingsDefinition>(), 
                     IHandView.Default.Presenter, IBuildingToolitpView.Default.Presenter,
                     IGameKeysManager.Default, managerPresenter);
             }

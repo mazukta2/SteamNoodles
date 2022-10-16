@@ -5,31 +5,50 @@ using System.Collections.Generic;
 using System.Text;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Languages;
+using Game.Assets.Scripts.Game.Logic.Events.Game;
 
 namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 {
     public class LocalizationManager : ILocalizationManager
     {
-        public event Action OnChangeLanguage = delegate { };
-        private Dictionary<string, string> _currentLanguage = new Dictionary<string, string>();
-        private string _currentLanguageName;
-        private IGameDefinitions _definitions;
+        //private Dictionary<string, string> _currentLanguage = new Dictionary<string, string>();
+        //private string _currentLanguageName;
+        //private IGameDefinitions _definitions;
+        private LanguagePack _currentLanguage;
+        private Dictionary<string, LanguagePack> _languages = new Dictionary<string, LanguagePack>();
 
-        public LocalizationManager(IGameDefinitions definitions, string defaultLanguage)
+        public LocalizationManager(LanguagePack language) : this(new List<LanguagePack>() { language }, language.Name)
         {
-            _currentLanguageName = defaultLanguage ?? throw new ArgumentNullException(nameof(defaultLanguage));
-            _definitions = definitions ?? throw new ArgumentNullException(nameof(definitions));
-            LoadLanguage();
+
         }
 
-        private void LoadLanguage()
+        public LocalizationManager(List<LanguagePack> languages, string defaultLanguage)
         {
-            var defs = _definitions.Get<LanguageDefinition>($"{_currentLanguageName}");
-            _currentLanguage.Clear();
-            foreach (var item in defs.Values)
-                _currentLanguage.Add(item.Key, item.Value);
+            foreach (var item in languages)
+            {
+                _languages.Add(item.Name, item);
+            }
 
-            OnChangeLanguage();
+            LoadLanguage(defaultLanguage);
+        }
+
+        public LocalizationManager(IDefinitions definitions, string defaultLanguage)
+        {
+            var defs = definitions.GetList<LanguageDefinition>();
+            foreach (var item in defs)
+            {
+                _languages.Add(item.Name, item.Create());
+            }
+
+            LoadLanguage(defaultLanguage);
+        }
+
+        private void LoadLanguage(string name)
+        {
+            _currentLanguage = _languages[name];
+            //_currentLanguage.Clear();
+
+            new OnLanguageChanged().Fire();
         }
 
         public string Get(string key, params object[] args)
@@ -55,7 +74,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
                 }
             }
            
-            var str = _currentLanguage[key];
+            var str = _currentLanguage.Get(key);
             var prms = preparedArgs.ToArray();
 
             try
@@ -70,7 +89,12 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Localization
 
         public string GetCurrentLanguage()
         {
-            return _currentLanguageName;
+            return _currentLanguage.Name;
+        }
+
+        public void ChangeLanguage(string name)
+        {
+            LoadLanguage(name);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Game.Assets.Scripts.Game.Environment;
+using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
+using Game.Assets.Scripts.Game.Logic.Definitions.Languages;
 using Game.Assets.Scripts.Game.Logic.Infrastructure;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
@@ -15,27 +17,29 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     public class GameCoreInitialize : MonoBehaviour
     {
         public static bool IsGameExit { get; private set; }
-        private Core _core;
         private UnityControls _controls = new UnityControls();
         private GameTime _time = new GameTime();
+        private UnityEnviroment _enviroment;
 
         protected void Awake()
         {
             DontDestroyOnLoad(gameObject);
 
-            var definitions = new GameDefinitions(new UnityDefinitions());
-            var localization = new LocalizationManager(definitions, "English");
-            _core = new Core(new LevelsManager(), new GameAssets(new AssetsLoader()), definitions, new GameControls(_controls), localization, _time);
-            _core.OnDispose += _core_OnDispose;
-            IInfrastructure.Default = new DefaultInfrastructure(_core);
-            _core.Start();
+            _enviroment = new UnityEnviroment(new LevelsManager(),
+                new AssetsLoader(),
+                new GameDefinitions(new UnityDefinitions()),
+                new GameControls(_controls),
+                _time);
+            _enviroment.OnDispose += _core_OnDispose;
+
+            IInfrastructure.Default.ConnectEnviroment(_enviroment);
         }
 
         protected void OnApplicationQuit()
         {
-            _core.OnDispose -= _core_OnDispose;
+            _enviroment.OnDispose -= _core_OnDispose;
             IsGameExit = true;
-            _core.Dispose();
+            _enviroment.Dispose();
         }
 
         private void _core_OnDispose()
@@ -49,7 +53,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 
         protected void OnDestroy()
         {
-            if (!_core.IsDisposed)
+            if (!_enviroment.IsDisposed)
                 throw new Exception("Model is not disposed for some reasons");
         }
 

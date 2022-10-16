@@ -21,6 +21,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models
         {
             _dictonary.Add(typeof(T), model);
         }
+
+        public void Dispose()
+        {
+            foreach (var item in _dictonary)
+            {
+                if (item.Value is IDisposable disposable)
+                    disposable.Dispose();
+            }
+        }
     }
 }
 

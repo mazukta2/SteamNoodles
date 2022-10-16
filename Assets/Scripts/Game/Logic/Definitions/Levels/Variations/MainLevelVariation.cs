@@ -79,7 +79,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 
         public override ILevel CreateModel(LevelDefinition definition, IModels models)
         {
-            return new GameLevel(this, models, IGameRandom.Default, IGameTime.Default, IGameDefinitions.Default);
+            return new GameLevel(this, models, IGameRandom.Default, IGameTime.Default, IDefinitions.Default);
         }
 
     }

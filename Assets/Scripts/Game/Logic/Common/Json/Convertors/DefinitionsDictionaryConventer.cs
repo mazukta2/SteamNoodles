@@ -17,7 +17,7 @@ namespace Game.Assets.Scripts.Game.Logic.Common.Json.Convertors
             var result = new Dictionary<TKey, TValue>();
             foreach (var item in dictionary)
             {
-                result.Add(IGameDefinitions.Default.Get<TKey>(item.Key), item.Value);
+                result.Add(IDefinitions.Default.Get<TKey>(item.Key), item.Value);
             }
             return (IReadOnlyDictionary<TKey, TValue>)new ReadOnlyDictionary<TKey, TValue>(result);
         }
