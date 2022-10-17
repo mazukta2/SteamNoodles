@@ -42,6 +42,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 
         public override void Validate()
         {
+            if (string.IsNullOrEmpty(SceneName))
+                throw new Exception();
+
             if (StartingHand.Count == 0)
                 throw new Exception($"{nameof(StartingHand)} is empty");
 

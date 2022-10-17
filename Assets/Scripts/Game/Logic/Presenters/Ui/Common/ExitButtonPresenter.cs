@@ -10,14 +10,14 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common
     public class ExitButtonPresenter : Disposable, IPresenter
     {
         private IExitGameButtonView _view;
-        private Core _core;
+        private GameApplication _core;
 
-        public ExitButtonPresenter(IExitGameButtonView view) : this(view, IInfrastructure.Default.Core)
+        public ExitButtonPresenter(IExitGameButtonView view) : this(view, IInfrastructure.Default.Application)
         {
 
         }
 
-        public ExitButtonPresenter(IExitGameButtonView view, Core core)
+        public ExitButtonPresenter(IExitGameButtonView view, GameApplication core)
         {
             _view = view;
             _core = core;

@@ -27,6 +27,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         public GameTime Time => _time;
         public ControlsMock Controls => _controls;
         public GameKeysManager Keys => (GameKeysManager)IGameKeysManager.Default;
+        public DefinitionsMock Defs => _definitions;
 
         private ControlsMock _controls;
         private GameTime _time;
@@ -34,6 +35,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
         private CurrentLevel _currentLevel;
         private AssetsMock _assets;
         private LevelsManagerMock _levelManager;
+        private DefinitionsMock _definitions;
 
         public FakeGameBuild(AssetsMock assets, DefinitionsMock definitions, LevelsManagerMock levelManager, bool disableAutoload)
         {
@@ -41,6 +43,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             _time = new GameTime();
             _assets = assets;
             _levelManager = levelManager;
+            _definitions = definitions;
 
             _fakeUnityEnviroment = new UnityEnviroment(levelManager, assets, definitions, _controls, _time);
             
@@ -51,7 +54,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             {
                 var level = IDefinitions.Default.Get<MainDefinition>().StartLevel;
                 _levelManager.Add((LevelDefinitionMock)level);
-                var loading = IInfrastructure.Default.Core.Start();
+                var loading = IInfrastructure.Default.Application.Start();
                 _levelManager.FinishLoading();
                 _currentLevel = loading.GetResult();
             }
@@ -67,7 +70,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
 
         private void LoadLevel(LevelDefinition level)
         {
-            var loading = IInfrastructure.Default.Core.LoadLevel(level);
+            var loading = IInfrastructure.Default.Application.LoadLevel(level);
 
             _levelManager.FinishLoading();
             _currentLevel = loading.GetResult();

@@ -38,6 +38,13 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 
             _levelModel = definition.Variation.CreateModel(definition, _models);
 
+            if (_levelModel == null)
+                throw new Exception($"No level model for {definition}");
+
+            if (string.IsNullOrEmpty(_levelModel.SceneName))
+                throw new Exception($"No scene name for {definition}");
+
+            _levelManager.Unload();
             _levelManager.Load(_levelModel.SceneName, _views);
         }
 

@@ -21,6 +21,10 @@
 			"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations.Dialog",
 			"Name": "DIALOG_CHARACTERS_OLD_NOODLES_SELLER",
 			"Text": "DIALOG_START_GAME_1"
+		},
+		{
+			"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations.LoadScene",
+			"Scene": "Port"
 		}
 	]
 }

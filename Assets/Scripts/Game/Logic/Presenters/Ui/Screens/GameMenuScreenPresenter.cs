@@ -12,11 +12,11 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens
     {
         private IGameMenuScreenView _view;
         private ScreenManagerPresenter _screenManager;
-        private Core _game;
+        private GameApplication _game;
         private KeyCommand _exitKey;
         private readonly IGameKeysManager _keysManager;
 
-        public GameMenuScreenPresenter(IGameMenuScreenView view, Core game, IGameKeysManager keysManager, ScreenManagerPresenter screenManager) : base(view)
+        public GameMenuScreenPresenter(IGameMenuScreenView view, GameApplication game, IGameKeysManager keysManager, ScreenManagerPresenter screenManager) : base(view)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _screenManager = screenManager ?? throw new ArgumentNullException(nameof(screenManager));

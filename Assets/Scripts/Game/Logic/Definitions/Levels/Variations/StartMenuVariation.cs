@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Common.Json.Convertors;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Common.Json.Convertors;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
@@ -21,6 +22,9 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 
         public override void Validate()
         {
+            if (string.IsNullOrEmpty(SceneName))
+                throw new Exception();
+
             if (StartCutscene == null)
                 throw new System.Exception();
         }

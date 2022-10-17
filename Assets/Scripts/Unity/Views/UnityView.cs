@@ -33,7 +33,8 @@ namespace Game.Assets.Scripts.Game.Unity.Views
         {
             Collection = LevelsManager.Collection;
             PreAwake();
-            Collection.Add(this);
+            if (Collection != null)
+                Collection.Add(this);
         }
 
         protected virtual void PreAwake()
@@ -56,7 +57,8 @@ namespace Game.Assets.Scripts.Game.Unity.Views
             if (IsDisposed)
                 return;
 
-            Collection.Remove(this);
+            if (Collection != null)
+                Collection.Remove(this);
             IsDisposed = true;
             OnDispose();
         }

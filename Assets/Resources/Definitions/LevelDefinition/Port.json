@@ -1,0 +1,44 @@
+{
+	"Variation": {
+		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations.MainLevelVariation",
+
+	"StartingHand": [ "SimpleShop" ],
+	"ConstructionsReward": {
+		"Farm": 4,
+		"Well": 3,
+		"Boiler": 1,
+		"Windmill": 4,
+		"Pen": 4,
+		"Aquarium": 3
+	},
+	"SceneName": "PolygonScene",
+	"PlacementField": {
+		"Size": {
+			"X": 11,
+			"Y": 11
+		}
+	},
+	"QueuePosition": {
+		"X": 0,
+		"Y": 0,
+		"Z": -1.6
+	},
+	"QueueFirstPositionOffset": {
+		"X": 0,
+		"Y": 0,
+		"Z": 0.2
+	},
+	"CrowdUnitsAmount": 50,
+	"BaseCrowdUnits": {
+		"Commoner": 1
+	},
+	"UnitsRect": {
+		"X": -7,
+		"Y": -4.5,
+		"Width": 14,
+		"Height": 2.5
+	},
+	"ConstructionsForNextWave": 8,
+	"Waves" : 3
+	}
+}

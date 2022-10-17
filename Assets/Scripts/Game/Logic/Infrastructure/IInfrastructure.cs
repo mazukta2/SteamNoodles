@@ -10,7 +10,7 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure
     {
         public static IInfrastructure Default { get; set; } = new DefaultInfrastructure();
 
-        public Core Core { get; }
+        public GameApplication Application { get; }
         void ConnectEnviroment(UnityEnviroment unityEnviroment, bool autoStart = true);
     }
 }

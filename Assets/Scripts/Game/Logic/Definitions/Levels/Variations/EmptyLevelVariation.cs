@@ -1,4 +1,5 @@
-﻿using Game.Assets.Scripts.Game.Logic.Definitions.Common;
+﻿using System;
+using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
@@ -15,6 +16,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 
         public override void Validate()
         {
+            if (string.IsNullOrEmpty(SceneName))
+                throw new Exception();
         }
     }
 }

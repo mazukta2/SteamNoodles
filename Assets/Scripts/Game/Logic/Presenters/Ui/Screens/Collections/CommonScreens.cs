@@ -30,7 +30,7 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Collections
 
                 if (screenView is IGameMenuScreenView gameMenuScreen)
                     return new GameMenuScreenPresenter(gameMenuScreen, 
-                        IInfrastructure.Default.Core, IGameKeysManager.Default, managerPresenter);
+                        IInfrastructure.Default.Application, IGameKeysManager.Default, managerPresenter);
                 
 
                 throw new Exception("Unknown screen " + typeof(TScreen));

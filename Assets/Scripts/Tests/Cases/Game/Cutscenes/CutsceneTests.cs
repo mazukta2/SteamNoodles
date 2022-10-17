@@ -10,7 +10,9 @@ using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
+using Game.Assets.Scripts.Tests.Definitions;
 using Game.Assets.Scripts.Tests.Environment;
+using Game.Assets.Scripts.Tests.Environment.Game;
 using Game.Assets.Scripts.Tests.Views.Ui.Screens.Widgets;
 using NUnit.Framework;
 
@@ -133,6 +135,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Cutscenes
             presenter.Dispose();
             views.Dispose();
         }
+
     }
 }
 

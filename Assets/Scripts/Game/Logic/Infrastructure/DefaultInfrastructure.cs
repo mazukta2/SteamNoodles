@@ -8,7 +8,7 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure
     {
         private UnityEnviroment _enviroment;
 
-        public Core Core { get; private set; }
+        public GameApplication Application { get; private set; }
         public DefaultInfrastructure()
         {
         }
@@ -18,16 +18,16 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure
             _enviroment = unityEnviroment;
             _enviroment.OnDispose += DisconnectEnviroment;
 
-            Core = new Core(unityEnviroment);
+            Application = new GameApplication(unityEnviroment);
 
             if (autoStart)
-                Core.Start();
+                Application.Start();
         }
 
         private void DisconnectEnviroment()
         {
             _enviroment.OnDispose -= DisconnectEnviroment;
-            Core.Dispose();
+            Application.Dispose();
         }
     }
 }
