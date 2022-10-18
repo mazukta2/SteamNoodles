@@ -47,7 +47,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
                 Collection.Dispose();
                 Collection = null;
 
-                SceneManager.UnloadScene(SceneManager.GetActiveScene());
+                SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
             }
         }
 

@@ -1,17 +1,12 @@
 ﻿using System;
-using Game.Assets.Scripts.Game.Environment;
 using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
-using Game.Assets.Scripts.Game.Logic.Definitions;
-using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
+using Game.Assets.Scripts.Game.Logic.Events.Game;
 using Game.Assets.Scripts.Game.Logic.Infrastructure.Mapping;
-using Game.Assets.Scripts.Game.Logic.Libs.Stateless.Graph;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
-using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
-using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions.HandPresenter;
 
 namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 {
@@ -44,6 +39,7 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
             if (string.IsNullOrEmpty(_levelModel.SceneName))
                 throw new Exception($"No scene name for {definition}");
 
+            new OnLoadingStarted().Fire();
             _levelManager.Unload();
             _levelManager.Load(_levelModel.SceneName, _views);
         }
@@ -78,6 +74,7 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
 
             _result.Start();
 
+            new OnLoadingFinished().Fire();
             OnLoaded(_result);
             Dispose();
         }
