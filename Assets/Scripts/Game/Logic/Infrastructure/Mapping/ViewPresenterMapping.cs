@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.Assets.Scripts.Game.Logic.Presenters;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.TradeLevel;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Common;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.StartMenuLevel;
 using Game.Assets.Scripts.Game.Logic.Presenters.Ui.Screens.Widgets;
@@ -42,33 +43,6 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Mapping
                 }
             }
             
-            /*
-            var initing = _collection.FindViews<IViewWithDefaultPresenter>().ToList();
-
-            SetDefaitPresenterForViews<IScreenManagerView>();
-            SetDefaitPresenterForViews<IHandView>();
-            SetDefaitPresenterForViews<IGhostManagerView>();
-            SetDefaitPresenterForViews<IPointPieceSpawnerView>();
-
-            while (initing.Count > 0)
-            {
-                var view = initing.First();
-                initing.Remove(view);
-                view.InitDefaultPresenter();
-            }
-
-            IEnumerable<TView> SetDefaitPresenterForViews<TView>()
-                where TView : IViewWithPresenter, IViewWithDefaultPresenter
-            {
-                var views = _collection.FindViews<TView>().ToList();
-                foreach (var item in views)
-                {
-                    initing.Remove(item);
-                    item.InitDefaultPresenter();
-                }
-                return views;
-            }
-            */
 
             void TryConnect(Type viewType, IView view)
             {
@@ -91,16 +65,16 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Mapping
             }
         }
 
-        public void Map<TView, TPresenter>() where TView : IView where TPresenter : IPresenter
-        {
-            _viewToPresenter.Add(typeof(TView), typeof(TPresenter));
-        }
-
         private void MapEverything()
         {
             Map<IExitGameButtonView, ExitButtonPresenter>();
             Map<IStartNewGameView, StartGameButtonPresenter>();
             Map<IDialogView, DialogPresenter>();
+        }
+
+        public void Map<TView, TPresenter>() where TView : IView where TPresenter : IPresenter
+        {
+            _viewToPresenter.Add(typeof(TView), typeof(TPresenter));
         }
 
         private void Connect(IView view, IPresenter presenter)

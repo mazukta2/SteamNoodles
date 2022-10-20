@@ -494,9 +494,6 @@
     <None Remove="Assets\Levels\StartScene\Skybox.mat" />
     <None Remove="Assets\Levels\StartScene\Ground\Floor_Stone_Grass_Brown.png" />
     <None Remove="Assets\Levels\StartScene\Ground\Floor.mat" />
-    <None Remove="Assets\Scripts\Game\Logic\Views\Levels\Variations\" />
-    <None Remove="Assets\Scripts\Game\Logic\Presenters\Level\Variations\" />
-    <None Remove="Assets\Scripts\Tests\Views\Ui\Screens\Variations\" />
     <None Remove="Assets\Scripts\Game\Logic\Infrastructure\" />
     <None Remove="Assets\Scripts\Game\Logic\Infrastructure\Flow\" />
     <None Remove="Assets\Scripts\Game\Logic\Models\Levels\MainLevels\Building\" />
@@ -515,13 +512,11 @@
     <None Remove="Assets\Scripts\Game\Logic\Presenters\Localization\" />
     <None Remove="Assets\Scripts\Game\Logic\Events\" />
     <None Remove="Assets\Scripts\Game\Logic\Events\Game\" />
+    <None Remove="Assets\Scripts\Game\Logic\Presenters\Level\TradeLevel\" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <Folder Include="Assets\Scripts\Game\Logic\Views\Levels\Variations\" />
-    <Folder Include="Assets\Scripts\Game\Logic\Presenters\Level\Variations\" />
-    <Folder Include="Assets\Scripts\Tests\Views\Ui\Screens\Variations\" />
     <Folder Include="Assets\Scripts\Game\Logic\Infrastructure\" />
     <Folder Include="Assets\Scripts\Game\Logic\Infrastructure\Flow\" />
     <Folder Include="Assets\Scripts\Game\Logic\Models\Levels\MainLevels\Building\" />
@@ -540,5 +535,6 @@
     <Folder Include="Assets\Scripts\Game\Logic\Presenters\Localization\" />
     <Folder Include="Assets\Scripts\Game\Logic\Events\" />
     <Folder Include="Assets\Scripts\Game\Logic\Events\Game\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Presenters\Level\TradeLevel\" />
   </ItemGroup>
 </Project>

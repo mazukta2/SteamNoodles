@@ -14,6 +14,8 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 using Newtonsoft.Json;
 using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
 using Game.Assets.Scripts.Game.Logic.Models;
+using Game.Assets.Scripts.Game.Logic.Presenters;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.TradeLevel;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 {
@@ -80,9 +82,11 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 
         }
 
-        public override ILevel CreateModel(LevelDefinition definition, IModels models)
+        public override (ILevel, IPresenter) CreateModel(LevelDefinition definition, IModels models)
         {
-            return new GameLevel(this, models, IGameRandom.Default, IGameTime.Default, IDefinitions.Default);
+            var model = new TradeLevel(this, models, IGameRandom.Default, IGameTime.Default, IDefinitions.Default);
+            var presenter = new TradeLevelStarterPresenter(model);
+            return (model, presenter);
         }
 
     }

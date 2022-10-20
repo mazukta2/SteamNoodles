@@ -18,7 +18,7 @@ using Game.Assets.Scripts.Game.Logic.Views.Ui.Screens;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
 {
-    public class GameLevel : Disposable, ILevel
+    public class TradeLevel : Disposable, ILevel
     {
         public event Action OnStart = delegate { };
 
@@ -38,7 +38,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
         private LevelCrowd _crowd;
 
 
-        public GameLevel(MainLevelVariation settings, IModels models, IGameRandom random, IGameTime time, IDefinitions definitions)
+        public TradeLevel(MainLevelVariation settings, IModels models, IGameRandom random, IGameTime time, IDefinitions definitions)
         {
             _definition = settings ?? throw new ArgumentNullException(nameof(settings));
             if (string.IsNullOrEmpty(_definition.SceneName))

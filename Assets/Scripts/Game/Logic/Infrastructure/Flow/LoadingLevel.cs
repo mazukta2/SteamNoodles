@@ -6,6 +6,7 @@ using Game.Assets.Scripts.Game.Logic.Events.Game;
 using Game.Assets.Scripts.Game.Logic.Infrastructure.Mapping;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 using Game.Assets.Scripts.Game.Logic.Views.Levels.Managing;
 
 namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
@@ -20,6 +21,7 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
         private DefaultModels _models;
         private ILevel _levelModel;
         private CurrentLevel _result;
+        private IPresenter _presenter;
 
         public LoadingLevel(ILevelsManager levelsManager, LevelDefinition definition)
         {
@@ -31,7 +33,7 @@ namespace Game.Assets.Scripts.Game.Logic.Infrastructure.Flow
             _views = new DefaultViews();
             _models = new DefaultModels();
 
-            _levelModel = definition.Variation.CreateModel(definition, _models);
+            (_levelModel, _presenter) = definition.Variation.CreateModel(definition, _models);
 
             if (_levelModel == null)
                 throw new Exception($"No level model for {definition}");

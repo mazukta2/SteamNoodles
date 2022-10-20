@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -20}
+  m_AnchoredPosition: {x: 0, y: -10}
   m_SizeDelta: {x: 390, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4267385673826371304
@@ -69,8 +69,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: R or Mouse Wheel to <style="HeavyHighlight">rotate</style>.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: eb51ae45b2a938942ac1140dc3b2f50b, type: 2}
-  m_sharedMaterial: {fileID: -3810476270546444741, guid: eb51ae45b2a938942ac1140dc3b2f50b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c3b5b5275e6a64cf989cf99fac818f76, type: 2}
+  m_sharedMaterial: {fileID: -7484592689434927192, guid: c3b5b5275e6a64cf989cf99fac818f76, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -94,8 +94,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 14.1
+  m_fontSizeBase: 14.1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -369,7 +369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5920267145367497114, guid: 4951f00f8c29ebe47af57a1cead15bd8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -245
+      value: -214.8
       objectReference: {fileID: 0}
     - target: {fileID: 5920267145367497114, guid: 4951f00f8c29ebe47af57a1cead15bd8, type: 3}
       propertyPath: m_AnchoredPosition.y

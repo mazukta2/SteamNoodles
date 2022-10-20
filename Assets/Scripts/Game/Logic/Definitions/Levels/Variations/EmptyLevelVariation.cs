@@ -4,14 +4,15 @@ using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Levels;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
+using Game.Assets.Scripts.Game.Logic.Presenters;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 {
     public class EmptyLevelVariation : LevelVariation
     {
-        public override ILevel CreateModel(LevelDefinition definition, IModels models)
+        public override (ILevel, IPresenter) CreateModel(LevelDefinition definition, IModels models)
         {
-            return null;
+            return (null, null);
         }
 
         public override void Validate()
