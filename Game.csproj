@@ -513,6 +513,8 @@
     <None Remove="Assets\Scripts\Game\Logic\Events\" />
     <None Remove="Assets\Scripts\Game\Logic\Events\Game\" />
     <None Remove="Assets\Scripts\Game\Logic\Presenters\Level\TradeLevel\" />
+    <None Remove="Assets\Scripts\Game\Logic\Infrastructure\Music\" />
+    <None Remove="Assets\Scripts\Game\Logic\Presenters\Level\StartMenuLevel\" />
   </ItemGroup>
 
 
@@ -536,5 +538,7 @@
     <Folder Include="Assets\Scripts\Game\Logic\Events\" />
     <Folder Include="Assets\Scripts\Game\Logic\Events\Game\" />
     <Folder Include="Assets\Scripts\Game\Logic\Presenters\Level\TradeLevel\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Infrastructure\Music\" />
+    <Folder Include="Assets\Scripts\Game\Logic\Presenters\Level\StartMenuLevel\" />
   </ItemGroup>
 </Project>

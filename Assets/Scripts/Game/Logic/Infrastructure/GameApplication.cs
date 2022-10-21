@@ -5,6 +5,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions;
 using Game.Assets.Scripts.Game.Logic.Definitions.Common;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Infrastructure.Flow;
+using Game.Assets.Scripts.Game.Logic.Infrastructure.Music;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Controls;
@@ -20,6 +21,7 @@ namespace Game.Assets.Scripts.Game.Environment
     /// </summary>
     public class GameApplication : Disposable
     {
+        public MusicManager Music { get; private set; }
         private LoadingLevel _loading;
         private CurrentLevel _currentLevel;
         private UnityEnviroment _enviroment;
@@ -39,6 +41,7 @@ namespace Game.Assets.Scripts.Game.Environment
             IGameTime.Default = _enviroment.Time ?? throw new ArgumentNullException();
             IGameRandom.Default = new SessionRandom();
             _levelsManager = _enviroment.Levels;
+            Music = new MusicManager(IGameControls.Default, IGameTime.Default);
         }
 
         protected override void DisposeInner()
@@ -49,6 +52,9 @@ namespace Game.Assets.Scripts.Game.Environment
             IGameControls.Default.Dispose();
             IGameControls.Default = null;
             ILocalizationManager.Default = null;
+
+            Music.Dispose();
+            Music = null;
 
             if (_loading != null && !_loading.IsDisposed)
             {

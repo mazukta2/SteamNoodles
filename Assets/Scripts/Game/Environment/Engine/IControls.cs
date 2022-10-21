@@ -15,5 +15,6 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
         GameVector3 PointerLevelPosition { get; }
         void ChangeCamera(string name, float time);
         void PlayAnimation(string name, string animationName);
+        ISoundTrack CreateTrack(string name);
     }
 }

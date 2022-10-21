@@ -1,5 +1,6 @@
 ﻿using Game.Assets.Scripts.Game.Environment.Engine;
 using Game.Assets.Scripts.Game.Logic.Common.Math;
+using Game.Assets.Scripts.Game.Logic.Views.Controls;
 using System;
 
 namespace Game.Assets.Scripts.Tests.Environment
@@ -35,6 +36,11 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public void PlayAnimation(string name, string animationName)
         {
+        }
+
+        public ISoundTrack CreateTrack(string name)
+        {
+            return new SoundTrackMock(name);
         }
     }
 }

@@ -17,6 +17,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             return (T)_dictonary[typeof(T)];
         }
 
+        public bool Has<T>()
+        {
+            return _dictonary.ContainsKey(typeof(T));
+        }
+
         public void Add<T>(T model)
         {
             _dictonary.Add(typeof(T), model);

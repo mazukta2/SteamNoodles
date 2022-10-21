@@ -12,7 +12,7 @@ namespace Game.Assets.Scripts.Tests.Environment
     {
         public event Action OnLoadFinished = delegate { };
 
-        private List<LevelDefinitionMock> _availableLevels = new List<LevelDefinitionMock>();
+        private List<LevelDefinition> _availableLevels = new List<LevelDefinition>();
         private string _name;
         private IViews _collection;
 
@@ -32,7 +32,7 @@ namespace Game.Assets.Scripts.Tests.Environment
             _collection = null;
         }
 
-        public void Add(LevelDefinitionMock levelDefinition)
+        public void Add(LevelDefinition levelDefinition)
         {
             _availableLevels.Add(levelDefinition);
         }
@@ -45,7 +45,8 @@ namespace Game.Assets.Scripts.Tests.Environment
                 if (item.Variation.SceneName == _name)
                 {
                     wasFound = true;
-                    item.LevelPrefab.Fill(_collection);
+                    if (item is LevelDefinitionMock mock)
+                        mock.LevelPrefab.Fill(_collection);
                 }
             }
 

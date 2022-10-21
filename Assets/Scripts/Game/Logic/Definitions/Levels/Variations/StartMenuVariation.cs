@@ -7,6 +7,7 @@ using Game.Assets.Scripts.Game.Logic.Models.Levels.Variations;
 using Game.Assets.Scripts.Game.Logic.Models.Session;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters;
+using Game.Assets.Scripts.Game.Logic.Presenters.Level.StartMenuLevel;
 using Newtonsoft.Json;
 
 namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
@@ -16,9 +17,13 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
         [JsonConverter(typeof(DefinitionsConventer<CutsceneDefinition>))]
         public CutsceneDefinition StartCutscene { get; set; }
 
+        public string StartMusic { get; set; }
+
         public override (ILevel, IPresenter) CreateModel(LevelDefinition definition, IModels models)
         {
-            return (new StartMenu(this, models, IGameRandom.Default, IGameTime.Default, IDefinitions.Default), null);
+            var model = new StartMenu(this, models, IGameRandom.Default, IGameTime.Default, IDefinitions.Default);
+            var presenter = new StartMenuLeverlPresenter(model);
+            return (model, presenter);
         }
 
         public override void Validate()

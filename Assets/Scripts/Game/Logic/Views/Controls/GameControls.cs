@@ -46,5 +46,10 @@ namespace Game.Assets.Scripts.Game.Logic.Views.Controls
         {
             _controls.PlayAnimation(name, animationName);
         }
+
+        public ISoundTrack CreateTrack(string name)
+        {
+            return _controls.CreateTrack(name);
+        }
     }
 }

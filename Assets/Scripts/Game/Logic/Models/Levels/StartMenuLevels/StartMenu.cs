@@ -44,9 +44,15 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
         {
         }
 
+        public string GetStartMusic()
+        {
+            return _definition.StartMusic;
+        }
+
         public void StartCutscene()
         {
             new Cutscene(_models.Find<LevelSequencer>(), _definition.StartCutscene);
         }
+
     }
 }

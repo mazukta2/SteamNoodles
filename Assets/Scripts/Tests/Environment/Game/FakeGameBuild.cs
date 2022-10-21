@@ -53,7 +53,7 @@ namespace Game.Assets.Scripts.Tests.Environment.Game
             if (!disableAutoload)
             {
                 var level = IDefinitions.Default.Get<MainDefinition>().StartLevel;
-                _levelManager.Add((LevelDefinitionMock)level);
+                _levelManager.Add(level);
                 var loading = IInfrastructure.Default.Application.Start();
                 _levelManager.FinishLoading();
                 _currentLevel = loading.GetResult();

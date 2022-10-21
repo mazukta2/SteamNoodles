@@ -113,5 +113,10 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         {
             SceneAnimation.Play(name, animationName);
         }
+
+        public ISoundTrack CreateTrack(string name)
+        {
+            return new SoundTrack(name);
+        }
     }
 }
