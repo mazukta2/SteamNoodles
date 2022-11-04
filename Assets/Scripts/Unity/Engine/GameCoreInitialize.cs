@@ -24,7 +24,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         protected void Awake()
         {
             DontDestroyOnLoad(gameObject);
-
+            UnityControls.Controls = _controls;
             _enviroment = new UnityEnviroment(new LevelsManager(),
                 new AssetsLoader(),
                 new GameDefinitions(new UnityDefinitions()),

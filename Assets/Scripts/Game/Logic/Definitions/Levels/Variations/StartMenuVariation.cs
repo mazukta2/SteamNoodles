@@ -15,6 +15,8 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
     public class StartMenuVariation : LevelVariation
     {
         public string StartCutscene { get; set; }
+        [JsonConverter(typeof(DefinitionsConventer<LevelDefinition>))]
+        public LevelDefinition FirstLevel { get; set; }
 
         public string StartMusic { get; set; }
 

@@ -4,6 +4,7 @@
 
 		"SceneName": "StartMenu",
 		"StartCutscene": "StartGame",
+		"FirstLevel" : "Port",
 		"StartMusic": "Music/start-scene-soothing-sunset"
 	}
 }

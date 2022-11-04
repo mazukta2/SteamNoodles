@@ -7,10 +7,13 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Cutscenes
 {
     public class TimelineCutscene : Cutscene
     {
-        public TimelineCutscene(LevelSequencer levelSequencer,  string name) : base(levelSequencer, 
-            new List<CutsceneStep>() {new PlayTimelineAnimationStep(name)})
+        public TimelineCutscene(LevelSequencer levelSequencer,  string name) : base(levelSequencer)
         {
-            IInfrastructure.Default.Application.Music.Stop();
+            Init(new List<CutsceneStep>()
+            {
+                new StopMusicStep(),
+                new PlayTimelineAnimationStep(name)
+            });
         }
     }
 }

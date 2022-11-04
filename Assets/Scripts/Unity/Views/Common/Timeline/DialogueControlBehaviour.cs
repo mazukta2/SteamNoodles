@@ -7,11 +7,10 @@ namespace GameUnity.Unity.Views.Common.Timeline
 {
 	public class DialogueControlBehaviour : PlayableBehaviour
 	{
-		private string _tag;
 		private DialogueController _controller;
 		bool _firstFrameHappened;
 		bool _reachedFinal;
-		private string _characterName;
+		private DialogueControlAsset.Line[] _lines;
 
 
 		public override void ProcessFrame(Playable playable, FrameData info, object playerData)
@@ -48,14 +47,13 @@ namespace GameUnity.Unity.Views.Common.Timeline
 			{
 				_firstFrameHappened = true;
 				if (UnityEngine.Application.isPlaying)
-					_controller.ShowDialog(new LocalizatedString(_characterName), new LocalizatedString(_tag));
+					_controller.ShowDialog(_lines);
 			}
 		}
 
-		public void SetText(string name, string tag)
+		public void SetText(DialogueControlAsset.Line[] lines)
 		{
-			_tag = tag;
-			_characterName = name;
+			_lines = lines;
 		}
 	}
 }

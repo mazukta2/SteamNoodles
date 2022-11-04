@@ -19,11 +19,20 @@ namespace Game.Assets.Scripts.Game.Logic.Models
 
         public Cutscene(LevelSequencer levelSequencer, IEnumerable<CutsceneStep> steps)
         {
+            _levelSequencer = levelSequencer;
+            Init(_steps);
+        }
+
+        protected Cutscene(LevelSequencer levelSequencer)
+        {
+            _levelSequencer = levelSequencer;
+        }
+        
+        protected void Init(IEnumerable<CutsceneStep> steps)
+        {
             if (steps.Count() == 0)
                 throw new Exception("No steps in definition");
-
-            _levelSequencer = levelSequencer;
-
+            
             foreach (var step in steps)
             {
                 _steps.Add(step);
@@ -33,7 +42,6 @@ namespace Game.Assets.Scripts.Game.Logic.Models
             _levelSequencer.ProcessSteps();
 
             _levelSequencer.OnStepFinished += _step_OnFinished;
-
         }
 
 

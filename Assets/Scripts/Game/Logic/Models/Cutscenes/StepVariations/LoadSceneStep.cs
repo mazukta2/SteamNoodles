@@ -16,6 +16,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Cutscenes.StepVariations
 
         }
 
+        public LoadSceneStep(LevelDefinition sceneName) : this(sceneName, IInfrastructure.Default.Application)
+        {
+
+        }
+
         public LoadSceneStep(LevelDefinition sceneName, GameApplication application)
         {
             _application = application ?? throw new ArgumentNullException(nameof(application));

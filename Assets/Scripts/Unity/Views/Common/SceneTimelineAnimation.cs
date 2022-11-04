@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GameUnity.Assets.Scripts.Unity.Engine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(PlayableDirector))]
@@ -13,11 +14,13 @@ public class SceneTimelineAnimation : MonoBehaviour
     protected void Awake()
     {
         _list.Add(this);
+        gameObject.GetComponent<PlayableDirector>().stopped += HandleStoped;
     }
 
     protected void OnDestroy()
     {
         _list.Remove(this);
+        gameObject.GetComponent<PlayableDirector>().stopped -= HandleStoped;
     }
 
 
@@ -31,5 +34,11 @@ public class SceneTimelineAnimation : MonoBehaviour
             }
         }
     }
+    
+    private void HandleStoped(PlayableDirector obj)
+    {
+        UnityControls.Controls.FireTimelineFinished(_tag);
+    }
+
 }
 

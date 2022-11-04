@@ -16,6 +16,8 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
 {
     public class UnityControls : IControls
     {
+        public static UnityControls Controls { get; set; }
+        
         public event Action OnLevelClick = delegate { };
         public event Action<GameVector3> OnLevelPointerMoved = delegate { };
         public event Action<string> OnTimelineAnimationFinished = delegate { };
@@ -123,6 +125,11 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         public ISoundTrack CreateTrack(string name)
         {
             return new SoundTrack(name);
+        }
+
+        public void FireTimelineFinished(string name)
+        {
+            OnTimelineAnimationFinished(name);
         }
     }
 }

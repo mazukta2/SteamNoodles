@@ -17,6 +17,11 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Cutscenes.StepVariations
 
         }
 
+        public StopMusicStep() : this(IInfrastructure.Default.Application.Music)
+        {
+
+        }
+
         public StopMusicStep(MusicManager music)
         {
             _music = music;
