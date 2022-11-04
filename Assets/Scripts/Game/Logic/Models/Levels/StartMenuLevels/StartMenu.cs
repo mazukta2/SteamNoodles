@@ -14,6 +14,7 @@ using Game.Assets.Scripts.Game.Logic.Definitions.Customers;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations;
 using static Game.Assets.Scripts.Game.Logic.Presenters.Ui.Constructions.HandPresenter;
 using System.Reflection;
+using Game.Assets.Scripts.Game.Logic.Models.Cutscenes;
 using Game.Assets.Scripts.Game.Logic.Models.Sequencer;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
@@ -51,7 +52,7 @@ namespace Game.Assets.Scripts.Game.Logic.Models.Levels.Variations
 
         public void StartCutscene()
         {
-            new Cutscene(_models.Find<LevelSequencer>(), _definition.StartCutscene);
+            new TimelineCutscene(_models.Find<LevelSequencer>(), _definition.StartCutscene);
         }
 
     }

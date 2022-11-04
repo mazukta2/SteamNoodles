@@ -10,7 +10,11 @@
     "CONSTRUCTIONS_AQUARIUM_NAME": "Aquarium",
 
     "DIALOG_CHARACTERS_OLD_NOODLES_SELLER": "Old Woman",
-    "DIALOG_START_GAME_1": "!!!"
+    "DIALOG_CHARACTERS_GUARD": "Guard",
+    
+    "DIALOG_START_GAME_1": "!!!",
+    "DIALOG_START_GAME_2": "Hey!",
+    "DIALOG_START_GAME_3": "You! Woman! Did you see a little girl here?!"
 
   }
 }

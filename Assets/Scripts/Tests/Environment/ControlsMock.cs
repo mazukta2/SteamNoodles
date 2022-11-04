@@ -7,6 +7,7 @@ namespace Game.Assets.Scripts.Tests.Environment
 {
     public class ControlsMock : IControls
     {
+        public event Action<string> OnTimelineAnimationFinished = delegate {  };
         public GameVector3 PointerLevelPosition { get; private set; }
 
         public event Action OnLevelClick = delegate { };
@@ -36,6 +37,11 @@ namespace Game.Assets.Scripts.Tests.Environment
 
         public void PlayAnimation(string name, string animationName)
         {
+        }
+
+        public void PlayTimelineAnimation(string name)
+        {
+            OnTimelineAnimationFinished(name);
         }
 
         public ISoundTrack CreateTrack(string name)

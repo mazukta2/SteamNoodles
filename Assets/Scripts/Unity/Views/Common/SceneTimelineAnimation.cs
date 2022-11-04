@@ -21,13 +21,13 @@ public class SceneTimelineAnimation : MonoBehaviour
     }
 
 
-    public static void Play(string tag, string animationName)
+    public static void Play(string animationName)
     {
         foreach (var item in _list)
         {
-            if (item._tag == tag)
+            if (item._tag == animationName)
             {
-                //item.gameObject.GetComponent<PlayableDirector>();
+                item.gameObject.GetComponent<PlayableDirector>().Play();
             }
         }
     }

@@ -12,9 +12,11 @@ namespace Game.Assets.Scripts.Game.Environment.Engine
         void ShakeCamera();
         event Action OnLevelClick;
         event Action<GameVector3> OnLevelPointerMoved;
+        event Action<string> OnTimelineAnimationFinished;
         GameVector3 PointerLevelPosition { get; }
         void ChangeCamera(string name, float time);
         void PlayAnimation(string name, string animationName);
+        void PlayTimelineAnimation(string name);
         ISoundTrack CreateTrack(string name);
     }
 }

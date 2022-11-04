@@ -3,7 +3,7 @@
 		"Type": "Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations.StartMenuVariation",
 
 		"SceneName": "StartMenu",
-		"StartCutscene": "StartGameScene",
+		"StartCutscene": "StartGame",
 		"StartMusic": "Music/start-scene-soothing-sunset"
 	}
 }

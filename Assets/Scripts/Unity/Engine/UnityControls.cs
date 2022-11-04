@@ -18,6 +18,7 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
     {
         public event Action OnLevelClick = delegate { };
         public event Action<GameVector3> OnLevelPointerMoved = delegate { };
+        public event Action<string> OnTimelineAnimationFinished = delegate { };
 
         private Vector3 _mousePosition;
         private Plane _plane = new Plane(Vector3.up, 0);
@@ -112,6 +113,11 @@ namespace GameUnity.Assets.Scripts.Unity.Engine
         public void PlayAnimation(string name, string animationName)
         {
             SceneAnimation.Play(name, animationName);
+        }
+
+        public void PlayTimelineAnimation(string name)
+        {
+            SceneTimelineAnimation.Play(name);
         }
 
         public ISoundTrack CreateTrack(string name)

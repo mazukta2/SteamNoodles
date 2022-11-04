@@ -84,7 +84,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
             {
                 var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
                 var project = currentDirectory.Parent.Parent.Parent;
-                return new FileDefinitions(new DirectoryInfo(project.FullName + "/Assets/Resources/Definitions"));
+                var projectDirectory = new DirectoryInfo(project.FullName).Parent.Parent;
+                return new FileDefinitions(new DirectoryInfo(projectDirectory.FullName + "/Assets/Resources/Definitions"));
             }
         }
 

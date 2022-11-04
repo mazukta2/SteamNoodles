@@ -98,7 +98,8 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         {
             var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
             var project = currentDirectory.Parent.Parent.Parent;
-            IDefinitions.Default = new GameDefinitions(new FileDefinitions(new DirectoryInfo(project.FullName + "/Assets/Resources/Definitions")));
+            var projectDirectory = new DirectoryInfo(project.FullName).Parent.Parent;
+            IDefinitions.Default = new GameDefinitions(new FileDefinitions(new DirectoryInfo(projectDirectory.FullName + "/Assets/Resources/Definitions")));
         }
 
         public class FileDefinitions : IDefinitionsLoader

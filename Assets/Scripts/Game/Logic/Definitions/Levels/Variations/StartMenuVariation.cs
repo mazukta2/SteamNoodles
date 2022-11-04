@@ -14,8 +14,7 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
 {
     public class StartMenuVariation : LevelVariation
     {
-        [JsonConverter(typeof(DefinitionsConventer<CutsceneDefinition>))]
-        public CutsceneDefinition StartCutscene { get; set; }
+        public string StartCutscene { get; set; }
 
         public string StartMusic { get; set; }
 
