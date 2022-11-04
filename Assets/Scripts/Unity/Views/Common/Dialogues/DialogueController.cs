@@ -1,6 +1,7 @@
 using System;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
 using GameUnity.Assets.Scripts.Unity.Views.Ui.Common;
+using RedBlueGames.Tools.TextTyper;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UIElements;
@@ -11,7 +12,7 @@ namespace GameUnity.Unity.Views.Common.Dialogues
     public class DialogueController : MonoBehaviour
     {
         [SerializeField] UnityText _name;
-        [SerializeField] UnityText _text;
+        [SerializeField] TextTyper _text;
         [SerializeField] private Button _button;
         [SerializeField] private PlayableDirector _director;
         
@@ -33,7 +34,7 @@ namespace GameUnity.Unity.Views.Common.Dialogues
         public void ShowDialog(ILocalizatedString characterName, ILocalizatedString text)
         {
             _animator.SetBool("Showing", true);
-            _text.Set(text.Get());
+            _text.TypeText(text.Get(),0.001f);
             _name.Set(characterName.Get());
         }
 

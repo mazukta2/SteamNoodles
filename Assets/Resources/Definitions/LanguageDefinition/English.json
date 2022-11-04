@@ -14,7 +14,13 @@
     
     "DIALOG_START_GAME_1": "!!!",
     "DIALOG_START_GAME_2": "Hey!",
-    "DIALOG_START_GAME_3": "You! Woman! Did you see a little girl here?!"
-
+    "DIALOG_START_GAME_3": "You! Woman! Did you see a little girl here?!",
+    "DIALOG_START_GAME_3_1": "...",
+    "DIALOG_START_GAME_4": "Oh… yeah… I saw her.",
+    "DIALOG_START_GAME_5": "Yeah, she went down there, officer! She wore a beautiful puffy red dress, a broken trumpet, and has a company of little army of very funny mimes.",
+    "DIALOG_START_GAME_6": "W- What?",
+    "DIALOG_START_GAME_7": "Yeah, that's what I definitely could have seen here, if I was capable of seeing little girls. Or anything.",
+    "DIALOG_START_GAME_8": "Are you blind?",
+    "DIALOG_START_GAME_9": "Are you stupid?"
   }
 }
