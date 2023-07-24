@@ -83,7 +83,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Basic
             private IDefinitionsLoader CreateDefinitions()
             {
                 var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
-                var project = currentDirectory.Parent.Parent.Parent;
+                var project = currentDirectory.Parent.Parent;
                 var projectDirectory = new DirectoryInfo(project.FullName).Parent.Parent;
                 return new FileDefinitions(new DirectoryInfo(projectDirectory.FullName + "/Assets/Resources/Definitions"));
             }

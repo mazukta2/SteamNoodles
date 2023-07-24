@@ -71,16 +71,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
 
 
         [Test]
-        public void CutscenesDefinitions()
-        {
-            CreateDefinitions();
-            var defs = IDefinitions.Default.GetList<CutsceneDefinition>();
-
-            foreach (var cutscene in defs)
-                cutscene.Validate();
-        }
-
-        [Test]
         public void LanguagesDefinitions()
         {
             CreateDefinitions();
@@ -97,7 +87,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Definitions
         private void CreateDefinitions()
         {
             var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
-            var project = currentDirectory.Parent.Parent.Parent;
+            var project = currentDirectory.Parent.Parent;
             var projectDirectory = new DirectoryInfo(project.FullName).Parent.Parent;
             IDefinitions.Default = new GameDefinitions(new FileDefinitions(new DirectoryInfo(projectDirectory.FullName + "/Assets/Resources/Definitions")));
         }

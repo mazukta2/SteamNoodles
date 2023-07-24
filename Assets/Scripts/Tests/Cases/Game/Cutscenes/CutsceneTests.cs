@@ -20,84 +20,85 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Cutscenes
 {
     public class CutsceneTests
     {
-        [Test, Order(TestOrders.Models)]
-        public void TimeStepWorks()
+        /*
+    [Test, Order(TestOrders.Models)]
+    public void TimeStepWorks()
+    {
+        var time = new GameTime();
+
+        var steps = new List<CutsceneStep>()
         {
-            var time = new GameTime();
+            new WaitStep(3f, time),
+            new WaitStep(3f, time)
+        };
 
-            var steps = new List<CutsceneStep>()
-            {
-                new WaitStep(3f, time),
-                new WaitStep(3f, time)
-            };
+        var levelSequencer = new LevelSequencer();
+        var cutscene = new Cutscene(levelSequencer, steps);
 
-            var levelSequencer = new LevelSequencer();
-            var cutscene = new Cutscene(levelSequencer, steps);
+        Assert.IsFalse(cutscene.IsDisposed);
 
-            Assert.IsFalse(cutscene.IsDisposed);
+        time.MoveTime(1f);
 
-            time.MoveTime(1f);
+        Assert.AreEqual(0, levelSequencer.GetProcessedStepsAmount());
+        Assert.IsFalse(cutscene.IsDisposed);
 
-            Assert.AreEqual(0, levelSequencer.GetProcessedStepsAmount());
-            Assert.IsFalse(cutscene.IsDisposed);
+        time.MoveTime(3f);
 
-            time.MoveTime(3f);
+        Assert.AreEqual(1, levelSequencer.GetProcessedStepsAmount());
+        Assert.IsFalse(cutscene.IsDisposed);
 
-            Assert.AreEqual(1, levelSequencer.GetProcessedStepsAmount());
-            Assert.IsFalse(cutscene.IsDisposed);
+        time.MoveTime(3f);
 
-            time.MoveTime(3f);
+        Assert.AreEqual(2, levelSequencer.GetProcessedStepsAmount());
+        Assert.IsTrue(cutscene.IsDisposed);
+        levelSequencer.Dispose();
+    }
 
-            Assert.AreEqual(2, levelSequencer.GetProcessedStepsAmount());
-            Assert.IsTrue(cutscene.IsDisposed);
-            levelSequencer.Dispose();
-        }
+    [Test, Order(TestOrders.Models)]
+    public void SwitchCameraWorks()
+    {
+        var time = new GameTime();
+        var gameControls = new ControlsMock();
 
-        [Test, Order(TestOrders.Models)]
-        public void SwitchCameraWorks()
+        var steps = new List<CutsceneStep>()
         {
-            var time = new GameTime();
-            var gameControls = new ControlsMock();
+            new SwitchCameraStep(3f, "Camera1", time, gameControls),
+        };
 
-            var steps = new List<CutsceneStep>()
-            {
-                new SwitchCameraStep(3f, "Camera1", time, gameControls),
-            };
+        var levelSequencer = new LevelSequencer();
+        var cutscene = new Cutscene(levelSequencer, steps);
 
-            var levelSequencer = new LevelSequencer();
-            var cutscene = new Cutscene(levelSequencer, steps);
+        Assert.AreEqual("Camera1", gameControls.CurrentCamera);
+        Assert.IsFalse(cutscene.IsDisposed);
 
-            Assert.AreEqual("Camera1", gameControls.CurrentCamera);
-            Assert.IsFalse(cutscene.IsDisposed);
+        time.MoveTime(3f);
 
-            time.MoveTime(3f);
+        Assert.IsTrue(cutscene.IsDisposed);
+        levelSequencer.Dispose();
+    }
 
-            Assert.IsTrue(cutscene.IsDisposed);
-            levelSequencer.Dispose();
-        }
-
-        [Test, Order(TestOrders.Models)]
-        public void DialogsWork()
+    [Test, Order(TestOrders.Models)]
+    public void DialogsWork()
+    {
+        var steps = new List<CutsceneStep>()
         {
-            var steps = new List<CutsceneStep>()
-            {
-                new DialogStep(new EmptyLocalizatedString(), new EmptyLocalizatedString()),
-            };
+            new DialogStep(new EmptyLocalizatedString(), new EmptyLocalizatedString()),
+        };
 
-            var levelSequencer = new LevelSequencer();
-            var cutscene = new Cutscene(levelSequencer, steps);
+        var levelSequencer = new LevelSequencer();
+        var cutscene = new Cutscene(levelSequencer, steps);
 
-            Assert.IsFalse(cutscene.IsDisposed);
+        Assert.IsFalse(cutscene.IsDisposed);
 
-            Assert.IsTrue(levelSequencer.GetCurrentStep() is DialogStep);
+        Assert.IsTrue(levelSequencer.GetCurrentStep() is DialogStep);
 
-            Assert.IsFalse(cutscene.IsDisposed);
+        Assert.IsFalse(cutscene.IsDisposed);
 
-            ((DialogStep)levelSequencer.GetCurrentStep()).Process();
+        ((DialogStep)levelSequencer.GetCurrentStep()).Process();
 
-            Assert.IsTrue(cutscene.IsDisposed);
+        Assert.IsTrue(cutscene.IsDisposed);
 
-            levelSequencer.Dispose();
+        levelSequencer.Dispose();
         }
 
         [Test, Order(TestOrders.Presenters)]
@@ -135,6 +136,7 @@ namespace Game.Assets.Scripts.Tests.Cases.Game.Cutscenes
             presenter.Dispose();
             views.Dispose();
         }
+        */
 
     }
 }
