@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Material_Sand
   m_Shader: {fileID: 4800000, guid: 0299cf39328d3e946b7ce3dd58d1994c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -60,16 +63,35 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - Boolean_3F48562E: 0
+    - Vector1_3A166FDB: -0.6
     - Vector1_5439BAA1: 0.38
+    - Vector1_6A419151: 2
+    - Vector1_7A399AA1: 0.1
     - Vector1_7C0C17C5: -0.6
     - Vector1_8A778843: -0.12
     - Vector1_94D5305: 3.31
+    - Vector1_9BEE277: 0.5
+    - Vector1_9D76692F: -0.6
+    - Vector1_B3E62D9: 0
     - Vector1_BA4E600D: 0
     - Vector1_CF5F417B: 0.1
     - Vector1_D6ACAC2D: 14.1
+    - Vector1_DABDAA81: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -83,6 +105,8 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -91,10 +115,14 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_90CB3858: {r: 0.745283, g: 0.6968286, b: 0.24256846, a: 0}
+    - Color_923C80EB: {r: 0.8679245, g: 0.8480096, b: 0.6591313, a: 0}
     - Color_B0488681: {r: 1, g: 0.98823535, b: 0.882353, a: 0}
     - Color_B49C5A4A: {r: 0.8301887, g: 0.7232882, b: 0.5991456, a: 0}
+    - Color_BE7ECF4: {r: 0.509434, g: 0.39293697, b: 0.26673186, a: 1}
     - Color_FCAD28D6: {r: 0.8113208, g: 0.6221432, b: 0.48602706, a: 1}
     - Vector2_E6D20B08: {r: 0, g: 0.8, b: 0, a: 0}
+    - Vector2_F855F478: {r: 0, g: 0.8, b: 0, a: 0}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
@@ -111,4 +139,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 5
+  version: 7

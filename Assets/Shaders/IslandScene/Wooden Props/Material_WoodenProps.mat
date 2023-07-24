@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Material_WoodenProps
   m_Shader: {fileID: 4800000, guid: b97638d18e4d3fd4b99d4cf8b06ffc67, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -60,6 +63,18 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
@@ -75,6 +90,8 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -88,7 +105,13 @@ Material:
     - Color_2D3B95EC: {r: 1, g: 0.80672276, b: 0, a: 0}
     - Color_5E056D09: {r: 0.16037735, g: 0.06670349, b: 0.04009435, a: 0}
     - Color_663FE4B7: {r: 0.27847987, g: 0.2953008, b: 0.3962264, a: 1}
+    - Color_8D664163: {r: 0.22641507, g: 0.22641507, b: 0.22641507, a: 1}
+    - Color_9CA97F4C: {r: 0.5269669, g: 0.54612327, b: 0.5849056, a: 0}
+    - Color_A5E06AB1: {r: 0.16037735, g: 0.06670349, b: 0.04009435, a: 0}
+    - Color_C5646CCA: {r: 0.745283, g: 0.61073625, b: 0.05273226, a: 0}
+    - Color_CF6AF6C6: {r: 0.22641507, g: 0.11245837, b: 0.043787792, a: 0}
     - Color_F22E7AEA: {r: 0.64435744, g: 0.68114394, b: 0.754717, a: 0}
+    - Color_FE466F3F: {r: 0.8207547, g: 0.7587677, b: 0.42973477, a: 0}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
@@ -105,4 +128,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 5
+  version: 7

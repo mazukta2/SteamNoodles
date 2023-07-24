@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Material_Flag
   m_Shader: {fileID: 4800000, guid: 18b5f65cf64560248bac2a9d8619217e, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -60,14 +63,33 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Vector1_14ED5E41: 0.5
+    - Vector1_1FD8DF1D: 1
     - Vector1_270ABF42: 6.44
     - Vector1_4D58B5B3: 0.93
+    - Vector1_5124C0BB: 4
     - Vector1_5C8C9C10: -0.22
     - Vector1_6AF0B92A: 11.3
     - Vector1_71760C5: -0.14
+    - Vector1_7364B03: 2
     - Vector1_79F402B5: 12.63
+    - Vector1_8D972C: 0
+    - Vector1_9B458A08: 15
+    - Vector1_B85694EA: 9
     - Vector1_D47E73FB: 0.08
     - _AlphaClip: 0
     - _Blend: 0
@@ -82,6 +104,8 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -90,11 +114,17 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_95E9FD3A: {r: 0.9323986, g: 0.9339623, b: 0.9119349, a: 0}
     - Color_96AFF124: {r: 0.0211819, g: 0.025623169, b: 0.03773582, a: 0}
+    - Color_DCE73F14: {r: 0.0211819, g: 0.025623169, b: 0.03773582, a: 0}
     - Color_E84B64D2: {r: 1, g: 1, b: 1, a: 0}
+    - Vector2_27112B0F: {r: -1, g: -0.25, b: 0, a: 0}
+    - Vector2_4D77EB70: {r: 1, g: 2, b: 0, a: 0}
     - Vector2_61983782: {r: 1, g: 2.75, b: 0, a: 0}
     - Vector2_73C0661C: {r: 3, g: 1.5, b: 0, a: 0}
+    - Vector2_8F7C8165: {r: 0, g: 0, b: 0, a: 0}
     - Vector2_CA9898C7: {r: -1, g: -0.25, b: 0, a: 0}
+    - Vector2_E017696C: {r: 3, g: 1.5, b: 0, a: 0}
     - Vector2_F4A204A9: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -112,4 +142,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 5
+  version: 7
