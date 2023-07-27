@@ -16,7 +16,6 @@ namespace Game.Assets.Scripts.Game.Logic.Presenters.Level.StartMenuLevel
         {
             level.OnDispose += Dispose;
 
-            musicManager.Start(level.GetStartMusic());
         }
 
     }

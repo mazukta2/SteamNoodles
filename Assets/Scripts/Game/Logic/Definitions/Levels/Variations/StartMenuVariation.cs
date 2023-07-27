@@ -18,8 +18,6 @@ namespace Game.Assets.Scripts.Game.Logic.Definitions.Levels.Variations
         [JsonConverter(typeof(DefinitionsConventer<LevelDefinition>))]
         public LevelDefinition FirstLevel { get; set; }
 
-        public string StartMusic { get; set; }
-
         public override (ILevel, IPresenter) CreateModel(LevelDefinition definition, IModels models)
         {
             var model = new StartMenu(this, models, IGameRandom.Default, IGameTime.Default, IDefinitions.Default);

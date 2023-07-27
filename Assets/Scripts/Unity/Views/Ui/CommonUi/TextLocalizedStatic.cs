@@ -11,7 +11,7 @@ namespace GameUnity.Unity.Views.Ui.CommonUi
         [SerializeField] private string _tag;
         public void Awake()
         {
-            gameObject.GetComponent<TextMeshProUGUI>().text = new LocalizatedString(_tag).Get();
+            //gameObject.GetComponent<TextMeshProUGUI>().text = new LocalizatedString(_tag).Get();
         }
     }
 }

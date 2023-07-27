@@ -26,7 +26,6 @@ namespace Game.Assets.Scripts.Tests.Cases.Level
                 Variation = new StartMenuVariation()
                 {
                     SceneName = "SceneName",
-                    StartMusic = "MusicTrack"
                 }
             };
             var build = new BuildConstructor()

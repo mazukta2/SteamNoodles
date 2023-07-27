@@ -2,7 +2,6 @@
 using Game.Assets.Scripts.Game.Logic.Common.Animations;
 using Game.Assets.Scripts.Game.Logic.Common.Core;
 using Game.Assets.Scripts.Game.Logic.Models.Cutscenes;
-using Game.Assets.Scripts.Game.Logic.Models.Cutscenes.StepVariations;
 
 namespace Game.Assets.Scripts.Game.Logic.Models.Sequencer
 {

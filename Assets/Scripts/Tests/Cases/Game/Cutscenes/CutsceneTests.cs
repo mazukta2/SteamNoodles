@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.Assets.Scripts.Game.Logic.Definitions.Cutscenes.Variations;
 using Game.Assets.Scripts.Game.Logic.Definitions.Levels;
 using Game.Assets.Scripts.Game.Logic.Models;
 using Game.Assets.Scripts.Game.Logic.Models.Cutscenes;
-using Game.Assets.Scripts.Game.Logic.Models.Cutscenes.StepVariations;
 using Game.Assets.Scripts.Game.Logic.Models.Sequencer;
 using Game.Assets.Scripts.Game.Logic.Models.Time;
 using Game.Assets.Scripts.Game.Logic.Presenters.Localization;
